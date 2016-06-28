@@ -14,3 +14,6 @@
 
 # Ignore node
 node_modules
+
+# Ignore compile assets
+public/assets/
