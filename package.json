@@ -4,6 +4,7 @@
     "babelify": "^6.1.2",
     "browserify": "^13.0.1",
     "gulp": "^3.9.1",
+    "gulp-connect": "^4.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "vinyl-source-stream": "^1.1.0",
