@@ -11,6 +11,8 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-stack_explorer'
   gem 'pry-theme'
+
+  gem 'rspec-rails', '~> 3.4'
 end
 
 group :development do
