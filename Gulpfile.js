@@ -1,3 +1,4 @@
+var env = process.env.RAILS_ENV
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
@@ -14,11 +15,11 @@ var npmDependencies = getNPMPackageIds()
 
 var vinylSource = require('vinyl-source-stream')
 var vinylBuffer = require('vinyl-buffer')
-function bundle(browserifyPack, name) {
-  var p = browserifyPack.bundle().pipe(vinylSource(name)).pipe(vinylBuffer())
+function bundle(browserifyPack, path, fileName) {
+  var p = browserifyPack.bundle().pipe(vinylSource(fileName)).pipe(vinylBuffer())
   return p.pipe(sourcemaps.init({loadMaps: true}))
   .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest('public/assets/'))
+  .pipe(gulp.dest(path))
 }
 
 var browserify = require('browserify')
@@ -34,22 +35,33 @@ var vendorPack = browserify({
   require: npmDependencies,
 })
 
-gulp.task('default', ['js-vendor', 'js-app', 'compile-scss']);
+var glob = require('glob')
+var testPack = browserify({
+  entries: glob.sync('spec/javascripts/**/*Spec.js'),
+  paths: ['./app/assets/javascripts/'],
+  debug: true,
+}).external(npmDependencies).transform(babelify)
+
+gulp.task('default', ['js-vendor', 'js-app', 'compile-scss'])
 
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/application.scss')
   .pipe(sourcemaps.init())
   .pipe(sass({ indentedSyntax: false, errLogToConsole: true }))
   .pipe(sourcemaps.write())
-  .pipe(gulp.dest('public/assets'));
-});
+  .pipe(gulp.dest('public/assets/build/'))
+})
 
 gulp.task('js-app', function() {
-  return bundle(appPack, 'application.js')
+  return bundle(appPack, 'public/assets/build/', 'application.js')
 })
 
 gulp.task('js-vendor', function() {
-  return bundle(vendorPack, 'vendor.js')
+  return bundle(vendorPack, 'public/assets/build/', 'vendor.js')
+})
+
+gulp.task('js-test', function() {
+  return bundle(testPack, 'application-test.js')
 })
 
 var connect = require('gulp-connect')
@@ -61,3 +73,33 @@ gulp.task('server', function() {
   })
 })
 
+var clean = require('gulp-clean')
+gulp.task('clean-build-assets', function () {
+  return gulp.src('public/assets/build/*', {read: false})
+  .pipe(clean())
+})
+
+var runSequence = require('run-sequence')
+gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
+  runSequence(
+    ['js-vendor', 'js-app', 'compile-scss'],
+    ['version-assets']
+  )
+})
+
+var rev = require('gulp-rev')
+gulp.task('version-assets', function () {
+  if(!env || env == 'development' || env == 'test') {
+    return gulp.src(['public/assets/build/**/*'])
+    .pipe(gulp.dest('public/assets/'))
+  } else {
+    return gulp.src([
+      'public/assets/build/**/*',
+      '!public/assets/build/**/*.map'
+    ])
+    .pipe(rev())
+    .pipe(gulp.dest('public/assets'))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest('public/assets'))
+  }
+})

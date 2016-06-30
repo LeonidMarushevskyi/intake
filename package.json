@@ -5,10 +5,18 @@
     "browserify": "^13.0.1",
     "gulp": "^3.9.1",
     "gulp-connect": "^4.1.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-rev": "^7.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "vinyl-source-stream": "^1.1.0",
-    "vinyl-buffer": "^1.0.0"
+    "jasmine": "^2.4.1",
+    "karma": "^1.1.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
+    "run-sequence": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
     "babel-polyfill": "6.2.0"
