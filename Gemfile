@@ -5,6 +5,8 @@ gem 'pg', '~> 0.15'
 gem 'haml-rails'
 
 group :development, :test do
+  gem 'factory_girl_rails', require: false
+
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
