@@ -86,25 +86,40 @@ gulp.task('clean-build-assets', function () {
 
 var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
-  runSequence(
-    ['js-vendor', 'js-app', 'compile-scss', 'images'],
-    ['version-assets']
-  )
+  if(!env || env == 'development' || env == 'test') {
+    runSequence(
+      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['copy-build-assets']
+    )
+  } else {
+    runSequence(
+      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['version-assets'],
+      ['translate-versioned-assets']
+    )
+  }
+})
+
+var fingerprint = require('gulp-fingerprint')
+gulp.task('translate-versioned-assets', function() {
+  return gulp.src('public/assets/**/*.css')
+  .pipe(fingerprint('public/assets/rev-manifest.json'))
+  .pipe(gulp.dest('public/assets/'))
+})
+
+gulp.task('copy-build-assets', function () {
+  return gulp.src(['tmp/assets/**/*'])
+  .pipe(gulp.dest('public/assets/'))
 })
 
 var rev = require('gulp-rev')
 gulp.task('version-assets', function () {
-  if(!env || env == 'development' || env == 'test') {
-    return gulp.src(['tmp/assets/**/*'])
-    .pipe(gulp.dest('public/assets/'))
-  } else {
-    return gulp.src([
-      'tmp/assets/**/*',
-      '!tmp/assets/**/*.map'
-    ])
-    .pipe(rev())
-    .pipe(gulp.dest('public/assets'))
-    .pipe(rev.manifest())
-    .pipe(gulp.dest('public/assets'))
-  }
+  return gulp.src([
+    'tmp/assets/**/*',
+    '!tmp/assets/**/*.map'
+  ])
+  .pipe(rev())
+  .pipe(gulp.dest('public/assets'))
+  .pipe(rev.manifest())
+  .pipe(gulp.dest('public/assets'))
 })

@@ -6,6 +6,7 @@
     "gulp": "^3.9.1",
     "gulp-connect": "^4.1.0",
     "gulp-clean": "^0.3.2",
+    "gulp-fingerprint": "^0.3.2",
     "gulp-rev": "^7.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
