@@ -21,8 +21,6 @@ function bundle(browserifyPack, path, fileName) {
   var compress = (env && (env != 'development' || env != 'test'))
   return browserifyPack.bundle().pipe(vinylSource(fileName)).pipe(vinylBuffer())
   .pipe(gulpif(compress, uglify({preserveComments: 'some'})))
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(path))
 }
 
