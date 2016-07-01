@@ -42,7 +42,7 @@ var testPack = browserify({
   debug: true,
 }).external(npmDependencies).transform(babelify)
 
-gulp.task('default', ['js-vendor', 'js-app', 'compile-scss'])
+gulp.task('default', ['js-vendor', 'js-app', 'compile-scss', 'images'])
 
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/application.scss')
@@ -50,6 +50,11 @@ gulp.task('compile-scss', function() {
   .pipe(sass({ indentedSyntax: false, errLogToConsole: true }))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('tmp/assets/'))
+})
+
+gulp.task('images', function() {
+  return gulp.src('app/assets/images/**/*')
+  .pipe(gulp.dest('tmp/assets'))
 })
 
 gulp.task('js-app', function() {
@@ -82,7 +87,7 @@ gulp.task('clean-build-assets', function () {
 var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
   runSequence(
-    ['js-vendor', 'js-app', 'compile-scss'],
+    ['js-vendor', 'js-app', 'compile-scss', 'images'],
     ['version-assets']
   )
 })
