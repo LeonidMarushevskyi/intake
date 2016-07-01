@@ -49,19 +49,19 @@ gulp.task('compile-scss', function() {
   .pipe(sourcemaps.init())
   .pipe(sass({ indentedSyntax: false, errLogToConsole: true }))
   .pipe(sourcemaps.write())
-  .pipe(gulp.dest('public/assets/build/'))
+  .pipe(gulp.dest('tmp/assets/'))
 })
 
 gulp.task('js-app', function() {
-  return bundle(appPack, 'public/assets/build/', 'application.js')
+  return bundle(appPack, 'tmp/assets/', 'application.js')
 })
 
 gulp.task('js-vendor', function() {
-  return bundle(vendorPack, 'public/assets/build/', 'vendor.js')
+  return bundle(vendorPack, 'tmp/assets/', 'vendor.js')
 })
 
 gulp.task('js-test', function() {
-  return bundle(testPack, 'application-test.js')
+  return bundle(testPack, 'public/assets/', 'application-test.js')
 })
 
 var connect = require('gulp-connect')
@@ -75,7 +75,7 @@ gulp.task('server', function() {
 
 var clean = require('gulp-clean')
 gulp.task('clean-build-assets', function () {
-  return gulp.src('public/assets/build/*', {read: false})
+  return gulp.src('tmp/assets/*', {read: false})
   .pipe(clean())
 })
 
@@ -90,12 +90,12 @@ gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
 var rev = require('gulp-rev')
 gulp.task('version-assets', function () {
   if(!env || env == 'development' || env == 'test') {
-    return gulp.src(['public/assets/build/**/*'])
+    return gulp.src(['tmp/assets/**/*'])
     .pipe(gulp.dest('public/assets/'))
   } else {
     return gulp.src([
-      'public/assets/build/**/*',
-      '!public/assets/build/**/*.map'
+      'tmp/assets/**/*',
+      '!tmp/assets/**/*.map'
     ])
     .pipe(rev())
     .pipe(gulp.dest('public/assets'))
