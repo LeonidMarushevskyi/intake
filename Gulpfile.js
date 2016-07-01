@@ -46,7 +46,7 @@ var testPack = browserify({
   debug: true,
 }).external(npmDependencies).transform(babelify)
 
-gulp.task('default', ['js-vendor', 'js-app', 'compile-scss', 'images'])
+gulp.task('default', ['build-and-version-assets'])
 
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/application.scss')
@@ -127,4 +127,8 @@ gulp.task('version-assets', function () {
   .pipe(gulp.dest('public/assets'))
   .pipe(rev.manifest())
   .pipe(gulp.dest('public/assets'))
+})
+
+gulp.task('watch', ['server'], function() {
+  gulp.watch(['app/assets/javascripts/**/*'], ['build-and-version-assets'])
 })
