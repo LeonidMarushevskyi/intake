@@ -86,16 +86,17 @@ gulp.task('clean-build-assets', function () {
 
 var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
-  if(!env || env == 'development' || env == 'test') {
-    runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
-      ['copy-build-assets']
-    )
-  } else {
+  var revision = (env && (env != 'development' || env != 'test'))
+  if(revision) {
     runSequence(
       ['js-vendor', 'js-app', 'compile-scss', 'images'],
       ['version-assets'],
       ['translate-versioned-assets']
+    )
+  } else {
+    runSequence(
+      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['copy-build-assets']
     )
   }
 })
