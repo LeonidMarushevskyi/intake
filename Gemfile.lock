@@ -125,6 +125,8 @@ GEM
     pry-theme (1.1.2)
       coderay (~> 1.1)
       json (~> 1.8)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -225,6 +227,7 @@ DEPENDENCIES
   pry-remote
   pry-stack_explorer
   pry-theme
+  pundit
   rails (= 4.2.6)
   rspec-rails (~> 3.4)
   selenium-webdriver
