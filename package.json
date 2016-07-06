@@ -2,6 +2,7 @@
   "private": true,
   "devDependencies": {
     "babelify": "^6.1.2",
+    "bootstrap": "^3.3.6",
     "browserify": "^13.0.1",
     "glob": "^7.0.5",
     "gulp": "^3.9.1",
