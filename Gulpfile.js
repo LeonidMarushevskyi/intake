@@ -68,7 +68,7 @@ gulp.task('js-vendor', function() {
 })
 
 gulp.task('js-test', function() {
-  return bundle(testPack, 'public/assets/', 'application-test.js')
+  return bundle(testPack, 'tmp/assets/', 'application-test.js')
 })
 
 var connect = require('gulp-connect')
@@ -101,6 +101,13 @@ gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
       ['copy-build-assets']
     )
   }
+})
+
+gulp.task('build-test-assets', ['clean-build-assets'], function() {
+  return runSequence(
+    ['js-vendor', 'js-test'],
+    ['copy-build-assets']
+  )
 })
 
 var fingerprint = require('gulp-fingerprint')
