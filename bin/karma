@@ -1,0 +1,3 @@
+#!/bin/bash
+bin/gulp build-test-assets
+exec ./node_modules/.bin/karma start karma.conf.js $options "$@"
