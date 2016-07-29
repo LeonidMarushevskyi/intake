@@ -1,0 +1,27 @@
+version: '2'
+services:
+  ca_intake:
+    build: .
+    command: ./bin/docker_start
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/ca_intake
+      - ca_intake_rubygems:/ruby_gems
+    links:
+      - api
+  api:
+    extends:
+      file: ../casebook_api/docker-compose.common.yml
+      service: api
+    links:
+      - db
+  db:
+    extends:
+      file: ../casebook_api/docker-compose.common.yml
+      service: db
+volumes:
+  ca_intake_rubygems:
+  casebook_api_rubygems:
