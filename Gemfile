@@ -4,6 +4,7 @@ gem 'rails', '~> 5.0.0'
 gem 'pg', '~> 0.15'
 gem 'haml-rails'
 gem 'devise', '4.1.1'
+gem 'puma'
 gem 'pundit'
 
 group :development, :test do
