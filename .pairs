@@ -1,0 +1,9 @@
+---
+  pairs:
+    ap: Aneesh Pakala
+    sg: Suman Gurung
+
+email:
+  prefix: pair
+  domain: casecommons.org
+
