@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.configure do |config|
   did_gen_assets = false
   build_already_failed = false

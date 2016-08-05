@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'welcome#index'

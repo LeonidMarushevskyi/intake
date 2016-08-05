@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class SampleKittenPolicy < ApplicationPolicy
   attr_reader :user, :sample_kitten
 

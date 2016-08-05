@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'samples/kitten'
 
 FactoryGirl.define do
