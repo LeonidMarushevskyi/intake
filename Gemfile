@@ -18,6 +18,7 @@ group :development, :test do
   gem 'pry-theme'
 
   gem 'rspec-rails', '~> 3.4'
+  gem 'rubocop'
 end
 
 group :test do

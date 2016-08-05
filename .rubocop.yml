@@ -1,0 +1,7 @@
+AllCops:
+  Rails:
+    Enabled: true
+  Excludes:
+    - 'db/schema.rb'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
