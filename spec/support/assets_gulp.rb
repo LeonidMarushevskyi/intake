@@ -13,9 +13,7 @@ RSpec.configure do |config|
       end
     end
 
-    if build_already_failed
-      raise 'Failed to build modular JS assets!'
-    end
+    raise 'Failed to build modular JS assets!' if build_already_failed
 
     example.run
   end
