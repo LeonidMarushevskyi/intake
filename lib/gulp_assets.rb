@@ -5,6 +5,10 @@ require 'pathname'
 
 module GulpAssets
   module Helper
+    APP_ROOT = Pathname.new(
+      File.expand_path('../../', __FILE__)
+    ).freeze
+
     def gulp_asset_path(name)
       asset_filename = filename(name)
       uri(asset_filename).to_s
@@ -12,7 +16,11 @@ module GulpAssets
 
     def uri(filename)
       if ENV['RAILS_ENV'] == 'development'
-        return URI::HTTP.build(host: request.host, port: 4857, path: "/assets/#{filename}")
+        return URI::HTTP.build(
+          host: request.host,
+          port: 4857,
+          path: "/assets/#{filename}"
+        )
       else
         return URI::Generic.build(path: "/assets/#{filename}")
       end
@@ -27,9 +35,13 @@ module GulpAssets
     end
 
     def manifest
-      application_root = Pathname.new(File.expand_path('../..', __FILE__)).freeze
-      manifest_path = application_root.join('public', 'assets', 'rev-manifest.json').freeze
-      raise "Cannot find asset manifest: #{manifest_path}" unless File.exist?(manifest_path)
+      manifest_path = APP_ROOT.join(
+        'public',
+        'assets',
+        'rev-manifest.json'
+      ).freeze
+      manifest_file = File.exist?(manifest_path)
+      raise "Cannot find asset manifest: #{manifest_path}" unless manifest_file
       @manifest ||= JSON.parse(File.read(manifest_path))
     end
   end
