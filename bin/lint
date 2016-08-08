@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+ROOT="$(dirname "$0")/.."
+source "$ROOT/bin/_util"
+
+unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
