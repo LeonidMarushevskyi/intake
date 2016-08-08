@@ -3,6 +3,13 @@ require 'rails_helper'
 
 feature 'Create Referral' do
   scenario 'via create referral link' do
+    faraday_stub = Faraday.new do |builder|
+      builder.adapter :test do |stub|
+        stub.post('/api/v1/referrals') {|env| [201, {}, {'reference' => 'ABC123'}]}
+      end
+    end
+
+    allow(API).to receive(:connection).and_return(faraday_stub)
     visit root_path
 
     click_link 'Create Referral'
