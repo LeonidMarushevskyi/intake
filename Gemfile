@@ -9,6 +9,7 @@ gem 'rails', '~> 5.0.0'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
+  gem 'haml-lint'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
