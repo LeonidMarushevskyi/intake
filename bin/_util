@@ -1,5 +1,65 @@
 #!/bin/bash
 
+FMT_BOLD=$(tput bold)
+FMT_UNDERLINE=$(tput smul)
+FMT_NONE=$(tput sgr0)
+
+FMT_RED=$(tput setaf 1)
+FMT_GREEN=$(tput setaf 2)
+FMT_YELLOW=$(tput setaf 3)
+FMT_BLUE=$(tput setaf 4)
+FMT_MAGENTA=$(tput setaf 5)
+FMT_CYAN=$(tput setaf 6)
+FMT_WHITE=$(tput setaf 7)
+
+FMT_BG_RED=$(tput setab 1)
+FMT_BG_GREEN=$(tput setab 2)
+FMT_BG_YELLOW=$(tput setab 3)
+FMT_BG_BLUE=$(tput setab 4)
+FMT_BG_MAGENTA=$(tput setab 5)
+FMT_BG_CYAN=$(tput setab 6)
+FMT_BG_WHITE=$(tput setab 7)
+
+# Like `&&`, but without short-circuiting. Returns 1 if any commands exit with
+# non-zero status. Does *not* use `runcmd` for running commands.
+runmulti() {
+  local exit_status=0
+  for cmd in "$@"; do
+    if [[ -z "$DRY_RUN" ]]; then
+      (set +e ; $cmd)
+      [[ $? -ne 0 ]] && exit_status=1
+    fi
+  done
+  return $exit_status
+}
+
+# Accepts a prefix, ANSI-control format string, and message. Primarily meant for
+# building other output functions.
+message() {
+  local prefix="$1"
+  local ansi_format="$2"
+  local message=''
+  if [[ -z "$3" ]]; then
+    read -r -d '' message
+  else
+    message="$3"
+  fi
+  local padding="$(echo "$prefix" | perl -pe 's/./ /g')"
+  message="$(echo "$message" | perl -pe "s/^/$padding/ unless 1")"
+  printf "%b%s %s%b\n" "$ansi_format" "$prefix" "$message" "$FMT_NONE" >&2
+}
+
+# Like fatal(), but also exits with non-zero status.
+abort() {
+  fatal "$1"
+  exit 1
+}
+
+# Accepts a message either via stdin or as the first argument. Does not exit.
+fatal() {
+  message 'FATAL:' "$FMT_RED" "$@"
+}
+
 # Removes all ANSI colors codes, takes input via stdin.
 remove_color_codes() {
   perl -pe 's/\x1b\[[0-9;]*m//g'

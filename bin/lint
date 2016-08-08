@@ -5,4 +5,30 @@ set -e
 ROOT="$(dirname "$0")/.."
 source "$ROOT/bin/_util"
 
-unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
+js() {
+  unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
+}
+
+haml() {
+  bundle exec haml-lint app/views/**
+}
+
+ruby() {
+  bundle exec rubocop
+}
+
+is_valid_lint() {
+  local lint="$1"
+  echo -e "$available_lints" | grep --quiet "$lint"
+}
+
+cd "$ROOT"
+available_lints="js\nruby\nhaml"
+
+selected_lint="$1"
+if [[ -z "$selected_lint" ]]; then
+  runmulti $(echo -e "$available_lints" | xargs)
+else
+  is_valid_lint "$selected_lint" || abort 'Unknown lint specified'
+  "$selected_lint" ${@:2}
+fi
