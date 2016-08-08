@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.configure do |config|
   did_gen_assets = false
   build_already_failed = false
@@ -12,9 +13,7 @@ RSpec.configure do |config|
       end
     end
 
-    if build_already_failed
-      raise 'Failed to build modular JS assets!'
-    end
+    raise 'Failed to build modular JS assets!' if build_already_failed
 
     example.run
   end

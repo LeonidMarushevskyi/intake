@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 describe 'Pundit' do
@@ -14,7 +15,7 @@ describe 'Pundit' do
     it 'and forbids a forbidden action' do
       current_user = FactoryGirl.build(:user, first_name: 'NotKitty')
 
-      expect{Pundit.authorize(current_user, kitten, :allowed_to_pet?)}
+      expect { Pundit.authorize(current_user, kitten, :allowed_to_pet?) }
         .to raise_error(Pundit::NotAuthorizedError)
     end
   end

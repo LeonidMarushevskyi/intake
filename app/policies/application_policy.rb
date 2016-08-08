@@ -1,4 +1,7 @@
-class ApplicationPolicy
+# frozen_string_literal: true
+
+# All Application policies are inherited from here.
+class ApplicationPolicy # :nodoc:
   attr_reader :user, :record
 
   def initialize(user, record)
@@ -11,7 +14,7 @@ class ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(id: record.id).exists?
   end
 
   def create?
@@ -38,7 +41,7 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
-  class Scope
+  class Scope # :nodoc:
     attr_reader :user, :scope
 
     def initialize(user, scope)

@@ -7,6 +7,7 @@ services:
       - "3000:3000"
     environment:
       RAILS_ENV: development
+      API_URL: "http://api:3000"
     volumes:
       - .:/ca_intake
       - ca_intake_rubygems:/ruby_gems
