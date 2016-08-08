@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'gulp_assets'
+
+# CA Intake Application Controller.
 class ApplicationController < ActionController::Base # :nodoc:
   include GulpAssets::Helper
   include Pundit

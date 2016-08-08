@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# All Application policies are inherited from here.
 class ApplicationPolicy # :nodoc:
   attr_reader :user, :record
 
