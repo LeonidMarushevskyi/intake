@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails'
@@ -15,8 +16,8 @@ require 'rails/test_unit/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module CaIntake
-  class Application < Rails::Application
+module CaIntake # :nodoc:
+  class Application < Rails::Application # :nodoc:
     config.autoload_paths << Rails.root.join('lib')
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-class SampleKittenPolicy < ApplicationPolicy
+
+class SampleKittenPolicy < ApplicationPolicy # :nodoc:
   attr_reader :user, :sample_kitten
 
   def initialize(user, sample_kitten)

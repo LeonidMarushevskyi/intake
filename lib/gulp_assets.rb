@@ -4,7 +4,7 @@ require 'uri'
 require 'pathname'
 
 module GulpAssets
-  module Helper
+  module Helper # :nodoc:
     APP_ROOT = Pathname.new(
       File.expand_path('../../', __FILE__)
     ).freeze

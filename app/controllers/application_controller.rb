@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 require 'gulp_assets'
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::Base # :nodoc:
   include GulpAssets::Helper
   include Pundit
   # Prevent CSRF attacks by raising an exception.
