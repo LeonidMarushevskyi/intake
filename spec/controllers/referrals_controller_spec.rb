@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 describe ReferralsController do
-  describe 'POST #create' do
+  describe '#create' do
     it 'Creates a new referral' do
       allow(ReferralCreator).to receive(:create).and_return(double(:referral))
       post :create
