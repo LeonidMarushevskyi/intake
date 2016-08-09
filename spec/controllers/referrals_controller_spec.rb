@@ -2,11 +2,11 @@
 require 'rails_helper'
 
 describe ReferralsController do
-  describe 'GET #new' do
-    it 'assigns LUID to @refferal_code' do
-      get :new
+  describe '#create' do
+    it 'Creates a new referral' do
+      allow(ReferralCreator).to receive(:create).and_return(double(:referral))
+      post :create
       assert_response :success
-      expect(assigns(:referral_code)).to_not be_empty
     end
   end
 end

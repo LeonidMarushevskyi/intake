@@ -5,6 +5,7 @@ services:
     command: ./bin/docker_start
     ports:
       - "3000:3000"
+      - "4857:4857"
     environment:
       RAILS_ENV: development
       API_URL: "http://api:3000"
