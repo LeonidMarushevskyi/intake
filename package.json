@@ -4,6 +4,8 @@
     "babelify": "^6.1.2",
     "bootstrap-accessibility-plugin": "^1.0.2",
     "browserify": "^13.0.1",
+    "eslint": "1.10.3",
+    "eslint-plugin-react": "3.16.1",
     "glob": "^7.0.5",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
