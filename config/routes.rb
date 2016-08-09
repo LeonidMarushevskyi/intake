@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'welcome#index'
   get 'new_referral' => 'referrals#new', as: :new_referral
+  resources :style_guide, only: [:index, :show]
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

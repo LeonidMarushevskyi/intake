@@ -49,7 +49,15 @@ gulp.task('default', ['build-and-version-assets'])
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/application.scss')
   .pipe(sourcemaps.init())
-  .pipe(sass({ indentedSyntax: false, errLogToConsole: true }))
+  .pipe(sass({
+    indentedSyntax: false,
+    errLogToConsole: true,
+    includePaths: [
+      'node_modules/',
+      'app/assets/stylesheets/'
+    ],
+    outputStyle: 'expanded'
+  }))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('tmp/assets/'))
 })
