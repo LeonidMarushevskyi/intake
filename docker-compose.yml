@@ -11,6 +11,7 @@ services:
     volumes:
       - .:/ca_intake
       - ca_intake_rubygems:/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
     links:
       - api
   api:
@@ -25,4 +26,5 @@ services:
       service: db
 volumes:
   ca_intake_rubygems:
+  ca_intake_node_modules:
   casebook_api_rubygems:
