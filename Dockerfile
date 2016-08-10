@@ -16,4 +16,13 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 ENV DISPLAY :1
+ADD . $APP_HOME
+
 ENV BUNDLE_PATH /ruby_gems
+
+RUN bundle install
+RUN npm install
+RUN bin/gulp
+
+
+CMD bundle exec puma
