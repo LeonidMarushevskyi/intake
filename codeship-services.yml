@@ -1,0 +1,6 @@
+ca_intake:
+  build: .
+  environment:
+    RAILS_ENV: test
+  volumes:
+    - .:/ca_intake
