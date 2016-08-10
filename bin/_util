@@ -1,24 +1,26 @@
 #!/bin/bash
 
-FMT_BOLD=$(tput bold)
-FMT_UNDERLINE=$(tput smul)
-FMT_NONE=$(tput sgr0)
+if [[ $- == *i* ]]; then
+  FMT_BOLD=$(tput bold)
+  FMT_UNDERLINE=$(tput smul)
+  FMT_NONE=$(tput sgr0)
 
-FMT_RED=$(tput setaf 1)
-FMT_GREEN=$(tput setaf 2)
-FMT_YELLOW=$(tput setaf 3)
-FMT_BLUE=$(tput setaf 4)
-FMT_MAGENTA=$(tput setaf 5)
-FMT_CYAN=$(tput setaf 6)
-FMT_WHITE=$(tput setaf 7)
+  FMT_RED=$(tput setaf 1)
+  FMT_GREEN=$(tput setaf 2)
+  FMT_YELLOW=$(tput setaf 3)
+  FMT_BLUE=$(tput setaf 4)
+  FMT_MAGENTA=$(tput setaf 5)
+  FMT_CYAN=$(tput setaf 6)
+  FMT_WHITE=$(tput setaf 7)
 
-FMT_BG_RED=$(tput setab 1)
-FMT_BG_GREEN=$(tput setab 2)
-FMT_BG_YELLOW=$(tput setab 3)
-FMT_BG_BLUE=$(tput setab 4)
-FMT_BG_MAGENTA=$(tput setab 5)
-FMT_BG_CYAN=$(tput setab 6)
-FMT_BG_WHITE=$(tput setab 7)
+  FMT_BG_RED=$(tput setab 1)
+  FMT_BG_GREEN=$(tput setab 2)
+  FMT_BG_YELLOW=$(tput setab 3)
+  FMT_BG_BLUE=$(tput setab 4)
+  FMT_BG_MAGENTA=$(tput setab 5)
+  FMT_BG_CYAN=$(tput setab 6)
+  FMT_BG_WHITE=$(tput setab 7)
+fi
 
 # Like `&&`, but without short-circuiting. Returns 1 if any commands exit with
 # non-zero status. Does *not* use `runcmd` for running commands.
