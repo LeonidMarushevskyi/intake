@@ -1,5 +1,6 @@
 ca_intake:
   build: .
+  dockerfile: docker/codeship/Dockerfile
   environment:
     RAILS_ENV: test
   volumes:
