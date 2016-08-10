@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require 'rails_helper'
 
 describe ReferralCreator do
   describe '.create' do
-    it 'returns the report attributes if the post to /referrals is successful' do
+    it 'returns the report if the post to /referrals is successful' do
       mock_response = double(:mock_response, status: 201, body: double)
       allow(API.connection).to receive(:post).and_return(mock_response)
       referral = ReferralCreator.create
@@ -13,9 +14,9 @@ describe ReferralCreator do
       mock_response = double(:mock_response, status: 500)
       allow(API.connection).to receive(:post).and_return(mock_response)
 
-      expect {
+      expect do
         ReferralCreator.create
-      }.to raise_error RuntimeError
+      end.to raise_error RuntimeError
     end
   end
 end

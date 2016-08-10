@@ -5,7 +5,9 @@ feature 'Create Referral' do
   scenario 'via create referral link' do
     faraday_stub = Faraday.new do |builder|
       builder.adapter :test do |stub|
-        stub.post('/api/v1/referrals') {|env| [201, {}, {'reference' => 'ABC123'}]}
+        stub.post('/api/v1/referrals') do |_|
+          [201, {}, { 'reference' => 'ABC123' }]
+        end
       end
     end
 

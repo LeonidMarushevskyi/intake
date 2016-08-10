@@ -9,6 +9,5 @@ class ReferralsController < ApplicationController # :nodoc:
   end
 
   def edit
-
   end
 end
