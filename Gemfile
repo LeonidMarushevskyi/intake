@@ -21,6 +21,7 @@ group :development, :test do
   gem 'pry-theme'
   gem 'rspec-rails', '~> 3.4'
   gem 'rubocop'
+  gem 'i18n-tasks'
 end
 
 group :development do
