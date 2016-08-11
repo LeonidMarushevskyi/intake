@@ -3,5 +3,3 @@ ca_intake:
   dockerfile: docker/codeship/Dockerfile
   environment:
     RAILS_ENV: test
-  volumes:
-    - .:/ca_intake
