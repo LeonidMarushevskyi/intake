@@ -22,7 +22,7 @@ ENV BUNDLE_PATH /ruby_gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j24
 
-COPY package.json node_modules ./
+COPY package.json ./
 RUN npm install --spin=false
 
 COPY . ./
