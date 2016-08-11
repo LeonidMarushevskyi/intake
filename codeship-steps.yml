@@ -1,5 +1,3 @@
-- type: parallel
-  steps:
-  - name: rspec
-    service: ca_intake
-    command: xvfb-run bundle exec rspec spec
+- name: rspec
+  service: ca_intake
+  command: xvfb-run bundle exec rspec spec
