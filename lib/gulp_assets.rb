@@ -34,7 +34,7 @@ module GulpAssets
     # Returns the filenames actual versioned name that is
     # stored in the manifest file.
     def filename(filename)
-      if ENV['RAILS_ENV'] == 'development' || ENV['RAIL_ENV'] == 'test'
+      if ENV['RAILS_ENV'] == 'development' || ENV['RAILS_ENV'] == 'test'
         return filename
       else
         return manifest[filename]
