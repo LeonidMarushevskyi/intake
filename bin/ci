@@ -1,3 +1,3 @@
 Xvfb :99 -ac +extension RANDR -screen 0 2500x2500x16 &
-bin/gulp
+
 DISPLAY=:99 RAILS_ENV=test bundle exec rspec spec
