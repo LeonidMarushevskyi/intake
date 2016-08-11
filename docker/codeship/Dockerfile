@@ -16,4 +16,13 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
+RUN mkdir /ruby_gems
 ENV BUNDLE_PATH /ruby_gems
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install -j24
+
+COPY package.json node_modules ./
+RUN npm install --spin=false
+
+COPY . ./
