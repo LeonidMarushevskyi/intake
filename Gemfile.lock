@@ -220,6 +220,10 @@ GEM
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
+    sass (3.4.22)
+    scss_lint (0.49.0)
+      rake (>= 0.9, < 12)
+      sass (~> 3.4.20)
     selenium-webdriver (2.53.4)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
@@ -287,6 +291,7 @@ DEPENDENCIES
   rails-controller-testing
   rspec-rails (~> 3.4)
   rubocop
+  scss_lint
   selenium-webdriver
   spring
   web-console (~> 2.0)
