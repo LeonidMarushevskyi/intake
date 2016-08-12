@@ -1,0 +1,3 @@
+- name: rspec
+  service: ca_intake
+  command: bash bin/ci
