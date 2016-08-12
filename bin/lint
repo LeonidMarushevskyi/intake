@@ -5,6 +5,10 @@ set -e
 ROOT="$(dirname "$0")/.."
 source "$ROOT/bin/_util"
 
+scss() {
+  bundle exec scss-lint
+}
+
 js() {
   unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
 }
@@ -23,7 +27,7 @@ is_valid_lint() {
 }
 
 cd "$ROOT"
-available_lints="js\nruby\nhaml"
+available_lints="js\nruby\nhaml\nscss"
 
 selected_lint="$1"
 if [[ -z "$selected_lint" ]]; then
