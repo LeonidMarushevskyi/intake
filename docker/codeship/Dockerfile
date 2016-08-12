@@ -16,7 +16,6 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-RUN mkdir /ruby_gems
 ENV BUNDLE_PATH /ruby_gems
 
 COPY Gemfile Gemfile.lock ./
