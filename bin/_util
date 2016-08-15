@@ -28,8 +28,7 @@ runmulti() {
   local exit_status=0
   for cmd in "$@"; do
     if [[ -z "$DRY_RUN" ]]; then
-      (set +e ; $cmd)
-      [[ $? -ne 0 ]] && exit_status=1
+      $cmd || exit_status=1
     fi
   done
   return $exit_status
