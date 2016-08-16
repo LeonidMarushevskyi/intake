@@ -1,5 +1,12 @@
 ca_intake:
   build: .
   dockerfile: docker/codeship/Dockerfile
+  volumes_from:
+    - data
   environment:
     RAILS_ENV: test
+data:
+  image: busybox
+  volumes:
+    - ./tmp/ruby_gems:/ruby_gems
+    - ./tmp/node_modules:/ca_intake/node_modules
