@@ -1,0 +1,14 @@
+version: '2'
+services:
+  ca_intake:
+    build:
+      context: ../../
+      dockerfile: docker/codeship/Dockerfile
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+volumes:
+  ca_intake_rubygems:
+  ca_intake_node_modules:
