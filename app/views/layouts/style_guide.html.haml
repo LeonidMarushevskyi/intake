@@ -8,16 +8,16 @@
     = javascript_include_tag gulp_asset_path('vendor.js'), defer: true
     = javascript_include_tag gulp_asset_path('application.js'), defer: true
     = csrf_meta_tags
-  %body
-    .row
-      .col-sm-3
+  %body.styleguide
+    .container
+      .col-md-3
         %nav
           %ul
+            %li
+              = link_to 'Colors', style_guide_path(:colors)
             %li
               = link_to 'Lists', style_guide_path(:lists)
             %li
               = link_to 'Forms', style_guide_path(:forms)
-            %li
-              = link_to 'Colors', style_guide_path(:colors)
-      .col-sm-9
+      .col-md-9
         = yield

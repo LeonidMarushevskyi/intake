@@ -49,15 +49,13 @@ $green-light: #4aa564;
 $green-lighter: #94bfa2;
 $green-lightest: #e7f4e4;
 
-$cool-blue: #205493;
 $cool-blue-light: #4773aa;
 $cool-blue-lighter: #8ba6ca;
-$cool-blue-lightest: #dce4ef;
 
 // Special State Colors //
 
-$focus: #3e94cf;
-$visited: #4c2c92;
+$focus-color: #3e94cf;
+$visited-color: #4c2c92;
 
 /////////////////////////////////////////
 
@@ -110,15 +108,13 @@ $visited: #4c2c92;
 .c-green-lighter {color: $green-lighter;}
 .c-green-lightest {color: $green-lightest;}
 
-.c-cool-blue {color: $cool-blue;}
 .c-cool-blue-light {color: $cool-blue-light;}
 .c-cool-blue-lighter {color: $cool-blue-lighter;}
-.c-cool-blue-lightest {color: $cool-blue-lightest;}
 
 // Special State Colors //
 
-.c-focus {color: $focus;}
-.c-visited {color: $visited;}
+.c-focus-color {color: $focus-color;}
+.c-visited-color {color: $visited-color;}
 
 /////////////////////////////////////////
 
@@ -171,12 +167,10 @@ $visited: #4c2c92;
 .bg-green-lighter {background-color: $green-lighter;}
 .bg-green-lightest {background-color: $green-lightest;}
 
-.bg-cool-blue {background-color: $cool-blue;}
 .bg-cool-blue-light {background-color: $cool-blue-light;}
 .bg-cool-blue-lighter {background-color: $cool-blue-lighter;}
-.bg-cool-blue-lightest {background-color: $cool-blue-lightest;}
 
 // Special State Colors //
 
-.bg-focus {background-color: $focus;}
-.bg-visited {background-color: $visited;}
+.bg-focus-color {background-color: $focus-color;}
+.bg-visited-color {background-color: $visited-color;}
