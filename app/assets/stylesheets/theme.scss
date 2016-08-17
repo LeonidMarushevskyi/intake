@@ -12,6 +12,7 @@ html {
 body {
   font-family: $font-family;
   font-size: 1.7rem;
+  color: $primary-base;
 }
 
 p {
@@ -51,23 +52,43 @@ h1, h2, h3 {
 
 h1 {
   font-size: $largest-font;
-  font-weight: $bold-weight;
+  font-weight: $semibold-weight;
 }
 
 h2 {
   font-size: $larger-font;
-  font-weight: $bold-weight;
+  font-weight: $semibold-weight;
 }
 
 h3 {
   font-size: $large-font;
-  font-weight: $bold-weight;
+  font-weight: $semibold-weight;
+}
+
+h4 {
+  font-size: $large-font;
+  font-weight: $semibold-weight;
+  margin-top: 0;
 }
 
 p {
 	margin-bottom: $base-spacing;
-    margin-top: $base-spacing;
-    line-height: 1.5;
+  margin-top: $base-spacing;
+  line-height: 1.5;
+}
+
+pre {
+  border-radius: 0;
+  border: none;
+  padding: $double-spacing;
+  font-family: $code-font-family;
+  max-height: 40rem;
+  margin: 0;
+  font-size: $small-font;
+}
+
+code {
+  color: $primary-base;
 }
 
 /////////////////////////////////////////

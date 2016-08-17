@@ -1,23 +1,65 @@
 %h1 Alerts
 %i Alerts keep users informed of important and sometimes time-sensitive changes.
+.double-padded.border-regular-light-gray.gap-top
+  .alert.alert-success
+    .alert-body
+      %h3.alert-heading Success Status
+      %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
 
-.alert.alert-success
-  .alert-body
-    %h3.alert-heading Success Status
-    %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-.alert.alert-warning
-  .alert-body
-    %h3.alert-heading Warning Status
-    %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-.alert.alert-danger{:role => "alert"}
-  .alert-body
-    %h3.alert-heading Error Status
-    %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-.alert.alert-info
-  .alert-body
-    %h3.alert-heading Information Status
-    %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
-.alert.alert-info
-  .alert-body
-    %h3.alert-heading Information Status
-    %p.alert-text Multi line. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui atione voluptatem sequi nesciunt. Neque porro quisquam est, qui doloremipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+  .alert.alert-warning
+    .alert-body
+      %h3.alert-heading Warning Status
+      %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+  .alert.alert-danger{:role => "alert"}
+    .alert-body
+      %h3.alert-heading Error Status
+      %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+  .alert.alert-info
+    .alert-body
+      %h3.alert-heading Information Status
+      %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+  .alert.alert-info
+    .alert-body
+      %h3.alert-heading Information Status
+      %p.alert-text Multi line. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui atione voluptatem sequi nesciunt. Neque porro quisquam est, qui doloremipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+%pre.language-haml
+  %code
+    :preserve
+      .alert.alert-success
+        .alert-body
+          %h3.alert-heading Success Status
+          %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+      .alert.alert-warning
+       .alert-body
+          %h3.alert-heading Warning Status
+          %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+      .alert.alert-danger{:role => "alert"}
+        .alert-body
+          %h3.alert-heading Error Status
+          %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+      .alert.alert-info
+        .alert-body
+          %h3.alert-heading Information Status
+          %p.alert-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+
+      .alert.alert-info
+        .alert-body
+          %h3.alert-heading Information Status
+          %p.alert-text Multi line. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui atione voluptatem sequi nesciunt. Neque porro quisquam est, qui doloremipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+.double-padded.border-regular-light-gray
+  %h4 Accessibility Guideline
+  %ul
+  	%li
+  	  Simple tables can have two levels of headers. Each header cell should have scope="col" or scope="row".
+  	%li
+  	  Complex tables are tables with more than two levels of headers. Each header should be given a unique id and each data cell should have a headers attribute with each related header cell’s id listed.
+  	%li
+  	  When adding a title to a table, include it in a <caption> tag inside of the <table> element.
