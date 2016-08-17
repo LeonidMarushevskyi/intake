@@ -15,6 +15,6 @@ class StyleGuideController < ApplicationController # :nodoc:
   private
 
   def sanitize_page_name(page_name)
-    %w(forms tables colors typography borders buttons alerts).delete(page_name)
+    %w(forms tables colors typography borders buttons alerts navigation).delete(page_name)
   end
 end

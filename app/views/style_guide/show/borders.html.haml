@@ -1,10 +1,16 @@
 %h1
- Borders
+  Borders
 
-.padded.border-thin-light-gray.gap-bottom Thin light gray border
+.double-padded.border-regular-light-gray.gap-top
+  .padded.border-thin-light-gray.gap-bottom Thin light gray border
+  .padded.border-thin-dark-gray.gap-bottom Thin dark gray border
+  .padded.border-regular-light-gray.gap-bottom Regular light gray border
+  .padded.border-regular-dark-gray Regular dark gray border
 
-.padded.border-thin-dark-gray.gap-bottom Thin dark gray border
-
-.padded.border-regular-light-gray.gap-bottom Regular light gray border
-
-.padded.border-regular-dark-gray.gap-bottom Regular dark gray border
+%pre
+  %code
+    :preserve
+      .border-thin-light-gray Thin light gray border
+      .border-thin-dark-gray Thin dark gray border
+      .border-regular-light-gray Regular light gray border
+      .border-regular-dark-gray Regular dark gray borde

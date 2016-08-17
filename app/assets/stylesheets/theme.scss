@@ -49,7 +49,8 @@ h3 {
 
 h1 {
   font-size: $largest-font;
-  font-weight: $semibold-weight;
+  font-weight: $light-weight;
+  margin-bottom: 0;
 }
 
 h2 {
@@ -66,6 +67,7 @@ h4 {
   font-size: $large-font;
   font-weight: $semibold-weight;
   margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 p {
@@ -86,6 +88,16 @@ pre {
 
 code {
   color: $primary-base;
+}
+
+ul, ol {
+  margin: 0;
+}
+
+.additional_text {
+  float: right;
+  font-style: italic;
+  font-weight: normal;
 }
 
 /////////////////////////////////////////
@@ -630,9 +642,3 @@ table {
   left: -999em;
   position: absolute;
 }
-
-/////////////////////////////////////////
-
-// - Style Guide - //
-
-/////////////////////////////////////////

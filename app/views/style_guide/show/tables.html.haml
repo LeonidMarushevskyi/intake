@@ -8,17 +8,17 @@
     %table.table.table-hover
       %thead
         %tr
-          %td
+          %th{:scope => "col"}
             Item
-          %td
+          %th{:scope => "col"}
             Qty
-          %td
+          %th{:scope => "col"}
             Price
-          %td
+          %th{:scope => "col"}
             Description
       %tbody
         %tr
-          %td
+          %th{:scope => "row"}
             Pellentesque
           %td
             2
@@ -27,7 +27,7 @@
           %td
             Aenean accumsan lorem ante.
         %tr
-          %td
+          %th{:scope => "row"}
             Adipiscing
           %td
             1
@@ -36,7 +36,7 @@
           %td
             Proin fringilla tellus eget dui consequat ullamcorper.
         %tr
-          %td
+          %th{:scope => "row"}
             Suspendisse
           %td
             26
@@ -45,7 +45,7 @@
           %td
             Vestibulum feugiat non nulla nec semper.
         %tr
-          %td
+          %th{:scope => "row"}
             Morbi
           %td
             6
@@ -54,7 +54,7 @@
           %td
             Ut justo eros, vehicula at tincidunt vel, viverra sit amet sem.
         %tr
-          %td
+          %th{:scope => "row"}
             Vestibulum
           %td
             20
@@ -63,7 +63,7 @@
           %td
             Maecenas vel lobortis eros.
         %tr
-          %td
+          %th{:scope => "row"}
             Aenean
           %td
             9
@@ -72,24 +72,24 @@
           %td
             Curabitur fringilla sed urna in dictum.
 
-%pre.language-haml
+%pre
   %code
     :preserve
       .table-responsive
         %table.table.table-hover
           %thead
             %tr
-              %td
+              %th{:scope => "col"}
                 Item
-              %td
+              %th{:scope => "col"}
                 Qty
-              %td
+              %th{:scope => "col"}
                 Price
-              %td
+              %th{:scope => "col"}
                 Description
           %tbody
             %tr
-              %td
+              %th{:scope => "row"}
                 Pellentesque
               %td
                 2
@@ -98,7 +98,7 @@
               %td
                 Aenean accumsan lorem ante.
             %tr
-              %td
+              %th{:scope => "row"}
                 Adipiscing
               %td
                 1
@@ -107,7 +107,7 @@
               %td
                 Proin fringilla tellus eget dui consequat ullamcorper.
             %tr
-              %td
+              %th{:scope => "row"}
                 Suspendisse
               %td
                 26
@@ -116,7 +116,7 @@
               %td
                 Vestibulum feugiat non nulla nec semper.
             %tr
-              %td
+              %th{:scope => "row"}
                 Morbi
               %td
                 6
@@ -125,7 +125,7 @@
               %td
                 Ut justo eros, vehicula at tincidunt vel, viverra sit amet sem.
             %tr
-              %td
+              %th{:scope => "row"}
                 Vestibulum
               %td
                 20
@@ -134,7 +134,7 @@
               %td
                 Maecenas vel lobortis eros.
             %tr
-              %td
+              %th{:scope => "row"}
                 Aenean
               %td
                 9
@@ -144,7 +144,7 @@
                 Curabitur fringilla sed urna in dictum.
 
 .double-padded.border-regular-light-gray
-  %h4 Accessibility Guideline
+  %h4 Accessibility
   %ul
     %li
       Simple tables can have two levels of headers. Each header cell should have 
@@ -153,6 +153,18 @@
       %code scope="row"
       %span .
     %li
-      Complex tables are tables with more than two levels of headers. Each header should be given a unique id and each data cell should have a headers attribute with each related header cell’s id listed.
+      Complex tables are tables with more than two levels of headers. Each header should be given a unique 
+      %code id 
+      and each data cell should have a headers attribute with each related header cell’s 
+      %code id 
+      listed.
     %li
-      When adding a title to a table, include it in a <caption> tag inside of the <table> element.
+      When adding a title to a table, include it in a 
+      %code
+        :escaped
+          <caption>
+      tag inside of the 
+      %code
+        :escaped
+          <table>
+      %span element.

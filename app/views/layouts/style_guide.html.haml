@@ -12,10 +12,11 @@
     %link{:href => "https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600,700", :rel => "stylesheet", :type => "text/css’> "}
     %script{:src => "https://use.fontawesome.com/9b77536174.js"}
   %body.styleguide
-    .container
+    .container.double-gap-bottom
       .col-md-3
-        %nav
-          %ul 
+        %nav.double-gap-top
+          %h3.no-gap{:style => "color:#323a45;text-transform:uppercase;border-bottom: 1px solid #323a45;font-weight:600;"} Pattern Library
+          %ul.sidenav-list
             %li
               = link_to 'Typography', style_guide_path(:typography)
             %li
@@ -32,5 +33,7 @@
               = link_to 'Alerts', style_guide_path(:alerts)
             %li
               = link_to 'Icons', 'http://fontawesome.io/cheatsheet/', target: '_blank'
+            %li
+              = link_to 'Navigation', style_guide_path(:navigation)
       .col-md-9
         = yield
