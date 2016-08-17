@@ -1,8 +1,73 @@
 /////////////////////////////////////////
 
-// - Base - //
+// - Typography - //
 
 /////////////////////////////////////////
+
+html {
+  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.7rem;
+}
+
+p {
+  line-height: 1.5;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+a {
+  color: $primary-blue;
+  text-decoration: underline;
+}
+
+a:hover, a:active {
+  color: $primary-darker-blue;
+}
+
+a:visited {
+  color: $visited-color;
+}
+
+a:focus {
+  box-shadow: 0 0 3px $focus-color, 0 0 7px $focus-color;
+  outline: 0;
+}
+
+.dark-background-link a {
+	color: $gray-lighter;
+}
+
+h1, h2, h3 {
+  clear: both;
+  line-height: 1.3;
+  margin-bottom: $half-spacing;
+  margin-top: $base-spacing * 1.5;
+}
+
+h1 {
+  font-size: $largest-font;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: $larger-font;
+  font-weight: $bold-weight;
+}
+
+h3 {
+  font-size: $large-font;
+  font-weight: $bold-weight;
+}
+
+p {
+	margin-bottom: $base-spacing;
+    margin-top: $base-spacing;
+    line-height: 1.5;
+}
 
 /////////////////////////////////////////
 
