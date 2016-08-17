@@ -533,16 +533,20 @@ table {
 	width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
+
 	thead {
 		font-weight: $semibold-weight;
 	}
-	tbody>tr:nth-of-type(odd) {
-		background-color: $gray-lightest;
-	}
+
 	td {
 		padding: $base-spacing;
 	}
 }
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: none;
+  }}
 
 /////////////////////////////////////////
 
