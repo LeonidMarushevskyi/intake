@@ -285,7 +285,7 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-color: #ffffff;
+  background-color: $white;
   background-image: url("arrow-down.png");
   background-image: url("arrow-down.svg");
   background-position: right 1.3rem center;
@@ -318,13 +318,13 @@ input[type="radio"] {
 input[type="checkbox"] + label,
 input[type="radio"] + label {
   cursor: pointer;
-  font-weight: 400;
+  font-weight: $normal-weight;
   margin-bottom: 0.5em;
 }
 
 input[type="checkbox"] + label::before,
 input[type="radio"] + label::before {
-  background: #ffffff;
+  background: $white;
   border-radius: 0.3rem;
   box-shadow: 0 0 0 1px #757575;
   content: '\a0';
@@ -338,7 +338,7 @@ input[type="radio"] + label::before {
 }
 
 input[type="radio"] + label::before {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px #757575;
+  box-shadow: 0 0 0 2px $white, 0 0 0 3px #757575;
   height: 1.6rem;
   line-height: 1.6rem;
   width: 1.6rem;
@@ -352,11 +352,11 @@ input[type="radio"]:checked + label::before {
 }
 
 input[type="radio"]:checked + label::before {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px $primary-blue;
+  box-shadow: 0 0 0 2px $white, 0 0 0 4px $primary-blue;
 }
 
 input[type="radio"]:focus + label::before {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px $primary-blue, 0 0 3px 4px $focus-color, 0 0 7px 4px $focus-color;
+  box-shadow: 0 0 0 2px $white, 0 0 0 4px $primary-blue, 0 0 3px 4px $focus-color, 0 0 7px 4px $focus-color;
 }
 
 input[type="checkbox"]:checked + label::before {
@@ -367,7 +367,7 @@ input[type="checkbox"]:checked + label::before {
 }
 
 input[type="checkbox"]:focus + label::before {
-  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px $primary-blue;
+  box-shadow: 0 0 0 1px $white, 0 0 0 3px $primary-blue;
 }
 
 input[type="checkbox"]:disabled + label {
@@ -377,7 +377,7 @@ input[type="checkbox"]:disabled + label {
 input[type="checkbox"]:disabled + label::before,
 input[type="radio"]:disabled + label::before {
   background: #d6d7d9;
-  box-shadow: 0 0 0 1px #aeb0b5;
+  box-shadow: 0 0 0 1px $gray-light;
   cursor: not-allowed;
 }
 
