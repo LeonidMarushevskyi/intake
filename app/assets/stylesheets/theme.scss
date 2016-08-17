@@ -1,123 +1,131 @@
 // Helpers //
 
+.no-pad {
+	padding: 0;
+}
+
+.no-gap {
+	margin: 0;
+}
+
 .half-padded {
-	padding: 5px;
+	padding: $half-spacing;
 }
 
 .padded {
-	padding: 10px;
+	padding: $base-spacing;
 }
 
 .double-padded {
-	padding: 20px;
+	padding: $double-spacing;
 }
 
 .half-margin {
-	padding: 5px;
+	padding: $half-spacing;
 }
 
 .margin {
-	padding: 10px;
+	padding: $base-spacing;
 }
 
 .double-margin {
-	padding: 20px;
+	padding: $double-spacing;
 }
 
 .half-pad-top {
-	padding-top: 5px;
+	padding-top: $half-spacing;
 }
 
 .pad-top {
-	padding-top: 10px;
+	padding-top: $base-spacing;
 }
 
 .double-pad-top {
-	padding-top: 20px;
+	padding-top: $double-spacing;
 }
 
 .half-pad-bottom {
-	padding-bottom: 5px;
+	padding-bottom: $half-spacing;
 }
 
 .pad-bottom {
-	padding-bottom: 10px;
+	padding-bottom: $base-spacing;
 }
 
 .double-pad-bottom {
-	padding-bottom: 20px;
+	padding-bottom: $double-spacing;
 }
 
 .half-pad-left {
-	padding-left: 5px;
+	padding-left: $half-spacing;
 }
 
 .pad-left {
-	padding-left: 10px;
+	padding-left: $base-spacing;
 }
 
 .double-pad-left {
-	padding-left: 20px;
+	padding-left: $double-spacing;
 }
 
 .half-pad-right {
-	padding-right: 5px;
+	padding-right: $half-spacing;
 }
 
 .pad-right {
-	padding-right: 10px;
+	padding-right: $base-spacing;
 }
 
 .double-pad-right {
-	padding-right: 20px;
+	padding-right: $double-spacing;
 }
 
 .half-gap-top {
-	margin-top: 5px;
+	margin-top: $half-spacing;
 }
 
 .gap-top {
-	margin-top: 10px;
+	margin-top: $base-spacing;
 }
 
 .double-gap-top {
-	margin-top: 20px;
+	margin-top: $double-spacing;
 }
 
 .half-gap-bottom {
-	margin-bottom: 5px;
+	margin-bottom: $half-spacing;
 }
 
 .gap-bottom {
-	margin-bottom: 10px;
+	margin-bottom: $base-spacing;
 }
 
 .double-gap-bottom {
-	margin-bottom: 20px;
+	margin-bottom: $double-spacing;
 }
 
 .half-gap-left {
-	margin-left: 5px;
+	margin-left: $half-spacing;
 }
 
 .gap-left {
-	margin-left: 10px;
+	margin-left: $base-spacing;
 }
 
 .double-gap-left {
-	margin-left: 20px;
+	margin-left: $double-spacing;
 }
 
 .half-gap-right {
-	margin-right: 5px;
+	margin-right: $half-spacing;
 }
 
 .gap-right {
-	margin-right: 10px;
+	margin-right: $base-spacing;
 }
 
 .double-gap-right {
-	margin-right: 20px;
+	margin-right: $double-spacing;
 }
 
 .pull-left {
