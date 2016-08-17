@@ -2,34 +2,33 @@
 
 %h2 Headers
 
-%h1 Section Heading (h1)
-%h2 Section Heading (h2)
-%h3 Subsection Heading (h3)
+.double-padded.border-regular-light-gray
+  %h1 Section Heading (h1)
+  %h2 Section Heading (h2)
+  %h3 Subsection Heading (h3)
 
 %h2 Paragraph
 
-%p
+.double-padded.border-regular-light-gray
   Aenean accumsan lorem ante. Vestibulum feugiat non nulla nec semper. Pellentesque nisl quam, condimentum eget turpis id, euismod feugiat mauris. Aliquam dictum quam vel porttitor facilisis. Duis eleifend dolor ut metus laoreet eleifend non et sem. Quisque venenatis sem nibh, cursus dictum diam egestas vitae. Curabitur dictum egestas nulla eget euismod. Ut id elementum tortor. Curabitur ornare magna a nisi semper, eget vestibulum lacus congue. Morbi pellentesque erat non nisl euismod, in consequat enim condimentum. Nam aliquam enim metus, mollis tincidunt purus dapibus in. Integer aliquet ornare accumsan. Morbi tincidunt nisl vel magna ornare, non fermentum metus pellentesque. Mauris eget lorem dolor.
   %br
   %br
   Morbi vitae nunc egestas, blandit odio id, fringilla ex. Suspendisse orci lacus, auctor id finibus et, tempus ut felis. Nunc tristique congue diam, ut suscipit sapien pulvinar vitae. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus dolor nisi, pretium vitae pellentesque in, pharetra quis turpis. Vestibulum maximus enim at nulla tincidunt, quis tristique metus dictum. Nulla imperdiet neque est, quis pellentesque dolor luctus a. Nunc in nisl sollicitudin, posuere nisl vitae, tristique nulla. Aliquam eu dolor tempor, condimentum nulla at, interdum enim. Etiam id ullamcorper orci, nec hendrerit enim. Nullam eleifend, sem quis tempus semper, felis enim venenatis lectus, non aliquam tortor metus sed sem. Morbi volutpat elit nunc, vitae consequat ipsum euismod sit amet. Vivamus vel dolor justo. Duis vitae felis sit amet ex efficitur suscipit. Phasellus porta non lorem id mollis.
 
 %h2 Links
+.double-padded.border-regular-light-gray
+  %p
+    %a{:href => "#"} This
+    is a text link on a light background.
+  %p
+    %a.c-visited-color{:href => "#"} This
+    is a visited link.
+  %p
+    This is a link that goes to an
+    = succeed "." do
+      %a.usa-external_link{:href => "http://media.giphy.com/media/8sgNa77Dvj7tC/giphy.gif"} external website
+    (WIP)
 
-%p
-  %a{:href => "#"} This
-  is a text link on a light background.
-
-%p
-  %a.c-visited-color{:href => "#"} This
-  is a visited link.
-
-%p
-  This is a link that goes to an
-  = succeed "." do
-    %a.usa-external_link{:href => "http://media.giphy.com/media/8sgNa77Dvj7tC/giphy.gif"} external website
-  (WIP)
-
-.bg-gray-dark.padded.c-white.dark-background-link
-  %a{:href => "#"} This
-  is a text link on a dark background.
+  .bg-gray-dark.padded.c-white.dark-background-link
+    %a{:href => "#"} This
+    is a text link on a dark background.
