@@ -16,6 +16,6 @@ feature 'Style guide' do
     expect(page).to have_css('h1', text: 'Tables')
 
     click_link 'Forms'
-    expect(page).to have_content 'Forms page'
+    expect(page).to have_content 'Forms'
   end
 end
