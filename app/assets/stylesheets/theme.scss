@@ -50,7 +50,7 @@ h1, h2, h3 {
 
 h1 {
   font-size: $largest-font;
-  font-weight: 700;
+  font-weight: $bold-weight;
 }
 
 h2 {
@@ -90,7 +90,7 @@ p {
   display: inline-block;
   font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1.7rem;
-  font-weight: 700;
+  font-weight: $bold-weight;
   line-height: 1;
   outline: none;
   padding: 1rem 2rem;
@@ -171,7 +171,234 @@ p {
 
 /////////////////////////////////////////
 
+input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="file"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid $gray;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: $primary-base;
+  display: block;
+  font-size: 1.7rem;
+  height: 4.4rem;
+  line-height: 1.3;
+  margin: 0.2em 0;
+  max-width: 46rem;
+  outline: none;
+  padding: 1rem 0.7em;
+  width: 100%;
+}
 
+input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="url"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="file"]:focus,
+input[type="date"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+textarea:focus,
+select:focus
+{
+  box-shadow: 0 0 3px $focus-color, 0 0 7px $focus-color;
+}
+
+.input-error {
+  border-left: 4px solid $secondary-red-dark;
+  margin-top: 3rem;
+  padding-bottom: 0.8rem;
+  padding-left: 1.5rem;
+  padding-top: 0.8rem;
+  position: relative;
+  right: 1.9rem;
+}
+
+.input-error input,
+.input-error textarea,
+.input-error select {
+  border: 3px solid $secondary-red-dark;
+  width: calc(100% + 1.9rem);
+}
+
+.input-error label {
+  margin-top: 0;
+}
+
+.input-error .input-inline {
+  border: 1px solid $gray;
+  width: inherit;
+}
+
+.input-error .input-inline-error {
+  border: 3px solid $secondary-red-dark;
+}
+
+.input-error-label {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: $bold-weight;
+}
+
+.input-error-message {
+  color: $secondary-red-dark;
+  display: block;
+  font-size: 1.7rem;
+  font-weight: $bold-weight;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+label {
+  display: block;
+  margin-top: 3rem;
+  max-width: 46rem;
+  font-weight: $normal-weight;
+}
+
+textarea {
+  height: 16rem;
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #ffffff;
+  background-image: url("arrow-down.png");
+  background-image: url("arrow-down.svg");
+  background-position: right 1.3rem center;
+  background-repeat: no-repeat;
+  background-size: 1.3rem;
+}
+
+legend {
+  font-size: 3rem;
+  font-weight: $bold-weight;
+}
+
+.fieldset-inputs label {
+  margin-top: 0;
+}
+
+.form-hint {
+  color: #757575;
+  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  margin-bottom: 0;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-left: -2rem;
+  opacity: 0;
+  position: absolute;
+}
+
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+  cursor: pointer;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+}
+
+input[type="checkbox"] + label::before,
+input[type="radio"] + label::before {
+  background: #ffffff;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0 1px #757575;
+  content: '\a0';
+  display: inline-block;
+  height: 1.8rem;
+  line-height: 1.8rem;
+  margin-right: 0.6em;
+  text-indent: 0.15em;
+  vertical-align: middle\0;
+  width: 1.8rem;
+}
+
+input[type="radio"] + label::before {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px #757575;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  width: 1.6rem;
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label::before {
+  background-color: $primary-blue;
+  box-shadow: 0 0 0 1px $primary-blue;
+}
+
+input[type="radio"]:checked + label::before {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px $primary-blue;
+}
+
+input[type="radio"]:focus + label::before {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px $primary-blue, 0 0 3px 4px $focus-color, 0 0 7px 4px $focus-color;
+}
+
+input[type="checkbox"]:checked + label::before {
+  background-image: url("correct8.png");
+  background-image: url("correct8.svg");
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+input[type="checkbox"]:focus + label::before {
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px $primary-blue;
+}
+
+input[type="checkbox"]:disabled + label {
+  color: #5b616b;
+}
+
+input[type="checkbox"]:disabled + label::before,
+input[type="radio"]:disabled + label::before {
+  background: #d6d7d9;
+  box-shadow: 0 0 0 1px #aeb0b5;
+  cursor: not-allowed;
+}
+
+.unstyled-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.unstyled-list li {
+  display: list-item;
+  margin: 0;
+}
+
+.unstyled-list li::before {
+  display: none;
+}
+
+.unstyled-list li::after {
+  display: none;
+}
 
 /////////////////////////////////////////
 
@@ -321,6 +548,11 @@ table {
 // - Accessibility - //
 
 /////////////////////////////////////////
+
+.sr-only {
+  position: absolute;
+  left: -999em;
+}
 
 /////////////////////////////////////////
 

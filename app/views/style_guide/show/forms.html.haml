@@ -3,8 +3,7 @@
 
 %h2 Buttons
 %i Use buttons to signal actions.
-
-.double-gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.border-regular-light-gray
   %button.primary-button
     Primary Button
   %button.secondary-button
@@ -19,3 +18,69 @@
     Disabled Button
   %button.secondary-button.disabled-button.big-button
     Big Disabled Button
+
+%h2 Text Input
+%i Text inputs allow people to enter any combination of letters, numbers, or symbols of their choosing (unless otherwise restricted). Text input boxes can span single or multiple lines.
+.gap-top.double-padded.border-regular-light-gray
+  %label{:for => "input-type-text"} Text input label
+  %input#input-type-text{:name => "input-type-text", :type => "text"}
+  .input-error
+    %label.input-error-label{:for => "input-error"} Text input error
+    %span#input-error-message.input-error-message{:role => "alert"} Helpful error message
+    %input#input-error{"aria-describedby" => "input-error-message", :name => "input-error", :type => "text"}
+  %label{:for => "input-type-textarea"} Text area label
+  %textarea#input-type-textarea{:name => "input-type-textarea"}
+
+%h2 Dropdown
+%i A dropdown allows users to select one option from a list.
+.gap-top.double-padded.border-regular-light-gray
+  %form.form
+    %label{:for => "options"} Dropdown label
+    %select#options{:name => "options"}
+      %option{:value => "value1"} Option A
+      %option{:value => "value2"} Option B
+      %option{:value => "value3"} Option C
+
+%h2 Checkboxes
+%i Checkboxes allow users to select one or more options from a visible list.
+.gap-top.double-padded.border-regular-light-gray
+  %fieldset.fieldset-inputs.sans
+    %legend.sr-only Historical figures 1
+    %ul.unstyled-list
+      %li
+        %input#truth{:checked => "checked", :name => "historical-figures-1", :type => "checkbox", :value => "truth"}/
+        %label{:for => "truth"} Sojourner Truth
+      %li
+        %input#douglass{:name => "historical-figures-1", :type => "checkbox", :value => "douglass"}/
+        %label{:for => "douglass"} Frederick Douglass
+      %li
+        %input#washington{:name => "historical-figures-1", :type => "checkbox", :value => "washington"}/
+        %label{:for => "washington"} Booker T. Washington
+      %li
+        %input#carver{:disabled => "disabled", :name => "historical-figures-1", :type => "checkbox"}/
+        %label{:for => "carver"} George Washington Carver
+
+%h2 Radio buttons
+%i Radio buttons allow users to see all available choices at once and select exactly one option.
+.gap-top.double-padded.border-regular-light-gray
+  %fieldset.fieldset-inputs.sans
+    %legend.sr-only Historical figures 2
+    %ul.unstyled-list
+      %li
+        %input#stanton{:checked => "checked", :name => "historical-figures-2", :type => "radio", :value => "stanton"}/
+        %label{:for => "stanton"} Elizabeth Cady Stanton
+      %li
+        %input#anthony{:name => "historical-figures-2", :type => "radio", :value => "anthony"}/
+        %label{:for => "anthony"} Susan B. Anthony
+      %li
+        %input#tubman{:name => "historical-figures-2", :type => "radio", :value => "tubman"}/
+        %label{:for => "tubman"} Harriet Tubman
+
+
+%h2 Datepicker
+%i Field used to select a date or date range.
+.gap-top.double-padded.border-regular-light-gray
+
+%h2 Autocompleter
+%i Field used to select people.
+.gap-top.double-padded.border-regular-light-gray
