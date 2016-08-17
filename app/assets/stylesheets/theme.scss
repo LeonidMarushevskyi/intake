@@ -71,7 +71,35 @@ p {
 
 /////////////////////////////////////////
 
-// - Table - //
+// - Borders - //
+
+/////////////////////////////////////////
+
+.border-thin-light-gray {
+	border: $thin-border solid $gray-lightest;
+}
+
+.border-thin-dark-gray {
+	border: $thin-border solid $gray;
+}
+
+.border-regular-light-gray {
+	border: $regular-border solid $gray-lightest;
+}
+
+.border-regular-dark-gray {
+	border: $regular-border solid $gray;
+}
+
+/////////////////////////////////////////
+
+// - Lists - //
+
+/////////////////////////////////////////
+
+/////////////////////////////////////////
+
+// - Tables - //
 
 /////////////////////////////////////////
 
