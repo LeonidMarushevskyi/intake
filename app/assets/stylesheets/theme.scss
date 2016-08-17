@@ -197,9 +197,103 @@ p {
 
 /////////////////////////////////////////
 
-// - Lists - //
+// - Alerts - //
 
 /////////////////////////////////////////
+
+.alert {
+  background-color: $gray-lightest;
+  background-position: 1rem 2rem;
+  background-repeat: no-repeat;
+  background-size: 4rem;
+  margin-top: 1.5em;
+  padding: 1em;
+}
+
+@media screen and (min-width: 600px) {
+  .alert {
+    background-size: 5.2rem;
+  }
+}
+
+.alert ul {
+  margin-bottom: 0;
+  margin-top: 1em;
+}
+
+.alert-icon {
+  display: table-cell;
+  padding-right: 1rem;
+}
+
+.alert-body {
+  display: table-cell;
+  padding-left: 3.5rem;
+  vertical-align: top;
+}
+
+@media screen and (min-width: 600px) {
+  .alert-body {
+    padding-left: 5rem;
+  }
+}
+
+.alert-heading {
+  margin-bottom: .3rem;
+  margin-top: 0;
+}
+
+@media screen and (min-width: 600px) {
+  .alert-heading {
+    margin-top: .3rem;
+  }
+}
+
+.alert-text {
+  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.alert-success {
+  color: $primary-base;
+  border: 0;
+  border-radius: 0;
+  background-color: $green-lightest;
+  background-image: url("success.png");
+  background-image: url("success.svg");
+}
+
+.alert-warning {
+  color: $primary-base;
+  border: 0;
+  border-radius: 0;  
+  background-color: $gold-lightest;
+  background-image: url("warning.png");
+  background-image: url("warning.svg");
+}
+
+.alert-danger {
+  color: $primary-base;
+  border: 0;
+  border-radius: 0;  
+  background-color: $secondary-red-lightest;
+  background-image: url("error.png");
+  background-image: url("error.svg");
+}
+
+.alert-info {
+  color: $primary-base;
+  border: 0;
+  border-radius: 0;  
+  background-color: $primary-blue-alt-lightest;
+  background-image: url("info.png");
+  background-image: url("info.svg");
+}
+
+.alert-no_icon {
+  background-image: none;
+}
 
 /////////////////////////////////////////
 
