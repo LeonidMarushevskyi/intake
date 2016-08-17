@@ -1,0 +1,312 @@
+%h1 Cards
+
+.double-padded.border-regular-light-gray.gap-top
+  .card
+    .card-header
+      %h3 Profile Information
+      %a.fa.fa-pencil{:href => "#", "aria-label" => "Edit profile"}
+    .card-body
+      .row
+        .col-md-6
+          First name
+          .c-gray
+            Pierre
+        .col-md-6
+          Last name
+          .c-gray
+            Klein
+      .row.gap-top
+        .col-md-6
+          Gender
+          .c-gray
+            Male
+      .row.gap-top
+        .col-md-6
+          Date of birth
+          .c-gray
+            02/25/1986
+        .col-md-6
+          Social security number
+          .c-gray
+            158-698-5874
+      .row.gap-top
+        .col-md-6
+          Address
+          .c-gray
+            50 Grand St. Apt #3
+        .col-md-6
+          City
+          .c-gray
+            Queens
+      .row.gap-top
+        .col-md-6
+          State
+          .c-gray
+            New York
+        .col-md-6
+          ZIP
+          .c-gray
+            11377
+
+  .card.edit.double-gap-top
+    .card-header
+      %h3 Profile Information
+      %a.fa.fa-check{:href => "#", "aria-label" => "Done editing profile"}
+    .card-body
+      .row
+        .col-md-6
+          %label.no-gap
+            First name
+          %input{:name => "first-name", :type =>"text", :value => "Pierre"}
+        .col-md-6
+          %label.no-gap
+            Last name
+          %input{:name => "first-name", :type =>"text", :value => "Klein"}
+      .row
+        .col-md-6
+          %label
+            Gender
+          %select#state{:name => "gender"}
+            %option{:value => ""}
+            %option{:value => "Female"} Female
+            %option{:value => "Male", :selected => "selected"} Male
+            %option{:value => "Other"} Other
+      .row
+        .col-md-6
+          %label
+            Date of birth
+          %input{:name => "first-name", :type =>"date", :value => "02-25-1986"}
+        .col-md-6
+          %label
+            Social security number
+          %input{:name => "first-name", :type =>"number", :value => "1586985874"}
+      .row
+        .col-md-6
+          %label
+            Address
+          %input{:name => "first-name", :type =>"text", :value => "50 Grand St. Apt #3"}
+        .col-md-6
+          %label
+            City
+          %input{:name => "city", :type =>"text", :value => "Queens"}  
+      .row
+        .col-md-6
+          %label
+            State
+          %select#state{:name => "state"}
+            %option{:value => ""}
+            %option{:value => "AL"} Alabama
+            %option{:value => "AK"} Alaska
+            %option{:value => "AZ"} Arizona
+            %option{:value => "AR"} Arkansas
+            %option{:value => "CA"} California
+            %option{:value => "CO"} Colorado
+            %option{:value => "CT"} Connecticut
+            %option{:value => "DE"} Delaware
+            %option{:value => "DC"} District of Columbia
+            %option{:value => "FL"} Florida
+            %option{:value => "GA"} GeorgiaHawaii
+            %option{:value => "HI"} 
+            %option{:value => "ID"} Idaho
+            %option{:value => "IL"} Illinois
+            %option{:value => "IN"} Indiana
+            %option{:value => "IA"} Iowa
+            %option{:value => "KS"} Kansas
+            %option{:value => "KY"} Kentucky
+            %option{:value => "LA"} Louisiana
+            %option{:value => "ME"} Maine
+            %option{:value => "MD"} Maryland
+            %option{:value => "MA"} Massachusetts
+            %option{:value => "MI"} Michigan
+            %option{:value => "MN"} Minnesota
+            %option{:value => "MS"} Mississippi
+            %option{:value => "MO"} Missouri
+            %option{:value => "MT"} Montana
+            %option{:value => "NE"} Nebraska
+            %option{:value => "NV"} Nevada
+            %option{:value => "NH"} New Hampshire
+            %option{:value => "NJ"} New Jersey
+            %option{:value => "NM"} New Mexico
+            %option{:value => "NY", :selected => "selected"} New York
+            %option{:value => "NC"} North Carolina
+            %option{:value => "ND"} North Dakota
+            %option{:value => "OH"} Ohio
+            %option{:value => "OK"} Oklahoma
+            %option{:value => "OR"} Oregon
+            %option{:value => "PA"} Pennsylvania
+            %option{:value => "RI"} Rhode Island
+            %option{:value => "SC"} South Carolina
+            %option{:value => "SD"} South Dakota
+            %option{:value => "TN"} Tennessee
+            %option{:value => "TX"} Texas
+            %option{:value => "UT"} Utah
+            %option{:value => "VT"} Vermont
+            %option{:value => "VA"} Virginia
+            %option{:value => "WA"} Washington
+            %option{:value => "WV"} West Virginia
+            %option{:value => "WI"} Wisconsin
+            %option{:value => "WY"} Wyoming
+        .col-md-6
+          %label
+            Address
+          %input{:name => "zip", :type =>"number", :value => "11377"}
+
+%pre
+  %code
+    :preserve
+      .card
+        .card-header
+          %h3 Profile Information
+          %a.fa.fa-pencil{:href => "#", "aria-label" => "Edit profile"}
+        .card-body
+          .row
+            .col-md-6
+              First name
+              .c-gray
+                Pierre
+            .col-md-6
+              Last name
+              .c-gray
+                Klein
+          .row.gap-top
+            .col-md-6
+              Gender
+              .c-gray
+                Male
+          .row.gap-top
+            .col-md-6
+              Date of birth
+              .c-gray
+                02/25/1986
+            .col-md-6
+              Social security number
+              .c-gray
+                158-698-5874
+          .row.gap-top
+            .col-md-6
+              Address
+              .c-gray
+                50 Grand St. Apt #3
+            .col-md-6
+              City
+              .c-gray
+                Queens
+          .row.gap-top
+            .col-md-6
+              State
+              .c-gray
+                New York
+            .col-md-6
+              ZIP
+              .c-gray
+                11377
+
+      .card.edit.double-gap-top
+        .card-header
+          %h3 Profile Information
+          %a.fa.fa-check{:href => "#", "aria-label" => "Done editing profile"}
+        .card-body
+          .row
+            .col-md-6
+              %label.no-gap
+                First name
+              %input{:name => "first-name", :type =>"text", :value => "Pierre"}
+            .col-md-6
+              %label.no-gap
+                Last name
+              %input{:name => "first-name", :type =>"text", :value => "Klein"}
+          .row
+            .col-md-6
+              %label
+                Gender
+              %select#state{:name => "gender"}
+                %option{:value => ""}
+                %option{:value => "Female"} Female
+                %option{:value => "Male", :selected => "selected"} Male
+                %option{:value => "Other"} Other
+          .row
+            .col-md-6
+              %label
+                Date of birth
+              %input{:name => "first-name", :type =>"date", :value => "02-25-1986"}
+            .col-md-6
+              %label
+                Social security number
+              %input{:name => "first-name", :type =>"number", :value => "1586985874"}
+          .row
+            .col-md-6
+              %label
+                Address
+              %input{:name => "first-name", :type =>"text", :value => "50 Grand St. Apt #3"}
+            .col-md-6
+              %label
+                City
+              %input{:name => "city", :type =>"text", :value => "Queens"}  
+          .row
+            .col-md-6
+              %label
+                State
+              %select#state{:name => "state"}
+                %option{:value => ""}
+                %option{:value => "AL"} Alabama
+                %option{:value => "AK"} Alaska
+                %option{:value => "AZ"} Arizona
+                %option{:value => "AR"} Arkansas
+                %option{:value => "CA"} California
+                %option{:value => "CO"} Colorado
+                %option{:value => "CT"} Connecticut
+                %option{:value => "DE"} Delaware
+                %option{:value => "DC"} District of Columbia
+                %option{:value => "FL"} Florida
+                %option{:value => "GA"} GeorgiaHawaii
+                %option{:value => "HI"} 
+                %option{:value => "ID"} Idaho
+                %option{:value => "IL"} Illinois
+                %option{:value => "IN"} Indiana
+                %option{:value => "IA"} Iowa
+                %option{:value => "KS"} Kansas
+                %option{:value => "KY"} Kentucky
+                %option{:value => "LA"} Louisiana
+                %option{:value => "ME"} Maine
+                %option{:value => "MD"} Maryland
+                %option{:value => "MA"} Massachusetts
+                %option{:value => "MI"} Michigan
+                %option{:value => "MN"} Minnesota
+                %option{:value => "MS"} Mississippi
+                %option{:value => "MO"} Missouri
+                %option{:value => "MT"} Montana
+                %option{:value => "NE"} Nebraska
+                %option{:value => "NV"} Nevada
+                %option{:value => "NH"} New Hampshire
+                %option{:value => "NJ"} New Jersey
+                %option{:value => "NM"} New Mexico
+                %option{:value => "NY", :selected => "selected"} New York
+                %option{:value => "NC"} North Carolina
+                %option{:value => "ND"} North Dakota
+                %option{:value => "OH"} Ohio
+                %option{:value => "OK"} Oklahoma
+                %option{:value => "OR"} Oregon
+                %option{:value => "PA"} Pennsylvania
+                %option{:value => "RI"} Rhode Island
+                %option{:value => "SC"} South Carolina
+                %option{:value => "SD"} South Dakota
+                %option{:value => "TN"} Tennessee
+                %option{:value => "TX"} Texas
+                %option{:value => "UT"} Utah
+                %option{:value => "VT"} Vermont
+                %option{:value => "VA"} Virginia
+                %option{:value => "WA"} Washington
+                %option{:value => "WV"} West Virginia
+                %option{:value => "WI"} Wisconsin
+                %option{:value => "WY"} Wyoming
+            .col-md-6
+              %label
+                Address
+              %input{:name => "zip", :type =>"number", :value => "11377"}
+
+
+.double-padded.border-regular-light-gray
+  %h4 Accessibility
+  %ul
+    %li
+
