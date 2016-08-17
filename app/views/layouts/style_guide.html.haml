@@ -1,21 +1,43 @@
 !!!
 %html
   %head
-    %meta{ :content => 'text/html; charset=UTF-8',
-      'http-equiv' => 'Content-Type' }/
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }
     %title California Intake Frontend
     = stylesheet_link_tag gulp_asset_path('application.css'), defer: true
     = javascript_include_tag gulp_asset_path('vendor.js'), defer: true
     = javascript_include_tag gulp_asset_path('application.js'), defer: true
     = csrf_meta_tags
-  %body
-    .row
-      .col-sm-3
-        %nav
-          %ul
+    - font_link = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300italic,700italic,700,600italic,600,400italic,300'
+    %link{ href: font_link, rel: 'stylesheet', type: 'text/css' }
+    %link{ href: 'https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600,700',
+      rel: 'stylesheet',
+      type: 'text/css' }
+    %script{ src: 'https://use.fontawesome.com/9b77536174.js' }
+  %body.styleguide
+    .container.double-gap-bottom
+      .col-md-3
+        %nav.double-gap-top
+          %h3.no-gap{ style: 'color:#323a45;text-transform:uppercase;border-bottom: 1px solid #323a45;font-weight:600;' } Pattern Library
+          %ul.sidenav-list
             %li
-              = link_to 'Lists', style_guide_path(:lists)
+              = link_to 'Typography', style_guide_path(:typography)
+            %li
+              = link_to 'Colors', style_guide_path(:colors)
+            %li
+              = link_to 'Grid', 'http://getbootstrap.com/css/#grid', target: '_blank'
             %li
               = link_to 'Forms', style_guide_path(:forms)
-      .col-sm-9
+            %li
+              = link_to 'Tables', style_guide_path(:tables)
+            %li
+              = link_to 'Borders', style_guide_path(:borders)
+            %li
+              = link_to 'Alerts', style_guide_path(:alerts)
+            %li
+              = link_to 'Icons', 'http://fontawesome.io/cheatsheet/', target: '_blank'
+            %li
+              = link_to 'Navigation', style_guide_path(:navigation)
+            %li
+              = link_to 'Cards', style_guide_path(:cards)
+      .col-md-9
         = yield

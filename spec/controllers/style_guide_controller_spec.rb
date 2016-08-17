@@ -17,10 +17,10 @@ describe StyleGuideController do
       expect(response).to render_template('style_guide/show/forms')
     end
 
-    it 'when id is lists it renders lists' do
-      get :show, params: { id: :lists }
+    it 'when id is tables it renders tables' do
+      get :show, params: { id: :tables }
       assert_response :success
-      expect(response).to render_template('style_guide/show/lists')
+      expect(response).to render_template('style_guide/show/tables')
     end
   end
 end

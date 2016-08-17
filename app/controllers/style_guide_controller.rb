@@ -4,6 +4,17 @@
 # and UX patterns used for the CA Intake project
 class StyleGuideController < ApplicationController # :nodoc:
   layout 'style_guide'
+  PAGES = %w(
+    forms
+    tables
+    colors
+    typography
+    borders
+    buttons
+    alerts
+    navigation
+    cards
+  ).freeze
 
   def index
   end
@@ -15,6 +26,6 @@ class StyleGuideController < ApplicationController # :nodoc:
   private
 
   def sanitize_page_name(page_name)
-    %w(forms lists).delete(page_name)
+    PAGES.dup.delete(page_name)
   end
 end

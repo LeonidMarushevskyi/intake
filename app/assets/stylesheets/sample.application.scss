@@ -1,5 +1,5 @@
 // Used to test asset compilation with gulp
-$test-primary-color: hotpink;
+$test-primary-color: #ff69b4;
 
 @mixin test-border-radius($radius) {
   -webkit-border-radius: $radius;
@@ -9,8 +9,8 @@ $test-primary-color: hotpink;
 
 .test-element {
   color: $test-primary-color;
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 .test-other-element {

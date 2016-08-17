@@ -22,6 +22,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'rubocop'
   gem 'i18n-tasks'
+  gem 'scss_lint'
 end
 
 group :development do

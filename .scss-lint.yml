@@ -1,0 +1,19 @@
+scss_files: 'app/assets/stylesheets/**/*.scss'
+
+
+linters:
+  BorderZero:
+    enabled: false
+  VendorPrefix:
+    enabled: false
+  DuplicateProperty:
+    enabled: false
+  QualifyingElement:
+    enabled: false
+  NestingDepth:
+    enabled: false
+
+  Indentation:
+    severity: warning
+    width: 2
+
