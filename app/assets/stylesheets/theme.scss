@@ -1,103 +1,129 @@
-// Navigation //
+// Helpers //
 
-.usa-sidenav-list {
-  display: block;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.half-padded {
+	padding: 5px;
 }
 
-.usa-sidenav-list > li {
-  display: list-item;
-  margin: 0;
+.padded {
+	padding: 10px;
 }
 
-.usa-sidenav-list > li::before {
-  display: none;
+.double-padded {
+	padding: 20px;
 }
 
-.usa-sidenav-list > li::after {
-  display: none;
+.half-margin {
+	padding: 5px;
 }
 
-.usa-sidenav-list li {
-  border-top: 1px solid #5b616b;
-  font-size: 1.7rem;
+.margin {
+	padding: 10px;
 }
 
-.usa-sidenav-list li:first-child {
-  border-top: none;
+.double-margin {
+	padding: 20px;
 }
 
-.usa-sidenav-list a {
-  border: none;
-  color: #212121;
-  display: block;
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  line-height: 1.3;
-  padding: 0.85rem 1rem 0.85rem 1.8rem;
-  text-decoration: none;
+.half-pad-top {
+	padding-top: 5px;
 }
 
-.usa-sidenav-list a:hover {
-  background-color: #f1f1f1;
-  color: #0071bc;
-  text-decoration: none;
+.pad-top {
+	padding-top: 10px;
 }
 
-.usa-sidenav-list a:focus {
-  position: relative;
-  z-index: 1;
+.double-pad-top {
+	padding-top: 20px;
 }
 
-.usa-sidenav-list a.usa-current {
-  border-left: 4px solid #0071bc;
-  color: #0071bc;
-  font-weight: 700;
-  padding-left: 1.4rem;
+.half-pad-bottom {
+	padding-bottom: 5px;
 }
 
-.usa-sidenav-sub_list {
-  display: block;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  margin: 0;
-  width: 100%;
+.pad-bottom {
+	padding-bottom: 10px;
 }
 
-.usa-sidenav-sub_list > li {
-  display: list-item;
-  margin: 0;
+.double-pad-bottom {
+	padding-bottom: 20px;
 }
 
-.usa-sidenav-sub_list > li::before {
-  display: none;
+.half-pad-left {
+	padding-left: 5px;
 }
 
-.usa-sidenav-sub_list > li::after {
-  display: none;
+.pad-left {
+	padding-left: 10px;
 }
 
-.usa-sidenav-sub_list li {
-  border: none;
-  font-size: 1.5rem;
+.double-pad-left {
+	padding-left: 20px;
 }
 
-.usa-sidenav-sub_list a {
-  padding-left: 2.8rem;
-  line-height: 1.3;
+.half-pad-right {
+	padding-right: 5px;
 }
 
-.usa-sidenav-sub_list a:hover, .usa-sidenav-sub_list a.usa-current {
-  border: none;
-  padding-left: 2.8rem;
+.pad-right {
+	padding-right: 10px;
 }
 
-.usa-sidenav-sub_list .usa-sidenav-sub_list a {
-  padding-left: 3.8rem;
+.double-pad-right {
+	padding-right: 20px;
 }
 
-.usa-sidenav-sub_list .usa-sidenav-sub_list a:hover {
-  padding-left: 3.8rem;
+.half-gap-top {
+	margin-top: 5px;
+}
+
+.gap-top {
+	margin-top: 10px;
+}
+
+.double-gap-top {
+	margin-top: 20px;
+}
+
+.half-gap-bottom {
+	margin-bottom: 5px;
+}
+
+.gap-bottom {
+	margin-bottom: 10px;
+}
+
+.double-gap-bottom {
+	margin-bottom: 20px;
+}
+
+.half-gap-left {
+	margin-left: 5px;
+}
+
+.gap-left {
+	margin-left: 10px;
+}
+
+.double-gap-left {
+	margin-left: 20px;
+}
+
+.half-gap-right {
+	margin-right: 5px;
+}
+
+.gap-right {
+	margin-right: 10px;
+}
+
+.double-gap-right {
+	margin-right: 20px;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
 }
