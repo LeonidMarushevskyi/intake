@@ -7,9 +7,10 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-COPY scripts/test.sh /usr/local/bin/test.sh
-RUN chmod +x /usr/local/bin/test.sh
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --without=development -j24
+
+COPY package.json ./
+RUN npm install --spin=false
 
 COPY . ./
-
-ENTRYPOINT ["test.sh"]
