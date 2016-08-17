@@ -722,3 +722,47 @@ table {
   left: -999em;
 }
 
+/////////////////////////////////////////
+
+// - Cards - //
+
+/////////////////////////////////////////
+
+.card {
+  .card-header {
+    background-color: $gray-lightest;
+    padding: $base-spacing;
+    display: block;
+    overflow: hidden;
+    h3 {
+      padding: 0;
+      margin: 0;
+      font-size: $base-font;
+      font-weight: $semibold-weight;
+      float: left;
+    }
+    a.fa {
+      text-decoration: none;
+      float: right;
+    }
+  }
+  .card-body {
+    padding: $base-spacing;
+    border: $regular-border solid $gray-lightest;
+    border-top: none;
+  }
+}
+
+.card.edit {
+  .card-header {
+    background-color: $cool-blue-light;
+    color: $white;
+    a.fa {
+      color: $white;
+    }
+  }
+  .card-body {
+    border-color: $cool-blue-lighter;
+  }
+
+} 

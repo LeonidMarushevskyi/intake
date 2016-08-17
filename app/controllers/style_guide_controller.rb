@@ -13,6 +13,7 @@ class StyleGuideController < ApplicationController # :nodoc:
     buttons
     alerts
     navigation
+    cards
   ).freeze
 
   def index
