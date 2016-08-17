@@ -1,3 +1,14 @@
-- name: rspec
-  service: ca_intake
-  command: bash bin/ci
+- type: parallel
+  steps:
+    - name: rspec
+      service: ca_intake
+      command: bin/ci
+    - name: javascript
+      service: ca_intake
+      command: bin/ci-javascript
+    - name: lint
+      service: ca_intake
+      command: bin/lint
+    - name: ruby_style_guide
+      service: ca_intake
+      command: bundle exec rubocop
