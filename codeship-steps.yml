@@ -6,3 +6,6 @@
     - name: javascript
       service: ca_intake
       command: bin/ci-javascript
+    - name: lint
+      service: ca_intake
+      command: bin/lint
