@@ -712,19 +712,22 @@ table {
     background-color: $gray-lightest;
     display: block;
     overflow: hidden;
-    padding: $base-spacing;
+    font-size: $large-font;
+    padding: $base-spacing / 1.5  $base-spacing;
 
     h3 {
       float: left;
-      font-size: $base-font;
-      font-weight: $semibold-weight;
+      font-weight: $extralight-weight;
       margin: 0;
       padding: 0;
+      text-transform: uppercase;
     }
 
     .fa {
       float: right;
       text-decoration: none;
+      top: $base-spacing * .2;
+      position: relative;
 
     }
   }
@@ -750,5 +753,3 @@ table {
     }
   }
 }
-
-
