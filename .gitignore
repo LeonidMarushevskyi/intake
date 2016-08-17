@@ -17,3 +17,5 @@ node_modules
 
 # Ignore compile assets
 public/assets/
+
+.DS_Store
