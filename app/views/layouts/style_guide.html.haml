@@ -12,12 +12,16 @@
     .container
       .col-md-3
         %nav
-          %ul
+          %ul 
+            %li
+              = link_to 'Grid', 'http://getbootstrap.com/css/#grid', target: '_blank'
             %li
               = link_to 'Colors', style_guide_path(:colors)
             %li
               = link_to 'Lists', style_guide_path(:lists)
             %li
               = link_to 'Forms', style_guide_path(:forms)
+            %li
+              = link_to 'Icons', 'http://fontawesome.io/cheatsheet/', target: '_blank'
       .col-md-9
         = yield
