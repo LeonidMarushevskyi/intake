@@ -711,8 +711,8 @@ table {
   .card-header {
     background-color: $gray-lightest;
     display: block;
-    overflow: hidden;
     font-size: $large-font;
+    overflow: hidden;
     padding: $base-spacing / 1.5  $base-spacing;
 
     h3 {
@@ -725,10 +725,9 @@ table {
 
     .fa {
       float: right;
+      position: relative;
       text-decoration: none;
       top: $base-spacing * .2;
-      position: relative;
-
     }
   }
 
