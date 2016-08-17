@@ -8,12 +8,12 @@ feature 'Style guide' do
     expect(page).to have_content 'Style guide index page'
 
     within 'nav' do
-      expect(page).to have_link 'Lists'
+      expect(page).to have_link 'Tables'
       expect(page).to have_link 'Forms'
     end
 
-    click_link 'Lists'
-    expect(page).to have_content 'Lists page'
+    click_link 'Tables'
+    expect(page).to have_css('h1', text: 'Tables')
 
     click_link 'Forms'
     expect(page).to have_content 'Forms page'
