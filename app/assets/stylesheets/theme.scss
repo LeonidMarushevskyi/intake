@@ -5,11 +5,12 @@
 /////////////////////////////////////////
 
 html {
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: $font-family;
   font-size: 10px;
 }
 
 body {
+  font-family: $font-family;
   font-size: 1.7rem;
 }
 
@@ -88,7 +89,7 @@ p {
   color: $white;
   cursor: pointer;
   display: inline-block;
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: $font-family;
   font-size: 1.7rem;
   font-weight: $bold-weight;
   line-height: 1;
@@ -304,7 +305,7 @@ legend {
 
 .form-hint {
   color: #757575;
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: $font-family;
   margin-bottom: 0;
 }
 
@@ -477,7 +478,7 @@ input[type="radio"]:disabled + label::before {
 }
 
 .alert-text {
-  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: $font-family;
   margin-bottom: 0;
   margin-top: 0;
 }
