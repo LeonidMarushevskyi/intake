@@ -2,7 +2,7 @@
 
 cd "$APP_HOME"
 
-bundle install -j24
+bundle install --without=development -j24
 
 npm install --spin=false
 
