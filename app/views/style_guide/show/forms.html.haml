@@ -39,30 +39,63 @@
 %h2.double-gap-top Buttons
 %i Use buttons to signal actions.
 .gap-top.double-padded.border-regular-light-gray
-  %button.primary-button
+  %button.btn.btn-primary
     Primary Button
-  %button.secondary-button
+  %button.btn.btn-default
     Secondary Button
   %br
-  %button.primary-button.big-button
+  %button.btn.btn-primary.btn-lg
     Big Primary Button
-  %button.secondary-button.big-button
+  %button.btn.btn-default.btn-lg
     Big Secondary Button
   %br
-  %button.primary-button.disabled-button
+  %button.btn.btn-primary{:disabled => "disabled"}
     Disabled Button
-  %button.secondary-button.disabled-button.big-button
+  %button.btn.btn-default.btn-lg{:disabled => "disabled"}
     Big Disabled Button
 
 %pre
   %code
     :preserve
-      WIP
+      %button.btn.btn-primary
+        Primary Button
+      %button.btn.btn-default
+        Secondary Button
+      %button.btn.btn-primary.btn-lg
+        Big Primary Button
+      %button.btn.btn-default.btn-lg
+        Big Secondary Button
+      %button.btn.btn-primary{:disabled => "disabled"}
+        Disabled Button
+      %button.btn.btn-default.btn-lg{:disabled => "disabled"}
+        Big Disabled Button
 
 .double-padded.border-regular-light-gray
   %h4 Accessibility
   %ul
-    %li WIP
+    %li Buttons should display a visible focus state when users tab to them.
+    %li 
+      Avoid using
+      %code
+        :escaped
+          <div> 
+      or 
+      %code
+        :escaped
+          <img>
+      tags to create buttons. Screen readers don't automatically know either is a usable button.
+    %li When styling links to look like buttons, remember that screen readers handle links slightly differently than they do buttons. Pressing the Space key triggers a button, but pressing the Enter key triggers a link.
+    %li 
+      if the 
+      %code
+        :escaped
+          <a>
+      elements are used to act as buttons – triggering in-page functionality, rather than navigating to another document or section within the current page – they should also be given an appropriate
+      %code
+        role="button"
+      %span .
+
+
 
 %h2.double-gap-top Text Input
 %i Text inputs allow people to enter any combination of letters, numbers, or symbols of their choosing (unless otherwise restricted). Text input boxes can span single or multiple lines.
