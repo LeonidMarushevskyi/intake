@@ -16,7 +16,7 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Firefox'],
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,
     singleRun: true,

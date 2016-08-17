@@ -1,0 +1,6 @@
+ca_intake:
+  build: ../../
+  dockerfile: docker/codeship/Dockerfile
+  command: bash bin/ci
+  environment:
+    RAILS_ENV: test

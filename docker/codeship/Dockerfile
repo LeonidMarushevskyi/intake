@@ -1,25 +1,14 @@
-FROM ruby:2.3.1
-RUN \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -y \
-    build-essential \
-    sudo \
-    iceweasel \
-    chromium \
-    xvfb
+FROM casecommons/ca_intake_base_image:latest
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-RUN apt-get install -y nodejs
+
+ENV BUNDLE_PATH /ruby_gems
 
 ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-ENV BUNDLE_PATH /ruby_gems
-
 COPY Gemfile Gemfile.lock ./
-RUN bundle install -j24
+RUN bundle install --without=development -j24
 
 COPY package.json ./
 RUN npm install --spin=false
