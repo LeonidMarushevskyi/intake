@@ -24,7 +24,7 @@ services:
     build:
       context: ../../
       dockerfile: docker/test/Dockerfile
-    command: bin/ci-javscript
+    command: bin/ci-javascript
     environment:
       RAILS_ENV: test
     volumes:
