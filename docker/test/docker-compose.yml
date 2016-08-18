@@ -8,7 +8,7 @@ services:
     environment:
       RAILS_ENV: test
     volumes:
-      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
   lint:
     build:
@@ -18,7 +18,7 @@ services:
     environment:
       RAILS_ENV: test
     volumes:
-      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
   javascript_test:
     build:
@@ -28,7 +28,7 @@ services:
     environment:
       RAILS_ENV: test
     volumes:
-      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
 volumes:
   ca_intake_rubygems:
