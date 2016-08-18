@@ -1,10 +1,30 @@
 version: '2'
 services:
-  test:
+  rspec_test:
     build:
       context: ../../
       dockerfile: docker/test/Dockerfile
     command: bin/ci
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  lint:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/lint
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  javascript_test:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/ci-javscript
     environment:
       RAILS_ENV: test
     volumes:
