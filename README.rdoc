@@ -32,14 +32,15 @@ System dependencies:
 * Execute the the test suite using: bundle exec rspec spec/
 * Run all the lints using: bin/lint
 
-== Section 3. Roadmap	
 
-* Milestone 1: Develop Application Infrastructure and Standards,  [Complete]
-* Milestone 2: Create Intake Base Functions 1; Set up Logging and Monitoring [In Progress]
-* Milestone 3: Create Intake Base Functions 2 
-* Milestone 4: Create Intake Base Functions 3 
-* Milestone 5:  Create Intake Base Functions 4
+== Section 3. License
 
-== Section 4. License
+The Casebook Intake Accelerator is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-The Casebook Accelerator Toolkit is licensed royalty-free under the AGPL version 3, which requires third party users to contribute their work back to the community. This maximizes the benefit to other states, so they will have access to derived work done by others who use this Toolkit’s accelerators.
+The Casebook Intake Accelerator is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
+
+See https://www.gnu.org/licenses/agpl.html
+
+== Section 4. Copyright
+
+Copyright (c) 2016 Case Commons, Inc.
