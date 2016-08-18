@@ -1,6 +1,6 @@
 == The Casebook Intake Accelerator
 
-**Section 1. Introduction to the Casebook Intake Accelerator**
+Section 1. Introduction to the Casebook Intake Accelerator
 
 The Casebook Accelerator Toolkit is a collection of Accelerators that are designed to assist agile teams in iteratively developing child welfare products across the country.  Each Accelerator has a publicly accessible repo in GitHub providing tools, components and/or assets to jumpstart an agile development process for child welfare.  
 
