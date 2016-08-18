@@ -14,7 +14,7 @@ CHECK := @bash -c '\
   if [[ $(INSPECT) -ne 0 ]]; \
   then exit $(INSPECT); fi' VALUE
 
-.PHONY: test
+.PHONY: test build clean
 
 test:
 	${INFO} "Pulling latest images..."
@@ -31,6 +31,14 @@ test:
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) lint
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) javascript_test
 	${INFO} "Testing complete"
+
+build:
+	${INFO} "Building"
+
+clean:
+	${INFO} "Destroying development environment..."
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) down --volumes
+	${INFO} "Clean complete"
 
 # Cosmetics
 YELLOW := "\e[1;33m"
