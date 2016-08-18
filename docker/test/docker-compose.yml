@@ -1,0 +1,15 @@
+version: '2'
+services:
+  test:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/ci
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+volumes:
+  ca_intake_rubygems:
+  ca_intake_node_modules:
