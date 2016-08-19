@@ -1,5 +1,19 @@
 version: '2'
+
+volumes:
+  ca_intake_rubygems:
+  ca_intake_node_modules:
+
 services:
+  cache:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile.cache
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
   rspec_test:
     build:
       context: ../../
@@ -30,6 +44,3 @@ services:
     volumes:
       - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
-volumes:
-  ca_intake_rubygems:
-  ca_intake_node_modules:
