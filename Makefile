@@ -20,9 +20,12 @@ test:
 	${INFO} "Pulling latest images..."
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) pull
 	${INFO} "Building images..."
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull cache
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull rspec_test
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull lint
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull javascript_test
+	${INFO} "Building cache..."
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up cache
 	${INFO} "Running tests..."
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up rspec_test
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up lint
