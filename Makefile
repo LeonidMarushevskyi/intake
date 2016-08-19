@@ -36,7 +36,14 @@ test:
 	${INFO} "Testing complete"
 
 build:
-	${INFO} "Building"
+	${INFO} "Creating builder image..."
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build builder
+	${INFO} "Building application artifacts..."
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up builder
+	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) builder
+	${INFO} "Copying application artifacts..."
+	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q builder):/ca_intake_build/. tmp
+	${INFO} "Build complete"
 
 clean:
 	${INFO} "Destroying development environment..."
