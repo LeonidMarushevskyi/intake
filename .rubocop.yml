@@ -4,3 +4,4 @@ AllCops:
     - 'node_modules/**/*'
     - 'vendor/**/*'
     - 'tmp/**/*'
+    - 'ruby_gems/**/*'
