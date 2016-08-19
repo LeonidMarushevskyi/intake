@@ -18,7 +18,7 @@ class ReferralCreator
     ::API.connection.post do |req|
       req.url REFERRAL_PATH
       req.headers['Content-Type'] = CONTENT_TYPE
-      req.body = { referral: referral_params }.to_json
+      req.body = referral_params.to_json
     end
   end
   private_class_method :make_api_request_with_params
