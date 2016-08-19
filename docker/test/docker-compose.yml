@@ -3,6 +3,7 @@ version: '2'
 volumes:
   ca_intake_rubygems:
   ca_intake_node_modules:
+  ca_intake_build:
 
 services:
   cache:
@@ -44,3 +45,11 @@ services:
     volumes:
       - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
+  builder:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile.build
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+      - ca_intake_build:/ca_intake_build
