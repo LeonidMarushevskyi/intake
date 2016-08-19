@@ -5,9 +5,10 @@
 class ReferralsController < ApplicationController # :nodoc:
   def create
     @referral = ReferralCreator.create
-    render :edit
+    redirect_to edit_referral_path(@referral['reference'])
   end
 
   def edit
+    @referral_reference = params['id']
   end
 end

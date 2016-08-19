@@ -4,9 +4,10 @@ require 'rails_helper'
 describe ReferralsController do
   describe '#create' do
     it 'Creates a new referral' do
-      allow(ReferralCreator).to receive(:create).and_return(double(:referral))
+      referral = { 'reference' => '123ABC' }
+      allow(ReferralCreator).to receive(:create).and_return(referral)
       post :create
-      assert_response :success
+      assert_response :redirect
     end
   end
 end
