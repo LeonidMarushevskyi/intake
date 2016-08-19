@@ -1,3 +1,9 @@
 #!/bin/bash
 
-bundle exec fpm -s dir -t deb -n ca_intake -v $(git rev-parse head) -p /ruby_gems /ca_intake
+cd "$APP_HOME"
+
+revision=$(git rev-parse HEAD)
+output_dir="/ca_intake_build"
+input_dir="/ca_intake"
+
+bundle exec fpm -s dir -t deb --name ca_intake --version "$revision" --package "$output_dir" "$input_dir" 
