@@ -1,0 +1,48 @@
+.double-padded.border-regular-light-gray.gap-top
+  .card
+    .card-header
+      %h3 Profile Information
+    .card-body
+      .row
+        .col-md-6
+          First name
+          .c-gray
+            = @person['first_name']
+        .col-md-6
+          Last name
+          .c-gray
+            = @person['last_name']
+      .row.gap-top
+        .col-md-6
+          Gender
+          .c-gray
+            = @person['gender'].camelize
+      .row.gap-top
+        .col-md-6
+          Date of birth
+          .c-gray
+            = @person['date_of_birth']
+        .col-md-6
+          Social security number
+          .c-gray
+            = @person['ssn']
+      .row.gap-top
+        - address = @person['address'] || {}
+        .col-md-6
+          Address
+          .c-gray
+            = address['street_address']
+        .col-md-6
+          City
+          .c-gray
+            = address['city']
+      .row.gap-top
+        .col-md-6
+          State
+          .c-gray
+            = USStates::ABBREVIATION_NAME_MAP[address['state']]
+        .col-md-6
+          ZIP
+          .c-gray
+            = address['zip']
+

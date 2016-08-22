@@ -9,4 +9,5 @@
     = javascript_include_tag gulp_asset_path('application.js'), defer: true
     = csrf_meta_tags
   %body
-    = yield
+    .container
+      = yield
