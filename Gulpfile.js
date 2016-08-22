@@ -142,6 +142,6 @@ gulp.task('version-assets', function () {
   .pipe(gulp.dest('public/assets'))
 })
 
-gulp.task('watch', ['server'], function() {
-  gulp.watch(['app/assets/javascripts/**/*'], ['build-and-version-assets'])
+gulp.task('watch', ['default', 'server'], function() {
+  gulp.watch(['app/assets/javascripts/**/*'], ['default'])
 })
