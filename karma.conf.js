@@ -16,7 +16,13 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Firefox'],
+    browsers: ['Chrome_no_sandbox', 'Firefox'],
+    customLaunchers: {
+      Chrome_no_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,
     singleRun: true,
