@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  intake_app:
+    build:
+      context: ../../
+      dockerfile: docker/release/Dockerfile
+    command: 'bash -c ''bundle exec puma -e production -C config/puma.rb'''
+    environment:
+      RAILS_ENV: production
