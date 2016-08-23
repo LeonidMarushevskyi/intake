@@ -5,10 +5,14 @@
 class ReferralsController < ApplicationController # :nodoc:
   def create
     @referral = ReferralCreator.create
-    redirect_to edit_referral_path(@referral['reference'])
+    redirect_to referral_path(id: @referral['id'])
   end
 
   def edit
-    @referral_reference = params['id']
+    @referral = Referral.find(params[:id])
+  end
+
+  def show
+    @referral = Referral.find(params[:id])
   end
 end
