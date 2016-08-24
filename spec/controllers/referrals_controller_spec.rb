@@ -55,4 +55,27 @@ describe ReferralsController do
       expect(response).to render_template('show')
     end
   end
+
+  describe '#update' do
+    let(:referral) { double(:referral) }
+    let(:referral_attributes) do
+      { name: '123 Report' }
+    end
+    before do
+      allow(Referral).to receive(:save_existing).with(
+        '1',
+        referral_attributes
+      ).and_return(referral)
+    end
+
+    it 'assigns referral' do
+      put :update, params: { id: 1, referral: referral_attributes }
+      expect(assigns(:referral)).to eq(referral)
+    end
+
+    it 'redirects to show' do
+      put :update, params: { id: 1, referral: referral_attributes }
+      expect(response).to redirect_to(referral_path(assigns(:referral)))
+    end
+  end
 end
