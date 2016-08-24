@@ -28,10 +28,11 @@ class ReferralsController < ApplicationController # :nodoc:
 
   def referral_params
     params.require(:referral).permit(
-      :address,
+      :street_address,
       :city,
       :ended_at,
       :incident_date,
+      :location_type,
       :method_of_referral,
       :name,
       :reference,

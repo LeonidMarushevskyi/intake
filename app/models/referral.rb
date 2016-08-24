@@ -4,4 +4,15 @@
 class Referral # :nodoc:
   include Her::Model
   use_api API_V1
+
+  attributes :street_address,
+             :city,
+             :ended_at,
+             :incident_date,
+             :method_of_referral,
+             :started_at,
+             :state,
+             :zip,
+             :name,
+             :location_type
 end

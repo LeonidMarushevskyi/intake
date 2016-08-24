@@ -1,1 +1,56 @@
-%h1 Referral ##{@referral.reference}
+%h1 Edit Referral ##{@referral.reference}
+.double-padded.border-regular-light-gray.gap-top
+  .card.edit.double-gap-top
+    .card-header
+      %h3 Referral Information
+      %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing referral' }
+    .card-body
+      = form_for @referral do |f|
+        .row
+          .col-md-6
+            = f.hidden_field :reference
+            = f.label :name, 'Title/Name of Referral'
+            = f.text_field :name
+        .row
+          .col-md-6
+            = f.label :method_of_referral, 'Method of Referral'
+            - methods_of_referral_options = options_from_collection_for_select(MethodsOfReferral::ALL, :first, :last, f.object.method_of_referral)
+            = f.select :method_of_referral, methods_of_referral_options, include_blank: true
+        .row
+          .col-md-6
+            - value = (f.object.started_at ? Time.zone.parse(f.object.started_at) : nil)
+            = f.label :started_at, 'Phone Call Start Date/Time'
+            = f.datetime_field :started_at, value: value
+        .row
+          .col-md-6
+            - value = (f.object.ended_at ? Time.zone.parse(f.object.ended_at) : nil)
+            = f.label :ended_at, 'Phone Call End Date/Time'
+            = f.datetime_field :ended_at, value: value
+        .row
+          .col-md-6
+            - value = (f.object.incident_date ? Date.parse(f.object.incident_date) : nil)
+            = f.label :incident_date, 'Incident Date'
+            = f.date_field :incident_date, value: value
+        .row
+          .col-md-6
+            %fieldset
+              %legend Incident Address
+              = f.label :street_address, 'Address'
+              = f.text_field :street_address
+              = f.label :city, 'City'
+              = f.text_field :city
+              = f.label :state
+              - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last, f.object.state)
+              = f.select :state, state_options, include_blank: true
+              = f.label :zip, 'Zip'
+              = f.text_field :zip
+        .row
+          .col-md-6
+            = f.label :location_type, 'Location Type'
+            - location_type_options = grouped_options_for_select(LocationTypes::ALL, f.object.location_type)
+            = f.select :location_type, location_type_options, include_blank: true
+        .row
+          .col-md-6
+            = f.submit 'Save'
+
+

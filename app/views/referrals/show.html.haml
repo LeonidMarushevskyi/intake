@@ -1,1 +1,31 @@
 %h1 Referral ##{@referral.reference}
+.double-padded.border-regular-light-gray.gap-top
+  .card
+    .card-header
+      %h3 Referral Information
+    .card-body
+      .row
+        .col-md-6
+          Title/Name of Referral
+          .c-gray
+            = @referral.name
+      .row
+        .col-md-6
+          Method of Referral
+          .c-gray
+            = MethodsOfReferral::ALL[@referral.method_of_referral]
+      .row
+        .col-md-6
+          Phone Call Start Date/Time
+          .c-gray
+            = Time.zone.parse(@referral.started_at).strftime('%m/%d/%Y %I:%M %p') if @referral.started_at
+      .row
+        .col-md-6
+          Phone Call End Date/Time
+          .c-gray
+            = Time.zone.parse(@referral.ended_at).strftime('%m/%d/%Y %I:%M %p') if @referral.ended_at
+      .row
+        .col-md-6
+          Incident Date
+          .c-gray
+            = Date.parse(@referral.incident_date).strftime('%m/%d/%Y') if @referral.incident_date
