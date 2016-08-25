@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Remove all containers
+docker ps --all --quiet | xargs docker rm --force
+
+# Remove all docker volumes
+docker volume list --quiet  |  awk '{ print $2 }' | xargs docker volume rm
+
+# Delete all docker images
+docker images --quiet | xargs docker rmi --force 
