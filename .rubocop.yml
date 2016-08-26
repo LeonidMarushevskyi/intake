@@ -3,3 +3,5 @@ AllCops:
     - 'db/schema.rb'
     - 'node_modules/**/*'
     - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'ruby_gems/**/*'

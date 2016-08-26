@@ -1,0 +1,55 @@
+version: '2'
+
+volumes:
+  ca_intake_rubygems:
+  ca_intake_node_modules:
+  ca_intake_build:
+
+services:
+  cache:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile.cache
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  rspec_test:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/ci
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  lint:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/lint
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  javascript_test:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile
+    command: bin/ci-javascript
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+  builder:
+    build:
+      context: ../../
+      dockerfile: docker/test/Dockerfile.build
+    volumes:
+      - ca_intake_rubygems:/ca_intake/ruby_gems
+      - ca_intake_node_modules:/ca_intake/node_modules
+      - ca_intake_build:/ca_intake_build

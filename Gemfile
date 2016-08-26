@@ -23,6 +23,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'i18n-tasks'
   gem 'scss_lint'
+  gem 'fpm'
 end
 
 group :development do
