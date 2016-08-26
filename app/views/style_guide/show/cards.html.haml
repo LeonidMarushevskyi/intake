@@ -8,43 +8,52 @@
     .card-body
       .row
         .col-md-6
-          First name
+          %label.no-gap
+            First name
           .c-gray
             Pierre
         .col-md-6
-          Last name
+          %label.no-gap-desktop
+            Last name
           .c-gray
             Klein
-      .row.gap-top
+      .row
         .col-md-6
-          Gender
+          %label
+            Gender
           .c-gray
             Male
-      .row.gap-top
+      .row
         .col-md-6
-          Date of birth
+          %label
+            Date of birth
           .c-gray
             02/25/1986
         .col-md-6
-          Social security number
+          %label
+            Social security number
           .c-gray
             158-698-5874
-      .row.gap-top
+      .row
         .col-md-6
-          Address
+          %label
+            Address
           .c-gray
             50 Grand St. Apt #3
         .col-md-6
-          City
+          %label
+            City
           .c-gray
             Queens
-      .row.gap-top
+      .row
         .col-md-6
-          State
+          %label
+            State
           .c-gray
             New York
         .col-md-6
-          ZIP
+          %label
+            ZIP
           .c-gray
             11377
 
@@ -59,12 +68,12 @@
             First name
           %input{ name: 'first-name', type: 'text', value: 'Pierre' }
         .col-md-6
-          %label.no-gap
+          %label.no-gap-desktop
             Last name
           %input{ name: 'first-name', type: 'text', value: 'Klein' }
       .row
         .col-md-6
-          %label
+          %label.gap-top
             Gender
           %select#state{ name: 'gender' }
             %option{ value: '' }
@@ -73,25 +82,25 @@
             %option{ value: 'Other' } Other
       .row
         .col-md-6
-          %label
+          %label.gap-top
             Date of birth
           %input{ name: 'first-name', type: 'date', value: '02-25-1986' }
         .col-md-6
-          %label
+          %label.gap-top
             Social security number
           %input{ name: 'first-name', type: 'number', value: '1586985874' }
       .row
         .col-md-6
-          %label
+          %label.gap-top
             Address
           %input{ name: 'first-name', type: 'text', value: '50 Grand St. Apt #3' }
         .col-md-6
-          %label
+          %label.gap-top
             City
           %input{ name: 'city', type: 'text', value: 'Queens' }
       .row
         .col-md-6
-          %label
+          %label.gap-top
             State
           %select#state{ name: 'state' }
             %option{ value: '' }
@@ -147,7 +156,7 @@
             %option{ value: 'WI' } Wisconsin
             %option{ value: 'WY' } Wyoming
         .col-md-6
-          %label
+          %label.gap-top
             Address
           %input{ name: 'zip', type: 'number', value: '11377' }
 
@@ -161,43 +170,52 @@
         .card-body
           .row
             .col-md-6
-              First name
+              %label.no-gap
+                First name
               .c-gray
                 Pierre
             .col-md-6
-              Last name
+              %label.no-gap-desktop
+                Last name
               .c-gray
                 Klein
-          .row.gap-top
+          .row
             .col-md-6
-              Gender
+              %label
+                Gender
               .c-gray
                 Male
-          .row.gap-top
+          .row
             .col-md-6
-              Date of birth
+              %label
+                Date of birth
               .c-gray
                 02/25/1986
             .col-md-6
-              Social security number
+              %label
+                Social security number
               .c-gray
                 158-698-5874
-          .row.gap-top
+          .row
             .col-md-6
-              Address
+              %label
+                Address
               .c-gray
                 50 Grand St. Apt #3
             .col-md-6
-              City
+              %label
+                City
               .c-gray
                 Queens
-          .row.gap-top
+          .row
             .col-md-6
-              State
+              %label
+                State
               .c-gray
                 New York
             .col-md-6
-              ZIP
+              %label
+                ZIP
               .c-gray
                 11377
 
@@ -210,41 +228,41 @@
             .col-md-6
               %label.no-gap
                 First name
-              %input{ name: 'first-name', type:'text', value: 'Pierre' }
+              %input{ name: 'first-name', type: 'text', value: 'Pierre' }
             .col-md-6
-              %label.no-gap
+              %label.no-gap-desktop
                 Last name
-              %input{ name: 'first-name', type:'text', value: 'Klein' }
+              %input{ name: 'first-name', type: 'text', value: 'Klein' }
           .row
             .col-md-6
-              %label
+              %label.gap-top
                 Gender
               %select#state{ name: 'gender' }
                 %option{ value: '' }
                 %option{ value: 'Female' } Female
-                %option{ value: 'Male', :selected: 'selected' } Male
+                %option{ value: 'Male', selected: 'selected' } Male
                 %option{ value: 'Other' } Other
           .row
             .col-md-6
-              %label
+              %label.gap-top
                 Date of birth
-              %input{ name: 'first-name', type:'date', value: '02-25-1986' }
+              %input{ name: 'first-name', type: 'date', value: '02-25-1986' }
             .col-md-6
-              %label
+              %label.gap-top
                 Social security number
-              %input{ name: 'first-name', type:'number', value: '1586985874' }
+              %input{ name: 'first-name', type: 'number', value: '1586985874' }
           .row
             .col-md-6
-              %label
+              %label.gap-top
                 Address
-              %input{ name: 'first-name', type:'text', value: '50 Grand St. Apt #3' }
+              %input{ name: 'first-name', type: 'text', value: '50 Grand St. Apt #3' }
             .col-md-6
-              %label
+              %label.gap-top
                 City
-              %input{ name: 'city', type:'text', value: 'Queens' }
+              %input{ name: 'city', type: 'text', value: 'Queens' }
           .row
             .col-md-6
-              %label
+              %label.gap-top
                 State
               %select#state{ name: 'state' }
                 %option{ value: '' }
@@ -300,9 +318,9 @@
                 %option{ value: 'WI' } Wisconsin
                 %option{ value: 'WY' } Wyoming
             .col-md-6
-              %label
+              %label.gap-top
                 Address
-              %input{ name: 'zip', type:'number', value: '11377' }
+              %input{ name: 'zip', type: 'number', value: '11377' }
 
 .double-padded.border-regular-light-gray
   %h4 Accessibility
