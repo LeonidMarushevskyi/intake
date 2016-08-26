@@ -8,6 +8,12 @@
   margin: 0;
 }
 
+@media screen and (min-width: 767px) {
+  label.no-pad-top-desktop {
+    margin-top: 0;
+  }
+}
+
 .half-padded {
   padding: $half-spacing;
 }
