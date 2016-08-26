@@ -734,6 +734,11 @@ table {
     border: $regular-border solid $gray-lightest;
     border-top: 0;
     padding: $base-spacing;
+
+    .btn {
+      margin-top: $double-spacing;
+      margin-bottom: $base-spacing;
+    }
   }
 
   &.edit {
