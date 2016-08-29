@@ -3,7 +3,7 @@
 .double-padded.border-regular-light-gray.gap-top
   .card
     .card-header
-      %h3 Profile Information
+      %span Profile Information
       %a.fa.fa-pencil{ href: '#', 'aria-label': 'Edit profile' }
     .card-body
       .row
@@ -59,8 +59,10 @@
 
   .card.edit.double-gap-top
     .card-header
-      %h3 Profile Information
-      %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing profile' }
+      %span Profile Information
+      %a.pull-right{ href: '#', 'aria-label': 'Done editing profile' }
+        %i.material-icons
+          mode_edit
     .card-body
       .row
         .col-md-6
@@ -170,7 +172,7 @@
     :preserve
       .card
         .card-header
-          %h3 Profile Information
+          %span Profile Information
           %a.fa.fa-pencil{ href: '#', 'aria-label': 'Edit profile' }
         .card-body
           .row
@@ -226,7 +228,7 @@
 
       .card.edit.double-gap-top
         .card-header
-          %h3 Profile Information
+          %span Profile Information
           %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing profile' }
         .card-body
           .row

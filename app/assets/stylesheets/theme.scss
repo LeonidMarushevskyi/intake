@@ -714,7 +714,7 @@ table {
     overflow: hidden;
     padding: $base-spacing / 1.5  $base-spacing;
 
-    h3 {
+    span {
       float: left;
       font-weight: $extralight-weight;
       margin: 0;
@@ -722,11 +722,15 @@ table {
       text-transform: uppercase;
     }
 
-    .fa {
+    a {
       float: right;
-      position: relative;
       text-decoration: none;
+    }
+
+    .material-icons {
+      font-size: $large-font;
       top: $base-spacing * .2;
+      position: relative;
     }
   }
 
@@ -746,7 +750,7 @@ table {
       background-color: $cool-blue-light;
       color: $white;
 
-      .fa {
+      a {
         color: $white;
       }
     }
