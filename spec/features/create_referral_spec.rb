@@ -15,7 +15,11 @@ feature 'Create Referral' do
 
     referral = {
       id: 1,
-      reference: 'MYREFERENCE'
+      reference: 'MYREFERENCE',
+      referral_address: {
+        address: {
+        }
+      }
     }.with_indifferent_access
 
     stub_api_for(Referral) do |stub|

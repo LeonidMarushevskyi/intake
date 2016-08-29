@@ -28,8 +28,6 @@ class ReferralsController < ApplicationController # :nodoc:
 
   def referral_params
     params.require(:referral).permit(
-      :street_address,
-      :city,
       :ended_at,
       :incident_date,
       :location_type,
@@ -37,8 +35,16 @@ class ReferralsController < ApplicationController # :nodoc:
       :name,
       :reference,
       :started_at,
-      :state,
-      :zip
+      referral_address_attributes: [
+        :id,
+        address_attributes: [
+          :id,
+          :city,
+          :state,
+          :street_address,
+          :zip
+        ]
+      ]
     )
   end
 end

@@ -35,15 +35,18 @@
           .col-md-6
             %fieldset
               %legend Incident Address
-              = f.label :street_address, 'Address'
-              = f.text_field :street_address
-              = f.label :city, 'City'
-              = f.text_field :city
-              = f.label :state
-              - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last, f.object.state)
-              = f.select :state, state_options, include_blank: true
-              = f.label :zip, 'Zip'
-              = f.text_field :zip
+              = f.fields_for :referral_address, f.object.referral_address do |referral_address|
+                = referral_address.hidden_field :id
+                = referral_address.fields_for :address_attributes, referral_address.object.address do |address|
+                  = address.label :street_address, 'Address'
+                  = address.text_field :street_address
+                  = address.label :city, 'City'
+                  = address.text_field :city
+                  = address.label :state
+                  - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
+                  = address.select :state, state_options, include_blank: true
+                  = address.label :zip, 'Zip'
+                  = address.text_field :zip
         .row
           .col-md-6
             = f.label :location_type, 'Location Type'

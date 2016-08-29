@@ -14,6 +14,17 @@ feature 'Show Referral' do
       method_of_referral: 'mail',
       name: 'The Rocky Horror Picture Show',
       started_at: '2016-08-13T10:00:00.000Z',
+      referral_address: {
+        id: 2,
+        address: {
+          id: 4,
+          street_address: '123 fake st',
+          city: 'Springfield',
+          state: 'NY',
+          zip: 12_345,
+          person_id: nil
+        }
+      }
     }.with_indifferent_access
 
     stub_api_for(Referral) do |stub|
@@ -30,6 +41,10 @@ feature 'Show Referral' do
     expect(page).to have_content '8/13/2016 10:00 AM'
     expect(page).to have_content '8/22/2016 11:00 AM'
     expect(page).to have_content '8/11/2016'
+    expect(page).to have_content '123 fake st'
+    expect(page).to have_content 'Springfield'
+    expect(page).to have_content 'New York'
+    expect(page).to have_content '12345'
     expect(page).to have_content "Child's Home"
   end
 end

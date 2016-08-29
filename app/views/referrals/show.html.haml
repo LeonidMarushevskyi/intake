@@ -29,3 +29,27 @@
           Incident Date
           .c-gray
             = Date.parse(@referral.incident_date).strftime('%m/%d/%Y') if @referral.incident_date
+      .row.gap-top
+        - address = @referral.referral_address.address
+        .col-md-6
+          Address
+          .c-gray
+            = address.street_address
+        .col-md-6
+          City
+          .c-gray
+            = address.city
+      .row.gap-top
+        .col-md-6
+          State
+          .c-gray
+            = USStates::ABBREVIATION_NAME_MAP[address.state]
+        .col-md-6
+          ZIP
+          .c-gray
+            = address.zip
+      .row
+        .col-md-6
+          Location Type
+          .c-gray
+            = @referral.location_type
