@@ -1,48 +1,56 @@
-.double-padded.border-regular-light-gray.gap-top
-  .card
-    .card-header
-      %h3 Profile Information
-    .card-body
-      .row
-        .col-md-6
+.card.double-gap-top
+  .card-header
+    %span Profile Information
+  .card-body
+    .row
+      .col-md-6
+        %label.no-gap
           First name
-          .c-gray
-            = @person['first_name']
-        .col-md-6
+        .c-gray
+          = @person['first_name']
+      .col-md-6
+        %label.no-gap-top-desktop
           Last name
-          .c-gray
-            = @person['last_name']
-      .row.gap-top
-        .col-md-6
+        .c-gray
+          = @person['last_name']
+    .row.gap-top
+      .col-md-6
+        %label
           Gender
-          .c-gray
-            = @person['gender'].camelize
-      .row.gap-top
-        .col-md-6
+        .c-gray
+          = @person['gender'].camelize
+    .row.gap-top
+      .col-md-6
+        %label
           Date of birth
-          .c-gray
-            = @person['date_of_birth']
-        .col-md-6
+        .c-gray
+          = @person['date_of_birth']
+      .col-md-6
+        %label
           Social security number
-          .c-gray
-            = @person['ssn']
-      .row.gap-top
-        - address = @person['address'] || {}
-        .col-md-6
+        .c-gray
+          = @person['ssn']
+    .row.gap-top
+      - address = @person['address'] || {}
+      .col-md-6
+        %label
           Address
-          .c-gray
-            = address['street_address']
-        .col-md-6
+        .c-gray
+          = address['street_address']
+      .col-md-6
+        %label
           City
-          .c-gray
-            = address['city']
-      .row.gap-top
-        .col-md-6
+        .c-gray
+          = address['city']
+    .row.gap-top
+      .col-md-6
+        %label
           State
-          .c-gray
-            = USStates::ABBREVIATION_NAME_MAP[address['state']]
-        .col-md-6
+        .c-gray
+          = USStates::ABBREVIATION_NAME_MAP[address['state']]
+      .col-md-6
+        %label
           ZIP
-          .c-gray
-            = address['zip']
+        .c-gray
+          = address['zip']
 

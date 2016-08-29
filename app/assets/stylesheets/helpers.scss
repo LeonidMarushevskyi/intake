@@ -1,11 +1,21 @@
 // Helpers //
 
+.centered {
+  text-align: center;
+}
+
 .no-pad {
   padding: 0;
 }
 
 .no-gap {
   margin: 0;
+}
+
+@media screen and (min-width: 767px) {
+  label.no-gap-top-desktop {
+    margin-top: 0;
+  }
 }
 
 .half-padded {

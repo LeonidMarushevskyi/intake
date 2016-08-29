@@ -1,46 +1,43 @@
-%h1 Create Person
-.double-padded.border-regular-light-gray.gap-top
-  .card.edit.double-gap-top
-    .card-header
-      %h3 Profile Information
-      %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing profile' }
-    .card-body
-      = form_for :person, url: people_path do |f|
-        .row
-          .col-md-6
-            = f.label :first_name, 'First Name', class: 'no-gap'
-            = f.text_field :first_name
-          .col-md-6
-            = f.label :last_name, 'Last Name', class: 'no-gap'
-            = f.text_field :last_name
-        .row
-          .col-md-6
-            - gender_options = options_from_collection_for_select(Genders::ALL, :first, :last)
-            = f.label(:gender, 'Gender')
-            = f.select :gender, gender_options, include_blank: true
-        .row
-          .col-md-6
-            = f.label :date_of_birth
-            = f.date_field :date_of_birth
-          .col-md-6
-            = f.label :ssn, 'Social security number'
-            = f.text_field :ssn
-        .row
-          .col-md-6
-            = f.label :address, for: :person_street_address
-            = f.text_field :street_address
-          .col-md-6
-            = f.label :city
-            = f.text_field :city
-        .row
-          .col-md-6
-            = f.label :state
-            - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last)
-            = f.select :state, state_options, include_blank: true
-          .col-md-6
-            = f.label :zip
-            = f.text_field :zip
-        .row
-          .col-md-6
-            = f.submit 'Save'
-
+.card.edit.double-gap-top
+  .card-header
+    %span Create New Person
+    %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing profile' }
+  .card-body
+    = form_for :person, url: people_path do |f|
+      .row
+        .col-md-6
+          = f.label :first_name, 'First Name', class: 'no-gap'
+          = f.text_field :first_name
+        .col-md-6
+          = f.label :last_name, 'Last Name', class: 'no-pad-top-desktop'
+          = f.text_field :last_name
+      .row
+        .col-md-6
+          - gender_options = options_from_collection_for_select(Genders::ALL, :first, :last)
+          = f.label(:gender, 'Gender')
+          = f.select :gender, gender_options, include_blank: true
+      .row
+        .col-md-6
+          = f.label :date_of_birth
+          = f.date_field :date_of_birth
+        .col-md-6
+          = f.label :ssn, 'Social security number'
+          = f.text_field :ssn
+      .row
+        .col-md-6
+          = f.label :address, for: :person_street_address
+          = f.text_field :street_address
+        .col-md-6
+          = f.label :city
+          = f.text_field :city
+      .row
+        .col-md-6
+          = f.label :state
+          - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last)
+          = f.select :state, state_options, include_blank: true
+        .col-md-6
+          = f.label :zip
+          = f.text_field :zip
+      .row
+        .centered
+          = f.submit 'Save'
