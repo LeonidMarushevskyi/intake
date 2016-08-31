@@ -550,6 +550,10 @@ table {
   td {
     padding: $base-spacing;
   }
+
+  tbody tr th {
+    font-weight: normal;
+  }
 }
 
 @media screen and (max-width: 767px) {
