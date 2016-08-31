@@ -14,16 +14,13 @@ feature 'Show Referral' do
       method_of_referral: 'mail',
       name: 'The Rocky Horror Picture Show',
       started_at: '2016-08-13T10:00:00.000Z',
-      referral_address: {
-        id: 2,
-        address: {
-          id: 4,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: 12_345,
-          person_id: nil
-        }
+      address: {
+        id: 4,
+        street_address: '123 fake st',
+        city: 'Springfield',
+        state: 'NY',
+        zip: 12_345,
+        person_id: nil
       }
     }.with_indifferent_access
 

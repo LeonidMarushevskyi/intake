@@ -16,9 +16,7 @@ feature 'Create Referral' do
     referral = {
       id: 1,
       reference: 'MYREFERENCE',
-      referral_address: {
-        address: {
-        }
+      address: {
       }
     }.with_indifferent_access
 

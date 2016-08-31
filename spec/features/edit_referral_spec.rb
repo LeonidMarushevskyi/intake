@@ -12,10 +12,7 @@ feature 'Edit Referral' do
       started_at: '2016-08-13T10:00:00.000Z',
       ended_at: '2016-08-13T11:00:00.000Z',
       incident_date: '2016-08-11',
-      referral_address: {
-        id: nil,
-        address: {
-        }
+      address: {
       }
     }.with_indifferent_access
 
@@ -50,9 +47,7 @@ feature 'Edit Referral' do
       id: 1,
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
-      referral_address: {
-        address: {
-        }
+      address: {
       }
     }.with_indifferent_access
 

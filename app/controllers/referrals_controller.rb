@@ -35,15 +35,12 @@ class ReferralsController < ApplicationController # :nodoc:
       :name,
       :reference,
       :started_at,
-      referral_address_attributes: [
+      address: [
         :id,
-        address_attributes: [
-          :id,
-          :city,
-          :state,
-          :street_address,
-          :zip
-        ]
+        :city,
+        :state,
+        :street_address,
+        :zip
       ]
     )
   end

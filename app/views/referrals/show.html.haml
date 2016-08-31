@@ -30,7 +30,7 @@
           .c-gray
             = Date.parse(@referral.incident_date).strftime('%m/%d/%Y') if @referral.incident_date
       .row.gap-top
-        - address = @referral.referral_address.address
+        - address = @referral.address
         .col-md-6
           Address
           .c-gray

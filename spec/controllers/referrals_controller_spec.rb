@@ -60,7 +60,15 @@ describe ReferralsController do
   describe '#update' do
     let(:referral) { double(:referral) }
     let(:referral_attributes) do
-      { name: '123 Report' }
+      {
+        name: '123 Report',
+        address: {
+          city: 'LA',
+          state: 'CA',
+          street_address: '123 Fake St',
+          zip: '11222'
+        }
+      }.with_indifferent_access
     end
     before do
       allow(Referral).to receive(:save_existing).with(
