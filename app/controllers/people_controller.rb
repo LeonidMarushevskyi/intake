@@ -7,7 +7,21 @@ class PeopleController < ApplicationController
   end
 
   def create
-    @person = PersonCreator.create(params[:person])
+    @person = PersonCreator.create(person_params.to_h)
     render :show
+  end
+
+  def person_params
+    params.require(:person).permit(
+      :first_name,
+      :last_name,
+      :gender,
+      :date_of_birth,
+      :ssn,
+      :street_address,
+      :city,
+      :state,
+      :zip
+    )
   end
 end
