@@ -35,6 +35,7 @@ class ReferralsController < ApplicationController # :nodoc:
       :method_of_referral,
       :name,
       :reference,
+      :response_time,
       :started_at,
       address: [
         :id,

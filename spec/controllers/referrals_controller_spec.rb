@@ -61,6 +61,7 @@ describe ReferralsController do
       {
         name: '123 Report',
         incident_county: 'sacramento',
+        response_time: 'immediate',
         address: {
           city: 'LA',
           state: 'CA',
