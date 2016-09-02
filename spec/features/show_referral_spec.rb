@@ -14,6 +14,7 @@ feature 'Show Referral' do
       method_of_referral: 'mail',
       name: 'The Rocky Horror Picture Show',
       reference: 'My Bad!',
+      response_time: 'within_twenty_four_hours',
       started_at: '2016-08-13T10:00:00.000Z',
       address: {
         id: 4,
@@ -45,5 +46,6 @@ feature 'Show Referral' do
     expect(page).to have_content 'New York'
     expect(page).to have_content '12345'
     expect(page).to have_content "Child's Home"
+    expect(page).to have_content 'Within 24 hours'
   end
 end

@@ -5,5 +5,5 @@ module ResponseTime
     immediate: 'Immediate',
     within_twenty_four_hours: 'Within 24 hours',
     more_than_twenty_four_hours: 'More than 24 hours'
-  }.freeze
+  }.with_indifferent_access.freeze
 end

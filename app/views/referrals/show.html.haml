@@ -58,3 +58,8 @@
           Location Type
           .c-gray
             = @referral.location_type
+      .row
+        .col-md-6
+          Response Time
+          .c-gray
+            = ResponseTime::ALL[@referral.response_time]
