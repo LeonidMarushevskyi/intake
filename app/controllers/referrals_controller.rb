@@ -36,6 +36,7 @@ class ReferralsController < ApplicationController # :nodoc:
       :name,
       :reference,
       :response_time,
+      :screening_decision,
       :started_at,
       address: [
         :id,

@@ -13,6 +13,7 @@ feature 'Edit Referral' do
       name: 'Little Shop Of Horrors',
       reference: 'My Bad!',
       response_time: 'immediate',
+      screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z',
       address: {
       }
@@ -33,6 +34,7 @@ feature 'Edit Referral' do
     expect(page).to have_field('Incident Date', with: '2016-08-11')
     expect(page).to have_field('Incident County', with: 'sacramento')
     expect(page).to have_field('Response Time', with: 'immediate')
+    expect(page).to have_field('Screening Decision', with: 'evaluate_out')
 
     fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'

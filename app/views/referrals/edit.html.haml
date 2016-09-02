@@ -60,6 +60,11 @@
             = f.label :response_time, 'Response Time'
             - response_time_options = options_from_collection_for_select(ResponseTime::ALL, :first, :last, f.object.response_time)
             = f.select :response_time, response_time_options, include_blank: true
+        .row
+          .col-md-6
+            = f.label :screening_decision, 'Screening Decision'
+            - screening_decision_options = options_from_collection_for_select(ScreeningDecision::ALL, :first, :last, f.object.screening_decision)
+            = f.select :screening_decision, screening_decision_options, include_blank: true
 
         .row
           .col-md-6

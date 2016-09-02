@@ -62,6 +62,7 @@ describe ReferralsController do
         name: '123 Report',
         incident_county: 'sacramento',
         response_time: 'immediate',
+        screening_decision: 'evaluate_out',
         address: {
           city: 'LA',
           state: 'CA',
