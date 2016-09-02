@@ -4,7 +4,7 @@
 class Referral # :nodoc:
   include Her::Model
   use_api API_V1
-  ASSOCIATIONS = [:address]
+  ASSOCIATIONS = [:address].freeze
 
   has_one :address
 

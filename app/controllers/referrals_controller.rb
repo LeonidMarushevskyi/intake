@@ -4,8 +4,8 @@
 # the creation and modification of referral objects.
 class ReferralsController < ApplicationController # :nodoc:
   def create
-    @referral = ReferralCreator.create
-    redirect_to referral_path(id: @referral['id'])
+    @referral = Referral.create(reference: LUID.generate.first)
+    redirect_to referral_path(@referral)
   end
 
   def update

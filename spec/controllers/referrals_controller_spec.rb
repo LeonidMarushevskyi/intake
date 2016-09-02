@@ -4,12 +4,10 @@ require 'rails_helper'
 
 describe ReferralsController do
   describe '#create' do
-    let(:referral) do
-      { id: 1, reference: '123ABC' }.with_indifferent_access
-    end
-
+    let(:referral) { double(:referral, id: 1, reference: '123ABC') }
     before do
-      allow(ReferralCreator).to receive(:create).and_return(referral)
+      allow(LUID).to receive(:generate).and_return(['123ABC'])
+      allow(Referral).to receive(:create).with(reference: '123ABC').and_return(referral)
     end
 
     it 'assigns referral' do
@@ -19,7 +17,7 @@ describe ReferralsController do
 
     it 'redirects to show' do
       post :create
-      expect(response).to redirect_to(referral_path(id: referral['id']))
+      expect(response).to redirect_to(referral_path(assigns(:referral)))
     end
   end
 
