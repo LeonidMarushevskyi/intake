@@ -5,10 +5,6 @@ require 'pathname'
 
 module GulpAssets
   module Helper # :nodoc:
-    APP_ROOT = Pathname.new(
-      File.expand_path('../../', __FILE__)
-    ).freeze
-
     # Returns the location of the gulp served assets.
     def gulp_asset_path(name)
       asset_filename = filename(name)
@@ -20,25 +16,20 @@ module GulpAssets
     # and all other cases assets are provided by the file system from
     # the public assets folder.
     def uri(filename)
-      if ENV['RAILS_ENV'] == 'development'
-        return URI::HTTP.build(
-          host: request.host,
-          port: 4857,
-          path: "/assets/#{filename}"
-        )
-      else
-        return URI::Generic.build(path: "/assets/#{filename}")
-      end
+      asset_path = "/assets/#{filename}"
+      return URI::HTTP.build(
+        host: request.host,
+        port: 4857,
+        path: asset_path
+      ) if Rails.env.development?
+      URI::Generic.build(path: asset_path)
     end
 
     # Returns the filenames actual versioned name that is
     # stored in the manifest file.
     def filename(filename)
-      if ENV['RAILS_ENV'] == 'development' || ENV['RAILS_ENV'] == 'test'
-        return filename
-      else
-        return manifest[filename]
-      end
+      return filename if Rails.env.development? || Rails.env.test?
+      manifest[filename]
     end
 
     # Returns the asset manifest file.
@@ -46,7 +37,7 @@ module GulpAssets
     # versioned filename. This can be used to translate the original filename
     # to the actual filename.
     def manifest
-      manifest_path = APP_ROOT.join(
+      manifest_path = Rails.root.join(
         'public',
         'assets',
         'rev-manifest.json'
