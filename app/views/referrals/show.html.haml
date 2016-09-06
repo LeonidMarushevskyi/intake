@@ -29,6 +29,11 @@
           Incident Date
           .c-gray
             = Date.parse(@referral.incident_date).strftime('%m/%d/%Y') if @referral.incident_date
+      .row
+        .col-md-6
+          Incident County
+          .c-gray
+            = County::ALL[@referral.incident_county]
       .row.gap-top
         - address = @referral.address
         .col-md-6

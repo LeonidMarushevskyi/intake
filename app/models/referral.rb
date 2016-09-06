@@ -9,11 +9,12 @@ class Referral # :nodoc:
   has_one :address
 
   attributes :ended_at,
+    :incident_county,
     :incident_date,
+    :location_type,
     :method_of_referral,
-    :started_at,
     :name,
-    :location_type
+    :started_at
 
   def self.to_params(attributes)
     ASSOCIATIONS.each do |association_key|

@@ -33,6 +33,11 @@
             = f.date_field :incident_date, value: value
         .row
           .col-md-6
+            = f.label :incident_county, 'Incident County'
+            - county_options = options_from_collection_for_select(County::ALL, :first, :last, f.object.incident_county)
+            = f.select :incident_county, county_options, include_blank: true
+        .row
+          .col-md-6
             %fieldset
               %legend Incident Address
               = fields_for 'referral[address]', f.object.address do |address|
