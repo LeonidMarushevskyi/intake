@@ -13,7 +13,7 @@
         .col-md-6
           Method of Referral
           .c-gray
-            = MethodsOfReferral::ALL[@referral.method_of_referral]
+            = MethodOfReferral::ALL[@referral.method_of_referral]
       .row
         .col-md-6
           Phone Call Start Date/Time
@@ -48,7 +48,7 @@
         .col-md-6
           State
           .c-gray
-            = USStates::ABBREVIATION_NAME_MAP[address.state]
+            = USState::ABBREVIATION_NAME_MAP[address.state]
         .col-md-6
           ZIP
           .c-gray

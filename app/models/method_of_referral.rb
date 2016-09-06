@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module MethodsOfReferral
+module MethodOfReferral
   ALL = {
     'email' => 'Email',
     'fax' => 'Fax',
