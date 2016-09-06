@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module LocationTypes
+module LocationType
   ALL = [
     [
       'Home Settings', [

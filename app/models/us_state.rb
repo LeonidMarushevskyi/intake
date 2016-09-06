@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module USStates
+module USState
   ABBREVIATION_NAME_MAP = {
     'AL' => 'Alabama',
     'AK' => 'Alaska',

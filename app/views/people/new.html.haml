@@ -13,7 +13,7 @@
           = f.text_field :last_name
       .row
         .col-md-6
-          - gender_options = options_from_collection_for_select(Genders::ALL, :first, :last)
+          - gender_options = options_from_collection_for_select(Gender::ALL, :first, :last)
           = f.label(:gender, 'Gender')
           = f.select :gender, gender_options, include_blank: true
       .row
@@ -33,7 +33,7 @@
       .row
         .col-md-6
           = f.label :state
-          - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last)
+          - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last)
           = f.select :state, state_options, include_blank: true
         .col-md-6
           = f.label :zip

@@ -14,7 +14,7 @@
         .row
           .col-md-6
             = f.label :method_of_referral, 'Method of Referral'
-            - methods_of_referral_options = options_from_collection_for_select(MethodsOfReferral::ALL, :first, :last, f.object.method_of_referral)
+            - methods_of_referral_options = options_from_collection_for_select(MethodOfReferral::ALL, :first, :last, f.object.method_of_referral)
             = f.select :method_of_referral, methods_of_referral_options, include_blank: true
         .row
           .col-md-6
@@ -33,6 +33,11 @@
             = f.date_field :incident_date, value: value
         .row
           .col-md-6
+            = f.label :incident_county, 'Incident County'
+            - county_options = options_from_collection_for_select(County::ALL, :first, :last, f.object.incident_county)
+            = f.select :incident_county, county_options, include_blank: true
+        .row
+          .col-md-6
             %fieldset
               %legend Incident Address
               = fields_for 'referral[address]', f.object.address do |address|
@@ -41,14 +46,14 @@
                 = address.label :city, 'City'
                 = address.text_field :city
                 = address.label :state
-                - state_options = options_from_collection_for_select(USStates::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
+                - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
                 = address.select :state, state_options, include_blank: true
                 = address.label :zip, 'Zip'
                 = address.text_field :zip
         .row
           .col-md-6
             = f.label :location_type, 'Location Type'
-            - location_type_options = grouped_options_for_select(LocationTypes::ALL, f.object.location_type)
+            - location_type_options = grouped_options_for_select(LocationType::ALL, f.object.location_type)
             = f.select :location_type, location_type_options, include_blank: true
         .row
           .col-md-6

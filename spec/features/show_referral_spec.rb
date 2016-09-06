@@ -7,12 +7,13 @@ feature 'Show Referral' do
   scenario 'showing existing referral' do
     existing_referral = {
       id: 1,
-      reference: 'My Bad!',
       ended_at: '2016-08-22T11:00:00.000Z',
+      incident_county: 'sacramento',
       incident_date: '2016-08-11',
       location_type: "Child's Home",
       method_of_referral: 'mail',
       name: 'The Rocky Horror Picture Show',
+      reference: 'My Bad!',
       started_at: '2016-08-13T10:00:00.000Z',
       address: {
         id: 4,
@@ -38,6 +39,7 @@ feature 'Show Referral' do
     expect(page).to have_content '8/13/2016 10:00 AM'
     expect(page).to have_content '8/22/2016 11:00 AM'
     expect(page).to have_content '8/11/2016'
+    expect(page).to have_content 'Sacramento'
     expect(page).to have_content '123 fake st'
     expect(page).to have_content 'Springfield'
     expect(page).to have_content 'New York'

@@ -7,11 +7,12 @@ feature 'Edit Referral' do
   scenario 'edit an existing referral' do
     existing_referral = {
       id: 1,
-      reference: 'My Bad!',
-      name: 'Little Shop Of Horrors',
-      started_at: '2016-08-13T10:00:00.000Z',
       ended_at: '2016-08-13T11:00:00.000Z',
+      incident_county: 'sacramento',
       incident_date: '2016-08-11',
+      name: 'Little Shop Of Horrors',
+      reference: 'My Bad!',
+      started_at: '2016-08-13T10:00:00.000Z',
       address: {
       }
     }.with_indifferent_access
@@ -29,12 +30,14 @@ feature 'Edit Referral' do
     expect(page).to have_field('Phone Call Start Date/Time', with: '2016-08-13 10:00:00 UTC')
     expect(page).to have_field('Phone Call End Date/Time', with: '2016-08-13 11:00:00 UTC')
     expect(page).to have_field('Incident Date', with: '2016-08-11')
+    expect(page).to have_field('Incident County', with: 'sacramento')
 
     fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'
     fill_in 'Phone Call Start Date/Time', with: '2016-08-13 10:00 AM'
     fill_in 'Phone Call End Date/Time', with: '2016-08-22 11:00 AM'
     fill_in 'Incident Date', with: '2016-08-11'
+    select  'Mariposa', from: 'Incident County'
     within 'fieldset', text: 'Incident Address' do
       fill_in 'Address', with: '123 fake st'
       fill_in 'City', with: 'Springfield'

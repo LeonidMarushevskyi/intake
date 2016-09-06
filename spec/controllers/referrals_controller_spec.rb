@@ -60,6 +60,7 @@ describe ReferralsController do
     let(:referral_attributes) do
       {
         name: '123 Report',
+        incident_county: 'sacramento',
         address: {
           city: 'LA',
           state: 'CA',
