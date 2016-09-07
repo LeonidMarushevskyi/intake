@@ -7,50 +7,50 @@
         %label.no-gap
         = t('activemodel.attributes.person.first_name')
         .c-gray
-          = @person['first_name']
+          = @person.first_name
       .col-md-6
         %label.no-gap-top-desktop
         = t('activemodel.attributes.person.last_name')
         .c-gray
-          = @person['last_name']
+          = @person.last_name
     .row.gap-top
       .col-md-6
         %label
         = t('activemodel.attributes.person.gender')
         .c-gray
-          = @person['gender'].camelize
+          = @person.gender.camelize
     .row.gap-top
       .col-md-6
         %label
         = t('activemodel.attributes.person.date_of_birth')
         .c-gray
-          = @person['date_of_birth']
+          = @person.date_of_birth
       .col-md-6
         %label
         = t('activemodel.attributes.person.ssn')
         .c-gray
-          = @person['ssn']
+          = @person.ssn
     .row.gap-top
-      - address = @person['address'] || {}
+      - address = @person.address
       .col-md-6
         %label
         = t('activemodel.attributes.address.street_address')
         .c-gray
-          = address['street_address']
+          = address.street_address
       .col-md-6
         %label
         = t('activemodel.attributes.address.city')
         .c-gray
-          = address['city']
+          = address.city
     .row.gap-top
       .col-md-6
         %label
         = t('activemodel.attributes.address.state')
         .c-gray
-          = USState::ABBREVIATION_NAME_MAP[address['state']]
+          = USState::ABBREVIATION_NAME_MAP[address.state]
       .col-md-6
         %label
         = t('activemodel.attributes.address.zip')
         .c-gray
-          = address['zip']
+          = address.zip
 

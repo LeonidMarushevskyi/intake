@@ -4,6 +4,7 @@ require 'rails_helper'
 feature 'Create Person' do
   scenario 'via the create person link on the home page' do
     person = {
+      id: 1,
       first_name: 'Homer',
       last_name: 'Simpson',
       gender: 'male',
@@ -16,15 +17,15 @@ feature 'Create Person' do
         zip: '12345'
       }
     }.with_indifferent_access
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.post('/api/v1/people') do |_|
-          [201, {}, person]
-        end
+    stub_api_for(Person) do |stub|
+      stub.post('/people') do |_env|
+        [200, {}, person.to_json]
+      end
+      stub.get('/people/1') do |_env|
+        [200, {}, person.to_json]
       end
     end
 
-    allow(API).to receive(:connection).and_return(faraday_stub)
     visit root_path
 
     click_link 'Create Person'
