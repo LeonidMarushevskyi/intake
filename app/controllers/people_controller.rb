@@ -4,11 +4,16 @@
 # the creation and modification of person objects.
 class PeopleController < ApplicationController
   def new
+    @person = Person.new(address: {})
   end
 
   def create
-    @person = PersonCreator.create(person_params.to_h)
-    render :show
+    @person = Person.create(person_params.to_h)
+    redirect_to person_path(@person)
+  end
+
+  def show
+    @person = Person.find(params[:id])
   end
 
   def person_params
@@ -18,10 +23,12 @@ class PeopleController < ApplicationController
       :gender,
       :date_of_birth,
       :ssn,
-      :street_address,
-      :city,
-      :state,
-      :zip
+      address: [
+        :street_address,
+        :city,
+        :state,
+        :zip
+      ]
     )
   end
 end
