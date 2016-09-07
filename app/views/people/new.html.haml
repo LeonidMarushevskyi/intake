@@ -6,37 +6,37 @@
     = form_for :person, url: people_path do |f|
       .row
         .col-md-6
-          = f.label :first_name, 'First Name', class: 'no-gap'
+          = f.label :first_name, t('activemodel.attributes.person.first_name'), class: 'no-gap'
           = f.text_field :first_name
         .col-md-6
-          = f.label :last_name, 'Last Name', class: 'no-pad-top-desktop'
+          = f.label :last_name, t('activemodel.attributes.person.last_name'), class: 'no-pad-top-desktop'
           = f.text_field :last_name
       .row
         .col-md-6
           - gender_options = options_from_collection_for_select(Gender::ALL, :first, :last)
-          = f.label(:gender, 'Gender')
+          = f.label :gender, t('activemodel.attributes.person.gender')
           = f.select :gender, gender_options, include_blank: true
       .row
         .col-md-6
-          = f.label :date_of_birth
+          = f.label :date_of_birth, t('activemodel.attributes.person.date_of_birth')
           = f.date_field :date_of_birth
         .col-md-6
-          = f.label :ssn, 'Social security number'
+          = f.label :ssn, t('activemodel.attributes.person.ssn')
           = f.text_field :ssn
       .row
         .col-md-6
-          = f.label :address, for: :person_street_address
+          = f.label :address, t('activemodel.attributes.address.street_address'), for: :person_street_address
           = f.text_field :street_address
         .col-md-6
-          = f.label :city
+          = f.label :city, t('activemodel.attributes.address.city')
           = f.text_field :city
       .row
         .col-md-6
-          = f.label :state
+          = f.label :state, t('activemodel.attributes.address.state')
           - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last)
           = f.select :state, state_options, include_blank: true
         .col-md-6
-          = f.label :zip
+          = f.label :zip, t('activemodel.attributes.address.zip')
           = f.text_field :zip
       .row
         .centered
