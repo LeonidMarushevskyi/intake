@@ -69,4 +69,5 @@ Rails.application.configure do
   # reply_to: ''
   # }
   # config.action_mailer.raise_delivery_errors = false
+  config.eager_load_paths += %W(#{config.root}/lib)
 end
