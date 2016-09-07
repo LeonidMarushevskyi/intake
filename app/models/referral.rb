@@ -14,6 +14,8 @@ class Referral # :nodoc:
     :location_type,
     :method_of_referral,
     :name,
+    :response_time,
+    :screening_decision,
     :started_at
 
   def self.to_params(attributes)
