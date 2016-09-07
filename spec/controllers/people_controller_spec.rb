@@ -3,14 +3,14 @@ require 'rails_helper'
 
 describe PeopleController do
   describe '#new' do
-    let(:person) { double(:person) }
-    before do
-      allow(Person).to receive(:new).and_return(person)
-    end
-
     it 'assigns person' do
       post :new
-      expect(assigns(:person)).to eq(person)
+      expect(assigns(:person)).to be_present
+    end
+
+    it 'assigns person address' do
+      post :new
+      expect(assigns(:person).address.attributes).to eq({})
     end
 
     it 'renders the edit template' do
