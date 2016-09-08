@@ -15,4 +15,4 @@
         - @referrals.each do |referral|
           %tr
             %td
-              = link_to "#{referral.name} - #{referral.reference}", referral_path(referral)
+              = link_to name_and_reference(referral), referral_path(referral)
