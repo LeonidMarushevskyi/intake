@@ -11,7 +11,7 @@ feature 'Referrals Index' do
       incident_date: '2016-08-11',
       name: 'Little Shop Of Horrors',
       response_time: 'immediate',
-      screening_decision: ScreeningDecision::ALL.keys.sample
+      screening_decision: 'evaluate_out'
     }.with_indifferent_access
     referral_two = {
       id: 2,
@@ -19,7 +19,7 @@ feature 'Referrals Index' do
       incident_date: '2016-7-7',
       name: 'The Shining',
       response_time: 'within_twenty_four_hours',
-      screening_decision: ScreeningDecision::ALL.keys.sample
+      screening_decision: 'accept_for_investigation'
     }.with_indifferent_access
     referral_three = {
       id: 3,
@@ -27,7 +27,7 @@ feature 'Referrals Index' do
       incident_date: '2016-08-10',
       name: 'It Follows',
       response_time: 'more_than_twenty_four_hours',
-      screening_decision: ScreeningDecision::ALL.keys.sample
+      screening_decision: 'referral_to_other_agency'
     }.with_indifferent_access
     referrals = [referral_one, referral_two, referral_three]
 
@@ -49,12 +49,15 @@ feature 'Referrals Index' do
     within 'tbody' do
       expect(page).to have_link('Little Shop Of Horrors - ABCDEF')
       expect(page).to have_content('Immediate')
+      expect(page).to have_content('Evaluate Out')
 
       expect(page).to have_link('The Shining - HIJKLM')
       expect(page).to have_content('Within 24 hours')
+      expect(page).to have_content('Accept for Investigation')
 
       expect(page).to have_link('It Follows - NOPQRS')
       expect(page).to have_content('More than 24 hours')
+      expect(page).to have_content('Referral to Other Agency')
 
       expect(page).to have_xpath('tr', count: 3)
     end

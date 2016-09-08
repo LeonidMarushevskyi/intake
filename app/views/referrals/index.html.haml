@@ -18,3 +18,5 @@
               = link_to name_and_reference(referral), referral_path(referral)
             %td
               = ResponseTime::ALL[referral.response_time]
+            %td
+              = ScreeningDecision::ALL[referral.screening_decision]
