@@ -24,6 +24,9 @@ class ReferralsController < ApplicationController # :nodoc:
     @referral = Referral.find(params[:id])
   end
 
+  def index
+  end
+
   private
 
   def referral_params

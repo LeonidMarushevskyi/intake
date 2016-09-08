@@ -1,0 +1,13 @@
+.double-padded.border-regular-light-gray
+  .table-responsive
+    %table.table.table-hover
+      %thead
+        %tr
+          %th{ scope: 'col' }
+            = t(:name_and_id, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:response_time, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:screening_decision, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:created_at, scope: :referral)
