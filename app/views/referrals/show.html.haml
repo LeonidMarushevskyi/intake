@@ -28,7 +28,7 @@
         .col-md-6
           = t('activemodel.attributes.referral.incident_date')
           .c-gray
-            = Date.parse(@referral.incident_date).strftime('%m/%d/%Y') if @referral.incident_date
+            = format_date(@referral.incident_date)
       .row
         .col-md-6
           = t('activemodel.attributes.referral.incident_county')
