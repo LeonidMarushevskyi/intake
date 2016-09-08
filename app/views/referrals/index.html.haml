@@ -20,3 +20,5 @@
               = ResponseTime::ALL[referral.response_time]
             %td
               = ScreeningDecision::ALL[referral.screening_decision]
+            %td
+              = format_date(referral.created_at)
