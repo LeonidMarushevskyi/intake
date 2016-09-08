@@ -45,5 +45,11 @@ feature 'Referrals Index' do
       expect(page).to have_css('th', text: 'Decision')
       expect(page).to have_css('th', text: 'Report Date')
     end
+
+    within 'tbody' do
+      expect(page).to have_link('Little Shop Of Horrors - ABCDEF')
+      expect(page).to have_link('The Shining - HIJKLM')
+      expect(page).to have_link('It Follows - NOPQRS')
+    end
   end
 end

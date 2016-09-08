@@ -4,10 +4,15 @@
       %thead
         %tr
           %th{ scope: 'col' }
-            = t(:name_and_id, scope: :referral)
+            = t(:name_and_reference, scope: :referral)
           %th{ scope: 'col' }
             = t(:response_time, scope: :referral)
           %th{ scope: 'col' }
             = t(:screening_decision, scope: :referral)
           %th{ scope: 'col' }
             = t(:created_at, scope: :referral)
+      %tbody
+        - @referrals.each do |referral|
+          %tr
+            %td
+              = link_to "#{referral.name} - #{referral.reference}", referral_path(referral)

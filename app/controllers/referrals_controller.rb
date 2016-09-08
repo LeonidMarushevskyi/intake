@@ -25,6 +25,7 @@ class ReferralsController < ApplicationController # :nodoc:
   end
 
   def index
+    @referrals = Referral.all
   end
 
   private

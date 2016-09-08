@@ -90,6 +90,14 @@ describe ReferralsController do
   end
 
   describe '#index' do
+    let(:referrals) { double(:referrals) }
+    before { allow(Referral).to receive(:all).and_return(referrals) }
+
+    it 'assigns referrals' do
+      put :index
+      expect(assigns(:referrals)).to eq(referrals)
+    end
+
     it 'renders the index template' do
       get :index
       expect(response).to render_template('index')
