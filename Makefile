@@ -76,6 +76,7 @@ release:
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up nginx
+	${INFO} "Release image build complete"
 
 clean:
 	${INFO} "Destroying development environment..."
