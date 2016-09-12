@@ -56,6 +56,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-accessible (0.2.1)
+      capybara (~> 2.0)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     clamp (1.0.0)
@@ -306,6 +308,7 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
+  capybara-accessible
   devise (= 4.1.1)
   factory_girl_rails
   faker

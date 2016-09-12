@@ -552,6 +552,10 @@ table {
   }
 }
 
+tbody tr th {
+  font-weight: normal;
+}
+
 @media screen and (max-width: 767px) {
   .table-responsive {
     border: 0;
