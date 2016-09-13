@@ -73,8 +73,9 @@ release:
 	${INFO} "Pulling latest images..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) pull
 	${INFO} "Building images..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build intake_app
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up intake_app
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up nginx
 
 clean:
 	${INFO} "Destroying development environment..."
