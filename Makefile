@@ -75,7 +75,7 @@ release:
 	${INFO} "Building images..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up nginx
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up -d nginx
 	${INFO} "Release image build complete"
 
 clean:
