@@ -12,7 +12,7 @@ REL_PROJECT := $(PROJECT_NAME)$(BUILD_ID)
 TEST_PROJECT := $(PROJECT_NAME)_test
 
 # Application Service Name - must match Docker Compose release specification application service name
-APP_SERVICE_NAME := intake_app
+APP_SERVICE_NAME := app
 
 # Build tag expression - can be used to evaulate a shell expression at runtime
 BUILD_TAG_EXPRESSION ?= date -u +%m%d%Y%H%M%S
