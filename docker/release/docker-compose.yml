@@ -13,6 +13,7 @@ services:
       - webroot:/ca_intake
     environment:
       RAILS_ENV: production
+      API_URL: "http://app:3000"
 
   nginx:
     build:
