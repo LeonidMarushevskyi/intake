@@ -9,7 +9,6 @@ services:
     build:
       context: ../../
       dockerfile: docker/release/Dockerfile
-    command: 'bash -c ''bundle exec puma -e production -C config/puma.rb'''
     volumes:
       - webroot:/ca_intake
     environment:
