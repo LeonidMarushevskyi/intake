@@ -49,5 +49,8 @@ feature 'Show Referral' do
     expect(page).to have_content "Child's Home"
     expect(page).to have_content 'Within 24 hours'
     expect(page).to have_content 'Evaluate Out'
+
+    expect(page).to have_link('Home', href: root_path)
+    expect(page).to have_link('Edit', href: edit_referral_path(id: 1))
   end
 end

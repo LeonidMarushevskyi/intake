@@ -86,3 +86,6 @@
           = t('activemodel.attributes.referral.screening_decision')
         .c-gray
           = ScreeningDecision::ALL[@referral.screening_decision]
+
+= link_to 'Home', root_path
+= link_to 'Edit', edit_referral_path(@referral)
