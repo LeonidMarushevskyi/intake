@@ -21,6 +21,6 @@ feature 'Create Referral' do
 
     visit root_path
     click_link 'Create Referral'
-    expect(page).to have_content('Referral #MYREFERENCE')
+    expect(page).to have_content('Edit Referral #MYREFERENCE')
   end
 end
