@@ -14,6 +14,7 @@ class Referral # :nodoc:
     :location_type,
     :method_of_referral,
     :name,
+    :narrative,
     :response_time,
     :screening_decision,
     :started_at

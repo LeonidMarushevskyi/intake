@@ -16,6 +16,7 @@ en:
         location_type: 'Location Type'
         response_time: 'Response Time'
         screening_decision: 'Screening Decision'
+        narrative: 'Narrative'
       address:
         street_address: 'Address'
         city: 'City'

@@ -11,6 +11,7 @@ feature 'Edit Referral' do
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
       name: 'Little Shop Of Horrors',
+      narrative: 'Narrative 123 test',
       reference: 'My Bad!',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
@@ -35,6 +36,7 @@ feature 'Edit Referral' do
     expect(page).to have_field('Incident County', with: 'sacramento')
     expect(page).to have_field('Response Time', with: 'immediate')
     expect(page).to have_field('Screening Decision', with: 'evaluate_out')
+    expect(page).to have_field('Narrative', with: 'Narrative 123 test')
 
     fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'
@@ -48,12 +50,14 @@ feature 'Edit Referral' do
       select 'New York', from: 'State'
       fill_in 'Zip', with: '12345'
     end
+    fill_in 'Narrative', with: 'Updated narrative'
     select "Child's Home", from: 'Location Type'
 
     updated_referral = {
       id: 1,
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
+      narrative: 'Updated narrative',
       address: {
       }
     }.with_indifferent_access
@@ -72,5 +76,6 @@ feature 'Edit Referral' do
     expect(page).to_not have_content 'Edit Referral'
     expect(page).to have_content 'Referral #My Bad!'
     expect(page).to have_content 'The Rocky Horror Picture Show'
+    expect(page).to have_content 'Updated narrative'
   end
 end

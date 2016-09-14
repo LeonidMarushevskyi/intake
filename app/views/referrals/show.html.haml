@@ -12,6 +12,12 @@
     .row
       .col-md-6
         %label
+          = t('activemodel.attributes.referral.narrative')
+        .c-gray
+          = @referral.narrative
+    .row
+      .col-md-6
+        %label
           = t('activemodel.attributes.referral.method_of_referral')
         .c-gray
           = MethodOfReferral::ALL[@referral.method_of_referral]

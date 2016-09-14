@@ -13,6 +13,10 @@
             = f.text_field :name
         .row
           .col-md-6
+            = f.label :narrative
+            = f.text_area :narrative
+        .row
+          .col-md-6
             = f.label :method_of_referral
             - methods_of_referral_options = options_from_collection_for_select(MethodOfReferral::ALL, :first, :last, f.object.method_of_referral)
             = f.select :method_of_referral, methods_of_referral_options, include_blank: true
