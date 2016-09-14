@@ -1,0 +1,24 @@
+.double-padded.border-regular-light-gray
+  .table-responsive
+    %table.table.table-hover
+      %thead
+        %tr
+          %th{ scope: 'col' }
+            = t(:name_and_reference, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:response_time, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:screening_decision, scope: :referral)
+          %th{ scope: 'col' }
+            = t(:created_at, scope: :referral)
+      %tbody
+        - referrals.each do |referral|
+          %tr
+            %td
+              = link_to ReferralPresenter.name_and_reference(referral), referral_path(referral)
+            %td
+              = ResponseTime::ALL[referral.response_time]
+            %td
+              = ScreeningDecision::ALL[referral.screening_decision]
+            %td
+              = format_date(referral.created_at)
