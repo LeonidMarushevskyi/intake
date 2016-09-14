@@ -15,7 +15,7 @@
         - referrals.each do |referral|
           %tr
             %td
-              = link_to name_and_reference(referral), referral_path(referral)
+              = link_to ReferralPresenter.name_and_reference(referral), referral_path(referral)
             %td
               = ResponseTime::ALL[referral.response_time]
             %td
