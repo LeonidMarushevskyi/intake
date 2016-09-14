@@ -1,77 +1,71 @@
-%h1 Edit Referral ##{@referral.reference}
-.double-padded.border-regular-light-gray.gap-top
-  .card.edit.double-gap-top
-    .card-header
-      %h3 Referral Information
-      %a.fa.fa-check{ href: '#', 'aria-label': 'Done editing referral' }
-    .card-body
-      = form_for @referral do |f|
-        .row
-          .col-md-6
-            = f.hidden_field :reference
-            = f.label :name
-            = f.text_field :name
-        .row
-          .col-md-6
-            = f.label :narrative
-            = f.text_area :narrative
-        .row
-          .col-md-6
-            = f.label :method_of_referral
-            - methods_of_referral_options = options_from_collection_for_select(MethodOfReferral::ALL, :first, :last, f.object.method_of_referral)
-            = f.select :method_of_referral, methods_of_referral_options, include_blank: true
-        .row
-          .col-md-6
-            - value = (f.object.started_at ? Time.zone.parse(f.object.started_at) : nil)
-            = f.label :started_at
-            = f.datetime_field :started_at, value: value
-        .row
-          .col-md-6
-            - value = (f.object.ended_at ? Time.zone.parse(f.object.ended_at) : nil)
-            = f.label :ended_at
-            = f.datetime_field :ended_at, value: value
-        .row
-          .col-md-6
-            - value = (f.object.incident_date ? Date.parse(f.object.incident_date) : nil)
-            = f.label :incident_date
-            = f.date_field :incident_date, value: value
-        .row
-          .col-md-6
-            = f.label :incident_county
-            - county_options = options_from_collection_for_select(County::ALL, :first, :last, f.object.incident_county)
-            = f.select :incident_county, county_options, include_blank: true
-        .row
-          .col-md-6
-            %fieldset
-              %legend Incident Address
-              = fields_for 'referral[address]', Address.new(f.object.address.attributes) do |address|
-                = address.label :street_address
-                = address.text_field :street_address
-                = address.label :city
-                = address.text_field :city
-                = address.label :state
-                - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
-                = address.select :state, state_options, include_blank: true
-                = address.label :zip
-                = address.text_field :zip
-        .row
-          .col-md-6
-            = f.label :location_type
-            - location_type_options = grouped_options_for_select(LocationType::ALL, f.object.location_type)
-            = f.select :location_type, location_type_options, include_blank: true
-        .row
-          .col-md-6
-            = f.label :response_time
-            - response_time_options = options_from_collection_for_select(ResponseTime::ALL, :first, :last, f.object.response_time)
-            = f.select :response_time, response_time_options, include_blank: true
-        .row
-          .col-md-6
-            = f.label :screening_decision
-            - screening_decision_options = options_from_collection_for_select(ScreeningDecision::ALL, :first, :last, f.object.screening_decision)
-            = f.select :screening_decision, screening_decision_options, include_blank: true
-
-        .row
-          .col-md-6
-            = f.submit 'Save'
-
-
+.card.edit.double-gap-top
+  .card-header
+    %h3 Referral Information
+  .card-body
+    = form_for @referral do |f|
+      .row
+        .col-md-6
+          = f.hidden_field :reference
+          = f.label :name
+          = f.text_field :name
+      .row
+        .col-md-6
+          = f.label :narrative
+          = f.text_area :narrative
+      .row
+        .col-md-6
+          = f.label :method_of_referral
+          - methods_of_referral_options = options_from_collection_for_select(MethodOfReferral::ALL, :first, :last, f.object.method_of_referral)
+          = f.select :method_of_referral, methods_of_referral_options, include_blank: true
+      .row
+        .col-md-6
+          - value = (f.object.started_at ? Time.zone.parse(f.object.started_at) : nil)
+          = f.label :started_at
+          = f.datetime_field :started_at, value: value
+      .row
+        .col-md-6
+          - value = (f.object.ended_at ? Time.zone.parse(f.object.ended_at) : nil)
+          = f.label :ended_at
+          = f.datetime_field :ended_at, value: value
+      .row
+        .col-md-6
+          - value = (f.object.incident_date ? Date.parse(f.object.incident_date) : nil)
+          = f.label :incident_date
+          = f.date_field :incident_date, value: value
+      .row
+        .col-md-6
+          = f.label :incident_county
+          - county_options = options_from_collection_for_select(County::ALL, :first, :last, f.object.incident_county)
+          = f.select :incident_county, county_options, include_blank: true
+      .row
+        .col-md-6
+          %fieldset
+            %legend Incident Address
+            = fields_for 'referral[address]', Address.new(f.object.address.attributes) do |address|
+              = address.label :street_address
+              = address.text_field :street_address
+              = address.label :city
+              = address.text_field :city
+              = address.label :state
+              - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
+              = address.select :state, state_options, include_blank: true
+              = address.label :zip
+              = address.text_field :zip
+      .row
+        .col-md-6
+          = f.label :location_type
+          - location_type_options = grouped_options_for_select(LocationType::ALL, f.object.location_type)
+          = f.select :location_type, location_type_options, include_blank: true
+      .row
+        .col-md-6
+          = f.label :response_time
+          - response_time_options = options_from_collection_for_select(ResponseTime::ALL, :first, :last, f.object.response_time)
+          = f.select :response_time, response_time_options, include_blank: true
+      .row
+        .col-md-6
+          = f.label :screening_decision
+          - screening_decision_options = options_from_collection_for_select(ScreeningDecision::ALL, :first, :last, f.object.screening_decision)
+          = f.select :screening_decision, screening_decision_options, include_blank: true
+      .row
+        .centered
+          = f.button 'Save', class: 'btn btn-primary'
