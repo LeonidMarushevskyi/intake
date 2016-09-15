@@ -15,9 +15,9 @@ describe ReferralsController do
       expect(assigns(:referral)).to eq(referral)
     end
 
-    it 'redirects to show' do
+    it 'redirects to edit' do
       post :create
-      expect(response).to redirect_to(referral_path(assigns(:referral)))
+      expect(response).to redirect_to(edit_referral_path(assigns(:referral)))
     end
   end
 

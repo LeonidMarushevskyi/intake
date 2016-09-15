@@ -5,7 +5,7 @@
 class ReferralsController < ApplicationController # :nodoc:
   def create
     @referral = Referral.create(reference: LUID.generate.first)
-    redirect_to referral_path(@referral)
+    redirect_to edit_referral_path(@referral)
   end
 
   def update
