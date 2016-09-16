@@ -9,12 +9,14 @@ services:
     environment:
       RAILS_ENV: development
       API_URL: "http://api:3000"
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
     volumes:
       - .:/ca_intake
       - ca_intake_rubygems:/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
     links:
       - api
+      - elasticsearch
   api:
     extends:
       file: ../casebook_api/docker-compose.common.yml
@@ -22,10 +24,12 @@ services:
     links:
       - db
       - redis
+      - elasticsearch
     ports:
       - "3001:3000"
     environment:
       REDIS_URL: 'redis://redis:6379/0'
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
   db:
     extends:
       file: ../casebook_api/docker-compose.common.yml
@@ -43,8 +47,12 @@ services:
     links:
       - db
       - redis
+      - elasticsearch
     environment:
       REDIS_URL: 'redis://redis:6379/0'
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+  elasticsearch:
+    image: 'elasticsearch:2.4'
 volumes:
   ca_intake_rubygems:
   ca_intake_node_modules:
