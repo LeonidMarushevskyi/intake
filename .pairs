@@ -1,9 +1,10 @@
 ---
   pairs:
-    ap: Aneesh Pakala
     sg: Suman Gurung
     nj: Nate Jones
+    nl: Nora Lin
     pk: Pierre Klein
+    tr: Thomas Ramirez
 
 email:
   prefix: pair
