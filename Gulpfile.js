@@ -29,6 +29,7 @@ var babelify = require('babelify')
 var appPack = browserify({
   entries: ['app/assets/javascripts/application.js'],
   paths: ['./app/assets/javascripts/'],
+  extensions: ['.jsx'],
   debug: true,
 }).external(npmDependencies).transform(babelify)
 
@@ -39,8 +40,9 @@ var vendorPack = browserify({
 
 var glob = require('glob')
 var testPack = browserify({
-  entries: glob.sync('spec/javascripts/**/*Spec.js'),
+  entries: glob.sync('spec/javascripts/**/*Spec.js?(x)'),
   paths: ['./app/assets/javascripts/'],
+  extensions: ['.jsx'],
   debug: true,
 }).external(npmDependencies).transform(babelify)
 
