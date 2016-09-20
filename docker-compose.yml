@@ -28,7 +28,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      REDIS_URL: 'redis://redis:6379/0'
+      REDIS_DATABASE: 'redis://redis:6379/0'
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
   db:
     extends:
@@ -49,7 +49,7 @@ services:
       - redis
       - elasticsearch
     environment:
-      REDIS_URL: 'redis://redis:6379/0'
+      REDIS_DATABASE: 'redis://redis:6379/0'
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
   elasticsearch:
     image: 'elasticsearch:2.4'
