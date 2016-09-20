@@ -2,6 +2,7 @@ var env = process.env.RAILS_ENV
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
+var isProduction = (env && !(env === 'development' || env === 'test'))
 
 function getNPMPackageIds() {
   var packageManifest = {};
@@ -18,9 +19,8 @@ var vinylBuffer = require('vinyl-buffer')
 var gulpif = require('gulp-if')
 var uglify = require('gulp-uglify')
 function bundle(browserifyPack, path, fileName) {
-  var compress = (env && (env != 'development' || env != 'test'))
   return browserifyPack.bundle().pipe(vinylSource(fileName)).pipe(vinylBuffer())
-  .pipe(gulpif(compress, uglify({preserveComments: 'some'})))
+  .pipe(gulpif(isProduction, uglify({preserveComments: 'some'})))
   .pipe(gulp.dest(path))
 }
 
@@ -98,17 +98,16 @@ gulp.task('clean-build-assets', function () {
 
 var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
-  var revision = (env && (env == 'development' || env == 'test'))
-  if(revision) {
-    runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
-      ['copy-build-assets']
-    )
-  } else {
+  if(isProduction) {
     runSequence(
       ['js-vendor', 'js-app', 'compile-scss', 'images'],
       ['version-assets'],
       ['translate-versioned-assets']
+    )
+  } else {
+    runSequence(
+      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['copy-build-assets']
     )
   }
 })
