@@ -107,7 +107,8 @@ describe ReferralsController do
 
   describe '#index' do
     let(:referrals) { double(:referrals) }
-    before { allow(Referral).to receive(:all).and_return(referrals) }
+    let(:search) { double(:search, results: referrals) }
+    before { allow(ReferralsRepo).to receive(:search).and_return(search) }
 
     it 'assigns referrals' do
       put :index

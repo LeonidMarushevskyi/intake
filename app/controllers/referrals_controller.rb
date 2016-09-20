@@ -49,7 +49,7 @@ class ReferralsController < ApplicationController # :nodoc:
   end
 
   def index
-    @referrals = Referral.all
+    @referrals = ReferralsRepo.search({}).results
   end
 
   private
