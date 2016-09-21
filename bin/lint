@@ -12,7 +12,7 @@ scss() {
 
 js() {
   unblacken_cmd ./node_modules/.bin/eslint \
-   --format junit --output-file spec/reports/haml-lint.xml \
+   --format junit --output-file "$REPORTS_DIR"/eslint.xml \
    --color app/assets/javascripts/**
 }
 
