@@ -32,7 +32,7 @@ feature 'Referrals Index' do
     referrals = [referral_one, referral_two, referral_three]
 
     search = double(:search, results: referrals)
-    allow(ReferralsRepo).to receive(:search).and_return(search)
+    expect(ReferralsRepo).to receive(:search).with({}).and_return(search)
 
     visit referrals_path
 

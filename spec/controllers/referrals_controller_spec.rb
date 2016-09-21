@@ -106,13 +106,13 @@ describe ReferralsController do
   end
 
   describe '#index' do
-    let(:referrals) { double(:referrals) }
+    let(:referrals) { double(:referrals, as_json: [{ id: 1 }]) }
     let(:search) { double(:search, results: referrals) }
     before { allow(ReferralsRepo).to receive(:search).and_return(search) }
 
-    it 'assigns referrals' do
-      put :index
-      expect(assigns(:referrals)).to eq(referrals)
+    it 'renders referrals as json' do
+      get :index, format: :json
+      expect(JSON.parse(response.body)).to eq([{ 'id' => 1 }])
     end
 
     it 'renders the index template' do
