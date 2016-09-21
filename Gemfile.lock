@@ -38,6 +38,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    addressable (2.4.0)
     archive-tar-minitar (0.5.2)
     arel (7.1.1)
     arr-pm (0.0.10)
@@ -62,6 +63,9 @@ GEM
       xpath (~> 2.0)
     capybara-accessible (0.2.1)
       capybara (~> 2.0)
+    capybara-screenshot (1.0.14)
+      capybara (>= 1.0, < 3)
+      launchy
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     ci_reporter (2.0.0)
@@ -176,6 +180,8 @@ GEM
     insist (1.0.0)
     io-like (0.3.0)
     json (1.8.3)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -354,6 +360,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   capybara-accessible
+  capybara-screenshot
   ci_reporter_rspec
   devise (= 4.1.1)
   elasticsearch-persistence
