@@ -11,6 +11,7 @@ class Referral # :nodoc:
   attributes :ended_at,
     :incident_county,
     :incident_date,
+    :involved_people,
     :location_type,
     :method_of_referral,
     :name,
@@ -25,5 +26,12 @@ class Referral # :nodoc:
       attributes[association_key] = association.attributes if association.is_a?(Her::Model)
     end
     attributes
+  end
+
+  def involved_people
+    involved_people = attributes[:involved_people] || []
+    involved_people.map do |involved_people_attributes|
+      Person.new(involved_people_attributes)
+    end
   end
 end

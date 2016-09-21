@@ -18,6 +18,14 @@
     .row
       .col-md-6
         %label
+          = t('activemodel.attributes.referral.involved_people')
+        .c-gray
+          %ul
+            - @referral.involved_people && @referral.involved_people.each do |person|
+              %li= "#{person.first_name} #{person.last_name}"
+    .row
+      .col-md-6
+        %label
           = t('activemodel.attributes.referral.method_of_referral')
         .c-gray
           = MethodOfReferral::ALL[@referral.method_of_referral]
