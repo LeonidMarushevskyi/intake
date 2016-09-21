@@ -4,13 +4,16 @@ set -e
 
 ROOT="$(dirname "$0")/.."
 source "$ROOT/bin/_util"
+REPORTS_DIR="spec/reports"
 
 scss() {
   bundle exec scss-lint
 }
 
 js() {
-  unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
+  unblacken_cmd ./node_modules/.bin/eslint \
+   --format junit --output-file spec/reports/haml-lint.xml \
+   --color app/assets/javascripts/**
 }
 
 haml() {
@@ -18,7 +21,9 @@ haml() {
 }
 
 ruby() {
-  bundle exec rubocop
+  bundle exec rubocop \
+   -r $(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb \
+   --format progress --format RuboCop::Formatter::JUnitFormatter --out "$REPORTS_DIR"/rubocop.xml
 }
 
 is_valid_lint() {
