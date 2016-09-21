@@ -22,7 +22,6 @@ services:
     links:
       - app
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:81"
     volumes:
       - webroot:/ca_intake
