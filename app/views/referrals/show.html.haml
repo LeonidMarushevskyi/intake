@@ -22,7 +22,7 @@
         .c-gray
           %ul
             - @referral.involved_people && @referral.involved_people.each do |person|
-              %li= "#{person.first_name} #{person.last_name}"
+              %li #{person.first_name} #{person.last_name}
     .row
       .col-md-6
         %label

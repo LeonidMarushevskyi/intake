@@ -26,6 +26,11 @@ feature 'Edit Referral' do
       end
     end
 
+    search_results = [Person.new(first_name: 'Marge', last_name: 'Simpson')]
+    allow(PeopleRepo).to receive(:search)
+      .with('Marge')
+      .and_return(search_results)
+
     visit edit_referral_path(id: existing_referral[:id])
 
     expect(page).to have_content 'Edit Referral #My Bad!'
@@ -44,6 +49,7 @@ feature 'Edit Referral' do
     fill_in 'Phone Call End Date/Time', with: '2016-08-22 11:00 AM'
     fill_in 'Incident Date', with: '2016-08-11'
     select  'Mariposa', from: 'Incident County'
+    fill_in_autocompleter 'Involved People', with: 'Marge'
     within 'fieldset', text: 'Incident Address' do
       fill_in 'Address', with: '123 fake st'
       fill_in 'City', with: 'Springfield'
@@ -58,6 +64,9 @@ feature 'Edit Referral' do
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
       narrative: 'Updated narrative',
+      involved_people: [
+        { first_name: 'Marge', last_name: 'Simpson' }
+      ],
       address: {
       }
     }.with_indifferent_access
@@ -77,5 +86,6 @@ feature 'Edit Referral' do
     expect(page).to have_content 'Referral #My Bad!'
     expect(page).to have_content 'The Rocky Horror Picture Show'
     expect(page).to have_content 'Updated narrative'
+    expect(page).to have_content 'Marge Simpson'
   end
 end

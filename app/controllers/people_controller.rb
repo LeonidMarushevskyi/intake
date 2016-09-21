@@ -16,6 +16,11 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
   end
 
+  def search
+    people = PeopleRepo.search(params[:query])
+    render json: people.map(&:attributes)
+  end
+
   def person_params
     params.require(:person).permit(
       :first_name,

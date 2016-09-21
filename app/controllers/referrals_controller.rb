@@ -3,6 +3,28 @@
 # Referral Controller handles all service request for
 # the creation and modification of referral objects.
 class ReferralsController < ApplicationController # :nodoc:
+  PERMITTED_PARAMS = [
+    :ended_at,
+    :incident_county,
+    :incident_date,
+    :location_type,
+    :method_of_referral,
+    :name,
+    :narrative,
+    :reference,
+    :response_time,
+    :screening_decision,
+    :started_at,
+    address: [
+      :id,
+      :city,
+      :state,
+      :street_address,
+      :zip
+    ],
+    involved_person_ids: []
+  ].freeze
+
   def create
     @referral = Referral.create(reference: LUID.generate.first)
     redirect_to edit_referral_path(@referral)
@@ -31,25 +53,6 @@ class ReferralsController < ApplicationController # :nodoc:
   private
 
   def referral_params
-    params.require(:referral).permit(
-      :ended_at,
-      :incident_county,
-      :incident_date,
-      :location_type,
-      :method_of_referral,
-      :name,
-      :narrative,
-      :reference,
-      :response_time,
-      :screening_decision,
-      :started_at,
-      address: [
-        :id,
-        :city,
-        :state,
-        :street_address,
-        :zip
-      ]
-    )
+    params.require(:referral).permit(*PERMITTED_PARAMS)
   end
 end
