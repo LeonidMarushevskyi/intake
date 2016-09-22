@@ -1,14 +1,33 @@
-import $ from 'jquery'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReferralsFilter from 'ReferralsFilter'
 import ReferralsIndexPage from 'ReferralsIndexPage'
 import ReferralsTable from 'ReferralsTable'
-import TestUtils from 'react-addons-test-utils'
+import {mount} from 'enzyme';
+import * as Utils from 'utils/http'
 
 describe('ReferralsIndexPage', () => {
-  it('renders ReferralsTable', () => {
-    const view = TestUtils.renderIntoDocument(<ReferralsIndexPage />)
-    const tables = TestUtils.scryRenderedComponentsWithType(view, ReferralsTable)
-    expect(tables.length).toEqual(1)
+  beforeEach(() => {
+    const xhrSpyObj = jasmine.createSpyObj('xhrSpyObj', ['done'])
+    spyOn(Utils, 'request').and.returnValue(xhrSpyObj)
+  })
+
+  describe('render', () => {
+    it('renders ReferralsFilter', () => {
+      const wrapper = mount(<ReferralsIndexPage location={{}} />)
+      expect(wrapper.find(ReferralsFilter).length).toEqual(1)
+    })
+
+    it('renders ReferralsTable', () => {
+      const wrapper = mount(<ReferralsIndexPage location={{}} />)
+      expect(wrapper.find(ReferralsTable).length).toEqual(1)
+    })
+  })
+
+  describe('updateIndex', () => {
+    it('makes an ajax call to the pathname', () => {
+      const location = { pathname: 'my-api', search: '?my-search' }
+      const wrapper = mount(<ReferralsIndexPage location={location} />)
+      expect(Utils.request).toHaveBeenCalledWith('GET', 'my-api.json?my-search', null, null)
+    })
   })
 })

@@ -106,18 +106,49 @@ describe ReferralsController do
   end
 
   describe '#index' do
-    let(:referrals) { double(:referrals, as_json: [{ id: 1 }]) }
-    let(:search) { double(:search, results: referrals) }
-    before { allow(ReferralsRepo).to receive(:search).and_return(search) }
+    context 'without query params' do
+      let(:referrals) { double(:referrals, as_json: [{ id: 1 }]) }
+      let(:search) { double(:search, results: referrals) }
+      before do
+        allow(ReferralsRepo).to receive(:search)
+          .with({})
+          .and_return(search)
+      end
 
-    it 'renders referrals as json' do
-      get :index, format: :json
-      expect(JSON.parse(response.body)).to eq([{ 'id' => 1 }])
+      it 'renders referrals as json' do
+        get :index, format: :json
+        expect(JSON.parse(response.body)).to eq([{ 'id' => 1 }])
+      end
+
+      it 'renders the index template' do
+        get :index
+        expect(response).to render_template('index')
+      end
     end
 
-    it 'renders the index template' do
-      get :index
-      expect(response).to render_template('index')
+    context 'with query params' do
+      let(:query) do
+        {
+          filtered: {
+            filter: {
+              terms: { response_time: %w(immediate within_twenty_four_hours) }
+            }
+          }
+        }
+      end
+      let(:referrals) { double(:referrals, as_json: []) }
+      let(:search) { double(:search, results: referrals) }
+
+      before do
+        expect(ReferralsRepo).to receive(:search)
+          .with(query: query)
+          .and_return(search)
+      end
+
+      it 'renders referrals returned from filtered query' do
+        get :index, format: :json, params: { response_times: %w(immediate within_twenty_four_hours) }
+        expect(JSON.parse(response.body)).to eq([])
+      end
     end
   end
 end

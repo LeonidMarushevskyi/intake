@@ -52,13 +52,33 @@ class ReferralsController < ApplicationController # :nodoc:
     respond_to do |format|
       format.html
       format.json do
-        referrals = ReferralsRepo.search({}).results
+        referrals = ReferralsRepo.search(query).results
         render json: referrals
       end
     end
   end
 
   private
+
+  def query
+    if response_times
+      {
+        query: {
+          filtered: {
+            filter: {
+              terms: { response_time: response_times }
+            }
+          }
+        }
+      }
+    else
+      {}
+    end
+  end
+
+  def response_times
+    params[:response_times]
+  end
 
   def referral_params
     params.require(:referral).permit(*PERMITTED_PARAMS)
