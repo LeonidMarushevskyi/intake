@@ -33,9 +33,9 @@ node {
         }
     }
     finally {
-        // stage ('Reports') {
-        //     step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
-        // }
+        stage ('Reports') {
+            step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
+        }
 
         stage('Clean') {
             sh 'make clean'
