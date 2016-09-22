@@ -2,5 +2,4 @@ Dockerfile
 codeship-services.yml
 codeship-steps.yml
 docker
-release
 reports
