@@ -22,6 +22,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'pry-theme'
   gem 'rspec-rails', '~> 3.4'
+  gem 'rubocop-junit-formatter'
   gem 'rubocop'
   gem 'i18n-tasks'
   gem 'scss_lint'
@@ -37,6 +38,7 @@ group :development do
 end
 
 group :test do
+  gem 'ci_reporter_rspec'
   gem 'capybara'
   gem 'capybara-accessible'
   gem 'faker'

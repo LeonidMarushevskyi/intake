@@ -4,6 +4,7 @@ volumes:
   ca_intake_rubygems:
   ca_intake_node_modules:
   ca_intake_build:
+  ca_intake_test_reports:
 
 services:
   cache:
@@ -22,9 +23,12 @@ services:
     command: bin/ci
     environment:
       RAILS_ENV: test
+      CI_REPORTS: /reports
+      GENERATE_TEST_REPORTS: 'yes'
     volumes:
       - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
+      - ca_intake_test_reports:/reports
   lint:
     build:
       context: ../../
@@ -32,9 +36,12 @@ services:
     command: bin/lint
     environment:
       RAILS_ENV: test
+      CI_REPORTS: /reports
+      GENERATE_TEST_REPORTS: 'yes'
     volumes:
       - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
+      - ca_intake_test_reports:/reports
   javascript_test:
     build:
       context: ../../
@@ -42,9 +49,12 @@ services:
     command: bin/ci-javascript
     environment:
       RAILS_ENV: test
+      CI_REPORTS: /reports
+      GENERATE_TEST_REPORTS: 'yes'
     volumes:
       - ca_intake_rubygems:/ca_intake/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
+      - ca_intake_test_reports:/reports
   builder:
     build:
       context: ../../

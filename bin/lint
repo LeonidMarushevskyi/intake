@@ -10,7 +10,13 @@ scss() {
 }
 
 js() {
+if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
+  unblacken_cmd ./node_modules/.bin/eslint \
+   --format junit --output-file "$CI_REPORTS"/eslint.xml \
+   --color app/assets/javascripts/**
+else
   unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
+fi
 }
 
 haml() {
@@ -18,7 +24,13 @@ haml() {
 }
 
 ruby() {
+if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
+  bundle exec rubocop \
+   -r $(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb \
+   --format progress --format RuboCop::Formatter::JUnitFormatter --out "$CI_REPORTS"/rubocop.xml
+else
   bundle exec rubocop
+fi
 }
 
 is_valid_lint() {

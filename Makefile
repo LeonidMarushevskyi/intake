@@ -50,8 +50,11 @@ test:
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up cache
 	${INFO} "Running tests..."
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up rspec_test
+	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q rspec_test):/reports/. reports
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up lint
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up javascript_test 
+	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q lint):/reports/. reports
+	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up javascript_test
+	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q javascript_test):/reports/. reports
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) rspec_test
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) lint
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) javascript_test
