@@ -1,17 +1,7 @@
 import React from 'react'
+import ResponseTime from 'ResponseTime'
+import ScreeningDecision from 'ScreeningDecision'
 import moment from 'moment'
-
-const RESPONSE_TIME = Object.freeze({
-  immediate: 'Immediate',
-  within_twenty_four_hours: 'Within 24 hours',
-  more_than_twenty_four_hours: 'More than 24 hours'
-})
-
-const SCREENING_DECISION = Object.freeze({
-  evaluate_out: 'Evaluate Out',
-  accept_for_investigation: 'Accept for Investigation',
-  referral_to_other_agency: 'Referral to Other Agency'
-})
 
 export default class ReferralsTable extends React.Component {
   constructor() {
@@ -38,12 +28,12 @@ export default class ReferralsTable extends React.Component {
                   return (
                     <tr key={referral.id}>
                       <td><a href={`/referrals/${referral.id}`}>{`${referral.name} - ${referral.reference}`}</a></td>
-                      <td>{RESPONSE_TIME[referral.response_time]}</td>
-                      <td>{SCREENING_DECISION[referral.screening_decision]}</td>
+                      <td>{ResponseTime[referral.response_time]}</td>
+                      <td>{ScreeningDecision[referral.screening_decision]}</td>
                       <td>{moment(referral.created_at).format('MM/DD/YYYY')}</td>
                     </tr>
                     )
-                  })
+                })
               }
             </tbody>
           </table>
