@@ -7,3 +7,15 @@ default: &default
   username: <%= ENV['PG_USER'] ? ENV['PG_USER'] : 'casebook' %>
   password: <%= ENV['PG_PASSWORD'] %>
   database: <%= ENV['DATABASE_NAME'] %>
+
+development:
+  <<: *default
+  database: intake_accelerator_development
+
+test:
+  <<: *default
+  database: intake_accelerator_test
+
+production:
+  <<: *default
+  database: <%= ENV.fetch('DATABASE_NAME', 'intake_accelerator_production') %>
