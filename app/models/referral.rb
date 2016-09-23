@@ -4,9 +4,10 @@
 class Referral # :nodoc:
   include Her::Model
   use_api API_V1
-  ASSOCIATIONS = [:address].freeze
+  ASSOCIATIONS = [:address, :involved_people].freeze
 
   has_one :address
+  has_many :involved_people, class_name: 'Person'
 
   attributes :ended_at,
     :incident_county,

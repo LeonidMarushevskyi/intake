@@ -68,4 +68,24 @@ describe PeopleController do
       expect(response).to render_template('show')
     end
   end
+
+  describe '#search' do
+    it 'searches for people and renders a json with person attributes' do
+      people = [
+        Person.new(first_name: 'Bart', last_name: 'Simpson'),
+        Person.new(first_name: 'John', last_name: 'Smith')
+      ]
+      allow(PeopleRepo).to receive(:search)
+        .with('foobarbaz')
+        .and_return(people)
+
+      get 'search', query: 'foobarbaz'
+
+      body = JSON.parse(response.body)
+      expect(body.first['first_name']).to eq('Bart')
+      expect(body.first['last_name']).to eq('Simpson')
+      expect(body.last['first_name']).to eq('John')
+      expect(body.last['last_name']).to eq('Smith')
+    end
+  end
 end

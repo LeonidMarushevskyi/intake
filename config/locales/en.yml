@@ -13,6 +13,7 @@ en:
         ended_at: 'Phone Call End Date/Time'
         incident_date: 'Incident Date'
         incident_county: 'Incident County'
+        involved_people: 'Involved People'
         location_type: 'Location Type'
         response_time: 'Response Time'
         screening_decision: 'Screening Decision'

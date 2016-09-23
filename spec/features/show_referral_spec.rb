@@ -24,7 +24,12 @@ feature 'Show Referral' do
         state: 'NY',
         zip: 12_345,
         person_id: nil
-      }
+      },
+      involved_people: [{
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        gender: 'male'
+      }]
     }.with_indifferent_access
 
     stub_api_for(Referral) do |stub|
