@@ -4,4 +4,4 @@ bundle check || bundle install
 npm install
 bin/gulp
 
-Xvfb :1 -ac +extension RANDR -screen 0 2500x2500x16 & bin/gulp watch & bundle exec puma
+Xvfb :1 -ac +extension RANDR -screen 0 2500x2500x16 & while true; do bin/gulp watch; done & bundle exec puma
