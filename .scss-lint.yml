@@ -16,4 +16,6 @@ linters:
   Indentation:
     severity: warning
     width: 2
+  SelectorFormat:
+    convention: hyphenated_BEM
 

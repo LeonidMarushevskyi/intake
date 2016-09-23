@@ -3,6 +3,7 @@
     "eslint-plugin-react"
   ],
   "ecmaFeatures": {
+    "experimentalObjectRestSpread": true,
     "jsx": true,
     "modules": true
   },
