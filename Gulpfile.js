@@ -44,7 +44,11 @@ var testPack = browserify({
   paths: ['./app/assets/javascripts/'],
   extensions: ['.jsx'],
   debug: true,
-}).external(npmDependencies).transform(babelify)
+}).external(npmDependencies)
+  .exclude('react/addons')
+  .exclude('react/lib/ReactContext')
+  .exclude('react/lib/ExecutionEnvironment')
+  .transform(babelify)
 
 gulp.task('default', ['build-and-version-assets'])
 
