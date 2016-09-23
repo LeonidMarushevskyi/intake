@@ -12,8 +12,18 @@ RUN \
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 RUN apt-get install -y nodejs
 
-ENV APP_HOME /ca_intake
+ENV APP_HOME /app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 ENV DISPLAY :1
+ADD . $APP_HOME
 ENV BUNDLE_PATH /ruby_gems
+
+RUN bundle install
+RUN npm install
+
+RUN bin/gulp
+
+VOLUME ["/app/public"]
+
+CMD bundle exec puma
