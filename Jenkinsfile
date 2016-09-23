@@ -7,7 +7,7 @@ node {
             sh 'make test'
         }
 
-        if branch == 'master' {
+        if (branch == 'master') {
           stage('Build') {
               sh 'make build'
           }
