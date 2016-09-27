@@ -13,8 +13,6 @@ export default class Autocompleter extends React.Component {
       involvedPeople: this.props.involvedPeople || [],
       isLoading: false,
     }
-
-    this.lastRequestId = null
   }
 
   loadSuggestions(value) {
