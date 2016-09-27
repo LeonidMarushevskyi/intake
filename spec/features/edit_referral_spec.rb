@@ -17,7 +17,10 @@ feature 'Edit Referral' do
       screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z',
       address: {
-      }
+      },
+      involved_people: [
+        { id: 1, first_name: 'Homer', last_name: 'Simpson' }
+      ]
     }.with_indifferent_access
 
     stub_api_for(Referral) do |stub|
@@ -25,11 +28,6 @@ feature 'Edit Referral' do
         [200, {}, existing_referral.to_json]
       end
     end
-
-    search_results = [Person.new(first_name: 'Marge', last_name: 'Simpson')]
-    allow(PeopleRepo).to receive(:search)
-      .with('Marge')
-      .and_return(search_results)
 
     visit edit_referral_path(id: existing_referral[:id])
 
@@ -42,6 +40,12 @@ feature 'Edit Referral' do
     expect(page).to have_field('Response Time', with: 'immediate')
     expect(page).to have_field('Screening Decision', with: 'evaluate_out')
     expect(page).to have_field('Narrative', with: 'Narrative 123 test')
+    expect(page).to have_content 'Homer Simpson'
+
+    search_results = [Person.new(first_name: 'Marge', last_name: 'Simpson')]
+    allow(PeopleRepo).to receive(:search)
+      .with('Marge')
+      .and_return(search_results)
 
     fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'
@@ -65,7 +69,8 @@ feature 'Edit Referral' do
       name: 'The Rocky Horror Picture Show',
       narrative: 'Updated narrative',
       involved_people: [
-        { first_name: 'Marge', last_name: 'Simpson' }
+        { id: 1, first_name: 'Homer', last_name: 'Simpson' },
+        { id: 2, first_name: 'Marge', last_name: 'Simpson' }
       ],
       address: {
       }
@@ -86,6 +91,7 @@ feature 'Edit Referral' do
     expect(page).to have_content 'Referral #My Bad!'
     expect(page).to have_content 'The Rocky Horror Picture Show'
     expect(page).to have_content 'Updated narrative'
+    expect(page).to have_content 'Homer Simpson'
     expect(page).to have_content 'Marge Simpson'
   end
 end

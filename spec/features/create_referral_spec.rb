@@ -7,7 +7,8 @@ feature 'Create Referral' do
       id: 1,
       reference: 'MYREFERENCE',
       address: {
-      }
+      },
+      involved_people: []
     }.with_indifferent_access
 
     stub_api_for(Referral) do |stub|
