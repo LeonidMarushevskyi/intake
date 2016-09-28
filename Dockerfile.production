@@ -19,7 +19,6 @@ ENV DISPLAY :1
 ADD . $APP_HOME
 ENV BUNDLE_PATH /ruby_gems
 ENV RAILS_ENV production
-ENV RACK_ENV production
 RUN bundle install
 RUN npm install
 
