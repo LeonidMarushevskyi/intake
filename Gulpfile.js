@@ -73,6 +73,11 @@ gulp.task('images', function() {
   .pipe(gulp.dest('tmp/assets'))
 })
 
+gulp.task('fonts', function() {
+  return gulp.src('app/assets/fonts/**/*')
+  .pipe(gulp.dest('tmp/assets/fonts'))
+})
+
 gulp.task('js-app', function() {
   return bundle(appPack, 'tmp/assets/', 'application.js')
 })
@@ -108,13 +113,13 @@ var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
   if(isProduction) {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
       ['version-assets'],
       ['translate-versioned-assets']
     )
   } else {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
       ['copy-build-assets']
     )
   }
