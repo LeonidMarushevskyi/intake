@@ -1,7 +1,7 @@
 var env = process.env.RAILS_ENV
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
+var gulp = require('gulp')
+var sass = require('gulp-sass')
+var sourcemaps = require('gulp-sourcemaps')
 var isProduction = (env && !(env === 'development' || env === 'test'))
 
 function getNPMPackageIds() {
