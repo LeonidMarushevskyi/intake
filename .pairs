@@ -1,13 +1,16 @@
 pairs:
   jh: Johny Ho
-  nj: Nate Jones; Nate.Jone
+  nj: Nate Jones; Nate.Jones
   nl: Nora Lin; Nora.Lin
-  pk: Pierre Klein; Pierre.Klein
+  pg: Pema Geyleg; Pema.Geyleg
+  pk: Pierre Klein; Pierre.Klien
+  ra: Rebecca Ackerman; Rebecca.Ackerman
   sg: Suman Gurung
-  sm: Siva Mukunda; Siva.Mukunda
+  sh: Shri Harsha Poosa
+  sm: Siva Mukunda; Siva.Makunda
   tr: Thomas Ramirez; Thomas.Ramirez
 email:
   prefix: pair
-  domain: osi.ca.gov
+  domain: OSI.ca.gov
   no_solo_prefix: true
-
+global: true  # Set to true for git-pair to change git configuration for all your projects
