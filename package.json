@@ -15,6 +15,7 @@
     "babelify": "^6.1.2",
     "bootstrap-accessibility-plugin": "^1.0.2",
     "browserify": "^13.0.1",
+    "cors": "^2.8.1",
     "enzyme": "^2.4.1",
     "eslint": "1.10.3",
     "eslint-plugin-react": "3.16.1",

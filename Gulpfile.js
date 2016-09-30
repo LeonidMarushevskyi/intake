@@ -86,11 +86,15 @@ gulp.task('js-test', function() {
 })
 
 var connect = require('gulp-connect')
+var cors = require('cors')
 gulp.task('server', function() {
   connect.server({
     root: 'public/',
     port: 4857,
     livereload: false,
+    middleware: function() {
+      return [cors()];
+    }
   })
 })
 
