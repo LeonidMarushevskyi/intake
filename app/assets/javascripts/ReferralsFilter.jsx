@@ -1,7 +1,8 @@
+import CheckboxListFilter from 'CheckboxListFilter'
 import React from 'react'
+import ResponseTime from 'ResponseTime'
+import ScreeningDecision from 'ScreeningDecision'
 import {browserHistory} from 'react-router'
-import ResponseTimeFilter from 'ResponseTimeFilter'
-import ScreeningDecisionFilter from 'ScreeningDecisionFilter'
 
 export default class ReferralsFilter extends React.Component {
   constructor() {
@@ -29,14 +30,20 @@ export default class ReferralsFilter extends React.Component {
     var screeningDecisions = this.valueAsArray(this.props.query['screening_decisions[]'])
     return (
       <div>
-        <ResponseTimeFilter
+        <CheckboxListFilter
+          collection={ResponseTime}
+          legend={'Response Time'}
+          name={'response-time'}
           selected={responseTimes}
           onChange={(newResponseTimes) => this.onChange({
             'response_times[]': newResponseTimes,
             'screening_decisions[]': screeningDecisions,
           })}
         />
-        <ScreeningDecisionFilter
+        <CheckboxListFilter
+          collection={ScreeningDecision}
+          legend={'Decision'}
+          name={'screening-decision'}
           selected={screeningDecisions}
           onChange={(newScreeningDecisions) => this.onChange({
             'response_times[]': responseTimes,
