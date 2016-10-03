@@ -61,23 +61,24 @@ class ReferralsController < ApplicationController # :nodoc:
   private
 
   def query
-    if response_times
-      {
-        query: {
-          filtered: {
-            filter: {
-              terms: { response_time: response_times }
-            }
-          }
-        }
-      }
-    else
-      {}
-    end
+    { query: { filtered: { filter: { bool: { must: search_terms } } } } }
+  end
+
+  def search_terms
+    terms = []
+
+    terms << { terms: { response_time: response_times } } if response_times
+    terms << { terms: { screening_decision: screening_decisions } } if screening_decisions
+
+    terms
   end
 
   def response_times
     params[:response_times]
+  end
+
+  def screening_decisions
+    params[:screening_decisions]
   end
 
   def referral_params

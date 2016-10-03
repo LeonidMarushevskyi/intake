@@ -111,7 +111,7 @@ describe ReferralsController do
       let(:search) { double(:search, results: referrals) }
       before do
         allow(ReferralsRepo).to receive(:search)
-          .with({})
+          .with(query: { filtered: { filter: { bool: { must: [] } } } })
           .and_return(search)
       end
 
@@ -131,13 +131,20 @@ describe ReferralsController do
         {
           filtered: {
             filter: {
-              terms: { response_time: %w(immediate within_twenty_four_hours) }
+              bool: {
+                must: [{
+                  terms: { response_time: %w(immediate within_twenty_four_hours) }
+                }]
+              }
             }
           }
         }
       end
       let(:referrals) { double(:referrals, as_json: []) }
       let(:search) { double(:search, results: referrals) }
+      let(:params) do
+        { response_times: %w(immediate within_twenty_four_hours) }
+      end
 
       before do
         expect(ReferralsRepo).to receive(:search)
@@ -146,7 +153,7 @@ describe ReferralsController do
       end
 
       it 'renders referrals returned from filtered query' do
-        get :index, format: :json, params: { response_times: %w(immediate within_twenty_four_hours) }
+        get :index, format: :json, params: params
         expect(JSON.parse(response.body)).to eq([])
       end
     end

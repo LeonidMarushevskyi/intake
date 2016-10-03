@@ -1,6 +1,7 @@
 import ResponseTime from 'ResponseTime'
 import React from 'react'
 import {browserHistory} from 'react-router'
+import ScreeningDecision from 'ScreeningDecision'
 
 export default class ReferralsFilter extends React.Component {
   constructor() {
@@ -15,8 +16,9 @@ export default class ReferralsFilter extends React.Component {
     }
   }
 
-  render() {
+  responseTimeFilter() {
     var responseTimes = this.valueAsArray(this.props.query['response_times[]'])
+    var screeningDecisions = this.valueAsArray(this.props.query['screening_decisions[]'])
 
     return (
       <fieldset className='fieldset-inputs sans'>
@@ -38,7 +40,7 @@ export default class ReferralsFilter extends React.Component {
                     }
                     browserHistory.push({
                       pathname: '/referrals',
-                      query: {'response_times[]': newResponseTimes},
+                      query: {'response_times[]': newResponseTimes, 'screening_decisions[]': screeningDecisions},
                     })
                   }}
                 />
@@ -48,6 +50,52 @@ export default class ReferralsFilter extends React.Component {
           }
         </ul>
       </fieldset>
+    )
+  }
+
+  screeningDecisionFilter() {
+    var responseTimes = this.valueAsArray(this.props.query['response_times[]'])
+    var screeningDecisions = this.valueAsArray(this.props.query['screening_decisions[]'])
+
+    return (
+      <fieldset className='fieldset-inputs sans'>
+        <legend>Decision</legend>
+        <ul className='unstyled-list'>
+          {
+            Object.keys(ScreeningDecision).map((screeningDecision) => (
+              <li key={screeningDecision}>
+                <input
+                  id={`screening-decision-${screeningDecision}`}
+                  type='checkbox'
+                  checked={(screeningDecisions || []).includes(screeningDecision)}
+                  onChange={(event) => {
+                    let newScreeningDecisions
+                    if (event.target.checked) {
+                      newScreeningDecisions = screeningDecisions.concat(screeningDecision)
+                    } else {
+                      newScreeningDecisions = screeningDecisions.filter((ele) => ele !== screeningDecision)
+                    }
+                    browserHistory.push({
+                      pathname: '/referrals',
+                      query: {'response_times[]': responseTimes, 'screening_decisions[]': newScreeningDecisions},
+                    })
+                  }}
+                />
+                <label htmlFor={`screening-decision-${screeningDecision}`}>{ScreeningDecision[screeningDecision]}</label>
+              </li>
+              ))
+          }
+        </ul>
+      </fieldset>
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        {this.responseTimeFilter()}
+        {this.screeningDecisionFilter()}
+      </div>
     )
   }
 }
