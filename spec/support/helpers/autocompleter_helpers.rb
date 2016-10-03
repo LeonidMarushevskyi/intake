@@ -37,6 +37,10 @@ module AutocompleterHelpers
     retry
   end
 
+  def whole_page
+    page.find(:xpath, '//body')
+  end
+
   def wait_for_result_to_appear(value)
     Timeout.timeout(2.0 * Capybara.default_wait_time) do
       sleep(0.1) until page.first(
