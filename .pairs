@@ -1,12 +1,13 @@
----
-  pairs:
-    sg: Suman Gurung
-    nj: Nate Jones
-    nl: Nora Lin
-    pk: Pierre Klein
-    tr: Thomas Ramirez
-    jh: Johny Ho
+pairs:
+  jh: Johny Ho
+  nj: Nate Jones; Nate.Jone
+  nl: Nora Lin; Nora.Lin
+  pk: Pierre Klein; Pierre.Klein
+  sg: Suman Gurung
+  sm: Siva Mukunda; Siva.Mukunda
+  tr: Thomas Ramirez; Thomas.Ramirez
 email:
   prefix: pair
-  domain: casecommons.org
+  domain: osi.ca.gov
+  no_solo_prefix: true
 
