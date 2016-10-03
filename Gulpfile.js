@@ -1,7 +1,7 @@
 var env = process.env.RAILS_ENV
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
+var gulp = require('gulp')
+var sass = require('gulp-sass')
+var sourcemaps = require('gulp-sourcemaps')
 var isProduction = (env && !(env === 'development' || env === 'test'))
 
 function getNPMPackageIds() {
@@ -73,6 +73,11 @@ gulp.task('images', function() {
   .pipe(gulp.dest('tmp/assets'))
 })
 
+gulp.task('fonts', function() {
+  return gulp.src('app/assets/fonts/**/*')
+  .pipe(gulp.dest('tmp/assets/fonts'))
+})
+
 gulp.task('js-app', function() {
   return bundle(appPack, 'tmp/assets/', 'application.js')
 })
@@ -86,11 +91,15 @@ gulp.task('js-test', function() {
 })
 
 var connect = require('gulp-connect')
+var cors = require('cors')
 gulp.task('server', function() {
   connect.server({
     root: 'public/',
     port: 4857,
     livereload: false,
+    middleware: function() {
+      return [cors()];
+    }
   })
 })
 
@@ -104,13 +113,13 @@ var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
   if(isProduction) {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
       ['version-assets'],
       ['translate-versioned-assets']
     )
   } else {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images'],
+      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
       ['copy-build-assets']
     )
   }
