@@ -16,8 +16,8 @@ export default class ReferralsIndexPage extends React.Component {
     this.updateIndex()
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevProps.location != this.props.location) {
+  componentDidUpdate(prevProps, _prevState) {
+    if (prevProps.location !== this.props.location) {
       this.updateIndex()
     }
   }

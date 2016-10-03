@@ -1,23 +1,33 @@
 import React from 'react'
 import ReferralsFilter from 'ReferralsFilter'
-import {render, mount} from 'enzyme'
+import ResponseTimeFilter from 'ResponseTimeFilter'
+import ScreeningDecisionFilter from 'ScreeningDecisionFilter'
+import {mount, shallow} from 'enzyme';
+import {browserHistory} from 'react-router'
 
 describe('ReferralsFilter', () => {
   describe('render', () => {
-    it('renders Response Times', () => {
-      const view = render(<ReferralsFilter />)
-      expect(view.text()).toContain('Response Time')
-      expect(view.text()).toContain('Immediate')
-      expect(view.text()).toContain('Within 24 hours')
-      expect(view.text()).toContain('More than 24 hours')
-    })
+    it('contains an ScreeningDecisionFilter component', function () {
+      const wrapper = mount(<ReferralsFilter/>)
+      expect(wrapper.find(ScreeningDecisionFilter).length).toEqual(1)
+    });
 
-    it('renders selected filters', () => {
-      const query = { 'response_times[]': ['immediate', 'more_than_twenty_four_hours'] }
-      const view = render(<ReferralsFilter query={query} />)
-      expect(view.find('input')[0].attribs.checked).toBeDefined()
-      expect(view.find('input')[1].attribs.checked).not.toBeDefined()
-      expect(view.find('input')[2].attribs.checked).toBeDefined()
+    it('contains an ResponseTimeFilter component', function () {
+      const wrapper = mount(<ReferralsFilter/>)
+      expect(wrapper.find(ResponseTimeFilter).length).toEqual(1)
+    });
+  })
+
+  describe('onChange', () => {
+    beforeEach(() => spyOn(browserHistory, 'push'))
+
+    it('updates browser history', () => {
+      const wrapper = shallow(<ReferralsFilter/>).instance()
+      wrapper.onChange({'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']})
+      expect(browserHistory.push).toHaveBeenCalledWith({
+        pathname: '/referrals',
+        query: {'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']},
+      })
     })
   })
 })
