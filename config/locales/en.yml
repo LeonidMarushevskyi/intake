@@ -1,9 +1,4 @@
 en:
-  referral:
-    created_at: 'Report Date'
-    name_and_reference: 'Name & ID'
-    response_time: 'Response Time'
-    screening_decision: 'Decision'
   activemodel:
     attributes:
       referral:
