@@ -42,7 +42,7 @@ module AutocompleterHelpers
   end
 
   def wait_for_result_to_appear(value)
-    Timeout.timeout(2.0 * Capybara.default_wait_time) do
+    Timeout.timeout(2.0 * Capybara.default_max_wait_time) do
       sleep(0.1) until page.first(
         RESULTS_CONTAINER.to_s,
         visible: true,
