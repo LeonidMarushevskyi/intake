@@ -15,7 +15,7 @@
           = f.text_area :narrative
       .row
         .col-md-6
-          - involved_people = ReferralPresenter.involved_people_attributes(f.object)
+          - involved_people = @involved_people.as_json(only: [:id, :first_name, :last_name])
           = f.label :involved_people
           #add-person{ 'data-props' => { involvedPeople: involved_people }.to_json }
       .row

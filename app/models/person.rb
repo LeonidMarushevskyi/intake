@@ -3,6 +3,8 @@
 # Model for storing Intake person information.
 class Person # :nodoc:
   include Her::Model
+  include ActiveModel::Serializers::JSON
+
   use_api API_V1
   ASSOCIATIONS = [:address].freeze
 

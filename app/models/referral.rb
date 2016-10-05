@@ -3,6 +3,7 @@
 # Model for storing Intake referral information.
 class Referral # :nodoc:
   include Her::Model
+
   use_api API_V1
   ASSOCIATIONS = [:address, :involved_people].freeze
 

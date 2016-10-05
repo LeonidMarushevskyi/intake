@@ -23,13 +23,21 @@ describe ReferralsController do
 
   describe '#edit' do
     let(:referral) { double(:referral) }
+    let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
+
     before do
       allow(Referral).to receive(:find).with('1').and_return(referral)
+      allow(referral).to receive(:involved_people).and_return(involved_people)
     end
 
     it 'assigns referral' do
       post :edit, params: { id: 1 }
       expect(assigns(:referral)).to eq(referral)
+    end
+
+    it 'assigns involved_people' do
+      post :edit, params: { id: 1 }
+      expect(assigns(:involved_people)).to eq(involved_people)
     end
 
     it 'renders the edit template' do
@@ -40,13 +48,21 @@ describe ReferralsController do
 
   describe '#show' do
     let(:referral) { double(:referral) }
+    let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
+
     before do
       allow(Referral).to receive(:find).with('1').and_return(referral)
+      allow(referral).to receive(:involved_people).and_return(involved_people)
     end
 
     it 'assigns referral' do
       get :show, params: { id: 1 }
       expect(assigns(:referral)).to eq(referral)
+    end
+
+    it 'assigns involved_people' do
+      post :edit, params: { id: 1 }
+      expect(assigns(:involved_people)).to eq(involved_people)
     end
 
     it 'renders the show template' do

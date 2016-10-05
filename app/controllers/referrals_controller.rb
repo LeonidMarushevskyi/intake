@@ -40,10 +40,12 @@ class ReferralsController < ApplicationController # :nodoc:
 
   def edit
     @referral = Referral.find(params[:id])
+    @involved_people = @referral.involved_people.to_a
   end
 
   def show
     @referral = Referral.find(params[:id])
+    @involved_people = @referral.involved_people.to_a
   end
 
   def index
