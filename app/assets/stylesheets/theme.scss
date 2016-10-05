@@ -199,6 +199,20 @@ ol {
   cursor: not-allowed;
 }
 
+.input-type-date {
+  background-image: url('calendar.svg');
+  background-position: 99%;
+  background-repeat: no-repeat;
+  background-size: 3rem;
+}
+
+.input-type-autocompleter {
+  background-image: url('search.svg');
+  background-position: 99%;
+  background-repeat: no-repeat;
+  background-size: 3rem;
+}
+
 /////////////////////////////////////////
 
 // - Forms - //
