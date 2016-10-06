@@ -1,12 +1,7 @@
 !!!
 %html
   %head
-    %meta{ charset: 'utf-8' }
-    %title Casebook Intake Accelerator
-    = stylesheet_link_tag gulp_asset_path('application.css')
-    = javascript_include_tag gulp_asset_path('vendor.js'), defer: true
-    = javascript_include_tag gulp_asset_path('application.js'), defer: true
-    = csrf_meta_tags
+    = render 'layouts/head'
   %body
     .container
       = yield

@@ -1,4 +1,5 @@
 en:
+  title: 'Intake'
   activemodel:
     attributes:
       referral:
