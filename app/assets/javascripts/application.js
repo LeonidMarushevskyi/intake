@@ -3,15 +3,21 @@ import 'jquery-ujs'
 
 import 'babel-polyfill'
 import 'bootstrap'
+import $ from 'jquery'
 import Autocompleter from 'Autocompleter'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import $ from 'jquery'
+import ReferralsApp from 'ReferralsApp'
+
+function bindReactComponent(Component, containerId) {
+  const container = document.getElementById(containerId)
+  if (container) {
+    const props = $(container).data('props')
+    ReactDOM.render(<Component {...props} />, container)
+  }
+}
 
 $(document).ready(() => {
-  const element = document.getElementById('add-person')
-  if (element) {
-    const props = $(element).data('props')
-    ReactDOM.render(<Autocompleter involvedPeople={props.involvedPeople} />, element)
-  }
+  bindReactComponent(Autocompleter, 'add-person')
+  bindReactComponent(ReferralsApp, 'referrals-app')
 })
