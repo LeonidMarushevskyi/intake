@@ -5,6 +5,10 @@ set -e
 ROOT="$(dirname "$0")/.."
 source "$ROOT/bin/_util"
 
+CI_TEST_DIR='intake_test_phase'
+CI_URL=https://ci.mycasebook.org/
+IDENTITY_FILE=~/.ssh/id_rsa_jenkins
+
 push_current_branch() {
   git push origin head
 }
@@ -12,16 +16,22 @@ push_current_branch() {
 test() {
   push_current_branch
   local branch=`git name-rev --name-only HEAD`
-  local test_dir='intake_test_phase'
-  java -jar jenkins-cli.jar -i ~/.ssh/id_rsa_jenkins -s https://ci.mycasebook.org/ build $test_dir/$branch
+  local test_job_name='$CI_TEST_DIR/$branch'
+  java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_URL build $test_job_name
 }
 
+deploy() {
+  local deploy_job_name='intake_deploy_to_acceptance'
+  local image_tag="casecommons/ca_intake:$1"
+  echo -e "deploying image tag: $image_tag"
+  java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_URL build $deploy_job_name -p IMAGE_TAG=$image_tag
+}
+
+available_operations="test\ndeploy [image-tag]"
 is_valid_operation() {
   local operation="$1"
   echo -e "$available_operations" | grep --quiet "$operation"
 }
-
-available_operations="test\n"
 
 operation="$1"
 if [[ -z "$operation" ]]; then
