@@ -1,5 +1,9 @@
 en:
   title: 'Intake'
+  links:
+    create_referral: 'Create Referral'
+    create_person: 'Create Person'
+    referrals: 'Referrals'
   activemodel:
     attributes:
       referral:
