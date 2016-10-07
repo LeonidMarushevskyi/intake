@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+ROOT="$(dirname "$0")/.."
+source "$ROOT/bin/_util"
+
+push_current_branch() {
+  git push origin head
+}
+
+test() {
+  push_current_branch
+  local branch=`git name-rev --name-only HEAD`
+  local test_dir='intake_test_phase'
+  java -jar jenkins-cli.jar -i ~/.ssh/id_rsa_jenkins -s https://ci.mycasebook.org/ build $test_dir/$branch
+}
+
+is_valid_operation() {
+  local operation="$1"
+  echo -e "$available_operations" | grep --quiet "$operation"
+}
+
+available_operations="test\n"
+
+operation="$1"
+if [[ -z "$operation" ]]; then
+  echo -e "Available operations are: $available_operations"
+else
+  is_valid_operation "$operation" || abort 'Unknown operation specified'
+  "$operation" ${@:2}
+fi
