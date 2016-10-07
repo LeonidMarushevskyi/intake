@@ -17,6 +17,7 @@ test() {
   push_current_branch
   local branch=`git name-rev --name-only HEAD`
   local test_job_name='$CI_TEST_DIR/$branch'
+  echo -e "testing $test_job_name"
   java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_URL build $test_job_name
 }
 
@@ -27,7 +28,13 @@ deploy() {
   java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_URL build $deploy_job_name -p IMAGE_TAG=$image_tag
 }
 
-available_operations="test\ndeploy [image-tag]"
+ci() {
+  local ci_job_name='intake(CI)'
+  echo -e "running ci"
+  java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_URL build $ci_job_name
+}
+
+available_operations="test\ndeploy [image-tag]\nci"
 is_valid_operation() {
   local operation="$1"
   echo -e "$available_operations" | grep --quiet "$operation"
@@ -35,7 +42,7 @@ is_valid_operation() {
 
 operation="$1"
 if [[ -z "$operation" ]]; then
-  echo -e "Available operations are: $available_operations"
+  echo -e "Available operations are:\n$available_operations"
 else
   is_valid_operation "$operation" || abort 'Unknown operation specified'
   "$operation" ${@:2}
