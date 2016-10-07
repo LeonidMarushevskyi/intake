@@ -5,7 +5,7 @@ feature 'Style guide' do
   scenario 'styles are listed in sidebar' do
     visit style_guide_index_path
 
-    expect(page).to have_title 'Casebook Intake Accelerator'
+    expect(page).to have_title 'Intake'
     expect(page).to have_content 'PATTERN LIBRARY'
 
     within 'nav' do
