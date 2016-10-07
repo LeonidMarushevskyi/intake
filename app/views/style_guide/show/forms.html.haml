@@ -147,21 +147,19 @@
 %h2.double-gap-top Dropdown
 %i A dropdown allows users to select one option from a list.
 .gap-top.double-padded.border-regular-light-gray
-  %form.form
-    %label.no-gap{ for: 'options' } Dropdown label
-    %select#options{ name: 'options' }
-      %option{ value: 'value1' } Option A
-      %option{ value: 'value2' } Option B
-      %option{ value: 'value3' } Option C
+  %label.no-gap{ for: 'options' } Dropdown label
+  %select#options{ name: 'options' }
+    %option{ value: 'value1' } Option A
+    %option{ value: 'value2' } Option B
+    %option{ value: 'value3' } Option C
 %pre
   %code
     :preserve
-      %form.form
-        %label{ for: 'options' } Dropdown label
-        %select#options{ name: 'options' }
-          %option{ value: 'value1' } Option A
-          %option{ value: 'value2' } Option B
-          %option{ value: 'value3' } Option C
+      %label{ for: 'options' } Dropdown label
+      %select#options{ name: 'options' }
+        %option{ value: 'value1' } Option A
+        %option{ value: 'value2' } Option B
+        %option{ value: 'value3' } Option C
 
 .double-padded.border-regular-light-gray
   %h4 Accessibility
@@ -312,10 +310,13 @@
 %h2.double-gap-top Datepicker
 %i Field used to select a date or date range.
 .gap-top.double-padded.border-regular-light-gray
+  %label.no-gap{ for: 'input-type-date' } Date field
+  %input.input-type-date#input-type-date{ name: 'input-type-date', type: 'date' }
 %pre
   %code
     :preserve
-      WIP
+      %label.no-gap{ for: 'input-type-date' } Date field
+      %input.input-type-date#input-type-date{ name: 'input-type-date', type: 'date' }
 .double-padded.border-regular-light-gray
   %h4 Accessibility
   %ul
@@ -324,10 +325,13 @@
 %h2.double-gap-top Autocompleter
 %i Field used to select people.
 .gap-top.double-padded.border-regular-light-gray
+  %label.no-gap{ for: 'input-type-autocompleter' } Autocompleter field
+  %input.input-type-autocompleter#input-type-autocompleter{ name: 'input-type-autocompleter', type: 'text' }
 %pre
   %code
     :preserve
-      WIP
+      %label.no-gap{ for: 'input-type-autocompleter' } Autocompleter field
+      %input.input-type-autocompleter#input-type-autocompleter{ name: 'input-type-autocompleter', type: 'text' }
 .double-padded.border-regular-light-gray
   %h4 Accessibility
   %ul
