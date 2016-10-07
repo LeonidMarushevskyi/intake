@@ -20,7 +20,7 @@ services:
       - elasticsearch
   api:
     extends:
-      file: ../casebook_api/docker-compose.common.yml
+      file: ../intake_api_prototype/docker-compose.common.yml
       service: api
     links:
       - db
@@ -33,7 +33,7 @@ services:
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
   db:
     extends:
-      file: ../casebook_api/docker-compose.common.yml
+      file: ../intake_api_prototype/docker-compose.common.yml
       service: db
   redis:
     image: 'redis:3.2-alpine'
@@ -42,7 +42,7 @@ services:
       - '6379:6379'
   sidekiq:
     extends:
-      file: ../casebook_api/docker-compose.common.yml
+      file: ../intake_api_prototype/docker-compose.common.yml
       service: api
     command: ./bin/sidekiq_start
     links:
