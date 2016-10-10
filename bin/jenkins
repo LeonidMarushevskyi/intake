@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+
+ROOT="$(dirname "$0")/.."
+source "$ROOT/bin/_util"
+
+CI_JOB_NAME='intake_test_phase'
+CI_DOMAIN=https://ci.mycasebook.org/
+IDENTITY_FILE=~/.ssh/id_rsa
+
+push_current_branch() {
+  git push origin head
+}
+
+job() {
+  echo -e "running job $@"
+  java -jar jenkins-cli.jar -i $IDENTITY_FILE -s $CI_DOMAIN build $@
+}
+
+test() {
+  push_current_branch
+  local branch=`git name-rev --name-only HEAD`
+  local test_job_name=$CI_JOB_NAME/$branch
+  job $test_job_name
+}
+
+deploy() {
+  local deploy_job_name='intake_deploy_to_acceptance'
+  local image_tag="casecommons/ca_intake:$1"
+  job $deploy_job_name -p IMAGE_TAG=$image_tag
+}
+
+ci() {
+  local ci_job_name='intake(CI)'
+  job $ci_job_name
+}
+
+available_operations="test\ndeploy [image-tag]\nci\njob [job-name]"
+is_valid_operation() {
+  local operation="$1"
+  echo -e "$available_operations" | grep --quiet "$operation"
+}
+
+operation="$1"
+if [[ -z "$operation" ]]; then
+  echo -e "Available operations are:\n$available_operations"
+else
+  is_valid_operation "$operation" || abort 'Unknown operation specified'
+  "$operation" ${@:2}
+fi
