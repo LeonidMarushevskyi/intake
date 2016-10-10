@@ -33,8 +33,8 @@ feature 'Edit Referral' do
 
     expect(page).to have_content 'Edit Referral #My Bad!'
     expect(page).to have_field('Title/Name of Referral', with: 'Little Shop Of Horrors')
-    expect(page).to have_field('Phone Call Start Date/Time', with: '2016-08-13 10:00:00 UTC')
-    expect(page).to have_field('Phone Call End Date/Time', with: '2016-08-13 11:00:00 UTC')
+    expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13 10:00:00 UTC')
+    expect(page).to have_field('Screening End Date/Time', with: '2016-08-13 11:00:00 UTC')
     expect(page).to have_field('Incident Date', with: '2016-08-11')
     expect(page).to have_field('Incident County', with: 'sacramento')
     expect(page).to have_field('Response Time', with: 'immediate')
@@ -49,8 +49,8 @@ feature 'Edit Referral' do
 
     fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'
-    fill_in 'Phone Call Start Date/Time', with: '2016-08-13 10:00 AM'
-    fill_in 'Phone Call End Date/Time', with: '2016-08-22 11:00 AM'
+    fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
+    fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
     fill_in 'Incident Date', with: '2016-08-11'
     select  'Mariposa', from: 'Incident County'
     fill_in_autocompleter 'Involved People', with: 'Marge'
