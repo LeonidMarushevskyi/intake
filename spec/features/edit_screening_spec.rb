@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Edit Referral' do
+feature 'Edit Screening' do
   scenario 'edit an existing referral' do
     existing_referral = {
       id: 1,
@@ -23,13 +23,13 @@ feature 'Edit Referral' do
       ]
     }.with_indifferent_access
 
-    stub_api_for(Referral) do |stub|
-      stub.get('/referrals/1') do |_env|
+    stub_api_for(Screening) do |stub|
+      stub.get('/screenings/1') do |_env|
         [200, {}, existing_referral.to_json]
       end
     end
 
-    visit edit_referral_path(id: existing_referral[:id])
+    visit edit_screening_path(id: existing_referral[:id])
 
     expect(page).to have_content 'Edit Referral #My Bad!'
     expect(page).to have_field('Title/Name of Referral', with: 'Little Shop Of Horrors')
@@ -76,11 +76,11 @@ feature 'Edit Referral' do
       }
     }.with_indifferent_access
 
-    stub_api_for(Referral) do |stub|
-      stub.put('/referrals/1') do |_env|
+    stub_api_for(Screening) do |stub|
+      stub.put('/screenings/1') do |_env|
         [200, {}, updated_referral.to_json]
       end
-      stub.get('/referrals/1') do |_env|
+      stub.get('/screenings/1') do |_env|
         [200, {}, updated_referral.to_json]
       end
     end

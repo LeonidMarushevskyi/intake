@@ -20,7 +20,7 @@ export default class ReferralsFilter extends React.Component {
 
   onChange(query) {
     browserHistory.push({
-      pathname: '/referrals',
+      pathname: '/screenings',
       query: query,
     })
   }

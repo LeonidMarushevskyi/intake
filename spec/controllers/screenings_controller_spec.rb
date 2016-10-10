@@ -2,37 +2,37 @@
 
 require 'rails_helper'
 
-describe ReferralsController do
+describe ScreeningsController do
   describe '#create' do
-    let(:referral) { double(:referral, id: 1, reference: '123ABC') }
+    let(:screening) { double(:screening, id: 1, reference: '123ABC') }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      allow(Referral).to receive(:create).with(reference: '123ABC').and_return(referral)
+      allow(Screening).to receive(:create).with(reference: '123ABC').and_return(screening)
     end
 
-    it 'assigns referral' do
+    it 'assigns screening' do
       post :create
-      expect(assigns(:referral)).to eq(referral)
+      expect(assigns(:screening)).to eq(screening)
     end
 
     it 'redirects to edit' do
       post :create
-      expect(response).to redirect_to(edit_referral_path(assigns(:referral)))
+      expect(response).to redirect_to(edit_screening_path(assigns(:screening)))
     end
   end
 
   describe '#edit' do
-    let(:referral) { double(:referral) }
+    let(:screening) { double(:screening) }
     let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
 
     before do
-      allow(Referral).to receive(:find).with('1').and_return(referral)
-      allow(referral).to receive(:involved_people).and_return(involved_people)
+      allow(Screening).to receive(:find).with('1').and_return(screening)
+      allow(screening).to receive(:involved_people).and_return(involved_people)
     end
 
-    it 'assigns referral' do
+    it 'assigns screening' do
       post :edit, params: { id: 1 }
-      expect(assigns(:referral)).to eq(referral)
+      expect(assigns(:screening)).to eq(screening)
     end
 
     it 'assigns involved_people' do
@@ -47,17 +47,17 @@ describe ReferralsController do
   end
 
   describe '#show' do
-    let(:referral) { double(:referral) }
+    let(:screening) { double(:screening) }
     let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
 
     before do
-      allow(Referral).to receive(:find).with('1').and_return(referral)
-      allow(referral).to receive(:involved_people).and_return(involved_people)
+      allow(Screening).to receive(:find).with('1').and_return(screening)
+      allow(screening).to receive(:involved_people).and_return(involved_people)
     end
 
-    it 'assigns referral' do
+    it 'assigns screening' do
       get :show, params: { id: 1 }
-      expect(assigns(:referral)).to eq(referral)
+      expect(assigns(:screening)).to eq(screening)
     end
 
     it 'assigns involved_people' do
@@ -72,8 +72,8 @@ describe ReferralsController do
   end
 
   describe '#update' do
-    let(:referral) { double(:referral) }
-    let(:referral_attributes) do
+    let(:screening) { double(:screening) }
+    let(:screening_attributes) do
       {
         name: '123 Report',
         incident_county: 'sacramento',
@@ -88,34 +88,34 @@ describe ReferralsController do
       }.with_indifferent_access
     end
     before do
-      allow(Referral).to receive(:save_existing).with(
+      allow(Screening).to receive(:save_existing).with(
         '1',
-        referral_attributes
-      ).and_return(referral)
+        screening_attributes
+      ).and_return(screening)
     end
 
-    it 'assigns referral' do
-      put :update, params: { id: 1, referral: referral_attributes }
-      expect(assigns(:referral)).to eq(referral)
+    it 'assigns screening' do
+      put :update, params: { id: 1, screening: screening_attributes }
+      expect(assigns(:screening)).to eq(screening)
     end
 
     it 'redirects to show' do
-      put :update, params: { id: 1, referral: referral_attributes }
-      expect(response).to redirect_to(referral_path(assigns(:referral)))
+      put :update, params: { id: 1, screening: screening_attributes }
+      expect(response).to redirect_to(screening_path(assigns(:screening)))
     end
   end
 
   describe '#index' do
     context 'without query params' do
-      let(:referrals) { double(:referrals, as_json: [{ id: 1 }]) }
-      let(:search) { double(:search, results: referrals) }
+      let(:screenings) { double(:screenings, as_json: [{ id: 1 }]) }
+      let(:search) { double(:search, results: screenings) }
       before do
-        allow(ReferralsRepo).to receive(:search)
+        allow(ScreeningsRepo).to receive(:search)
           .with(query: { filtered: { filter: { bool: { must: [] } } } })
           .and_return(search)
       end
 
-      it 'renders referrals as json' do
+      it 'renders screenings as json' do
         get :index, format: :json
         expect(JSON.parse(response.body)).to eq([{ 'id' => 1 }])
       end
@@ -140,19 +140,19 @@ describe ReferralsController do
           }
         }
       end
-      let(:referrals) { double(:referrals, as_json: []) }
-      let(:search) { double(:search, results: referrals) }
+      let(:screenings) { double(:screenings, as_json: []) }
+      let(:search) { double(:search, results: screenings) }
       let(:params) do
         { response_times: %w(immediate within_twenty_four_hours) }
       end
 
       before do
-        expect(ReferralsRepo).to receive(:search)
+        expect(ScreeningsRepo).to receive(:search)
           .with(query: query)
           .and_return(search)
       end
 
-      it 'renders referrals returned from filtered query' do
+      it 'renders screenings returned from filtered query' do
         get :index, format: :json, params: params
         expect(JSON.parse(response.body)).to eq([])
       end

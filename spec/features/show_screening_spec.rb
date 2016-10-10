@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Show Referral' do
+feature 'Show Screening' do
   scenario 'showing existing referral' do
     existing_referral = {
       id: 1,
@@ -32,13 +32,13 @@ feature 'Show Referral' do
       }]
     }.with_indifferent_access
 
-    stub_api_for(Referral) do |stub|
-      stub.get('/referrals/1') do |_env|
+    stub_api_for(Screening) do |stub|
+      stub.get('/screenings/1') do |_env|
         [200, {}, existing_referral.to_json]
       end
     end
 
-    visit referral_path(id: existing_referral[:id])
+    visit screening_path(id: existing_referral[:id])
 
     expect(page).to have_content 'Referral #My Bad!'
     expect(page).to have_content 'Mail'
@@ -56,6 +56,6 @@ feature 'Show Referral' do
     expect(page).to have_content 'Evaluate Out'
 
     expect(page).to have_link('Home', href: root_path)
-    expect(page).to have_link('Edit', href: edit_referral_path(id: 1))
+    expect(page).to have_link('Edit', href: edit_screening_path(id: 1))
   end
 end

@@ -3,10 +3,10 @@ en:
   links:
     create_screening: 'Start Screening'
     create_person: 'Create Person'
-    referrals: 'Referrals'
+    screenings: 'Screenings'
   activemodel:
     attributes:
-      referral:
+      screening:
         name: 'Title/Name of Referral'
         method_of_referral: 'Method of Referral'
         started_at: 'Screening Start Date/Time'

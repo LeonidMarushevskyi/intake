@@ -3,9 +3,9 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Referrals Index' do
-  scenario 'list all referrals' do
-    referral_one = Referral.new(
+feature 'Screenings Index' do
+  scenario 'list all screenings' do
+    screening_one = Screening.new(
       id: 1,
       reference: 'ABCDEF',
       created_at: '2016-08-11T18:24:22.157Z',
@@ -13,7 +13,7 @@ feature 'Referrals Index' do
       response_time: 'immediate',
       screening_decision: 'evaluate_out'
     )
-    referral_two = Referral.new(
+    screening_two = Screening.new(
       id: 2,
       reference: 'HIJKLM',
       created_at: '2016-07-07T11:21:22.007Z',
@@ -21,7 +21,7 @@ feature 'Referrals Index' do
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation'
     )
-    referral_three = Referral.new(
+    screening_three = Screening.new(
       id: 3,
       reference: 'NOPQRS',
       created_at: '2016-08-10T09:11:22.112Z',
@@ -29,13 +29,13 @@ feature 'Referrals Index' do
       response_time: 'more_than_twenty_four_hours',
       screening_decision: 'referral_to_other_agency'
     )
-    referrals = [referral_one, referral_two, referral_three]
+    screenings = [screening_one, screening_two, screening_three]
 
-    search = double(:search, results: referrals)
+    search = double(:search, results: screenings)
     query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    expect(ReferralsRepo).to receive(:search).with(query).and_return(search)
+    expect(ScreeningsRepo).to receive(:search).with(query).and_return(search)
 
-    visit referrals_path
+    visit screenings_path
 
     within 'thead' do
       expect(page).to have_css('th', text: 'Name & ID')
@@ -71,8 +71,8 @@ feature 'Referrals Index' do
     end
   end
 
-  scenario 'filter referrals by response time' do
-    referral_one = Referral.new(
+  scenario 'filter screenings by response time' do
+    screening_one = Screening.new(
       id: 1,
       reference: 'ABCDEF',
       created_at: '2016-08-11T18:24:22.157Z',
@@ -80,7 +80,7 @@ feature 'Referrals Index' do
       response_time: 'immediate',
       screening_decision: 'evaluate_out'
     )
-    referral_two = Referral.new(
+    screening_two = Screening.new(
       id: 2,
       reference: 'HIJKLM',
       created_at: '2016-07-07T11:21:22.007Z',
@@ -89,11 +89,7 @@ feature 'Referrals Index' do
       screening_decision: 'accept_for_investigation'
     )
 
-    search = double(:search, results: [])
-    query1 = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    allow(ReferralsRepo).to receive(:search).with(query1).and_return(search)
-
-    response_time_search = double(:search, results: [referral_one, referral_two])
+    response_time_search = double(:search, results: [screening_one, screening_two])
     query2 = {
       query: {
         filtered: {
@@ -107,16 +103,8 @@ feature 'Referrals Index' do
         }
       }
     }
-    allow(ReferralsRepo).to receive(:search).with(query2).and_return(response_time_search)
-
-    visit referrals_path
-
-    within 'thead' do
-      expect(page).to have_css('th', text: 'Name & ID')
-      expect(page).to have_css('th', text: 'Response Time')
-      expect(page).to have_css('th', text: 'Decision')
-      expect(page).to have_css('th', text: 'Report Date')
-    end
+    allow(ScreeningsRepo).to receive(:search).with(query2).and_return(response_time_search)
+    visit screenings_path
 
     find('label', text: 'Immediate').click
     find('label', text: 'Within 24 hours').click

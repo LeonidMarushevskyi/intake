@@ -1,4 +1,4 @@
-%h1 Referral ##{@referral.reference}
+%h1 Referral ##{@screening.reference}
 .card.double-gap-top
   .card-header
     %span Referral Information
@@ -6,19 +6,19 @@
     .row
       .col-md-6
         %label.no-gap
-          = t('activemodel.attributes.referral.name')
+          = t('activemodel.attributes.screening.name')
         .c-gray
-          = @referral.name
+          = @screening.name
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.narrative')
+          = t('activemodel.attributes.screening.narrative')
         .c-gray
-          = @referral.narrative
+          = @screening.narrative
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.involved_people')
+          = t('activemodel.attributes.screening.involved_people')
         .c-gray
           %ul
             - @involved_people.each do |person|
@@ -26,35 +26,35 @@
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.method_of_referral')
+          = t('activemodel.attributes.screening.method_of_referral')
         .c-gray
-          = MethodOfReferral::ALL[@referral.method_of_referral]
+          = MethodOfReferral::ALL[@screening.method_of_referral]
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.started_at')
+          = t('activemodel.attributes.screening.started_at')
         .c-gray
-          = Time.zone.parse(@referral.started_at).strftime('%m/%d/%Y %I:%M %p') if @referral.started_at
+          = Time.zone.parse(@screening.started_at).strftime('%m/%d/%Y %I:%M %p') if @screening.started_at
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.ended_at')
+          = t('activemodel.attributes.screening.ended_at')
         .c-gray
-          = Time.zone.parse(@referral.ended_at).strftime('%m/%d/%Y %I:%M %p') if @referral.ended_at
+          = Time.zone.parse(@screening.ended_at).strftime('%m/%d/%Y %I:%M %p') if @screening.ended_at
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.incident_date')
+          = t('activemodel.attributes.screening.incident_date')
         .c-gray
-          = format_date(@referral.incident_date)
+          = format_date(@screening.incident_date)
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.incident_county')
+          = t('activemodel.attributes.screening.incident_county')
         .c-gray
-          = County::ALL[@referral.incident_county]
+          = County::ALL[@screening.incident_county]
     .row.gap-top
-      - address = @referral.address
+      - address = @screening.address
       .col-md-6
         %label
           = t('activemodel.attributes.address.street_address')
@@ -79,21 +79,21 @@
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.location_type')
+          = t('activemodel.attributes.screening.location_type')
         .c-gray
-          = @referral.location_type
+          = @screening.location_type
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.response_time')
+          = t('activemodel.attributes.screening.response_time')
         .c-gray
-          = ResponseTime::ALL[@referral.response_time]
+          = ResponseTime::ALL[@screening.response_time]
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.referral.screening_decision')
+          = t('activemodel.attributes.screening.screening_decision')
         .c-gray
-          = ScreeningDecision::ALL[@referral.screening_decision]
+          = ScreeningDecision::ALL[@screening.screening_decision]
 
 = link_to 'Home', root_path
-= link_to 'Edit', edit_referral_path(@referral)
+= link_to 'Edit', edit_screening_path(@screening)

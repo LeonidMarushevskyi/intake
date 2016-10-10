@@ -1,9 +1,9 @@
-%h1 Edit Referral ##{@referral.reference}
+%h1 Edit Referral ##{@screening.reference}
 .card.edit.double-gap-top
   .card-header
     %h3 Referral Information
   .card-body
-    = form_for @referral do |f|
+    = form_for @screening do |f|
       .row
         .col-md-6
           = f.hidden_field :reference
@@ -47,7 +47,7 @@
         .col-md-6
           %fieldset
             %legend Incident Address
-            = fields_for 'referral[address]', Address.new(f.object.address.attributes) do |address|
+            = fields_for 'screening[address]', Address.new(f.object.address.attributes) do |address|
               = address.label :street_address
               = address.text_field :street_address
               = address.label :city
