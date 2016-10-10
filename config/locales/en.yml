@@ -1,7 +1,7 @@
 en:
   title: 'Intake'
   links:
-    create_referral: 'Create Referral'
+    create_screening: 'Start Screening'
     create_person: 'Create Person'
     referrals: 'Referrals'
   activemodel:

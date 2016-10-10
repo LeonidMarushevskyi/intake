@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-feature 'Create Referral' do
-  scenario 'via create referral link' do
+feature 'Create Screening' do
+  scenario 'via start screening link' do
     referral = {
       id: 1,
       reference: 'MYREFERENCE',
@@ -21,7 +21,7 @@ feature 'Create Referral' do
     end
 
     visit root_path
-    click_link 'Create Referral'
+    click_link 'Start Screening'
     expect(page).to have_content('Edit Referral #MYREFERENCE')
   end
 end
