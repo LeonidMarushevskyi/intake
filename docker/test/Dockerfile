@@ -7,4 +7,5 @@ WORKDIR $APP_HOME
 
 ENV BUNDLE_PATH /ca_intake/ruby_gems
 
+VOLUME ["/ca_intake/public"]
 COPY . ./
