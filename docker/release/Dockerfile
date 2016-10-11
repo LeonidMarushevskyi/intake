@@ -12,4 +12,6 @@ ENV BUNDLE_PATH /ca_intake/ruby_gems
 COPY scripts/release.sh /usr/local/bin/release.sh
 RUN chmod +x /usr/local/bin/release.sh
 
+VOLUME ["/ca_intake/public"]
+
 ENTRYPOINT ["release.sh"]
