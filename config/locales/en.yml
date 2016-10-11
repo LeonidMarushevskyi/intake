@@ -7,7 +7,7 @@ en:
   activemodel:
     attributes:
       screening:
-        name: 'Title/Name of Referral'
+        name: 'Title/Name of Screening'
         method_of_referral: 'Method of Referral'
         started_at: 'Screening Start Date/Time'
         ended_at: 'Screening End Date/Time'

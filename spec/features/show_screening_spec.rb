@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Show Screening' do
-  scenario 'showing existing referral' do
+  scenario 'showing existing screening' do
     existing_referral = {
       id: 1,
       ended_at: '2016-08-22T11:00:00.000Z',
@@ -40,7 +40,7 @@ feature 'Show Screening' do
 
     visit screening_path(id: existing_referral[:id])
 
-    expect(page).to have_content 'Referral #My Bad!'
+    expect(page).to have_content 'Screening #My Bad!'
     expect(page).to have_content 'Mail'
     expect(page).to have_content 'The Rocky Horror Picture Show'
     expect(page).to have_content '8/13/2016 10:00 AM'

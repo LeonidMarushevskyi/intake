@@ -22,6 +22,6 @@ feature 'Create Screening' do
 
     visit root_path
     click_link 'Start Screening'
-    expect(page).to have_content('Edit Referral #MYREFERENCE')
+    expect(page).to have_content('Edit Screening #MYREFERENCE')
   end
 end
