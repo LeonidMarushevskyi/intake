@@ -1,13 +1,13 @@
 import React from 'react'
-import ReferralsFilter from 'ReferralsFilter'
-import ReferralsTable from 'ReferralsTable'
+import ScreeningsFilter from 'ScreeningsFilter'
+import ScreeningsTable from 'ScreeningsTable'
 import * as Utils from 'utils/http'
 
-export default class ReferralsIndexPage extends React.Component {
+export default class ScreeningsIndexPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
-      referrals: [],
+      screenings: [],
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -27,7 +27,7 @@ export default class ReferralsIndexPage extends React.Component {
     const url = `${pathname}.json${search}`
     const xhr = Utils.request('GET', url, null, null)
     xhr.done((xhrResp) => {
-      this.setState({referrals: xhrResp.responseJSON})
+      this.setState({screenings: xhrResp.responseJSON})
     })
   }
 
@@ -36,16 +36,16 @@ export default class ReferralsIndexPage extends React.Component {
     return (
       <div>
         <div className='col-md-3'>
-          <ReferralsFilter query={query} />
+          <ScreeningsFilter query={query} />
         </div>
         <div className='col-md-9'>
-          <ReferralsTable referrals={this.state.referrals} />
+          <ScreeningsTable screenings={this.state.screenings} />
         </div>
       </div>
     )
   }
 }
 
-ReferralsIndexPage.propTypes = {
+ScreeningsIndexPage.propTypes = {
   location: React.PropTypes.object,
 }

@@ -7,7 +7,7 @@ import $ from 'jquery'
 import Autocompleter from 'Autocompleter'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ReferralsApp from 'ReferralsApp'
+import ScreeningsApp from 'ScreeningsApp'
 
 function bindReactComponent(Component, containerId) {
   const container = document.getElementById(containerId)
@@ -19,5 +19,5 @@ function bindReactComponent(Component, containerId) {
 
 $(document).ready(() => {
   bindReactComponent(Autocompleter, 'add-person')
-  bindReactComponent(ReferralsApp, 'referrals-app')
+  bindReactComponent(ScreeningsApp, 'screenings-app')
 })

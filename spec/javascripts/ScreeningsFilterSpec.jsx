@@ -1,15 +1,15 @@
 import CheckboxListFilter from 'CheckboxListFilter'
 import React from 'react'
-import ReferralsFilter from 'ReferralsFilter'
+import ScreeningsFilter from 'ScreeningsFilter'
 import ResponseTime from 'ResponseTime'
 import ScreeningDecision from 'ScreeningDecision'
 import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme';
 
-describe('ReferralsFilter', () => {
+describe('ScreeningsFilter', () => {
   describe('render', () => {
     it('contains an checkbox list filter component for response times', function () {
-      const wrapper = mount(<ReferralsFilter/>)
+      const wrapper = mount(<ScreeningsFilter/>)
       expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
       expect(wrapper.find(CheckboxListFilter).nodes[0].props.name).toEqual('response-time')
       expect(wrapper.find(CheckboxListFilter).nodes[0].props.collection).toEqual(ResponseTime)
@@ -17,7 +17,7 @@ describe('ReferralsFilter', () => {
     })
 
     it('contains an checkbox list filter component for screening decisions', function () {
-      const wrapper = mount(<ReferralsFilter/>)
+      const wrapper = mount(<ScreeningsFilter/>)
       expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
       expect(wrapper.find(CheckboxListFilter).nodes[1].props.name).toEqual('screening-decision')
       expect(wrapper.find(CheckboxListFilter).nodes[1].props.collection).toEqual(ScreeningDecision)
@@ -29,10 +29,10 @@ describe('ReferralsFilter', () => {
     beforeEach(() => spyOn(browserHistory, 'push'))
 
     it('updates browser history', () => {
-      const wrapper = shallow(<ReferralsFilter/>).instance()
+      const wrapper = shallow(<ScreeningsFilter/>).instance()
       wrapper.onChange({'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']})
       expect(browserHistory.push).toHaveBeenCalledWith({
-        pathname: '/referrals',
+        pathname: '/screenings',
         query: {'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']},
       })
     })

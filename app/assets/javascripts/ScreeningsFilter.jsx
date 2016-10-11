@@ -4,7 +4,7 @@ import ResponseTime from 'ResponseTime'
 import ScreeningDecision from 'ScreeningDecision'
 import {browserHistory} from 'react-router'
 
-export default class ReferralsFilter extends React.Component {
+export default class ScreeningsFilter extends React.Component {
   constructor() {
     super(...arguments)
     this.onChange = this.onChange.bind(this)
@@ -55,10 +55,10 @@ export default class ReferralsFilter extends React.Component {
   }
 }
 
-ReferralsFilter.propTypes = {
+ScreeningsFilter.propTypes = {
   query: React.PropTypes.object,
 }
 
-ReferralsFilter.defaultProps = {
+ScreeningsFilter.defaultProps = {
   query: {},
 }
