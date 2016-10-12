@@ -8,7 +8,7 @@ feature 'Create Screening' do
       reference: 'MYREFERENCE',
       address: {
       },
-      involved_people: []
+      participants: []
     }.with_indifferent_access
 
     stub_api_for(Screening) do |stub|

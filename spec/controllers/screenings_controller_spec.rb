@@ -23,11 +23,11 @@ describe ScreeningsController do
 
   describe '#edit' do
     let(:screening) { double(:screening) }
-    let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
+    let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
       allow(Screening).to receive(:find).with('1').and_return(screening)
-      allow(screening).to receive(:involved_people).and_return(involved_people)
+      allow(screening).to receive(:participants).and_return(participants)
     end
 
     it 'assigns screening' do
@@ -35,9 +35,9 @@ describe ScreeningsController do
       expect(assigns(:screening)).to eq(screening)
     end
 
-    it 'assigns involved_people' do
+    it 'assigns participants' do
       post :edit, params: { id: 1 }
-      expect(assigns(:involved_people)).to eq(involved_people)
+      expect(assigns(:participants)).to eq(participants)
     end
 
     it 'renders the edit template' do
@@ -48,11 +48,11 @@ describe ScreeningsController do
 
   describe '#show' do
     let(:screening) { double(:screening) }
-    let(:involved_people) { [double(:involved_person1), double(:involved_person2)] }
+    let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
       allow(Screening).to receive(:find).with('1').and_return(screening)
-      allow(screening).to receive(:involved_people).and_return(involved_people)
+      allow(screening).to receive(:participants).and_return(participants)
     end
 
     it 'assigns screening' do
@@ -60,9 +60,9 @@ describe ScreeningsController do
       expect(assigns(:screening)).to eq(screening)
     end
 
-    it 'assigns involved_people' do
+    it 'assigns participants' do
       post :edit, params: { id: 1 }
-      expect(assigns(:involved_people)).to eq(involved_people)
+      expect(assigns(:participants)).to eq(participants)
     end
 
     it 'renders the show template' do

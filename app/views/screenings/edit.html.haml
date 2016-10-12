@@ -16,9 +16,9 @@
           = f.text_area :narrative
       .row
         .col-md-6
-          - involved_people = @involved_people.as_json(only: [:id, :first_name, :last_name])
-          = f.label :involved_people
-          #add-person{ 'data-props' => { involvedPeople: involved_people, id: 'screening_involved_people' }.to_json }
+          - participants = @participants.as_json(only: [:id, :first_name, :last_name])
+          = f.label :participants
+          #add-person{ 'data-props' => { participants: participants, id: 'screening_participants' }.to_json }
       .row
         .col-md-6
           = f.label :method_of_referral

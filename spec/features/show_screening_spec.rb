@@ -25,7 +25,7 @@ feature 'Show Screening' do
         zip: 12_345,
         person_id: nil
       },
-      involved_people: [{
+      participants: [{
         first_name: 'Bart',
         last_name: 'Simpson',
         gender: 'male'

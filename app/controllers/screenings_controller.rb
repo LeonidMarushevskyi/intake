@@ -22,7 +22,7 @@ class ScreeningsController < ApplicationController # :nodoc:
       :street_address,
       :zip
     ],
-    involved_person_ids: []
+    participant_ids: []
   ].freeze
 
   def create
@@ -40,12 +40,12 @@ class ScreeningsController < ApplicationController # :nodoc:
 
   def edit
     @screening = Screening.find(params[:id])
-    @involved_people = @screening.involved_people.to_a
+    @participants = @screening.participants.to_a
   end
 
   def show
     @screening = Screening.find(params[:id])
-    @involved_people = @screening.involved_people.to_a
+    @participants = @screening.participants.to_a
   end
 
   def index

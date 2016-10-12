@@ -19,10 +19,10 @@
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.screening.involved_people')
+          = t('activemodel.attributes.screening.participants')
         .c-gray
           %ul
-            - @involved_people.each do |person|
+            - @participants.each do |person|
               %li #{person.first_name} #{person.last_name}
     .row
       .col-md-6

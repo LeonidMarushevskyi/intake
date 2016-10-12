@@ -18,7 +18,7 @@ feature 'Edit Screening' do
       started_at: '2016-08-13T10:00:00.000Z',
       address: {
       },
-      involved_people: [
+      participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' }
       ]
     }.with_indifferent_access
@@ -53,7 +53,7 @@ feature 'Edit Screening' do
     fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
     fill_in 'Incident Date', with: '2016-08-11'
     select  'Mariposa', from: 'Incident County'
-    fill_in_autocompleter 'Involved People', with: 'Marge'
+    fill_in_autocompleter 'Participants', with: 'Marge'
     within 'fieldset', text: 'Incident Address' do
       fill_in 'Address', with: '123 fake st'
       fill_in 'City', with: 'Springfield'
@@ -68,7 +68,7 @@ feature 'Edit Screening' do
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
       narrative: 'Updated narrative',
-      involved_people: [
+      participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' },
         { id: 2, first_name: 'Marge', last_name: 'Simpson' }
       ],
