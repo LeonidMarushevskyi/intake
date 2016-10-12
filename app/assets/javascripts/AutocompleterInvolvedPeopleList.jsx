@@ -11,7 +11,7 @@ export default class AutocompleterInvolvedPeopleList extends React.Component {
         {this.props.involvedPeople.map((person, i) => (
           <li key={i}>
             {person.first_name} {person.last_name}
-            <input type='hidden' name='referral[involved_person_ids][]' value={person.id} />
+            <input type='hidden' name='screening[involved_person_ids][]' value={person.id} />
           </li>
         ))}
       </ul>

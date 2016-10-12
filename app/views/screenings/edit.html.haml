@@ -1,9 +1,10 @@
-%h1 Edit Referral ##{@referral.reference}
+%h1
+  = I18n.t(:edit, scope: [:views, :screening], reference: @screening.reference)
 .card.edit.double-gap-top
   .card-header
     %h3 Referral Information
   .card-body
-    = form_for @referral do |f|
+    = form_for @screening do |f|
       .row
         .col-md-6
           = f.hidden_field :reference
@@ -17,7 +18,7 @@
         .col-md-6
           - involved_people = @involved_people.as_json(only: [:id, :first_name, :last_name])
           = f.label :involved_people
-          #add-person{ 'data-props' => { involvedPeople: involved_people }.to_json }
+          #add-person{ 'data-props' => { involvedPeople: involved_people, id: 'screening_involved_people' }.to_json }
       .row
         .col-md-6
           = f.label :method_of_referral
@@ -47,7 +48,7 @@
         .col-md-6
           %fieldset
             %legend Incident Address
-            = fields_for 'referral[address]', Address.new(f.object.address.attributes) do |address|
+            = fields_for 'screening[address]', Address.new(f.object.address.attributes) do |address|
               = address.label :street_address
               = address.text_field :street_address
               = address.label :city

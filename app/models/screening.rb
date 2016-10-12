@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Model for storing Intake referral information.
-class Referral # :nodoc:
+# Model for storing Intake screening information.
+class Screening # :nodoc:
   include Her::Model
 
   use_api API_V1

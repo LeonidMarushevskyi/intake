@@ -80,7 +80,7 @@ export default class Autocompleter extends React.Component {
     const {value, suggestions, involvedPeople} = this.state
     const inputProps = {
       placeholder: 'Search people...',
-      id: 'referral_involved_people',
+      id: this.props.id,
       value,
       onChange: this.onChange.bind(this),
     }
@@ -104,6 +104,7 @@ export default class Autocompleter extends React.Component {
 }
 
 Autocompleter.propTypes = {
+  id: React.PropTypes.string,
   involvedPeople: React.PropTypes.array,
 }
 

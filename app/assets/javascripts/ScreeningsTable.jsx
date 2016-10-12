@@ -3,7 +3,7 @@ import ResponseTime from 'ResponseTime'
 import ScreeningDecision from 'ScreeningDecision'
 import moment from 'moment'
 
-export default class ReferralsTable extends React.Component {
+export default class ScreeningsTable extends React.Component {
   constructor() {
     super(...arguments)
   }
@@ -22,14 +22,14 @@ export default class ReferralsTable extends React.Component {
           </thead>
           <tbody>
             {
-              this.props.referrals.map((referralObject) => {
-                const referral = referralObject.attributes
+              this.props.screenings.map((screeningObject) => {
+                const screening = screeningObject.attributes
                 return (
-                  <tr key={referral.id}>
-                    <td><a href={`/referrals/${referral.id}`}>{`${referral.name} - ${referral.reference}`}</a></td>
-                    <td>{ResponseTime[referral.response_time]}</td>
-                    <td>{ScreeningDecision[referral.screening_decision]}</td>
-                    <td>{moment(referral.created_at).format('MM/DD/YYYY')}</td>
+                  <tr key={screening.id}>
+                    <td><a href={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</a></td>
+                    <td>{ResponseTime[screening.response_time]}</td>
+                    <td>{ScreeningDecision[screening.screening_decision]}</td>
+                    <td>{moment(screening.created_at).format('MM/DD/YYYY')}</td>
                   </tr>
                   )
               })
@@ -41,10 +41,10 @@ export default class ReferralsTable extends React.Component {
   }
 }
 
-ReferralsTable.propTypes = {
-  referrals: React.PropTypes.array,
+ScreeningsTable.propTypes = {
+  screenings: React.PropTypes.array,
 }
 
-ReferralsTable.defaultProps = {
-  referrals: [],
+ScreeningsTable.defaultProps = {
+  screenings: [],
 }

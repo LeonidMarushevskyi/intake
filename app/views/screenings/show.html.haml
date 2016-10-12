@@ -1,0 +1,100 @@
+%h1
+  = I18n.t(:show, scope: [:views, :screening], reference: @screening.reference)
+.card.double-gap-top
+  .card-header
+    %span Referral Information
+  .card-body
+    .row
+      .col-md-6
+        %label.no-gap
+          = t('activemodel.attributes.screening.name')
+        .c-gray
+          = @screening.name
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.narrative')
+        .c-gray
+          = @screening.narrative
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.involved_people')
+        .c-gray
+          %ul
+            - @involved_people.each do |person|
+              %li #{person.first_name} #{person.last_name}
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.method_of_referral')
+        .c-gray
+          = MethodOfReferral::ALL[@screening.method_of_referral]
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.started_at')
+        .c-gray
+          = Time.zone.parse(@screening.started_at).strftime('%m/%d/%Y %I:%M %p') if @screening.started_at
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.ended_at')
+        .c-gray
+          = Time.zone.parse(@screening.ended_at).strftime('%m/%d/%Y %I:%M %p') if @screening.ended_at
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.incident_date')
+        .c-gray
+          = format_date(@screening.incident_date)
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.incident_county')
+        .c-gray
+          = County::ALL[@screening.incident_county]
+    .row.gap-top
+      - address = @screening.address
+      .col-md-6
+        %label
+          = t('activemodel.attributes.address.street_address')
+        .c-gray
+          = address.street_address
+      .col-md-6
+        %label
+          = t('activemodel.attributes.address.city')
+        .c-gray
+          = address.city
+    .row.gap-top
+      .col-md-6
+        %label
+          = t('activemodel.attributes.address.state')
+        .c-gray
+          = USState::ABBREVIATION_NAME_MAP[address.state]
+      .col-md-6
+        %label
+          = t('activemodel.attributes.address.zip')
+        .c-gray
+          = address.zip
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.location_type')
+        .c-gray
+          = @screening.location_type
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.response_time')
+        .c-gray
+          = ResponseTime::ALL[@screening.response_time]
+    .row
+      .col-md-6
+        %label
+          = t('activemodel.attributes.screening.screening_decision')
+        .c-gray
+          = ScreeningDecision::ALL[@screening.screening_decision]
+
+= link_to 'Home', root_path
+= link_to 'Edit', edit_screening_path(@screening)

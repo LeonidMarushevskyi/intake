@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Referral Controller handles all service request for
-# the creation and modification of referral objects.
-class ReferralsController < ApplicationController # :nodoc:
+# Screening Controller handles all service request for
+# the creation and modification of screening objects.
+class ScreeningsController < ApplicationController # :nodoc:
   PERMITTED_PARAMS = [
     :ended_at,
     :incident_county,
@@ -26,34 +26,34 @@ class ReferralsController < ApplicationController # :nodoc:
   ].freeze
 
   def create
-    @referral = Referral.create(reference: LUID.generate.first)
-    redirect_to edit_referral_path(@referral)
+    @screening = Screening.create(reference: LUID.generate.first)
+    redirect_to edit_screening_path(@screening)
   end
 
   def update
-    @referral = Referral.save_existing(
+    @screening = Screening.save_existing(
       params[:id],
-      referral_params.to_h
+      screening_params.to_h
     )
-    redirect_to referral_path(@referral)
+    redirect_to screening_path(@screening)
   end
 
   def edit
-    @referral = Referral.find(params[:id])
-    @involved_people = @referral.involved_people.to_a
+    @screening = Screening.find(params[:id])
+    @involved_people = @screening.involved_people.to_a
   end
 
   def show
-    @referral = Referral.find(params[:id])
-    @involved_people = @referral.involved_people.to_a
+    @screening = Screening.find(params[:id])
+    @involved_people = @screening.involved_people.to_a
   end
 
   def index
     respond_to do |format|
       format.html
       format.json do
-        referrals = ReferralsRepo.search(query).results
-        render json: referrals
+        screenings = ScreeningsRepo.search(query).results
+        render json: screenings
       end
     end
   end
@@ -81,7 +81,7 @@ class ReferralsController < ApplicationController # :nodoc:
     params[:screening_decisions]
   end
 
-  def referral_params
-    params.require(:referral).permit(*PERMITTED_PARAMS)
+  def screening_params
+    params.require(:screening).permit(*PERMITTED_PARAMS)
   end
 end

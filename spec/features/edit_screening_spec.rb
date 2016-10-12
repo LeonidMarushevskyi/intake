@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Edit Referral' do
+feature 'Edit Screening' do
   scenario 'edit an existing referral' do
     existing_referral = {
       id: 1,
@@ -23,16 +23,16 @@ feature 'Edit Referral' do
       ]
     }.with_indifferent_access
 
-    stub_api_for(Referral) do |stub|
-      stub.get('/referrals/1') do |_env|
+    stub_api_for(Screening) do |stub|
+      stub.get('/screenings/1') do |_env|
         [200, {}, existing_referral.to_json]
       end
     end
 
-    visit edit_referral_path(id: existing_referral[:id])
+    visit edit_screening_path(id: existing_referral[:id])
 
-    expect(page).to have_content 'Edit Referral #My Bad!'
-    expect(page).to have_field('Title/Name of Referral', with: 'Little Shop Of Horrors')
+    expect(page).to have_content 'Edit Screening #My Bad!'
+    expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
     expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13 10:00:00 UTC')
     expect(page).to have_field('Screening End Date/Time', with: '2016-08-13 11:00:00 UTC')
     expect(page).to have_field('Incident Date', with: '2016-08-11')
@@ -47,7 +47,7 @@ feature 'Edit Referral' do
       .with('Marge')
       .and_return(search_results)
 
-    fill_in 'Title/Name of Referral', with: 'The Rocky Horror Picture Show'
+    fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
     select 'Mail', from: 'Method of Referral'
     fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
     fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
@@ -76,19 +76,19 @@ feature 'Edit Referral' do
       }
     }.with_indifferent_access
 
-    stub_api_for(Referral) do |stub|
-      stub.put('/referrals/1') do |_env|
+    stub_api_for(Screening) do |stub|
+      stub.put('/screenings/1') do |_env|
         [200, {}, updated_referral.to_json]
       end
-      stub.get('/referrals/1') do |_env|
+      stub.get('/screenings/1') do |_env|
         [200, {}, updated_referral.to_json]
       end
     end
 
     click_button 'Save'
 
-    expect(page).to_not have_content 'Edit Referral'
-    expect(page).to have_content 'Referral #My Bad!'
+    expect(page).to_not have_content 'Edit Screening'
+    expect(page).to have_content 'Screening #My Bad!'
     expect(page).to have_content 'The Rocky Horror Picture Show'
     expect(page).to have_content 'Updated narrative'
     expect(page).to have_content 'Homer Simpson'
