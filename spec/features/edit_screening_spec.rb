@@ -47,21 +47,26 @@ feature 'Edit Screening' do
       .with('Marge')
       .and_return(search_results)
 
-    fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-    select 'Mail', from: 'Method of Referral'
-    fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
-    fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
-    fill_in 'Incident Date', with: '2016-08-11'
-    select  'Mariposa', from: 'Incident County'
-    fill_in_autocompleter 'Participants', with: 'Marge'
-    within 'fieldset', text: 'Incident Address' do
-      fill_in 'Address', with: '123 fake st'
-      fill_in 'City', with: 'Springfield'
-      select 'New York', from: 'State'
-      fill_in 'Zip', with: '12345'
+    within '#participants-card' do
+      fill_in_autocompleter 'Participants', with: 'Marge'
     end
-    fill_in 'Narrative', with: 'Updated narrative'
-    select "Child's Home", from: 'Location Type'
+
+    within '#referral-information-card' do
+      fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
+      select 'Mail', from: 'Method of Referral'
+      fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
+      fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
+      fill_in 'Incident Date', with: '2016-08-11'
+      select  'Mariposa', from: 'Incident County'
+      within 'fieldset', text: 'Incident Address' do
+        fill_in 'Address', with: '123 fake st'
+        fill_in 'City', with: 'Springfield'
+        select 'New York', from: 'State'
+        fill_in 'Zip', with: '12345'
+      end
+      fill_in 'Narrative', with: 'Updated narrative'
+      select "Child's Home", from: 'Location Type'
+    end
 
     updated_referral = {
       id: 1,

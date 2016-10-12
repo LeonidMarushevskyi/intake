@@ -1,10 +1,21 @@
 %h1
   = I18n.t(:edit, scope: [:views, :screening], reference: @screening.reference)
-.card.edit.double-gap-top
-  .card-header
-    %h3 Referral Information
-  .card-body
-    = form_for @screening do |f|
+
+= form_for @screening do |f|
+  #participants-card.card.edit.double-gap-top
+    .card-header
+      %span Participants
+    .card-body
+      .row
+        .col-md-6
+          = f.label :participants, t('activemodel.attributes.screening.participants'), class: 'no-gap'
+          - participants = @participants.as_json(only: [:id, :first_name, :last_name])
+          #add-person{ 'data-props' => { participants: participants, id: 'screening_participants' }.to_json }
+
+  #referral-information-card.card.edit.double-gap-top
+    .card-header
+      %span Referral Information
+    .card-body
       .row
         .col-md-6
           = f.hidden_field :reference
@@ -14,11 +25,6 @@
         .col-md-6
           = f.label :narrative
           = f.text_area :narrative
-      .row
-        .col-md-6
-          - participants = @participants.as_json(only: [:id, :first_name, :last_name])
-          = f.label :participants
-          #add-person{ 'data-props' => { participants: participants, id: 'screening_participants' }.to_json }
       .row
         .col-md-6
           = f.label :method_of_referral
