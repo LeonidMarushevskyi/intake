@@ -1,4 +1,5 @@
-%h1 Screening ##{@screening.reference}
+%h1
+  = I18n.t(:show, scope: [:views, :screening], reference: @screening.reference)
 .card.double-gap-top
   .card-header
     %span Referral Information

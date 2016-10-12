@@ -29,4 +29,8 @@ en:
     create_person: 'Create Person'
     screenings: 'Screenings'
   title: 'Intake'
+  views:
+    screening:
+      edit: 'Edit Screening #%{reference}'
+      show: 'Screening #%{reference}'
 
