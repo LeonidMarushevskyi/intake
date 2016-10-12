@@ -1,11 +1,17 @@
 en:
-  title: 'Intake'
-  links:
-    create_screening: 'Start Screening'
-    create_person: 'Create Person'
-    screenings: 'Screenings'
   activemodel:
     attributes:
+      address:
+        street_address: 'Address'
+        city: 'City'
+        state: 'State'
+        zip: 'Zip'
+      person:
+        first_name: 'First Name'
+        last_name: 'Last Name'
+        gender: 'Gender'
+        date_of_birth: 'Date of birth'
+        ssn: 'Social security number'
       screening:
         name: 'Title/Name of Screening'
         method_of_referral: 'Method of Referral'
@@ -18,15 +24,9 @@ en:
         response_time: 'Response Time'
         screening_decision: 'Screening Decision'
         narrative: 'Narrative'
-      address:
-        street_address: 'Address'
-        city: 'City'
-        state: 'State'
-        zip: 'Zip'
-      person:
-        first_name: 'First Name'
-        last_name: 'Last Name'
-        gender: 'Gender'
-        date_of_birth: 'Date of birth'
-        ssn: 'Social security number'
+  links:
+    create_screening: 'Start Screening'
+    create_person: 'Create Person'
+    screenings: 'Screenings'
+  title: 'Intake'
 
