@@ -24,9 +24,9 @@
     .row
       .col-md-6
         %label
-          = t('activemodel.attributes.screening.method_of_referral')
+          = t('activemodel.attributes.screening.communication_method')
         .c-gray
-          = MethodOfReferral::ALL[@screening.method_of_referral]
+          = CommunicationMethod::ALL[@screening.communication_method]
 
 .card.double-gap-top#participants-card
   .card-header

@@ -10,7 +10,7 @@ feature 'Edit Screening' do
       ended_at: '2016-08-13T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
-      method_of_referral: 'phone',
+      communication_method: 'phone',
       name: 'Little Shop Of Horrors',
       narrative: 'Narrative 123 test',
       reference: 'My Bad!',
@@ -37,7 +37,7 @@ feature 'Edit Screening' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13 10:00:00 UTC')
       expect(page).to have_field('Screening End Date/Time', with: '2016-08-13 11:00:00 UTC')
-      expect(page).to have_field('Method of Referral', with: 'phone')
+      expect(page).to have_field('Communication Method', with: 'phone')
     end
 
     within '#participants-card' do
@@ -61,7 +61,7 @@ feature 'Edit Screening' do
       fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
       fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
       fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
-      select  'Mail', from: 'Method of Referral'
+      select  'Mail', from: 'Communication Method'
     end
 
     within '#participants-card' do
@@ -86,7 +86,7 @@ feature 'Edit Screening' do
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
       narrative: 'Updated narrative',
-      method_of_referral: 'mail',
+      communication_method: 'mail',
       participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' },
         { id: 2, first_name: 'Marge', last_name: 'Simpson' }

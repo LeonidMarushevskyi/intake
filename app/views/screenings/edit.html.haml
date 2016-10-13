@@ -21,9 +21,9 @@
           = f.datetime_field :ended_at, value: value
       .row
         .col-md-6
-          = f.label :method_of_referral, t('activemodel.attributes.screening.method_of_referral')
-          - methods_of_referral_options = options_from_collection_for_select(MethodOfReferral::ALL, :first, :last, f.object.method_of_referral)
-          = f.select :method_of_referral, methods_of_referral_options, include_blank: true
+          = f.label :communication_method, t('activemodel.attributes.screening.communication_method')
+          - communication_method_options = options_from_collection_for_select(CommunicationMethod::ALL, :first, :last, f.object.communication_method)
+          = f.select :communication_method, communication_method_options, include_blank: true
 
   .card.edit.double-gap-top#participants-card
     .card-header

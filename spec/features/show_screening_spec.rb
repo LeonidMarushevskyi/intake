@@ -11,7 +11,7 @@ feature 'Show Screening' do
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
       location_type: "Child's Home",
-      method_of_referral: 'mail',
+      communication_method: 'mail',
       name: 'The Rocky Horror Picture Show',
       reference: 'My Bad!',
       response_time: 'within_twenty_four_hours',
