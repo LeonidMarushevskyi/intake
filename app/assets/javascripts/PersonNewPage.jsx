@@ -23,11 +23,20 @@ export default class PersonNewPage extends React.Component {
       }),
     }
     this.update = this.update.bind(this)
+    this.save = this.save.bind(this)
   }
 
   update(fieldSeq, value) {
     const person = this.state.person.setIn(fieldSeq, value)
     this.setState({person: person})
+  }
+
+  save() {
+    const url = `/people.json`
+    const xhr = Utils.request('POST', url, {person: this.state.person.toJS()}, null)
+    xhr.done((xhrResp) => {
+      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
+    })
   }
 
   render() {
@@ -125,7 +134,7 @@ export default class PersonNewPage extends React.Component {
           </div>
           <div className='row'>
             <div className='centered'>
-              <input type='submit' value='Save' />
+              <input type='submit' value='Save' onClick={this.save} />
             </div>
           </div>
       </div>
