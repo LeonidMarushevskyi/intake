@@ -3,3 +3,4 @@ codeship-services.yml
 codeship-steps.yml
 docker
 reports
+node_modules
