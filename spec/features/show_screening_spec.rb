@@ -42,15 +42,18 @@ feature 'Show Screening' do
 
     expect(page).to have_content 'Screening #My Bad!'
 
+    within '#screening-information-card' do
+      expect(page).to have_content 'Mail'
+      expect(page).to have_content 'The Rocky Horror Picture Show'
+      expect(page).to have_content '8/13/2016 10:00 AM'
+      expect(page).to have_content '8/22/2016 11:00 AM'
+    end
+
     within '#participants-card' do
       expect(page).to have_content 'Bart Simpson'
     end
 
     within '#referral-information-card' do
-      expect(page).to have_content 'Mail'
-      expect(page).to have_content 'The Rocky Horror Picture Show'
-      expect(page).to have_content '8/13/2016 10:00 AM'
-      expect(page).to have_content '8/22/2016 11:00 AM'
       expect(page).to have_content '8/11/2016'
       expect(page).to have_content 'Sacramento'
       expect(page).to have_content '123 fake st'
