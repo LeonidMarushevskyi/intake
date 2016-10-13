@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe PeopleController do
   describe '#new' do
-    it 'renders the edit template' do
+    it 'renders the new template' do
       post :new
       expect(response).to render_template('new')
     end
@@ -62,9 +62,9 @@ describe PeopleController do
       expect(assigns(:person)).to eq(person)
     end
 
-    it 'renders the show template' do
+    it 'renders the new template' do
       get :show, params: { id: 1 }
-      expect(response).to render_template('show')
+      expect(response).to render_template('new')
     end
   end
 

@@ -17,6 +17,7 @@ class PeopleController < ApplicationController
 
   def show
     @person = Person.find(params[:id])
+    render :new
   end
 
   def search
