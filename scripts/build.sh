@@ -3,7 +3,7 @@
 cd "$APP_HOME"
 
 revision=$(git rev-parse --short HEAD)
-output_dir="/ca_intake_build"
+output_dir="/build_artefacts"
 input_dir="/ca_intake"
 
 rm -rf public/assets && RAILS_ENV=production bin/gulp

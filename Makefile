@@ -66,7 +66,7 @@ build:
 	${INFO} "Deleting old application artifacts..."
 	@ rm -rf release
 	${INFO} "Copying application artifacts..."
-	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q builder):/ca_intake_build/. release
+	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q builder):/build_artefacts/. release
 	${INFO} "Build complete"
 
 release:

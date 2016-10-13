@@ -1,6 +1,4 @@
 version: '2'
-volumes:
-  ca_intake_build:
 
 services:
   rspec_test:
@@ -34,5 +32,3 @@ services:
     build:
       context: ../../
       dockerfile: docker/test/Dockerfile.build
-    volumes:
-      - ca_intake_build:/ca_intake_build
