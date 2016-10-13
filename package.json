@@ -37,6 +37,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-junit-reporter": "^1.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
     "react-addons-test-utils": "^15.3.2",
     "run-sequence": "^1.2.2",
     "vinyl-buffer": "^1.0.0",

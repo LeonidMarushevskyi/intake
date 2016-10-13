@@ -10,7 +10,9 @@ module.exports = function(config) {
       'public/assets/application-test.js',
     ],
     exclude: [ ],
-    preprocessors: { },
+    preprocessors: {
+      '**/*.js': ['sourcemap'],
+    },
     reporters: ['progress', 'junit'],
     junitReporter: {
           outputDir: '/reports', // results will be saved as $outputDir/$browserName.xml
