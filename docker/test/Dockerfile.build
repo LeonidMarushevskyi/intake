@@ -8,6 +8,7 @@ RUN mkdir /build_artefacts
 
 ENV BUNDLE_PATH /ca_intake/ruby_gems
 
+RUN gem install bundler
 COPY Gemfile Gemfile.lock ./
 COPY package.json ./
 
