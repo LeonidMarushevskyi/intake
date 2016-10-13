@@ -5,10 +5,10 @@ class Screening # :nodoc:
   include Her::Model
 
   use_api API_V1
-  ASSOCIATIONS = [:address, :involved_people].freeze
+  ASSOCIATIONS = [:address, :participants].freeze
 
   has_one :address
-  has_many :involved_people, class_name: 'Person'
+  has_many :participants, class_name: 'Person'
 
   attributes :ended_at,
     :incident_county,

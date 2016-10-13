@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import ReactAutosuggest from 'react-autosuggest'
-import AutocompleterInvolvedPeopleList from 'AutocompleterInvolvedPeopleList'
+import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
 import Autocompleter from 'Autocompleter'
 import $ from 'jquery'
 
@@ -11,9 +11,9 @@ describe('<Autcompleter />', () => {
     expect(wrapper.find(ReactAutosuggest).length).toBe(1)
   })
 
-  it('renders a AutocompleterInvolvedPeopleList component', () => {
+  it('renders a AutocompleterParticipantsList component', () => {
     const wrapper = shallow(<Autocompleter />)
-    expect(wrapper.find(AutocompleterInvolvedPeopleList).length).toBe(1)
+    expect(wrapper.find(AutocompleterParticipantsList).length).toBe(1)
   })
 
   describe('#onChange', () => {
@@ -42,7 +42,7 @@ describe('<Autcompleter />', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = 'Bart Simpson'
       wrapper.instance().onSuggestionSelected('selected', {suggestion: suggestion})
-      expect(wrapper.state('involvedPeople')).toContain(suggestion)
+      expect(wrapper.state('participants')).toContain(suggestion)
       expect(wrapper.state('value')).toEqual('')
     })
   })

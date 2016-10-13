@@ -1,6 +1,19 @@
 %h1
   = I18n.t(:show, scope: [:views, :screening], reference: @screening.reference)
-.card.double-gap-top
+#participants-card.card.double-gap-top
+  .card-header
+    %span Participants
+  .card-body
+    .row
+      .col-md-6
+        %label.no-gap
+          = t('activemodel.attributes.screening.participants')
+        .c-gray
+          %ul
+            - @participants.each do |person|
+              %li #{person.first_name} #{person.last_name}
+
+#referral-information-card.card.double-gap-top
   .card-header
     %span Referral Information
   .card-body
@@ -16,14 +29,6 @@
           = t('activemodel.attributes.screening.narrative')
         .c-gray
           = @screening.narrative
-    .row
-      .col-md-6
-        %label
-          = t('activemodel.attributes.screening.involved_people')
-        .c-gray
-          %ul
-            - @involved_people.each do |person|
-              %li #{person.first_name} #{person.last_name}
     .row
       .col-md-6
         %label

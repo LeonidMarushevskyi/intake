@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import $ from 'jquery'
-import AutocompleterInvolvedPeopleList from 'AutocompleterInvolvedPeopleList'
+import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
 
 export default class Autocompleter extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class Autocompleter extends React.Component {
     this.state = {
       value: '',
       suggestions: [],
-      involvedPeople: this.props.involvedPeople || [],
+      participants: this.props.participants || [],
       isLoading: false,
     }
   }
@@ -41,12 +41,12 @@ export default class Autocompleter extends React.Component {
   }
 
   onSuggestionSelected(event, {suggestion}) {
-    var involvedPeople = this.state.involvedPeople.slice(0)
-    involvedPeople.push(suggestion)
+    var participants = this.state.participants.slice(0)
+    participants.push(suggestion)
     this.onSuggestionsClearRequested()
     this.setState({
       value: '',
-      involvedPeople: involvedPeople,
+      participants: participants,
     })
   }
 
@@ -77,7 +77,7 @@ export default class Autocompleter extends React.Component {
   }
 
   render() {
-    const {value, suggestions, involvedPeople} = this.state
+    const {value, suggestions, participants} = this.state
     const inputProps = {
       placeholder: 'Search people...',
       id: this.props.id,
@@ -97,7 +97,7 @@ export default class Autocompleter extends React.Component {
           inputProps={inputProps}
           renderSuggestionsContainer={this.renderSuggestionsContainer}
         />
-        <AutocompleterInvolvedPeopleList involvedPeople={involvedPeople} />
+        <AutocompleterParticipantsList participants={participants} />
       </div>
     )
   }
@@ -105,9 +105,9 @@ export default class Autocompleter extends React.Component {
 
 Autocompleter.propTypes = {
   id: React.PropTypes.string,
-  involvedPeople: React.PropTypes.array,
+  participants: React.PropTypes.array,
 }
 
 Autocompleter.defaultProps = {
-  involvedPeople: [],
+  participants: [],
 }
