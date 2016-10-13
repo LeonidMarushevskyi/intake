@@ -4,12 +4,15 @@
 # the creation and modification of person objects.
 class PeopleController < ApplicationController
   def new
-    @person = Person.new(address: {})
   end
 
   def create
-    @person = Person.create(person_params.to_h)
-    redirect_to person_path(@person)
+    respond_to do |format|
+      format.json do
+        person = PersonService.create(person_params.to_h)
+        render json: person
+      end
+    end
   end
 
   def show
