@@ -1,6 +1,6 @@
 %h1
   = I18n.t(:show, scope: [:views, :screening], reference: @screening.reference)
-#participants-card.card.double-gap-top
+.card.double-gap-top#participants-card
   .card-header
     %span Participants
   .card-body
@@ -13,7 +13,7 @@
             - @participants.each do |person|
               %li #{person.first_name} #{person.last_name}
 
-#referral-information-card.card.double-gap-top
+.card.double-gap-top#referral-information-card
   .card-header
     %span Referral Information
   .card-body
