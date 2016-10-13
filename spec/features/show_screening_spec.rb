@@ -13,7 +13,7 @@ feature 'Show Screening' do
       location_type: "Child's Home",
       communication_method: 'mail',
       name: 'The Rocky Horror Picture Show',
-      narrative: 'some narrative',
+      report_narrative: 'some narrative',
       reference: 'My Bad!',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'evaluate_out',

@@ -12,7 +12,7 @@ feature 'Edit Screening' do
       incident_date: '2016-08-11',
       communication_method: 'phone',
       name: 'Little Shop Of Horrors',
-      narrative: 'Narrative 123 test',
+      report_narrative: 'Narrative 123 test',
       reference: 'My Bad!',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
@@ -45,7 +45,7 @@ feature 'Edit Screening' do
     end
 
     within '#narrative-card' do
-      expect(page).to have_field('Narrative', with: 'Narrative 123 test')
+      expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
     end
 
     within '#referral-information-card' do
@@ -72,7 +72,7 @@ feature 'Edit Screening' do
     end
 
     within '#narrative-card' do
-      fill_in 'Narrative', with: 'Updated narrative'
+      fill_in 'Report Narrative', with: 'Updated narrative'
     end
 
     within '#referral-information-card' do
@@ -91,7 +91,7 @@ feature 'Edit Screening' do
       id: 1,
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
-      narrative: 'Updated narrative',
+      report_narrative: 'Updated narrative',
       communication_method: 'mail',
       participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' },

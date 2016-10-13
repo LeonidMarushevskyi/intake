@@ -16,7 +16,7 @@ class Screening # :nodoc:
     :location_type,
     :communication_method,
     :name,
-    :narrative,
+    :report_narrative,
     :response_time,
     :screening_decision,
     :started_at
