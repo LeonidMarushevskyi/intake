@@ -3,6 +3,7 @@ import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
 import USState from 'USState'
+import {browserHistory} from 'react-router'
 
 export default class PersonNewPage extends React.Component {
   constructor() {
@@ -36,6 +37,9 @@ export default class PersonNewPage extends React.Component {
     const xhr = Utils.request('POST', url, {person: this.state.person.toJS()}, null)
     xhr.done((xhrResp) => {
       this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
+      browserHistory.push({
+        pathname: `/people/${xhrResp.responseJSON.id}`,
+      })
     })
   }
 
