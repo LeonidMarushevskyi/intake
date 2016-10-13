@@ -1,6 +1,8 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
+import Gender from 'Gender'
+import USState from 'USState'
 
 export default class PersonShowPage extends React.Component {
   constructor() {
@@ -44,7 +46,7 @@ export default class PersonShowPage extends React.Component {
           <div className='row gap-top'>
             <div className='col-md-6'>
               <label>Gender</label>
-              <div className='c-gray'>{person.get('gender')}</div>
+              <div className='c-gray'>{Gender[person.get('gender')]}</div>
             </div>
           </div>
           <div className='row gap-top'>
@@ -70,7 +72,7 @@ export default class PersonShowPage extends React.Component {
           <div className='row gap-top'>
             <div className='col-md-6'>
               <label>State</label>
-              <div className='c-gray'>{person.getIn(['address', 'state'])}</div>
+              <div className='c-gray'>{USState[person.getIn(['address', 'state'])]}</div>
             </div>
             <div className='col-md-6'>
               <label>Zip</label>
