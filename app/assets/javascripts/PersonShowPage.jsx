@@ -1,5 +1,6 @@
-import React from 'react'
+import * as Utils from 'utils/http'
 import Immutable from 'immutable'
+import React from 'react'
 
 export default class PersonShowPage extends React.Component {
   constructor() {
@@ -7,6 +8,19 @@ export default class PersonShowPage extends React.Component {
     this.state = {
       person: Immutable.Map(),
     }
+    this.fetch = this.fetch.bind(this)
+  }
+
+  componentDidMount() {
+    this.fetch()
+  }
+
+  fetch() {
+    const {params} = this.props
+    const xhr = Utils.request('GET', `/people/${params.id}.json`)
+    xhr.done((xhrResp) => {
+      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
+    })
   }
 
   render() {
@@ -67,4 +81,8 @@ export default class PersonShowPage extends React.Component {
       </div>
     )
   }
+}
+
+PersonShowPage.propTypes = {
+  params: React.PropTypes.object.isRequired,
 }
