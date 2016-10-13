@@ -15,6 +15,13 @@ class PersonService
     response.body.with_indifferent_access
   end
 
+  def self.find(id)
+    response = make_api_get("#{PEOPLE_PATH}/#{id}")
+    raise 'Error finding person' if response.status != 200
+    Rails.logger.info response.body.inspect
+    response.body.with_indifferent_access
+  end
+
   def self.compose_person_params(user_passed_in_params)
     params = {}
     PERSON_ATTRS.map do |attr|
@@ -32,4 +39,12 @@ class PersonService
     end
   end
   private_class_method :make_api_post
+
+  def self.make_api_get(url)
+    ::API.connection.get do |req|
+      req.url url
+      req.headers['Content-Type'] = CONTENT_TYPE
+    end
+  end
+  private_class_method :make_api_get
 end

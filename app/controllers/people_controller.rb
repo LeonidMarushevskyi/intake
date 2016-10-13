@@ -16,8 +16,15 @@ class PeopleController < ApplicationController
   end
 
   def show
-    @person = Person.find(params[:id])
-    render :new
+    respond_to do |format|
+      format.html do
+        render :new
+      end
+      format.json do
+        person = PersonService.find(params[:id])
+        render json: person
+      end
+    end
   end
 
   def search

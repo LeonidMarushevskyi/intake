@@ -52,19 +52,47 @@ describe PeopleController do
   end
 
   describe '#show' do
-    let(:person) { double(:person) }
-    before do
-      allow(Person).to receive(:find).with('1').and_return(person)
+    let(:person) do
+      {
+        id: 1,
+        first_name: 'Homer',
+        last_name: 'Simpson',
+        gender: 'male',
+        date_of_birth: '05/29/1990',
+        ssn: '123-23-1234',
+        address: {
+          street_address: '123 fake st',
+          city: 'Springfield',
+          state: 'NY',
+          zip: '12345'
+        }
+      }.with_indifferent_access
     end
-
-    it 'assigns person' do
-      get :show, params: { id: 1 }
-      expect(assigns(:person)).to eq(person)
+    before do
+      allow(PersonService).to receive(:find).with('1').and_return(person)
     end
 
     it 'renders the new template' do
       get :show, params: { id: 1 }
       expect(response).to render_template('new')
+    end
+
+    it 'renders person as json' do
+      post :show, params: { id: 1 }, format: :json
+      expect(JSON.parse(response.body)).to eq({
+        id: 1,
+        first_name: 'Homer',
+        last_name: 'Simpson',
+        gender: 'male',
+        date_of_birth: '05/29/1990',
+        ssn: '123-23-1234',
+        address: {
+          street_address: '123 fake st',
+          city: 'Springfield',
+          state: 'NY',
+          zip: '12345'
+        }
+      }.with_indifferent_access)
     end
   end
 

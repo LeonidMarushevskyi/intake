@@ -39,4 +39,28 @@ describe PersonService do
       end.to raise_error RuntimeError
     end
   end
+
+  describe '.find' do
+    it 'returns the person if the get request to /people is successful' do
+      mock_response = double(:mock_response, status: 200, body: {})
+      mock_request = double(:mock_request)
+      allow(API.connection).to receive(:get)
+        .and_yield(mock_request)
+        .and_return(mock_response)
+      expect(mock_request).to receive(:url).with("#{PersonService::PEOPLE_PATH}/1")
+      expect(mock_request).to receive(:headers).and_return({})
+      expect(mock_request).to_not receive(:body=)
+      person = PersonService.find(1)
+      expect(person).to eq(mock_response.body)
+    end
+
+    it 'raise an error if the response code is not 200' do
+      mock_response = double(:mock_response, status: 500)
+      allow(API.connection).to receive(:get).and_return(mock_response)
+
+      expect do
+        PersonService.find(1)
+      end.to raise_error RuntimeError
+    end
+  end
 end
