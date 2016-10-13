@@ -3,6 +3,7 @@
   "dependencies": {
     "babel-polyfill": "6.2.0",
     "bootstrap": "^3.3.6",
+    "immutable": "^3.8.1",
     "jquery": "2.1.4",
     "jquery-ujs": "^1.2.1",
     "lodash": "3.7.0",
