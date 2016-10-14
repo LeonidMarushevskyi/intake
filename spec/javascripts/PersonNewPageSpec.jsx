@@ -7,7 +7,7 @@ describe('PersonNewPage', () => {
   describe('render', () => {
     it('renders the person input fields', () => {
       const wrapper = shallow(<PersonNewPage />)
-      expect(wrapper.find('input').length).toEqual(8)
+      expect(wrapper.find('input').length).toEqual(7)
     })
 
     it('renders the person select fields', () => {
@@ -17,7 +17,7 @@ describe('PersonNewPage', () => {
 
     it('renders the save button', () => {
       const wrapper = shallow(<PersonNewPage />)
-      expect(wrapper.find('input[type="submit"]').length).toEqual(1)
+      expect(wrapper.find('button').length).toEqual(1)
     })
   })
 

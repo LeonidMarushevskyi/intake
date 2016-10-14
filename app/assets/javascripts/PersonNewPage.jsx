@@ -48,7 +48,6 @@ export default class PersonNewPage extends React.Component {
       <div className='card edit double-gap-top'>
         <div className='card-header'>
           <span>Create New Person</span>
-          <a className='fa fa-check' href='#' aria-label='Done editing profile' />
         </div>
         <div className='card-body'>
           <div className='row'>
@@ -85,6 +84,7 @@ export default class PersonNewPage extends React.Component {
               <label htmlFor='date_of_birth'>Date of birth</label>
               <input
                 type='date'
+                className='input-type-date'
                 id='date_of_birth'
                 onChange={(event) => this.update(['date_of_birth'], event.target.value)}
               />
@@ -138,7 +138,7 @@ export default class PersonNewPage extends React.Component {
           </div>
           <div className='row'>
             <div className='centered'>
-              <input type='submit' value='Save' onClick={this.save} />
+              <button className='btn btn-primary' onClick={this.save}>Save</button>
             </div>
           </div>
       </div>
