@@ -419,8 +419,10 @@ input[type='radio']:disabled + label::before {
   }
 }
 
-.required:after {
-  
+.required::after {
+  @include fa-icon;
+  color: $secondary-red-dark;
+  content: '\f069';
 }
 
 /////////////////////////////////////////

@@ -103,9 +103,8 @@
   %label.no-gap{ for: 'input-type-text' } Text input label
   %input#input-type-text{ name: 'input-type-text', type: 'text' }
 
-  %label{ for: 'first-name' }
+  %label.required{ for: 'first-name' }
     Required text field
-    %span.additional_text Required
   %input#first-name{ 'aria-required' => 'true', name: 'first-name', required: '', type: 'text' }
 
   .input-error
