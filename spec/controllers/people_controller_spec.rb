@@ -3,9 +3,9 @@ require 'rails_helper'
 
 describe PeopleController do
   describe '#new' do
-    it 'renders the new template' do
+    it 'renders the show template' do
       post :new
-      expect(response).to render_template('new')
+      expect(response).to render_template('show')
     end
   end
 
@@ -72,9 +72,9 @@ describe PeopleController do
       allow(PersonService).to receive(:find).with('1').and_return(person)
     end
 
-    it 'renders the new template' do
+    it 'renders the show template' do
       get :show, params: { id: 1 }
-      expect(response).to render_template('new')
+      expect(response).to render_template('show')
     end
 
     it 'renders person as json' do

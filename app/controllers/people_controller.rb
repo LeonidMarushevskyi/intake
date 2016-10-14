@@ -4,6 +4,11 @@
 # the creation and modification of person objects.
 class PeopleController < ApplicationController
   def new
+    respond_to do |format|
+      format.html do
+        render :show
+      end
+    end
   end
 
   def create
@@ -18,7 +23,7 @@ class PeopleController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        render :new
+        render :show
       end
       format.json do
         person = PersonService.find(params[:id])
