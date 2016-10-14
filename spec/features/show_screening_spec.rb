@@ -13,6 +13,7 @@ feature 'Show Screening' do
       location_type: "Child's Home",
       communication_method: 'mail',
       name: 'The Rocky Horror Picture Show',
+      report_narrative: 'some narrative',
       reference: 'My Bad!',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'evaluate_out',
@@ -51,6 +52,10 @@ feature 'Show Screening' do
 
     within '#participants-card' do
       expect(page).to have_content 'Bart Simpson'
+    end
+
+    within '#narrative-card' do
+      expect(page).to have_content 'some narrative'
     end
 
     within '#referral-information-card' do

@@ -12,7 +12,7 @@ feature 'Edit Screening' do
       incident_date: '2016-08-11',
       communication_method: 'phone',
       name: 'Little Shop Of Horrors',
-      narrative: 'Narrative 123 test',
+      report_narrative: 'Narrative 123 test',
       reference: 'My Bad!',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
@@ -44,12 +44,15 @@ feature 'Edit Screening' do
       expect(page).to have_content 'Homer Simpson'
     end
 
+    within '#narrative-card' do
+      expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
+    end
+
     within '#referral-information-card' do
       expect(page).to have_field('Incident Date', with: '2016-08-11')
       expect(page).to have_field('Incident County', with: 'sacramento')
       expect(page).to have_field('Response Time', with: 'immediate')
       expect(page).to have_field('Screening Decision', with: 'evaluate_out')
-      expect(page).to have_field('Narrative', with: 'Narrative 123 test')
     end
 
     search_results = [Person.new(first_name: 'Marge', last_name: 'Simpson')]
@@ -68,6 +71,10 @@ feature 'Edit Screening' do
       fill_in_autocompleter 'Participants', with: 'Marge'
     end
 
+    within '#narrative-card' do
+      fill_in 'Report Narrative', with: 'Updated narrative'
+    end
+
     within '#referral-information-card' do
       fill_in 'Incident Date', with: '2016-08-11'
       select  'Mariposa', from: 'Incident County'
@@ -77,7 +84,6 @@ feature 'Edit Screening' do
         select 'New York', from: 'State'
         fill_in 'Zip', with: '12345'
       end
-      fill_in 'Narrative', with: 'Updated narrative'
       select "Child's Home", from: 'Location Type'
     end
 
@@ -85,7 +91,7 @@ feature 'Edit Screening' do
       id: 1,
       reference: 'My Bad!',
       name: 'The Rocky Horror Picture Show',
-      narrative: 'Updated narrative',
+      report_narrative: 'Updated narrative',
       communication_method: 'mail',
       participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' },
