@@ -11,12 +11,12 @@ describe ScreeningsController do
     end
 
     it 'assigns screening' do
-      post :create
+      process :create, method: :post
       expect(assigns(:screening)).to eq(screening)
     end
 
     it 'redirects to edit' do
-      post :create
+      process :create, method: :post
       expect(response).to redirect_to(edit_screening_path(assigns(:screening)))
     end
   end
@@ -31,17 +31,17 @@ describe ScreeningsController do
     end
 
     it 'assigns screening' do
-      post :edit, params: { id: 1 }
+      process :edit, method: :get, params: { id: 1 }
       expect(assigns(:screening)).to eq(screening)
     end
 
     it 'assigns participants' do
-      post :edit, params: { id: 1 }
+      process :edit, method: :get, params: { id: 1 }
       expect(assigns(:participants)).to eq(participants)
     end
 
     it 'renders the edit template' do
-      post :edit, params: { id: 1 }
+      process :edit, method: :get, params: { id: 1 }
       expect(response).to render_template('edit')
     end
   end
@@ -56,17 +56,17 @@ describe ScreeningsController do
     end
 
     it 'assigns screening' do
-      get :show, params: { id: 1 }
+      process :show, method: :get, params: { id: 1 }
       expect(assigns(:screening)).to eq(screening)
     end
 
     it 'assigns participants' do
-      post :edit, params: { id: 1 }
+      process :show, method: :get, params: { id: 1 }
       expect(assigns(:participants)).to eq(participants)
     end
 
     it 'renders the show template' do
-      get :show, params: { id: 1 }
+      process :show, method: :get, params: { id: 1 }
       expect(response).to render_template('show')
     end
   end
@@ -95,12 +95,12 @@ describe ScreeningsController do
     end
 
     it 'assigns screening' do
-      put :update, params: { id: 1, screening: screening_attributes }
+      process :update, method: :put, params: { id: 1, screening: screening_attributes }
       expect(assigns(:screening)).to eq(screening)
     end
 
     it 'redirects to show' do
-      put :update, params: { id: 1, screening: screening_attributes }
+      process :update, method: :put, params: { id: 1, screening: screening_attributes }
       expect(response).to redirect_to(screening_path(assigns(:screening)))
     end
   end
@@ -116,12 +116,12 @@ describe ScreeningsController do
       end
 
       it 'renders screenings as json' do
-        get :index, format: :json
+        process :index, method: :get, format: :json
         expect(JSON.parse(response.body)).to eq([{ 'id' => 1 }])
       end
 
       it 'renders the index template' do
-        get :index
+        process :index, method: :get
         expect(response).to render_template('index')
       end
     end
@@ -153,7 +153,7 @@ describe ScreeningsController do
       end
 
       it 'renders screenings returned from filtered query' do
-        get :index, format: :json, params: params
+        process :index, method: :get, format: :json, params: params
         expect(JSON.parse(response.body)).to eq([])
       end
     end

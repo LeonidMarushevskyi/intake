@@ -4,7 +4,7 @@ require 'rails_helper'
 describe PeopleController do
   describe '#new' do
     it 'renders the show template' do
-      post :new
+      process :new, method: :get
       expect(response).to render_template('show')
     end
   end
@@ -73,12 +73,12 @@ describe PeopleController do
     end
 
     it 'renders the show template' do
-      get :show, params: { id: 1 }
+      process :show, method: :get, params: { id: 1 }
       expect(response).to render_template('show')
     end
 
     it 'renders person as json' do
-      post :show, params: { id: 1 }, format: :json
+      process :show, method: :get, params: { id: 1 }, format: :json
       expect(JSON.parse(response.body)).to eq({
         id: 1,
         first_name: 'Homer',
@@ -106,7 +106,7 @@ describe PeopleController do
         .with('foobarbaz')
         .and_return(people)
 
-      get 'search', query: 'foobarbaz'
+      process :search, method: :get, params: { query: 'foobarbaz' }
 
       body = JSON.parse(response.body)
       expect(body.first['first_name']).to eq('Bart')
