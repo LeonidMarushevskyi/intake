@@ -42,22 +42,7 @@ describe PeopleController do
   end
 
   describe '#show' do
-    let(:person) do
-      {
-        id: 1,
-        first_name: 'Homer',
-        last_name: 'Simpson',
-        gender: 'male',
-        date_of_birth: '05/29/1990',
-        ssn: '123-23-1234',
-        address: {
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
-      }.with_indifferent_access
-    end
+    let(:person) { double(:person, as_json: { 'id' => 1 }) }
     before do
       allow(PersonRepository).to receive(:find).with('1').and_return(person)
     end
@@ -69,20 +54,7 @@ describe PeopleController do
 
     it 'renders person as json' do
       process :show, method: :get, params: { id: 1 }, format: :json
-      expect(JSON.parse(response.body)).to eq({
-        id: 1,
-        first_name: 'Homer',
-        last_name: 'Simpson',
-        gender: 'male',
-        date_of_birth: '05/29/1990',
-        ssn: '123-23-1234',
-        address: {
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
-      }.with_indifferent_access)
+      expect(JSON.parse(response.body)).to eq(person.as_json)
     end
   end
 

@@ -17,7 +17,7 @@ class PersonRepository
     response = make_api_get("#{PEOPLE_PATH}/#{id}")
     raise 'Error finding person' if response.status != 200
     Rails.logger.info response.body.inspect
-    response.body.with_indifferent_access
+    Person.new(response.body)
   end
 
   def self.make_api_post(url, attributes = {})
