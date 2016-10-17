@@ -55,7 +55,7 @@ feature 'Edit Screening' do
       expect(page).to have_field('Screening Decision', with: 'evaluate_out')
     end
 
-    search_results = [Person.new(first_name: 'Marge', last_name: 'Simpson')]
+    search_results = [Participant.new(first_name: 'Marge', last_name: 'Simpson')]
     allow(PeopleRepo).to receive(:search)
       .with('Marge')
       .and_return(search_results)

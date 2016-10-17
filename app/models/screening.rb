@@ -8,7 +8,7 @@ class Screening # :nodoc:
   ASSOCIATIONS = [:address, :participants].freeze
 
   has_one :address
-  has_many :participants, class_name: 'Person'
+  has_many :participants
 
   attributes :ended_at,
     :incident_county,
