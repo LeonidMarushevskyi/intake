@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# PersonService is a service class responsible for creation of a person
+# PersonRepository is a service class responsible for creation of a person
 # resource via the API
-class PersonService
+class PersonRepository
   PEOPLE_PATH = '/api/v1/people'
   CONTENT_TYPE = 'application/json'
 

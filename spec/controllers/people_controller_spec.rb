@@ -28,7 +28,7 @@ describe PeopleController do
     let(:created_person) { new_person.merge(id: 1) }
 
     before do
-      allow(PersonService).to receive(:create)
+      allow(PersonRepository).to receive(:create)
         .with(new_person).and_return(created_person)
     end
 
@@ -69,7 +69,7 @@ describe PeopleController do
       }.with_indifferent_access
     end
     before do
-      allow(PersonService).to receive(:find).with('1').and_return(person)
+      allow(PersonRepository).to receive(:find).with('1').and_return(person)
     end
 
     it 'renders the show template' do

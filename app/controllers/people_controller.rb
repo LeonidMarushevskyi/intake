@@ -14,7 +14,7 @@ class PeopleController < ApplicationController
   def create
     respond_to do |format|
       format.json do
-        person = PersonService.create(person_params.to_h)
+        person = PersonRepository.create(person_params.to_h)
         render json: person
       end
     end
@@ -26,7 +26,7 @@ class PeopleController < ApplicationController
         render :show
       end
       format.json do
-        person = PersonService.find(params[:id])
+        person = PersonRepository.find(params[:id])
         render json: person
       end
     end

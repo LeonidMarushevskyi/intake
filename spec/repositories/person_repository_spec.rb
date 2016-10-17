@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-describe PersonService do
+describe PersonRepository do
   describe '.create' do
     it 'returns the person if the post to /people is successful' do
       mock_response = double(:mock_response, status: 201, body: {})
@@ -22,11 +22,11 @@ describe PersonService do
       allow(API.connection).to receive(:post)
         .and_yield(mock_request)
         .and_return(mock_response)
-      expect(mock_request).to receive(:url).with(PersonService::PEOPLE_PATH)
+      expect(mock_request).to receive(:url).with(PersonRepository::PEOPLE_PATH)
       expect(mock_request).to receive(:headers).and_return({})
       expect(mock_request).to receive(:body=).with(person_attributes.to_json)
 
-      person = PersonService.create(person_attributes)
+      person = PersonRepository.create(person_attributes)
       expect(person).to eq(mock_response.body)
     end
 
@@ -35,7 +35,7 @@ describe PersonService do
       allow(API.connection).to receive(:post).and_return(mock_response)
 
       expect do
-        PersonService.create({})
+        PersonRepository.create({})
       end.to raise_error RuntimeError
     end
   end
@@ -47,10 +47,10 @@ describe PersonService do
       allow(API.connection).to receive(:get)
         .and_yield(mock_request)
         .and_return(mock_response)
-      expect(mock_request).to receive(:url).with("#{PersonService::PEOPLE_PATH}/1")
+      expect(mock_request).to receive(:url).with("#{PersonRepository::PEOPLE_PATH}/1")
       expect(mock_request).to receive(:headers).and_return({})
       expect(mock_request).to_not receive(:body=)
-      person = PersonService.find(1)
+      person = PersonRepository.find(1)
       expect(person).to eq(mock_response.body)
     end
 
@@ -59,7 +59,7 @@ describe PersonService do
       allow(API.connection).to receive(:get).and_return(mock_response)
 
       expect do
-        PersonService.find(1)
+        PersonRepository.find(1)
       end.to raise_error RuntimeError
     end
   end
