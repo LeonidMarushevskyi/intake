@@ -6,11 +6,11 @@ class PersonRepository
   PEOPLE_PATH = '/api/v1/people'
   CONTENT_TYPE = 'application/json'
 
-  def self.create(user_passed_in_attributes = {})
-    response = make_api_post(PEOPLE_PATH, user_passed_in_attributes)
+  def self.create(person)
+    response = make_api_post(PEOPLE_PATH, person)
     raise 'Error creating person' if response.status != 201
     Rails.logger.info response.body.inspect
-    response.body.with_indifferent_access
+    Person.new(response.body)
   end
 
   def self.find(id)

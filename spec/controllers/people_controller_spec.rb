@@ -10,7 +10,7 @@ describe PeopleController do
   end
 
   describe '#create' do
-    let(:new_person) do
+    let(:person_params) do
       {
         first_name: 'Homer',
         last_name: 'Simpson',
@@ -25,29 +25,19 @@ describe PeopleController do
         }
       }.with_indifferent_access
     end
-    let(:created_person) { new_person.merge(id: 1) }
+    let(:created_person) { double(:person, as_json: person_params.merge(id: 1)) }
 
     before do
-      allow(PersonRepository).to receive(:create)
-        .with(new_person).and_return(created_person)
+      person = double(:person)
+      expect(Person).to receive(:new)
+        .with(person_params).and_return(person)
+      expect(PersonRepository).to receive(:create)
+        .with(person).and_return(created_person)
     end
 
     it 'renders person as json' do
-      post :create, params: { person: new_person }, format: :json
-      expect(JSON.parse(response.body)).to eq({
-        id: 1,
-        first_name: 'Homer',
-        last_name: 'Simpson',
-        gender: 'male',
-        date_of_birth: '05/29/1990',
-        ssn: '123-23-1234',
-        address: {
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
-      }.with_indifferent_access)
+      post :create, params: { person: person_params }, format: :json
+      expect(JSON.parse(response.body)).to eq(created_person.as_json)
     end
   end
 

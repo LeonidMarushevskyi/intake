@@ -14,8 +14,9 @@ class PeopleController < ApplicationController
   def create
     respond_to do |format|
       format.json do
-        person = PersonRepository.create(person_params.to_h)
-        render json: person
+        person = Person.new(person_params.to_h)
+        created_person = PersonRepository.create(person)
+        render json: created_person
       end
     end
   end
