@@ -38,5 +38,6 @@ feature 'Show Person' do
     expect(page).to have_content('New York')
     expect(page).to have_content('12345')
     expect(page).to_not have_content('Save')
+    expect(page).to have_link('Edit', href: edit_person_path(id: person[:id]))
   end
 end

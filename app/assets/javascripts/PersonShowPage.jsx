@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import Gender from 'Gender'
 import USState from 'USState'
+import {Link} from 'react-router'
 
 export default class PersonShowPage extends React.Component {
   constructor() {
@@ -26,11 +27,13 @@ export default class PersonShowPage extends React.Component {
   }
 
   render() {
+    const {params} = this.props
     const {person} = this.state
     return (
       <div className='card double-gap-top'>
         <div className='card-header'>
           <span>Profile Information</span>
+          <Link to={`/people/${params.id}/edit`}>Edit</Link>
         </div>
         <div className='card-body'>
           <div className='row'>

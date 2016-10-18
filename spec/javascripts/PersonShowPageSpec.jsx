@@ -62,6 +62,14 @@ describe('PersonShowPage', () => {
       expect(wrapper.text()).toContain('Illinois')
       expect(wrapper.text()).toContain('60093')
     })
+
+    it('renders the edit link', () => {
+      const props = { params: { id: 99 } }
+      const wrapper = mount(<PersonShowPage {...props} />)
+      expect(wrapper.find('Link').length).toEqual(1)
+      expect(wrapper.find('Link').text()).toEqual('Edit')
+      expect(wrapper.find('Link').props().to).toEqual('/people/99/edit')
+    })
   })
 
   describe('fetch', () => {
