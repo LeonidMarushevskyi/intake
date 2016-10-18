@@ -3,6 +3,7 @@ import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
 import USState from 'USState'
+import {Link} from 'react-router'
 
 export default class PersonEditPage extends React.Component {
   constructor() {
@@ -31,6 +32,7 @@ export default class PersonEditPage extends React.Component {
   }
 
   render() {
+    const {params} = this.props
     const {person} = this.state
     return (
       <div className='card edit double-gap-top'>
@@ -137,7 +139,7 @@ export default class PersonEditPage extends React.Component {
           <div className='row'>
             <div className='centered'>
               <button className='btn btn-primary'>Save</button>
-              <button className='btn btn-default'>Cancel</button>
+              <Link className='btn btn-default' to={`/people/${params.id}`}>Cancel</Link>
             </div>
           </div>
         </div>

@@ -43,7 +43,42 @@ feature 'Edit Person' do
       expect(page).to have_field('State', with: 'NY')
       expect(page).to have_field('Zip', with: '12345')
     end
-    expect(page).to have_button 'Cancel'
+    expect(page).to have_link 'Cancel'
     expect(page).to have_button 'Save'
+  end
+
+  scenario 'when a user cancels after editing and existing person' do
+    person = {
+      id: 1,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      gender: 'male',
+      date_of_birth: '05/29/1990',
+      ssn: '123-23-1234',
+      address: {
+        street_address: '123 fake st',
+        city: 'Springfield',
+        state: 'NY',
+        zip: '12345'
+      }
+    }.with_indifferent_access
+    faraday_stub = Faraday.new do |builder|
+      builder.adapter :test do |stub|
+        stub.get('/api/v1/people/1') do |_|
+          [200, {}, person]
+        end
+      end
+    end
+    allow(API).to receive(:connection).and_return(faraday_stub)
+
+    visit edit_person_path(id: person[:id])
+
+    fill_in 'First Name', with: 'Lisa'
+    click_link 'Cancel'
+
+    within '.card-header' do
+      expect(page).to have_content('PROFILE INFORMATION')
+    end
+    expect(page).to have_content 'Homer'
   end
 end

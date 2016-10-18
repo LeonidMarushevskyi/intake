@@ -64,11 +64,17 @@ describe('PersonEditPage', () => {
       expect(wrapper.find('#zip').props().value).toEqual(60093)
     })
 
-    it('renders the save and cancel buttons', () => {
+    it('renders the save button', () => {
       const props = { params: { id: 1 } }
       const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('button.btn-primary').text()).toEqual('Save')
-      expect(wrapper.find('button.btn-default').text()).toEqual('Cancel')
+    })
+
+    it('renders the cancel link', () => {
+      const props = { params: { id: 1 } }
+      const wrapper = mount(<PersonEditPage {...props} />)
+      expect(wrapper.find('Link').text()).toEqual('Cancel')
+      expect(wrapper.find('Link').props().to).toEqual('/people/1')
     })
   })
 
