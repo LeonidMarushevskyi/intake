@@ -41,6 +41,13 @@ describe PeopleController do
     end
   end
 
+  describe '#edit' do
+    it 'renders the show template' do
+      process :show, method: :get, params: { id: 1 }
+      expect(response).to render_template('show')
+    end
+  end
+
   describe '#show' do
     let(:person) { double(:person, as_json: { 'id' => 1 }) }
     before do

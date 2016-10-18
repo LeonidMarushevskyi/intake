@@ -21,6 +21,14 @@ class PeopleController < ApplicationController
     end
   end
 
+  def edit
+    respond_to do |format|
+      format.html do
+        render :show
+      end
+    end
+  end
+
   def show
     respond_to do |format|
       format.html do
