@@ -3,24 +3,14 @@ require 'rails_helper'
 
 describe PeopleController do
   describe '#new' do
-    it 'assigns person' do
-      post :new
-      expect(assigns(:person)).to be_present
-    end
-
-    it 'assigns person address' do
-      post :new
-      expect(assigns(:person).address.attributes).to eq({})
-    end
-
-    it 'renders the edit template' do
-      post :new
-      expect(response).to render_template('new')
+    it 'renders the show template' do
+      process :new, method: :get
+      expect(response).to render_template('show')
     end
   end
 
   describe '#create' do
-    let(:new_person) do
+    let(:person_params) do
       {
         first_name: 'Homer',
         last_name: 'Simpson',
@@ -35,37 +25,36 @@ describe PeopleController do
         }
       }.with_indifferent_access
     end
-    let(:person) { double(:person, id: 1) }
+    let(:created_person) { double(:person, as_json: person_params.merge(id: 1)) }
 
     before do
-      allow(Person).to receive(:create).with(new_person).and_return(person)
+      person = double(:person)
+      expect(Person).to receive(:new)
+        .with(person_params).and_return(person)
+      expect(PersonRepository).to receive(:create)
+        .with(person).and_return(created_person)
     end
 
-    it 'assigns person' do
-      post :create, params: { person: new_person }
-      expect(assigns(:person)).to eq(person)
-    end
-
-    it 'redirects to show' do
-      post :create, params: { person: new_person }
-      expect(response).to redirect_to(person_path(assigns(:person)))
+    it 'renders person as json' do
+      post :create, params: { person: person_params }, format: :json
+      expect(JSON.parse(response.body)).to eq(created_person.as_json)
     end
   end
 
   describe '#show' do
-    let(:person) { double(:person) }
+    let(:person) { double(:person, as_json: { 'id' => 1 }) }
     before do
-      allow(Person).to receive(:find).with('1').and_return(person)
-    end
-
-    it 'assigns person' do
-      get :show, params: { id: 1 }
-      expect(assigns(:person)).to eq(person)
+      allow(PersonRepository).to receive(:find).with('1').and_return(person)
     end
 
     it 'renders the show template' do
-      get :show, params: { id: 1 }
+      process :show, method: :get, params: { id: 1 }
       expect(response).to render_template('show')
+    end
+
+    it 'renders person as json' do
+      process :show, method: :get, params: { id: 1 }, format: :json
+      expect(JSON.parse(response.body)).to eq(person.as_json)
     end
   end
 
@@ -79,7 +68,7 @@ describe PeopleController do
         .with('foobarbaz')
         .and_return(people)
 
-      get 'search', query: 'foobarbaz'
+      process :search, method: :get, params: { query: 'foobarbaz' }
 
       body = JSON.parse(response.body)
       expect(body.first['first_name']).to eq('Bart')

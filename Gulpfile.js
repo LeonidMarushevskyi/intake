@@ -19,9 +19,11 @@ var vinylBuffer = require('vinyl-buffer')
 var gulpif = require('gulp-if')
 var uglify = require('gulp-uglify')
 function bundle(browserifyPack, path, fileName) {
-  return browserifyPack.bundle().pipe(vinylSource(fileName)).pipe(vinylBuffer())
-  .pipe(gulpif(isProduction, uglify({preserveComments: 'some'})))
-  .pipe(gulp.dest(path))
+  return browserifyPack.bundle()
+    .pipe(vinylSource(fileName))
+    .pipe(vinylBuffer())
+    .pipe(gulpif(isProduction, uglify({preserveComments: 'some'})))
+    .pipe(gulp.dest(path))
 }
 
 var browserify = require('browserify')

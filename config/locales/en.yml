@@ -6,12 +6,6 @@ en:
         city: 'City'
         state: 'State'
         zip: 'Zip'
-      person:
-        first_name: 'First Name'
-        last_name: 'Last Name'
-        gender: 'Gender'
-        date_of_birth: 'Date of birth'
-        ssn: 'Social security number'
       screening:
         name: 'Title/Name of Screening'
         communication_method: 'Communication Method'

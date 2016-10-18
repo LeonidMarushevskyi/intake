@@ -46,8 +46,7 @@ module AutocompleterHelpers
       sleep(0.1) until page.first(
         RESULTS_CONTAINER.to_s,
         visible: true,
-        text: value,
-        exact: false
+        text: value
       )
     end
   end

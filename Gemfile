@@ -10,6 +10,7 @@ gem 'her'
 gem 'puma'
 gem 'pundit'
 gem 'rails', '~> 5.0.0'
+gem 'virtus'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
