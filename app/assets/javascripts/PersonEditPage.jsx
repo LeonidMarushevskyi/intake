@@ -46,7 +46,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='first_name'
-                value={person.get('first_name')}
+                value={person.get('first_name') || ''}
                 onChange={(event) => this.update(['first_name'], event.target.value)}
               />
             </div>
@@ -55,7 +55,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='last_name'
-                value={person.get('last_name')}
+                value={person.get('last_name') || ''}
                 onChange={(event) => this.update(['last_name'], event.target.value)}
               />
             </div>
@@ -65,7 +65,7 @@ export default class PersonEditPage extends React.Component {
               <label htmlFor='gender'>Gender</label>
               <select
                 id='gender'
-                value={person.get('gender')}
+                value={person.get('gender') || ''}
                 onChange={(event) => this.update(['gender'], event.target.value)}
               >
                 <option key='' value=''></option>
@@ -80,7 +80,7 @@ export default class PersonEditPage extends React.Component {
                 type='date'
                 className='input-type-date'
                 id='date_of_birth'
-                value={person.get('date_of_birth')}
+                value={person.get('date_of_birth') || ''}
                 onChange={(event) => this.update(['date_of_birth'], event.target.value)}
               />
             </div>
@@ -89,7 +89,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='ssn'
-                value={person.get('ssn')}
+                value={person.get('ssn') || ''}
                 onChange={(event) => this.update(['ssn'], event.target.value)}
               />
             </div>
@@ -100,7 +100,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='street_address'
-                value={person.getIn(['address', 'street_address'])}
+                value={person.getIn(['address', 'street_address']) || ''}
                 onChange={(event) => this.update(['address', 'street_address'], event.target.value)}
               />
             </div>
@@ -109,7 +109,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='city'
-                value={person.getIn(['address', 'city'])}
+                value={person.getIn(['address', 'city']) || ''}
                 onChange={(event) => this.update(['address', 'city'], event.target.value)}
               />
             </div>
@@ -119,7 +119,7 @@ export default class PersonEditPage extends React.Component {
               <label htmlFor='state'>State</label>
               <select
                 id='state'
-                value={person.getIn(['address', 'state'])}
+                value={person.getIn(['address', 'state']) || ''}
                 onChange={(event) => this.update(['address', 'state'], event.target.value)}
               >
                 <option key= '' value=''></option>
@@ -131,7 +131,7 @@ export default class PersonEditPage extends React.Component {
               <input
                 type='text'
                 id='zip'
-                value={person.getIn(['address', 'zip'])}
+                value={person.getIn(['address', 'zip']) || ''}
                 onChange={(event) => this.update(['address', 'zip'], event.target.value)}
               />
             </div>
