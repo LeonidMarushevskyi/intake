@@ -44,7 +44,9 @@ feature 'Create Person' do
 
     click_button 'Save'
 
-    expect(page).to have_content('PROFILE INFORMATION')
+    within '.card-header' do
+      expect(page).to have_content('PROFILE INFORMATION')
+    end
     expect(page).to_not have_content('Save')
   end
 end
