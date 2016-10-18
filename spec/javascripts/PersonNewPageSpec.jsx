@@ -5,6 +5,27 @@ import {mount, shallow} from 'enzyme';
 
 describe('PersonNewPage', () => {
   describe('render', () => {
+    it('renders the card header', () => {
+      const wrapper = mount(<PersonNewPage />)
+      expect(wrapper.find('.card-header').text()).toEqual('Create New Person')
+    })
+
+    it('renders the person label fields', () => {
+      const wrapper = mount(<PersonNewPage />)
+      expect(wrapper.find('label').length).toEqual(9)
+      expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
+        'First Name',
+        'Last Name',
+        'Gender',
+        'Date of birth',
+        'Social security number',
+        'Address',
+        'City',
+        'State',
+        'Zip'
+      ])
+    })
+
     it('renders the person input fields', () => {
       const wrapper = shallow(<PersonNewPage />)
       expect(wrapper.find('input').length).toEqual(7)
