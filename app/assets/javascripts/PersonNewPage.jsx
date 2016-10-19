@@ -32,14 +32,19 @@ export default class PersonNewPage extends React.Component {
     this.setState({person: person})
   }
 
+  show() {
+    const {person} = this.state
+    browserHistory.push({
+      pathname: `/people/${person.get('id')}`,
+    })
+  }
+
   save() {
     const url = `/people.json`
     const xhr = Utils.request('POST', url, {person: this.state.person.toJS()}, null)
     xhr.done((xhrResp) => {
       this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
-      browserHistory.push({
-        pathname: `/people/${xhrResp.responseJSON.id}`,
-      })
+      this.show()
     })
   }
 

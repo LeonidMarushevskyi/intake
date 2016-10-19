@@ -25,6 +25,8 @@ describe('PersonNewPage', () => {
     beforeEach(() => {
       const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
       spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
+      const xhrResponse = { responseJSON: {} }
+      xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
     })
 
     it('POSTs the person data to the server', () => {
@@ -33,6 +35,14 @@ describe('PersonNewPage', () => {
       expect(Utils.request).toHaveBeenCalled()
       expect(Utils.request.calls.argsFor(0)[0]).toEqual('POST')
       expect(Utils.request.calls.argsFor(0)[1]).toEqual('/people.json')
+    })
+
+    it('redirects to the person show page', () => {
+      const wrapper = mount(<PersonNewPage />)
+      const instance = wrapper.instance()
+      spyOn(instance, 'show')
+      instance.save()
+      expect(instance.show).toHaveBeenCalled()
     })
   })
 })
