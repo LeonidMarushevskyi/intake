@@ -5,3 +5,6 @@ require 'support/capybara/screenshot'
 
 Capybara.default_driver = :accessible_selenium
 Capybara.javascript_driver = Capybara.default_driver
+
+# Allow aria-label to be used in locators
+Capybara.enable_aria_label = true
