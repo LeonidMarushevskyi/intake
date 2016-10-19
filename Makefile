@@ -1,7 +1,7 @@
 # Project variables
 PROJECT_NAME ?= intake_accelerator
-ORG_NAME ?= casecommons
-REPO_NAME ?= intake_accelerator
+ORG_NAME ?= cwds
+REPO_NAME ?= intake
 
 # Filenames
 TEST_COMPOSE_FILE := docker/test/docker-compose.yml

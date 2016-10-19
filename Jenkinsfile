@@ -31,7 +31,7 @@ node {
               build job: DEPLOY_JOB, parameters: [[
                   $class: 'StringParameterValue',
                   name: 'IMAGE_TAG',
-                  value: 'casecommons/intake_accelerator:' + imageTag
+                  value: 'cwds/intake:' + imageTag
               ]]
           }
         }
