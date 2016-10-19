@@ -5,8 +5,9 @@ import React from 'react'
 import {mount} from 'enzyme'
 
 describe('PersonEditPage', () => {
+  let xhrSpyObject
   beforeEach(() => {
-    const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
+    xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
     spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
   })
 
@@ -86,6 +87,31 @@ describe('PersonEditPage', () => {
       expect(Utils.request).toHaveBeenCalled()
       expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
       expect(Utils.request.calls.argsFor(0)[1]).toEqual('/people/1.json')
+    })
+  })
+
+  describe('save', () => {
+    beforeEach(() => {
+      const xhrResponse = { responseJSON: {} }
+      xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
+    })
+
+    it('POSTs the person data to the server', () => {
+      const props = { params: { id: 1 } }
+      const wrapper = mount(<PersonEditPage {...props} />)
+      wrapper.instance().save()
+      expect(Utils.request).toHaveBeenCalled()
+      expect(Utils.request.calls.argsFor(1)[0]).toEqual('PUT')
+      expect(Utils.request.calls.argsFor(1)[1]).toEqual('/people/1.json')
+    })
+
+    it('redirects to the person show page', () => {
+      const props = { params: { id: 1 } }
+      const wrapper = mount(<PersonEditPage {...props} />)
+      const instance = wrapper.instance()
+      spyOn(instance, 'show')
+      instance.save()
+      expect(instance.show).toHaveBeenCalled()
     })
   })
 })

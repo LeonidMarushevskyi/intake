@@ -3,7 +3,7 @@ import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
 import USState from 'USState'
-import {Link} from 'react-router'
+import {Link, browserHistory} from 'react-router'
 
 export default class PersonEditPage extends React.Component {
   constructor() {
@@ -12,6 +12,7 @@ export default class PersonEditPage extends React.Component {
       person: Immutable.Map(),
     }
     this.fetch = this.fetch.bind(this)
+    this.save = this.save.bind(this)
   }
 
   componentDidMount() {
@@ -23,6 +24,23 @@ export default class PersonEditPage extends React.Component {
     const xhr = Utils.request('GET', `/people/${params.id}.json`)
     xhr.done((xhrResp) => {
       this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
+    })
+  }
+
+  save() {
+    const {params} = this.props
+    const url = `/people/${params.id}.json`
+    const xhr = Utils.request('PUT', url, {person: this.state.person.toJS()}, null)
+    xhr.done((xhrResp) => {
+      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
+      this.show()
+    })
+  }
+
+  show() {
+    const {params} = this.props
+    browserHistory.push({
+      pathname: `/people/${params.id}`,
     })
   }
 
@@ -138,7 +156,7 @@ export default class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <div className='centered'>
-              <button className='btn btn-primary'>Save</button>
+              <button className='btn btn-primary' onClick={this.save} >Save</button>
               <Link className='btn btn-default' to={`/people/${params.id}`}>Cancel</Link>
             </div>
           </div>

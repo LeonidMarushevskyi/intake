@@ -41,6 +41,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def update
+    respond_to do |format|
+      format.json do
+        person = Person.new(person_params.to_h)
+        updated_person = PersonRepository.update(person)
+        render json: updated_person
+      end
+    end
+  end
+
   def search
     people = PeopleRepo.search(params[:query])
     render json: people.map(&:attributes)
@@ -48,6 +58,7 @@ class PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(
+      :id,
       :first_name,
       :last_name,
       :gender,
