@@ -11,6 +11,12 @@ describe('PersonShowPage', () => {
   })
 
   describe('render', () => {
+    it('renders the card header', () => {
+      const props = { params: { id: 1 } }
+      const wrapper = mount(<PersonShowPage {...props} />)
+      expect(wrapper.find('.card-header').text()).toContain('Profile Information')
+    })
+
     it('renders the person label fields', () => {
       const props = { params: {} }
       const wrapper = mount(<PersonShowPage {...props} />)
