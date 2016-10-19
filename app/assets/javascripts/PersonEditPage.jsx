@@ -12,7 +12,8 @@ export default class PersonEditPage extends React.Component {
       person: Immutable.Map(),
     }
     this.fetch = this.fetch.bind(this)
-    this.save = this.save.bind(this)
+    this.update = this.update.bind(this)
+    this.setField = this.setField.bind(this)
   }
 
   componentDidMount() {
@@ -27,7 +28,7 @@ export default class PersonEditPage extends React.Component {
     })
   }
 
-  save() {
+  update() {
     const {params} = this.props
     const url = `/people/${params.id}.json`
     const xhr = Utils.request('PUT', url, {person: this.state.person.toJS()}, null)
@@ -44,7 +45,7 @@ export default class PersonEditPage extends React.Component {
     })
   }
 
-  update(fieldSeq, value) {
+  setField(fieldSeq, value) {
     const person = this.state.person.setIn(fieldSeq, value)
     this.setState({person: person})
   }
@@ -65,7 +66,7 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='first_name'
                 value={person.get('first_name') || ''}
-                onChange={(event) => this.update(['first_name'], event.target.value)}
+                onChange={(event) => this.setField(['first_name'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -74,7 +75,7 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='last_name'
                 value={person.get('last_name') || ''}
-                onChange={(event) => this.update(['last_name'], event.target.value)}
+                onChange={(event) => this.setField(['last_name'], event.target.value)}
               />
             </div>
           </div>
@@ -84,7 +85,7 @@ export default class PersonEditPage extends React.Component {
               <select
                 id='gender'
                 value={person.get('gender') || ''}
-                onChange={(event) => this.update(['gender'], event.target.value)}
+                onChange={(event) => this.setField(['gender'], event.target.value)}
               >
                 <option key='' value=''></option>
                 {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
@@ -99,7 +100,7 @@ export default class PersonEditPage extends React.Component {
                 className='input-type-date'
                 id='date_of_birth'
                 value={person.get('date_of_birth') || ''}
-                onChange={(event) => this.update(['date_of_birth'], event.target.value)}
+                onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -108,7 +109,7 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='ssn'
                 value={person.get('ssn') || ''}
-                onChange={(event) => this.update(['ssn'], event.target.value)}
+                onChange={(event) => this.setField(['ssn'], event.target.value)}
               />
             </div>
           </div>
@@ -119,7 +120,7 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='street_address'
                 value={person.getIn(['address', 'street_address']) || ''}
-                onChange={(event) => this.update(['address', 'street_address'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -128,7 +129,7 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='city'
                 value={person.getIn(['address', 'city']) || ''}
-                onChange={(event) => this.update(['address', 'city'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'city'], event.target.value)}
               />
             </div>
           </div>
@@ -138,7 +139,7 @@ export default class PersonEditPage extends React.Component {
               <select
                 id='state'
                 value={person.getIn(['address', 'state']) || ''}
-                onChange={(event) => this.update(['address', 'state'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'state'], event.target.value)}
               >
                 <option key= '' value=''></option>
                 {Object.keys(USState).map((item) => <option key={item} value={item}>{USState[item]}</option>)}
@@ -150,13 +151,13 @@ export default class PersonEditPage extends React.Component {
                 type='text'
                 id='zip'
                 value={person.getIn(['address', 'zip']) || ''}
-                onChange={(event) => this.update(['address', 'zip'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
               />
             </div>
           </div>
           <div className='row'>
             <div className='centered'>
-              <button className='btn btn-primary' onClick={this.save} >Save</button>
+              <button className='btn btn-primary' onClick={this.update} >Save</button>
               <Link className='btn btn-default' to={`/people/${params.id}`}>Cancel</Link>
             </div>
           </div>

@@ -23,11 +23,11 @@ export default class PersonNewPage extends React.Component {
         },
       }),
     }
-    this.update = this.update.bind(this)
+    this.setField = this.setField.bind(this)
     this.save = this.save.bind(this)
   }
 
-  update(fieldSeq, value) {
+  setField(fieldSeq, value) {
     const person = this.state.person.setIn(fieldSeq, value)
     this.setState({person: person})
   }
@@ -61,7 +61,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='first_name'
-                onChange={(event) => this.update(['first_name'], event.target.value)}
+                onChange={(event) => this.setField(['first_name'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -69,7 +69,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='last_name'
-                onChange={(event) => this.update(['last_name'], event.target.value)}
+                onChange={(event) => this.setField(['last_name'], event.target.value)}
               />
             </div>
           </div>
@@ -77,7 +77,7 @@ export default class PersonNewPage extends React.Component {
             <div className='col-md-6'>
               <label htmlFor='gender'>Gender</label>
               <select id='gender'
-                onChange={(event) => this.update(['gender'], event.target.value)}
+                onChange={(event) => this.setField(['gender'], event.target.value)}
               >
                 <option key='' value=''></option>
                 {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
@@ -91,7 +91,7 @@ export default class PersonNewPage extends React.Component {
                 type='date'
                 className='input-type-date'
                 id='date_of_birth'
-                onChange={(event) => this.update(['date_of_birth'], event.target.value)}
+                onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -99,7 +99,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='ssn'
-                onChange={(event) => this.update(['ssn'], event.target.value)}
+                onChange={(event) => this.setField(['ssn'], event.target.value)}
               />
             </div>
           </div>
@@ -109,7 +109,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='street_address'
-                onChange={(event) => this.update(['address', 'street_address'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
               />
             </div>
             <div className='col-md-6'>
@@ -117,7 +117,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='city'
-                onChange={(event) => this.update(['address', 'city'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'city'], event.target.value)}
               />
             </div>
           </div>
@@ -126,7 +126,7 @@ export default class PersonNewPage extends React.Component {
               <label htmlFor='state'>State</label>
               <select
                 id='state'
-                onChange={(event) => this.update(['address', 'state'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'state'], event.target.value)}
               >
                 <option key= '' value=''></option>
                 {Object.keys(USState).map((item) => <option key={item} value={item}>{USState[item]}</option>)}
@@ -137,7 +137,7 @@ export default class PersonNewPage extends React.Component {
               <input
                 type='text'
                 id='zip'
-                onChange={(event) => this.update(['address', 'zip'], event.target.value)}
+                onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
               />
             </div>
           </div>

@@ -90,16 +90,16 @@ describe('PersonEditPage', () => {
     })
   })
 
-  describe('save', () => {
+  describe('update', () => {
     beforeEach(() => {
       const xhrResponse = { responseJSON: {} }
       xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
     })
 
-    it('POSTs the person data to the server', () => {
+    it('PUTs the person data to the server', () => {
       const props = { params: { id: 1 } }
       const wrapper = mount(<PersonEditPage {...props} />)
-      wrapper.instance().save()
+      wrapper.instance().update()
       expect(Utils.request).toHaveBeenCalled()
       expect(Utils.request.calls.argsFor(1)[0]).toEqual('PUT')
       expect(Utils.request.calls.argsFor(1)[1]).toEqual('/people/1.json')
@@ -110,7 +110,7 @@ describe('PersonEditPage', () => {
       const wrapper = mount(<PersonEditPage {...props} />)
       const instance = wrapper.instance()
       spyOn(instance, 'show')
-      instance.save()
+      instance.update()
       expect(instance.show).toHaveBeenCalled()
     })
   })
