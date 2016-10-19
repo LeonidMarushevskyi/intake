@@ -41,6 +41,13 @@ describe PeopleController do
     end
   end
 
+  describe '#edit' do
+    it 'renders the show template' do
+      process :show, method: :get, params: { id: 1 }
+      expect(response).to render_template('show')
+    end
+  end
+
   describe '#show' do
     let(:person) { double(:person, as_json: { 'id' => 1 }) }
     before do
@@ -55,6 +62,42 @@ describe PeopleController do
     it 'renders person as json' do
       process :show, method: :get, params: { id: 1 }, format: :json
       expect(JSON.parse(response.body)).to eq(person.as_json)
+    end
+  end
+
+  describe '#update' do
+    let(:person_params) do
+      {
+        id: '1',
+        first_name: 'Homer',
+        last_name: 'Simpson',
+        gender: 'male',
+        date_of_birth: '05/29/1990',
+        ssn: '123-23-1234',
+        address: {
+          street_address: '123 fake st',
+          city: 'Springfield',
+          state: 'NY',
+          zip: '12345'
+        }
+      }.with_indifferent_access
+    end
+    let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }
+
+    before do
+      person = double(:person)
+      expect(Person).to receive(:new).with(person_params).and_return(person)
+      expect(PersonRepository).to receive(:update).with(person)
+        .and_return(updated_person)
+    end
+
+    it 'updates person and renders person as json' do
+      process :update,
+        method: :put,
+        params: { id: person_params[:id], person: person_params },
+        format: :json
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)).to eq(updated_person.as_json)
     end
   end
 

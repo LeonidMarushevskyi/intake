@@ -54,4 +54,39 @@ describe PersonRepository do
       end.to raise_error RuntimeError
     end
   end
+
+  describe '.update' do
+    it 'returns the person if the put to /people/:id is successful' do
+      mock_response = double(:mock_response, status: 200, body: 'mock_body')
+      mock_request = double(:mock_request)
+      created_person = double(:person, id: 1, as_json: 'created_person')
+      updated_person = double(:person)
+      allow(API.connection).to receive(:put)
+        .and_yield(mock_request)
+        .and_return(mock_response)
+      expect(mock_request).to receive(:url).with("#{PersonRepository::PEOPLE_PATH}/1")
+      expect(mock_request).to receive(:headers).and_return({})
+      expect(mock_request).to receive(:body=).with(created_person.to_json)
+      expect(Person).to receive(:new).with(mock_response.body)
+        .and_return(updated_person)
+      expect(PersonRepository.update(created_person)).to eq(updated_person)
+    end
+
+    it 'raise an error if the response code is not 201' do
+      created_person = double(:person, id: 1)
+      mock_response = double(:mock_response, status: 500)
+      allow(API.connection).to receive(:put).and_return(mock_response)
+
+      expect do
+        PersonRepository.update(created_person)
+      end.to raise_error('Error updating person')
+    end
+
+    it 'raises an error if person id is not present' do
+      created_person = double(:person, id: nil)
+      expect do
+        PersonRepository.update(created_person)
+      end.to raise_error('Error updating person: id is required')
+    end
+  end
 end

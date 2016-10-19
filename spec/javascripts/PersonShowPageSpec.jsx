@@ -11,6 +11,12 @@ describe('PersonShowPage', () => {
   })
 
   describe('render', () => {
+    it('renders the card header', () => {
+      const props = { params: { id: 1 } }
+      const wrapper = mount(<PersonShowPage {...props} />)
+      expect(wrapper.find('.card-header').text()).toContain('Profile Information')
+    })
+
     it('renders the person label fields', () => {
       const props = { params: {} }
       const wrapper = mount(<PersonShowPage {...props} />)
@@ -55,6 +61,14 @@ describe('PersonShowPage', () => {
       expect(wrapper.text()).toContain('Winnetka')
       expect(wrapper.text()).toContain('Illinois')
       expect(wrapper.text()).toContain('60093')
+    })
+
+    it('renders the edit link', () => {
+      const props = { params: { id: 99 } }
+      const wrapper = mount(<PersonShowPage {...props} />)
+      expect(wrapper.find('Link').length).toEqual(1)
+      expect(wrapper.find('Link').props()['aria-label']).toEqual('Edit Person')
+      expect(wrapper.find('Link').props().to).toEqual('/people/99/edit')
     })
   })
 
