@@ -18,6 +18,8 @@ services:
     links:
       - api
       - elasticsearch
+    tty: true
+    stdin_open: true
   api:
     extends:
       file: ../intake_api_prototype/docker-compose.common.yml
