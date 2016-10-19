@@ -26,7 +26,8 @@ class ScreeningsController < ApplicationController # :nodoc:
   ].freeze
 
   def create
-    @screening = Screening.create(reference: LUID.generate.first)
+    new_screening = Screening.new(reference: LUID.generate.first)
+    @screening = ScreeningRepository.create(new_screening)
     redirect_to edit_screening_path(@screening)
   end
 

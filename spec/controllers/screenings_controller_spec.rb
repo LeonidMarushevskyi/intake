@@ -4,20 +4,24 @@ require 'rails_helper'
 
 describe ScreeningsController do
   describe '#create' do
-    let(:screening) { double(:screening, id: 1, reference: '123ABC') }
+    let(:created_screening) { double(:screening, id: 1) }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      allow(Screening).to receive(:create).with(reference: '123ABC').and_return(screening)
+      screening = double(:screening)
+      expect(Screening).to receive(:new)
+        .with(reference: '123ABC').and_return(screening)
+      expect(ScreeningRepository).to receive(:create).with(screening)
+        .and_return(created_screening)
     end
 
     it 'assigns screening' do
       process :create, method: :post
-      expect(assigns(:screening)).to eq(screening)
+      expect(assigns(:screening)).to eq(created_screening)
     end
 
     it 'redirects to edit' do
       process :create, method: :post
-      expect(response).to redirect_to(edit_screening_path(assigns(:screening)))
+      expect(response).to redirect_to(edit_screening_path(created_screening))
     end
   end
 

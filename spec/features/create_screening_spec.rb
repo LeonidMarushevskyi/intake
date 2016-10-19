@@ -12,13 +12,19 @@ feature 'Create Screening' do
     }.with_indifferent_access
 
     stub_api_for(Screening) do |stub|
-      stub.post('/screenings') do |_env|
-        [200, {}, screening.to_json]
-      end
       stub.get('/screenings/1') do |_env|
         [200, {}, screening.to_json]
       end
     end
+
+    faraday_stub = Faraday.new do |builder|
+      builder.adapter :test do |stub|
+        stub.post('/api/v1/screenings') do |_|
+          [201, {}, screening]
+        end
+      end
+    end
+    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit root_path
     click_link 'Start Screening'
