@@ -33,7 +33,9 @@ export default class PersonShowPage extends React.Component {
       <div className='card double-gap-top'>
         <div className='card-header'>
           <span>Profile Information</span>
-          <Link to={`/people/${params.id}/edit`}>Edit</Link>
+          <Link to={`/people/${params.id}/edit`} aria-label='Edit Person'>
+            <i className='fa fa-pencil'></i>
+          </Link>
         </div>
         <div className='card-body'>
           <div className='row'>

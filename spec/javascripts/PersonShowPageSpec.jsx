@@ -67,7 +67,7 @@ describe('PersonShowPage', () => {
       const props = { params: { id: 99 } }
       const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('Link').length).toEqual(1)
-      expect(wrapper.find('Link').text()).toEqual('Edit')
+      expect(wrapper.find('Link').props()['aria-label']).toEqual('Edit Person')
       expect(wrapper.find('Link').props().to).toEqual('/people/99/edit')
     })
   })
