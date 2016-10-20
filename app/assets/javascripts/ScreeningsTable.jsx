@@ -22,17 +22,15 @@ export default class ScreeningsTable extends React.Component {
           </thead>
           <tbody>
             {
-              this.props.screenings.map((screeningObject) => {
-                const screening = screeningObject.attributes
-                return (
+              this.props.screenings.map((screening) => (
                   <tr key={screening.id}>
                     <td><a href={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</a></td>
                     <td>{ResponseTime[screening.response_time]}</td>
                     <td>{ScreeningDecision[screening.screening_decision]}</td>
                     <td>{moment(screening.created_at).format('MM/DD/YYYY')}</td>
                   </tr>
-                  )
-              })
+                )
+              )
             }
           </tbody>
         </table>
