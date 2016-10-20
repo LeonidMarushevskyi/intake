@@ -23,8 +23,7 @@ feature 'Show Screening' do
         street_address: '123 fake st',
         city: 'Springfield',
         state: 'NY',
-        zip: 12_345,
-        person_id: nil
+        zip: 12_345
       },
       participants: [{
         first_name: 'Bart',
