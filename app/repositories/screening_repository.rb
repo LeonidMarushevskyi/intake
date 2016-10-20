@@ -3,18 +3,18 @@
 # ScreeningRepository is a service class responsible for creation of a screening
 # resource via the API
 class ScreeningRepository
-  SCREENING_PATH = '/api/v1/screenings'
+  SCREENINGS_PATH = '/api/v1/screenings'
   CONTENT_TYPE = 'application/json'
 
   def self.create(screening)
-    response = make_api_call(SCREENING_PATH, :post, screening)
+    response = make_api_call(SCREENINGS_PATH, :post, screening)
     raise 'Error creating screening' if response.status != 201
     Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
   def self.find(id)
-    response = make_api_call("#{SCREENING_PATH}/#{id}", :get)
+    response = make_api_call("#{SCREENINGS_PATH}/#{id}", :get)
     raise 'Error finding screening' if response.status != 200
     Rails.logger.info response.body.inspect
     Screening.new(response.body)
