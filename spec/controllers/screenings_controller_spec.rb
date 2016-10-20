@@ -92,10 +92,9 @@ describe ScreeningsController do
       }.with_indifferent_access
     end
     before do
-      allow(Screening).to receive(:save_existing).with(
-        '1',
-        screening_attributes
-      ).and_return(screening)
+      existing_screening = double(:screening)
+      expect(Screening).to receive(:new).with(screening_attributes).and_return(existing_screening)
+      expect(ScreeningRepository).to receive(:update).with(existing_screening).and_return(screening)
     end
 
     it 'assigns screening' do

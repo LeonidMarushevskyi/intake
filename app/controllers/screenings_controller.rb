@@ -33,11 +33,9 @@ class ScreeningsController < ApplicationController # :nodoc:
   end
 
   def update
-    @screening = Screening.save_existing(
-      params[:id],
-      screening_params.to_h
-    )
-    redirect_to screening_path(@screening)
+    existing_screening = Screening.new(screening_params.to_h)
+    @screening = ScreeningRepository.update(existing_screening)
+    redirect_to screening_path(@screening.id)
   end
 
   def edit

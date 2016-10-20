@@ -1,7 +1,6 @@
 %h1
   = I18n.t(:edit, scope: [:views, :screening], reference: @screening.reference)
-
-= form_for @screening do |f|
+= form_for @screening, url: screening_path(@screening.id), method: :put do |f|
   .card.edit.double-gap-top#screening-information-card
     .card-header
       %span Screening Information

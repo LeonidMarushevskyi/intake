@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Edit Screening' do
-  scenario 'edit an existing referral' do
+  scenario 'edit an existing screening' do
     existing_screening = {
       id: 1,
       ended_at: '2016-08-13T11:00:00.000Z',
@@ -90,9 +90,9 @@ feature 'Edit Screening' do
       select "Child's Home", from: 'Location Type'
     end
 
-    updated_referral = {
+    updated_screening = {
       id: 1,
-      reference: 'My Bad!',
+      reference: 'Horror',
       name: 'The Rocky Horror Picture Show',
       report_narrative: 'Updated narrative',
       communication_method: 'mail',
@@ -104,18 +104,21 @@ feature 'Edit Screening' do
       }
     }.with_indifferent_access
 
-    stub_api_for(Screening) do |stub|
-      stub.put('/screenings/1') do |_env|
-        [200, {}, updated_referral.to_json]
-      end
-      stub.get('/screenings/1') do |_env|
-        [200, {}, updated_referral.to_json]
+    faraday_stub = Faraday.new do |builder|
+      builder.adapter :test do |stub|
+        stub.put('/api/v1/screenings/1') do |_env|
+          [200, {}, updated_screening]
+        end
+        stub.get('/api/v1/screenings/1') do |_env|
+          [200, {}, updated_screening]
+        end
       end
     end
+    allow(API).to receive(:connection).and_return(faraday_stub)
 
     click_button 'Save'
 
     expect(page).to_not have_content 'Edit Screening'
-    expect(page).to have_content 'Screening #My Bad!'
+    expect(page).to have_content 'Screening #Horror'
   end
 end
