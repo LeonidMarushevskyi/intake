@@ -30,8 +30,8 @@ describe ScreeningsController do
     let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
-      allow(Screening).to receive(:find).with('1').and_return(screening)
-      allow(screening).to receive(:participants).and_return(participants)
+      expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
+      expect(screening).to receive(:participants).and_return(participants)
     end
 
     it 'assigns screening' do

@@ -25,12 +25,12 @@ describe PersonRepository do
 
       expect do
         PersonRepository.create(nil)
-      end.to raise_error RuntimeError
+      end.to raise_error('Error creating person')
     end
   end
 
   describe '.find' do
-    it 'returns the person if the get request to /people is successful' do
+    it 'returns the person if the get request to /people/:id is successful' do
       mock_response = double(:mock_response, status: 200, body: 'mock_body')
       mock_request = double(:mock_request)
       found_person = double(:person)
@@ -51,7 +51,7 @@ describe PersonRepository do
 
       expect do
         PersonRepository.find(1)
-      end.to raise_error RuntimeError
+      end.to raise_error('Error finding person')
     end
   end
 

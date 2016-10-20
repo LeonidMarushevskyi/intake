@@ -25,7 +25,33 @@ describe ScreeningRepository do
 
       expect do
         ScreeningRepository.create(nil)
-      end.to raise_error RuntimeError
+      end.to raise_error('Error creating screening')
+    end
+  end
+
+  describe '.find' do
+    it 'returns the screening if the get request to /screenings/:id is successful' do
+      mock_response = double(:mock_response, status: 200, body: 'mock_body')
+      mock_request = double(:mock_request)
+      found_screening = double(:screening)
+      allow(API.connection).to receive(:get)
+        .and_yield(mock_request)
+        .and_return(mock_response)
+      expect(mock_request).to receive(:url).with("#{ScreeningRepository::SCREENING_PATH}/1")
+      expect(mock_request).to receive(:headers).and_return({})
+      expect(mock_request).to_not receive(:body=)
+      expect(Screening).to receive(:new).with(mock_response.body)
+        .and_return(found_screening)
+      expect(ScreeningRepository.find(1)).to eq(found_screening)
+    end
+
+    it 'raise an error if the response code is not 200' do
+      mock_response = double(:mock_response, status: 500)
+      allow(API.connection).to receive(:get).and_return(mock_response)
+
+      expect do
+        ScreeningRepository.find(1)
+      end.to raise_error('Error finding screening')
     end
   end
 end

@@ -13,6 +13,13 @@ class ScreeningRepository
     Screening.new(response.body)
   end
 
+  def self.find(id)
+    response = make_api_call("#{SCREENING_PATH}/#{id}", :get)
+    raise 'Error finding screening' if response.status != 200
+    Rails.logger.info response.body.inspect
+    Screening.new(response.body)
+  end
+
   def self.make_api_call(url, method, attributes = nil)
     ::API.connection.send(method) do |req|
       req.url url
