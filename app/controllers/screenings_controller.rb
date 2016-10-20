@@ -4,14 +4,15 @@
 # the creation and modification of screening objects.
 class ScreeningsController < ApplicationController # :nodoc:
   PERMITTED_PARAMS = [
+    :communication_method,
     :ended_at,
+    :id,
     :incident_county,
     :incident_date,
     :location_type,
-    :communication_method,
     :name,
-    :report_narrative,
     :reference,
+    :report_narrative,
     :response_time,
     :screening_decision,
     :started_at,
