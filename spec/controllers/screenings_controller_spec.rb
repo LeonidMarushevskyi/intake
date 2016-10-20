@@ -4,20 +4,24 @@ require 'rails_helper'
 
 describe ScreeningsController do
   describe '#create' do
-    let(:screening) { double(:screening, id: 1, reference: '123ABC') }
+    let(:created_screening) { double(:screening, id: 1) }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      allow(Screening).to receive(:create).with(reference: '123ABC').and_return(screening)
+      screening = double(:screening)
+      expect(Screening).to receive(:new)
+        .with(reference: '123ABC').and_return(screening)
+      expect(ScreeningRepository).to receive(:create).with(screening)
+        .and_return(created_screening)
     end
 
     it 'assigns screening' do
       process :create, method: :post
-      expect(assigns(:screening)).to eq(screening)
+      expect(assigns(:screening)).to eq(created_screening)
     end
 
     it 'redirects to edit' do
       process :create, method: :post
-      expect(response).to redirect_to(edit_screening_path(assigns(:screening)))
+      expect(response).to redirect_to(edit_screening_path(created_screening.id))
     end
   end
 
@@ -26,8 +30,8 @@ describe ScreeningsController do
     let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
-      allow(Screening).to receive(:find).with('1').and_return(screening)
-      allow(screening).to receive(:participants).and_return(participants)
+      expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
+      expect(screening).to receive(:participants).and_return(participants)
     end
 
     it 'assigns screening' do
@@ -51,8 +55,8 @@ describe ScreeningsController do
     let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
-      allow(Screening).to receive(:find).with('1').and_return(screening)
-      allow(screening).to receive(:participants).and_return(participants)
+      expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
+      expect(screening).to receive(:participants).and_return(participants)
     end
 
     it 'assigns screening' do
@@ -72,7 +76,7 @@ describe ScreeningsController do
   end
 
   describe '#update' do
-    let(:screening) { double(:screening) }
+    let(:screening) { double(:screening, id: 1) }
     let(:screening_attributes) do
       {
         name: '123 Report',
@@ -88,10 +92,9 @@ describe ScreeningsController do
       }.with_indifferent_access
     end
     before do
-      allow(Screening).to receive(:save_existing).with(
-        '1',
-        screening_attributes
-      ).and_return(screening)
+      existing_screening = double(:screening)
+      expect(Screening).to receive(:new).with(screening_attributes).and_return(existing_screening)
+      expect(ScreeningRepository).to receive(:update).with(existing_screening).and_return(screening)
     end
 
     it 'assigns screening' do
@@ -101,7 +104,7 @@ describe ScreeningsController do
 
     it 'redirects to show' do
       process :update, method: :put, params: { id: 1, screening: screening_attributes }
-      expect(response).to redirect_to(screening_path(assigns(:screening)))
+      expect(response).to redirect_to(screening_path(screening.id))
     end
   end
 

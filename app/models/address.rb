@@ -2,7 +2,12 @@
 
 # Model for storing Intake address information.
 class Address # :nodoc:
-  include Her::Model
+  include Virtus.model
+  include ActiveModel::Model
 
-  attributes :street_address, :city, :state, :zip
+  attribute :city
+  attribute :id
+  attribute :state
+  attribute :street_address
+  attribute :zip
 end

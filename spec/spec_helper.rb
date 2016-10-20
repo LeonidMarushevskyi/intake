@@ -40,18 +40,4 @@ RSpec.configure do |config|
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
   end
-
-  config.include(Module.new do
-    def stub_api_for(klass)
-      api = Her::API.new
-      klass.use_api(api)
-
-      # Here, you would customize this for your own API (URL, middleware, etc)
-      # like you have done in your application's initializer
-      api.setup url: 'http://api.example.com' do |c|
-        c.use Her::Middleware::FirstLevelParseJSON
-        c.adapter(:test) { |s| yield(s) }
-      end
-    end
-  end)
 end

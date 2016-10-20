@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-describe Person do
+describe Participant do
   describe 'as_json' do
-    it 'returns the attributes of a person as a hash' do
+    it 'returns the attributes of a participant as a hash' do
       attributes = {
         id: 1,
         first_name: 'Homer',

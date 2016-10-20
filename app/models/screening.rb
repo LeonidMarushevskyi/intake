@@ -2,30 +2,25 @@
 
 # Model for storing Intake screening information.
 class Screening # :nodoc:
-  include Her::Model
+  include Virtus.model
+  include ActiveModel::Model
 
-  use_api API_V1
-  ASSOCIATIONS = [:address, :participants].freeze
+  attribute :communication_method
+  attribute :created_at
+  attribute :ended_at
+  attribute :id
+  attribute :incident_county
+  attribute :incident_date
+  attribute :location_type
+  attribute :name
+  attribute :reference
+  attribute :report_narrative
+  attribute :response_time
+  attribute :screening_decision
+  attribute :started_at
+  attribute :updated_at
 
-  has_one :address
-  has_many :participants
-
-  attributes :ended_at,
-    :incident_county,
-    :incident_date,
-    :location_type,
-    :communication_method,
-    :name,
-    :report_narrative,
-    :response_time,
-    :screening_decision,
-    :started_at
-
-  def self.to_params(attributes)
-    ASSOCIATIONS.each do |association_key|
-      association = attributes[association_key]
-      attributes[association_key] = association.attributes if association.is_a?(Her::Model)
-    end
-    attributes
-  end
+  attribute :address, Address
+  attribute :participants, Array[Participant]
+  attribute :participant_ids, Array
 end

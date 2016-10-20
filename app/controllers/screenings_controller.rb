@@ -4,14 +4,15 @@
 # the creation and modification of screening objects.
 class ScreeningsController < ApplicationController # :nodoc:
   PERMITTED_PARAMS = [
+    :communication_method,
     :ended_at,
+    :id,
     :incident_county,
     :incident_date,
     :location_type,
-    :communication_method,
     :name,
-    :report_narrative,
     :reference,
+    :report_narrative,
     :response_time,
     :screening_decision,
     :started_at,
@@ -26,25 +27,24 @@ class ScreeningsController < ApplicationController # :nodoc:
   ].freeze
 
   def create
-    @screening = Screening.create(reference: LUID.generate.first)
-    redirect_to edit_screening_path(@screening)
+    new_screening = Screening.new(reference: LUID.generate.first)
+    @screening = ScreeningRepository.create(new_screening)
+    redirect_to edit_screening_path(@screening.id)
   end
 
   def update
-    @screening = Screening.save_existing(
-      params[:id],
-      screening_params.to_h
-    )
-    redirect_to screening_path(@screening)
+    existing_screening = Screening.new(screening_params.to_h)
+    @screening = ScreeningRepository.update(existing_screening)
+    redirect_to screening_path(@screening.id)
   end
 
   def edit
-    @screening = Screening.find(params[:id])
+    @screening = ScreeningRepository.find(params[:id])
     @participants = @screening.participants.to_a
   end
 
   def show
-    @screening = Screening.find(params[:id])
+    @screening = ScreeningRepository.find(params[:id])
     @participants = @screening.participants.to_a
   end
 

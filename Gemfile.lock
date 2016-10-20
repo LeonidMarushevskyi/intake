@@ -155,11 +155,6 @@ GEM
       rubocop (>= 0.36.0)
       sysexits (~> 1.1)
     hashie (3.4.5)
-    her (0.6.8)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      faraday (~> 0.8)
-      multi_json (~> 1.7)
     highline (1.7.8)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -372,7 +367,6 @@ DEPENDENCIES
   fpm
   haml-lint
   haml-rails
-  her
   i18n-tasks
   pry
   pry-byebug
