@@ -20,6 +20,14 @@ class ScreeningRepository
     Screening.new(response.body)
   end
 
+  def self.update(screening)
+    raise 'Error updating screening: id is required' unless screening.id
+    response = make_api_call("#{SCREENINGS_PATH}/#{screening.id}", :put, screening)
+    raise 'Error updating screening' if response.status != 200
+    Rails.logger.info response.body.inspect
+    Screening.new(response.body)
+  end
+
   def self.make_api_call(url, method, attributes = nil)
     ::API.connection.send(method) do |req|
       req.url url
