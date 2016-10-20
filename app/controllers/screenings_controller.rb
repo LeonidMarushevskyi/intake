@@ -29,7 +29,7 @@ class ScreeningsController < ApplicationController # :nodoc:
   def create
     new_screening = Screening.new(reference: LUID.generate.first)
     @screening = ScreeningRepository.create(new_screening)
-    redirect_to edit_screening_path(@screening)
+    redirect_to edit_screening_path(@screening.id)
   end
 
   def update

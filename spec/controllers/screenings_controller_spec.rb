@@ -21,7 +21,7 @@ describe ScreeningsController do
 
     it 'redirects to edit' do
       process :create, method: :post
-      expect(response).to redirect_to(edit_screening_path(created_screening))
+      expect(response).to redirect_to(edit_screening_path(created_screening.id))
     end
   end
 
@@ -76,7 +76,7 @@ describe ScreeningsController do
   end
 
   describe '#update' do
-    let(:screening) { double(:screening) }
+    let(:screening) { double(:screening, id: 1) }
     let(:screening_attributes) do
       {
         name: '123 Report',
@@ -104,7 +104,7 @@ describe ScreeningsController do
 
     it 'redirects to show' do
       process :update, method: :put, params: { id: 1, screening: screening_attributes }
-      expect(response).to redirect_to(screening_path(assigns(:screening)))
+      expect(response).to redirect_to(screening_path(screening.id))
     end
   end
 
