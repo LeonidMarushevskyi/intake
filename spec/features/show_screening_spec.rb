@@ -5,7 +5,7 @@ require 'spec_helper'
 
 feature 'Show Screening' do
   scenario 'showing existing screening' do
-    existing_referral = {
+    existing_screening = {
       id: 1,
       ended_at: '2016-08-22T11:00:00.000Z',
       incident_county: 'sacramento',
@@ -33,13 +33,16 @@ feature 'Show Screening' do
       }]
     }.with_indifferent_access
 
-    stub_api_for(Screening) do |stub|
-      stub.get('/screenings/1') do |_env|
-        [200, {}, existing_referral.to_json]
+    faraday_stub = Faraday.new do |builder|
+      builder.adapter :test do |stub|
+        stub.get('/api/v1/screenings/1') do |_|
+          [200, {}, existing_screening]
+        end
       end
     end
+    allow(API).to receive(:connection).and_return(faraday_stub)
 
-    visit screening_path(id: existing_referral[:id])
+    visit screening_path(id: existing_screening[:id])
 
     expect(page).to have_content 'Screening #My Bad!'
 

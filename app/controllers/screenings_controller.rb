@@ -45,7 +45,7 @@ class ScreeningsController < ApplicationController # :nodoc:
   end
 
   def show
-    @screening = Screening.find(params[:id])
+    @screening = ScreeningRepository.find(params[:id])
     @participants = @screening.participants.to_a
   end
 
