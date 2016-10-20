@@ -12,6 +12,7 @@ describe Person do
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
         address: {
+          id: 2,
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
@@ -28,6 +29,7 @@ describe Person do
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
         address: {
+          id: 2,
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
