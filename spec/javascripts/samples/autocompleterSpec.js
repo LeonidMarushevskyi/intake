@@ -1,11 +1,17 @@
-import React from 'react'
-import {shallow} from 'enzyme'
-import ReactAutosuggest from 'react-autosuggest'
-import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
-import Autocompleter from 'Autocompleter'
 import $ from 'jquery'
+import Autocompleter from 'Autocompleter'
+import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
+import Immutable from 'immutable'
+import React from 'react'
+import ReactAutosuggest from 'react-autosuggest'
+import matchers from 'jasmine-immutable-matchers'
+import {shallow} from 'enzyme'
 
 describe('<Autcompleter />', () => {
+  beforeEach(function () {
+    jasmine.addMatchers(matchers);
+  })
+
   it('renders a Autosuggest component', () => {
     const wrapper = shallow(<Autocompleter />)
     expect(wrapper.find(ReactAutosuggest).length).toBe(1)
@@ -39,10 +45,12 @@ describe('<Autcompleter />', () => {
 
   describe('#onSuggestionSelected', () => {
     it('clears the search Text and adds the suggestion', () => {
-      const wrapper = shallow(<Autocompleter />)
-      const suggestion = 'Bart Simpson'
+      const setField = jasmine.createSpy('setFieldSpy')
+      const wrapper = shallow(<Autocompleter setField={setField} />)
+      const suggestion = {id: 1, first_name: 'Bart'}
       wrapper.instance().onSuggestionSelected('selected', {suggestion: suggestion})
-      expect(wrapper.state('participants')).toContain(suggestion)
+      expect(setField.calls.argsFor(0)[0]).toEqual(['participants'])
+      expect(setField.calls.argsFor(0)[1]).toEqualImmutable(Immutable.fromJS([suggestion]))
       expect(wrapper.state('value')).toEqual('')
     })
   })
