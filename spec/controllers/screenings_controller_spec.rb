@@ -79,10 +79,12 @@ describe ScreeningsController do
     let(:screening) { double(:screening, id: 1) }
     let(:screening_attributes) do
       {
-        name: '123 Report',
+        created_at: '2016-10-21T16:11:59.484Z',
         incident_county: 'sacramento',
+        name: '123 Report',
         response_time: 'immediate',
         screening_decision: 'evaluate_out',
+        updated_at: '2016-10-21T16:11:59.484Z',
         address: {
           city: 'LA',
           state: 'CA',

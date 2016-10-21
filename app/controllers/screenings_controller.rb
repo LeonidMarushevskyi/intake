@@ -5,6 +5,7 @@
 class ScreeningsController < ApplicationController # :nodoc:
   PERMITTED_PARAMS = [
     :communication_method,
+    :created_at,
     :ended_at,
     :id,
     :incident_county,
@@ -16,6 +17,7 @@ class ScreeningsController < ApplicationController # :nodoc:
     :response_time,
     :screening_decision,
     :started_at,
+    :updated_at,
     address: [
       :id,
       :city,
