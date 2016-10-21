@@ -48,6 +48,15 @@ class ScreeningsController < ApplicationController # :nodoc:
   def show
     @screening = ScreeningRepository.find(params[:id])
     @participants = @screening.participants.to_a
+
+    respond_to do |format|
+      format.html do
+        render :show
+      end
+      format.json do
+        render json: @screening
+      end
+    end
   end
 
   def index

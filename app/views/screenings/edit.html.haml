@@ -38,14 +38,7 @@
           - participants = @participants.as_json(only: [:id, :first_name, :last_name])
           #add-person{ 'data-props' => { participants: participants, id: 'screening_participants' }.to_json }
 
-  .card.edit.double-gap-top#narrative-card
-    .card-header
-      %span Narrative
-    .card-body
-      .row
-        .col-md-6
-          = f.label :report_narrative, t('activemodel.attributes.screening.report_narrative'), class: 'no-gap'
-          = f.text_area :report_narrative
+  #screenings-app
 
   .card.edit.double-gap-top#referral-information-card
     .card-header
