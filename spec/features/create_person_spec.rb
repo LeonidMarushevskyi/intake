@@ -4,26 +4,29 @@ require 'rails_helper'
 feature 'Create Person' do
   scenario 'via the create person link on the home page' do
     person = {
-      id: 1,
-      first_name: 'Homer',
-      last_name: 'Simpson',
-      gender: 'male',
+      id: nil,
       date_of_birth: '05/29/1990',
+      first_name: 'Homer',
+      gender: 'male',
+      last_name: 'Simpson',
       ssn: '123-23-1234',
       address: {
-        street_address: '123 fake st',
         city: 'Springfield',
+        id: nil,
         state: 'NY',
+        street_address: '123 fake st',
         zip: '12345'
       }
-    }.with_indifferent_access
+    }
+    created_person = person.merge(id: 1)
+
     faraday_stub = Faraday.new do |builder|
       builder.adapter :test do |stub|
-        stub.post('/api/v1/people') do |_|
-          [201, {}, person]
+        stub.post('/api/v1/people', person.to_json) do |_|
+          [201, {}, created_person]
         end
         stub.get('/api/v1/people/1') do |_|
-          [200, {}, person]
+          [200, {}, created_person]
         end
       end
     end
