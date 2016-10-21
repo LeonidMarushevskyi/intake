@@ -73,6 +73,11 @@ describe ScreeningsController do
       process :show, method: :get, params: { id: 1 }
       expect(response).to render_template('show')
     end
+
+    it 'renders screening as json' do
+      process :show, method: :get, params: { id: 1 }, format: :json
+      expect(JSON.parse(response.body)).to eq(screening.as_json)
+    end
   end
 
   describe '#update' do

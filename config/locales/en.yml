@@ -17,7 +17,6 @@ en:
         location_type: 'Location Type'
         response_time: 'Response Time'
         screening_decision: 'Screening Decision'
-        report_narrative: 'Report Narrative'
   links:
     create_screening: 'Start Screening'
     create_person: 'Create Person'
