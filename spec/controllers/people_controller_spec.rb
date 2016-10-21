@@ -12,12 +12,14 @@ describe PeopleController do
   describe '#create' do
     let(:person_params) do
       {
+        id: '',
         first_name: 'Homer',
         last_name: 'Simpson',
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
         address: {
+          id: '',
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
@@ -25,7 +27,9 @@ describe PeopleController do
         }
       }.with_indifferent_access
     end
-    let(:created_person) { double(:person, as_json: person_params.merge(id: 1)) }
+    let(:created_person) do
+      double(:person, as_json: person_params.merge(id: 1))
+    end
 
     before do
       person = double(:person)
@@ -75,6 +79,7 @@ describe PeopleController do
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
         address: {
+          id: '1',
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',

@@ -65,6 +65,7 @@ class PeopleController < ApplicationController
       :date_of_birth,
       :ssn,
       address: [
+        :id,
         :street_address,
         :city,
         :state,
