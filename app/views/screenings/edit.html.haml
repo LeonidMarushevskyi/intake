@@ -8,6 +8,9 @@
       .row
         .col-md-6
           = f.hidden_field :id
+          = f.hidden_field :created_at
+          = f.hidden_field :updated_at
+          = f.hidden_field :reference
           = f.label :name, t('activemodel.attributes.screening.name'), class: 'no-gap'
           = f.text_field :name, placeholder: 'Enter name of the screening'
       .row
@@ -63,6 +66,7 @@
           %fieldset
             %legend Incident Address
             = fields_for 'screening[address]', Address.new(f.object.address.attributes) do |address|
+              = address.hidden_field :id
               = address.label :street_address
               = address.text_field :street_address
               = address.label :city

@@ -83,33 +83,36 @@ feature 'Edit Person' do
   end
 
   scenario 'when a user saves after editing and existing person' do
-    person = {
+    homer = {
       id: '1',
-      first_name: 'Homer',
-      last_name: 'Simpson',
-      gender: 'male',
       date_of_birth: '05/29/1990',
+      first_name: 'Homer',
+      gender: 'male',
+      last_name: 'Simpson',
       ssn: '123-23-1234',
       address: {
-        street_address: '123 fake st',
         city: 'Springfield',
+        id: '1',
         state: 'NY',
+        street_address: '123 fake st',
         zip: '12345'
       }
-    }.with_indifferent_access
+    }
+    lisa = homer.merge(first_name: 'Lisa')
+
     faraday_stub = Faraday.new do |builder|
       builder.adapter :test do |stub|
         stub.get('/api/v1/people/1') do |_|
-          [200, {}, person]
+          [200, {}, homer]
         end
-        stub.put('/api/v1/people/1') do |_|
-          [200, {}, person]
+        stub.put('/api/v1/people/1', lisa.to_json) do |_|
+          [200, {}, lisa]
         end
       end
     end
     allow(API).to receive(:connection).and_return(faraday_stub)
 
-    visit edit_person_path(id: person[:id])
+    visit edit_person_path(id: homer[:id])
 
     fill_in 'First Name', with: 'Lisa'
     click_button 'Save'

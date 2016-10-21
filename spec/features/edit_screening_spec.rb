@@ -6,7 +6,7 @@ require 'spec_helper'
 feature 'Edit Screening' do
   scenario 'edit an existing screening' do
     existing_screening = {
-      id: 1,
+      id: '1',
       ended_at: '2016-08-13T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
@@ -17,7 +17,14 @@ feature 'Edit Screening' do
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z',
+      updated_at: '2016-10-21T16:11:59.484Z',
+      created_at: '2016-10-21T16:11:59.484Z',
       address: {
+        street_address: '',
+        state: '',
+        city: '',
+        zip: '',
+        id: 3
       },
       participants: [
         { id: 1, first_name: 'Homer', last_name: 'Simpson' }
@@ -91,22 +98,34 @@ feature 'Edit Screening' do
     end
 
     updated_screening = {
-      id: 1,
-      reference: 'Horror',
-      name: 'The Rocky Horror Picture Show',
-      report_narrative: 'Updated narrative',
       communication_method: 'mail',
-      participants: [
-        { id: 1, first_name: 'Homer', last_name: 'Simpson' },
-        { id: 2, first_name: 'Marge', last_name: 'Simpson' }
-      ],
+      created_at: '2016-10-21T16:11:59.484Z',
+      ended_at: '2016-08-22 11:00 AM',
+      id: '1',
+      incident_county: 'mariposa',
+      incident_date: '2016-08-11',
+      location_type: "Child's Home",
+      name: 'The Rocky Horror Picture Show',
+      reference: 'My Bad!',
+      report_narrative: 'Updated narrative',
+      response_time: 'immediate',
+      screening_decision: 'evaluate_out',
+      started_at: '2016-08-13 10:00 AM',
+      updated_at: '2016-10-21T16:11:59.484Z',
       address: {
-      }
-    }.with_indifferent_access
+        city: 'Springfield',
+        id: '3',
+        state: 'NY',
+        street_address: '123 fake st',
+        zip: '12345'
+      },
+      participants: [],
+      participant_ids: ['1']
+    }
 
     faraday_stub = Faraday.new do |builder|
       builder.adapter :test do |stub|
-        stub.put('/api/v1/screenings/1') do |_env|
+        stub.put('/api/v1/screenings/1', updated_screening.to_json) do |_env|
           [200, {}, updated_screening]
         end
         stub.get('/api/v1/screenings/1') do |_env|
@@ -119,6 +138,6 @@ feature 'Edit Screening' do
     click_button 'Save'
 
     expect(page).to_not have_content 'Edit Screening'
-    expect(page).to have_content 'Screening #Horror'
+    expect(page).to have_content 'Screening #My Bad!'
   end
 end
