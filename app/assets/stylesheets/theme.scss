@@ -95,12 +95,6 @@ ol {
   margin: 0;
 }
 
-.additional-text {
-  float: right;
-  font-style: italic;
-  font-weight: normal;
-}
-
 /////////////////////////////////////////
 
 // - Buttons - //
@@ -423,6 +417,12 @@ input[type='radio']:disabled + label::before {
   li::after {
     display: none;
   }
+}
+
+.required::after {
+  @include fa-icon;
+  color: $secondary-red-dark;
+  content: '\f069';
 }
 
 /////////////////////////////////////////
