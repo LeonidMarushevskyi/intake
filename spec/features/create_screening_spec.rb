@@ -4,27 +4,26 @@ require 'rails_helper'
 feature 'Create Screening' do
   scenario 'via start screening link' do
     new_screening = {
-     communication_method: nil,
-     created_at: nil,
-     ended_at: nil,
-     id: nil,
-     incident_county: nil,
-     incident_date: nil,
-     location_type: nil,
-     name: nil,
-     reference: "DQJIYK",
-     report_narrative: nil,
-     response_time: nil,
-     screening_decision: nil,
-     started_at: nil,
-     updated_at: nil,
-     address: nil,
-     participants: [],
-     participant_ids: []
+      communication_method: nil,
+      created_at: nil,
+      ended_at: nil,
+      id: nil,
+      incident_county: nil,
+      incident_date: nil,
+      location_type: nil,
+      name: nil,
+      reference: 'DQJIYK',
+      report_narrative: nil,
+      response_time: nil,
+      screening_decision: nil,
+      started_at: nil,
+      updated_at: nil,
+      address: nil,
+      participants: [],
+      participant_ids: []
     }
 
-    created_screening = new_screening
-      .merge(id: 1).merge(address: {})
+    created_screening = new_screening.merge(id: 1).merge(address: {})
     allow(LUID).to receive(:generate).and_return(['DQJIYK'])
     faraday_stub = Faraday.new do |builder|
       builder.adapter :test do |stub|
