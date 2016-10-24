@@ -1,6 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
+import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
 
 export default class ScreeningShowPage extends React.Component {
   constructor() {
@@ -8,9 +9,9 @@ export default class ScreeningShowPage extends React.Component {
     this.state = {
       screening: Immutable.fromJS({
         report_narrative: '',
+        participants: [],
       }),
     }
-
     this.fetch = this.fetch.bind(this)
   }
 
@@ -27,16 +28,38 @@ export default class ScreeningShowPage extends React.Component {
   }
 
   render() {
+    const {screening} = this.state
     return (
-      <div className='card double-gap-top' id='narrative-card'>
-        <div className='card-header'>
-          <span>Narrative</span>
+      <div>
+        <div className='card double-gap-top' id= 'participants-card'>
+          <div className='card-header'>
+            <span>Participants</span>
+          </div>
+          <div className='card-body'>
+            <div className='row'>
+              <div className='col-md-6'>
+                <label className='no-gap'>
+                  Participants
+                </label>
+                <div className='c-gray'>
+                  <AutocompleterParticipantsList
+                    participants={screening.get('participants').toJS()}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-6'>
-              <label className='no-gap'>Report Narrative</label>
-              <div className='c-gray'>{this.state.screening.get('report_narrative')}</div>
+        <div className='card double-gap-top' id='narrative-card'>
+          <div className='card-header'>
+            <span>Narrative</span>
+          </div>
+          <div className='card-body'>
+            <div className='row'>
+              <div className='col-md-6'>
+                <label className='no-gap'>Report Narrative</label>
+                <div className='c-gray'>{screening.get('report_narrative')}</div>
+              </div>
             </div>
           </div>
         </div>
