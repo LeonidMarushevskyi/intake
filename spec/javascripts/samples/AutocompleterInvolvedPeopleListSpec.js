@@ -6,7 +6,7 @@ describe('<AutocompleterParticipantsList />', () => {
   it('renders a Autosuggest component', () => {
     const participants = [
       {first_name: 'Bart', last_name: 'Simpson'},
-      {first_name: 'Lisa', last_name: 'Simpson'}
+      {first_name: 'Lisa', last_name: 'Simpson'},
     ]
     const wrapper = shallow(
       <AutocompleterParticipantsList participants={participants} />

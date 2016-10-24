@@ -8,8 +8,8 @@ import matchers from 'jasmine-immutable-matchers'
 import {shallow} from 'enzyme'
 
 describe('<Autcompleter />', () => {
-  beforeEach(function () {
-    jasmine.addMatchers(matchers);
+  beforeEach(() => {
+    jasmine.addMatchers(matchers)
   })
 
   it('renders a Autosuggest component', () => {
@@ -86,7 +86,6 @@ describe('<Autcompleter />', () => {
   describe('#renderSuggestionsContainer', () => {
     it('rendres the suggestions container', () => {
       const wrapper = shallow(<Autocompleter />)
-      const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const container = wrapper.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).html()).toBe('<div class="baz">foobar</div>')
     })
