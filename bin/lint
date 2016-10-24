@@ -13,9 +13,9 @@ js() {
 if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
   unblacken_cmd ./node_modules/.bin/eslint \
    --format junit --output-file "$CI_REPORTS"/TESTS-Eslint.xml \
-   --color app/assets/javascripts/**
+   --color app/assets/javascripts/** spec/javascripts/**
 else
-  unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/**
+  unblacken_cmd ./node_modules/.bin/eslint --color app/assets/javascripts/** spec/javascripts/**
 fi
 }
 
