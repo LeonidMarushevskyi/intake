@@ -31,23 +31,7 @@ export default class ScreeningShowPage extends React.Component {
     const {screening} = this.state
     return (
       <div>
-        <div className='card double-gap-top' id= 'participants-card'>
-          <div className='card-header'>
-            <span>Participants</span>
-          </div>
-          <div className='card-body'>
-            <div className='row'>
-              <div className='col-md-6'>
-                <label className='no-gap'>
-                  Participants
-                </label>
-                <div className='c-gray'>
-                  <ParticipantList participants={screening.get('participants').toJS()} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ParticipantList participants={screening.get('participants').toJS()} />
         <div className='card double-gap-top' id='narrative-card'>
           <div className='card-header'>
             <span>Narrative</span>

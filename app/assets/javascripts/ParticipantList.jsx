@@ -7,11 +7,15 @@ export default class ParticipantList extends React.Component {
 
   render() {
     return (
-      <ul>
-        {this.props.participants.map((person, i) => (
-          <li key={i}>
-            {person.first_name} {person.last_name}
-            <input type='hidden' name='screening[participant_ids][]' value={person.id} />
+      <ul className='list-unstyled'>
+        {this.props.participants.map((participant, i) => (
+          <li key={participant.id} className='card double-gap-top' id={`participants-card-${participant.id}`}>
+            <input type='hidden' name='screening[participant_ids][]' value={participant.id} />
+            <div className='card-header'>
+              <span>{`${participant.first_name} ${participant.last_name}`}</span>
+            </div>
+            <div className='card-body'>
+            </div>
           </li>
         ))}
       </ul>

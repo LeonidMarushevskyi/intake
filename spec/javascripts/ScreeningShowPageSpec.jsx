@@ -11,21 +11,8 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('render', () => {
-    describe('participants card', () => {
-      it('renders the participants card', () => {
-        const props = {params: {id: 1}}
-        const wrapper = mount(<ScreeningShowPage {...props} />)
-        expect(wrapper.find('#participants-card .card-header').text()).toContain('Participants')
-      })
-
-      it('renders the screening particpants label fileds', () => {
-        const props = {params: {}}
-        const wrapper = mount(<ScreeningShowPage {...props}/>)
-        expect(wrapper.find('#participants-card label').length).toEqual(1)
-        expect(wrapper.find('#participants-card label').text()).toEqual('Participants')
-      })
-
-      it('renders the list of participants', () => {
+    describe('participants cards', () => {
+      it('renders a card for each participant', () => {
         const props = {params: {}}
         const wrapper = mount(<ScreeningShowPage {...props} />)
         wrapper.setState({
@@ -33,12 +20,12 @@ describe('ScreeningShowPage', () => {
             participants: [{
               id: 1, first_name: 'Rodney', last_name: 'Mullens',
             }, {
-              id: 2, first_name: 'Tony', last_name: 'Hawk',
+              id: 5, first_name: 'Tony', last_name: 'Hawk',
             }],
           }),
         })
-        expect(wrapper.find('#participants-card ul').text()).toContain('Rodney Mullens')
-        expect(wrapper.find('#participants-card ul').text()).toContain('Tony Hawk')
+        expect(wrapper.find('#participants-card-1 .card-header').text()).toContain('Rodney Mullens')
+        expect(wrapper.find('#participants-card-5 .card-header').text()).toContain('Tony Hawk')
       })
     })
 

@@ -5,6 +5,9 @@ require 'spec_helper'
 
 feature 'Show Screening' do
   scenario 'showing existing participant' do
+    existing_participant = {
+      id: 1, first_name: 'Homer', last_name: 'Simpson'
+    }
     existing_screening = {
       id: 4,
       created_at: '2016-10-24T15:14:22.923Z',
@@ -26,9 +29,7 @@ feature 'Show Screening' do
         zip: nil,
         id: 8
       },
-      participants: [
-        { id: 1, first_name: 'Homer', last_name: 'Simpson' }
-      ]
+      participants: [existing_participant]
     }.with_indifferent_access
 
     faraday_stub = Faraday.new do |builder|
@@ -42,8 +43,8 @@ feature 'Show Screening' do
 
     visit screening_path(id: existing_screening[:id])
 
-    within '#participants-card' do
-      expect(page).to have_content 'Homer Simpson'
+    within "#participants-card-#{existing_participant[:id]}" do
+      expect(page).to have_content 'HOMER SIMPSON'
     end
   end
 end

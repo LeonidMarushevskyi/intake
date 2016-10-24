@@ -25,11 +25,7 @@ feature 'Show Screening' do
         state: 'NY',
         zip: 12_345
       },
-      participants: [{
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        gender: 'male'
-      }]
+      participants: []
     }.with_indifferent_access
 
     faraday_stub = Faraday.new do |builder|
@@ -50,10 +46,6 @@ feature 'Show Screening' do
       expect(page).to have_content 'The Rocky Horror Picture Show'
       expect(page).to have_content '8/13/2016 10:00 AM'
       expect(page).to have_content '8/22/2016 11:00 AM'
-    end
-
-    within '#participants-card' do
-      expect(page).to have_content 'Bart Simpson'
     end
 
     within '#narrative-card' do
