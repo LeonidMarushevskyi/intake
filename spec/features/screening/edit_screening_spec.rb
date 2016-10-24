@@ -26,9 +26,7 @@ feature 'Edit Screening' do
         zip: '',
         id: 3
       },
-      participants: [
-        { id: 1, first_name: 'Homer', last_name: 'Simpson' }
-      ]
+      participants: []
     }.with_indifferent_access
 
     faraday_stub = Faraday.new do |builder|
@@ -50,10 +48,6 @@ feature 'Edit Screening' do
       expect(page).to have_field('Communication Method', with: 'phone')
     end
 
-    within '#participants-card' do
-      expect(page).to have_content 'Homer Simpson'
-    end
-
     within '#narrative-card' do
       expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
     end
@@ -65,20 +59,11 @@ feature 'Edit Screening' do
       expect(page).to have_field('Screening Decision', with: 'evaluate_out')
     end
 
-    search_results = [Participant.new(first_name: 'Marge', last_name: 'Simpson')]
-    allow(PeopleRepo).to receive(:search)
-      .with('Marge')
-      .and_return(search_results)
-
     within '#screening-information-card' do
       fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
       fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
       fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
       select  'Mail', from: 'Communication Method'
-    end
-
-    within '#participants-card' do
-      fill_in_autocompleter 'Participants', with: 'Marge'
     end
 
     within '#narrative-card' do
@@ -120,7 +105,7 @@ feature 'Edit Screening' do
         zip: '12345'
       },
       participants: [],
-      participant_ids: ['1']
+      participant_ids: []
     }
 
     faraday_stub = Faraday.new do |builder|
