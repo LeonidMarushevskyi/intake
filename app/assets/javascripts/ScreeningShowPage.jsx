@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
+import ParticipantList from 'ParticipantList'
 
 export default class ScreeningShowPage extends React.Component {
   constructor() {
@@ -42,9 +42,7 @@ export default class ScreeningShowPage extends React.Component {
                   Participants
                 </label>
                 <div className='c-gray'>
-                  <AutocompleterParticipantsList
-                    participants={screening.get('participants').toJS()}
-                  />
+                  <ParticipantList participants={screening.get('participants').toJS()} />
                 </div>
               </div>
             </div>

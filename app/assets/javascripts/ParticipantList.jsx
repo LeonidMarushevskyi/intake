@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class AutocompleterParticipantsList extends React.Component {
+export default class ParticipantList extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -19,10 +19,10 @@ export default class AutocompleterParticipantsList extends React.Component {
   }
 }
 
-AutocompleterParticipantsList.propTypes = {
+ParticipantList.propTypes = {
   participants: React.PropTypes.array,
 }
 
-AutocompleterParticipantsList.defaultProps = {
+ParticipantList.defaultProps = {
   participants: [],
 }

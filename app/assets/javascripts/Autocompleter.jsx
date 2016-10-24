@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
+import ParticipantList from 'ParticipantList'
 import Immutable from 'immutable'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
@@ -98,7 +98,7 @@ export default class Autocompleter extends React.Component {
           inputProps={inputProps}
           renderSuggestionsContainer={this.renderSuggestionsContainer}
         />
-        <AutocompleterParticipantsList participants={participants} />
+        <ParticipantList participants={participants} />
       </div>
     )
   }
