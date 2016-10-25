@@ -2,6 +2,7 @@ import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'autocompleter'
+import ParticipantEditView from 'ParticipantEditView'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {
@@ -54,6 +55,11 @@ export default class ScreeningEditPage extends React.Component {
             </div>
           </div>
         </div>
+        {
+          screening.get('participants').map((participant) =>
+            <ParticipantEditView key={participant.get('id')} participant={participant} />
+          )
+        }
         <div className='card edit double-gap-top' id='narrative-card'>
           <div className='card-header'>
             <span>Narrative</span>

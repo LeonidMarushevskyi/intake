@@ -28,12 +28,20 @@ describe('ScreeningEditPage', () => {
       it('renders the autocompleter', () => {
         const props = {params: {}}
         const wrapper = mount(<ScreeningEditPage {...props} />)
-        const participants = [{id: 1, first_name: 'Rob', last_name: 'Mee'}]
-        const screening = Immutable.fromJS({participants: participants})
-        wrapper.setState({screening: screening})
         expect(wrapper.find('Autocompleter').props().id).toEqual('screening_participants')
-        expect(wrapper.find('Autocompleter').props().participants).toEqual(participants)
       })
+    })
+
+    it('renders the participants edit view for each participant', () => {
+      const props = {params: {}}
+      const wrapper = mount(<ScreeningEditPage {...props} />)
+      const participants = [
+        {id: 1, first_name: 'Melissa', last_name: 'Powers'},
+        {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+      ]
+      const screening = Immutable.fromJS({participants: participants})
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('ParticipantEditView').length).toEqual(2)
     })
 
     describe('narrative card', () => {

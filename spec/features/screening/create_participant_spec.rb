@@ -4,9 +4,9 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Edit Screening' do
-  scenario 'adding a new participant' do
+  scenario 'creating a new participant' do
     existing_screening = {
-      id: 4,
+      id: 99,
       created_at: '2016-10-24T15:14:22.923Z',
       ended_at: nil,
       incident_county: nil,
@@ -48,8 +48,9 @@ feature 'Edit Screening' do
       find('li', text: 'Marge Simpson').click
     end
 
-    within '#participants-card' do
-      expect(page).to have_content 'Marge Simpson'
+    within "#participants-card-#{marge.id}.edit" do
+      expect(page).to have_content 'MARGE SIMPSON'
+      expect(page).to have_link 'Delete participant'
     end
   end
 end
