@@ -8,7 +8,7 @@ export default class ParticipantList extends React.Component {
   render() {
     return (
       <ul className='list-unstyled'>
-        {this.props.participants.map((participant, i) => (
+        {this.props.participants.map((participant) => (
           <li key={participant.id} className='card double-gap-top' id={`participants-card-${participant.id}`}>
             <input type='hidden' name='screening[participant_ids][]' value={participant.id} />
             <div className='card-header'>
