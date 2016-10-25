@@ -4,11 +4,11 @@ import ScreeningsFilter from 'ScreeningsFilter'
 import ResponseTime from 'ResponseTime'
 import ScreeningDecision from 'ScreeningDecision'
 import {browserHistory} from 'react-router'
-import {mount, shallow} from 'enzyme';
+import {mount, shallow} from 'enzyme'
 
 describe('ScreeningsFilter', () => {
   describe('render', () => {
-    it('contains an checkbox list filter component for response times', function () {
+    it('contains an checkbox list filter component for response times', () => {
       const wrapper = mount(<ScreeningsFilter/>)
       expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
       expect(wrapper.find(CheckboxListFilter).nodes[0].props.name).toEqual('response-time')
@@ -16,7 +16,7 @@ describe('ScreeningsFilter', () => {
       expect(wrapper.find(CheckboxListFilter).nodes[0].props.legend).toEqual('Response Time')
     })
 
-    it('contains an checkbox list filter component for screening decisions', function () {
+    it('contains an checkbox list filter component for screening decisions', () => {
       const wrapper = mount(<ScreeningsFilter/>)
       expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
       expect(wrapper.find(CheckboxListFilter).nodes[1].props.name).toEqual('screening-decision')

@@ -1,6 +1,6 @@
 import PersonShowPage from 'PersonShowPage'
 import React from 'react'
-import {shallow, mount} from 'enzyme';
+import {mount} from 'enzyme'
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 
@@ -12,13 +12,13 @@ describe('PersonShowPage', () => {
 
   describe('render', () => {
     it('renders the card header', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('.card-header').text()).toContain('Profile Information')
     })
 
     it('renders the person label fields', () => {
-      const props = { params: {} }
+      const props = {params: {}}
       const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('label').length).toEqual(9)
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
@@ -30,12 +30,12 @@ describe('PersonShowPage', () => {
         'Address',
         'City',
         'State',
-        'Zip'
+        'Zip',
       ])
     })
 
     it('renders the person value fields', () => {
-      const props = { params: {} }
+      const props = {params: {}}
       const wrapper = mount(<PersonShowPage {...props} />)
       wrapper.setState({
         person: Immutable.fromJS({
@@ -45,8 +45,8 @@ describe('PersonShowPage', () => {
           date_of_birth: '11/16/1990',
           ssn: '111223333',
           address: {
-            street_address:'671 Lincoln Avenue',
-            city:'Winnetka',
+            street_address: '671 Lincoln Avenue',
+            city: 'Winnetka',
             state: 'IL',
             zip: 60093,
           },
@@ -64,7 +64,7 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the edit link', () => {
-      const props = { params: { id: 99 } }
+      const props = {params: {id: 99}}
       const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('Link').length).toEqual(1)
       expect(wrapper.find('Link').props()['aria-label']).toEqual('Edit Person')
@@ -74,7 +74,7 @@ describe('PersonShowPage', () => {
 
   describe('fetch', () => {
     it('GETs the person data to the server', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonShowPage {...props} />)
       wrapper.instance().fetch()
       expect(Utils.request).toHaveBeenCalled()
@@ -83,4 +83,3 @@ describe('PersonShowPage', () => {
     })
   })
 })
-

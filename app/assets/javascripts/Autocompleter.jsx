@@ -1,7 +1,6 @@
+import $ from 'jquery'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
-import $ from 'jquery'
-import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
 
 export default class Autocompleter extends React.Component {
   constructor(props) {
@@ -10,7 +9,6 @@ export default class Autocompleter extends React.Component {
     this.state = {
       value: '',
       suggestions: [],
-      participants: this.props.participants || [],
       isLoading: false,
     }
   }
@@ -41,13 +39,11 @@ export default class Autocompleter extends React.Component {
   }
 
   onSuggestionSelected(event, {suggestion}) {
-    var participants = this.state.participants.slice(0)
-    participants.push(suggestion)
     this.onSuggestionsClearRequested()
     this.setState({
       value: '',
-      participants: participants,
     })
+    this.props.onSelect(suggestion)
   }
 
   onSuggestionsClearRequested() {
@@ -77,14 +73,13 @@ export default class Autocompleter extends React.Component {
   }
 
   render() {
-    const {value, suggestions, participants} = this.state
+    const {value, suggestions} = this.state
     const inputProps = {
       placeholder: 'Search people...',
       id: this.props.id,
       value,
       onChange: this.onChange.bind(this),
     }
-
     return (
       <div>
         <ReactAutosuggest
@@ -97,7 +92,6 @@ export default class Autocompleter extends React.Component {
           inputProps={inputProps}
           renderSuggestionsContainer={this.renderSuggestionsContainer}
         />
-        <AutocompleterParticipantsList participants={participants} />
       </div>
     )
   }
@@ -105,9 +99,5 @@ export default class Autocompleter extends React.Component {
 
 Autocompleter.propTypes = {
   id: React.PropTypes.string,
-  participants: React.PropTypes.array,
-}
-
-Autocompleter.defaultProps = {
-  participants: [],
+  onSelect: React.PropTypes.func,
 }

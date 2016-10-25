@@ -13,7 +13,6 @@ en:
         ended_at: 'Screening End Date/Time'
         incident_date: 'Incident Date'
         incident_county: 'Incident County'
-        participants: 'Participants'
         location_type: 'Location Type'
         response_time: 'Response Time'
         screening_decision: 'Screening Decision'

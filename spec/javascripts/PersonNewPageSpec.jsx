@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import PersonNewPage from 'PersonNewPage'
 import React from 'react'
-import {mount, shallow} from 'enzyme';
+import {mount, shallow} from 'enzyme'
 
 describe('PersonNewPage', () => {
   describe('render', () => {
@@ -22,7 +22,7 @@ describe('PersonNewPage', () => {
         'Address',
         'City',
         'State',
-        'Zip'
+        'Zip',
       ])
     })
 
@@ -46,7 +46,7 @@ describe('PersonNewPage', () => {
     beforeEach(() => {
       const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
       spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
-      const xhrResponse = { responseJSON: {} }
+      const xhrResponse = {responseJSON: {}}
       xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
     })
 
@@ -67,4 +67,3 @@ describe('PersonNewPage', () => {
     })
   })
 })
-

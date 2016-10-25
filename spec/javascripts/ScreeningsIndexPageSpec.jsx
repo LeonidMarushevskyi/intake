@@ -2,7 +2,7 @@ import React from 'react'
 import ScreeningsFilter from 'ScreeningsFilter'
 import ScreeningsIndexPage from 'ScreeningsIndexPage'
 import ScreeningsTable from 'ScreeningsTable'
-import {mount} from 'enzyme';
+import {mount} from 'enzyme'
 import * as Utils from 'utils/http'
 
 describe('ScreeningsIndexPage', () => {
@@ -25,8 +25,8 @@ describe('ScreeningsIndexPage', () => {
 
   describe('updateIndex', () => {
     it('makes an ajax call to the pathname', () => {
-      const location = { pathname: 'my-api', search: '?my-search' }
-      const wrapper = mount(<ScreeningsIndexPage location={location} />)
+      const location = {pathname: 'my-api', search: '?my-search'}
+      mount(<ScreeningsIndexPage location={location} />)
       expect(Utils.request).toHaveBeenCalledWith('GET', 'my-api.json?my-search', null, null)
     })
   })

@@ -4,7 +4,6 @@ import 'jquery-ujs'
 import 'babel-polyfill'
 import 'bootstrap'
 import $ from 'jquery'
-import Autocompleter from 'Autocompleter'
 import PeopleApp from 'PeopleApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -19,7 +18,6 @@ function bindReactComponent(Component, containerId) {
 }
 
 $(document).ready(() => {
-  bindReactComponent(Autocompleter, 'add-person')
   bindReactComponent(ScreeningsApp, 'screenings-app')
   bindReactComponent(PeopleApp, 'people-app')
 })

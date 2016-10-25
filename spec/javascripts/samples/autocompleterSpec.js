@@ -1,19 +1,18 @@
-import React from 'react'
-import {shallow} from 'enzyme'
-import ReactAutosuggest from 'react-autosuggest'
-import AutocompleterParticipantsList from 'AutocompleterParticipantsList'
-import Autocompleter from 'Autocompleter'
 import $ from 'jquery'
+import Autocompleter from 'Autocompleter'
+import React from 'react'
+import ReactAutosuggest from 'react-autosuggest'
+import matchers from 'jasmine-immutable-matchers'
+import {shallow} from 'enzyme'
 
 describe('<Autcompleter />', () => {
+  beforeEach(() => {
+    jasmine.addMatchers(matchers)
+  })
+
   it('renders a Autosuggest component', () => {
     const wrapper = shallow(<Autocompleter />)
     expect(wrapper.find(ReactAutosuggest).length).toBe(1)
-  })
-
-  it('renders a AutocompleterParticipantsList component', () => {
-    const wrapper = shallow(<Autocompleter />)
-    expect(wrapper.find(AutocompleterParticipantsList).length).toBe(1)
   })
 
   describe('#onChange', () => {
@@ -39,10 +38,11 @@ describe('<Autcompleter />', () => {
 
   describe('#onSuggestionSelected', () => {
     it('clears the search Text and adds the suggestion', () => {
-      const wrapper = shallow(<Autocompleter />)
-      const suggestion = 'Bart Simpson'
+      const onSelect = jasmine.createSpy('onSelectSpy')
+      const wrapper = shallow(<Autocompleter onSelect={onSelect} />)
+      const suggestion = {id: 1, first_name: 'Bart'}
       wrapper.instance().onSuggestionSelected('selected', {suggestion: suggestion})
-      expect(wrapper.state('participants')).toContain(suggestion)
+      expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
       expect(wrapper.state('value')).toEqual('')
     })
   })
@@ -78,7 +78,6 @@ describe('<Autcompleter />', () => {
   describe('#renderSuggestionsContainer', () => {
     it('rendres the suggestions container', () => {
       const wrapper = shallow(<Autocompleter />)
-      const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const container = wrapper.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).html()).toBe('<div class="baz">foobar</div>')
     })

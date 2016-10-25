@@ -28,16 +28,6 @@
           - communication_method_options = options_from_collection_for_select(CommunicationMethod::ALL, :first, :last, f.object.communication_method)
           = f.select :communication_method, communication_method_options, include_blank: true
 
-  .card.edit.double-gap-top#participants-card
-    .card-header
-      %span Participants
-    .card-body
-      .row
-        .col-md-6
-          = f.label :participants, t('activemodel.attributes.screening.participants'), class: 'no-gap'
-          - participants = @participants.as_json(only: [:id, :first_name, :last_name])
-          #add-person{ 'data-props' => { participants: participants, id: 'screening_participants' }.to_json }
-
   #screenings-app
 
   .card.edit.double-gap-top#referral-information-card

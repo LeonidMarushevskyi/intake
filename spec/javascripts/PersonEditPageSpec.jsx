@@ -13,13 +13,13 @@ describe('PersonEditPage', () => {
 
   describe('render', () => {
     it('renders the card header', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('.card-header').text()).toEqual('Edit Person')
     })
 
     it('renders the person label fields', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('label').length).toEqual(9)
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
@@ -31,12 +31,12 @@ describe('PersonEditPage', () => {
         'Address',
         'City',
         'State',
-        'Zip'
+        'Zip',
       ])
     })
 
     it('renders the person input fields', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       wrapper.setState({
         person: Immutable.fromJS({
@@ -46,8 +46,8 @@ describe('PersonEditPage', () => {
           date_of_birth: '11/16/1990',
           ssn: '111223333',
           address: {
-            street_address:'671 Lincoln Avenue',
-            city:'Winnetka',
+            street_address: '671 Lincoln Avenue',
+            city: 'Winnetka',
             state: 'IL',
             zip: 60093,
           },
@@ -66,13 +66,13 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the save button', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('button.btn-primary').text()).toEqual('Save')
     })
 
     it('renders the cancel link', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('Link').text()).toEqual('Cancel')
       expect(wrapper.find('Link').props().to).toEqual('/people/1')
@@ -81,7 +81,7 @@ describe('PersonEditPage', () => {
 
   describe('fetch', () => {
     it('GETs the person data to the server', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       wrapper.instance().fetch()
       expect(Utils.request).toHaveBeenCalled()
@@ -92,12 +92,12 @@ describe('PersonEditPage', () => {
 
   describe('update', () => {
     beforeEach(() => {
-      const xhrResponse = { responseJSON: {} }
+      const xhrResponse = {responseJSON: {}}
       xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
     })
 
     it('PUTs the person data to the server', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       wrapper.instance().update()
       expect(Utils.request).toHaveBeenCalled()
@@ -106,7 +106,7 @@ describe('PersonEditPage', () => {
     })
 
     it('redirects to the person show page', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<PersonEditPage {...props} />)
       const instance = wrapper.instance()
       spyOn(instance, 'show')
@@ -115,4 +115,3 @@ describe('PersonEditPage', () => {
     })
   })
 })
-

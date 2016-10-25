@@ -1,6 +1,6 @@
 import ScreeningShowPage from 'ScreeningShowPage'
 import React from 'react'
-import {mount} from 'enzyme';
+import {mount} from 'enzyme'
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 
@@ -11,39 +11,49 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('render', () => {
-    it('renders the card header', () => {
-      const props = { params: { id: 1 } }
+    it('renders the participants edit view for each participant', () => {
+      const props = {params: {}}
       const wrapper = mount(<ScreeningShowPage {...props} />)
-
-      expect(wrapper.find('.card-header').text()).toContain('Narrative')
+      const participants = [
+        {id: 1, first_name: 'Rodney', last_name: 'Mullens'},
+        {id: 5, first_name: 'Tony', last_name: 'Hawk'},
+      ]
+      const screening = Immutable.fromJS({participants: participants})
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('ParticipantShowView').length).toEqual(2)
     })
 
-    it('renders the screening narrative label fields', () => {
-      const props = { params: {} }
-      const wrapper = mount(<ScreeningShowPage {...props} />)
-
-      expect(wrapper.find('label').length).toEqual(1)
-      expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
-        'Report Narrative'
-      ])
-    })
-
-    it('renders the screening value fields', () => {
-      const props = { params: {} }
-      const wrapper = mount(<ScreeningShowPage {...props} />)
-      wrapper.setState({
-        screening: Immutable.fromJS({
-          report_narrative: 'some narrative',
-        }),
+    describe('narrative card', () => {
+      it('renders the card header', () => {
+        const props = {params: {id: 1}}
+        const wrapper = mount(<ScreeningShowPage {...props} />)
+        expect(wrapper.find('#narrative-card .card-header').text()).toContain('Narrative')
       })
 
-      expect(wrapper.text()).toContain('some narrative')
+      it('renders the narrative label', () => {
+        const props = {params: {}}
+        const wrapper = mount(<ScreeningShowPage {...props} />)
+        expect(wrapper.find('#narrative-card label').length).toEqual(1)
+        expect(wrapper.find('#narrative-card label').text()).toEqual('Report Narrative')
+      })
+
+      it('renders the narratve value', () => {
+        const props = {params: {}}
+        const wrapper = mount(<ScreeningShowPage {...props} />)
+        wrapper.setState({
+          screening: Immutable.fromJS({
+            report_narrative: 'some narrative',
+            participants: [],
+          }),
+        })
+        expect(wrapper.text()).toContain('some narrative')
+      })
     })
   })
 
   describe('fetch', () => {
     it('GETs the screening data from the server', () => {
-      const props = { params: { id: 1 } }
+      const props = {params: {id: 1}}
       const wrapper = mount(<ScreeningShowPage {...props} />)
       wrapper.instance().fetch()
 
@@ -53,4 +63,3 @@ describe('ScreeningShowPage', () => {
     })
   })
 })
-
