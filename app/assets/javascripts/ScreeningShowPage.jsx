@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import ParticipantList from 'ParticipantList'
+import ParticipantShowView from 'ParticipantShowView'
 
 export default class ScreeningShowPage extends React.Component {
   constructor() {
@@ -31,7 +31,11 @@ export default class ScreeningShowPage extends React.Component {
     const {screening} = this.state
     return (
       <div>
-        <ParticipantList participants={screening.get('participants').toJS()} />
+        {
+          screening.get('participants').map((participant) =>
+            <ParticipantShowView key={participant.get('id')} participant= {participant} />
+          )
+        }
         <div className='card double-gap-top' id='narrative-card'>
           <div className='card-header'>
             <span>Narrative</span>

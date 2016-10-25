@@ -45,7 +45,7 @@ export default class ScreeningEditPage extends React.Component {
           <div className='card-body'>
             <div className='row'>
               <div className='col-md-6'>
-                <label className='no-gap' htmlFor='screening_participants' >Participants</label>
+                <label className='no-gap' htmlFor='screening_participants'>Participants</label>
                 <Autocompleter
                   id='screening_participants'
                   participants={screening.get('participants').toJS()}

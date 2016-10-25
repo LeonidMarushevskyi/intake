@@ -45,6 +45,8 @@ feature 'Show Screening' do
 
     within "#participants-card-#{existing_participant[:id]}" do
       expect(page).to have_content 'HOMER SIMPSON'
+      expect(page).to have_link 'Edit participant'
+      expect(page).to have_link 'Delete participant'
     end
   end
 end

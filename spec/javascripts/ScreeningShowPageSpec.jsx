@@ -11,22 +11,16 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('render', () => {
-    describe('participants cards', () => {
-      it('renders a card for each participant', () => {
-        const props = {params: {}}
-        const wrapper = mount(<ScreeningShowPage {...props} />)
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            participants: [{
-              id: 1, first_name: 'Rodney', last_name: 'Mullens',
-            }, {
-              id: 5, first_name: 'Tony', last_name: 'Hawk',
-            }],
-          }),
-        })
-        expect(wrapper.find('#participants-card-1 .card-header').text()).toContain('Rodney Mullens')
-        expect(wrapper.find('#participants-card-5 .card-header').text()).toContain('Tony Hawk')
-      })
+    it('renders the participants edit view for each participant', () => {
+      const props = {params: {}}
+      const wrapper = mount(<ScreeningShowPage {...props} />)
+      const participants = [
+        {id: 1, first_name: 'Rodney', last_name: 'Mullens'},
+        {id: 5, first_name: 'Tony', last_name: 'Hawk'},
+      ]
+      const screening = Immutable.fromJS({participants: participants})
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('ParticipantShowView').length).toEqual(2)
     })
 
     describe('narrative card', () => {
