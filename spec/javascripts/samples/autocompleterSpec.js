@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import Autocompleter from 'Autocompleter'
-import ParticipantList from 'ParticipantList'
 import Immutable from 'immutable'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
@@ -15,11 +14,6 @@ describe('<Autcompleter />', () => {
   it('renders a Autosuggest component', () => {
     const wrapper = shallow(<Autocompleter />)
     expect(wrapper.find(ReactAutosuggest).length).toBe(1)
-  })
-
-  it('renders a ParticipantList component', () => {
-    const wrapper = shallow(<Autocompleter />)
-    expect(wrapper.find(ParticipantList).length).toBe(1)
   })
 
   describe('#onChange', () => {

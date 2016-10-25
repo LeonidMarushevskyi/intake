@@ -1,5 +1,4 @@
 import $ from 'jquery'
-import ParticipantList from 'ParticipantList'
 import Immutable from 'immutable'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
@@ -79,7 +78,6 @@ export default class Autocompleter extends React.Component {
 
   render() {
     const {value, suggestions} = this.state
-    const {participants} = this.props
     const inputProps = {
       placeholder: 'Search people...',
       id: this.props.id,
@@ -98,7 +96,6 @@ export default class Autocompleter extends React.Component {
           inputProps={inputProps}
           renderSuggestionsContainer={this.renderSuggestionsContainer}
         />
-        <ParticipantList participants={participants} />
       </div>
     )
   }
