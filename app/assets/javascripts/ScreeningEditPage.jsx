@@ -39,7 +39,7 @@ export default class ScreeningEditPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-md-12'>
               <label className='no-gap' htmlFor='screening[report_narrative]'>Report Narrative</label>
               <textarea
                 name='screening[report_narrative]'
