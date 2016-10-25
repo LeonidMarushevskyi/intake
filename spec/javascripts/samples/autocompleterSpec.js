@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import Autocompleter from 'Autocompleter'
-import Immutable from 'immutable'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
@@ -39,12 +38,11 @@ describe('<Autcompleter />', () => {
 
   describe('#onSuggestionSelected', () => {
     it('clears the search Text and adds the suggestion', () => {
-      const setField = jasmine.createSpy('setFieldSpy')
-      const wrapper = shallow(<Autocompleter setField={setField} />)
+      const onSelect = jasmine.createSpy('onSelectSpy')
+      const wrapper = shallow(<Autocompleter onSelect={onSelect} />)
       const suggestion = {id: 1, first_name: 'Bart'}
       wrapper.instance().onSuggestionSelected('selected', {suggestion: suggestion})
-      expect(setField.calls.argsFor(0)[0]).toEqual(['participants'])
-      expect(setField.calls.argsFor(0)[1]).toEqualImmutable(Immutable.fromJS([suggestion]))
+      expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
       expect(wrapper.state('value')).toEqual('')
     })
   })

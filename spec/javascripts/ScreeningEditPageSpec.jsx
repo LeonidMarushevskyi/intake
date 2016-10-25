@@ -29,6 +29,9 @@ describe('ScreeningEditPage', () => {
         const props = {params: {}}
         const wrapper = mount(<ScreeningEditPage {...props} />)
         expect(wrapper.find('Autocompleter').props().id).toEqual('screening_participants')
+        expect(wrapper.find('Autocompleter').props().onSelect).toEqual(
+          wrapper.instance().addParticipant
+        )
       })
     })
 
@@ -73,6 +76,28 @@ describe('ScreeningEditPage', () => {
       expect(Utils.request).toHaveBeenCalled()
       expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
       expect(Utils.request.calls.argsFor(0)[1]).toEqual('/screenings/1.json')
+    })
+  })
+
+  describe('addParticipant', () => {
+    it('adds the participant to an empty list of participants', () => {
+      const props = {params: {id: 1}}
+      const wrapper = mount(<ScreeningEditPage {...props} />).instance()
+      wrapper.addParticipant({id: 1})
+      const participants = wrapper.state.screening.get('participants')
+      expect(participants.size).toEqual(1)
+      expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
+    })
+
+    it('adds the participant to a non empty list of participants', () => {
+      const props = {params: {id: 1}}
+      const wrapper = mount(<ScreeningEditPage {...props} />).instance()
+      wrapper.addParticipant({id: 1})
+      wrapper.addParticipant({id: 2})
+      const participants = wrapper.state.screening.get('participants')
+      expect(participants.size).toEqual(2)
+      expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
+      expect(participants.get(1)).toEqual(Immutable.Map({id: 2}))
     })
   })
 })

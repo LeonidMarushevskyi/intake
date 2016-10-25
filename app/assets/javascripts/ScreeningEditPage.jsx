@@ -15,6 +15,7 @@ export default class ScreeningEditPage extends React.Component {
     }
     this.fetch = this.fetch.bind(this)
     this.setField = this.setField.bind(this)
+    this.addParticipant = this.addParticipant.bind(this)
   }
 
   componentDidMount() {
@@ -34,6 +35,14 @@ export default class ScreeningEditPage extends React.Component {
     this.setState({screening: screening})
   }
 
+  addParticipant(participant) {
+    const {screening} = this.state
+    const participants = screening.get('participants').push(Immutable.Map(participant))
+    this.setState({
+      screening: screening.set('participants', participants),
+    })
+  }
+
   render() {
     const {screening} = this.state
     return (
@@ -46,11 +55,7 @@ export default class ScreeningEditPage extends React.Component {
             <div className='row'>
               <div className='col-md-6'>
                 <label className='no-gap' htmlFor='screening_participants'>Participants</label>
-                <Autocompleter
-                  id='screening_participants'
-                  participants={screening.get('participants').toJS()}
-                  setField={this.setField}
-                />
+                <Autocompleter id='screening_participants' onSelect={this.addParticipant}/>
               </div>
             </div>
           </div>

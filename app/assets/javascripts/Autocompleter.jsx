@@ -1,5 +1,4 @@
 import $ from 'jquery'
-import Immutable from 'immutable'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 
@@ -40,14 +39,11 @@ export default class Autocompleter extends React.Component {
   }
 
   onSuggestionSelected(event, {suggestion}) {
-    const {participants} = this.props
     this.onSuggestionsClearRequested()
     this.setState({
       value: '',
     })
-    const newParticipants = Immutable.fromJS(participants)
-      .push(Immutable.Map(suggestion))
-    this.props.setField(['participants'], newParticipants)
+    this.props.onSelect(suggestion)
   }
 
   onSuggestionsClearRequested() {
@@ -103,10 +99,5 @@ export default class Autocompleter extends React.Component {
 
 Autocompleter.propTypes = {
   id: React.PropTypes.string,
-  participants: React.PropTypes.array,
-  setField: React.PropTypes.func,
-}
-
-Autocompleter.defaultProps = {
-  participants: [],
+  onSelect: React.PropTypes.func,
 }
