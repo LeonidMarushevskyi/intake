@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import Autocompleter from 'autocompleter'
+import Autocompleter from 'Autocompleter'
 import ParticipantEditView from 'ParticipantEditView'
 
 export default class ScreeningEditPage extends React.Component {
