@@ -37,7 +37,7 @@ describe('ScreeningShowPage', () => {
         expect(wrapper.find('#narrative-card label').text()).toEqual('Report Narrative')
       })
 
-      it('renders the narratve value', () => {
+      it('renders the narrative value', () => {
         const props = {params: {}}
         const wrapper = mount(<ScreeningShowPage {...props} />)
         wrapper.setState({

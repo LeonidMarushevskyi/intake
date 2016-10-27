@@ -43,7 +43,7 @@ export default class ScreeningEditPage extends React.Component {
     })
   }
 
-  render() {
+  renderParticipantsCard() {
     const {screening} = this.state
     return (
       <div>
@@ -65,24 +65,39 @@ export default class ScreeningEditPage extends React.Component {
             <ParticipantEditView key={participant.get('id')} participant={participant} />
           )
         }
-        <div className='card edit double-gap-top' id='narrative-card'>
-          <div className='card-header'>
-            <span>Narrative</span>
-          </div>
-          <div className='card-body'>
-            <div className='row'>
-              <div className='col-md-12'>
-                <label className='no-gap' htmlFor='screening[report_narrative]'>Report Narrative</label>
-                <textarea
-                  name='screening[report_narrative]'
-                  id='screening[report_narrative]'
-                  value={screening.get('report_narrative') || ''}
-                  onChange={(event) => this.setField(['report_narrative'], event.target.value)}
-                />
-              </div>
+      </div>
+    )
+  }
+
+  renderNarrativeCard() {
+    const {screening} = this.state
+    return(
+      <div className='card edit double-gap-top' id='narrative-card'>
+        <div className='card-header'>
+          <span>Narrative</span>
+        </div>
+        <div className='card-body'>
+          <div className='row'>
+            <div className='col-md-12'>
+              <label className='no-gap' htmlFor='screening[report_narrative]'>Report Narrative</label>
+              <textarea
+                name='screening[report_narrative]'
+                id='screening[report_narrative]'
+                value={screening.get('report_narrative') || ''}
+                onChange={(event) => this.setField(['report_narrative'], event.target.value)}
+              />
             </div>
           </div>
         </div>
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderParticipantsCard()}
+        {this.renderNarrativeCard()}
       </div>
     )
   }
