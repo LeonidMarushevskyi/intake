@@ -25,8 +25,8 @@ describe('PersonEditPage', () => {
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
         'Last Name',
-        'Gender',
         'Date of birth',
+        'Gender',
         'Social security number',
         'Address',
         'City',

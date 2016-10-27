@@ -70,26 +70,13 @@ export default class PersonEditPage extends React.Component {
               />
             </div>
             <div className='col-md-6'>
-              <label className='no-pad-top-desktop' htmlFor='last_name'>Last Name</label>
+              <label className='no-gap-top-desktop' htmlFor='last_name'>Last Name</label>
               <input
                 type='text'
                 id='last_name'
                 value={person.get('last_name') || ''}
                 onChange={(event) => this.setField(['last_name'], event.target.value)}
               />
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='gender'>Gender</label>
-              <select
-                id='gender'
-                value={person.get('gender') || ''}
-                onChange={(event) => this.setField(['gender'], event.target.value)}
-              >
-                <option key='' value=''></option>
-                {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
-              </select>
             </div>
           </div>
           <div className='row'>
@@ -103,6 +90,19 @@ export default class PersonEditPage extends React.Component {
                 onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
               />
             </div>
+            <div className='col-md-6'>
+              <label htmlFor='gender'>Gender</label>
+              <select
+                id='gender'
+                value={person.get('gender') || ''}
+                onChange={(event) => this.setField(['gender'], event.target.value)}
+              >
+                <option key='' value=''></option>
+                {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className='row'>
             <div className='col-md-6'>
               <label htmlFor='ssn'>Social security number</label>
               <input
