@@ -23,7 +23,7 @@ describe('ParticipantEditView', () => {
   })
 
   it('renders the participants first and last name in the card header', () => {
-    expect(wrapper.text()).toContain('Lisa Simpson')
+    expect(wrapper.find('.card-header').text()).toContain('Lisa Simpson')
   })
 
   it('renders the delete link', () => {
