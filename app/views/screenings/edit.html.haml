@@ -1,32 +1,10 @@
 %h1
   = I18n.t(:edit, scope: [:views, :screening], reference: @screening.reference)
 = form_for @screening, url: screening_path(@screening.id), method: :put do |f|
-  .card.edit.double-gap-top#screening-information-card
-    .card-header
-      %span Screening Information
-    .card-body
-      .row
-        .col-md-6
-          = f.hidden_field :id
-          = f.hidden_field :created_at
-          = f.hidden_field :updated_at
-          = f.hidden_field :reference
-          = f.label :name, t('activemodel.attributes.screening.name'), class: 'no-gap'
-          = f.text_field :name, placeholder: 'Enter name of the screening'
-      .row
-        .col-md-6
-          - value = (f.object.started_at ? Time.zone.parse(f.object.started_at) : nil)
-          = f.label :started_at, t('activemodel.attributes.screening.started_at')
-          = f.datetime_field :started_at, value: value
-        .col-md-6
-          - value = (f.object.ended_at ? Time.zone.parse(f.object.ended_at) : nil)
-          = f.label :ended_at, t('activemodel.attributes.screening.ended_at')
-          = f.datetime_field :ended_at, value: value
-      .row
-        .col-md-6
-          = f.label :communication_method, t('activemodel.attributes.screening.communication_method')
-          - communication_method_options = options_from_collection_for_select(CommunicationMethod::ALL, :first, :last, f.object.communication_method)
-          = f.select :communication_method, communication_method_options, include_blank: true
+  = f.hidden_field :id
+  = f.hidden_field :created_at
+  = f.hidden_field :updated_at
+  = f.hidden_field :reference
 
   #screenings-app
 

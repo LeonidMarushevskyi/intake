@@ -43,8 +43,8 @@ feature 'Edit Screening' do
 
     within '#screening-information-card' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
-      expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13 10:00:00 UTC')
-      expect(page).to have_field('Screening End Date/Time', with: '2016-08-13 11:00:00 UTC')
+      expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
+      expect(page).to have_field('Screening End Date/Time', with: '2016-08-13T11:00:00.000Z')
       expect(page).to have_field('Communication Method', with: 'phone')
     end
 
@@ -61,8 +61,8 @@ feature 'Edit Screening' do
 
     within '#screening-information-card' do
       fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-      fill_in 'Screening Start Date/Time', with: '2016-08-13 10:00 AM'
-      fill_in 'Screening End Date/Time', with: '2016-08-22 11:00 AM'
+      fill_in 'Screening Start Date/Time', with: '2016-08-13T10:00.000Z'
+      fill_in 'Screening End Date/Time', with: '2016-08-22T11:00.000Z'
       select  'Mail', from: 'Communication Method'
     end
 
@@ -85,7 +85,7 @@ feature 'Edit Screening' do
     updated_screening = {
       communication_method: 'mail',
       created_at: '2016-10-21T16:11:59.484Z',
-      ended_at: '2016-08-22 11:00 AM',
+      ended_at: '2016-08-22T11:00.000Z',
       id: '1',
       incident_county: 'mariposa',
       incident_date: '2016-08-11',
@@ -95,7 +95,7 @@ feature 'Edit Screening' do
       report_narrative: 'Updated narrative',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
-      started_at: '2016-08-13 10:00 AM',
+      started_at: '2016-08-13T10:00.000Z',
       updated_at: '2016-10-21T16:11:59.484Z',
       address: {
         city: 'Springfield',
