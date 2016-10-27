@@ -52,15 +52,15 @@ describe('PersonShowPage', () => {
           },
         }),
       })
-      expect(wrapper.text()).toContain('Kevin')
-      expect(wrapper.text()).toContain('McCallister')
-      expect(wrapper.text()).toContain('Male')
-      expect(wrapper.text()).toContain('11/16/1990')
-      expect(wrapper.text()).toContain('111223333')
-      expect(wrapper.text()).toContain('671 Lincoln Avenue')
-      expect(wrapper.text()).toContain('Winnetka')
-      expect(wrapper.text()).toContain('Illinois')
-      expect(wrapper.text()).toContain('60093')
+      expect(wrapper.find('.card-body').text()).toContain('Kevin')
+      expect(wrapper.find('.card-body').text()).toContain('McCallister')
+      expect(wrapper.find('.card-body').text()).toContain('Male')
+      expect(wrapper.find('.card-body').text()).toContain('11/16/1990')
+      expect(wrapper.find('.card-body').text()).toContain('111223333')
+      expect(wrapper.find('.card-body').text()).toContain('671 Lincoln Avenue')
+      expect(wrapper.find('.card-body').text()).toContain('Winnetka')
+      expect(wrapper.find('.card-body').text()).toContain('Illinois')
+      expect(wrapper.find('.card-body').text()).toContain('60093')
     })
 
     it('renders the edit link', () => {
