@@ -1,32 +1,5 @@
 %h1
   = I18n.t(:show, scope: [:views, :screening], reference: @screening.reference)
-.card.double-gap-top#screening-information-card
-  .card-header
-    %span Screening Information
-  .card-body
-    .row
-      .col-md-6
-        %label.no-gap
-          = t('activemodel.attributes.screening.name')
-        .c-gray
-          = @screening.name
-    .row
-      .col-md-6
-        %label
-          = t('activemodel.attributes.screening.started_at')
-        .c-gray
-          = Time.zone.parse(@screening.started_at).strftime('%m/%d/%Y %I:%M %p') if @screening.started_at
-      .col-md-6
-        %label
-          = t('activemodel.attributes.screening.ended_at')
-        .c-gray
-          = Time.zone.parse(@screening.ended_at).strftime('%m/%d/%Y %I:%M %p') if @screening.ended_at
-    .row
-      .col-md-6
-        %label
-          = t('activemodel.attributes.screening.communication_method')
-        .c-gray
-          = CommunicationMethod::ALL[@screening.communication_method]
 
 #screenings-app
 
