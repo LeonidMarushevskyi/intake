@@ -6,7 +6,12 @@ require 'spec_helper'
 feature 'Show Screening' do
   scenario 'showing existing participant' do
     existing_participant = {
-      id: 1, first_name: 'Homer', last_name: 'Simpson'
+      id: 1,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      gender: 'male',
+      ssn: '123-23-1234',
+      date_of_birth: '1990-09-05'
     }
     existing_screening = {
       id: 4,
@@ -44,9 +49,19 @@ feature 'Show Screening' do
     visit screening_path(id: existing_screening[:id])
 
     within "#participants-card-#{existing_participant[:id]}" do
-      expect(page).to have_content 'HOMER SIMPSON'
-      expect(page).to have_link 'Edit participant'
-      expect(page).to have_link 'Delete participant'
+      within '.card-header' do
+        expect(page).to have_content 'HOMER SIMPSON'
+        expect(page).to have_link 'Edit participant'
+        expect(page).to have_link 'Delete participant'
+      end
+
+      within '.card-body' do
+        expect(page).to have_content('Homer')
+        expect(page).to have_content('Simpson')
+        expect(page).to have_content('Male')
+        expect(page).to have_content('1990-09-05')
+        expect(page).to have_content('123-23-1234')
+      end
     end
   end
 end

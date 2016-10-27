@@ -10,6 +10,9 @@ describe('ParticipanShowView', () => {
       id: 200,
       first_name: 'Kevin',
       last_name: 'McCallister',
+      gender: 'male',
+      date_of_birth: '11/16/1990',
+      ssn: '111223333',
     })
     wrapper = shallow(<ParticipantShowView participant={participant} />)
   })
@@ -20,7 +23,7 @@ describe('ParticipanShowView', () => {
   })
 
   it('renders the participants first and last name', () => {
-    expect(wrapper.text()).toContain('Kevin McCallister')
+    expect(wrapper.find('.card-header').text()).toContain('Kevin McCallister')
   })
 
   it('renders the delete link', () => {
@@ -29,5 +32,26 @@ describe('ParticipanShowView', () => {
 
   it('renders the edit link', () => {
     expect(wrapper.find('.fa-pencil').length).toEqual(1)
+  })
+
+  it('renders the default avatar', () => {
+    expect(wrapper.find('img').props().src).toEqual('/assets/default-profile.svg')
+  })
+
+  it('renders the labels of the participant card', () => {
+    expect(wrapper.find('label').length).toEqual(4)
+    expect(wrapper.find('label').map((element) => element.text())).toEqual([
+      'Name',
+      'Gender',
+      'Date of birth',
+      'Social security number',
+    ])
+  })
+
+  it('renders the participant value fields', () => {
+    expect(wrapper.find('.card-body').text()).toContain('Kevin McCallister')
+    expect(wrapper.find('.card-body').text()).toContain('Male')
+    expect(wrapper.find('.card-body').text()).toContain('11/16/1990')
+    expect(wrapper.find('.card-body').text()).toContain('111223333')
   })
 })
