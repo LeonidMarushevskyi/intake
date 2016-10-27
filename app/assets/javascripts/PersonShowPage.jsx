@@ -50,15 +50,15 @@ export default class PersonShowPage extends React.Component {
           </div>
           <div className='row gap-top'>
             <div className='col-md-6'>
+              <label>Date of birth</label>
+              <div className='c-gray'>{person.get('date_of_birth')}</div>
+            </div>
+            <div className='col-md-6'>
               <label>Gender</label>
               <div className='c-gray'>{Gender[person.get('gender')]}</div>
             </div>
           </div>
           <div className='row gap-top'>
-            <div className='col-md-6'>
-              <label>Date of birth</label>
-              <div className='c-gray'>{person.get('date_of_birth')}</div>
-            </div>
             <div className='col-md-6'>
               <label>Social security number</label>
               <div className='c-gray'>{person.get('ssn')}</div>

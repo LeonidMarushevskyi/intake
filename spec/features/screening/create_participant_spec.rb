@@ -38,7 +38,14 @@ feature 'Edit Screening' do
     end
     allow(API).to receive(:connection).and_return(faraday_stub)
 
-    marge = Participant.new(id: 99, first_name: 'Marge', last_name: 'Simpson')
+    marge = Participant.new(
+      id: 99,
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      date_of_birth: '05/29/1990',
+      gender: 'female',
+      ssn: '123-23-1234'
+    )
     allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
 
     visit edit_screening_path(id: existing_screening[:id])
@@ -49,8 +56,20 @@ feature 'Edit Screening' do
     end
 
     within "#participants-card-#{marge.id}.edit" do
-      expect(page).to have_content 'MARGE SIMPSON'
-      expect(page).to have_link 'Delete participant'
+      within '.card-header' do
+        expect(page).to have_content 'MARGE SIMPSON'
+        expect(page).to have_link 'Delete participant'
+      end
+
+      within '.card-body' do
+        expect(page).to have_field('First Name', with: marge.first_name)
+        expect(page).to have_field('Last Name', with: marge.last_name)
+        expect(page).to have_field('Gender', with: marge.gender)
+        expect(page).to have_field('Date of birth', with: marge.date_of_birth)
+        expect(page).to have_field('Social security number', with: marge.ssn)
+        expect(page).to have_button 'Cancel'
+        expect(page).to have_button 'Save'
+      end
     end
   end
 end
