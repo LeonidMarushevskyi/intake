@@ -12,51 +12,85 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('render', () => {
+    let wrapper
+    beforeEach(() => {
+      const props = {params: {id: 1}}
+      wrapper = mount(<ScreeningEditPage {...props} />)
+    })
+
+    describe('screening information card', () => {
+      it('renders the card header', () => {
+        expect(wrapper.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
+      })
+
+      it('render the labels', () => {
+        const labels = wrapper.find('#screening-information-card label')
+
+        expect(labels.length).toEqual(4)
+        expect(labels.map((element) => element.text())).toEqual([
+          'Title/Name of Screening',
+          'Screening Start Date/Time',
+          'Screening End Date/Time',
+          'Communication Method',
+        ])
+      })
+
+      it('render the fields', () => {
+        wrapper.setState({
+          screening: Immutable.fromJS({
+            name: 'The Rocky Horror Picture Show',
+            started_at: '2016-08-13T10:00:00.000Z',
+            ended_at: '2016-08-22T11:00:00.000Z',
+            communication_method: 'mail',
+            participants: [],
+          }),
+        })
+        const inputs = wrapper.find('#screening-information-card input')
+
+        expect(inputs.length).toEqual(3)
+        expect(inputs.map((element) => element.props().value)).toEqual([
+          'The Rocky Horror Picture Show',
+          '2016-08-13T10:00:00.000Z',
+          '2016-08-22T11:00:00.000Z',
+        ])
+
+        expect(wrapper.find('#screening-information-card select').props().value).toEqual('mail')
+      })
+    })
+
     describe('participants card', () => {
       it('renders the card header', () => {
-        const props = {params: {id: 1}}
-        const wrapper = mount(<ScreeningEditPage {...props} />)
         expect(wrapper.find('#participants-card .card-header').text()).toContain('Participants')
       })
 
       it('renders the participant label', () => {
-        const props = {params: {}}
-        const wrapper = mount(<ScreeningEditPage {...props} />)
         expect(wrapper.find('#participants-card label').text()).toEqual('Participants')
       })
 
       it('renders the autocompleter', () => {
-        const props = {params: {}}
-        const wrapper = mount(<ScreeningEditPage {...props} />)
         expect(wrapper.find('Autocompleter').props().id).toEqual('screening_participants')
         expect(wrapper.find('Autocompleter').props().onSelect).toEqual(
           wrapper.instance().addParticipant
         )
       })
-    })
 
-    it('renders the participants edit view for each participant', () => {
-      const props = {params: {}}
-      const wrapper = mount(<ScreeningEditPage {...props} />)
-      const participants = [
-        {id: 1, first_name: 'Melissa', last_name: 'Powers'},
-        {id: 2, first_name: 'Marshall', last_name: 'Powers'},
-      ]
-      const screening = Immutable.fromJS({participants: participants})
-      wrapper.setState({screening: screening})
-      expect(wrapper.find('ParticipantEditView').length).toEqual(2)
+      it('renders the participants edit view for each participant', () => {
+        const participants = [
+          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
+          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+        ]
+        const screening = Immutable.fromJS({participants: participants})
+        wrapper.setState({screening: screening})
+        expect(wrapper.find('ParticipantEditView').length).toEqual(2)
+      })
     })
 
     describe('narrative card', () => {
       it('renders the narrative card header', () => {
-        const props = {params: {id: 1}}
-        const wrapper = mount(<ScreeningEditPage {...props} />)
         expect(wrapper.find('#narrative-card .card-header').text()).toEqual('Narrative')
       })
 
       it('renders the report narrative textarea', () => {
-        const props = {params: {id: 1}}
-        const wrapper = mount(<ScreeningEditPage {...props} />)
         wrapper.setState({
           screening: Immutable.fromJS({
             report_narrative: 'some narrative',
