@@ -12,15 +12,17 @@ describe('PersonEditPage', () => {
   })
 
   describe('render', () => {
-    it('renders the card header', () => {
+    let wrapper
+    beforeEach(() => {
       const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
+      wrapper = mount(<PersonEditPage {...props} />)
+    })
+
+    it('renders the card header', () => {
       expect(wrapper.find('.card-header').text()).toEqual('Edit Person')
     })
 
     it('renders the person label fields', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('label').length).toEqual(9)
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
@@ -36,8 +38,6 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the person input fields', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       wrapper.setState({
         person: Immutable.fromJS({
           first_name: 'Kevin',
@@ -66,14 +66,10 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the save button', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('button.btn-primary').text()).toEqual('Save')
     })
 
     it('renders the cancel link', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       expect(wrapper.find('Link').text()).toEqual('Cancel')
       expect(wrapper.find('Link').props().to).toEqual('/people/1')
     })
@@ -91,14 +87,15 @@ describe('PersonEditPage', () => {
   })
 
   describe('update', () => {
+    let wrapper
     beforeEach(() => {
       const xhrResponse = {responseJSON: {}}
       xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
+      const props = {params: {id: 1}}
+      wrapper = mount(<PersonEditPage {...props} />)
     })
 
     it('PUTs the person data to the server', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       wrapper.instance().update()
       expect(Utils.request).toHaveBeenCalled()
       expect(Utils.request.calls.argsFor(1)[0]).toEqual('PUT')
@@ -106,8 +103,6 @@ describe('PersonEditPage', () => {
     })
 
     it('redirects to the person show page', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
       const instance = wrapper.instance()
       spyOn(instance, 'show')
       instance.update()

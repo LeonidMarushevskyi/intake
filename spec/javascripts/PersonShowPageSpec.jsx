@@ -11,15 +11,17 @@ describe('PersonShowPage', () => {
   })
 
   describe('render', () => {
+    let wrapper
+    beforeEach(() => {
+      const props = {params: {id: 99}}
+      wrapper = mount(<PersonShowPage {...props} />)
+    })
+
     it('renders the card header', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('.card-header').text()).toContain('Profile Information')
     })
 
     it('renders the person label fields', () => {
-      const props = {params: {}}
-      const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('label').length).toEqual(9)
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
@@ -35,8 +37,6 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the person value fields', () => {
-      const props = {params: {}}
-      const wrapper = mount(<PersonShowPage {...props} />)
       wrapper.setState({
         person: Immutable.fromJS({
           first_name: 'Kevin',
@@ -64,8 +64,6 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the edit link', () => {
-      const props = {params: {id: 99}}
-      const wrapper = mount(<PersonShowPage {...props} />)
       expect(wrapper.find('Link').length).toEqual(1)
       expect(wrapper.find('Link').props()['aria-label']).toEqual('Edit Person')
       expect(wrapper.find('Link').props().to).toEqual('/people/99/edit')
