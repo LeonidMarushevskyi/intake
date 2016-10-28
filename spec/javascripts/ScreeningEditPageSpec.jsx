@@ -74,14 +74,17 @@ describe('ScreeningEditPage', () => {
         )
       })
 
-      it('renders the participants edit view for each participant', () => {
+      it('renders the participants card for each participant', () => {
         const participants = [
           {id: 1, first_name: 'Melissa', last_name: 'Powers'},
           {id: 2, first_name: 'Marshall', last_name: 'Powers'},
         ]
         const screening = Immutable.fromJS({participants: participants})
         wrapper.setState({screening: screening})
-        expect(wrapper.find('ParticipantEditView').length).toEqual(2)
+        expect(wrapper.find('ParticipantCard').length).toEqual(2)
+        expect(wrapper.find('ParticipantCard').nodes.map((ele) => ele.props.mode)).toEqual(
+          ['edit', 'edit']
+        )
       })
     })
 

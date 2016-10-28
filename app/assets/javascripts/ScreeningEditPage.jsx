@@ -3,7 +3,7 @@ import CommunicationMethod from 'CommunicationMethod'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
-import ParticipantEditView from 'ParticipantEditView'
+import ParticipantCard from 'ParticipantCard'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {
@@ -68,7 +68,7 @@ export default class ScreeningEditPage extends React.Component {
         </div>
         {
           screening.get('participants').map((participant) =>
-            <ParticipantEditView key={participant.get('id')} participant={participant} />
+            <ParticipantCard key={participant.get('id')} participant={participant} mode='edit'/>
           )
         }
       </div>
