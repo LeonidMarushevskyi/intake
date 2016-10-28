@@ -2,16 +2,16 @@ import React from 'react'
 import {Link} from 'react-router'
 import Gender from 'Gender'
 
-const ParticipantShowView = ({participant}) => (
+const ParticipantShowView = ({participant, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
       <span>{`${participant.get('first_name')} ${participant.get('last_name')}`}</span>
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times'></i>
       </Link>
-      <Link aria-label='Edit participant' className='gap-right pull-right' href='#'>
+      <a aria-label='Edit participant' className='gap-right pull-right' href='#' onClick={onEdit}>
         <i className='fa fa-pencil'></i>
-      </Link>
+      </a>
     </div>
     <div className='card-body'>
       <div className='row'>
@@ -36,6 +36,7 @@ const ParticipantShowView = ({participant}) => (
 )
 
 ParticipantShowView.propTypes = {
+  onEdit: React.PropTypes.func.isRequired,
   participant: React.PropTypes.object.isRequired,
 }
 export default ParticipantShowView

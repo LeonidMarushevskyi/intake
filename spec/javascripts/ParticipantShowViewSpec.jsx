@@ -5,6 +5,7 @@ import {shallow} from 'enzyme'
 
 describe('ParticipanShowView', () => {
   let wrapper
+  let onEdit
   beforeEach(() => {
     const participant = Immutable.fromJS({
       id: 200,
@@ -14,7 +15,8 @@ describe('ParticipanShowView', () => {
       date_of_birth: '11/16/1990',
       ssn: '111223333',
     })
-    wrapper = shallow(<ParticipantShowView participant={participant} />)
+    onEdit = jasmine.createSpy()
+    wrapper = shallow(<ParticipantShowView participant={participant} onEdit={onEdit}/>)
   })
 
   it('renders a participant show view card', () => {
@@ -53,5 +55,10 @@ describe('ParticipanShowView', () => {
     expect(wrapper.find('.card-body').text()).toContain('Male')
     expect(wrapper.find('.card-body').text()).toContain('11/16/1990')
     expect(wrapper.find('.card-body').text()).toContain('111223333')
+  })
+
+  it('calls the onEdit function when "Edit participant" is clicked', () => {
+    wrapper.find('a[aria-label="Edit participant"]').simulate('click')
+    expect(onEdit).toHaveBeenCalled()
   })
 })
