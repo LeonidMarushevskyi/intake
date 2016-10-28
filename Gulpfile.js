@@ -134,11 +134,12 @@ gulp.task('build-test-assets', ['clean-build-assets'], function() {
   )
 })
 
-var fingerprint = require('gulp-fingerprint')
+var revReplace = require('gulp-rev-replace')
 gulp.task('translate-versioned-assets', function() {
-  return gulp.src('public/assets/**/*.css')
-  .pipe(fingerprint('public/assets/rev-manifest.json'))
-  .pipe(gulp.dest('public/assets/'))
+  var manifest = gulp.src('public/assets/rev-manifest.json')
+  return gulp.src(['public/assets/**/*.js', 'public/assets/**/*.css'])
+    .pipe(revReplace({manifest: manifest}))
+    .pipe(gulp.dest('public/assets/'))
 })
 
 gulp.task('copy-build-assets', function () {
