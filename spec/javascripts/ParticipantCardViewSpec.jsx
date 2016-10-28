@@ -1,14 +1,14 @@
 import Immutable from 'immutable'
-import ParticipantCard from 'ParticipantCard'
+import ParticipantCardView from 'ParticipantCardView'
 import React from 'react'
 import {mount} from 'enzyme'
 
-describe('ParticipantCard', () => {
+describe('ParticipantCardView', () => {
   describe('when mode is set to show', () => {
     let wrapper
     beforeEach(() => {
       const participant = Immutable.fromJS({id: 5, first_name: 'Tony', last_name: 'Hawk'})
-      wrapper = mount(<ParticipantCard participant={participant} mode='show'/>)
+      wrapper = mount(<ParticipantCardView participant={participant} mode='show'/>)
     })
 
     it('renders the participants show view for each participant', () => {
@@ -31,7 +31,7 @@ describe('ParticipantCard', () => {
     let wrapper
     beforeEach(() => {
       const participant = Immutable.fromJS({id: 5, first_name: 'Tony', last_name: 'Hawk'})
-      wrapper = mount(<ParticipantCard participant={participant} mode='edit'/>)
+      wrapper = mount(<ParticipantCardView participant={participant} mode='edit'/>)
     })
 
     it('renders the participants edit view for each participant', () => {

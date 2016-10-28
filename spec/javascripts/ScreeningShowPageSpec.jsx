@@ -77,8 +77,8 @@ describe('ScreeningShowPage', () => {
         ]
         const screening = Immutable.fromJS({participants: participants})
         wrapper.setState({screening: screening})
-        expect(wrapper.find('ParticipantCard').length).toEqual(2)
-        expect(wrapper.find('ParticipantCard').nodes.map((ele) => ele.props.mode)).toEqual(
+        expect(wrapper.find('ParticipantCardView').length).toEqual(2)
+        expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['show', 'show']
         )
       })

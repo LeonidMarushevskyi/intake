@@ -2,7 +2,7 @@ import React from 'react'
 import ParticipantShowView from 'ParticipantShowView'
 import ParticipantEditView from 'ParticipantEditView'
 
-export default class ParticipantCard extends React.Component {
+export default class ParticipantCardView extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
@@ -30,7 +30,7 @@ export default class ParticipantCard extends React.Component {
   }
 }
 
-ParticipantCard.propTypes = {
+ParticipantCardView.propTypes = {
   mode: React.PropTypes.oneOf(['edit', 'show']),
   participant: React.PropTypes.object.isRequired,
 }
