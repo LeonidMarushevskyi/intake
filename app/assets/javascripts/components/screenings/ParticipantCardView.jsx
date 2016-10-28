@@ -1,6 +1,6 @@
 import React from 'react'
-import ParticipantShowView from 'ParticipantShowView'
-import ParticipantEditView from 'ParticipantEditView'
+import ParticipantShowView from 'components/screenings/ParticipantShowView'
+import ParticipantEditView from 'components/screenings/ParticipantEditView'
 
 export default class ParticipantCardView extends React.Component {
   constructor() {

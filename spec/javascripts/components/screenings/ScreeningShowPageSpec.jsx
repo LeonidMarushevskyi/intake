@@ -1,4 +1,4 @@
-import ScreeningShowPage from 'ScreeningShowPage'
+import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 import React from 'react'
 import {mount} from 'enzyme'
 import * as Utils from 'utils/http'

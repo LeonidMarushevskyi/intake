@@ -1,6 +1,6 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
-import PersonEditPage from 'PersonEditPage'
+import PersonEditPage from 'components/people/PersonEditPage'
 import React from 'react'
 import {mount} from 'enzyme'
 

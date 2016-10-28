@@ -1,8 +1,8 @@
 import React from 'react'
 import {Router, Route, browserHistory} from 'react-router'
-import PersonNewPage from 'PersonNewPage'
-import PersonShowPage from 'PersonShowPage'
-import PersonEditPage from 'PersonEditPage'
+import PersonNewPage from 'components/people/PersonNewPage'
+import PersonShowPage from 'components/people/PersonShowPage'
+import PersonEditPage from 'components/people/PersonEditPage'
 
 export default class App extends React.Component {
   render() {

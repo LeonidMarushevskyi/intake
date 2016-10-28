@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import ParticipantCardView from 'ParticipantCardView'
+import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import CommunicationMethod from 'CommunicationMethod'
 import moment from 'moment'
 

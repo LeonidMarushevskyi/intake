@@ -3,7 +3,7 @@ import CommunicationMethod from 'CommunicationMethod'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
-import ParticipantCardView from 'ParticipantCardView'
+import ParticipantCardView from 'components/screenings/ParticipantCardView'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {

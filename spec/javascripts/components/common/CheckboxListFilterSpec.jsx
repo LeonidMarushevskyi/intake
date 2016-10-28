@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckboxListFilter from 'CheckboxListFilter'
+import CheckboxListFilter from 'components/common/CheckboxListFilter'
 import ScreeningDecision from 'ScreeningDecision'
 import {render, shallow} from 'enzyme'
 

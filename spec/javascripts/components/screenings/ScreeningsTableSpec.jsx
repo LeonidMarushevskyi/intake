@@ -1,5 +1,5 @@
 import React from 'react'
-import ScreeningsTable from 'ScreeningsTable'
+import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import TestUtils from 'react-addons-test-utils'
 
 describe('ScreeningsTable', () => {

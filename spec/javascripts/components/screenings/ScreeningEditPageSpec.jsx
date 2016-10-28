@@ -1,6 +1,6 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
-import ScreeningEditPage from 'ScreeningEditPage'
+import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
 import React from 'react'
 import {mount} from 'enzyme'
 
