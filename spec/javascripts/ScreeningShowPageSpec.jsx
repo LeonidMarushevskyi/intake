@@ -6,7 +6,6 @@ import Immutable from 'immutable'
 
 describe('ScreeningShowPage', () => {
   let wrapper
-
   beforeEach(() => {
     const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
     spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
@@ -71,7 +70,7 @@ describe('ScreeningShowPage', () => {
     })
 
     describe('participants card', () => {
-      it('renders the participants edit view for each participant', () => {
+      it('renders the participants show view for each participant', () => {
         const participants = [
           {id: 1, first_name: 'Rodney', last_name: 'Mullens'},
           {id: 5, first_name: 'Tony', last_name: 'Hawk'},

@@ -39,7 +39,7 @@ export default class ScreeningShowPage extends React.Component {
       <div>
         {
           screening.get('participants').map((participant) =>
-            <ParticipantShowView key={participant.get('id')} participant= {participant} />
+            <ParticipantShowView key={participant.get('id')} participant={participant} />
           )
         }
       </div>
