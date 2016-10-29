@@ -62,20 +62,15 @@ describe('ScreeningEditPage', () => {
       })
     })
 
-    describe('narrative card', () => {
-      it('renders the narrative card header', () => {
-        expect(wrapper.find('#narrative-card .card-header').text()).toEqual('Narrative')
+    it('renders the narrative edit view', () => {
+      const screening =  Immutable.fromJS({
+        report_narrative: 'some narrative',
+        participants: [],
       })
-
-      it('renders the report narrative textarea', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            report_narrative: 'some narrative',
-            participants: [],
-          }),
-        })
-        expect(wrapper.find('textarea').text()).toEqual('some narrative')
-      })
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('NarrativeEditView').length).toEqual(1)
+      expect(wrapper.find('NarrativeEditView').props().screening).toEqual(screening)
+      expect(wrapper.find('NarrativeEditView').props().onChange).toEqual(wrapper.instance().setField)
     })
   })
 

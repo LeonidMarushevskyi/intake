@@ -4,6 +4,7 @@ import React from 'react'
 import Autocompleter from 'Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
+import NarrativeEditView from 'components/screenings/NarrativeEditView'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {
@@ -75,36 +76,12 @@ export default class ScreeningEditPage extends React.Component {
     )
   }
 
-  renderNarrativeCard() {
-    const {screening} = this.state
-    return (
-      <div className='card edit double-gap-top' id='narrative-card'>
-        <div className='card-header'>
-          <span>Narrative</span>
-        </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-12'>
-              <label className='no-gap' htmlFor='screening[report_narrative]'>Report Narrative</label>
-              <textarea
-                name='screening[report_narrative]'
-                id='screening[report_narrative]'
-                value={screening.get('report_narrative') || ''}
-                onChange={(event) => this.setField(['report_narrative'], event.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   render() {
     return (
       <div>
         <InformationEditView screening={this.state.screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        {this.renderNarrativeCard()}
+        <NarrativeEditView screening={this.state.screening} onChange={this.setField} />
       </div>
     )
   }
