@@ -1,4 +1,4 @@
-import ScreeningShowPage from 'ScreeningShowPage'
+import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 import React from 'react'
 import {mount} from 'enzyme'
 import * as Utils from 'utils/http'
@@ -6,7 +6,6 @@ import Immutable from 'immutable'
 
 describe('ScreeningShowPage', () => {
   let wrapper
-
   beforeEach(() => {
     const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
     spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
@@ -71,14 +70,17 @@ describe('ScreeningShowPage', () => {
     })
 
     describe('participants card', () => {
-      it('renders the participants edit view for each participant', () => {
+      it('renders the participants card for each participant', () => {
         const participants = [
           {id: 1, first_name: 'Rodney', last_name: 'Mullens'},
           {id: 5, first_name: 'Tony', last_name: 'Hawk'},
         ]
         const screening = Immutable.fromJS({participants: participants})
         wrapper.setState({screening: screening})
-        expect(wrapper.find('ParticipantShowView').length).toEqual(2)
+        expect(wrapper.find('ParticipantCardView').length).toEqual(2)
+        expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
+          ['show', 'show']
+        )
       })
     })
 

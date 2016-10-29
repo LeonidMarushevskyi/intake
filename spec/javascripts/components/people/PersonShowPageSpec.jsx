@@ -1,4 +1,4 @@
-import PersonShowPage from 'PersonShowPage'
+import PersonShowPage from 'components/people/PersonShowPage'
 import React from 'react'
 import {mount} from 'enzyme'
 import * as Utils from 'utils/http'

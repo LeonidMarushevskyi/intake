@@ -4,10 +4,10 @@ import 'jquery-ujs'
 import 'babel-polyfill'
 import 'bootstrap'
 import $ from 'jquery'
-import PeopleApp from 'PeopleApp'
+import PeopleApp from 'components/PeopleApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ScreeningsApp from 'ScreeningsApp'
+import ScreeningsApp from 'components/ScreeningsApp'
 
 function bindReactComponent(Component, containerId) {
   const container = document.getElementById(containerId)

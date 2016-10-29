@@ -1,7 +1,7 @@
 import React from 'react'
-import ScreeningsFilter from 'ScreeningsFilter'
-import ScreeningsIndexPage from 'ScreeningsIndexPage'
-import ScreeningsTable from 'ScreeningsTable'
+import ScreeningsFilter from 'components/screenings/ScreeningsFilter'
+import ScreeningsIndexPage from 'components/screenings/ScreeningsIndexPage'
+import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import {mount} from 'enzyme'
 import * as Utils from 'utils/http'
 

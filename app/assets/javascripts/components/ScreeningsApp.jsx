@@ -1,8 +1,8 @@
 import React from 'react'
 import {Router, Route, browserHistory} from 'react-router'
-import ScreeningEditPage from 'ScreeningEditPage'
-import ScreeningShowPage from 'ScreeningShowPage'
-import ScreeningsIndexPage from 'ScreeningsIndexPage'
+import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
+import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
+import ScreeningsIndexPage from 'components/screenings/ScreeningsIndexPage'
 
 export default class App extends React.Component {
   render() {

@@ -1,4 +1,4 @@
-import CheckboxListFilter from 'CheckboxListFilter'
+import CheckboxListFilter from 'components/common/CheckboxListFilter'
 import React from 'react'
 import ResponseTime from 'ResponseTime'
 import ScreeningDecision from 'ScreeningDecision'

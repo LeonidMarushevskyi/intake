@@ -1,6 +1,6 @@
 import React from 'react'
-import ScreeningsFilter from 'ScreeningsFilter'
-import ScreeningsTable from 'ScreeningsTable'
+import ScreeningsFilter from 'components/screenings/ScreeningsFilter'
+import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import * as Utils from 'utils/http'
 
 export default class ScreeningsIndexPage extends React.Component {

@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import ParticipantShowView from 'ParticipantShowView'
+import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import CommunicationMethod from 'CommunicationMethod'
 import moment from 'moment'
 
@@ -39,7 +39,7 @@ export default class ScreeningShowPage extends React.Component {
       <div>
         {
           screening.get('participants').map((participant) =>
-            <ParticipantShowView key={participant.get('id')} participant= {participant} />
+            <ParticipantCardView key={participant.get('id')} participant={participant} mode='show'/>
           )
         }
       </div>
