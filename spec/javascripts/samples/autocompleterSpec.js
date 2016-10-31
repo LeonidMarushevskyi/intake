@@ -67,11 +67,18 @@ describe('<Autcompleter />', () => {
   })
 
   describe('#renderSuggestion', () => {
-    it('renders the individual suggestion', () => {
+    it('renders the first name and last name', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const value = wrapper.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toBe('<span>Bart Simpson</span>')
+      expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
+    })
+
+    it('renders the participants date of birth', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const suggestion = {date_of_birth: '1990-02-13'}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).toContain('<div>(2/13/1990)</div>')
     })
   })
 
