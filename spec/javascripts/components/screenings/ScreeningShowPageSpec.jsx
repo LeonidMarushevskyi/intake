@@ -104,6 +104,17 @@ describe('ScreeningShowPage', () => {
         expect(wrapper.text()).toContain('some narrative')
       })
     })
+
+    describe('referral information card', () => {
+      it('renders ReferralInformationShowView', () => {
+        const screening = Immutable.fromJS({
+          incident_county: 'alpine',
+          participants: [],
+        })
+        wrapper.setState({screening: screening})
+        expect(wrapper.find('ReferralInformationShowView').length).toEqual(1)
+      })
+    })
   })
 
   describe('fetch', () => {

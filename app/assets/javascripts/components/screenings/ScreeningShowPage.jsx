@@ -4,6 +4,7 @@ import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import CommunicationMethod from 'CommunicationMethod'
 import moment from 'moment'
+import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
 
 export default class ScreeningShowPage extends React.Component {
   constructor() {
@@ -16,6 +17,17 @@ export default class ScreeningShowPage extends React.Component {
         communication_method: '',
         participants: [],
         report_narrative: '',
+        incident_date: '',
+        incident_county: '',
+        address: Immutable.fromJS({
+          street_address: '',
+          city: '',
+          state: '',
+          zip: '',
+        }),
+        location_type: '',
+        response_time: '',
+        screening_decision: '',
       }),
     }
     this.fetch = this.fetch.bind(this)
@@ -111,6 +123,7 @@ export default class ScreeningShowPage extends React.Component {
         {this.renderScreeningInformationCard()}
         {this.renderParticipantsCard()}
         {this.renderNarrativeCard()}
+        <ReferralInformationShowView screening={this.state.screening}/>
       </div>
     )
   }
