@@ -63,7 +63,7 @@ export default class Autocompleter extends React.Component {
     const dob = moment(date_of_birth, 'YYYY-MM-DD')
     if (dob.isValid()) {
       const ageInYears = moment().diff(dob, 'years')
-      ageInfo = `${ageInYears} yrs old (${dob.format('l')})`
+      ageInfo = `${ageInYears} yrs old (${dob.format('M/D/YYYY')})`
     }
     return (
       <div>
