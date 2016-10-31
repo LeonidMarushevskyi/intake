@@ -3,6 +3,7 @@ import Autocompleter from 'Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
+import moment from 'moment'
 import {shallow} from 'enzyme'
 
 describe('<Autcompleter />', () => {
@@ -78,7 +79,15 @@ describe('<Autcompleter />', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = {date_of_birth: '1990-02-13'}
       const value = wrapper.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('<div>(2/13/1990)</div>')
+      expect(shallow(value).html()).toContain('(2/13/1990)')
+    })
+
+    it('renders the participants age', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const date_of_birth = moment().subtract(15, 'years').format('YYYY-MM-DD')
+      const suggestion = {date_of_birth: date_of_birth}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).toContain('15 yrs old')
     })
   })
 

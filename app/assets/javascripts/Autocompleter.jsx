@@ -59,11 +59,12 @@ export default class Autocompleter extends React.Component {
 
   renderSuggestion(suggestion) {
     const {first_name, last_name, date_of_birth} = suggestion
-    const formattedDob = moment(date_of_birth).format('l')
+    const dob = moment(date_of_birth, 'YYYY-MM-DD')
+    const ageInYears = moment().diff(dob, 'years')
     return (
       <div>
         <div>{`${first_name} ${last_name}`}</div>
-        <div>{`(${formattedDob})`}</div>
+        <div>{`${ageInYears} yrs old (${dob.format('l')})`}</div>
       </div>
     )
   }
