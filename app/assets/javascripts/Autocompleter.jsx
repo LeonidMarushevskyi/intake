@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
+import moment from 'moment'
 
 export default class Autocompleter extends React.Component {
   constructor(props) {
@@ -57,8 +58,18 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestion(suggestion) {
+    const {first_name, last_name, date_of_birth} = suggestion
+    let ageInfo
+    const dob = moment(date_of_birth, 'YYYY-MM-DD')
+    if (dob.isValid()) {
+      const ageInYears = moment().diff(dob, 'years')
+      ageInfo = `${ageInYears} yrs old (${dob.format('M/D/YYYY')})`
+    }
     return (
-      <span>{`${suggestion.first_name} ${suggestion.last_name}`}</span>
+      <div>
+        <div>{`${first_name} ${last_name}`}</div>
+        <div>{ageInfo}</div>
+      </div>
     )
   }
 

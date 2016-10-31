@@ -3,6 +3,7 @@ import Autocompleter from 'Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
+import moment from 'moment'
 import {shallow} from 'enzyme'
 
 describe('<Autcompleter />', () => {
@@ -67,11 +68,33 @@ describe('<Autcompleter />', () => {
   })
 
   describe('#renderSuggestion', () => {
-    it('renders the individual suggestion', () => {
+    it('renders the first name and last name', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const value = wrapper.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toBe('<span>Bart Simpson</span>')
+      expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
+    })
+
+    it('renders the date of birth in format D/M/YYYY', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const suggestion = {date_of_birth: '1990-02-13'}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).toContain('(2/13/1990)')
+    })
+
+    it('renders the age', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const date_of_birth = moment().subtract(15, 'years').format('YYYY-MM-DD')
+      const suggestion = {date_of_birth: date_of_birth}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).toContain('15 yrs old')
+    })
+
+    it('does not render age when date of birth is not present', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const suggestion = {date_of_birth: null}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).not.toContain('yrs old')
     })
   })
 
