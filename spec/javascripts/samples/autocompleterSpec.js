@@ -75,19 +75,26 @@ describe('<Autcompleter />', () => {
       expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
     })
 
-    it('renders the participants date of birth', () => {
+    it('renders the date of birth in format D/M/YYYY', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = {date_of_birth: '1990-02-13'}
       const value = wrapper.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('(2/13/1990)')
     })
 
-    it('renders the participants age', () => {
+    it('renders the age', () => {
       const wrapper = shallow(<Autocompleter />)
       const date_of_birth = moment().subtract(15, 'years').format('YYYY-MM-DD')
       const suggestion = {date_of_birth: date_of_birth}
       const value = wrapper.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('15 yrs old')
+    })
+
+    it('does not render age when date of birth is not present', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const suggestion = {date_of_birth: null}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).not.toContain('yrs old')
     })
   })
 
