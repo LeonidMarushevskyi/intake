@@ -10,6 +10,4 @@ class Participant
   attribute :gender
   attribute :last_name
   attribute :ssn
-
-  attribute :address, Address
 end

@@ -58,8 +58,7 @@ describe Screening do
           first_name: 'Homer',
           gender: nil,
           last_name: 'Simpson',
-          ssn: nil,
-          address: nil
+          ssn: nil
         )
       }.with_indifferent_access)
     end

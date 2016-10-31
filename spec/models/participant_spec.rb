@@ -10,14 +10,7 @@ describe Participant do
         last_name: 'Simpson',
         gender: 'male',
         date_of_birth: '05/29/1990',
-        ssn: '123-23-1234',
-        address: {
-          id: 2,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
+        ssn: '123-23-1234'
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json
@@ -27,14 +20,7 @@ describe Participant do
         last_name: 'Simpson',
         gender: 'male',
         date_of_birth: '05/29/1990',
-        ssn: '123-23-1234',
-        address: {
-          id: 2,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
+        ssn: '123-23-1234'
       }.with_indifferent_access)
     end
   end
