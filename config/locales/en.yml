@@ -1,17 +1,4 @@
 en:
-  activemodel:
-    attributes:
-      address:
-        street_address: 'Address'
-        city: 'City'
-        state: 'State'
-        zip: 'Zip'
-      screening:
-        incident_date: 'Incident Date'
-        incident_county: 'Incident County'
-        location_type: 'Location Type'
-        response_time: 'Response Time'
-        screening_decision: 'Screening Decision'
   links:
     create_screening: 'Start Screening'
     create_person: 'Create Person'
