@@ -5,6 +5,7 @@ import Autocompleter from 'Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {
@@ -17,6 +18,18 @@ export default class ScreeningEditPage extends React.Component {
         communication_method: '',
         participants: [],
         report_narrative: '',
+        incident_date: '',
+        incident_county: '',
+        address: Immutable.fromJS({
+          id: '',
+          street_address: '',
+          city: '',
+          state: '',
+          zip: '',
+        }),
+        location_type: '',
+        response_time: '',
+        screening_decision: '',
       }),
     }
 
@@ -82,6 +95,7 @@ export default class ScreeningEditPage extends React.Component {
         <InformationEditView screening={this.state.screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
         <NarrativeEditView screening={this.state.screening} onChange={this.setField} />
+        <ReferralInformationEditView screening={this.state.screening} onChange={this.setField} />
       </div>
     )
   }

@@ -7,51 +7,6 @@
   = f.hidden_field :reference
 
   #screenings-app
-
-  .card.edit.double-gap-top#referral-information-card
-    .card-header
-      %span Referral Information
-    .card-body
-      .row
-        .col-md-6
-          - value = (f.object.incident_date ? Date.parse(f.object.incident_date) : nil)
-          = f.label :incident_date
-          = f.date_field :incident_date, value: value
-      .row
-        .col-md-6
-          = f.label :incident_county
-          - county_options = options_from_collection_for_select(County::ALL, :first, :last, f.object.incident_county)
-          = f.select :incident_county, county_options, include_blank: true
-      .row
-        .col-md-6
-          %fieldset
-            %legend Incident Address
-            = fields_for 'screening[address]', Address.new(f.object.address.attributes) do |address|
-              = address.hidden_field :id
-              = address.label :street_address
-              = address.text_field :street_address
-              = address.label :city
-              = address.text_field :city
-              = address.label :state
-              - state_options = options_from_collection_for_select(USState::ABBREVIATION_NAME_MAP, :first, :last, address.object.state)
-              = address.select :state, state_options, include_blank: true
-              = address.label :zip
-              = address.text_field :zip
-      .row
-        .col-md-6
-          = f.label :location_type
-          - location_type_options = grouped_options_for_select(LocationType::ALL, f.object.location_type)
-          = f.select :location_type, location_type_options, include_blank: true
-      .row
-        .col-md-6
-          = f.label :response_time
-          - response_time_options = options_from_collection_for_select(ResponseTime::ALL, :first, :last, f.object.response_time)
-          = f.select :response_time, response_time_options, include_blank: true
-      .row
-        .col-md-6
-          = f.label :screening_decision
-          - screening_decision_options = options_from_collection_for_select(ScreeningDecision::ALL, :first, :last, f.object.screening_decision)
-          = f.select :screening_decision, screening_decision_options, include_blank: true
-      .row
-        .centered
-          = f.button 'Save', class: 'btn btn-primary'
+  .row
+    .centered
+      = f.button 'Save', class: 'btn btn-primary'

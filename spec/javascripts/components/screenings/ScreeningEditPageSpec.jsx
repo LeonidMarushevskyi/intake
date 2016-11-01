@@ -72,6 +72,27 @@ describe('ScreeningEditPage', () => {
       expect(wrapper.find('NarrativeEditView').props().screening).toEqual(screening)
       expect(wrapper.find('NarrativeEditView').props().onChange).toEqual(wrapper.instance().setField)
     })
+
+    it('renders the referral edit view', () => {
+      const screening = Immutable.fromJS({
+        incident_date: '2006-01-21',
+        incident_county: 'alpine',
+        address: {
+          street_address: '1500 7th St',
+          city: 'Sacramento',
+          state: 'CA',
+          zip: 95814,
+        },
+        location_type: 'Juvenile Detention',
+        response_time: 'within_twenty_four_hours',
+        screening_decision: 'accept_for_investigation',
+        participants: [],
+      })
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('ReferralInformationEditView').length).toEqual(1)
+      expect(wrapper.find('ReferralInformationEditView').props().screening).toEqual(screening)
+      expect(wrapper.find('ReferralInformationEditView').props().onChange).toEqual(wrapper.instance().setField)
+    })
   })
 
   describe('fetch', () => {
