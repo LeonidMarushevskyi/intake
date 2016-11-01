@@ -12,6 +12,7 @@ export default class ScreeningEditPage extends React.Component {
     super(...arguments)
     this.state = {
       screening: Immutable.fromJS({
+        reference: '',
         name: '',
         started_at: '',
         ended_at: '',
@@ -90,12 +91,18 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   render() {
+    const {screening} = this.state
     return (
       <div>
-        <InformationEditView screening={this.state.screening} onChange={this.setField} />
+        <h1>{`Edit Screening #${this.state.screening.get('reference')}`}</h1>
+        <input type='hidden' name='screening[id]' id='screening_id' value={screening.get('id') || ''} />
+        <input type='hidden' name='screening[created_at]' id='screening_created_at' value={screening.get('created_at') || ''} />
+        <input type='hidden' name='screening[updated_at]' id='screening_updated_at' value={screening.get('updated_at') || ''} />
+        <input type='hidden' name='screening[reference]' id='screening_reference' value={screening.get('reference') || ''} />
+        <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        <NarrativeEditView screening={this.state.screening} onChange={this.setField} />
-        <ReferralInformationEditView screening={this.state.screening} onChange={this.setField} />
+        <NarrativeEditView screening={screening} onChange={this.setField} />
+        <ReferralInformationEditView screening={screening} onChange={this.setField} />
       </div>
     )
   }

@@ -18,6 +18,16 @@ describe('ScreeningEditPage', () => {
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
 
+    it('renders the screening reference', () => {
+      wrapper.setState({
+        screening: Immutable.fromJS({
+          reference: 'The Rocky Horror Picture Show',
+          participants: []
+        })
+      })
+      expect(wrapper.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
+    })
+
     it('renders the screening information edit view', () => {
       const screening =  Immutable.fromJS({
         name: 'The Rocky Horror Picture Show',

@@ -1,11 +1,4 @@
-%h1
-  = I18n.t(:edit, scope: [:views, :screening], reference: @screening.reference)
 = form_for @screening, url: screening_path(@screening.id), method: :put do |f|
-  = f.hidden_field :id
-  = f.hidden_field :created_at
-  = f.hidden_field :updated_at
-  = f.hidden_field :reference
-
   #screenings-app
   .row
     .centered
