@@ -37,14 +37,11 @@ feature 'Show Screening' do
   }.with_indifferent_access
 
   before do
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get("/api/v1/screenings/#{existing_screening[:id]}") do |_|
-          [200, {}, existing_screening]
-        end
+    faraday_helper do |stub|
+      stub.get("/api/v1/screenings/#{existing_screening[:id]}") do |_|
+        [200, {}, existing_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
   end
 
   scenario 'showing existing participant' do

@@ -28,14 +28,11 @@ feature 'Show Screening' do
       participants: []
     }.with_indifferent_access
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/screenings/1') do |_|
-          [200, {}, existing_screening]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/screenings/1') do |_|
+        [200, {}, existing_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit screening_path(id: existing_screening[:id])
 

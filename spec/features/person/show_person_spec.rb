@@ -17,14 +17,11 @@ feature 'Show Person' do
         zip: '12345'
       }
     }.with_indifferent_access
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, person]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, person]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit person_path(id: person[:id])
 

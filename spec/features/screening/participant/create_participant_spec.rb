@@ -42,14 +42,11 @@ feature 'Edit Screening' do
   end
 
   before do
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get("/api/v1/screenings/#{existing_screening[:id]}") do |_|
-          [200, {}, existing_screening]
-        end
+    faraday_helper do |stub|
+      stub.get("/api/v1/screenings/#{existing_screening[:id]}") do |_|
+        [200, {}, existing_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
     allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
   end
 

@@ -29,14 +29,11 @@ feature 'Edit Screening' do
       participants: []
     }.with_indifferent_access
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/screenings/1') do |_|
-          [200, {}, existing_screening]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/screenings/1') do |_|
+        [200, {}, existing_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit edit_screening_path(id: existing_screening[:id])
     expect(page).to have_content 'Edit Screening #My Bad!'
@@ -108,17 +105,14 @@ feature 'Edit Screening' do
       participant_ids: []
     }
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.put('/api/v1/screenings/1', updated_screening.to_json) do |_env|
-          [200, {}, updated_screening]
-        end
-        stub.get('/api/v1/screenings/1') do |_env|
-          [200, {}, updated_screening]
-        end
+    faraday_helper do |stub|
+      stub.put('/api/v1/screenings/1', updated_screening.to_json) do |_env|
+        [200, {}, updated_screening]
+      end
+      stub.get('/api/v1/screenings/1') do |_env|
+        [200, {}, updated_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     click_button 'Save'
 

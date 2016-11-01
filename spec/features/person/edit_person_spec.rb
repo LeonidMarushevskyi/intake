@@ -17,14 +17,11 @@ feature 'Edit Person' do
         zip: '12345'
       }
     }.with_indifferent_access
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, person]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, person]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit edit_person_path(id: person[:id])
 
@@ -62,14 +59,11 @@ feature 'Edit Person' do
         zip: '12345'
       }
     }.with_indifferent_access
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, person]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, person]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit edit_person_path(id: person[:id])
 
@@ -100,17 +94,14 @@ feature 'Edit Person' do
     }
     lisa = homer.merge(first_name: 'Lisa')
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, homer]
-        end
-        stub.put('/api/v1/people/1', lisa.to_json) do |_|
-          [200, {}, lisa]
-        end
+    faraday_helper do |stub|
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, homer]
+      end
+      stub.put('/api/v1/people/1', lisa.to_json) do |_|
+        [200, {}, lisa]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit edit_person_path(id: homer[:id])
 

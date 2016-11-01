@@ -25,17 +25,14 @@ feature 'Create Screening' do
 
     created_screening = new_screening.merge(id: 1).merge(address: {})
     allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.post('/api/v1/screenings', new_screening.to_json) do |_|
-          [201, {}, created_screening]
-        end
-        stub.get('/api/v1/screenings/1') do |_|
-          [200, {}, created_screening]
-        end
+    faraday_helper do |stub|
+      stub.post('/api/v1/screenings', new_screening.to_json) do |_|
+        [201, {}, created_screening]
+      end
+      stub.get('/api/v1/screenings/1') do |_|
+        [200, {}, created_screening]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit root_path
     click_link 'Start Screening'

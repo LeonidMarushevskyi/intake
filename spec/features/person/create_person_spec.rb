@@ -20,17 +20,14 @@ feature 'Create Person' do
     }
     created_person = person.merge(id: 1)
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.post('/api/v1/people', person.to_json) do |_|
-          [201, {}, created_person]
-        end
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, created_person]
-        end
+    faraday_helper do |stub|
+      stub.post('/api/v1/people', person.to_json) do |_|
+        [201, {}, created_person]
+      end
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, created_person]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit root_path
 
