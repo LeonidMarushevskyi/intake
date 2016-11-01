@@ -15,6 +15,22 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('render', () => {
+    it('renders the screening reference', () => {
+      wrapper.setState({
+        screening: Immutable.fromJS({
+          reference: 'The Rocky Horror Picture Show',
+          participants: []
+        })
+      })
+      expect(wrapper.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
+    })
+
+    it('renders the home and edit link', () => {
+      const links = wrapper.find('a')
+      expect(links.length).toEqual(2)
+      expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
+    })
+
     describe('screening information card', () => {
       it('render the card headers', () => {
         expect(wrapper.find('#screening-information-card .card-header').text()).toEqual('Screening Information')

@@ -11,6 +11,7 @@ export default class ScreeningShowPage extends React.Component {
     super(...arguments)
     this.state = {
       screening: Immutable.fromJS({
+        reference: '',
         name: '',
         started_at: '',
         ended_at: '',
@@ -120,10 +121,13 @@ export default class ScreeningShowPage extends React.Component {
   render() {
     return (
       <div>
+        <h1>{`Screening #${this.state.screening.get('reference')}`}</h1>
         {this.renderScreeningInformationCard()}
         {this.renderParticipantsCard()}
         {this.renderNarrativeCard()}
         <ReferralInformationShowView screening={this.state.screening}/>
+        <a href={'/'} className='gap-right'>Home</a>
+        <a href={`/screenings/${this.state.screening.get('id')}/edit`}>Edit</a>
       </div>
     )
   }
