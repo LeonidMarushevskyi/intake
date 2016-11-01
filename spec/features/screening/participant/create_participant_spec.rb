@@ -30,16 +30,17 @@ feature 'Edit Screening' do
     }.with_indifferent_access
   end
   let(:marge_date_of_birth) { 15.years.ago.to_date }
-  let(:marge) do
-    Participant.new(
+  let(:marge_attributes) do
+    {
       id: 99,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: marge_date_of_birth.to_s(:db),
       gender: 'female',
       ssn: '123-23-1234'
-    )
+    }
   end
+  let(:marge) { Person.new(marge_attributes) }
 
   before do
     faraday_helper do |stub|
