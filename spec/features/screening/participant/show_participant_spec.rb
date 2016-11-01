@@ -47,7 +47,7 @@ feature 'Show Screening' do
   scenario 'showing existing participant' do
     visit screening_path(id: existing_screening[:id])
 
-    within "#participants-card-#{existing_participant[:id]}.show" do
+    within show_participant_card_selector(existing_participant[:id]) do
       within '.card-header' do
         expect(page).to have_content 'HOMER SIMPSON'
         expect(page).to have_link 'Edit participant'
@@ -67,7 +67,7 @@ feature 'Show Screening' do
   scenario 'editing an existing participant on the show page' do
     visit screening_path(id: existing_screening[:id])
 
-    within "#participants-card-#{existing_participant[:id]}.show" do
+    within show_participant_card_selector(existing_participant[:id]) do
       click_link 'Edit participant'
     end
 

@@ -86,7 +86,7 @@ feature 'Edit Screening' do
 
     visit edit_screening_path(id: existing_screening[:id])
 
-    within "#participants-card-#{created_participant_marge[:id]}.edit" do
+    within edit_participant_card_selector(created_participant_marge[:id]) do
       within '.card-header' do
         expect(page).to have_content 'MARGE SIMPSON'
         expect(page).to have_link 'Delete participant'
