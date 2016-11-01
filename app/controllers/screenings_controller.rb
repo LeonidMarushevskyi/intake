@@ -35,9 +35,13 @@ class ScreeningsController < ApplicationController # :nodoc:
   end
 
   def update
-    existing_screening = Screening.new(screening_params.to_h)
-    @screening = ScreeningRepository.update(existing_screening)
-    redirect_to screening_path(@screening.id)
+    respond_to do |format|
+      format.json do
+        existing_screening = Screening.new(screening_params.to_h)
+        updated_screening = ScreeningRepository.update(existing_screening)
+        render json: updated_screening
+      end
+    end
   end
 
   def edit

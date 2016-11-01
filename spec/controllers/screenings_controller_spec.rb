@@ -81,9 +81,9 @@ describe ScreeningsController do
   end
 
   describe '#update' do
-    let(:screening) { double(:screening, id: 1) }
-    let(:screening_attributes) do
+    let(:screening_params) do
       {
+        id: '1',
         created_at: '2016-10-21T16:11:59.484Z',
         incident_county: 'sacramento',
         name: '123 Report',
@@ -91,6 +91,7 @@ describe ScreeningsController do
         screening_decision: 'evaluate_out',
         updated_at: '2016-10-21T16:11:59.484Z',
         address: {
+          id: '2',
           city: 'LA',
           state: 'CA',
           street_address: '123 Fake St',
@@ -98,20 +99,21 @@ describe ScreeningsController do
         }
       }.with_indifferent_access
     end
+    let(:updated_screening) { double(:screening, as_json: { 'id' => 'updated_screening' }) }
+
     before do
-      existing_screening = double(:screening)
-      expect(Screening).to receive(:new).with(screening_attributes).and_return(existing_screening)
-      expect(ScreeningRepository).to receive(:update).with(existing_screening).and_return(screening)
+      screening = double(:screening)
+      expect(Screening).to receive(:new).with(screening_params).and_return(screening)
+      expect(ScreeningRepository).to receive(:update).with(screening).and_return(updated_screening)
     end
 
-    it 'assigns screening' do
-      process :update, method: :put, params: { id: 1, screening: screening_attributes }
-      expect(assigns(:screening)).to eq(screening)
-    end
-
-    it 'redirects to show' do
-      process :update, method: :put, params: { id: 1, screening: screening_attributes }
-      expect(response).to redirect_to(screening_path(screening.id))
+    it 'updates and renders screening as json' do
+      process :update,
+        method: :put,
+        params: { id: screening_params[:id], screening: screening_params },
+        format: :json
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)).to eq(updated_screening.as_json)
     end
   end
 

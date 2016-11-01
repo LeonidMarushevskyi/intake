@@ -1,4 +1,5 @@
 import * as Utils from 'utils/http'
+import {browserHistory} from 'react-router'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
@@ -37,6 +38,7 @@ export default class ScreeningEditPage extends React.Component {
     this.fetch = this.fetch.bind(this)
     this.setField = this.setField.bind(this)
     this.addParticipant = this.addParticipant.bind(this)
+    this.update = this.update.bind(this)
   }
 
   componentDidMount() {
@@ -48,6 +50,23 @@ export default class ScreeningEditPage extends React.Component {
     const xhr = Utils.request('GET', `/screenings/${params.id}.json`)
     xhr.done((xhrResp) => {
       this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
+    })
+  }
+
+  show() {
+    const {params} = this.props
+    browserHistory.push({
+      pathname: `/screenings/${params.id}`,
+    })
+  }
+
+  update() {
+    const {params} = this.props
+    const url = `/screenings/${params.id}.json`
+    const xhr = Utils.request('PUT', url, {screening: this.state.screening.toJS()}, null)
+    xhr.done((xhrResp) => {
+      this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
+      this.show()
     })
   }
 
@@ -103,6 +122,11 @@ export default class ScreeningEditPage extends React.Component {
         {this.renderParticipantsCard()}
         <NarrativeEditView screening={screening} onChange={this.setField} />
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary' onClick={this.update}>Save</button>
+          </div>
+        </div>
       </div>
     )
   }

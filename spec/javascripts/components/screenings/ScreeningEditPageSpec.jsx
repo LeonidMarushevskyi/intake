@@ -137,4 +137,28 @@ describe('ScreeningEditPage', () => {
       expect(participants.get(1)).toEqual(Immutable.Map({id: 2}))
     })
   })
+
+  describe('update', () => {
+    let wrapper
+    beforeEach(() => {
+      const xhrResponse = {responseJSON: {'participants': []}}
+      xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
+      const props = {params: {id: 1}}
+      wrapper = mount(<ScreeningEditPage {...props} />)
+    })
+
+    it('PUTs the screening data to the server', () => {
+      wrapper.instance().update()
+      expect(Utils.request).toHaveBeenCalled()
+      expect(Utils.request.calls.argsFor(1)[0]).toEqual('PUT')
+      expect(Utils.request.calls.argsFor(1)[1]).toEqual('/screenings/1.json')
+    })
+
+    it('redirects to the screening show page', () => {
+      const instance = wrapper.instance()
+      spyOn(instance, 'show')
+      instance.update()
+      expect(instance.show).toHaveBeenCalled()
+    })
+  })
 })
