@@ -3,6 +3,14 @@
 require 'rails_helper'
 require 'spec_helper'
 
+def build_participant_from_person_attributes(person_attributes, screening_attributes)
+  person_attributes.merge(
+    person_id: person_attributes[:id].to_s,
+    screening_id: screening_attributes[:id].to_s,
+    id: nil
+  )
+end
+
 feature 'Edit Screening' do
   let(:existing_screening) do
     {
@@ -54,12 +62,29 @@ feature 'Edit Screening' do
   scenario 'creating a new participant' do
     visit edit_screening_path(id: existing_screening[:id])
 
+    participant_marge = build_participant_from_person_attributes(marge_attributes, existing_screening)
+    created_participant_marge = participant_marge.merge(id: 23)
+    faraday_helper do |stub|
+      stub.post('/api/v1/participants', participant_marge.to_json) do |_|
+        [201, {}, created_participant_marge]
+      end
+    end
+
     within '#participants-card' do
       fill_in_autocompleter 'Participants', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
 
-    within "#participants-card-#{marge.id}.edit" do
+    existing_screening_with_marge = existing_screening.merge(participants: [created_participant_marge])
+    faraday_helper do |stub|
+      stub.get("/api/v1/screenings/#{existing_screening_with_marge[:id]}") do |_|
+        [200, {}, existing_screening_with_marge]
+      end
+    end
+
+    visit edit_screening_path(id: existing_screening[:id])
+
+    within "#participants-card-#{created_participant_marge[:id]}.edit" do
       within '.card-header' do
         expect(page).to have_content 'MARGE SIMPSON'
         expect(page).to have_link 'Delete participant'
