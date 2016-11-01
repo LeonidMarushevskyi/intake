@@ -3,27 +3,28 @@ require 'rails_helper'
 
 feature 'Show Person' do
   scenario 'showing existing person' do
-    person = {
-      id: 1,
+    person = FactoryGirl.create(
+      :person,
       first_name: 'Homer',
       last_name: 'Simpson',
       gender: 'male',
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
-      address: {
+      address: FactoryGirl.create(
+        :address,
         street_address: '123 fake st',
         city: 'Springfield',
         state: 'NY',
         zip: '12345'
-      }
-    }.with_indifferent_access
+      )
+    )
     faraday_helper do |stub|
-      stub.get('/api/v1/people/1') do |_|
-        [200, {}, person]
+      stub.get("/api/v1/people/#{person.id}") do |_|
+        [200, {}, person.as_json]
       end
     end
 
-    visit person_path(id: person[:id])
+    visit person_path(id: person.id)
 
     expect(page).to have_content('Homer')
     expect(page).to have_content('Simpson')
@@ -35,6 +36,6 @@ feature 'Show Person' do
     expect(page).to have_content('New York')
     expect(page).to have_content('12345')
     expect(page).to_not have_content('Save')
-    expect(page).to have_link('Edit Person', href: edit_person_path(id: person[:id]))
+    expect(page).to have_link('Edit Person', href: edit_person_path(id: person.id))
   end
 end

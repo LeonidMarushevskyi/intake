@@ -12,31 +12,7 @@ def build_participant_from_person_attributes(person_attributes, screening_attrib
 end
 
 feature 'Edit Screening' do
-  let(:existing_screening) do
-    {
-      id: 12,
-      created_at: '2016-10-24T15:14:22.923Z',
-      ended_at: nil,
-      incident_county: nil,
-      incident_date: nil,
-      location_type: nil,
-      communication_method: nil,
-      name: nil,
-      report_narrative: nil,
-      reference: '8KXNCK',
-      response_time: nil,
-      screening_decision: nil,
-      started_at: nil,
-      address: {
-        street_address: nil,
-        state: nil,
-        city: nil,
-        zip: nil,
-        id: 8
-      },
-      participants: []
-    }.with_indifferent_access
-  end
+  let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
   let(:marge_attributes) do
     {
@@ -52,21 +28,27 @@ feature 'Edit Screening' do
 
   before do
     faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening[:id]}") do |_|
-        [200, {}, existing_screening]
+      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
+        [200, {}, existing_screening.as_json]
       end
     end
     allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
   end
 
   scenario 'creating a new participant' do
-    visit edit_screening_path(id: existing_screening[:id])
+    visit edit_screening_path(id: existing_screening.id)
 
-    participant_marge = build_participant_from_person_attributes(marge_attributes, existing_screening)
-    created_participant_marge = participant_marge.merge(id: 23)
+    participant_marge = FactoryGirl.build(
+      :participant,
+      build_participant_from_person_attributes(marge_attributes, existing_screening)
+    )
+    created_participant_marge = FactoryGirl.build(
+      :participant,
+      participant_marge.as_json.merge(id: 23)
+    )
     faraday_helper do |stub|
       stub.post('/api/v1/participants', participant_marge.to_json) do |_|
-        [201, {}, created_participant_marge]
+        [201, {}, created_participant_marge.as_json]
       end
     end
 
@@ -75,16 +57,14 @@ feature 'Edit Screening' do
       find('li', text: 'Marge Simpson').click
     end
 
-    existing_screening_with_marge = existing_screening.merge(
-      participants: [created_participant_marge]
-    )
+    existing_screening.assign_attributes(participants: [created_participant_marge])
     faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening_with_marge[:id]}") do |_|
-        [200, {}, existing_screening_with_marge]
+      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
+        [200, {}, existing_screening.as_json]
       end
     end
 
-    visit edit_screening_path(id: existing_screening[:id])
+    visit edit_screening_path(id: existing_screening.id)
 
     within edit_participant_card_selector(created_participant_marge[:id]) do
       within '.card-header' do
@@ -105,7 +85,7 @@ feature 'Edit Screening' do
   end
 
   scenario 'searching for a person with the participant autocompleter' do
-    visit edit_screening_path(id: existing_screening[:id])
+    visit edit_screening_path(id: existing_screening.id)
 
     within '#participants-card' do
       fill_in_autocompleter 'Participants', with: 'Marge'

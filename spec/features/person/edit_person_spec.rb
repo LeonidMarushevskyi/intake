@@ -2,28 +2,35 @@
 require 'rails_helper'
 
 feature 'Edit Person' do
-  scenario 'edit and existing person' do
-    person = {
-      id: 1,
+  let(:person) do
+    address = FactoryGirl.create(
+      :address,
+      street_address: '123 fake st',
+      city: 'Springfield',
+      state: 'NY',
+      zip: '12345'
+    )
+    FactoryGirl.create(
+      :person,
       first_name: 'Homer',
       last_name: 'Simpson',
       gender: 'male',
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
-      address: {
-        street_address: '123 fake st',
-        city: 'Springfield',
-        state: 'NY',
-        zip: '12345'
-      }
-    }.with_indifferent_access
+      address: address
+    )
+  end
+
+  before do
     faraday_helper do |stub|
-      stub.get('/api/v1/people/1') do |_|
-        [200, {}, person]
+      stub.get("/api/v1/people/#{person.id}") do |_|
+        [200, {}, person.as_json]
       end
     end
+  end
 
-    visit edit_person_path(id: person[:id])
+  scenario 'edit and existing person' do
+    visit edit_person_path(id: person.id)
 
     within '.card-header' do
       expect(page).to have_content 'EDIT PERSON'
@@ -45,27 +52,7 @@ feature 'Edit Person' do
   end
 
   scenario 'when a user cancels after editing and existing person' do
-    person = {
-      id: 1,
-      first_name: 'Homer',
-      last_name: 'Simpson',
-      gender: 'male',
-      date_of_birth: '05/29/1990',
-      ssn: '123-23-1234',
-      address: {
-        street_address: '123 fake st',
-        city: 'Springfield',
-        state: 'NY',
-        zip: '12345'
-      }
-    }.with_indifferent_access
-    faraday_helper do |stub|
-      stub.get('/api/v1/people/1') do |_|
-        [200, {}, person]
-      end
-    end
-
-    visit edit_person_path(id: person[:id])
+    visit edit_person_path(id: person.id)
 
     fill_in 'First Name', with: 'Lisa'
     click_link 'Cancel'
@@ -77,35 +64,19 @@ feature 'Edit Person' do
   end
 
   scenario 'when a user saves after editing and existing person' do
-    homer = {
-      id: '1',
-      date_of_birth: '05/29/1990',
-      first_name: 'Homer',
-      gender: 'male',
-      last_name: 'Simpson',
-      ssn: '123-23-1234',
-      address: {
-        city: 'Springfield',
-        id: '1',
-        state: 'NY',
-        street_address: '123 fake st',
-        zip: '12345'
-      }
-    }
-    lisa = homer.merge(first_name: 'Lisa')
-
-    faraday_helper do |stub|
-      stub.get('/api/v1/people/1') do |_|
-        [200, {}, homer]
-      end
-      stub.put('/api/v1/people/1', lisa.to_json) do |_|
-        [200, {}, lisa]
-      end
-    end
-
-    visit edit_person_path(id: homer[:id])
+    visit edit_person_path(id: person.id)
 
     fill_in 'First Name', with: 'Lisa'
+
+    person.first_name = 'Lisa'
+    faraday_helper do |stub|
+      stub.put("/api/v1/people/#{person.id}", person.to_json) do |_|
+        [200, {}, person.as_json]
+      end
+      stub.get("/api/v1/people/#{person.id}") do |_|
+        [200, {}, person.as_json]
+      end
+    end
     click_button 'Save'
     within '.card-header' do
       expect(page).to have_content('PROFILE INFORMATION')

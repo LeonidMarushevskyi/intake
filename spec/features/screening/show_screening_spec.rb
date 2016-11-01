@@ -2,39 +2,40 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'support/factory_girl'
 
 feature 'Show Screening' do
   scenario 'showing existing screening' do
-    existing_screening = {
-      id: 1,
+    address = FactoryGirl.create(
+      :address,
+      street_address: '123 fake st',
+      city: 'Springfield',
+      state: 'NY',
+      zip: 12_345
+    )
+    existing_screening = FactoryGirl.create(
+      :screening,
+      communication_method: 'mail',
       ended_at: '2016-08-22T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
       location_type: "Child's Home",
-      communication_method: 'mail',
       name: 'The Rocky Horror Picture Show',
-      report_narrative: 'some narrative',
       reference: 'My Bad!',
+      report_narrative: 'some narrative',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z',
-      address: {
-        id: 4,
-        street_address: '123 fake st',
-        city: 'Springfield',
-        state: 'NY',
-        zip: 12_345
-      },
-      participants: []
-    }.with_indifferent_access
+      address: address
+    )
 
     faraday_helper do |stub|
-      stub.get('/api/v1/screenings/1') do |_|
-        [200, {}, existing_screening]
+      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
+        [200, {}, existing_screening.as_json]
       end
     end
 
-    visit screening_path(id: existing_screening[:id])
+    visit screening_path(id: existing_screening.id)
 
     expect(page).to have_content 'Screening #My Bad!'
 
@@ -62,6 +63,6 @@ feature 'Show Screening' do
     end
 
     expect(page).to have_link('Home', href: root_path)
-    expect(page).to have_link('Edit', href: edit_screening_path(id: 1))
+    expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
 end
