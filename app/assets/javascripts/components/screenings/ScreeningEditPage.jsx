@@ -113,11 +113,11 @@ export default class ScreeningEditPage extends React.Component {
     const {screening} = this.state
     return (
       <div>
-        <h1>{`Edit Screening #${this.state.screening.get('reference')}`}</h1>
-        <input type='hidden' name='screening[id]' id='screening_id' value={screening.get('id') || ''} />
-        <input type='hidden' name='screening[created_at]' id='screening_created_at' value={screening.get('created_at') || ''} />
-        <input type='hidden' name='screening[updated_at]' id='screening_updated_at' value={screening.get('updated_at') || ''} />
-        <input type='hidden' name='screening[reference]' id='screening_reference' value={screening.get('reference') || ''} />
+        <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
+        <input type='hidden' id='id' value={screening.get('id') || ''} />
+        <input type='hidden' id='created_at' value={screening.get('created_at') || ''} />
+        <input type='hidden' id='updated_at' value={screening.get('updated_at') || ''} />
+        <input type='hidden' id='reference' value={screening.get('reference') || ''} />
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
         <NarrativeEditView screening={screening} onChange={this.setField} />

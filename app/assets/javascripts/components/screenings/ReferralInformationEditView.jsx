@@ -14,11 +14,10 @@ const ReferralInformationEditView = ({screening, onChange}) => (
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_incident_date' className='no-gap'>Incident Date</label>
+          <label htmlFor='incident_date' className='no-gap'>Incident Date</label>
           <input
             type='date'
-            name='screening[incident_date]'
-            id='screening_incident_date'
+            id='incident_date'
             value={screening.get('incident_date') || ''}
             onChange={(event) => onChange(['incident_date'], event.target.value)}
           />
@@ -26,10 +25,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_incident_county'>Incident County</label>
+          <label htmlFor='incident_county'>Incident County</label>
           <select
-            name='screening[incident_county]'
-            id='screening_incident_county'
+            id='incident_county'
             value={screening.get('incident_county') || ''}
             onChange={(event) => onChange(['incident_county'], event.target.value)}
           >
@@ -42,27 +40,24 @@ const ReferralInformationEditView = ({screening, onChange}) => (
         <legend>Incident Address</legend>
         <input
           type='hidden'
-          name='screening[address][id]'
-          id='screening_address_id'
+          id='address_id'
           value={screening.getIn(['address', 'id']) || ''}
         />
         <div className='row'>
           <div className='col-md-6'>
-            <label htmlFor='screening_address_street_address' className='no-gap'>Address</label>
+            <label htmlFor='street_address' className='no-gap'>Address</label>
             <input
               type='text'
-              name='screening[address][street_address]'
-              id='screening_address_street_address'
+              id='street_address'
               value={screening.getIn(['address', 'street_address']) || ''}
               onChange={(event) => onChange(['address', 'street_address'], event.target.value)}
             />
           </div>
           <div className='col-md-6'>
-            <label htmlFor='screening_address_city' className='no-gap'>City</label>
+            <label htmlFor='city' className='no-gap'>City</label>
             <input
               type='text'
-              name='screening[address][city]'
-              id='screening_address_city'
+              id='city'
               value={screening.getIn(['address', 'city']) || ''}
               onChange={(event) => onChange(['address', 'city'], event.target.value)}
             />
@@ -70,10 +65,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
         </div>
         <div className='row'>
           <div className='col-md-6'>
-            <label htmlFor='screening_address_state'>State</label>
+            <label htmlFor='state'>State</label>
             <select
-              name='screening[address][state]'
-              id='screening_address_state'
+              id='state'
               value={screening.getIn(['address', 'state']) || ''}
               onChange={(event) => onChange(['address', 'state'], event.target.value)}
             >
@@ -82,11 +76,10 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             </select>
           </div>
           <div className='col-md-6'>
-            <label htmlFor='screening_address_zip'>Zip</label>
+            <label htmlFor='zip'>Zip</label>
             <input
               type='text'
-              name='screening[address][zip]'
-              id='screening_address_zip'
+              id='zip'
               value={screening.getIn(['address', 'zip']) || ''}
               onChange={(event) => onChange(['address', 'zip'], event.target.value)}
             />
@@ -95,10 +88,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </fieldset>
       <div className='row double-gap-top'>
         <div className='col-md-6'>
-          <label htmlFor='screening_location_type'>Location Type</label>
+          <label htmlFor='location_type'>Location Type</label>
           <select
-            name='screening[location_type]'
-            id='screening_location_type'
+            id='location_type'
             value={screening.get('location_type')  || ''}
             onChange={(event) => onChange(['location_type'], event.target.value)}
           >
@@ -115,10 +107,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_response_time'>Response Time</label>
+          <label htmlFor='response_time'>Response Time</label>
           <select
-            name='screening[response_time]'
-            id='screening_response_time'
+            id='response_time'
             value={screening.get('response_time') || ''}
             onChange={(event) => onChange(['response_time'], event.target.value)}
           >
@@ -129,10 +120,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_screening_decision'>Screening Decision</label>
+          <label htmlFor='screening_decision'>Screening Decision</label>
           <select
-            name='screening[screening_decision]'
-            id='screening_screening_decision'
+            id='screening_decision'
             value={screening.get('screening_decision') || ''}
             onChange={(event) => onChange(['screening_decision'], event.target.value)}
           >

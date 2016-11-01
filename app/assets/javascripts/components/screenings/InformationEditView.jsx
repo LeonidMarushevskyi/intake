@@ -9,10 +9,9 @@ const InformationEditView = ({screening, onChange}) => (
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-6'>
-          <label className='no-gap' htmlFor='screening_name'>Title/Name of Screening</label>
+          <label className='no-gap' htmlFor='name'>Title/Name of Screening</label>
           <input
-            name='screening[name]'
-            id='screening_name'
+            id='name'
             placeholder='Enter name of the screening'
             value={screening.get('name') || ''}
             onChange={(event) => onChange(['name'], event.target.value)}
@@ -21,21 +20,19 @@ const InformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_started_at'>Screening Start Date/Time</label>
+          <label htmlFor='started_at'>Screening Start Date/Time</label>
           <input
             type='datetime'
-            name='screening[started_at]'
-            id='screening_started_at'
+            id='started_at'
             value={screening.get('started_at') || ''}
             onChange={(event) => onChange(['started_at'], event.target.value)}
           />
         </div>
         <div className='col-md-6'>
-          <label htmlFor='screening_ended_at'>Screening End Date/Time</label>
+          <label htmlFor='ended_at'>Screening End Date/Time</label>
           <input
             type='datetime'
-            name='screening[ended_at]'
-            id='screening_ended_at'
+            id='ended_at'
             value={screening.get('ended_at') || ''}
             onChange={(event) => onChange(['ended_at'], event.target.value)}
           />
@@ -43,10 +40,9 @@ const InformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='screening_communication_method'>Communication Method</label>
+          <label htmlFor='communication_method'>Communication Method</label>
           <select
-            name='screening[communication_method]'
-            id='screening_communication_method'
+            id='communication_method'
             value={screening.get('communication_method') || ''}
             onChange={(event) => onChange(['communication_method'], event.target.value)}
           >

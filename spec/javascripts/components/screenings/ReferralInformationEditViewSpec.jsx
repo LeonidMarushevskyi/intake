@@ -68,7 +68,7 @@ describe('ReferralInformationEditView', () => {
   })
 
   it('fires the onChange call when a field changes', () => {
-    wrapper.find('#screening_incident_date').simulate('change', {target: {value: '01/21/2006'}})
+    wrapper.find('#incident_date').simulate('change', {target: {value: '01/21/2006'}})
     expect(onChange).toHaveBeenCalledWith(['incident_date'], '01/21/2006')
   })
 })
