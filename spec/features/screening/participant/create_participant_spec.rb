@@ -6,7 +6,7 @@ require 'spec_helper'
 feature 'Edit Screening' do
   let(:existing_screening) do
     {
-      id: 99,
+      id: 12,
       created_at: '2016-10-24T15:14:22.923Z',
       ended_at: nil,
       incident_county: nil,
@@ -33,10 +33,10 @@ feature 'Edit Screening' do
   let(:marge_attributes) do
     {
       id: 99,
-      first_name: 'Marge',
-      last_name: 'Simpson',
       date_of_birth: marge_date_of_birth.to_s(:db),
+      first_name: 'Marge',
       gender: 'female',
+      last_name: 'Simpson',
       ssn: '123-23-1234'
     }
   end
