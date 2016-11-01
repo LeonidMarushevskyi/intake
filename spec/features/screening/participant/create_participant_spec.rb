@@ -75,7 +75,9 @@ feature 'Edit Screening' do
       find('li', text: 'Marge Simpson').click
     end
 
-    existing_screening_with_marge = existing_screening.merge(participants: [created_participant_marge])
+    existing_screening_with_marge = existing_screening.merge(
+      participants: [created_participant_marge]
+    )
     faraday_helper do |stub|
       stub.get("/api/v1/screenings/#{existing_screening_with_marge[:id]}") do |_|
         [200, {}, existing_screening_with_marge]
