@@ -17,11 +17,13 @@ module GulpAssets
     # the public assets folder.
     def uri(filename)
       asset_path = "/assets/#{filename}"
-      return URI::HTTP.build(
-        host: request.host,
-        port: 4857,
-        path: asset_path
-      ) if Rails.env.development?
+      if Rails.env.development?
+        return URI::HTTP.build(
+          host: request.host,
+          port: 4857,
+          path: asset_path
+        )
+      end
       URI::Generic.build(path: asset_path)
     end
 
