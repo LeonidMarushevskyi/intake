@@ -1,9 +1,8 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
+import InformationShowView from 'components/screenings/InformationShowView'
 import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
-import CommunicationMethod from 'CommunicationMethod'
-import moment from 'moment'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
 
 export default class ScreeningShowPage extends React.Component {
@@ -59,46 +58,6 @@ export default class ScreeningShowPage extends React.Component {
     )
   }
 
-  parseDateTime(dateTime) {
-    return (dateTime === null ? '' : moment.utc(dateTime).format('MM/DD/YYYY hh:mm A'))
-  }
-
-  renderScreeningInformationCard() {
-    const {screening} = this.state
-
-    return (
-      <div className='card double-gap-top' id='screening-information-card'>
-        <div className='card-header'>
-          <span>Screening Information</span>
-        </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-6'>
-              <label className='no-gap'>Title/Name of Screening</label>
-              <div className='c-gray'>{screening.get('name')}</div>
-            </div>
-          </div>
-          <div className='row double-gap-top'>
-            <div className='col-md-6'>
-              <label className='no-gap'>Screening Start Date/Time</label>
-              <div className='c-gray'>{this.parseDateTime(screening.get('started_at'))}</div>
-            </div>
-            <div className='col-md-6'>
-              <label className='no-gap'>Screening End Date/Time</label>
-              <div className='c-gray'>{this.parseDateTime(screening.get('ended_at'))}</div>
-            </div>
-          </div>
-          <div className='row double-gap-top'>
-            <div className='col-md-6'>
-              <label className='no-gap'>Communication Method</label>
-              <div className='c-gray'>{CommunicationMethod[screening.get('communication_method')]}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   renderNarrativeCard() {
     const {screening} = this.state
     return (
@@ -119,15 +78,16 @@ export default class ScreeningShowPage extends React.Component {
   }
 
   render() {
+    const {screening} = this.state
     return (
       <div>
-        <h1>{`Screening #${this.state.screening.get('reference')}`}</h1>
-        {this.renderScreeningInformationCard()}
+        <h1>{`Screening #${screening.get('reference')}`}</h1>
+        <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
         {this.renderNarrativeCard()}
-        <ReferralInformationShowView screening={this.state.screening}/>
+        <ReferralInformationShowView screening={screening}/>
         <a href={'/'} className='gap-right'>Home</a>
-        <a href={`/screenings/${this.state.screening.get('id')}/edit`}>Edit</a>
+        <a href={`/screenings/${screening.get('id')}/edit`}>Edit</a>
       </div>
     )
   }

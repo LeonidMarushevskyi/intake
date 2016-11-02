@@ -31,57 +31,13 @@ describe('ScreeningShowPage', () => {
       expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
     })
 
-    describe('screening information card', () => {
-      it('render the card headers', () => {
-        expect(wrapper.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
-      })
-
-      it('renders the screening information label fields', () => {
-        const labels = wrapper.find('#screening-information-card label')
-
-        expect(labels.length).toEqual(4)
-        expect(labels.map((element) => element.text())).toEqual([
-          'Title/Name of Screening',
-          'Screening Start Date/Time',
-          'Screening End Date/Time',
-          'Communication Method',
-        ])
-      })
-
-      it('renders the screening value fields', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            name: 'The Rocky Horror Picture Show',
-            started_at: '2016-08-13T10:00:00.000Z',
-            ended_at: '2016-08-22T11:00:00.000Z',
-            communication_method: 'mail',
-            participants: [],
-          }),
+    describe('information card', () => {
+      it('renders InformationShowView', () => {
+        const screening = Immutable.fromJS({
+          participants: [],
         })
-        const values = wrapper.find('#screening-information-card .c-gray')
-
-        expect(values.length).toEqual(4)
-        expect(values.map((element) => element.text())).toEqual([
-          'The Rocky Horror Picture Show',
-          '08/13/2016 10:00 AM',
-          '08/22/2016 11:00 AM',
-          'Mail',
-        ])
-      })
-
-      it('displays information correctly when they are null', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            name: null,
-            started_at: null,
-            ended_at: null,
-            communication_method: null,
-            participants: [],
-          }),
-        })
-
-        expect(wrapper.find('#screening-information-card .c-gray')
-          .map((element) => element.text())).toEqual(['', '', '', ''])
+        wrapper.setState({screening: screening})
+        expect(wrapper.find('InformationShowView').length).toEqual(1)
       })
     })
 
