@@ -121,6 +121,8 @@ describe('ScreeningEditPage', () => {
       const props = {params: {id: 1}}
       const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
+      const participant_ids = wrapper.state.screening.get('participant_ids')
+      expect(Immutable.is(participant_ids, Immutable.List.of(1))).toEqual(true)
       const participants = wrapper.state.screening.get('participants')
       expect(participants.size).toEqual(1)
       expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
@@ -131,6 +133,8 @@ describe('ScreeningEditPage', () => {
       const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
       wrapper.addParticipant({id: 2})
+      const participant_ids = wrapper.state.screening.get('participant_ids')
+      expect(Immutable.is(participant_ids, Immutable.List.of(1, 2))).toEqual(true)
       const participants = wrapper.state.screening.get('participants')
       expect(participants.size).toEqual(2)
       expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))

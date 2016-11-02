@@ -32,6 +32,7 @@ export default class ScreeningEditPage extends React.Component {
         location_type: '',
         response_time: '',
         screening_decision: '',
+        participant_ids: [],
       }),
     }
 
@@ -78,8 +79,9 @@ export default class ScreeningEditPage extends React.Component {
   addParticipant(participant) {
     const {screening} = this.state
     const participants = screening.get('participants').push(Immutable.Map(participant))
+    const participant_ids = screening.get('participant_ids').push(participant.id)
     this.setState({
-      screening: screening.set('participants', participants),
+      screening: screening.merge({participants: participants, participant_ids: participant_ids}),
     })
   }
 
