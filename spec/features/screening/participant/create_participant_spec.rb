@@ -3,28 +3,35 @@
 require 'rails_helper'
 require 'spec_helper'
 
-def build_participant_from_person_attributes(person_attributes, screening_attributes)
-  person_attributes.merge(
-    person_id: person_attributes[:id].to_s,
-    screening_id: screening_attributes[:id].to_s,
-    id: nil
+def build_participant_from_person_and_screening(person, screening)
+  person.as_json(
+    only: [
+      :date_of_birth,
+      :first_name,
+      :gender,
+      :last_name,
+      :ssn
+    ]
+  ).merge(
+    id: nil,
+    person_id: person.id.to_s,
+    screening_id: screening.id.to_s
   )
 end
 
 feature 'Edit Screening' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
-  let(:marge_attributes) do
-    {
+  let(:marge) do
+    Person.new(
       id: 99,
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234'
-    }
+    )
   end
-  let(:marge) { Person.new(marge_attributes) }
 
   before do
     faraday_helper do |stub|
@@ -40,7 +47,7 @@ feature 'Edit Screening' do
 
     participant_marge = FactoryGirl.build(
       :participant,
-      build_participant_from_person_attributes(marge_attributes, existing_screening)
+      build_participant_from_person_and_screening(marge, existing_screening)
     )
     created_participant_marge = FactoryGirl.build(
       :participant,
