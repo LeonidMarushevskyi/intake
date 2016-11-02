@@ -31,10 +31,8 @@ describe('ParticipantEditView', () => {
   })
 
   it('renders the participant inputs', () => {
-    expect(wrapper.find('input').length).toEqual(5)
-    expect(wrapper.find('input[type="hidden"]').props().value).toEqual(199)
+    expect(wrapper.find('input').length).toEqual(4)
     expect(wrapper.find('input').nodes.map((node) => node.props.value)).toEqual([
-      199,
       'Lisa',
       'Simpson',
       '2016-12-31',

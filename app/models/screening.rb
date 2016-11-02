@@ -22,5 +22,4 @@ class Screening # :nodoc:
 
   attribute :address, Address
   attribute :participants, Array[Participant]
-  attribute :participant_ids, Array
 end
