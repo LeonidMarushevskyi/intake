@@ -31,14 +31,12 @@ describe('ScreeningShowPage', () => {
       expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
     })
 
-    describe('information card', () => {
-      it('renders InformationShowView', () => {
-        const screening = Immutable.fromJS({
-          participants: [],
-        })
-        wrapper.setState({screening: screening})
-        expect(wrapper.find('InformationShowView').length).toEqual(1)
-      })
+    it('render cards', () => {
+      const screening = Immutable.fromJS({participants: []})
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('InformationShowView').length).toEqual(1)
+      expect(wrapper.find('NarrativeShowView').length).toEqual(1)
+      expect(wrapper.find('ReferralInformationShowView').length).toEqual(1)
     })
 
     describe('participants card', () => {
@@ -53,38 +51,6 @@ describe('ScreeningShowPage', () => {
         expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['show', 'show']
         )
-      })
-    })
-
-    describe('narrative card', () => {
-      it('renders the card header', () => {
-        expect(wrapper.find('#narrative-card .card-header').text()).toContain('Narrative')
-      })
-
-      it('renders the narrative label', () => {
-        expect(wrapper.find('#narrative-card label').length).toEqual(1)
-        expect(wrapper.find('#narrative-card label').text()).toEqual('Report Narrative')
-      })
-
-      it('renders the narrative value', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            report_narrative: 'some narrative',
-            participants: [],
-          }),
-        })
-        expect(wrapper.text()).toContain('some narrative')
-      })
-    })
-
-    describe('referral information card', () => {
-      it('renders ReferralInformationShowView', () => {
-        const screening = Immutable.fromJS({
-          incident_county: 'alpine',
-          participants: [],
-        })
-        wrapper.setState({screening: screening})
-        expect(wrapper.find('ReferralInformationShowView').length).toEqual(1)
       })
     })
   })

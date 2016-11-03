@@ -1,6 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
+import NarrativeShowView from 'components/screenings/NarrativeShowView'
 import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
@@ -58,25 +59,6 @@ export default class ScreeningShowPage extends React.Component {
     )
   }
 
-  renderNarrativeCard() {
-    const {screening} = this.state
-    return (
-      <div className='card double-gap-top' id='narrative-card'>
-        <div className='card-header'>
-          <span>Narrative</span>
-        </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-6'>
-              <label className='no-gap'>Report Narrative</label>
-              <div className='c-gray'>{screening.get('report_narrative')}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   render() {
     const {screening} = this.state
     return (
@@ -84,7 +66,7 @@ export default class ScreeningShowPage extends React.Component {
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        {this.renderNarrativeCard()}
+        <NarrativeShowView screening={screening}/>
         <ReferralInformationShowView screening={screening}/>
         <a href={'/'} className='gap-right'>Home</a>
         <a href={`/screenings/${screening.get('id')}/edit`}>Edit</a>
