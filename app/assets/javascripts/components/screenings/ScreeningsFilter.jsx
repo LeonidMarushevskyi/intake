@@ -1,7 +1,7 @@
 import CheckboxListFilter from 'components/common/CheckboxListFilter'
 import React from 'react'
-import ResponseTime from 'ResponseTime'
-import ScreeningDecision from 'ScreeningDecision'
+import RESPONSE_TIME from 'ResponseTime'
+import SCREENING_DECISION from 'ScreeningDecision'
 import {browserHistory} from 'react-router'
 
 export default class ScreeningsFilter extends React.Component {
@@ -31,7 +31,7 @@ export default class ScreeningsFilter extends React.Component {
     return (
       <div>
         <CheckboxListFilter
-          collection={ResponseTime}
+          collection={RESPONSE_TIME}
           legend={'Response Time'}
           name={'response-time'}
           selected={responseTimes}
@@ -41,7 +41,7 @@ export default class ScreeningsFilter extends React.Component {
           })}
         />
         <CheckboxListFilter
-          collection={ScreeningDecision}
+          collection={SCREENING_DECISION}
           legend={'Decision'}
           name={'screening-decision'}
           selected={screeningDecisions}

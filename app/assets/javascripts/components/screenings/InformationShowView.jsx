@@ -1,5 +1,5 @@
 import React from 'react'
-import CommunicationMethod from 'CommunicationMethod'
+import COMMUNICATION_METHOD from 'CommunicationMethod'
 import moment from 'moment'
 
 function parseDateTime(dateTime) {
@@ -31,7 +31,7 @@ const InformationShowView = ({screening}) => (
       <div className='row double-gap-top'>
         <div className='col-md-6'>
           <label className='no-gap'>Communication Method</label>
-          <div className='c-gray'>{CommunicationMethod[screening.get('communication_method')]}</div>
+          <div className='c-gray'>{COMMUNICATION_METHOD[screening.get('communication_method')]}</div>
         </div>
       </div>
     </div>

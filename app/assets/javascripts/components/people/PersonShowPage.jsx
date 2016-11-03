@@ -2,7 +2,7 @@ import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
 import Gender from 'Gender'
-import USState from 'USState'
+import US_STATE from 'USState'
 import {Link} from 'react-router'
 
 export default class PersonShowPage extends React.Component {
@@ -77,7 +77,7 @@ export default class PersonShowPage extends React.Component {
           <div className='row gap-top'>
             <div className='col-md-6'>
               <label>State</label>
-              <div className='c-gray'>{USState[person.getIn(['address', 'state'])]}</div>
+              <div className='c-gray'>{US_STATE[person.getIn(['address', 'state'])]}</div>
             </div>
             <div className='col-md-6'>
               <label>Zip</label>

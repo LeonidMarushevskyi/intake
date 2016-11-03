@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
-import Gender from 'Gender'
+import GENDER from 'Gender'
 
 const ParticipantShowView = ({participant, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
@@ -22,7 +22,7 @@ const ParticipantShowView = ({participant, onEdit}) => (
           <label className='no-gap'>Name</label>
           <div className='c-gray'>{`${participant.get('first_name')} ${participant.get('last_name')}`}</div>
           <label>Gender</label>
-          <div className='c-gray'>{Gender[participant.get('gender')]}</div>
+          <div className='c-gray'>{GENDER[participant.get('gender')]}</div>
         </div>
         <div className='col-md-5'>
           <label className='no-gap-top-desktop'>Date of birth</label>

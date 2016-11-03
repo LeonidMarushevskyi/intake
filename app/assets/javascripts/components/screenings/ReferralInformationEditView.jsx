@@ -1,10 +1,10 @@
-import County from 'County'
-import LocationType from 'LocationType'
+import COUNTY from 'County'
+import LOCATION_TYPE from 'LocationType'
 import moment from 'moment'
 import React from 'react'
-import ResponseTime from 'ResponseTime'
-import ScreeningDecision from 'ScreeningDecision'
-import USState from 'USState'
+import RESPONSE_TIME from 'ResponseTime'
+import SCREENING_DECISION from 'ScreeningDecision'
+import US_STATE from 'USState'
 
 const ReferralInformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='referral-information-card'>
@@ -32,7 +32,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['incident_county'], event.target.value)}
           >
             <option key='' value=''></option>
-            {Object.keys(County).map((item) => <option key={item} value={item}>{County[item]}</option>)}
+            {Object.keys(COUNTY).map((item) => <option key={item} value={item}>{COUNTY[item]}</option>)}
           </select>
         </div>
       </div>
@@ -72,7 +72,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
               onChange={(event) => onChange(['address', 'state'], event.target.value)}
             >
               <option key='' value=''></option>
-              {Object.keys(USState).map((item) => <option key={item} value={item}>{USState[item]}</option>)}
+              {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </select>
           </div>
           <div className='col-md-6'>
@@ -95,10 +95,10 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['location_type'], event.target.value)}
           >
             <option key='' value=''></option>
-            {Object.keys(LocationType).map((group) => {
+            {Object.keys(LOCATION_TYPE).map((group) => {
               return (
                 <optgroup key={group} label={group}>
-                  {LocationType[group].map((item) => <option key={item} value={item}>{item}</option>)}
+                  {LOCATION_TYPE[group].map((item) => <option key={item} value={item}>{item}</option>)}
                 </optgroup>
                 )
             })}
@@ -114,7 +114,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['response_time'], event.target.value)}
           >
             <option key='' value=''></option>
-            {Object.keys(ResponseTime).map((item) => <option key={item} value={item}>{ResponseTime[item]}</option>)}
+            {Object.keys(RESPONSE_TIME).map((item) => <option key={item} value={item}>{RESPONSE_TIME[item]}</option>)}
         </select>
         </div>
       </div>
@@ -127,7 +127,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['screening_decision'], event.target.value)}
           >
             <option key='' value=''></option>
-            {Object.keys(ScreeningDecision).map((item) => <option key={item} value={item}>{ScreeningDecision[item]}</option>)}
+            {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
           </select>
         </div>
       </div>

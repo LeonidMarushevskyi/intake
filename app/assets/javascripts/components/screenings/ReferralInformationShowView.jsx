@@ -1,9 +1,9 @@
-import County from 'County'
+import COUNTY from 'County'
 import moment from 'moment'
 import React from 'react'
-import ResponseTime from 'ResponseTime'
-import ScreeningDecision from 'ScreeningDecision'
-import USState from 'USState'
+import RESPONSE_TIME from 'ResponseTime'
+import SCREENING_DECISION from 'ScreeningDecision'
+import US_STATE from 'USState'
 
 const ReferralInformationShowView = ({screening}) => (
   <div className='card double-gap-top' id='referral-information-card'>
@@ -21,7 +21,7 @@ const ReferralInformationShowView = ({screening}) => (
       <div className='row'>
         <div className='col-md-6'>
           <label>Incident County</label>
-          <div className='c-gray'>{County[screening.get('incident_county')]}</div>
+          <div className='c-gray'>{COUNTY[screening.get('incident_county')]}</div>
         </div>
       </div>
       <div className='row'>
@@ -37,7 +37,7 @@ const ReferralInformationShowView = ({screening}) => (
       <div className='row'>
         <div className='col-md-6'>
           <label>State</label>
-          <div className='c-gray'>{USState[screening.getIn(['address', 'state'])]}</div>
+          <div className='c-gray'>{US_STATE[screening.getIn(['address', 'state'])]}</div>
         </div>
         <div className='col-md-6'>
           <label>Zip</label>
@@ -53,13 +53,13 @@ const ReferralInformationShowView = ({screening}) => (
       <div className='row'>
         <div className='col-md-6'>
           <label>Response Time</label>
-          <div className='c-gray'>{ResponseTime[screening.get('response_time')]}</div>
+          <div className='c-gray'>{RESPONSE_TIME[screening.get('response_time')]}</div>
         </div>
       </div>
       <div className='row'>
         <div className='col-md-6'>
           <label>Screening Decision</label>
-          <div className='c-gray'>{ScreeningDecision[screening.get('screening_decision')]}</div>
+          <div className='c-gray'>{SCREENING_DECISION[screening.get('screening_decision')]}</div>
         </div>
       </div>
     </div>

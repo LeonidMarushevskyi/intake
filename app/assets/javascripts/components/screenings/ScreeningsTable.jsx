@@ -1,6 +1,6 @@
 import React from 'react'
-import ResponseTime from 'ResponseTime'
-import ScreeningDecision from 'ScreeningDecision'
+import RESPONSE_TIME from 'ResponseTime'
+import SCREENING_DECISION from 'ScreeningDecision'
 import moment from 'moment'
 
 export default class ScreeningsTable extends React.Component {
@@ -25,8 +25,8 @@ export default class ScreeningsTable extends React.Component {
               this.props.screenings.map((screening) => (
                   <tr key={screening.id}>
                     <td><a href={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</a></td>
-                    <td>{ResponseTime[screening.response_time]}</td>
-                    <td>{ScreeningDecision[screening.screening_decision]}</td>
+                    <td>{RESPONSE_TIME[screening.response_time]}</td>
+                    <td>{SCREENING_DECISION[screening.screening_decision]}</td>
                     <td>{moment(screening.created_at).format('MM/DD/YYYY')}</td>
                   </tr>
                 )

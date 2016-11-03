@@ -1,4 +1,4 @@
-export default Object.freeze({
+const US_STATE = Object.freeze({
   AL: 'Alabama',
   AK: 'Alaska',
   AZ: 'Arizona',
@@ -50,3 +50,5 @@ export default Object.freeze({
   WI: 'Wisconsin',
   WY: 'Wyoming',
 })
+
+export default US_STATE

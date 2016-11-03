@@ -1,8 +1,8 @@
 import * as Utils from 'utils/http'
-import Gender from 'Gender'
+import GENDER from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
-import USState from 'USState'
+import US_STATE from 'USState'
 import {browserHistory} from 'react-router'
 
 export default class PersonNewPage extends React.Component {
@@ -89,7 +89,7 @@ export default class PersonNewPage extends React.Component {
                 onChange={(event) => this.setField(['gender'], event.target.value)}
               >
                 <option key='' value=''></option>
-                {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
+                {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
               </select>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default class PersonNewPage extends React.Component {
                 onChange={(event) => this.setField(['address', 'state'], event.target.value)}
               >
                 <option key= '' value=''></option>
-                {Object.keys(USState).map((item) => <option key={item} value={item}>{USState[item]}</option>)}
+                {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
               </select>
             </div>
             <div className='col-md-6'>

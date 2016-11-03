@@ -1,5 +1,5 @@
 import React from 'react'
-import CommunicationMethod from 'CommunicationMethod'
+import COMMUNICATION_METHOD from 'CommunicationMethod'
 
 const InformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='screening-information-card'>
@@ -47,7 +47,7 @@ const InformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['communication_method'], event.target.value)}
           >
             <option key='' value=''></option>
-            {Object.keys(CommunicationMethod).map((item) => <option key={item} value={item}>{CommunicationMethod[item]}</option>)}
+            {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
           </select>
         </div>
       </div>

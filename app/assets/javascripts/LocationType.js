@@ -1,4 +1,4 @@
-export default Object.freeze({
+const LOCATION_TYPE = Object.freeze({
   'Home Settings': [
     "Child's Home",
     "Relative's Home",
@@ -21,3 +21,5 @@ export default Object.freeze({
     'Unknown',
   ],
 })
+
+export default LOCATION_TYPE
