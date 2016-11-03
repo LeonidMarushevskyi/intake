@@ -1,28 +1,45 @@
 import * as Utils from 'utils/http'
+import {browserHistory} from 'react-router'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
 
 export default class ScreeningEditPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
       screening: Immutable.fromJS({
+        reference: '',
         name: '',
         started_at: '',
         ended_at: '',
         communication_method: '',
         participants: [],
         report_narrative: '',
+        incident_date: '',
+        incident_county: '',
+        address: Immutable.fromJS({
+          id: '',
+          street_address: '',
+          city: '',
+          state: '',
+          zip: '',
+        }),
+        location_type: '',
+        response_time: '',
+        screening_decision: '',
+        participant_ids: [],
       }),
     }
 
     this.fetch = this.fetch.bind(this)
     this.setField = this.setField.bind(this)
     this.addParticipant = this.addParticipant.bind(this)
+    this.update = this.update.bind(this)
   }
 
   componentDidMount() {
@@ -37,6 +54,23 @@ export default class ScreeningEditPage extends React.Component {
     })
   }
 
+  show() {
+    const {params} = this.props
+    browserHistory.push({
+      pathname: `/screenings/${params.id}`,
+    })
+  }
+
+  update() {
+    const {params} = this.props
+    const url = `/screenings/${params.id}.json`
+    const xhr = Utils.request('PUT', url, {screening: this.state.screening.toJS()}, null)
+    xhr.done((xhrResp) => {
+      this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
+      this.show()
+    })
+  }
+
   setField(fieldSeq, value) {
     const screening = this.state.screening.setIn(fieldSeq, value)
     this.setState({screening: screening})
@@ -45,8 +79,9 @@ export default class ScreeningEditPage extends React.Component {
   addParticipant(participant) {
     const {screening} = this.state
     const participants = screening.get('participants').push(Immutable.Map(participant))
+    const participant_ids = screening.get('participant_ids').push(participant.id)
     this.setState({
-      screening: screening.set('participants', participants),
+      screening: screening.merge({participants: participants, participant_ids: participant_ids}),
     })
   }
 
@@ -77,11 +112,23 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   render() {
+    const {screening} = this.state
     return (
       <div>
-        <InformationEditView screening={this.state.screening} onChange={this.setField} />
+        <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
+        <input type='hidden' id='id' value={screening.get('id') || ''} />
+        <input type='hidden' id='created_at' value={screening.get('created_at') || ''} />
+        <input type='hidden' id='updated_at' value={screening.get('updated_at') || ''} />
+        <input type='hidden' id='reference' value={screening.get('reference') || ''} />
+        <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        <NarrativeEditView screening={this.state.screening} onChange={this.setField} />
+        <NarrativeEditView screening={screening} onChange={this.setField} />
+        <ReferralInformationEditView screening={screening} onChange={this.setField} />
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary' onClick={this.update}>Save</button>
+          </div>
+        </div>
       </div>
     )
   }

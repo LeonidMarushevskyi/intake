@@ -15,58 +15,28 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('render', () => {
-    describe('screening information card', () => {
-      it('render the card headers', () => {
-        expect(wrapper.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
-      })
-
-      it('renders the screening information label fields', () => {
-        const labels = wrapper.find('#screening-information-card label')
-
-        expect(labels.length).toEqual(4)
-        expect(labels.map((element) => element.text())).toEqual([
-          'Title/Name of Screening',
-          'Screening Start Date/Time',
-          'Screening End Date/Time',
-          'Communication Method',
-        ])
-      })
-
-      it('renders the screening value fields', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            name: 'The Rocky Horror Picture Show',
-            started_at: '2016-08-13T10:00:00.000Z',
-            ended_at: '2016-08-22T11:00:00.000Z',
-            communication_method: 'mail',
-            participants: [],
-          }),
+    it('renders the screening reference', () => {
+      wrapper.setState({
+        screening: Immutable.fromJS({
+          reference: 'The Rocky Horror Picture Show',
+          participants: []
         })
-        const values = wrapper.find('#screening-information-card .c-gray')
-
-        expect(values.length).toEqual(4)
-        expect(values.map((element) => element.text())).toEqual([
-          'The Rocky Horror Picture Show',
-          '08/13/2016 10:00 AM',
-          '08/22/2016 11:00 AM',
-          'Mail',
-        ])
       })
+      expect(wrapper.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
+    })
 
-      it('displays information correctly when they are null', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            name: null,
-            started_at: null,
-            ended_at: null,
-            communication_method: null,
-            participants: [],
-          }),
-        })
+    it('renders the home and edit link', () => {
+      const links = wrapper.find('a')
+      expect(links.length).toEqual(2)
+      expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
+    })
 
-        expect(wrapper.find('#screening-information-card .c-gray')
-          .map((element) => element.text())).toEqual(['', '', '', ''])
-      })
+    it('render cards', () => {
+      const screening = Immutable.fromJS({participants: []})
+      wrapper.setState({screening: screening})
+      expect(wrapper.find('InformationShowView').length).toEqual(1)
+      expect(wrapper.find('NarrativeShowView').length).toEqual(1)
+      expect(wrapper.find('ReferralInformationShowView').length).toEqual(1)
     })
 
     describe('participants card', () => {
@@ -81,27 +51,6 @@ describe('ScreeningShowPage', () => {
         expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['show', 'show']
         )
-      })
-    })
-
-    describe('narrative card', () => {
-      it('renders the card header', () => {
-        expect(wrapper.find('#narrative-card .card-header').text()).toContain('Narrative')
-      })
-
-      it('renders the narrative label', () => {
-        expect(wrapper.find('#narrative-card label').length).toEqual(1)
-        expect(wrapper.find('#narrative-card label').text()).toEqual('Report Narrative')
-      })
-
-      it('renders the narrative value', () => {
-        wrapper.setState({
-          screening: Immutable.fromJS({
-            report_narrative: 'some narrative',
-            participants: [],
-          }),
-        })
-        expect(wrapper.text()).toContain('some narrative')
       })
     })
   })
