@@ -89,6 +89,7 @@ feature 'Edit Screening' do
     within 'li', text: 'Marge Simpson' do
       expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
       expect(page).to have_content '15 yrs old'
+      expect(page).to have_content 'Female'
     end
   end
 end

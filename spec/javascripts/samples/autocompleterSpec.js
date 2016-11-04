@@ -75,6 +75,13 @@ describe('<Autcompleter />', () => {
       expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
     })
 
+    it('renders the gender', () => {
+      const wrapper = shallow(<Autocompleter />)
+      const suggestion = {gender: 'female'}
+      const value = wrapper.instance().renderSuggestion(suggestion)
+      expect(shallow(value).html()).toContain('<div>Female</div>')
+    })
+
     it('renders the date of birth in format D/M/YYYY', () => {
       const wrapper = shallow(<Autocompleter />)
       const suggestion = {date_of_birth: '1990-02-13'}
