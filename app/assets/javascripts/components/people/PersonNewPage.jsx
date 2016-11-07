@@ -52,7 +52,7 @@ export default class PersonNewPage extends React.Component {
     return (
       <div className='card edit double-gap-top'>
         <div className='card-header'>
-          <span>Create New Person</span>
+          <span>Basic Demographics card</span>
         </div>
         <div className='card-body'>
           <div className='row'>

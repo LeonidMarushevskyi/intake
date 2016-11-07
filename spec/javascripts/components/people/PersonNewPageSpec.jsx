@@ -7,7 +7,7 @@ describe('PersonNewPage', () => {
   describe('render', () => {
     it('renders the card header', () => {
       const wrapper = mount(<PersonNewPage />)
-      expect(wrapper.find('.card-header').text()).toEqual('Create New Person')
+      expect(wrapper.find('.card-header').text()).toEqual('Basic Demographics card')
     })
 
     it('renders the person label fields', () => {
