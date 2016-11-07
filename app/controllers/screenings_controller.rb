@@ -28,9 +28,13 @@ class ScreeningsController < ApplicationController # :nodoc:
   ].freeze
 
   def create
-    new_screening = Screening.new(reference: LUID.generate.first)
-    @screening = ScreeningRepository.create(new_screening)
-    redirect_to edit_screening_path(@screening.id)
+    respond_to do |format|
+      format.json do
+        new_screening = Screening.new(reference: LUID.generate.first)
+        screening = ScreeningRepository.create(new_screening)
+        render json: screening
+      end
+    end
   end
 
   def update

@@ -3,21 +3,12 @@ import 'jquery-ujs'
 
 import 'babel-polyfill'
 import 'bootstrap'
-import $ from 'jquery'
-import PeopleApp from 'components/PeopleApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ScreeningsApp from 'components/ScreeningsApp'
+import {Router, browserHistory} from 'react-router'
+import routes from 'routes'
 
-function bindReactComponent(Component, containerId) {
-  const container = document.getElementById(containerId)
-  if (container) {
-    const props = $(container).data('props')
-    ReactDOM.render(<Component {...props} />, container)
-  }
-}
-
-$(document).ready(() => {
-  bindReactComponent(ScreeningsApp, 'screenings-app')
-  bindReactComponent(PeopleApp, 'people-app')
-})
+ReactDOM.render(
+  <Router history={browserHistory} routes={routes} />,
+  document.getElementById('app')
+)

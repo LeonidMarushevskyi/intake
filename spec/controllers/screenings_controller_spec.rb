@@ -14,14 +14,10 @@ describe ScreeningsController do
         .and_return(created_screening)
     end
 
-    it 'assigns screening' do
-      process :create, method: :post
-      expect(assigns(:screening)).to eq(created_screening)
-    end
-
-    it 'redirects to edit' do
-      process :create, method: :post
-      expect(response).to redirect_to(edit_screening_path(created_screening.id))
+    it 'creates and renders screening as json' do
+      process :create, method: :post, format: :json
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)).to eq(created_screening.as_json)
     end
   end
 

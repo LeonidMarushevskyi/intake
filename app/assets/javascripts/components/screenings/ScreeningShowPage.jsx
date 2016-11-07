@@ -5,6 +5,7 @@ import NarrativeShowView from 'components/screenings/NarrativeShowView'
 import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
+import {IndexLink, Link} from 'react-router'
 
 export default class ScreeningShowPage extends React.Component {
   constructor() {
@@ -68,8 +69,8 @@ export default class ScreeningShowPage extends React.Component {
         {this.renderParticipantsCard()}
         <NarrativeShowView screening={screening}/>
         <ReferralInformationShowView screening={screening}/>
-        <a href={'/'} className='gap-right'>Home</a>
-        <a href={`/screenings/${screening.get('id')}/edit`}>Edit</a>
+        <IndexLink to='/' className='gap-right'>Home</IndexLink>
+        <Link to={`/screenings/${screening.get('id')}/edit`}>Edit</Link>
       </div>
     )
   }

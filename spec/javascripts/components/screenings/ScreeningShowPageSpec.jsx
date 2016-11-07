@@ -26,7 +26,7 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the home and edit link', () => {
-      const links = wrapper.find('a')
+      const links = wrapper.find('Link')
       expect(links.length).toEqual(2)
       expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
     })
