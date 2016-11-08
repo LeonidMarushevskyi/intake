@@ -24,8 +24,7 @@ class ScreeningsController < ApplicationController # :nodoc:
       :state,
       :street_address,
       :zip
-    ],
-    participant_ids: []
+    ]
   ].freeze
 
   def create

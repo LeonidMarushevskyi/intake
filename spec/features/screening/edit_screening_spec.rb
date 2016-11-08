@@ -5,8 +5,8 @@ require 'spec_helper'
 
 feature 'Edit Screening' do
   scenario 'edit an existing screening' do
-    existing_screening = {
-      id: '1',
+    existing_screening = FactoryGirl.create(
+      :screening,
       ended_at: '2016-08-13T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
@@ -18,27 +18,16 @@ feature 'Edit Screening' do
       screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z',
       updated_at: '2016-10-21T16:11:59.484Z',
-      created_at: '2016-10-21T16:11:59.484Z',
-      address: {
-        street_address: '',
-        state: '',
-        city: '',
-        zip: '',
-        id: 3
-      },
-      participants: []
-    }.with_indifferent_access
+      created_at: '2016-10-21T16:11:59.484Z'
+    )
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.get('/api/v1/screenings/1') do |_|
-          [200, {}, existing_screening]
-        end
+    faraday_helper do |stub|
+      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
+        [200, {}, existing_screening.as_json]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
-    visit edit_screening_path(id: existing_screening[:id])
+    visit edit_screening_path(id: existing_screening.id)
     expect(page).to have_content 'Edit Screening #My Bad!'
 
     within '#screening-information-card' do
@@ -82,11 +71,9 @@ feature 'Edit Screening' do
       select "Child's Home", from: 'Location Type'
     end
 
-    updated_screening = {
+    existing_screening.assign_attributes(
       communication_method: 'mail',
-      created_at: '2016-10-21T16:11:59.484Z',
       ended_at: '2016-08-22T11:00.000Z',
-      id: '1',
       incident_county: 'mariposa',
       incident_date: '2016-08-11',
       location_type: "Child's Home",
@@ -95,30 +82,23 @@ feature 'Edit Screening' do
       report_narrative: 'Updated narrative',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
-      started_at: '2016-08-13T10:00.000Z',
-      updated_at: '2016-10-21T16:11:59.484Z',
-      address: {
-        city: 'Springfield',
-        id: '3',
-        state: 'NY',
-        street_address: '123 fake st',
-        zip: '12345'
-      },
-      participants: [],
-      participant_ids: []
-    }
+      started_at: '2016-08-13T10:00.000Z'
+    )
+    existing_screening.address.assign_attributes(
+      city: 'Springfield',
+      state: 'NY',
+      street_address: '123 fake st',
+      zip: '12345'
+    )
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.put('/api/v1/screenings/1', updated_screening.to_json) do |_env|
-          [200, {}, updated_screening]
-        end
-        stub.get('/api/v1/screenings/1') do |_env|
-          [200, {}, updated_screening]
-        end
+    faraday_helper do |stub|
+      stub.put("/api/v1/screenings/#{existing_screening.id}", existing_screening.to_json) do |_env|
+        [200, {}, existing_screening.as_json]
+      end
+      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_env|
+        [200, {}, existing_screening.as_json]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     click_button 'Save'
 

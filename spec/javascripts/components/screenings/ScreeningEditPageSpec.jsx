@@ -54,7 +54,7 @@ describe('ScreeningEditPage', () => {
       it('renders the autocompleter', () => {
         expect(wrapper.find('Autocompleter').props().id).toEqual('screening_participants')
         expect(wrapper.find('Autocompleter').props().onSelect).toEqual(
-          wrapper.instance().addParticipant
+          wrapper.instance().createParticipant
         )
       })
 
@@ -111,8 +111,43 @@ describe('ScreeningEditPage', () => {
       const wrapper = mount(<ScreeningEditPage {...props} />)
       wrapper.instance().fetch()
       expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
-      expect(Utils.request.calls.argsFor(0)[1]).toEqual('/screenings/1.json')
+      expect(Utils.request.calls.argsFor(1)[0]).toEqual('GET')
+      expect(Utils.request.calls.argsFor(1)[1]).toEqual('/screenings/1.json')
+    })
+  })
+
+  describe('createParticipant', () => {
+    let wrapper
+    const personId = 99
+    const screeningId = 1
+    const person = {id: personId}
+    const participant = {id: null, person_id: personId, screening_id: screeningId}
+
+    beforeEach(() => {
+      let alreadyCalled = false
+      const xhrResponse = {responseJSON: {participants: []}}
+
+      xhrSpyObject.done.and.callFake((afterDone) => {
+        if(alreadyCalled) { return afterDone(participant) }
+        alreadyCalled = true
+        return afterDone(xhrResponse)
+      })
+      const props = {params: {id: screeningId}}
+      wrapper = mount(<ScreeningEditPage {...props} />).instance()
+      spyOn(wrapper, 'addParticipant')
+    })
+
+    it('POSTs the participant data to the server', () => {
+      wrapper.createParticipant(person)
+      expect(Utils.request).toHaveBeenCalled()
+      expect(Utils.request.calls.argsFor(1)[0]).toEqual('POST')
+      expect(Utils.request.calls.argsFor(1)[1]).toEqual('/screenings/1/participants.json')
+      expect(Utils.request.calls.argsFor(1)[2]).toEqual({participant: participant})
+    })
+
+    it('adds the newly created participant', () => {
+      wrapper.createParticipant(person)
+      expect(wrapper.addParticipant).toHaveBeenCalled()
     })
   })
 

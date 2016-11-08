@@ -11,13 +11,8 @@ describe Participant do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
-          id: 2,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
+        person_id: 1,
+        screening_id: 2
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json
@@ -28,13 +23,8 @@ describe Participant do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
-          id: 2,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345'
-        }
+        person_id: 1,
+        screening_id: 2
       }.with_indifferent_access)
     end
   end

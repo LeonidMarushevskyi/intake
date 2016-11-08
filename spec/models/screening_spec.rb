@@ -7,7 +7,7 @@ describe Screening do
       attributes = {
         communication_method: 'phone',
         ended_at: '2016-08-13T11:00:00.000Z',
-        id: 1,
+        id: 2,
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
         location_type: nil,
@@ -27,7 +27,7 @@ describe Screening do
           zip: 11_222
         },
         participants: [
-          { id: 1, first_name: 'Homer', last_name: 'Simpson' }
+          { id: 1, first_name: 'Homer', last_name: 'Simpson', person_id: 3, screening_id: 2 }
         ]
       }.with_indifferent_access
       expect(
@@ -35,7 +35,7 @@ describe Screening do
       ).to include({
         communication_method: 'phone',
         ended_at: '2016-08-13T11:00:00.000Z',
-        id: 1,
+        id: 2,
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
         location_type: nil,
@@ -59,7 +59,8 @@ describe Screening do
           gender: nil,
           last_name: 'Simpson',
           ssn: nil,
-          address: nil
+          person_id: 3,
+          screening_id: 2
         )
       }.with_indifferent_access)
     end

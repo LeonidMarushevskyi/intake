@@ -40,6 +40,7 @@ export default class ScreeningEditPage extends React.Component {
     this.setField = this.setField.bind(this)
     this.addParticipant = this.addParticipant.bind(this)
     this.update = this.update.bind(this)
+    this.createParticipant = this.createParticipant.bind(this)
   }
 
   componentDidMount() {
@@ -85,6 +86,15 @@ export default class ScreeningEditPage extends React.Component {
     })
   }
 
+  createParticipant(person) {
+    const {params} = this.props
+    const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
+    const xhr = Utils.request('POST', `/screenings/${params.id}/participants.json`, {participant: participant})
+    xhr.done((xhrResp) => {
+      this.addParticipant(xhrResp.responseJSON)
+    })
+  }
+
   renderParticipantsCard() {
     const {screening} = this.state
     return (
@@ -97,7 +107,7 @@ export default class ScreeningEditPage extends React.Component {
             <div className='row'>
               <div className='col-md-6'>
                 <label className='no-gap' htmlFor='screening_participants'>Participants</label>
-                <Autocompleter id='screening_participants' onSelect={this.addParticipant}/>
+                <Autocompleter id='screening_participants' onSelect={this.createParticipant}/>
               </div>
             </div>
           </div>

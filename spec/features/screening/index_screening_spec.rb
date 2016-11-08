@@ -5,24 +5,24 @@ require 'spec_helper'
 
 feature 'Screenings Index' do
   scenario 'list all screenings' do
-    screening_one = Screening.new(
-      id: 1,
+    screening_one = FactoryGirl.create(
+      :screening,
       reference: 'ABCDEF',
       created_at: '2016-08-11T18:24:22.157Z',
       name: 'Little Shop Of Horrors',
       response_time: 'immediate',
       screening_decision: 'evaluate_out'
     )
-    screening_two = Screening.new(
-      id: 2,
+    screening_two = FactoryGirl.create(
+      :screening,
       reference: 'HIJKLM',
       created_at: '2016-07-07T11:21:22.007Z',
       name: 'The Shining',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation'
     )
-    screening_three = Screening.new(
-      id: 3,
+    screening_three = FactoryGirl.create(
+      :screening,
       reference: 'NOPQRS',
       created_at: '2016-08-10T09:11:22.112Z',
       name: 'It Follows',
@@ -72,23 +72,22 @@ feature 'Screenings Index' do
   end
 
   scenario 'filter screenings by response time' do
-    screening_one = Screening.new(
-      id: 1,
+    screening_one = FactoryGirl.create(
+      :screening,
       reference: 'ABCDEF',
       created_at: '2016-08-11T18:24:22.157Z',
       name: 'Little Shop Of Horrors',
       response_time: 'immediate',
       screening_decision: 'evaluate_out'
     )
-    screening_two = Screening.new(
-      id: 2,
+    screening_two = FactoryGirl.create(
+      :screening,
       reference: 'HIJKLM',
       created_at: '2016-07-07T11:21:22.007Z',
       name: 'The Shining',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation'
     )
-
     response_time_search = double(:search, results: [screening_one, screening_two])
     query2 = {
       query: {

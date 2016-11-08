@@ -31,7 +31,7 @@ describe ScreeningRepository do
 
   describe '.find' do
     it 'returns the screening if the get request to /screenings/:id is successful' do
-      mock_response = double(:mock_response, status: 200, body:  { id: 'mock_body' })
+      mock_response = double(:mock_response, status: 200, body: { id: 'mock_body' })
       mock_request = double(:mock_request)
       found_screening = double(:screening)
       allow(API.connection).to receive(:get)

@@ -3,34 +3,33 @@ require 'rails_helper'
 
 feature 'Create Person' do
   scenario 'via the create person link on the home page' do
-    person = {
+    address = FactoryGirl.create(
+      :address,
+      city: 'Springfield',
+      id: nil,
+      state: 'NY',
+      street_address: '123 fake st',
+      zip: '12345'
+    )
+    person = FactoryGirl.create(
+      :person,
       id: nil,
       date_of_birth: '05/29/1990',
       first_name: 'Homer',
       gender: 'male',
       last_name: 'Simpson',
       ssn: '123-23-1234',
-      address: {
-        city: 'Springfield',
-        id: nil,
-        state: 'NY',
-        street_address: '123 fake st',
-        zip: '12345'
-      }
-    }
-    created_person = person.merge(id: 1)
+      address: address
+    )
 
-    faraday_stub = Faraday.new do |builder|
-      builder.adapter :test do |stub|
-        stub.post('/api/v1/people', person.to_json) do |_|
-          [201, {}, created_person]
-        end
-        stub.get('/api/v1/people/1') do |_|
-          [200, {}, created_person]
-        end
+    faraday_helper do |stub|
+      stub.post('/api/v1/people', person.to_json) do |_|
+        [201, {}, person.as_json.merge(id: 1)]
+      end
+      stub.get('/api/v1/people/1') do |_|
+        [200, {}, person.as_json.merge(id: 1)]
       end
     end
-    allow(API).to receive(:connection).and_return(faraday_stub)
 
     visit root_path
 
