@@ -11,7 +11,10 @@
     "react": "^15.3.2",
     "react-autosuggest": "^6.0.3",
     "react-dom": "^15.3.2",
-    "react-router": "^2.8.1"
+    "react-redux": "4.4.6",
+    "react-router": "^2.8.1",
+    "redux": "3.6.0",
+    "redux-thunk": "2.1.0"
   },
   "devDependencies": {
     "babelify": "^6.1.2",
@@ -41,6 +44,7 @@
     "karma-junit-reporter": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "react-addons-test-utils": "^15.3.2",
+    "redux-mock-store": "1.0.2",
     "run-sequence": "^1.2.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
