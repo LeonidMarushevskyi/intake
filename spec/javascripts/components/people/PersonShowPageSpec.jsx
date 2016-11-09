@@ -1,19 +1,33 @@
-import PersonShowPage from 'components/people/PersonShowPage'
-import React from 'react'
-import {mount} from 'enzyme'
-import * as Utils from 'utils/http'
 import Immutable from 'immutable'
+import React from 'react'
+import {PersonShowPage} from 'components/people/PersonShowPage'
+import {mount} from 'enzyme'
 
 describe('PersonShowPage', () => {
-  beforeEach(() => {
-    const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
-    spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
-  })
-
   describe('render', () => {
     let wrapper
+    let fetchPerson
+
     beforeEach(() => {
-      const props = {params: {id: 99}}
+      fetchPerson = jasmine.createSpy('fetchPerson')
+      const person = Immutable.fromJS({
+        first_name: 'Kevin',
+        last_name: 'McCallister',
+        gender: 'male',
+        date_of_birth: '11/16/1990',
+        ssn: '111223333',
+        address: {
+          street_address: '671 Lincoln Avenue',
+          city: 'Winnetka',
+          state: 'IL',
+          zip: 60093,
+        },
+      })
+      const props = {
+        actions: { fetchPerson: fetchPerson },
+        params: {id: 99},
+        person: person,
+      }
       wrapper = mount(<PersonShowPage {...props} />)
     })
 
@@ -36,22 +50,11 @@ describe('PersonShowPage', () => {
       ])
     })
 
+    it('calls fetchPerson action', () => {
+      expect(fetchPerson).toHaveBeenCalledWith(99)
+    })
+
     it('renders the person value fields', () => {
-      wrapper.setState({
-        person: Immutable.fromJS({
-          first_name: 'Kevin',
-          last_name: 'McCallister',
-          gender: 'male',
-          date_of_birth: '11/16/1990',
-          ssn: '111223333',
-          address: {
-            street_address: '671 Lincoln Avenue',
-            city: 'Winnetka',
-            state: 'IL',
-            zip: 60093,
-          },
-        }),
-      })
       expect(wrapper.find('.card-body').text()).toContain('Kevin')
       expect(wrapper.find('.card-body').text()).toContain('McCallister')
       expect(wrapper.find('.card-body').text()).toContain('Male')
@@ -67,17 +70,6 @@ describe('PersonShowPage', () => {
       expect(wrapper.find('Link').length).toEqual(1)
       expect(wrapper.find('Link').props()['aria-label']).toEqual('Edit Person')
       expect(wrapper.find('Link').props().to).toEqual('/people/99/edit')
-    })
-  })
-
-  describe('fetch', () => {
-    it('GETs the person data to the server', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonShowPage {...props} />)
-      wrapper.instance().fetch()
-      expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
-      expect(Utils.request.calls.argsFor(0)[1]).toEqual('/people/1.json')
     })
   })
 })
