@@ -26,4 +26,22 @@ describe('person actions', () => {
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
+
+  describe('createPerson', () => {
+    it('dispatches createPersonRequest and createPersonSuccess', () => {
+      const person = {first_name: 'Bart'}
+      const fakeXhrResp = {responseJSON: Object.assign({id: 1}, person)}
+      spyOn(Utils, 'request').and.returnValue($.Deferred().resolve(fakeXhrResp))
+
+      const expectedActions = [
+        {type: types.CREATE_PERSON_SUCCESS, person: Immutable.fromJS(fakeXhrResp.responseJSON)},
+      ]
+
+      const store = mockStore()
+
+      store.dispatch(personActions.createPerson({person: person}))
+      expect(Utils.request).toHaveBeenCalledWith('POST', '/people.json', {person: person})
+      expect(store.getActions()).toEqual(expectedActions)
+    })
+  })
 })

@@ -13,3 +13,15 @@ export function fetchPerson(personId) {
         dispatch(fetchPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
       })
 }
+
+export function createPersonSuccess(person) {
+  return {type: types.CREATE_PERSON_SUCCESS, person}
+}
+
+export function createPerson(person) {
+  return (dispatch) =>
+    Utils.request('POST', '/people.json', person)
+      .then((xhrResp) => {
+        dispatch(createPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      })
+}
