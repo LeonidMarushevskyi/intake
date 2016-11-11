@@ -61,7 +61,9 @@ node {
         }
 
         stage('Clean') {
-            sh 'make clean'
+            retry(2) {
+                sh 'make clean'
+            }
             sh 'make logout'
         }
     }
