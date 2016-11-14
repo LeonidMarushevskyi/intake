@@ -83,8 +83,8 @@ clean:
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) down --volumes
 	${INFO} "Destroying release environment..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down --volumes
-	${INFO} "Removing dangling images..."
-	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
+	${INFO} "Removing local images..."
+	@ docker images -q -f label=application=$(PROJECT_NAME) | sort -u | xargs -I ARGS docker rmi -f ARGS
 	${INFO} "Clean complete"
 
 tag:
