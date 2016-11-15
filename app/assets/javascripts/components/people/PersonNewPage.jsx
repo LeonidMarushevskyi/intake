@@ -1,11 +1,13 @@
-import * as Utils from 'utils/http'
+import * as personActions from 'actions/personActions'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
 import US_STATE from 'USState'
+import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
+import {connect} from 'react-redux'
 
-export default class PersonNewPage extends React.Component {
+export class PersonNewPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
@@ -33,19 +35,15 @@ export default class PersonNewPage extends React.Component {
   }
 
   show() {
-    const {person} = this.state
+    const {person} = this.props
     browserHistory.push({
       pathname: `/people/${person.get('id')}`,
     })
   }
 
   save() {
-    const url = `/people.json`
-    const xhr = Utils.request('POST', url, {person: this.state.person.toJS()}, null)
-    xhr.done((xhrResp) => {
-      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
-      this.show()
-    })
+    this.props.actions.createPerson({person: this.state.person.toJS()})
+      .then(() => this.show())
   }
 
   render() {
@@ -151,3 +149,20 @@ export default class PersonNewPage extends React.Component {
     )
   }
 }
+
+PersonNewPage.propTypes = {
+  person: React.PropTypes.object,
+  actions: React.PropTypes.object.isRequired,
+}
+
+function mapStateToProps(state, ownProps) {
+  return {person: state.person}
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    actions: bindActionCreators(personActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonNewPage)
