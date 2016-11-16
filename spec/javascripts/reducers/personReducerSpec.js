@@ -20,4 +20,14 @@ describe('personReducer', () => {
       expect(personReducer(Immutable.Map(), action)).toEqual(person)
     })
   })
+
+  describe('on UPDATE_PERSON_SUCCESS', () => {
+    it('returns the person from the action', () => {
+      const initialPerson = Immutable.Map({id: 1, first_name: 'Bart'})
+      const updatedPerson = Immutable.Map({id: 1, first_name: 'Lisa'})
+      const action = personActions.updatePersonSuccess(updatedPerson)
+
+      expect(personReducer(initialPerson, action)).toEqual(updatedPerson)
+    })
+  })
 })

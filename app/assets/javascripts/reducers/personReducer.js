@@ -7,6 +7,8 @@ export default function personReducer(state = Immutable.Map(), action) {
       return action.person
     case types.CREATE_PERSON_SUCCESS:
       return action.person
+    case types.UPDATE_PERSON_SUCCESS:
+      return action.person
     default:
       return state
   }
