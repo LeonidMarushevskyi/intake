@@ -25,3 +25,17 @@ export function createPerson(person) {
         dispatch(createPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
       })
 }
+
+export function updatePersonSuccess(person) {
+  return {type: types.UPDATE_PERSON_SUCCESS, person}
+}
+
+export function updatePerson(person) {
+  return (dispatch) => {
+    const {person: {id: personId}} = person
+    return Utils.request('PUT', `/people/${personId}.json`, person)
+      .then((xhrResp) => {
+        dispatch(updatePersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      })
+  }
+}
