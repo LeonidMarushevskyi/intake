@@ -46,6 +46,7 @@ feature 'Create Person' do
 
     click_button 'Save'
 
+    expect(page).to have_current_path(person_path(1))
     within '.card-header' do
       expect(page).to have_content('PROFILE INFORMATION')
     end

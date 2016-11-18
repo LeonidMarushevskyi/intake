@@ -57,6 +57,7 @@ feature 'Edit Person' do
     fill_in 'First Name', with: 'Lisa'
     click_link 'Cancel'
 
+    expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do
       expect(page).to have_content('PROFILE INFORMATION')
     end
@@ -78,6 +79,7 @@ feature 'Edit Person' do
       end
     end
     click_button 'Save'
+    expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do
       expect(page).to have_content('PROFILE INFORMATION')
     end

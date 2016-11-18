@@ -1,41 +1,34 @@
-import * as Utils from 'utils/http'
+import * as personActions from 'actions/personActions'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
 import US_STATE from 'USState'
 import {Link, browserHistory} from 'react-router'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
-export default class PersonEditPage extends React.Component {
+export class PersonEditPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
       person: Immutable.Map(),
     }
-    this.fetch = this.fetch.bind(this)
-    this.update = this.update.bind(this)
     this.setField = this.setField.bind(this)
+    this.update = this.update.bind(this)
   }
 
   componentDidMount() {
-    this.fetch()
+    const personId = this.props.params.id
+    this.props.actions.fetchPerson(personId)
   }
 
-  fetch() {
-    const {params} = this.props
-    const xhr = Utils.request('GET', `/people/${params.id}.json`)
-    xhr.done((xhrResp) => {
-      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
-    })
+  componentWillReceiveProps(nextProps) {
+    this.setState({person: nextProps.person})
   }
 
   update() {
-    const {params} = this.props
-    const url = `/people/${params.id}.json`
-    const xhr = Utils.request('PUT', url, {person: this.state.person.toJS()}, null)
-    xhr.done((xhrResp) => {
-      this.setState({person: Immutable.fromJS(xhrResp.responseJSON)})
-      this.show()
-    })
+    this.props.actions.updatePerson({person: this.state.person.toJS()})
+      .then(() => this.show())
   }
 
   show() {
@@ -169,4 +162,18 @@ export default class PersonEditPage extends React.Component {
 
 PersonEditPage.propTypes = {
   params: React.PropTypes.object.isRequired,
+  person: React.PropTypes.object.isRequired,
+  actions: React.PropTypes.object.isRequired,
 }
+
+function mapStateToProps(state, ownProps) {
+  return {person: state.person}
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    actions: bindActionCreators(personActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonEditPage)

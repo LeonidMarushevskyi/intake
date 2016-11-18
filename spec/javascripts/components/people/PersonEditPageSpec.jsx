@@ -1,20 +1,22 @@
-import * as Utils from 'utils/http'
 import Immutable from 'immutable'
-import PersonEditPage from 'components/people/PersonEditPage'
 import React from 'react'
+import {PersonEditPage} from 'components/people/PersonEditPage'
+import {browserHistory} from 'react-router'
 import {mount} from 'enzyme'
 
 describe('PersonEditPage', () => {
-  let xhrSpyObject
-  beforeEach(() => {
-    xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
-    spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
-  })
-
+  let wrapper
+  let actionsSpy
   describe('render', () => {
-    let wrapper
     beforeEach(() => {
-      const props = {params: {id: 1}}
+      actionsSpy = {
+        fetchPerson: jasmine.createSpy(),
+      }
+      const props = {
+        params: {id: 1},
+        person: Immutable.Map(),
+        actions: actionsSpy,
+      }
       wrapper = mount(<PersonEditPage {...props} />)
     })
 
@@ -40,12 +42,14 @@ describe('PersonEditPage', () => {
     it('renders the person input fields', () => {
       wrapper.setState({
         person: Immutable.fromJS({
+          id: 1,
           first_name: 'Kevin',
           last_name: 'McCallister',
           gender: 'male',
           date_of_birth: '11/16/1990',
           ssn: '111223333',
           address: {
+            id: 2,
             street_address: '671 Lincoln Avenue',
             city: 'Winnetka',
             state: 'IL',
@@ -73,40 +77,41 @@ describe('PersonEditPage', () => {
       expect(wrapper.find('Link').text()).toEqual('Cancel')
       expect(wrapper.find('Link').props().to).toEqual('/people/1')
     })
-  })
 
-  describe('fetch', () => {
-    it('GETs the person data to the server', () => {
-      const props = {params: {id: 1}}
-      const wrapper = mount(<PersonEditPage {...props} />)
-      wrapper.instance().fetch()
-      expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
-      expect(Utils.request.calls.argsFor(0)[1]).toEqual('/people/1.json')
+    it('dispatches fetchPerson', () => {
+      expect(actionsSpy.fetchPerson).toHaveBeenCalledWith(1)
     })
   })
 
   describe('update', () => {
-    let wrapper
     beforeEach(() => {
-      const xhrResponse = {responseJSON: {}}
-      xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
-      const props = {params: {id: 1}}
+      actionsSpy = {
+        fetchPerson: jasmine.createSpy('fetchPerson'),
+        updatePerson: jasmine.createSpy('updatePerson'),
+      }
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      promiseSpyObj.then.and.callFake((then) => then())
+      actionsSpy.updatePerson.and.returnValue(promiseSpyObj)
+      spyOn(browserHistory, 'push')
+
+      const props = {
+        params: {id: 1},
+        person: Immutable.Map({id: 1, first_name: 'Bart'}),
+        actions: actionsSpy,
+      }
       wrapper = mount(<PersonEditPage {...props} />)
     })
 
-    it('PUTs the person data to the server', () => {
-      wrapper.instance().update()
-      expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(1)[0]).toEqual('PUT')
-      expect(Utils.request.calls.argsFor(1)[1]).toEqual('/people/1.json')
+    it('dispatches updatePerson', () => {
+      const updatedPersonProps = {id: 1, first_name: 'Lisa'}
+      wrapper.setState({person: Immutable.fromJS(updatedPersonProps)})
+      wrapper.find('button.btn-primary').simulate('click')
+      expect(actionsSpy.updatePerson).toHaveBeenCalledWith({person: updatedPersonProps})
     })
 
-    it('redirects to the person show page', () => {
-      const instance = wrapper.instance()
-      spyOn(instance, 'show')
-      instance.update()
-      expect(instance.show).toHaveBeenCalled()
+    it('redirects to show', () => {
+      wrapper.find('button.btn-primary').simulate('click')
+      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
   })
 })

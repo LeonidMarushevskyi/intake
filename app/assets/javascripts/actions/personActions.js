@@ -1,0 +1,41 @@
+import * as types from 'actions/actionTypes'
+import * as Utils from 'utils/http'
+import Immutable from 'immutable'
+
+export function fetchPersonSuccess(person) {
+  return {type: types.FETCH_PERSON_SUCCESS, person}
+}
+
+export function fetchPerson(personId) {
+  return (dispatch) =>
+    Utils.request('GET', `/people/${personId}.json`)
+      .then((xhrResp) => {
+        dispatch(fetchPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      })
+}
+
+export function createPersonSuccess(person) {
+  return {type: types.CREATE_PERSON_SUCCESS, person}
+}
+
+export function createPerson(person) {
+  return (dispatch) =>
+    Utils.request('POST', '/people.json', person)
+      .then((xhrResp) => {
+        dispatch(createPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      })
+}
+
+export function updatePersonSuccess(person) {
+  return {type: types.UPDATE_PERSON_SUCCESS, person}
+}
+
+export function updatePerson(person) {
+  return (dispatch) => {
+    const {person: {id: personId}} = person
+    return Utils.request('PUT', `/people/${personId}.json`, person)
+      .then((xhrResp) => {
+        dispatch(updatePersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      })
+  }
+}

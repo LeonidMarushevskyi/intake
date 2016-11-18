@@ -5,10 +5,16 @@ import 'babel-polyfill'
 import 'bootstrap'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Router, browserHistory} from 'react-router'
+import configureStore from 'store/configureStore'
 import routes from 'routes'
+import {Provider} from 'react-redux'
+import {Router, browserHistory} from 'react-router'
+
+const store = configureStore()
 
 ReactDOM.render(
-  <Router history={browserHistory} routes={routes} />,
+  <Provider store={store}>
+    <Router history={browserHistory} routes={routes} />
+  </Provider>,
   document.getElementById('app')
 )

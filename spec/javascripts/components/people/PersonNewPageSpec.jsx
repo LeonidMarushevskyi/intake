@@ -1,17 +1,26 @@
-import * as Utils from 'utils/http'
-import PersonNewPage from 'components/people/PersonNewPage'
+import Immutable from 'immutable'
 import React from 'react'
-import {mount, shallow} from 'enzyme'
+import {browserHistory} from 'react-router'
+import {PersonNewPage} from 'components/people/PersonNewPage'
+import {mount} from 'enzyme'
 
 describe('PersonNewPage', () => {
+  let wrapper
+
   describe('render', () => {
+    beforeEach(() => {
+      const props = {
+        person: Immutable.Map(),
+        actions: {},
+      }
+      wrapper = mount(<PersonNewPage {...props} />)
+    })
+
     it('renders the card header', () => {
-      const wrapper = mount(<PersonNewPage />)
       expect(wrapper.find('.card-header').text()).toEqual('Basic Demographics card')
     })
 
     it('renders the person label fields', () => {
-      const wrapper = mount(<PersonNewPage />)
       expect(wrapper.find('label').length).toEqual(9)
       expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
@@ -27,43 +36,49 @@ describe('PersonNewPage', () => {
     })
 
     it('renders the person input fields', () => {
-      const wrapper = shallow(<PersonNewPage />)
       expect(wrapper.find('input').length).toEqual(7)
     })
 
     it('renders the person select fields', () => {
-      const wrapper = shallow(<PersonNewPage />)
       expect(wrapper.find('select').length).toEqual(2)
     })
 
     it('renders the save button', () => {
-      const wrapper = shallow(<PersonNewPage />)
       expect(wrapper.find('button').length).toEqual(1)
     })
   })
 
   describe('save', () => {
+    let createPerson
+
     beforeEach(() => {
-      const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
-      spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
-      const xhrResponse = {responseJSON: {}}
-      xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
+      createPerson = jasmine.createSpy('createPerson')
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      promiseSpyObj.then.and.callFake((then) => then())
+      createPerson.and.returnValue(promiseSpyObj)
+      spyOn(browserHistory, 'push')
     })
 
-    it('POSTs the person data to the server', () => {
-      const wrapper = mount(<PersonNewPage />)
-      wrapper.instance().save()
-      expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(0)[0]).toEqual('POST')
-      expect(Utils.request.calls.argsFor(0)[1]).toEqual('/people.json')
+    it('dispatches createPerson', () => {
+      const personProps = {first_name: 'Bart'}
+      const props = {
+        person: Immutable.Map(),
+        actions: {createPerson: createPerson}
+      }
+      wrapper = mount(<PersonNewPage {...props} />)
+      wrapper.setState({person: Immutable.fromJS(personProps)})
+      wrapper.find('button.btn-primary').simulate('click')
+      expect(createPerson).toHaveBeenCalledWith({person: personProps})
     })
 
-    it('redirects to the person show page', () => {
-      const wrapper = mount(<PersonNewPage />)
-      const instance = wrapper.instance()
-      spyOn(instance, 'show')
-      instance.save()
-      expect(instance.show).toHaveBeenCalled()
+    it('redirects to show', () => {
+      const props = {
+        person: Immutable.fromJS({id: 1}),
+        actions: {createPerson: createPerson}
+      }
+      wrapper = mount(<PersonNewPage {...props} />)
+      wrapper.find('button.btn-primary').simulate('click')
+      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
   })
 })
