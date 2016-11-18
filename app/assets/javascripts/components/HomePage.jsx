@@ -5,12 +5,12 @@ import {browserHistory} from 'react-router'
 
 export default class HomePage extends React.Component {
   createScreening() {
-    const xhr = Utils.request('POST', `/screenings.json`)
-    xhr.done((xhrResp) => {
-      browserHistory.push({
-        pathname: `/screenings/${xhrResp.responseJSON.id}/edit`,
+    Utils.request('POST', `/screenings.json`)
+      .then((jsonResponse) => {
+        browserHistory.push({
+          pathname: `/screenings/${jsonResponse.id}/edit`,
+        })
       })
-    })
   }
 
   render() {

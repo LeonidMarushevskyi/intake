@@ -5,10 +5,10 @@ import HomePage from 'components/HomePage'
 import React from 'react'
 
 describe('HomePage', () => {
-  let xhrSpyObject
+  let promiseSpyObj
   beforeEach(() => {
-    xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
-    spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
+    promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
     spyOn(browserHistory, 'push')
   })
 
@@ -24,8 +24,8 @@ describe('HomePage', () => {
   })
 
   it('sends a POST request to the server and redirects to edit', () => {
-    const xhrResponse = {responseJSON: {'id': '1'}}
-    xhrSpyObject.done.and.callFake((afterDone) => afterDone(xhrResponse))
+    const jsonResponse = {id: '1'}
+    promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
 
     const wrapper = shallow(<HomePage />)
     wrapper.find('a').simulate('click')

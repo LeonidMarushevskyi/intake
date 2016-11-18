@@ -9,8 +9,8 @@ export function fetchPersonSuccess(person) {
 export function fetchPerson(personId) {
   return (dispatch) =>
     Utils.request('GET', `/people/${personId}.json`)
-      .then((xhrResp) => {
-        dispatch(fetchPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      .then((jsonResponse) => {
+        dispatch(fetchPersonSuccess(Immutable.fromJS(jsonResponse)))
       })
 }
 
@@ -21,8 +21,8 @@ export function createPersonSuccess(person) {
 export function createPerson(person) {
   return (dispatch) =>
     Utils.request('POST', '/people.json', person)
-      .then((xhrResp) => {
-        dispatch(createPersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      .then((jsonResponse) => {
+        dispatch(createPersonSuccess(Immutable.fromJS(jsonResponse)))
       })
 }
 
@@ -34,8 +34,8 @@ export function updatePerson(person) {
   return (dispatch) => {
     const {person: {id: personId}} = person
     return Utils.request('PUT', `/people/${personId}.json`, person)
-      .then((xhrResp) => {
-        dispatch(updatePersonSuccess(Immutable.fromJS(xhrResp.responseJSON)))
+      .then((jsonResponse) => {
+        dispatch(updatePersonSuccess(Immutable.fromJS(jsonResponse)))
       })
   }
 }

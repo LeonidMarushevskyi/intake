@@ -72,21 +72,13 @@ function getCSRFToken() {
 // Always passes just the jqXHR object to all callbacks in the returned promise
 // for a consistent API, unlike jQuery.ajax's inconsistent one.
 export function request(method, url, data, options) {
-  const promise = $.Deferred()
-  const xhrReq = $.ajax(Object.assign({
-    type: method,
-    url: url,
-    data: data,
-    headers: {'X-CSRF-Token': getCSRFToken()},
-  }, options || {}))
-
-  xhrReq.done((data, textStatus, xhrResp) => {
-    promise.resolve(xhrResp)
+  return new Promise((resolve, reject) => {
+    $.ajax(Object.assign({
+      type: method,
+      url: url,
+      data: data,
+      headers: {'X-CSRF-Token': getCSRFToken()},
+    }, options || {}))
+      .done(resolve).fail(reject)
   })
-
-  xhrReq.fail((xhrResp, _textStatus, _errorThrown) => {
-    promise.reject(xhrResp)
-  })
-
-  return promise
 }

@@ -7,8 +7,9 @@ import * as Utils from 'utils/http'
 
 describe('ScreeningsIndexPage', () => {
   beforeEach(() => {
-    const xhrSpyObj = jasmine.createSpyObj('xhrSpyObj', ['done'])
-    spyOn(Utils, 'request').and.returnValue(xhrSpyObj)
+    const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
+    promiseSpyObj.then.and.callFake((then) => then([]))
   })
 
   describe('render', () => {

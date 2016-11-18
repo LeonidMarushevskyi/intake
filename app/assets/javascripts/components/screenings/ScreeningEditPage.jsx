@@ -48,10 +48,10 @@ export default class ScreeningEditPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    const xhr = Utils.request('GET', `/screenings/${params.id}.json`)
-    xhr.done((xhrResp) => {
-      this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
-    })
+    Utils.request('GET', `/screenings/${params.id}.json`)
+      .then((jsonResponse) => {
+        this.setState({screening: Immutable.fromJS(jsonResponse)})
+      })
   }
 
   show() {
@@ -64,11 +64,11 @@ export default class ScreeningEditPage extends React.Component {
   update() {
     const {params} = this.props
     const url = `/screenings/${params.id}.json`
-    const xhr = Utils.request('PUT', url, {screening: this.state.screening.toJS()}, null)
-    xhr.done((xhrResp) => {
-      this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
-      this.show()
-    })
+    Utils.request('PUT', url, {screening: this.state.screening.toJS()})
+      .then((jsonResponse) => {
+        this.setState({screening: Immutable.fromJS(jsonResponse)})
+        this.show()
+      })
   }
 
   setField(fieldSeq, value) {
@@ -87,10 +87,10 @@ export default class ScreeningEditPage extends React.Component {
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
-    const xhr = Utils.request('POST', `/screenings/${params.id}/participants.json`, {participant: participant})
-    xhr.done((xhrResp) => {
-      this.addParticipant(xhrResp.responseJSON)
-    })
+    Utils.request('POST', `/screenings/${params.id}/participants.json`, {participant: participant})
+      .then((jsonResponse) => {
+        this.addParticipant(jsonResponse)
+      })
   }
 
   renderParticipantsCard() {

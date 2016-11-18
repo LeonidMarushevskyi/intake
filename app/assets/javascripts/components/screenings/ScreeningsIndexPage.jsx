@@ -25,10 +25,10 @@ export default class ScreeningsIndexPage extends React.Component {
   updateIndex() {
     const {pathname, search} = this.props.location
     const url = `${pathname}.json${search}`
-    const xhr = Utils.request('GET', url, null, null)
-    xhr.done((xhrResp) => {
-      this.setState({screenings: xhrResp.responseJSON})
-    })
+    Utils.request('GET', url)
+      .then((jsonResponse) => {
+        this.setState({screenings: jsonResponse})
+      })
   }
 
   render() {

@@ -6,9 +6,10 @@ import Immutable from 'immutable'
 
 describe('ScreeningShowPage', () => {
   let wrapper
+  let promiseSpyObj
   beforeEach(() => {
-    const xhrSpyObject = jasmine.createSpyObj('xhrSpyObj', ['done'])
-    spyOn(Utils, 'request').and.returnValue(xhrSpyObject)
+    promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
 
     const props = {params: {id: 1}}
     wrapper = mount(<ScreeningShowPage {...props} />)
@@ -57,11 +58,13 @@ describe('ScreeningShowPage', () => {
 
   describe('fetch', () => {
     it('GETs the screening data from the server', () => {
-      wrapper.instance().fetch()
+      let instance = wrapper.instance()
+      const screening = {id: 1, participants: []}
+      promiseSpyObj.then.and.callFake((then) => then(screening))
+      instance.fetch()
 
-      expect(Utils.request).toHaveBeenCalled()
-      expect(Utils.request.calls.argsFor(0)[0]).toEqual('GET')
-      expect(Utils.request.calls.argsFor(0)[1]).toEqual('/screenings/1.json')
+      expect(Utils.request).toHaveBeenCalledWith('GET', '/screenings/1.json')
+      expect(wrapper.find('Link').nodes[1].props.to).toEqual(`/screenings/${screening.id}/edit`)
     })
   })
 })

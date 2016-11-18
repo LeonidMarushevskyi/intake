@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import * as Utils from 'utils/http'
 import * as personActions from 'actions/personActions'
 import * as types from 'actions/actionTypes'
@@ -13,11 +12,13 @@ describe('person actions', () => {
   describe('fetchPerson', () => {
     it('dispatches fetchPersonRequest and fetchPersonSuccess', () => {
       const person = {id: 1, first_name: 'Bart'}
-      const fakeXhrResp = {responseJSON: person}
-      spyOn(Utils, 'request').and.returnValue($.Deferred().resolve(fakeXhrResp))
+      const jsonResponse = person
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
 
       const expectedActions = [
-        {type: types.FETCH_PERSON_SUCCESS, person: Immutable.fromJS(person)},
+        {type: types.FETCH_PERSON_SUCCESS, person: Immutable.fromJS(jsonResponse)},
       ]
       const store = mockStore()
 
@@ -30,11 +31,13 @@ describe('person actions', () => {
   describe('createPerson', () => {
     it('dispatches createPersonRequest and createPersonSuccess', () => {
       const person = {first_name: 'Bart'}
-      const fakeXhrResp = {responseJSON: Object.assign({id: 1}, person)}
-      spyOn(Utils, 'request').and.returnValue($.Deferred().resolve(fakeXhrResp))
+      const jsonResponse = {id: 1, first_name: 'Bart'}
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
 
       const expectedActions = [
-        {type: types.CREATE_PERSON_SUCCESS, person: Immutable.fromJS(fakeXhrResp.responseJSON)},
+        {type: types.CREATE_PERSON_SUCCESS, person: Immutable.fromJS(jsonResponse)},
       ]
       const store = mockStore()
 
@@ -47,11 +50,12 @@ describe('person actions', () => {
   describe('updatePerson', () => {
     it('dispatches updatePersonRequest and updatePersonSuccess', () => {
       const updatedPerson = {id: 1, first_name: 'Lisa', last_name: 'Simpson'}
-      const fakeXhrResp = {responseJSON: updatedPerson}
-      spyOn(Utils, 'request').and.returnValue($.Deferred().resolve(fakeXhrResp))
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.callFake((then) => then(updatedPerson))
 
       const expectedActions = [
-        {type: types.UPDATE_PERSON_SUCCESS, person: Immutable.fromJS(fakeXhrResp.responseJSON)},
+        {type: types.UPDATE_PERSON_SUCCESS, person: Immutable.fromJS(updatedPerson)},
       ]
 
       const store = mockStore({

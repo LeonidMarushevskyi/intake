@@ -41,10 +41,10 @@ export default class ScreeningShowPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    const xhr = Utils.request('GET', `/screenings/${params.id}.json`)
-    xhr.done((xhrResp) => {
-      this.setState({screening: Immutable.fromJS(xhrResp.responseJSON)})
-    })
+    Utils.request('GET', `/screenings/${params.id}.json`)
+      .then((jsonResponse) => {
+        this.setState({screening: Immutable.fromJS(jsonResponse)})
+      })
   }
 
   renderParticipantsCard() {
