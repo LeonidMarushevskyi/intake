@@ -48,7 +48,7 @@ feature 'Create Person' do
 
     expect(page).to have_current_path(person_path(1))
     within '.card-header' do
-      expect(page).to have_content('PROFILE INFORMATION')
+      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end
     expect(page).to_not have_content('Save')
   end

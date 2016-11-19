@@ -23,7 +23,7 @@ export class PersonShowPage extends React.Component {
     return (
       <div className='card double-gap-top'>
         <div className='card-header'>
-          <span>Profile Information</span>
+          <span>Basic Demographics Card</span>
           <Link to={`/people/${params.id}/edit`} aria-label='Edit Person'>
             <i className='fa fa-pencil'></i>
           </Link>

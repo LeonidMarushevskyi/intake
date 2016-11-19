@@ -49,7 +49,7 @@ export class PersonEditPage extends React.Component {
     return (
       <div className='card edit double-gap-top'>
         <div className='card-header'>
-          <span>Edit Person</span>
+          <span>Edit Basic Demographics Card</span>
         </div>
         <div className='card-body'>
           <div className='row'>

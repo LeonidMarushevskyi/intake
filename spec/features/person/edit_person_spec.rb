@@ -33,7 +33,7 @@ feature 'Edit Person' do
     visit edit_person_path(id: person.id)
 
     within '.card-header' do
-      expect(page).to have_content 'EDIT PERSON'
+      expect(page).to have_content 'EDIT BASIC DEMOGRAPHICS CARD'
     end
 
     within '.card-body' do
@@ -59,7 +59,7 @@ feature 'Edit Person' do
 
     expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do
-      expect(page).to have_content('PROFILE INFORMATION')
+      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end
     expect(page).to have_content 'Homer'
   end
@@ -81,7 +81,7 @@ feature 'Edit Person' do
     click_button 'Save'
     expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do
-      expect(page).to have_content('PROFILE INFORMATION')
+      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end
   end
 end

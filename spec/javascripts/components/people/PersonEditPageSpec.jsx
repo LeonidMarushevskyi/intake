@@ -21,7 +21,7 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the card header', () => {
-      expect(wrapper.find('.card-header').text()).toEqual('Edit Person')
+      expect(wrapper.find('.card-header').text()).toEqual('Edit Basic Demographics Card')
     })
 
     it('renders the person label fields', () => {

@@ -32,7 +32,7 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the card header', () => {
-      expect(wrapper.find('.card-header').text()).toContain('Profile Information')
+      expect(wrapper.find('.card-header').text()).toContain('Basic Demographics Card')
     })
 
     it('renders the person label fields', () => {
