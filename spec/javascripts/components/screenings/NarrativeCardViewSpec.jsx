@@ -16,6 +16,17 @@ describe('NarrativeCardView', () => {
       wrapper = mount(<NarrativeCardView {...props} mode='edit'/>)
       expect(wrapper.find('NarrativeEditView').length).toEqual(1)
     })
+
+    describe("and a user clicks 'Cancel'", () => {
+      beforeEach(() => {
+        const cancelButton = wrapper.find('button')
+        cancelButton.simulate('click')
+      })
+
+      it('the narrative show view is rendered', () => {
+        expect(wrapper.find('NarrativeShowView').length).toEqual(1)
+      })
+    })
   })
 
   describe('when the mode is set to show', () => {

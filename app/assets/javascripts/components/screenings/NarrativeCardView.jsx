@@ -9,28 +9,31 @@ export default class NarrativeCardView extends React.Component {
       mode: this.props.mode,
     }
     this.onEdit = this.onEdit.bind(this)
+    this.onCancel = this.onCancel.bind(this)
   }
 
   onEdit() {
     this.setState({mode: 'edit'})
   }
 
+  onCancel() {
+    this.setState({mode: 'show'})
+  }
+
   render() {
     const {mode} = this.state
     const {screening} = this.props
-    let View
+    let view
     if (mode === 'edit') {
-      View = NarrativeEditView
+      view = <NarrativeEditView screening={this.props.screening} onChange={() => null} onCancel={this.onCancel} />
     } else {
-      View = NarrativeShowView
+      view = <NarrativeShowView screening={this.props.screening} onEdit={this.onEdit} />
     }
-    return (
-      <View screening={this.props.screening} onEdit={this.onEdit} />
-    )
+    return view
   }
 }
 
 NarrativeCardView.propTypes = {
   mode: React.PropTypes.oneOf(['edit', 'show']),
-  screening: React.PropTypes.object.isRequired,
+  screening: React.PropTypes.object.isRequired
 }

@@ -9,7 +9,8 @@ describe('narrative card', () => {
 
   beforeEach(() => {
     onEdit = jasmine.createSpy()
-    wrapper = shallow(<NarrativeShowView screening={Immutable.Map({})} onEdit={onEdit} />)
+    const screening = Immutable.Map({report_narrative: 'some narrative'})
+    wrapper = shallow(<NarrativeShowView screening={screening} onEdit={onEdit} />)
   })
 
   it('renders a show card with narative-card as id', () => {
@@ -36,8 +37,6 @@ describe('narrative card', () => {
   })
 
   it('renders the narrative value', () => {
-    const screening = Immutable.Map({report_narrative: 'some narrative'})
-    wrapper = shallow(<NarrativeShowView screening={screening} />)
     expect(wrapper.text()).toContain('some narrative')
   })
 
