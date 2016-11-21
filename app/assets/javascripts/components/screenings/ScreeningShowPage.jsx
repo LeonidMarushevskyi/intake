@@ -1,7 +1,7 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
-import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
@@ -68,7 +68,7 @@ export default class ScreeningShowPage extends React.Component {
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        <NarrativeShowView screening={screening}/>
+        <NarrativeCardView screening={screening} mode='show'/>
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>

@@ -33,11 +33,10 @@ describe('ScreeningShowPage', () => {
       expect(editLink.html()).toContain('Edit')
     })
 
-    it('render cards', () => {
+    it('render show views', () => {
       const screening = Immutable.fromJS({participants: []})
       wrapper.setState({screening: screening})
       expect(wrapper.find('InformationShowView').length).toEqual(1)
-      expect(wrapper.find('NarrativeShowView').length).toEqual(1)
       expect(wrapper.find('ReferralInformationShowView').length).toEqual(1)
     })
 
@@ -53,6 +52,18 @@ describe('ScreeningShowPage', () => {
         expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['show', 'show']
         )
+      })
+    })
+
+    describe('narrative card', () => {
+      it('renders the narrative card', () => {
+        const screening = Immutable.fromJS({
+          report_narrative: 'this is a narrative report',
+          participants: [],
+        })
+        wrapper.setState({screening: screening})
+        expect(wrapper.find('NarrativeCardView').length).toEqual(1)
+        expect(wrapper.find('NarrativeCardView').props().screening).toEqual(screening)
       })
     })
   })
