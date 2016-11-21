@@ -22,7 +22,7 @@ feature 'Edit Person' do
   end
 
   before do
-    stub_request(:get, %r{.*/api/v1/people/#{person.id}})
+    stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -70,12 +70,12 @@ feature 'Edit Person' do
 
     person.first_name = 'Lisa'
 
-    stub_request(:put, %r{.*/api/v1/people/#{person.id}})
+    stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)
       .and_return(status: 200,
                   body: person.to_json,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, %r{.*/api/v1/people/#{person.id}})
+    stub_request(:get, api_person_path(person.id))
       .and_return(status: 200,
                   body: person.to_json,
                   headers: { 'Content-Type' => 'application/json' })

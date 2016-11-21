@@ -35,12 +35,12 @@ feature 'Create Person' do
     select 'New York', from: 'State'
     fill_in 'Zip', with: '12345'
 
-    stub_request(:post, %r{.*/api/v1/people})
+    stub_request(:post, api_people_path)
       .with(body: person.to_json)
       .and_return(body: person.as_json.merge(id: 1).to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, %r{.*/api/v1/people/1})
+    stub_request(:get, api_person_path(1))
       .and_return(body: person.as_json.merge(id: 1).to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

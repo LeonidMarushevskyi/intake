@@ -4,17 +4,13 @@ require 'rails_helper'
 require 'spec_helper'
 require 'support/factory_girl'
 
-def json_body(json)
-  { body: json, headers: { 'Content-Type' => 'application/json' } }
-end
-
 feature 'screening narrative card' do
   scenario 'user edits narrative card from screening show page and cancels' do
     existing_screening = FactoryGirl.create(
       :screening,
       report_narrative: 'This is my report narrative'
     )
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
@@ -37,7 +33,7 @@ feature 'screening narrative card' do
       :screening,
       report_narrative: 'This is my report narrative'
     )
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
 
     visit edit_screening_path(id: existing_screening.id)
@@ -59,7 +55,7 @@ feature 'screening narrative card' do
       :screening,
       report_narrative: 'This is my report narrative'
     )
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
@@ -71,14 +67,14 @@ feature 'screening narrative card' do
     end
 
     existing_screening.report_narrative = 'Trying to fill in with changes'
-    stub_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
       .and_return(json_body(existing_screening.to_json))
 
     click_button 'Save'
 
     expect(
-      a_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      a_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
     ).to have_been_made
 
@@ -92,7 +88,7 @@ feature 'screening narrative card' do
       :screening,
       report_narrative: 'This is my report narrative'
     )
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
 
     visit edit_screening_path(id: existing_screening.id)
@@ -103,7 +99,7 @@ feature 'screening narrative card' do
     end
 
     existing_screening.report_narrative = 'Trying to fill in with changes'
-    stub_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
       .and_return(json_body(existing_screening.to_json))
 
@@ -112,7 +108,7 @@ feature 'screening narrative card' do
     end
 
     expect(
-      a_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      a_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
     ).to have_been_made
 

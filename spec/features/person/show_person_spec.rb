@@ -18,7 +18,7 @@ feature 'Show Person' do
         zip: '12345'
       )
     )
-    stub_request(:get, %r{.*/api/v1/people/#{person.id}})
+    stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

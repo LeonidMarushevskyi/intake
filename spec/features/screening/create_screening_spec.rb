@@ -12,13 +12,13 @@ feature 'Create Screening' do
       updated_at: nil,
       address: nil
     )
-    stub_request(:post, %r{.*/api/v1/screenings})
+    stub_request(:post, api_screenings_path)
       .with(body: new_screening.to_json)
       .and_return(body: new_screening.as_json.merge(id: 1, address: {}).to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
 
-    stub_request(:get, %r{.*/api/v1/screenings/1})
+    stub_request(:get, api_screening_path(1))
       .and_return(body: new_screening.as_json.merge(id: 1, address: {}).to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

@@ -34,7 +34,7 @@ feature 'Edit Screening' do
   end
 
   before do
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -52,7 +52,7 @@ feature 'Edit Screening' do
       :participant,
       participant_marge.as_json.merge(id: 23)
     )
-    stub_request(:post, %r{.*/api/v1/participants})
+    stub_request(:post, api_participants_path)
       .and_return(body: participant_marge.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -64,7 +64,7 @@ feature 'Edit Screening' do
 
     existing_screening.assign_attributes(participants: [created_participant_marge])
 
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

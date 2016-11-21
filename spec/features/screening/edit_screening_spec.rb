@@ -3,10 +3,6 @@
 require 'rails_helper'
 require 'spec_helper'
 
-def json_body(json)
-  { body: json, headers: { 'Content-Type' => 'application/json' } }
-end
-
 feature 'Edit Screening' do
   scenario 'edit an existing screening' do
     existing_screening = FactoryGirl.create(
@@ -25,7 +21,7 @@ feature 'Edit Screening' do
       created_at: '2016-10-21T16:11:59.484Z'
     )
 
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -94,18 +90,18 @@ feature 'Edit Screening' do
       zip: '12345'
     )
 
-    stub_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
       .and_return(json_body(existing_screening.to_json))
 
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
       .and_return(json_body(existing_screening.to_json))
 
     page.find('button:last-child', text: 'Save').click
 
     expect(
-      a_request(:put, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      a_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
     ).to have_been_made
 

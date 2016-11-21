@@ -4,10 +4,6 @@ require 'rails_helper'
 require 'spec_helper'
 require 'support/factory_girl'
 
-def json_body(json)
-  { body: json, headers: { 'Content-Type' => 'application/json' } }
-end
-
 feature 'Show Screening' do
   scenario 'showing existing screening' do
     address = FactoryGirl.create(
@@ -33,7 +29,7 @@ feature 'Show Screening' do
       address: address
     )
 
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+    stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
