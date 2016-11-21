@@ -88,8 +88,39 @@ feature 'Screenings Index' do
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation'
     )
-    response_time_search = double(:search, results: [screening_one, screening_two])
-    query2 = {
+    screening_three = FactoryGirl.create(
+      :screening,
+      reference: 'NOPQRS',
+      created_at: '2016-08-10T09:11:22.112Z',
+      name: 'It Follows',
+      response_time: 'more_than_twenty_four_hours',
+      screening_decision: 'referral_to_other_agency'
+    )
+    screenings = [screening_one, screening_two, screening_three]
+
+    search = double(:search, results: screenings)
+    query = { query: { filtered: { filter: { bool: { must: [] } } } } }
+    expect(ScreeningsRepo).to receive(:search).with(query).and_return(search)
+
+    immediate_screenings = double(:search, results: [screening_one])
+    immediate_query = {
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [
+                { terms: { response_time: ['immediate'] } }
+              ]
+            }
+          }
+        }
+      }
+    }
+    expect(ScreeningsRepo).to receive(:search)
+      .with(immediate_query).and_return(immediate_screenings)
+
+    immediate_and_24hrs_screenings = double(:search, results: [screening_one, screening_two])
+    immediate_and_24hrs_query = {
       query: {
         filtered: {
           filter: {
@@ -102,7 +133,8 @@ feature 'Screenings Index' do
         }
       }
     }
-    allow(ScreeningsRepo).to receive(:search).with(query2).and_return(response_time_search)
+    expect(ScreeningsRepo).to receive(:search)
+      .with(immediate_and_24hrs_query).and_return(immediate_and_24hrs_screenings)
     visit screenings_path
 
     find('label', text: 'Immediate').click
