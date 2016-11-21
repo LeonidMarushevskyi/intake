@@ -34,11 +34,10 @@ feature 'Edit Screening' do
   end
 
   before do
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
     allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
   end
 
@@ -53,11 +52,10 @@ feature 'Edit Screening' do
       :participant,
       participant_marge.as_json.merge(id: 23)
     )
-    faraday_helper do |stub|
-      stub.post('/api/v1/participants', participant_marge.to_json) do |_|
-        [201, {}, created_participant_marge.as_json]
-      end
-    end
+    stub_request(:post, %r{.*/api/v1/participants})
+      .and_return(body: participant_marge.to_json,
+                  status: 201,
+                  headers: { 'Content-Type' => 'application/json' })
 
     within '#participants-card' do
       fill_in_autocompleter 'Participants', with: 'Marge'
@@ -65,11 +63,11 @@ feature 'Edit Screening' do
     end
 
     existing_screening.assign_attributes(participants: [created_participant_marge])
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+
+    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     visit edit_screening_path(id: existing_screening.id)
 

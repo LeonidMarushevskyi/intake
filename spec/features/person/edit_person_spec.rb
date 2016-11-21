@@ -22,11 +22,10 @@ feature 'Edit Person' do
   end
 
   before do
-    faraday_helper do |stub|
-      stub.get("/api/v1/people/#{person.id}") do |_|
-        [200, {}, person.as_json]
-      end
-    end
+    stub_request(:get, %r{.*/api/v1/people/#{person.id}})
+      .and_return(body: person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
   end
 
   scenario 'edit and existing person' do
@@ -70,14 +69,17 @@ feature 'Edit Person' do
     fill_in 'First Name', with: 'Lisa'
 
     person.first_name = 'Lisa'
-    faraday_helper do |stub|
-      stub.put("/api/v1/people/#{person.id}", person.to_json) do |_|
-        [200, {}, person.as_json]
-      end
-      stub.get("/api/v1/people/#{person.id}") do |_|
-        [200, {}, person.as_json]
-      end
-    end
+
+    stub_request(:put, %r{.*/api/v1/people/#{person.id}})
+      .with(body: person.to_json)
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, %r{.*/api/v1/people/#{person.id}})
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+
     click_button 'Save'
     expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do

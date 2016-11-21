@@ -4,6 +4,10 @@ require 'rails_helper'
 require 'spec_helper'
 require 'support/factory_girl'
 
+def json_body(json)
+  { body: json, headers: { 'Content-Type' => 'application/json' } }
+end
+
 feature 'Show Screening' do
   scenario 'showing existing screening' do
     address = FactoryGirl.create(
@@ -29,11 +33,8 @@ feature 'Show Screening' do
       address: address
     )
 
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
 
@@ -71,11 +72,8 @@ feature 'Show Screening' do
       :screening,
       report_narrative: 'This is my report narrative'
     )
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
+      .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
     click_link 'Edit narrative'
