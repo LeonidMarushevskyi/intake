@@ -61,6 +61,7 @@ export default class ScreeningShowPage extends React.Component {
   }
 
   render() {
+    const {params} = this.props
     const {screening} = this.state
     return (
       <div>
@@ -70,7 +71,7 @@ export default class ScreeningShowPage extends React.Component {
         <NarrativeShowView screening={screening}/>
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
-        <Link to={`/screenings/${screening.get('id')}/edit`}>Edit</Link>
+        <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
       </div>
     )
   }

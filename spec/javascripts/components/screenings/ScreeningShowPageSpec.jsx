@@ -1,6 +1,6 @@
 import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow} from 'enzyme'
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 
@@ -12,7 +12,7 @@ describe('ScreeningShowPage', () => {
     spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
 
     const props = {params: {id: 1}}
-    wrapper = mount(<ScreeningShowPage {...props} />)
+    wrapper = shallow(<ScreeningShowPage {...props} />)
   })
 
   describe('render', () => {
@@ -27,9 +27,10 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the home and edit link', () => {
-      const links = wrapper.find('Link')
-      expect(links.length).toEqual(2)
-      expect(links.map((element) => element.text())).toEqual(['Home', 'Edit'])
+      const homeLink = wrapper.find({to: '/'})
+      const editLink = wrapper.find({to: '/screenings/1/edit'})
+      expect(homeLink.html()).toContain('Home')
+      expect(editLink.html()).toContain('Edit')
     })
 
     it('render cards', () => {
