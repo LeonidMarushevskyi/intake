@@ -34,14 +34,19 @@ export default class ScreeningEditPage extends React.Component {
         response_time: '',
         screening_decision: '',
       }),
+      loaded: false,
     }
 
-    this.fetch = this.fetch.bind(this)
-    this.setField = this.setField.bind(this)
-    this.addParticipant = this.addParticipant.bind(this)
-    this.update = this.update.bind(this)
-    this.createParticipant = this.createParticipant.bind(this)
-    this.cardSave = this.cardSave.bind(this)
+    const methods =[
+      'fetch',
+      'setField',
+      'addParticipant',
+      'update',
+      'createParticipant',
+      'cardSave',
+      'saveAll'
+    ]
+    methods.forEach((method) => this[method] = this[method].bind(this))
   }
 
   componentDidMount() {
@@ -49,10 +54,14 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   fetch() {
+    debugger
     const {params} = this.props
     screeningActions.fetch(params.id)
       .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
+        this.setState({
+          screening: Immutable.fromJS(jsonResponse),
+          loaded: true,
+        })
       })
   }
 
@@ -78,9 +87,10 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   cardSave(fieldSeq, value) {
+    debugger
     const {params} = this.props
     const screening = this.state.screening.setIn(fieldSeq, value)
-    screeningActions.save(params.id, screening.toJS())
+    return screeningActions.save(params.id, screening.toJS())
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })
@@ -102,6 +112,14 @@ export default class ScreeningEditPage extends React.Component {
         this.addParticipant(jsonResponse)
       })
   }
+
+  saveAll() {
+    if(this.state.loaded) {
+      const narrativeCardSave = this.refs.narrativeCard.onSave()
+      narrativeCardSave.then(() => this.update())
+    }
+  }
+
 
   renderParticipantsCard() {
     const {screening} = this.state
@@ -130,11 +148,7 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   render() {
-    const {screening} = this.state
-    const saveAll = () => {
-      this.refs.narrativeCard.onSave()
-      this.update()
-    }
+    const {screening, loaded} = this.state
     return (
       <div>
         <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
@@ -144,16 +158,16 @@ export default class ScreeningEditPage extends React.Component {
         <input type='hidden' id='reference' value={screening.get('reference') || ''} />
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        <NarrativeCardView
+        {loaded && <NarrativeCardView
           ref='narrativeCard'
           narrative={screening.get('report_narrative')}
           mode='edit'
           onSave={(value) => this.cardSave(['report_narrative'], value)}
-        />
+        />}
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' onClick={saveAll}>Save</button>
+            <button className='btn btn-primary' onClick={this.saveAll}>Save</button>
           </div>
         </div>
       </div>

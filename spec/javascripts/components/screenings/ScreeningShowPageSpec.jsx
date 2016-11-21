@@ -1,4 +1,3 @@
-import * as Utils from 'utils/http'
 import * as screeningActions from 'actions/screening'
 import Immutable from 'immutable'
 import React from 'react'
@@ -7,15 +6,20 @@ import {shallow} from 'enzyme'
 
 describe('ScreeningShowPage', () => {
   let wrapper
-  let promiseSpyObj
-  beforeEach(() => {
-    promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
-    const props = {params: {id: 1}}
-    wrapper = shallow(<ScreeningShowPage {...props} />)
-  })
+  const props = {params: {id: 1}}
+  const screeningWithRequiredAttributes = {
+    participants: [],
+    report_narrative: 'A Sample Narrative',
+  }
+  const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
 
   describe('render', () => {
+    beforeEach(() => {
+      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.callFake((afterThen) => afterThen(screeningWithRequiredAttributes))
+      wrapper = shallow(<ScreeningShowPage {...props} />)
+    })
+
     it('renders the screening reference', () => {
       wrapper.setState({
         screening: Immutable.fromJS({
@@ -62,16 +66,19 @@ describe('ScreeningShowPage', () => {
           report_narrative: 'this is a narrative report',
           participants: [],
         })
-        wrapper.setState({screening: screening})
+        wrapper.setState({
+          screening: screening,
+          loaded: true,
+        })
       })
 
       it('renders the narrative card', () => {
-        expect(wrapper.find('NarrativeCardView').length).toEqual(1)
+       expect(wrapper.find('NarrativeCardView').length).toEqual(1)
       })
 
       it('has screening passed in props', () => {
         expect(wrapper.find('NarrativeCardView').props().narrative).toEqual(
-          screening.get('report_narrative')
+          'this is a narrative report'
         )
       })
 
@@ -84,14 +91,12 @@ describe('ScreeningShowPage', () => {
   describe('fetch', () => {
     let wrapper
     beforeEach(() => {
-      const screening = {id: 1, participants: []}
-      promiseSpyObj.then.and.callFake((then) => then(screening))
+      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
       spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      const props = {params: {id: 1}}
       wrapper = shallow(<ScreeningShowPage {...props} />)
     })
 
-    it('GETs the screening data from the server', () => {
+    it('GETs the screening from the server', () => {
       wrapper.instance().fetch()
       expect(screeningActions.fetch).toHaveBeenCalledWith(1)
     })
@@ -100,10 +105,8 @@ describe('ScreeningShowPage', () => {
   describe('cardSave', () => {
     let wrapper
     beforeEach(() => {
-      const screening = {id: 1, participants: []}
-      promiseSpyObj.then.and.callFake((then) => then(screening))
+      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
       spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      const props = {params: {id: 1}}
       wrapper = shallow(<ScreeningShowPage {...props} />)
     })
 

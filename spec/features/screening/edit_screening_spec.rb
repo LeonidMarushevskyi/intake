@@ -103,7 +103,7 @@ feature 'Edit Screening' do
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
       .with(json_body(existing_screening.to_json))
-    ).to have_been_made
+    ).to have_been_made.twice
 
     expect(page).to_not have_content 'Edit Screening'
     expect(page).to have_content 'Screening #My Bad!'

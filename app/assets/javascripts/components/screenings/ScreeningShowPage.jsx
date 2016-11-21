@@ -31,6 +31,7 @@ export default class ScreeningShowPage extends React.Component {
         response_time: '',
         screening_decision: '',
       }),
+      loaded: false,
     }
     this.fetch = this.fetch.bind(this)
     this.cardSave = this.cardSave.bind(this)
@@ -45,14 +46,17 @@ export default class ScreeningShowPage extends React.Component {
     const {params} = this.props
     screeningActions.fetch(params.id)
       .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
+        this.setState({
+          screening: Immutable.fromJS(jsonResponse),
+          loaded: true,
+        })
       })
   }
 
   cardSave(fieldSeq, value) {
     const {params} = this.props
     const screening = this.state.screening.setIn(fieldSeq, value)
-    screeningActions.save(params.id, screening.toJS())
+    return screeningActions.save(params.id, screening.toJS())
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })
@@ -78,17 +82,17 @@ export default class ScreeningShowPage extends React.Component {
 
   render() {
     const {params} = this.props
-    const {screening} = this.state
+    const {screening, loaded} = this.state
     return (
       <div>
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        <NarrativeCardView
+        {loaded && <NarrativeCardView
           narrative={screening.get('report_narrative')}
           mode='show'
           onSave={(value) => this.cardSave(['report_narrative'], value)}
-        />
+        />}
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>

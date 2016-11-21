@@ -10,27 +10,19 @@ describe('NarrativeCardView', () => {
     narrative: 'This is my narrative',
     onSave: onSave,
   }
+  const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
 
   describe('render', () => {
     describe('when the mode is set to edit', () => {
       beforeEach(() => {
+        promiseObj.then.and.callFake((thenFunction) => thenFunction())
+        onSave.and.returnValue(promiseObj)
         wrapper = mount(<NarrativeCardView {...props} mode='edit'/>)
       })
 
       it('renders the edit view', () => {
         expect(wrapper.find('NarrativeEditView').length).toEqual(1)
         expect(wrapper.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
-      })
-
-      describe('and the components narrative changes', () => {
-        beforeEach(() => {
-          wrapper.setProps(Object.assign({}, props, {narrative: 'modified narrative', mode: 'edit'}))
-        })
-
-        it('renders the edit view with the new narrative', () => {
-          expect(wrapper.find('NarrativeEditView').length).toEqual(1)
-          expect(wrapper.find('NarrativeEditView').props().narrative).toEqual('modified narrative')
-        })
       })
 
       describe("and a user clicks 'Cancel'", () => {

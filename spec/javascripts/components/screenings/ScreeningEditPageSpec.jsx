@@ -8,14 +8,21 @@ import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
   let wrapper
-  const screeningWithRequiredAttributes = {participants: []}
+  const screeningWithRequiredAttributes = {
+    participants: [],
+    report_narrative: 'A Sample Narrative',
+  }
   const props = {params: {id: 1}}
   const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
 
+  var loadComponent = () => {
+    spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
+    promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
+  }
+
   describe('render', () => {
     beforeEach(() => {
-      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
-      const props = {params: {id: 1}}
+      loadComponent()
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
 
@@ -64,7 +71,10 @@ describe('ScreeningEditPage', () => {
           {id: 1, first_name: 'Melissa', last_name: 'Powers'},
           {id: 2, first_name: 'Marshall', last_name: 'Powers'},
         ]
-        const screening = Immutable.fromJS({participants: participants})
+        const screening = Immutable.fromJS({
+          ...screeningWithRequiredAttributes,
+          participants: participants,
+        })
         wrapper.setState({screening: screening})
         expect(wrapper.find('ParticipantCardView').length).toEqual(2)
         expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
@@ -121,9 +131,13 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('fetch', () => {
+    let wrapper
+    beforeEach(() => {
+      loadComponent()
+      wrapper = mount(<ScreeningEditPage {...props} />)
+    })
+
     it('GETs the screening data from the server', () => {
-      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
-      const wrapper = mount(<ScreeningEditPage {...props} />)
       wrapper.instance().fetch()
       expect(screeningActions.fetch).toHaveBeenCalledWith(1)
     })
@@ -172,13 +186,22 @@ describe('ScreeningEditPage', () => {
     })
   })
 
+  var createSpyOnSave = () => {
+    spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
+    promiseSpyObj.then.and.callFake((afterThen) => afterThen(screeningWithRequiredAttributes))
+    promiseSpyObj.then.and.returnValue(promiseSpyObj)
+  }
+
   describe('saving', () => {
     let wrapper
     let saveButton
     beforeEach(() => {
-      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
+      createSpyOnSave()
       wrapper = mount(<ScreeningEditPage {...props} />)
+      wrapper.setState({
+        screening: Immutable.fromJS(screeningWithRequiredAttributes),
+        loaded: true,
+      })
       const nameOfScreening = wrapper.find('#name')
       nameOfScreening.simulate('change', { target: { value: 'my screening' }})
       saveButton = wrapper.find('button.btn.btn-primary').last()
@@ -191,13 +214,6 @@ describe('ScreeningEditPage', () => {
       expect(screeningActions.save.calls.argsFor(0)[1].name).toEqual(
         'my screening'
       )
-    })
-
-    it('redirects to the screening show page', () => {
-      const instance = wrapper.instance()
-      spyOn(instance, 'show')
-      saveButton.simulate('click')
-      expect(instance.show).toHaveBeenCalled()
     })
 
     describe('with narrative changes', () => {
@@ -220,8 +236,7 @@ describe('ScreeningEditPage', () => {
   describe('cardSave', () => {
     let wrapper
     beforeEach(() => {
-      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
+      createSpyOnSave()
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
 

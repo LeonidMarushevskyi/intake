@@ -15,10 +15,6 @@ export default class NarrativeCardView extends React.Component {
     this.onChange = this.onChange.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({narrative: nextProps.narrative})
-  }
-
   onEdit(event) {
     event.preventDefault()
     this.setState({mode: 'edit'})
@@ -30,8 +26,9 @@ export default class NarrativeCardView extends React.Component {
   }
 
   onSave() {
-    this.setState({mode: 'show'})
-    this.props.onSave(this.state.narrative)
+    return this.props.onSave(this.state.narrative).then(() => {
+      this.setState({mode: 'show'})
+    })
   }
 
   onChange(value) {
