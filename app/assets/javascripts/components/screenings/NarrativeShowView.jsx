@@ -1,9 +1,12 @@
 import React from 'react'
 
-const NarrativeShowView = ({screening}) => (
-  <div className='card double-gap-top' id='narrative-card'>
+const NarrativeShowView = ({screening, onEdit}) => (
+  <div className='card show double-gap-top' id='narrative-card'>
     <div className='card-header'>
       <span>Narrative</span>
+      <a aria-label='Edit narrative' className='gap-right pull-right' href='#' onClick={onEdit}>
+        <i className='fa fa-pencil'></i>
+      </a>
     </div>
     <div className='card-body'>
       <div className='row'>
@@ -17,6 +20,7 @@ const NarrativeShowView = ({screening}) => (
 )
 
 NarrativeShowView.propTypes = {
+  onEdit: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 export default NarrativeShowView
