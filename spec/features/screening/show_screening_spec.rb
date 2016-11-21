@@ -66,27 +66,4 @@ feature 'Show Screening' do
     expect(page).to have_link('Home', href: root_path)
     expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
-
-  scenario 'user edits narrative card and user cancels' do
-    existing_screening = FactoryGirl.create(
-      :screening,
-      report_narrative: 'This is my report narrative'
-    )
-    stub_request(:get, %r{.*/api/v1/screenings/#{existing_screening.id}})
-      .and_return(json_body(existing_screening.to_json))
-
-    visit screening_path(id: existing_screening.id)
-    click_link 'Edit narrative'
-
-    within '#narrative-card.edit' do
-      expect(page).to have_field('Report Narrative', with: 'This is my report narrative')
-      fill_in 'Report Narrative', with: 'Trying to fill in'
-    end
-
-    click_button 'Cancel'
-
-    within '#narrative-card.show' do
-      expect(page).to have_content 'This is my report narrative'
-    end
-  end
 end

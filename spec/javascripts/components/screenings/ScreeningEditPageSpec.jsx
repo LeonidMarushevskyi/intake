@@ -1,4 +1,6 @@
 import * as Utils from 'utils/http'
+import * as screeningActions from 'actions/screening'
+import * as participantActions from 'actions/participant'
 import Immutable from 'immutable'
 import React from 'react'
 import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
@@ -8,13 +10,11 @@ import {mount, shallow} from 'enzyme'
 describe('ScreeningEditPage', () => {
   let wrapper
   let promiseSpyObj
-  beforeEach(() => {
-    promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
-  })
 
   describe('render', () => {
     beforeEach(() => {
+      promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
       const props = {params: {id: 1}}
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
@@ -109,9 +109,11 @@ describe('ScreeningEditPage', () => {
   describe('fetch', () => {
     it('GETs the screening data from the server', () => {
       const props = {params: {id: 1}}
+      promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
       const wrapper = mount(<ScreeningEditPage {...props} />)
       wrapper.instance().fetch()
-      expect(Utils.request).toHaveBeenCalledWith('GET', '/screenings/1.json')
+      expect(screeningActions.fetch).toHaveBeenCalledWith(1)
     })
   })
 
@@ -125,6 +127,7 @@ describe('ScreeningEditPage', () => {
     beforeEach(() => {
       const jsonResponse = {id: 99, first_name: 'Bart'}
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
+      spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
 
       const props = {params: {id: screeningId}}
       wrapper = shallow(<ScreeningEditPage {...props} />)
@@ -133,7 +136,7 @@ describe('ScreeningEditPage', () => {
 
     it('POSTs the participant data to the server', () => {
       wrapper.instance().createParticipant(person)
-      expect(Utils.request).toHaveBeenCalledWith('POST', '/screenings/1/participants.json', {participant: participant})
+      expect(participantActions.create).toHaveBeenCalledWith(1, participant)
     })
 
     it('adds the newly created participant', () => {
@@ -169,13 +172,14 @@ describe('ScreeningEditPage', () => {
     const screening = {participants: [{id: 99,first_name: 'Bart'}]}
     beforeEach(() => {
       promiseSpyObj.then.and.callFake((then) => then(screening))
+      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
       spyOn(browserHistory, 'push')
       instance = wrapper.instance()
     })
 
     it('PUTs the screening data to the server and updates the state', () => {
       instance.update()
-      expect(Utils.request).toHaveBeenCalledWith('PUT', '/screenings/1.json', {screening: screening})
+      expect(screeningActions.save).toHaveBeenCalledWith(1, screening)
       expect(instance.state.screening.toJS().participants).toEqual([{id: 99, first_name: 'Bart'}])
     })
 

@@ -33,6 +33,8 @@ export default class ScreeningShowPage extends React.Component {
       }),
     }
     this.fetch = this.fetch.bind(this)
+    this.cardSave = this.cardSave.bind(this)
+    this.setField = this.setField.bind(this)
   }
 
   componentDidMount() {
@@ -45,6 +47,20 @@ export default class ScreeningShowPage extends React.Component {
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })
+  }
+
+  cardSave(fieldSeq, value) {
+    const {params} = this.props
+    const screening = this.state.screening.setIn(fieldSeq, value)
+    screeningActions.save(params.id, screening.toJS())
+      .then((jsonResponse) => {
+        this.setState({screening: Immutable.fromJS(jsonResponse)})
+      })
+  }
+
+  setField(fieldSeq, value) {
+    const screening = this.state.screening.setIn(fieldSeq, value)
+    this.setState({screening: screening})
   }
 
   renderParticipantsCard() {
@@ -68,7 +84,11 @@ export default class ScreeningShowPage extends React.Component {
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        <NarrativeCardView screening={screening} mode='show'/>
+        <NarrativeCardView
+          narrative={screening.get('report_narrative')}
+          mode='show'
+          onSave={(value) => this.cardSave(['report_narrative'], value)}
+        />
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>

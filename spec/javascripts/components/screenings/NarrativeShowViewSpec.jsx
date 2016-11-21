@@ -9,8 +9,7 @@ describe('narrative card', () => {
 
   beforeEach(() => {
     onEdit = jasmine.createSpy()
-    const screening = Immutable.Map({report_narrative: 'some narrative'})
-    wrapper = shallow(<NarrativeShowView screening={screening} onEdit={onEdit} />)
+    wrapper = shallow(<NarrativeShowView narrative={'some narrative'} onEdit={onEdit} />)
   })
 
   it('renders a show card with narative-card as id', () => {
