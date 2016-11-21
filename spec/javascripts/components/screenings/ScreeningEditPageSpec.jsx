@@ -8,11 +8,12 @@ import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
   let wrapper
-  let promiseSpyObj
+  const screeningWithRequiredAttributes = {participants: []}
+  const props = {params: {id: 1}}
+  const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
 
   describe('render', () => {
     beforeEach(() => {
-      promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
       const props = {params: {id: 1}}
       wrapper = mount(<ScreeningEditPage {...props} />)
@@ -22,7 +23,7 @@ describe('ScreeningEditPage', () => {
       wrapper.setState({
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
-          participants: []
+          ...screeningWithRequiredAttributes,
         })
       })
       expect(wrapper.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
@@ -34,7 +35,7 @@ describe('ScreeningEditPage', () => {
         started_at: '2016-08-13T10:00:00.000Z',
         ended_at: '2016-08-22T11:00:00.000Z',
         communication_method: 'mail',
-        participants: [],
+        ...screeningWithRequiredAttributes,
       })
       wrapper.setState({screening: screening})
       expect(wrapper.find('InformationEditView').length).toEqual(1)
@@ -77,7 +78,7 @@ describe('ScreeningEditPage', () => {
       beforeEach(() => {
         screening = Immutable.fromJS({
           report_narrative: 'this is a narrative report',
-          participants: [],
+          ...screeningWithRequiredAttributes,
         })
         wrapper.setState({screening: screening})
       })
@@ -110,7 +111,7 @@ describe('ScreeningEditPage', () => {
         location_type: 'Juvenile Detention',
         response_time: 'within_twenty_four_hours',
         screening_decision: 'accept_for_investigation',
-        participants: [],
+        ...screeningWithRequiredAttributes,
       })
       wrapper.setState({screening: screening})
       expect(wrapper.find('ReferralInformationEditView').length).toEqual(1)
@@ -121,8 +122,6 @@ describe('ScreeningEditPage', () => {
 
   describe('fetch', () => {
     it('GETs the screening data from the server', () => {
-      const props = {params: {id: 1}}
-      promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
       const wrapper = mount(<ScreeningEditPage {...props} />)
       wrapper.instance().fetch()
@@ -131,20 +130,15 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('createParticipant', () => {
-    const screeningId = 1
     const personId = 3
-    const person = {id: personId, first_name: 'Bart'}
-    const participant = {id: null, person_id: personId, screening_id: screeningId, first_name: 'Bart'}
-    const screening = Immutable.fromJS({participants: []})
+    const person = {id: personId}
+    const participant = {id: null, screening_id: props.params.id, person_id: personId}
 
     beforeEach(() => {
       const jsonResponse = {id: 99, first_name: 'Bart'}
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
       spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
-
-      const props = {params: {id: screeningId}}
       wrapper = shallow(<ScreeningEditPage {...props} />)
-      wrapper.setState({screening: screening})
     })
 
     it('POSTs the participant data to the server', () => {
@@ -160,7 +154,6 @@ describe('ScreeningEditPage', () => {
 
   describe('addParticipant', () => {
     it('adds the participant to an empty list of participants', () => {
-      const props = {params: {id: 1}}
       const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
       const participants = wrapper.state.screening.get('participants')
@@ -169,7 +162,6 @@ describe('ScreeningEditPage', () => {
     })
 
     it('adds the participant to a non empty list of participants', () => {
-      const props = {params: {id: 1}}
       const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
       wrapper.addParticipant({id: 2})
@@ -180,35 +172,40 @@ describe('ScreeningEditPage', () => {
     })
   })
 
-  describe('update', () => {
-    let instance
-    const screening = {participants: [{id: 99,first_name: 'Bart'}]}
+  describe('saving', () => {
+    let wrapper
+    let saveButton
     beforeEach(() => {
-      promiseSpyObj.then.and.callFake((then) => then(screening))
       spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      spyOn(browserHistory, 'push')
-      instance = wrapper.instance()
+      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
+      wrapper = mount(<ScreeningEditPage {...props} />)
+      const nameOfScreening = wrapper.find('#name')
+      nameOfScreening.simulate('change', { target: { value: 'my screening' }})
+      saveButton = wrapper.find('button.btn.btn-primary').last()
     })
 
-    it('PUTs the screening data to the server and updates the state', () => {
-      instance.update()
-      expect(screeningActions.save).toHaveBeenCalledWith(1, screening)
-      expect(instance.state.screening.toJS().participants).toEqual([{id: 99, first_name: 'Bart'}])
+    it('calls save action with current screening', () => {
+      saveButton.simulate('click')
+      expect(screeningActions.save).toHaveBeenCalled()
+      expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
+      expect(screeningActions.save.calls.argsFor(0)[1].name).toEqual(
+        'my screening'
+      )
     })
 
     it('redirects to the screening show page', () => {
-      instance.update()
-      expect(browserHistory.push).toHaveBeenCalled()
+      const instance = wrapper.instance()
+      spyOn(instance, 'show')
+      saveButton.simulate('click')
+      expect(instance.show).toHaveBeenCalled()
     })
   })
 
   describe('cardSave', () => {
     let wrapper
     beforeEach(() => {
-      const screening = {participants: []}
       spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-      promiseSpyObj.then.and.callFake((then) => then(screening))
-      const props = {params: {id: 1}}
+      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
 
