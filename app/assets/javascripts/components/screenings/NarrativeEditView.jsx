@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NarrativeEditView = ({screening, onChange, onCancel}) => (
+const NarrativeEditView = ({screening, onChange, onCancel, onSave}) => (
   <div className='card edit double-gap-top' id='narrative-card'>
     <div className='card-header'>
       <span>Narrative</span>
@@ -18,6 +18,7 @@ const NarrativeEditView = ({screening, onChange, onCancel}) => (
       </div>
       <div className='row'>
         <div className='centered'>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
           <button className='btn btn-default' onClick={onCancel}>Cancel</button>
         </div>
       </div>
@@ -29,5 +30,6 @@ NarrativeEditView.propTypes = {
   screening: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
+  onSave: React.PropTypes.func.isRequired,
 }
 export default NarrativeEditView

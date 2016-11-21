@@ -130,7 +130,7 @@ export default class ScreeningEditPage extends React.Component {
         <input type='hidden' id='reference' value={screening.get('reference') || ''} />
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        <NarrativeEditView screening={screening} onChange={this.setField} onCancel={() => null}/>
+        <NarrativeEditView screening={screening} onChange={this.setField} onCancel={() => null} onSave={() => null} />
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>

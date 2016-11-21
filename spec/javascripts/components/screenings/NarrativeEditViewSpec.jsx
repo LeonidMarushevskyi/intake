@@ -7,16 +7,21 @@ describe('NarrativeEditView', () => {
   let wrapper
   let onChange
   let onCancel
+  let onSave
+
 
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     onCancel = jasmine.createSpy('onCancel')
+    onSave = jasmine.createSpy('onSave')
+
     const screening = Immutable.fromJS({report_narrative: 'some narrative'})
     wrapper = shallow(
       <NarrativeEditView
         screening={screening}
         onChange={onChange}
         onCancel={onCancel}
+        onSave={onSave}
       />
     )
   })
@@ -34,8 +39,14 @@ describe('NarrativeEditView', () => {
     expect(onChange).toHaveBeenCalledWith([ 'report_narrative' ], 'Hey')
   })
 
-  xit('renders the save button', () => {
+  it('renders the save button', () => {
     expect(wrapper.find('.btn.btn-primary').text()).toEqual('Save')
+  })
+
+  it('when clicks the save button',() => {
+    const saveButton = wrapper.find('.btn.btn-primary')
+    saveButton.simulate('click')
+    expect(onSave).toHaveBeenCalled()
   })
 
   it('renders the cancel link', () => {

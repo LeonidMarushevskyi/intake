@@ -12,15 +12,29 @@ describe('NarrativeCardView', () => {
   }
 
   describe('when the mode is set to edit', () => {
-    it('renders the edit view', () => {
+    beforeEach(() => {
       wrapper = mount(<NarrativeCardView {...props} mode='edit'/>)
+    })
+
+    it('renders the edit view', () => {
       expect(wrapper.find('NarrativeEditView').length).toEqual(1)
     })
 
     describe("and a user clicks 'Cancel'", () => {
       beforeEach(() => {
-        const cancelButton = wrapper.find('button')
+        const cancelButton = wrapper.find('button[children="Cancel"]')
         cancelButton.simulate('click')
+      })
+
+      it('the narrative show view is rendered', () => {
+        expect(wrapper.find('NarrativeShowView').length).toEqual(1)
+      })
+    })
+
+    describe("and a user clicks 'Save'", () => {
+      beforeEach(() => {
+        const saveButton = wrapper.find('button[children="Save"]')
+        saveButton.simulate('click')
       })
 
       it('the narrative show view is rendered', () => {
