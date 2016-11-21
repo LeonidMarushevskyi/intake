@@ -131,6 +131,10 @@ export default class ScreeningEditPage extends React.Component {
 
   render() {
     const {screening} = this.state
+    const saveAll = () => {
+      this.refs.narrativeCard.onSave()
+      this.update()
+    }
     return (
       <div>
         <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
@@ -141,6 +145,7 @@ export default class ScreeningEditPage extends React.Component {
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
         <NarrativeCardView
+          ref='narrativeCard'
           narrative={screening.get('report_narrative')}
           mode='edit'
           onSave={(value) => this.cardSave(['report_narrative'], value)}
@@ -148,7 +153,7 @@ export default class ScreeningEditPage extends React.Component {
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' onClick={this.update}>Save</button>
+            <button className='btn btn-primary' onClick={saveAll}>Save</button>
           </div>
         </div>
       </div>

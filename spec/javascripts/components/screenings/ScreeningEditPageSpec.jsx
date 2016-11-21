@@ -199,6 +199,22 @@ describe('ScreeningEditPage', () => {
       saveButton.simulate('click')
       expect(instance.show).toHaveBeenCalled()
     })
+
+    describe('with narrative changes', () => {
+      beforeEach(() => {
+        const narrative = wrapper.find('#report_narrative')
+        narrative.simulate('change', { target: { value: 'Changed narrative' }})
+      })
+
+      it('calls save action with updated narrative', () => {
+        saveButton.simulate('click')
+        expect(screeningActions.save).toHaveBeenCalled()
+        expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
+        expect(screeningActions.save.calls.argsFor(0)[1].report_narrative).toEqual(
+          'Changed narrative'
+        )
+      })
+    })
   })
 
   describe('cardSave', () => {
