@@ -1,4 +1,3 @@
-import * as Utils from 'utils/http'
 import * as screeningActions from 'actions/screening'
 import * as participantActions from 'actions/participant'
 import Immutable from 'immutable'
@@ -73,15 +72,29 @@ describe('ScreeningEditPage', () => {
       })
     })
 
-    it('renders the narrative edit view', () => {
-      const screening =  Immutable.fromJS({
-        report_narrative: 'some narrative',
-        participants: [],
+    describe('narrative card', () => {
+      let screening
+      beforeEach(() => {
+        screening = Immutable.fromJS({
+          report_narrative: 'this is a narrative report',
+          participants: [],
+        })
+        wrapper.setState({screening: screening})
       })
-      wrapper.setState({screening: screening})
-      expect(wrapper.find('NarrativeEditView').length).toEqual(1)
-      expect(wrapper.find('NarrativeEditView').props().screening).toEqual(screening)
-      expect(wrapper.find('NarrativeEditView').props().onChange).toEqual(wrapper.instance().setField)
+
+      it('renders the narrative card', () => {
+        expect(wrapper.find('NarrativeCardView').length).toEqual(1)
+      })
+
+      it('has screening passed in props', () => {
+        expect(wrapper.find('NarrativeCardView').props().narrative).toEqual(
+          screening.get('report_narrative')
+        )
+      })
+
+      it('has mode set to edit', () => {
+        expect(wrapper.find('NarrativeCardView').props().mode).toEqual('edit')
+      })
     })
 
     it('renders the referral edit view', () => {
@@ -186,6 +199,29 @@ describe('ScreeningEditPage', () => {
     it('redirects to the screening show page', () => {
       instance.update()
       expect(browserHistory.push).toHaveBeenCalled()
+    })
+  })
+
+  describe('cardSave', () => {
+    let wrapper
+    beforeEach(() => {
+      const screening = {participants: []}
+      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.callFake((then) => then(screening))
+      const props = {params: {id: 1}}
+      wrapper = mount(<ScreeningEditPage {...props} />)
+    })
+
+    it('calls screening save', () => {
+      wrapper.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      expect(screeningActions.save).toHaveBeenCalled()
+    })
+
+    it('does not redirect to the screening show page', () => {
+      const instance = wrapper.instance()
+      spyOn(instance, 'show')
+      wrapper.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      expect(instance.show).not.toHaveBeenCalled()
     })
   })
 })
