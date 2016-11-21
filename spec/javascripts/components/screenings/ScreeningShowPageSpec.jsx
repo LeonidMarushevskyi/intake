@@ -76,7 +76,6 @@ describe('ScreeningShowPage', () => {
       instance.fetch()
 
       expect(Utils.request).toHaveBeenCalledWith('GET', '/screenings/1.json')
-      expect(wrapper.find('Link').nodes[1].props.to).toEqual(`/screenings/${screening.id}/edit`)
     })
   })
 })

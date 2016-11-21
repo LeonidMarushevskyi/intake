@@ -1,4 +1,4 @@
-import * as Utils from 'utils/http'
+import * as screeningActions from 'actions/screening'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
@@ -41,7 +41,7 @@ export default class ScreeningShowPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    Utils.request('GET', `/screenings/${params.id}.json`)
+    screeningActions.fetch(params.id)
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })

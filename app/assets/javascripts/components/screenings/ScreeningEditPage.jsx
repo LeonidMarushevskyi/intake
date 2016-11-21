@@ -1,5 +1,6 @@
-import * as Utils from 'utils/http'
 import {browserHistory} from 'react-router'
+import * as screeningActions from 'actions/screening'
+import * as participantActions from 'actions/participant'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
@@ -48,7 +49,7 @@ export default class ScreeningEditPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    Utils.request('GET', `/screenings/${params.id}.json`)
+    screeningActions.fetch(params.id)
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })
@@ -63,8 +64,7 @@ export default class ScreeningEditPage extends React.Component {
 
   update() {
     const {params} = this.props
-    const url = `/screenings/${params.id}.json`
-    Utils.request('PUT', url, {screening: this.state.screening.toJS()})
+    screeningActions.save(params.id, this.state.screening.toJS())
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
         this.show()
@@ -87,7 +87,7 @@ export default class ScreeningEditPage extends React.Component {
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
-    Utils.request('POST', `/screenings/${params.id}/participants.json`, {participant: participant})
+    participantActions.create(params.id, participant)
       .then((jsonResponse) => {
         this.addParticipant(jsonResponse)
       })
