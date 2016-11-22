@@ -53,6 +53,7 @@ feature 'Edit Screening' do
       participant_marge.as_json.merge(id: 23)
     )
     stub_request(:post, api_participants_path)
+      .with(body: participant_marge.to_json)
       .and_return(body: participant_marge.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -61,6 +62,10 @@ feature 'Edit Screening' do
       fill_in_autocompleter 'Participants', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
+
+    expect(
+      a_request(:post, api_participants_path).with(body: participant_marge.to_json)
+    ).to have_been_made
 
     existing_screening.assign_attributes(participants: [created_participant_marge])
 

@@ -47,6 +47,8 @@ feature 'Create Person' do
 
     click_button 'Save'
 
+    expect(a_request(:post, api_people_path).with(body: person.to_json)).to have_been_made
+
     expect(page).to have_current_path(person_path(1))
     within '.card-header' do
       expect(page).to have_content('BASIC DEMOGRAPHICS CARD')

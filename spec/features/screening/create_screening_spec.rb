@@ -25,6 +25,10 @@ feature 'Create Screening' do
 
     visit root_path
     click_link 'Start Screening'
+
+    expect(
+      a_request(:post, api_screenings_path).with(body: new_screening.to_json)
+    ).to have_been_made
     expect(page).to have_content('Edit Screening #DQJIYK')
   end
 end
