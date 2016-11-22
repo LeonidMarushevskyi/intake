@@ -38,9 +38,9 @@ export default class NarrativeCardView extends React.Component {
   render() {
     const {mode} = this.state
     const {narrative} = this.props
-    let view
+    let narrativeView
     if (mode === 'edit') {
-      view = (
+      narrativeView = (
         <NarrativeEditView
           onCancel={this.onCancel}
           onChange={this.onChange}
@@ -49,7 +49,7 @@ export default class NarrativeCardView extends React.Component {
         />
       )
     } else {
-      view = <NarrativeShowView narrative={this.props.narrative} onEdit={this.onEdit} />
+      narrativeView = <NarrativeShowView narrative={this.props.narrative} onEdit={this.onEdit} />
     }
     return view
   }
