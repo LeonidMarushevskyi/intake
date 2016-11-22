@@ -92,7 +92,7 @@ describe('ScreeningShowPage', () => {
     let wrapper
     beforeEach(() => {
       promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
-      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
+      spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
       wrapper = shallow(<ScreeningShowPage {...props} />)
     })
 
