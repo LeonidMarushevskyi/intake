@@ -1,4 +1,3 @@
-import * as Utils from 'utils/http'
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
