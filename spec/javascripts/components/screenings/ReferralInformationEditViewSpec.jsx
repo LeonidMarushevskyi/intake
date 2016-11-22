@@ -4,20 +4,20 @@ import ReferralInformationEditView from 'components/screenings/ReferralInformati
 import {shallow} from 'enzyme'
 
 describe('ReferralInformationEditView', () => {
-  let wrapper
+  let component
   let onChange
   beforeEach(() => {
     onChange = jasmine.createSpy()
-    wrapper = shallow(<ReferralInformationEditView screening={Immutable.fromJS({})} onChange={onChange} />)
+    component = shallow(<ReferralInformationEditView screening={Immutable.fromJS({})} onChange={onChange} />)
   })
 
   it('renders the card header', () => {
-    expect(wrapper.find('.card-header').text()).toEqual('Referral Information')
+    expect(component.find('.card-header').text()).toEqual('Referral Information')
   })
 
   it('render the labels', () => {
-    expect(wrapper.find('label').length).toEqual(9)
-    expect(wrapper.find('label').map((element) => element.text())).toEqual([
+    expect(component.find('label').length).toEqual(9)
+    expect(component.find('label').map((element) => element.text())).toEqual([
       'Incident Date',
       'Incident County',
       'Address',
@@ -45,9 +45,9 @@ describe('ReferralInformationEditView', () => {
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation',
     })
-    wrapper = shallow(<ReferralInformationEditView screening={screening} onChange={onChange} />)
+    component = shallow(<ReferralInformationEditView screening={screening} onChange={onChange} />)
 
-    const inputs = wrapper.find('#referral-information-card input')
+    const inputs = component.find('#referral-information-card input')
     expect(inputs.length).toEqual(5)
     expect(inputs.map((element) => element.props().value)).toEqual([
       '2006-01-21',
@@ -56,7 +56,7 @@ describe('ReferralInformationEditView', () => {
       'Sacramento',
        95814,
     ])
-    const selects = wrapper.find('#referral-information-card select')
+    const selects = component.find('#referral-information-card select')
     expect(selects.length).toEqual(5)
     expect(selects.map((element) => element.props().value)).toEqual([
       'alpine',
@@ -68,7 +68,7 @@ describe('ReferralInformationEditView', () => {
   })
 
   it('fires the onChange call when a field changes', () => {
-    wrapper.find('#incident_date').simulate('change', {target: {value: '01/21/2006'}})
+    component.find('#incident_date').simulate('change', {target: {value: '01/21/2006'}})
     expect(onChange).toHaveBeenCalledWith(['incident_date'], '01/21/2006')
   })
 })

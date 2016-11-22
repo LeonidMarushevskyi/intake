@@ -14,13 +14,13 @@ describe('ScreeningsIndexPage', () => {
 
   describe('render', () => {
     it('renders ScreeningsFilter', () => {
-      const wrapper = mount(<ScreeningsIndexPage location={{}} />)
-      expect(wrapper.find(ScreeningsFilter).length).toEqual(1)
+      const component = mount(<ScreeningsIndexPage location={{}} />)
+      expect(component.find(ScreeningsFilter).length).toEqual(1)
     })
 
     it('renders ScreeningsTable', () => {
-      const wrapper = mount(<ScreeningsIndexPage location={{}} />)
-      expect(wrapper.find(ScreeningsTable).length).toEqual(1)
+      const component = mount(<ScreeningsIndexPage location={{}} />)
+      expect(component.find(ScreeningsTable).length).toEqual(1)
     })
   })
 

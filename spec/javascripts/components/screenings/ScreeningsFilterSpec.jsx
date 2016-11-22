@@ -9,19 +9,19 @@ import {mount, shallow} from 'enzyme'
 describe('ScreeningsFilter', () => {
   describe('render', () => {
     it('contains an checkbox list filter component for response times', () => {
-      const wrapper = mount(<ScreeningsFilter/>)
-      expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
-      expect(wrapper.find(CheckboxListFilter).nodes[0].props.name).toEqual('response-time')
-      expect(wrapper.find(CheckboxListFilter).nodes[0].props.collection).toEqual(RESPONSE_TIME)
-      expect(wrapper.find(CheckboxListFilter).nodes[0].props.legend).toEqual('Response Time')
+      const component = mount(<ScreeningsFilter/>)
+      expect(component.find(CheckboxListFilter).length).toEqual(2)
+      expect(component.find(CheckboxListFilter).nodes[0].props.name).toEqual('response-time')
+      expect(component.find(CheckboxListFilter).nodes[0].props.collection).toEqual(RESPONSE_TIME)
+      expect(component.find(CheckboxListFilter).nodes[0].props.legend).toEqual('Response Time')
     })
 
     it('contains an checkbox list filter component for screening decisions', () => {
-      const wrapper = mount(<ScreeningsFilter/>)
-      expect(wrapper.find(CheckboxListFilter).length).toEqual(2)
-      expect(wrapper.find(CheckboxListFilter).nodes[1].props.name).toEqual('screening-decision')
-      expect(wrapper.find(CheckboxListFilter).nodes[1].props.collection).toEqual(SCREENING_DECISION)
-      expect(wrapper.find(CheckboxListFilter).nodes[1].props.legend).toEqual('Decision')
+      const component = mount(<ScreeningsFilter/>)
+      expect(component.find(CheckboxListFilter).length).toEqual(2)
+      expect(component.find(CheckboxListFilter).nodes[1].props.name).toEqual('screening-decision')
+      expect(component.find(CheckboxListFilter).nodes[1].props.collection).toEqual(SCREENING_DECISION)
+      expect(component.find(CheckboxListFilter).nodes[1].props.legend).toEqual('Decision')
     })
   })
 
@@ -29,8 +29,8 @@ describe('ScreeningsFilter', () => {
     beforeEach(() => spyOn(browserHistory, 'push'))
 
     it('updates browser history', () => {
-      const wrapper = shallow(<ScreeningsFilter/>).instance()
-      wrapper.onChange({'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']})
+      const component = shallow(<ScreeningsFilter/>).instance()
+      component.onChange({'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']})
       expect(browserHistory.push).toHaveBeenCalledWith({
         pathname: '/screenings',
         query: {'response_times[]': ['a'], 'screening_decisions[]': ['b', 'c']},

@@ -4,18 +4,18 @@ import InformationShowView from 'components/screenings/InformationShowView'
 import {shallow} from 'enzyme'
 
 describe('InformationShowView', () => {
-  let wrapper
+  let component
   beforeEach(() => {
     const props = {params: {id: 1}}
-    wrapper = shallow(<InformationShowView screening={Immutable.Map({})} />)
+    component = shallow(<InformationShowView screening={Immutable.Map({})} />)
   })
 
   it('render the card headers', () => {
-    expect(wrapper.find('.card-header').text()).toEqual('Screening Information')
+    expect(component.find('.card-header').text()).toEqual('Screening Information')
   })
 
   it('renders the screening information label fields', () => {
-    const labels = wrapper.find('#screening-information-card label')
+    const labels = component.find('#screening-information-card label')
 
     expect(labels.length).toEqual(4)
     expect(labels.map((element) => element.text())).toEqual([
@@ -33,8 +33,8 @@ describe('InformationShowView', () => {
       ended_at: '2016-08-22T11:00:00.000Z',
       communication_method: 'mail',
     })
-    wrapper = shallow(<InformationShowView screening={screening} />)
-    const values = wrapper.find('#screening-information-card .c-gray')
+    component = shallow(<InformationShowView screening={screening} />)
+    const values = component.find('#screening-information-card .c-gray')
 
     expect(values.length).toEqual(4)
     expect(values.map((element) => element.text())).toEqual([
@@ -53,8 +53,8 @@ describe('InformationShowView', () => {
       communication_method: null,
     })
 
-    wrapper = shallow(<InformationShowView screening={screening} />)
-    expect(wrapper.find('#screening-information-card .c-gray')
+    component = shallow(<InformationShowView screening={screening} />)
+    expect(component.find('#screening-information-card .c-gray')
       .map((element) => element.text())).toEqual(['', '', '', ''])
   })
 })

@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
-  let wrapper
+  let component
   const screeningWithRequiredAttributes = {
     participants: [],
     report_narrative: 'A Sample Narrative',
@@ -23,17 +23,17 @@ describe('ScreeningEditPage', () => {
   describe('render', () => {
     beforeEach(() => {
       loadComponent()
-      wrapper = mount(<ScreeningEditPage {...props} />)
+      component = mount(<ScreeningEditPage {...props} />)
     })
 
     it('renders the screening reference', () => {
-      wrapper.setState({
+      component.setState({
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
           ...screeningWithRequiredAttributes,
         })
       })
-      expect(wrapper.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
+      expect(component.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
     })
 
     it('renders the screening information edit view', () => {
@@ -44,25 +44,25 @@ describe('ScreeningEditPage', () => {
         communication_method: 'mail',
         ...screeningWithRequiredAttributes,
       })
-      wrapper.setState({screening: screening})
-      expect(wrapper.find('InformationEditView').length).toEqual(1)
-      expect(wrapper.find('InformationEditView').props().screening).toEqual(screening)
-      expect(wrapper.find('InformationEditView').props().onChange).toEqual(wrapper.instance().setField)
+      component.setState({screening: screening})
+      expect(component.find('InformationEditView').length).toEqual(1)
+      expect(component.find('InformationEditView').props().screening).toEqual(screening)
+      expect(component.find('InformationEditView').props().onChange).toEqual(component.instance().setField)
     })
 
     describe('participants card', () => {
       it('renders the card header', () => {
-        expect(wrapper.find('#participants-card .card-header').text()).toContain('Participants')
+        expect(component.find('#participants-card .card-header').text()).toContain('Participants')
       })
 
       it('renders the participant label', () => {
-        expect(wrapper.find('#participants-card label').text()).toEqual('Participants')
+        expect(component.find('#participants-card label').text()).toEqual('Participants')
       })
 
       it('renders the autocompleter', () => {
-        expect(wrapper.find('Autocompleter').props().id).toEqual('screening_participants')
-        expect(wrapper.find('Autocompleter').props().onSelect).toEqual(
-          wrapper.instance().createParticipant
+        expect(component.find('Autocompleter').props().id).toEqual('screening_participants')
+        expect(component.find('Autocompleter').props().onSelect).toEqual(
+          component.instance().createParticipant
         )
       })
 
@@ -75,9 +75,9 @@ describe('ScreeningEditPage', () => {
           ...screeningWithRequiredAttributes,
           participants: participants,
         })
-        wrapper.setState({screening: screening})
-        expect(wrapper.find('ParticipantCardView').length).toEqual(2)
-        expect(wrapper.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
+        component.setState({screening: screening})
+        expect(component.find('ParticipantCardView').length).toEqual(2)
+        expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['edit', 'edit']
         )
       })
@@ -90,21 +90,21 @@ describe('ScreeningEditPage', () => {
           report_narrative: 'this is a narrative report',
           ...screeningWithRequiredAttributes,
         })
-        wrapper.setState({screening: screening})
+        component.setState({screening: screening})
       })
 
       it('renders the narrative card', () => {
-        expect(wrapper.find('NarrativeCardView').length).toEqual(1)
+        expect(component.find('NarrativeCardView').length).toEqual(1)
       })
 
       it('has screening passed in props', () => {
-        expect(wrapper.find('NarrativeCardView').props().narrative).toEqual(
+        expect(component.find('NarrativeCardView').props().narrative).toEqual(
           screening.get('report_narrative')
         )
       })
 
       it('has mode set to edit', () => {
-        expect(wrapper.find('NarrativeCardView').props().mode).toEqual('edit')
+        expect(component.find('NarrativeCardView').props().mode).toEqual('edit')
       })
     })
 
@@ -123,22 +123,22 @@ describe('ScreeningEditPage', () => {
         screening_decision: 'accept_for_investigation',
         ...screeningWithRequiredAttributes,
       })
-      wrapper.setState({screening: screening})
-      expect(wrapper.find('ReferralInformationEditView').length).toEqual(1)
-      expect(wrapper.find('ReferralInformationEditView').props().screening).toEqual(screening)
-      expect(wrapper.find('ReferralInformationEditView').props().onChange).toEqual(wrapper.instance().setField)
+      component.setState({screening: screening})
+      expect(component.find('ReferralInformationEditView').length).toEqual(1)
+      expect(component.find('ReferralInformationEditView').props().screening).toEqual(screening)
+      expect(component.find('ReferralInformationEditView').props().onChange).toEqual(component.instance().setField)
     })
   })
 
   describe('fetch', () => {
-    let wrapper
+    let component
     beforeEach(() => {
       loadComponent()
-      wrapper = mount(<ScreeningEditPage {...props} />)
+      component = mount(<ScreeningEditPage {...props} />)
     })
 
     it('GETs the screening data from the server', () => {
-      wrapper.instance().fetch()
+      component.instance().fetch()
       expect(screeningActions.fetch).toHaveBeenCalledWith(1)
     })
   })
@@ -153,38 +153,38 @@ describe('ScreeningEditPage', () => {
       const jsonResponse = {id: 99, first_name: 'Bart'}
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
       spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
-      wrapper = shallow(<ScreeningEditPage {...props} />)
+      component = shallow(<ScreeningEditPage {...props} />)
     })
 
     it('POSTs the participant data to the server', () => {
-      wrapper.instance().createParticipant(person)
+      component.instance().createParticipant(person)
       expect(participantActions.create).toHaveBeenCalledWith(1, participant)
     })
 
     it('adds the newly created participant', () => {
-      wrapper.instance().createParticipant(person)
-      expect(wrapper.instance().state.screening.toJS().participants).toEqual([{id: 99, first_name: 'Bart'}])
+      component.instance().createParticipant(person)
+      expect(component.instance().state.screening.toJS().participants).toEqual([{id: 99, first_name: 'Bart'}])
     })
   })
 
   describe('addParticipant', () => {
-    let wrapper
+    let component
     beforeEach(() => {
       loadComponent()
-      wrapper = mount(<ScreeningEditPage {...props} />).instance()
+      component = mount(<ScreeningEditPage {...props} />).instance()
     })
 
     it('adds the participant to an empty list of participants', () => {
-      wrapper.addParticipant({id: 1})
-      const participants = wrapper.state.screening.get('participants')
+      component.addParticipant({id: 1})
+      const participants = component.state.screening.get('participants')
       expect(participants.size).toEqual(1)
       expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
     })
 
     it('adds the participant to a non empty list of participants', () => {
-      wrapper.addParticipant({id: 1})
-      wrapper.addParticipant({id: 2})
-      const participants = wrapper.state.screening.get('participants')
+      component.addParticipant({id: 1})
+      component.addParticipant({id: 2})
+      const participants = component.state.screening.get('participants')
       expect(participants.size).toEqual(2)
       expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
       expect(participants.get(1)).toEqual(Immutable.Map({id: 2}))
@@ -198,19 +198,19 @@ describe('ScreeningEditPage', () => {
   }
 
   describe('saving', () => {
-    let wrapper
+    let component
     let saveButton
     beforeEach(() => {
       loadComponent()
       createSpyOnSave()
-      wrapper = mount(<ScreeningEditPage {...props} />)
-      wrapper.setState({
+      component = mount(<ScreeningEditPage {...props} />)
+      component.setState({
         screening: Immutable.fromJS(screeningWithRequiredAttributes),
         loaded: true,
       })
-      const nameOfScreening = wrapper.find('#name')
+      const nameOfScreening = component.find('#name')
       nameOfScreening.simulate('change', { target: { value: 'my screening' }})
-      saveButton = wrapper.find('button.btn.btn-primary').last()
+      saveButton = component.find('button.btn.btn-primary').last()
     })
 
     it('calls save action with current screening', () => {
@@ -224,7 +224,7 @@ describe('ScreeningEditPage', () => {
 
     describe('with narrative changes', () => {
       beforeEach(() => {
-        const narrative = wrapper.find('#report_narrative')
+        const narrative = component.find('#report_narrative')
         narrative.simulate('change', { target: { value: 'Changed narrative' }})
       })
 
@@ -240,22 +240,22 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('cardSave', () => {
-    let wrapper
+    let component
     beforeEach(() => {
       loadComponent()
       createSpyOnSave()
-      wrapper = mount(<ScreeningEditPage {...props} />)
+      component = mount(<ScreeningEditPage {...props} />)
     })
 
     it('calls screening save', () => {
-      wrapper.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
       expect(screeningActions.save).toHaveBeenCalled()
     })
 
     it('does not redirect to the screening show page', () => {
-      const instance = wrapper.instance()
+      const instance = component.instance()
       spyOn(instance, 'show')
-      wrapper.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
       expect(instance.show).not.toHaveBeenCalled()
     })
   })
