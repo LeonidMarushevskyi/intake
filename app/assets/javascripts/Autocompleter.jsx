@@ -75,8 +75,7 @@ export default class Autocompleter extends React.Component {
     )
   }
 
-  renderSuggestionsContainer() {
-    const properties = arguments[0]
+  renderSuggestionsContainer(properties) {
     const children = properties.children
     return (
       <div {...properties}>
