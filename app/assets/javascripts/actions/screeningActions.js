@@ -10,5 +10,5 @@ export function fetch(id) {
 }
 
 export function create() {
-  return Utils.request('POST', `/screenings.json`)
+  return Utils.request('POST', '/screenings.json')
 }
