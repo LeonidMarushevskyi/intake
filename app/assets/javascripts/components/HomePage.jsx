@@ -1,11 +1,11 @@
-import * as Utils from 'utils/http'
+import * as screeningActions from 'actions/screeningActions'
 import React from 'react'
 import {Link} from 'react-router'
 import {browserHistory} from 'react-router'
 
 export default class HomePage extends React.Component {
   createScreening() {
-    Utils.request('POST', `/screenings.json`)
+    screeningActions.create()
       .then((jsonResponse) => {
         browserHistory.push({
           pathname: `/screenings/${jsonResponse.id}/edit`,

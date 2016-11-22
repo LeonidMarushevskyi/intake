@@ -8,3 +8,7 @@ export function save(id, screening) {
 export function fetch(id) {
   return Utils.request('GET', `/screenings/${id}.json`, null, {contentType: 'application/json'})
 }
+
+export function create() {
+  return Utils.request('POST', `/screenings.json`)
+}

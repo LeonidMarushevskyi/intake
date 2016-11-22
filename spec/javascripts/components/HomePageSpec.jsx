@@ -1,4 +1,4 @@
-import * as Utils from 'utils/http'
+import * as screeningActions from 'actions/screeningActions'
 import {shallow} from 'enzyme'
 import {browserHistory} from 'react-router'
 import HomePage from 'components/HomePage'
@@ -8,7 +8,7 @@ describe('HomePage', () => {
   let promiseSpyObj
   beforeEach(() => {
     promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
+    spyOn(screeningActions, 'create').and.returnValue(promiseSpyObj)
     spyOn(browserHistory, 'push')
   })
 
@@ -29,9 +29,7 @@ describe('HomePage', () => {
 
     const wrapper = shallow(<HomePage />)
     wrapper.find('a').simulate('click')
-    expect(Utils.request).toHaveBeenCalled()
-    expect(Utils.request.calls.argsFor(0)[0]).toEqual('POST')
-    expect(Utils.request.calls.argsFor(0)[1]).toEqual('/screenings.json')
+    expect(screeningActions).toHaveBeenCalled()
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
   })
 })
