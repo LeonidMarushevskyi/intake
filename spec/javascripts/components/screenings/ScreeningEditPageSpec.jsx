@@ -149,6 +149,7 @@ describe('ScreeningEditPage', () => {
     const participant = {id: null, screening_id: props.params.id, person_id: personId}
 
     beforeEach(() => {
+      loadComponent()
       const jsonResponse = {id: 99, first_name: 'Bart'}
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
       spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
@@ -167,8 +168,13 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('addParticipant', () => {
+    let wrapper
+    beforeEach(() => {
+      loadComponent()
+      wrapper = mount(<ScreeningEditPage {...props} />).instance()
+    })
+
     it('adds the participant to an empty list of participants', () => {
-      const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
       const participants = wrapper.state.screening.get('participants')
       expect(participants.size).toEqual(1)
@@ -176,7 +182,6 @@ describe('ScreeningEditPage', () => {
     })
 
     it('adds the participant to a non empty list of participants', () => {
-      const wrapper = mount(<ScreeningEditPage {...props} />).instance()
       wrapper.addParticipant({id: 1})
       wrapper.addParticipant({id: 2})
       const participants = wrapper.state.screening.get('participants')
@@ -196,6 +201,7 @@ describe('ScreeningEditPage', () => {
     let wrapper
     let saveButton
     beforeEach(() => {
+      loadComponent()
       createSpyOnSave()
       wrapper = mount(<ScreeningEditPage {...props} />)
       wrapper.setState({
@@ -236,6 +242,7 @@ describe('ScreeningEditPage', () => {
   describe('cardSave', () => {
     let wrapper
     beforeEach(() => {
+      loadComponent()
       createSpyOnSave()
       wrapper = mount(<ScreeningEditPage {...props} />)
     })
