@@ -22,15 +22,6 @@ feature 'Create Person' do
       address: address
     )
 
-    faraday_helper do |stub|
-      stub.post('/api/v1/people', person.to_json) do |_|
-        [201, {}, person.as_json.merge(id: 1)]
-      end
-      stub.get('/api/v1/people/1') do |_|
-        [200, {}, person.as_json.merge(id: 1)]
-      end
-    end
-
     visit root_path
 
     click_link 'Create Person'
@@ -43,6 +34,16 @@ feature 'Create Person' do
     fill_in 'City', with: 'Springfield'
     select 'New York', from: 'State'
     fill_in 'Zip', with: '12345'
+
+    stub_request(:post, api_people_path)
+      .with(body: person.to_json)
+      .and_return(body: person.as_json.merge(id: 1).to_json,
+                  status: 201,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, api_person_path(1))
+      .and_return(body: person.as_json.merge(id: 1).to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
 

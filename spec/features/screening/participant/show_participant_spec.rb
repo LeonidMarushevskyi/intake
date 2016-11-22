@@ -18,11 +18,10 @@ feature 'Show Screening' do
   )
 
   before do
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, api_screening_path(existing_screening.id))
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
   end
 
   scenario 'showing existing participant' do

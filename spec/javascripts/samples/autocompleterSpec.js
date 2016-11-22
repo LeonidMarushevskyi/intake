@@ -12,16 +12,16 @@ describe('<Autcompleter />', () => {
   })
 
   it('renders a Autosuggest component', () => {
-    const wrapper = shallow(<Autocompleter />)
-    expect(wrapper.find(ReactAutosuggest).length).toBe(1)
+    const component = shallow(<Autocompleter />)
+    expect(component.find(ReactAutosuggest).length).toBe(1)
   })
 
   describe('#onChange', () => {
     it('updates the value of the "value" state', () => {
-      const wrapper = shallow(<Autocompleter />)
-      expect(wrapper.state('value')).toBe('')
-      wrapper.instance().onChange('some_event', {newValue: 'foobar', method: 'baz'})
-      expect(wrapper.state('value')).toBe('foobar')
+      const component = shallow(<Autocompleter />)
+      expect(component.state('value')).toBe('')
+      component.instance().onChange('some_event', {newValue: 'foobar', method: 'baz'})
+      expect(component.state('value')).toBe('foobar')
     })
   })
 
@@ -31,84 +31,84 @@ describe('<Autcompleter />', () => {
       const promise = $.Deferred()
       promise.resolve([bart_simpson])
       spyOn($, 'get').and.returnValue(promise)
-      const wrapper = shallow(<Autocompleter />)
-      wrapper.instance().onSuggestionsFetchRequested({value: 'Simpson'})
-      expect(wrapper.state('suggestions')).toEqual([bart_simpson])
+      const component = shallow(<Autocompleter />)
+      component.instance().onSuggestionsFetchRequested({value: 'Simpson'})
+      expect(component.state('suggestions')).toEqual([bart_simpson])
     })
   })
 
   describe('#onSuggestionSelected', () => {
     it('clears the search Text and adds the suggestion', () => {
       const onSelect = jasmine.createSpy('onSelectSpy')
-      const wrapper = shallow(<Autocompleter onSelect={onSelect} />)
+      const component = shallow(<Autocompleter onSelect={onSelect} />)
       const suggestion = {id: 1, first_name: 'Bart'}
-      wrapper.instance().onSuggestionSelected('selected', {suggestion: suggestion})
+      component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
       expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
-      expect(wrapper.state('value')).toEqual('')
+      expect(component.state('value')).toEqual('')
     })
   })
 
   describe('#onSuggestionsClearRequested', () => {
     it('clears the suggestions', () => {
-      const wrapper = shallow(<Autocompleter />)
-      wrapper.setState({suggestions: ['foo', 'bar']})
-      expect(wrapper.state('suggestions')).toEqual(['foo', 'bar'])
-      wrapper.instance().onSuggestionsClearRequested()
-      expect(wrapper.state('suggestions')).toEqual([])
+      const component = shallow(<Autocompleter />)
+      component.setState({suggestions: ['foo', 'bar']})
+      expect(component.state('suggestions')).toEqual(['foo', 'bar'])
+      component.instance().onSuggestionsClearRequested()
+      expect(component.state('suggestions')).toEqual([])
     })
   })
 
   describe('#getSuggestionValue', () => {
     it('return the suggestion to display on the input field', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
-      const value = wrapper.instance().getSuggestionValue(suggestion)
+      const value = component.instance().getSuggestionValue(suggestion)
       expect(value).toBe('Bart Simpson')
     })
   })
 
   describe('#renderSuggestion', () => {
     it('renders the first name and last name', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
-      const value = wrapper.instance().renderSuggestion(suggestion)
+      const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
     })
 
     it('renders the gender', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const suggestion = {gender: 'female'}
-      const value = wrapper.instance().renderSuggestion(suggestion)
+      const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('<div>Female</div>')
     })
 
     it('renders the date of birth in format D/M/YYYY', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const suggestion = {date_of_birth: '1990-02-13'}
-      const value = wrapper.instance().renderSuggestion(suggestion)
+      const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('(2/13/1990)')
     })
 
     it('renders the age', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const date_of_birth = moment().subtract(15, 'years').format('YYYY-MM-DD')
       const suggestion = {date_of_birth: date_of_birth}
-      const value = wrapper.instance().renderSuggestion(suggestion)
+      const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).toContain('15 yrs old')
     })
 
     it('does not render age when date of birth is not present', () => {
-      const wrapper = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter />)
       const suggestion = {date_of_birth: null}
-      const value = wrapper.instance().renderSuggestion(suggestion)
+      const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).not.toContain('yrs old')
     })
   })
 
   describe('#renderSuggestionsContainer', () => {
     it('rendres the suggestions container', () => {
-      const wrapper = shallow(<Autocompleter />)
-      const container = wrapper.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
+      const component = shallow(<Autocompleter />)
+      const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).html()).toBe('<div class="baz">foobar</div>')
     })
   })

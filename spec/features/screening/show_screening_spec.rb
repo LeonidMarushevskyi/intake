@@ -29,11 +29,8 @@ feature 'Show Screening' do
       address: address
     )
 
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, api_screening_path(existing_screening.id))
+      .and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
 
@@ -46,7 +43,7 @@ feature 'Show Screening' do
       expect(page).to have_content '8/22/2016 11:00 AM'
     end
 
-    within '#narrative-card' do
+    within '#narrative-card.show' do
       expect(page).to have_content 'some narrative'
     end
 

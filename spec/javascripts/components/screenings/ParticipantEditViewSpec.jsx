@@ -4,7 +4,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('ParticipantEditView', () => {
-  let wrapper
+  let component
   beforeEach(() => {
     const participant = Immutable.fromJS({
       id: 199,
@@ -14,25 +14,25 @@ describe('ParticipantEditView', () => {
       gender: 'female',
       ssn: 'ssn-1',
     })
-    wrapper = shallow(<ParticipantEditView participant={participant} />)
+    component = shallow(<ParticipantEditView participant={participant} />)
   })
 
   it('renders a participant edit view card', () => {
-    expect(wrapper.find('.card.edit').length).toEqual(1)
-    expect(wrapper.find('#participants-card-199').length).toEqual(1)
+    expect(component.find('.card.edit').length).toEqual(1)
+    expect(component.find('#participants-card-199').length).toEqual(1)
   })
 
   it('renders the participants first and last name in the card header', () => {
-    expect(wrapper.find('.card-header').text()).toContain('Lisa Simpson')
+    expect(component.find('.card-header').text()).toContain('Lisa Simpson')
   })
 
   it('renders the delete link', () => {
-    expect(wrapper.find('.fa-times').length).toEqual(1)
+    expect(component.find('.fa-times').length).toEqual(1)
   })
 
   it('renders the participant inputs', () => {
-    expect(wrapper.find('input').length).toEqual(4)
-    expect(wrapper.find('input').nodes.map((node) => node.props.value)).toEqual([
+    expect(component.find('input').length).toEqual(4)
+    expect(component.find('input').nodes.map((node) => node.props.value)).toEqual([
       'Lisa',
       'Simpson',
       '2016-12-31',
@@ -41,12 +41,12 @@ describe('ParticipantEditView', () => {
   })
 
   it('renders the participant gender', () => {
-    expect(wrapper.find('select').props().value).toEqual('female')
+    expect(component.find('select').props().value).toEqual('female')
   })
 
   it('renders the labels of the participant card ', () => {
-    expect(wrapper.find('label').length).toEqual(5)
-    expect(wrapper.find('label').map((element) => element.text())).toEqual([
+    expect(component.find('label').length).toEqual(5)
+    expect(component.find('label').map((element) => element.text())).toEqual([
       'First Name',
       'Last Name',
       'Date of birth',
@@ -56,10 +56,10 @@ describe('ParticipantEditView', () => {
   })
 
   it('renders the save button', () => {
-    expect(wrapper.find('.btn.btn-primary').text()).toEqual('Save')
+    expect(component.find('.btn.btn-primary').text()).toEqual('Save')
   })
 
   it('renders the cancel link', () => {
-    expect(wrapper.find('.btn.btn-default').text()).toEqual('Cancel')
+    expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
   })
 })

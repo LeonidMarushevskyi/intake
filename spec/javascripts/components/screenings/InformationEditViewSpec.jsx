@@ -4,7 +4,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('InformationEditView', () => {
-  let wrapper
+  let component
   let onChange
   beforeEach(() => {
     onChange = jasmine.createSpy()
@@ -15,15 +15,15 @@ describe('InformationEditView', () => {
       communication_method: 'mail',
       participants: [],
     })
-    wrapper = shallow(<InformationEditView screening={screening} onChange={onChange} />)
+    component = shallow(<InformationEditView screening={screening} onChange={onChange} />)
   })
 
   it('renders the card header', () => {
-    expect(wrapper.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
+    expect(component.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
   })
 
   it('render the labels', () => {
-    const labels = wrapper.find('#screening-information-card label')
+    const labels = component.find('#screening-information-card label')
     expect(labels.length).toEqual(4)
     expect(labels.map((element) => element.text())).toEqual([
       'Title/Name of Screening',
@@ -34,18 +34,18 @@ describe('InformationEditView', () => {
   })
 
   it('render the fields', () => {
-    const inputs = wrapper.find('#screening-information-card input')
+    const inputs = component.find('#screening-information-card input')
     expect(inputs.length).toEqual(3)
     expect(inputs.map((element) => element.props().value)).toEqual([
       'The Rocky Horror Picture Show',
       '2016-08-13T10:00:00.000Z',
       '2016-08-22T11:00:00.000Z',
     ])
-    expect(wrapper.find('#screening-information-card select').props().value).toEqual('mail')
+    expect(component.find('#screening-information-card select').props().value).toEqual('mail')
   })
 
   it('fires the call the onChange function when a field changes', () => {
-    wrapper.find('#screening-information-card select').simulate('change', {target: { value: 'fax'}})
+    component.find('#screening-information-card select').simulate('change', {target: { value: 'fax'}})
     expect(onChange).toHaveBeenCalledWith([ 'communication_method' ], 'fax')
   })
 })

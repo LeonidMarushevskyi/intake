@@ -1,7 +1,7 @@
-import * as Utils from 'utils/http'
+import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
-import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
@@ -31,8 +31,11 @@ export default class ScreeningShowPage extends React.Component {
         response_time: '',
         screening_decision: '',
       }),
+      loaded: false,
     }
     this.fetch = this.fetch.bind(this)
+    this.cardSave = this.cardSave.bind(this)
+    this.setField = this.setField.bind(this)
   }
 
   componentDidMount() {
@@ -41,10 +44,27 @@ export default class ScreeningShowPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    Utils.request('GET', `/screenings/${params.id}.json`)
+    screeningActions.fetch(params.id)
+      .then((jsonResponse) => {
+        this.setState({
+          screening: Immutable.fromJS(jsonResponse),
+          loaded: true,
+        })
+      })
+  }
+
+  cardSave(fieldSeq, value) {
+    const {params} = this.props
+    const screening = this.state.screening.setIn(fieldSeq, value)
+    return screeningActions.save(params.id, screening.toJS())
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
       })
+  }
+
+  setField(fieldSeq, value) {
+    const screening = this.state.screening.setIn(fieldSeq, value)
+    this.setState({screening: screening})
   }
 
   renderParticipantsCard() {
@@ -61,16 +81,21 @@ export default class ScreeningShowPage extends React.Component {
   }
 
   render() {
-    const {screening} = this.state
+    const {params} = this.props
+    const {screening, loaded} = this.state
     return (
       <div>
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        <NarrativeShowView screening={screening}/>
+        {loaded && <NarrativeCardView
+          narrative={screening.get('report_narrative')}
+          mode='show'
+          onSave={(value) => this.cardSave(['report_narrative'], value)}
+        />}
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
-        <Link to={`/screenings/${screening.get('id')}/edit`}>Edit</Link>
+        <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
       </div>
     )
   }

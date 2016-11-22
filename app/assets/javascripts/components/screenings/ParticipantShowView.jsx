@@ -1,6 +1,7 @@
+import EditLink from 'components/common/EditLink'
+import GENDER from 'Gender'
 import React from 'react'
 import {Link} from 'react-router'
-import GENDER from 'Gender'
 
 const ParticipantShowView = ({participant, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
@@ -9,9 +10,7 @@ const ParticipantShowView = ({participant, onEdit}) => (
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times'></i>
       </Link>
-      <a aria-label='Edit participant' className='gap-right pull-right' href='#' onClick={onEdit}>
-        <i className='fa fa-pencil'></i>
-      </a>
+      <EditLink ariaLabel='Edit participant' onClick={onEdit} />
     </div>
     <div className='card-body'>
       <div className='row'>

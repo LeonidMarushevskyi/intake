@@ -12,14 +12,16 @@ feature 'Create Screening' do
       updated_at: nil,
       address: nil
     )
-    faraday_helper do |stub|
-      stub.post('/api/v1/screenings', new_screening.to_json) do |_|
-        [201, {}, new_screening.as_json.merge(id: 1, address: {})]
-      end
-      stub.get('/api/v1/screenings/1') do |_|
-        [200, {}, new_screening.as_json.merge(id: 1, address: {})]
-      end
-    end
+    stub_request(:post, api_screenings_path)
+      .with(body: new_screening.to_json)
+      .and_return(body: new_screening.as_json.merge(id: 1, address: {}).to_json,
+                  status: 201,
+                  headers: { 'Content-Type' => 'application/json' })
+
+    stub_request(:get, api_screening_path(1))
+      .and_return(body: new_screening.as_json.merge(id: 1, address: {}).to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     visit root_path
     click_link 'Start Screening'

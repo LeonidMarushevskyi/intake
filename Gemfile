@@ -38,11 +38,12 @@ group :development do
 end
 
 group :test do
-  gem 'ci_reporter_rspec'
   gem 'capybara'
   gem 'capybara-accessible'
   gem 'capybara-screenshot'
+  gem 'ci_reporter_rspec'
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
+  gem 'webmock'
 end

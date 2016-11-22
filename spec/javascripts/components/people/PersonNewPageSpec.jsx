@@ -5,7 +5,7 @@ import {PersonNewPage} from 'components/people/PersonNewPage'
 import {mount} from 'enzyme'
 
 describe('PersonNewPage', () => {
-  let wrapper
+  let component
 
   describe('render', () => {
     beforeEach(() => {
@@ -13,16 +13,16 @@ describe('PersonNewPage', () => {
         person: Immutable.Map(),
         actions: {},
       }
-      wrapper = mount(<PersonNewPage {...props} />)
+      component = mount(<PersonNewPage {...props} />)
     })
 
     it('renders the card header', () => {
-      expect(wrapper.find('.card-header').text()).toEqual('Basic Demographics card')
+      expect(component.find('.card-header').text()).toEqual('Basic Demographics card')
     })
 
     it('renders the person label fields', () => {
-      expect(wrapper.find('label').length).toEqual(9)
-      expect(wrapper.find('label').nodes.map((element) => element.textContent)).toEqual([
+      expect(component.find('label').length).toEqual(9)
+      expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
         'Last Name',
         'Date of birth',
@@ -36,15 +36,15 @@ describe('PersonNewPage', () => {
     })
 
     it('renders the person input fields', () => {
-      expect(wrapper.find('input').length).toEqual(7)
+      expect(component.find('input').length).toEqual(7)
     })
 
     it('renders the person select fields', () => {
-      expect(wrapper.find('select').length).toEqual(2)
+      expect(component.find('select').length).toEqual(2)
     })
 
     it('renders the save button', () => {
-      expect(wrapper.find('button').length).toEqual(1)
+      expect(component.find('button').length).toEqual(1)
     })
   })
 
@@ -65,9 +65,9 @@ describe('PersonNewPage', () => {
         person: Immutable.Map(),
         actions: {createPerson: createPerson}
       }
-      wrapper = mount(<PersonNewPage {...props} />)
-      wrapper.setState({person: Immutable.fromJS(personProps)})
-      wrapper.find('button.btn-primary').simulate('click')
+      component = mount(<PersonNewPage {...props} />)
+      component.setState({person: Immutable.fromJS(personProps)})
+      component.find('button.btn-primary').simulate('click')
       expect(createPerson).toHaveBeenCalledWith({person: personProps})
     })
 
@@ -76,8 +76,8 @@ describe('PersonNewPage', () => {
         person: Immutable.fromJS({id: 1}),
         actions: {createPerson: createPerson}
       }
-      wrapper = mount(<PersonNewPage {...props} />)
-      wrapper.find('button.btn-primary').simulate('click')
+      component = mount(<PersonNewPage {...props} />)
+      component.find('button.btn-primary').simulate('click')
       expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
   })

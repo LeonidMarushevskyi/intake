@@ -21,11 +21,10 @@ feature 'Edit Screening' do
       created_at: '2016-10-21T16:11:59.484Z'
     )
 
-    faraday_helper do |stub|
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:get, api_screening_path(existing_screening.id))
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     visit edit_screening_path(id: existing_screening.id)
     expect(page).to have_content 'Edit Screening #My Bad!'
@@ -91,16 +90,20 @@ feature 'Edit Screening' do
       zip: '12345'
     )
 
-    faraday_helper do |stub|
-      stub.put("/api/v1/screenings/#{existing_screening.id}", existing_screening.to_json) do |_env|
-        [200, {}, existing_screening.as_json]
-      end
-      stub.get("/api/v1/screenings/#{existing_screening.id}") do |_env|
-        [200, {}, existing_screening.as_json]
-      end
-    end
+    stub_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(existing_screening.to_json))
+      .and_return(json_body(existing_screening.to_json))
 
-    click_button 'Save'
+    stub_request(:get, api_screening_path(existing_screening.id))
+      .with(json_body(existing_screening.to_json))
+      .and_return(json_body(existing_screening.to_json))
+
+    page.find('button:last-child', text: 'Save').click
+
+    expect(
+      a_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(existing_screening.to_json))
+    ).to have_been_made.twice
 
     expect(page).to_not have_content 'Edit Screening'
     expect(page).to have_content 'Screening #My Bad!'

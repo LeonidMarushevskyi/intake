@@ -18,11 +18,10 @@ feature 'Show Person' do
         zip: '12345'
       )
     )
-    faraday_helper do |stub|
-      stub.get("/api/v1/people/#{person.id}") do |_|
-        [200, {}, person.as_json]
-      end
-    end
+    stub_request(:get, api_person_path(person.id))
+      .and_return(body: person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     visit person_path(id: person.id)
 

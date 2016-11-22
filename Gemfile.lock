@@ -79,6 +79,8 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.0.2)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     debug_inspector (0.0.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -154,6 +156,7 @@ GEM
       rake (>= 10, < 12)
       rubocop (>= 0.36.0)
       sysexits (~> 1.1)
+    hashdiff (0.3.0)
     hashie (3.4.5)
     highline (1.7.8)
     html2haml (2.0.0)
@@ -299,6 +302,7 @@ GEM
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
+    safe_yaml (1.0.4)
     sass (3.4.22)
     scss_lint (0.49.0)
       rake (>= 0.9, < 12)
@@ -342,6 +346,10 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    webmock (2.1.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     websocket (1.2.3)
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
@@ -387,6 +395,7 @@ DEPENDENCIES
   spring
   virtus
   web-console (~> 2.0)
+  webmock
 
 BUNDLED WITH
    1.13.2

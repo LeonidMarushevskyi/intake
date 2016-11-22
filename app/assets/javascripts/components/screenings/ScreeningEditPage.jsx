@@ -1,11 +1,12 @@
-import * as Utils from 'utils/http'
 import {browserHistory} from 'react-router'
+import * as screeningActions from 'actions/screeningActions'
+import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
-import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
 
 export default class ScreeningEditPage extends React.Component {
@@ -33,13 +34,19 @@ export default class ScreeningEditPage extends React.Component {
         response_time: '',
         screening_decision: '',
       }),
+      loaded: false,
     }
 
-    this.fetch = this.fetch.bind(this)
-    this.setField = this.setField.bind(this)
-    this.addParticipant = this.addParticipant.bind(this)
-    this.update = this.update.bind(this)
-    this.createParticipant = this.createParticipant.bind(this)
+    const methods =[
+      'fetch',
+      'setField',
+      'addParticipant',
+      'update',
+      'createParticipant',
+      'cardSave',
+      'saveAll'
+    ]
+    methods.forEach((method) => this[method] = this[method].bind(this))
   }
 
   componentDidMount() {
@@ -48,9 +55,12 @@ export default class ScreeningEditPage extends React.Component {
 
   fetch() {
     const {params} = this.props
-    Utils.request('GET', `/screenings/${params.id}.json`)
+    screeningActions.fetch(params.id)
       .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
+        this.setState({
+          screening: Immutable.fromJS(jsonResponse),
+          loaded: true,
+        })
       })
   }
 
@@ -63,8 +73,7 @@ export default class ScreeningEditPage extends React.Component {
 
   update() {
     const {params} = this.props
-    const url = `/screenings/${params.id}.json`
-    Utils.request('PUT', url, {screening: this.state.screening.toJS()})
+    screeningActions.save(params.id, this.state.screening.toJS())
       .then((jsonResponse) => {
         this.setState({screening: Immutable.fromJS(jsonResponse)})
         this.show()
@@ -74,6 +83,15 @@ export default class ScreeningEditPage extends React.Component {
   setField(fieldSeq, value) {
     const screening = this.state.screening.setIn(fieldSeq, value)
     this.setState({screening: screening})
+  }
+
+  cardSave(fieldSeq, value) {
+    const {params} = this.props
+    const screening = this.state.screening.setIn(fieldSeq, value)
+    return screeningActions.save(params.id, screening.toJS())
+      .then((jsonResponse) => {
+        this.setState({screening: Immutable.fromJS(jsonResponse)})
+      })
   }
 
   addParticipant(participant) {
@@ -87,11 +105,19 @@ export default class ScreeningEditPage extends React.Component {
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
-    Utils.request('POST', `/screenings/${params.id}/participants.json`, {participant: participant})
+    participantActions.create(params.id, participant)
       .then((jsonResponse) => {
         this.addParticipant(jsonResponse)
       })
   }
+
+  saveAll() {
+    if(this.state.loaded) {
+      const narrativeCardSave = this.refs.narrativeCard.onSave()
+      narrativeCardSave.then(() => this.update())
+    }
+  }
+
 
   renderParticipantsCard() {
     const {screening} = this.state
@@ -120,7 +146,7 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   render() {
-    const {screening} = this.state
+    const {screening, loaded} = this.state
     return (
       <div>
         <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
@@ -130,11 +156,16 @@ export default class ScreeningEditPage extends React.Component {
         <input type='hidden' id='reference' value={screening.get('reference') || ''} />
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        <NarrativeEditView screening={screening} onChange={this.setField} />
+        {loaded && <NarrativeCardView
+          ref='narrativeCard'
+          narrative={screening.get('report_narrative')}
+          mode='edit'
+          onSave={(value) => this.cardSave(['report_narrative'], value)}
+        />}
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' onClick={this.update}>Save</button>
+            <button className='btn btn-primary' onClick={this.saveAll}>Save</button>
           </div>
         </div>
       </div>

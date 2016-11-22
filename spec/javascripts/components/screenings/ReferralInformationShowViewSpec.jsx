@@ -4,19 +4,19 @@ import ReferralInformationShowView from 'components/screenings/ReferralInformati
 import {shallow} from 'enzyme'
 
 describe('ReferralInformationShowView', () => {
-  let wrapper
+  let component
 
   beforeEach(() => {
-    wrapper = shallow(<ReferralInformationShowView screening={Immutable.fromJS({})} />)
+    component = shallow(<ReferralInformationShowView screening={Immutable.fromJS({})} />)
   })
 
   it('renders the card header', () => {
-    expect(wrapper.find('.card-header').text()).toEqual('Referral Information')
+    expect(component.find('.card-header').text()).toEqual('Referral Information')
   })
 
   it('render the labels', () => {
-    expect(wrapper.find('label').length).toEqual(9)
-    expect(wrapper.find('label').map((element) => element.text())).toEqual([
+    expect(component.find('label').length).toEqual(9)
+    expect(component.find('label').map((element) => element.text())).toEqual([
       'Incident Date',
       'Incident County',
       'Address',
@@ -44,8 +44,8 @@ describe('ReferralInformationShowView', () => {
       screening_decision: 'accept_for_investigation',
     })
 
-    wrapper = shallow(<ReferralInformationShowView screening={screening} />)
-    const values = wrapper.find('.c-gray')
+    component = shallow(<ReferralInformationShowView screening={screening} />)
+    const values = component.find('.c-gray')
 
     expect(values.length).toEqual(9)
     expect(values.map((element) => element.text())).toEqual([
@@ -75,8 +75,8 @@ describe('ReferralInformationShowView', () => {
       response_time: null,
       screening_decision: null,
     })
-    wrapper = shallow(<ReferralInformationShowView screening={screening} />)
-    const values = wrapper.find('.c-gray')
+    component = shallow(<ReferralInformationShowView screening={screening} />)
+    const values = component.find('.c-gray')
     expect(values.map((element) => element.text())).toEqual(['', '', '', '', '', '', '', '', ''])
   })
 })

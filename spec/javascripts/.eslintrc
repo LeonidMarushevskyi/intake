@@ -1,13 +1,4 @@
 {
-  "plugins": [
-    "eslint-plugin-react",
-    "jasmine"
-  ],
-  "ecmaFeatures": {
-    "experimentalObjectRestSpread": true,
-    "jsx": true,
-    "modules": true
-  },
   "rules": {
     "array-bracket-spacing": [2, "never"],
     "arrow-body-style": [2, "as-needed"],
@@ -36,7 +27,7 @@
     "new-parens": [2],
     "no-alert": [2],
     "no-array-constructor": [2],
-    "no-arrow-condition": [2],
+    "no-confusing-arrow": ["error", {"allowParens": false}],
     "no-caller": [2],
     "no-class-assign": [2],
     "no-console": 0,
@@ -97,13 +88,13 @@
     "quote-props": [2, "as-needed", { "keywords": true }],
     "quotes": [2, "single", "avoid-escape"],
     "radix": [2],
-    "react/display-name": [2, { "acceptTranspilerName": true }],
+    "react/display-name": [2, { "ignoreTranspilerName": true }],
     "react/jsx-closing-bracket-location": [2, "tag-aligned"],
     "react/jsx-curly-spacing": [2, "never"],
     "react/jsx-indent-props": [2, 2],
     "react/jsx-no-duplicate-props": [2],
     "react/jsx-no-undef": [2],
-    "react/jsx-sort-prop-types": [2],
+    "react/sort-prop-types": [2],
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
     "react/no-danger": [2],
@@ -117,13 +108,11 @@
     "react/sort-comp": [2],
     "require-yield": [2],
     "semi": [2, "never"],
-    "space-after-keywords": [2, "always"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
     "space-before-blocks": [2, "always"],
     "space-before-function-paren": [2, "never"],
-    "space-before-keywords": [2, "always"],
     "space-in-parens": [2, "never"],
     "space-infix-ops": [2],
-    "space-return-throw-case": [2],
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
     "wrap-iife": [2],
     "yoda": [2, "never"],
@@ -142,5 +131,18 @@
     "es6": true,
     "jasmine": true
   },
-  "extends": ["eslint:recommended"]
+  "plugins": [
+    "react",
+    "jasmine",
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true,
+      "modules": true,
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module",
+  },
+  "extends": "eslint:recommended"
 }
