@@ -33,7 +33,7 @@ describe('ParticipanShowView', () => {
   })
 
   it('renders the edit link', () => {
-    expect(wrapper.find('.fa-pencil').length).toEqual(1)
+    expect(wrapper.find('EditLink').props().ariaLabel).toEqual('Edit participant')
   })
 
   it('renders the default avatar', () => {
@@ -57,8 +57,8 @@ describe('ParticipanShowView', () => {
     expect(wrapper.find('.card-body').text()).toContain('111223333')
   })
 
-  it('calls the onEdit function when "Edit participant" is clicked', () => {
-    wrapper.find('a[aria-label="Edit participant"]').simulate('click')
+  it('calls the onEdit function when edit link is clicked', () => {
+    wrapper.find('EditLink').simulate('click')
     expect(onEdit).toHaveBeenCalled()
   })
 })

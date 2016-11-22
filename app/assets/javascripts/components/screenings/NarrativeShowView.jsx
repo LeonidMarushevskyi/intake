@@ -1,12 +1,11 @@
+import EditLink from 'components/common/EditLink'
 import React from 'react'
 
 const NarrativeShowView = ({narrative, onEdit}) => (
   <div className='card show double-gap-top' id='narrative-card'>
     <div className='card-header'>
       <span>Narrative</span>
-      <a aria-label='Edit narrative' className='gap-right pull-right' href='#' onClick={onEdit}>
-        <i className='fa fa-pencil'></i>
-      </a>
+      <EditLink ariaLabel='Edit narrative' onClick={onEdit} />
     </div>
     <div className='card-body'>
       <div className='row'>
