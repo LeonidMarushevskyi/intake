@@ -1,6 +1,6 @@
 import {browserHistory} from 'react-router'
-import * as screeningActions from 'actions/screening'
-import * as participantActions from 'actions/participant'
+import * as screeningActions from 'actions/screeningActions'
+import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'Autocompleter'
@@ -54,7 +54,6 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   fetch() {
-    debugger
     const {params} = this.props
     screeningActions.fetch(params.id)
       .then((jsonResponse) => {
@@ -87,7 +86,6 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   cardSave(fieldSeq, value) {
-    debugger
     const {params} = this.props
     const screening = this.state.screening.setIn(fieldSeq, value)
     return screeningActions.save(params.id, screening.toJS())

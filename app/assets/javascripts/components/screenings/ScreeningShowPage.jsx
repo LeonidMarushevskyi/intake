@@ -1,4 +1,4 @@
-import * as screeningActions from 'actions/screening'
+import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'

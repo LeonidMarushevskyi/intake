@@ -1,4 +1,4 @@
-import * as screeningActions from 'actions/screening'
+import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import React from 'react'
 import ScreeningShowPage from 'components/screenings/ScreeningShowPage'

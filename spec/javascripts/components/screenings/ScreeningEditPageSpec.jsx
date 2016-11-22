@@ -1,5 +1,5 @@
-import * as screeningActions from 'actions/screening'
-import * as participantActions from 'actions/participant'
+import * as screeningActions from 'actions/screeningActions'
+import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
