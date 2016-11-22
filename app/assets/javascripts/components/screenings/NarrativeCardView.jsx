@@ -37,21 +37,20 @@ export default class NarrativeCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    const {narrative} = this.props
-    let narrativeView
-    if (mode === 'edit') {
-      narrativeView = (
-        <NarrativeEditView
-          onCancel={this.onCancel}
-          onChange={this.onChange}
-          onSave={this.onSave}
-          narrative={this.state.narrative}
-        />
-      )
-    } else {
-      narrativeView = <NarrativeShowView narrative={this.props.narrative} onEdit={this.onEdit} />
+    const allProps = {
+      edit: {
+        onCancel: this.onCancel,
+        onChange: this.onChange,
+        onSave: this.onSave,
+        narrative: this.state.narrative,
+      },
+      show: {
+        narrative: this.props.narrative, onEdit: this.onEdit
+      }
     }
-    return view
+    const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowView
+    const props = allProps[mode]
+    return <NarrativeView {...props} />
   }
 }
 
