@@ -113,3 +113,4 @@ Autocompleter.propTypes = {
   id: React.PropTypes.string,
   onSelect: React.PropTypes.func,
 }
+Autocompleter.displayName = 'Autocompleter'
