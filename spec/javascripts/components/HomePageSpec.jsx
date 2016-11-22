@@ -5,31 +5,35 @@ import HomePage from 'components/HomePage'
 import React from 'react'
 
 describe('HomePage', () => {
-  let promiseSpyObj
+  let wrapper
   beforeEach(() => {
-    promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    const jsonResponse = {id: '1'}
+    const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
     spyOn(screeningActions, 'create').and.returnValue(promiseSpyObj)
     spyOn(browserHistory, 'push')
+    wrapper = shallow(<HomePage />)
   })
 
-  it('render links', () => {
-    const wrapper = shallow(<HomePage />)
-    const links = wrapper.find('Link')
+  it('renders the create screening link', () => {
+    const createScreeningLink = wrapper.find('a[href="#"]')
+    expect(createScreeningLink.text()).toEqual('Start Screening')
+  })
 
-    expect(wrapper.find('a').text()).toEqual('Start Screening')
-    expect(links.map((element) => [element.props().to, element.props().children])).toEqual([
-      ['/people/new', 'Create Person'],
-      ['/screenings', 'Screenings'],
-    ])
+  it('renders the create person link', () => {
+    const createPersonLink = wrapper.find('Link[to="/people/new"]')
+    expect(createPersonLink.html()).toContain('Create Person')
+  })
+
+  it('renders the screening index link', () => {
+    const screeningIndexLink = wrapper.find('Link[to="/screenings"]')
+    expect(screeningIndexLink.html()).toContain('Screenings')
   })
 
   it('sends a POST request to the server and redirects to edit', () => {
-    const jsonResponse = {id: '1'}
-    promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
-
-    const wrapper = shallow(<HomePage />)
-    wrapper.find('a').simulate('click')
-    expect(screeningActions).toHaveBeenCalled()
+    const createScreeningLink = wrapper.find('a[href="#"]')
+    createScreeningLink.simulate('click')
+    expect(screeningActions.create).toHaveBeenCalled()
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
   })
 })
