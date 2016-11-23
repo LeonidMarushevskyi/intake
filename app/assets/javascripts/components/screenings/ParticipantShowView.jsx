@@ -1,6 +1,7 @@
 import EditLink from 'components/common/EditLink'
 import GENDER from 'Gender'
 import React from 'react'
+import ShowField from 'components/common/ShowField'
 import {Link} from 'react-router'
 
 const ParticipantShowView = ({participant, onEdit}) => (
@@ -18,16 +19,20 @@ const ParticipantShowView = ({participant, onEdit}) => (
           <img src='/assets/default-profile.svg' />
         </div>
         <div className='col-md-5'>
-          <label className='no-gap'>Name</label>
-          <div className='c-gray'>{`${participant.get('first_name')} ${participant.get('last_name')}`}</div>
-          <label>Gender</label>
-          <div className='c-gray'>{GENDER[participant.get('gender')]}</div>
+          <ShowField labelClassName='no-gap' label='Name'>
+            {`${participant.get('first_name')} ${participant.get('last_name')}`}
+          </ShowField>
+          <ShowField label='Gender'>
+            {GENDER[participant.get('gender')]}
+          </ShowField>
         </div>
         <div className='col-md-5'>
-          <label className='no-gap-top-desktop'>Date of birth</label>
-          <div className='c-gray'>{participant.get('date_of_birth')}</div>
-          <label>Social security number</label>
-          <div className='c-gray'>{participant.get('ssn')}</div>
+          <ShowField labelClassName='no-gap-top-desktop' label='Date of birth'>
+            {participant.get('date_of_birth')}
+          </ShowField>
+          <ShowField label='Social security number'>
+            {participant.get('ssn')}
+          </ShowField>
         </div>
       </div>
     </div>

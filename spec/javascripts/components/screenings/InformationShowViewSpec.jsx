@@ -14,19 +14,7 @@ describe('InformationShowView', () => {
     expect(component.find('.card-header').text()).toEqual('Screening Information')
   })
 
-  it('renders the screening information label fields', () => {
-    const labels = component.find('#screening-information-card label')
-
-    expect(labels.length).toEqual(4)
-    expect(labels.map((element) => element.text())).toEqual([
-      'Title/Name of Screening',
-      'Screening Start Date/Time',
-      'Screening End Date/Time',
-      'Communication Method',
-    ])
-  })
-
-  it('renders the screening value fields', () => {
+  it('renders the screening show fields', () => {
     const screening = Immutable.fromJS({
       name: 'The Rocky Horror Picture Show',
       started_at: '2016-08-13T10:00:00.000Z',
@@ -34,18 +22,18 @@ describe('InformationShowView', () => {
       communication_method: 'mail',
     })
     component = shallow(<InformationShowView screening={screening} />)
-    const values = component.find('#screening-information-card .c-gray')
-
-    expect(values.length).toEqual(4)
-    expect(values.map((element) => element.text())).toEqual([
-      'The Rocky Horror Picture Show',
-      '08/13/2016 10:00 AM',
-      '08/22/2016 11:00 AM',
-      'Mail',
-    ])
+    expect(component.find('ShowField').length).toEqual(4)
+    expect(component.find('ShowField[label="Title/Name of Screening"]').html())
+      .toContain('The Rocky Horror Picture Show')
+    expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
+      .toContain('08/13/2016 10:00 AM')
+    expect(component.find('ShowField[label="Screening End Date/Time"]').html())
+      .toContain('08/22/2016 11:00 AM')
+    expect(component.find('ShowField[label="Communication Method"]').html())
+      .toContain('Mail')
   })
 
-  it('displays information correctly when they are null', () => {
+  it('renders the screening show field when the field values are null', () => {
     const screening = Immutable.fromJS({
       name: null,
       started_at: null,
@@ -54,7 +42,13 @@ describe('InformationShowView', () => {
     })
 
     component = shallow(<InformationShowView screening={screening} />)
-    expect(component.find('#screening-information-card .c-gray')
-      .map((element) => element.text())).toEqual(['', '', '', ''])
+    expect(component.find('ShowField[label="Title/Name of Screening"]').html())
+      .toContain('<div class="c-gray"></div>')
+    expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
+      .toContain('<div class="c-gray"></div>')
+    expect(component.find('ShowField[label="Screening End Date/Time"]').html())
+      .toContain('<div class="c-gray"></div>')
+    expect(component.find('ShowField[label="Communication Method"]').html())
+      .toContain('<div class="c-gray"></div>')
   })
 })

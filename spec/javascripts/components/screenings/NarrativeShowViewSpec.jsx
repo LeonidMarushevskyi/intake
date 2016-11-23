@@ -25,14 +25,10 @@ describe('NarrativeShowView', () => {
     expect(component.find('EditLink').props().ariaLabel).toEqual('Edit narrative')
   })
 
-  it('renders the narrative label', () => {
-    const label = component.find('label')
-    expect(label.length).toEqual(1)
-    expect(label.text()).toEqual('Report Narrative')
-  })
-
-  it('renders the narrative value', () => {
-    expect(component.text()).toContain('some narrative')
+  it('renders the narrative show field', () => {
+    expect(component.find('ShowField').length).toEqual(1)
+    expect(component.find('ShowField[label="Report Narrative"]').html())
+      .toContain('some narrative')
   })
 
   it('calls the onEdit function when edit link is clicked', () => {

@@ -40,21 +40,16 @@ describe('ParticipanShowView', () => {
     expect(component.find('img').props().src).toEqual('/assets/default-profile.svg')
   })
 
-  it('renders the labels of the participant card', () => {
-    expect(component.find('label').length).toEqual(4)
-    expect(component.find('label').map((element) => element.text())).toEqual([
-      'Name',
-      'Gender',
-      'Date of birth',
-      'Social security number',
-    ])
-  })
-
-  it('renders the participant value fields', () => {
-    expect(component.find('.card-body').text()).toContain('Kevin McCallister')
-    expect(component.find('.card-body').text()).toContain('Male')
-    expect(component.find('.card-body').text()).toContain('11/16/1990')
-    expect(component.find('.card-body').text()).toContain('111223333')
+  it('renders the participant show fields', () => {
+    expect(component.find('ShowField').length).toEqual(4)
+    expect(component.find('ShowField[label="Name"]').html())
+      .toContain('Kevin McCallister')
+    expect(component.find('ShowField[label="Gender"]').html())
+      .toContain('Male')
+    expect(component.find('ShowField[label="Date of birth"]').html())
+      .toContain('11/16/1990')
+    expect(component.find('ShowField[label="Social security number"]').html())
+      .toContain('111223333')
   })
 
   it('calls the onEdit function when edit link is clicked', () => {
