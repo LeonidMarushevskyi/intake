@@ -6,7 +6,9 @@ feature 'Show Person' do
     person = FactoryGirl.create(
       :person,
       first_name: 'Homer',
+      middle_name: 'Jay',
       last_name: 'Simpson',
+      suffix: 'esq',
       gender: 'male',
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
@@ -26,7 +28,9 @@ feature 'Show Person' do
     visit person_path(id: person.id)
 
     expect(page).to have_content('Homer')
+    expect(page).to have_content('Jay')
     expect(page).to have_content('Simpson')
+    expect(page).to have_content('Esq')
     expect(page).to have_content('Male')
     expect(page).to have_content('05/29/1990')
     expect(page).to have_content('123-23-1234')

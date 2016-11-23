@@ -12,7 +12,9 @@ describe('PersonShowPage', () => {
       fetchPerson = jasmine.createSpy('fetchPerson')
       const person = Immutable.fromJS({
         first_name: 'Kevin',
+        middle_name: 'Culkin',
         last_name: 'McCallister',
+        suffix: 'phd',
         gender: 'male',
         date_of_birth: '11/16/1990',
         ssn: '111223333',
@@ -36,10 +38,12 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(9)
+      expect(component.find('label').length).toEqual(11)
       expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
+        'Middle Name',
         'Last Name',
+        'Suffix',
         'Date of birth',
         'Gender',
         'Social security number',
@@ -56,7 +60,9 @@ describe('PersonShowPage', () => {
 
     it('renders the person value fields', () => {
       expect(component.find('.card-body').text()).toContain('Kevin')
+      expect(component.find('.card-body').text()).toContain('Culkin')
       expect(component.find('.card-body').text()).toContain('McCallister')
+      expect(component.find('.card-body').text()).toContain('PhD')
       expect(component.find('.card-body').text()).toContain('Male')
       expect(component.find('.card-body').text()).toContain('11/16/1990')
       expect(component.find('.card-body').text()).toContain('111223333')

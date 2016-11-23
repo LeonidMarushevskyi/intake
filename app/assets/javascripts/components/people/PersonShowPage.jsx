@@ -2,6 +2,7 @@ import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
+import SUFFIX from 'Suffix'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
@@ -29,13 +30,21 @@ export class PersonShowPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-md-3'>
               <label className='no-gap'>First Name</label>
               <div className='c-gray'>{person.get('first_name')}</div>
             </div>
-            <div className='col-md-6'>
-              <label className='no-gap-top-desktop'>Last Name</label>
+            <div className='col-md-3'>
+              <label className='no-gap'>Middle Name</label>
+              <div className='c-gray'>{person.get('middle_name')}</div>
+            </div>
+            <div className='col-md-3'>
+              <label className='no-gap'>Last Name</label>
               <div className='c-gray'>{person.get('last_name')}</div>
+            </div>
+            <div className='col-md-3'>
+              <label className='no-gap-top-desktop'>Suffix</label>
+              <div className='c-gray'>{SUFFIX[person.get('suffix')]}</div>
             </div>
           </div>
           <div className='row gap-top'>
