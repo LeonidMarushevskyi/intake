@@ -13,12 +13,14 @@ feature 'Create Person' do
     )
     person = FactoryGirl.create(
       :person,
-      id: nil,
       date_of_birth: '05/29/1990',
       first_name: 'Homer',
       gender: 'male',
+      id: nil,
       last_name: 'Simpson',
+      middle_name: 'Jay',
       ssn: '123-23-1234',
+      suffix: 'esq',
       address: address
     )
 
@@ -26,7 +28,9 @@ feature 'Create Person' do
 
     click_link 'Create Person'
     fill_in 'First Name', with: 'Homer'
+    fill_in 'Middle Name', with: 'Jay'
     fill_in 'Last Name', with: 'Simpson'
+    select 'Esq', from: 'Suffix'
     select 'Male', from: 'Gender'
     fill_in 'Date of birth', with: '05/29/1990'
     fill_in 'Social security number', with: '123-23-1234'

@@ -2,6 +2,7 @@ import * as personActions from 'actions/personActions'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
+import SUFFIX from 'Suffix'
 import US_STATE from 'USState'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -14,6 +15,7 @@ export class PersonNewPage extends React.Component {
       person: Immutable.fromJS({
         first_name: '',
         last_name: '',
+        suffix: '',
         gender: '',
         date_of_birth: '',
         ssn: '',
@@ -54,7 +56,7 @@ export class PersonNewPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-md-3'>
               <label className='no-gap' htmlFor='first_name'>First Name</label>
               <input
                 type='text'
@@ -62,13 +64,31 @@ export class PersonNewPage extends React.Component {
                 onChange={(event) => this.setField(['first_name'], event.target.value)}
               />
             </div>
-            <div className='col-md-6'>
-              <label className='no-gap-top-desktop' htmlFor='last_name'>Last Name</label>
+            <div className='col-md-3'>
+              <label className='no-gap' htmlFor='middle_name'>Middle Name</label>
+              <input
+                type='text'
+                id='middle_name'
+                onChange={(event) => this.setField(['middle_name'], event.target.value)}
+              />
+            </div>
+            <div className='col-md-3'>
+              <label className='no-gap' htmlFor='last_name'>Last Name</label>
               <input
                 type='text'
                 id='last_name'
                 onChange={(event) => this.setField(['last_name'], event.target.value)}
               />
+            </div>
+            <div className='col-md-3'>
+              <label className='no-gap-top-desktop' htmlFor='suffix'>Suffix</label>
+              <select
+                id='suffix'
+                onChange={(event) => this.setField(['suffix'], event.target.value)}
+              >
+                <option key='' value=''></option>
+                {Object.keys(SUFFIX).map((item) => <option key={item} value={item}>{SUFFIX[item]}</option>)}
+              </select>
             </div>
           </div>
           <div className='row'>

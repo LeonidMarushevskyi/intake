@@ -21,10 +21,12 @@ describe('PersonNewPage', () => {
     })
 
     it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(9)
+      expect(component.find('label').length).toEqual(11)
       expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
+        'Middle Name',
         'Last Name',
+        'Suffix',
         'Date of birth',
         'Gender',
         'Social security number',
@@ -36,11 +38,11 @@ describe('PersonNewPage', () => {
     })
 
     it('renders the person input fields', () => {
-      expect(component.find('input').length).toEqual(7)
+      expect(component.find('input').length).toEqual(8)
     })
 
     it('renders the person select fields', () => {
-      expect(component.find('select').length).toEqual(2)
+      expect(component.find('select').length).toEqual(3)
     })
 
     it('renders the save button', () => {

@@ -7,7 +7,9 @@ describe Person do
       attributes = {
         id: 1,
         first_name: 'Homer',
+        middle_name: 'Jay',
         last_name: 'Simpson',
+        suffix: 'esq',
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
@@ -24,7 +26,9 @@ describe Person do
       ).to eq({
         id: 1,
         first_name: 'Homer',
+        middle_name: 'Jay',
         last_name: 'Simpson',
+        suffix: 'esq',
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',

@@ -60,7 +60,9 @@ class PeopleController < ApplicationController
     params.require(:person).permit(
       :id,
       :first_name,
+      :middle_name,
       :last_name,
+      :suffix,
       :gender,
       :date_of_birth,
       :ssn,

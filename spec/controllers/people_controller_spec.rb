@@ -14,7 +14,9 @@ describe PeopleController do
       {
         id: '',
         first_name: 'Homer',
+        middle_name: 'Jay',
         last_name: 'Simpson',
+        suffix: 'esq',
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
