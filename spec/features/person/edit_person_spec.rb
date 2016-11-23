@@ -12,10 +12,12 @@ feature 'Edit Person' do
     )
     FactoryGirl.create(
       :person,
-      first_name: 'Homer',
-      last_name: 'Simpson',
-      gender: 'male',
       date_of_birth: '05/29/1990',
+      first_name: 'Homer',
+      gender: 'male',
+      last_name: 'Simpson',
+      middle_name: 'Jay',
+      suffix: 'esq',
       ssn: '123-23-1234',
       address: address
     )
@@ -37,7 +39,9 @@ feature 'Edit Person' do
 
     within '.card-body' do
       expect(page).to have_field('First Name', with: 'Homer')
+      expect(page).to have_field('Middle Name', with: 'Jay')
       expect(page).to have_field('Last Name', with: 'Simpson')
+      expect(page).to have_field('Suffix', with: 'esq')
       expect(page).to have_field('Gender', with: 'male')
       expect(page).to have_field('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Social security number', with: '123-23-1234')

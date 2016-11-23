@@ -25,10 +25,12 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(9)
+      expect(component.find('label').length).toEqual(11)
       expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
         'First Name',
+        'Middle Name',
         'Last Name',
+        'Suffix',
         'Date of birth',
         'Gender',
         'Social security number',
@@ -44,7 +46,9 @@ describe('PersonEditPage', () => {
         person: Immutable.fromJS({
           id: 1,
           first_name: 'Kevin',
+          middle_name: 'Culkin',
           last_name: 'McCallister',
+          suffix: 'PhD',
           gender: 'male',
           date_of_birth: '11/16/1990',
           ssn: '111223333',
@@ -59,7 +63,9 @@ describe('PersonEditPage', () => {
       })
 
       expect(component.find('#first_name').props().value).toEqual('Kevin')
+      expect(component.find('#middle_name').props().value).toEqual('Culkin')
       expect(component.find('#last_name').props().value).toEqual('McCallister')
+      expect(component.find('#suffix').props().value).toEqual('PhD')
       expect(component.find('#gender').props().value).toEqual('male')
       expect(component.find('#date_of_birth').props().value).toEqual('11/16/1990')
       expect(component.find('#ssn').props().value).toEqual('111223333')
