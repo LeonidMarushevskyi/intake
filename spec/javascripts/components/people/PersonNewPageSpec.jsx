@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import {browserHistory} from 'react-router'
 import {PersonNewPage} from 'components/people/PersonNewPage'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('PersonNewPage', () => {
   let component
@@ -56,7 +56,7 @@ describe('PersonNewPage', () => {
         person: Immutable.Map(),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
       component.setState({person: Immutable.fromJS(personProps)})
       component.find('button.btn-primary').simulate('click')
       expect(createPerson).toHaveBeenCalledWith({person: personProps})
@@ -67,7 +67,7 @@ describe('PersonNewPage', () => {
         person: Immutable.fromJS({id: 1}),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
       component.find('button.btn-primary').simulate('click')
       expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
