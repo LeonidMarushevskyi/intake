@@ -72,6 +72,11 @@ class PeopleController < ApplicationController
         :city,
         :state,
         :zip
+      ],
+      phone_numbers: [
+        :id,
+        :phone_number,
+        :phone_number_type
       ]
     )
   end

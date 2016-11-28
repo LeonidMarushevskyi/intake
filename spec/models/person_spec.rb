@@ -19,7 +19,11 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [
+          { id: 1, phone_number: '111-111-1111', phone_number_type: 'cell' },
+          { id: 2, phone_number: '222-222-2222', phone_number_type: 'home' }
+        ]
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json
@@ -38,7 +42,11 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [
+          { id: 1, phone_number: '111-111-1111', phone_number_type: 'cell', created_at: nil, updated_at: nil},
+          { id: 2, phone_number: '222-222-2222', phone_number_type: 'home', created_at: nil, updated_at: nil }
+        ]
       }.with_indifferent_access)
     end
   end
