@@ -8,31 +8,8 @@ describe('ReferralInformationEditView', () => {
   let onChange
   beforeEach(() => {
     onChange = jasmine.createSpy()
-    component = shallow(<ReferralInformationEditView screening={Immutable.fromJS({})} onChange={onChange} />)
-  })
-
-  it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toEqual('Referral Information')
-  })
-
-  it('render the labels', () => {
-    expect(component.find('label').length).toEqual(9)
-    expect(component.find('label').map((element) => element.text())).toEqual([
-      'Incident Date',
-      'Incident County',
-      'Address',
-      'City',
-      'State',
-      'Zip',
-      'Location Type',
-      'Response Time',
-      'Screening Decision',
-    ])
-  })
-
-  it('renders the fields', () => {
     const screening = Immutable.fromJS({
-     incident_date: '2006-01-21',
+      incident_date: '2006-01-21',
       incident_county: 'alpine',
       address: Immutable.fromJS({
         id: '2',
@@ -46,25 +23,31 @@ describe('ReferralInformationEditView', () => {
       screening_decision: 'accept_for_investigation',
     })
     component = shallow(<ReferralInformationEditView screening={screening} onChange={onChange} />)
+  })
 
-    const inputs = component.find('#referral-information-card input')
-    expect(inputs.length).toEqual(5)
-    expect(inputs.map((element) => element.props().value)).toEqual([
-      '2006-01-21',
-      '2',
-      '1500 7th St',
-      'Sacramento',
-       95814,
-    ])
-    const selects = component.find('#referral-information-card select')
-    expect(selects.length).toEqual(5)
-    expect(selects.map((element) => element.props().value)).toEqual([
-      'alpine',
-      'CA',
-      'Juvenile Detention',
-      'within_twenty_four_hours',
-      'accept_for_investigation',
-    ])
+  it('renders the card header', () => {
+    expect(component.find('.card-header').text()).toEqual('Referral Information')
+  })
+
+  it('renders the input fields', () => {
+    expect(component.find('DateField[label="Incident Date"]').props().value)
+      .toEqual('2006-01-21')
+    expect(component.find('SelectField[label="Incident County"]').props().value)
+      .toEqual('alpine')
+    expect(component.find('InputField[label="Address"]').props().value)
+      .toEqual('1500 7th St')
+    expect(component.find('InputField[label="City"]').props().value)
+      .toEqual('Sacramento')
+    expect(component.find('InputField[label="Zip"]').props().value)
+      .toEqual(95814)
+    expect(component.find('SelectField[label="State"]').props().value)
+      .toEqual('CA')
+    expect(component.find('SelectField[label="Location Type"]').props().value)
+      .toEqual('Juvenile Detention')
+    expect(component.find('SelectField[label="Response Time"]').props().value)
+      .toEqual('within_twenty_four_hours')
+    expect(component.find('SelectField[label="Screening Decision"]').props().value)
+      .toEqual('accept_for_investigation')
   })
 
   it('fires the onChange call when a field changes', () => {
