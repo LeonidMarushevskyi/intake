@@ -11,6 +11,7 @@ describe('SelectField', () => {
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
       label: 'this is my label',
+      value: 'this-is-my-value',
       onChange: onChange,
     }
     component = shallow(
@@ -37,6 +38,7 @@ describe('SelectField', () => {
   it('renders the select element and children', () => {
     const selectElement = component.find('select')
     expect(selectElement.length).toEqual(1)
+    expect(selectElement.props().value).toEqual('this-is-my-value')
     expect(selectElement.find('option').length).toEqual(1)
   })
 
