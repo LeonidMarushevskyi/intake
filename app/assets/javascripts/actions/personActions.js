@@ -20,7 +20,7 @@ export function createPersonSuccess(person) {
 
 export function createPerson(person) {
   return (dispatch) =>
-    Utils.request('POST', '/people.json', person)
+    Utils.request('POST', '/people.json', JSON.stringify(person), {contentType: 'application/json'})
       .then((jsonResponse) => {
         dispatch(createPersonSuccess(Immutable.fromJS(jsonResponse)))
       })

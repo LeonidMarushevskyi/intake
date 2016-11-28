@@ -42,7 +42,12 @@ describe('person actions', () => {
       const store = mockStore()
 
       store.dispatch(personActions.createPerson({person: person}))
-      expect(Utils.request).toHaveBeenCalledWith('POST', '/people.json', {person: person})
+      expect(Utils.request).toHaveBeenCalledWith(
+        'POST',
+        '/people.json',
+        JSON.stringify({person: person}),
+        {contentType: 'application/json'}
+      )
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
