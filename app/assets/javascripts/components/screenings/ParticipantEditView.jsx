@@ -1,5 +1,8 @@
+import DateField from 'components/common/DateField'
 import Gender from 'Gender'
+import InputField from 'components/common/InputField'
 import React from 'react'
+import SelectField from 'components/common/SelectField'
 import {Link} from 'react-router'
 
 const ParticipantEditView = ({participant}) => (
@@ -12,58 +15,50 @@ const ParticipantEditView = ({participant}) => (
     </div>
     <div className='card-body'>
       <div className='row'>
-        <div className='col-md-6'>
-          <label className='no-gap' htmlFor='first_name'>First Name</label>
-          <input
-            type='text'
-            id='first_name'
-            value={participant.get('first_name') || ''}
-            onChange={() => null}
-          />
-        </div>
-        <div className='col-md-6'>
-          <label className='no-gap-top-desktop' htmlFor='last_name'>Last Name</label>
-          <input
-            type='text'
-            id='last_name'
-            value={participant.get('last_name') || ''}
-            onChange={() => null}
-          />
-        </div>
+        <InputField
+          wrapperClassName='col-md-6'
+          labelClassName='no-gap'
+          id='first_name'
+          label='First Name'
+          value={participant.get('first_name') || ''}
+          onChange={() => null}
+        />
+        <InputField
+          wrapperClassName='col-md-6'
+          labelClassName='no-gap-top-desktop'
+          id='last_name'
+          label='Last Name'
+          value={participant.get('last_name') || ''}
+          onChange={() => null}
+        />
       </div>
       <div className='row'>
-        <div className='col-md-6'>
-          <label htmlFor='date_of_birth'>Date of birth</label>
-          <input
-            type='date'
-            className='input-type-date'
-            id='date_of_birth'
-            value={participant.get('date_of_birth') || ''}
-            onChange={() => null}
-          />
-        </div>
-        <div className='col-md-6'>
-          <label htmlFor='gender'>Gender</label>
-          <select
-            id='gender'
-            value={participant.get('gender') || ''}
-            onChange={() => null}
-          >
-            <option key='' value=''></option>
-            {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
-          </select>
-        </div>
+        <DateField
+          wrapperClassName='col-md-6'
+          id='date_of_birth'
+          label='Date of birth'
+          value={participant.get('date_of_birth') || ''}
+          onChange={() => null}
+        />
+        <SelectField
+          wrapperClassName='col-md-6'
+          id='gender'
+          label='Gender'
+          value={participant.get('gender') || ''}
+          onChange={() => null}
+        >
+          <option key='' value=''></option>
+          {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
+        </SelectField>
       </div>
       <div className='row'>
-        <div className='col-md-6'>
-          <label htmlFor='ssn'>Social security number</label>
-          <input
-            type='text'
-            id='ssn'
-            value={participant.get('ssn') || ''}
-            onChange={() => null}
-          />
-        </div>
+        <InputField
+          wrapperClassName='col-md-6'
+          id='ssn'
+          label='Social security number'
+          value={participant.get('ssn') || ''}
+          onChange={() => null}
+        />
       </div>
       <div className='row'>
         <div className='centered'>

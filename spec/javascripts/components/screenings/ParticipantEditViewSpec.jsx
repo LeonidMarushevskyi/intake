@@ -30,29 +30,17 @@ describe('ParticipantEditView', () => {
     expect(component.find('.fa-times').length).toEqual(1)
   })
 
-  it('renders the participant inputs', () => {
-    expect(component.find('input').length).toEqual(4)
-    expect(component.find('input').nodes.map((node) => node.props.value)).toEqual([
-      'Lisa',
-      'Simpson',
-      '2016-12-31',
-      'ssn-1',
-    ])
-  })
-
-  it('renders the participant gender', () => {
-    expect(component.find('select').props().value).toEqual('female')
-  })
-
-  it('renders the labels of the participant card ', () => {
-    expect(component.find('label').length).toEqual(5)
-    expect(component.find('label').map((element) => element.text())).toEqual([
-      'First Name',
-      'Last Name',
-      'Date of birth',
-      'Gender',
-      'Social security number',
-    ])
+  it('renders the input fields', () => {
+    expect(component.find('InputField[label="First Name"]').props().value)
+      .toEqual('Lisa')
+    expect(component.find('InputField[label="Last Name"]').props().value)
+      .toEqual('Simpson')
+    expect(component.find('DateField[label="Date of birth"]').props().value)
+      .toEqual('2016-12-31')
+    expect(component.find('SelectField[label="Gender"]').props().value)
+      .toEqual('female')
+    expect(component.find('InputField[label="Social security number"]').props().value)
+      .toEqual('ssn-1')
   })
 
   it('renders the save button', () => {
