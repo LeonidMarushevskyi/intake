@@ -25,6 +25,7 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="Middle Name"]').length).toEqual(1)
       expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
       expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
+      expect(component.find('PhoneNumbersEditView').length).toEqual(1)
       expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
       expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
       expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
