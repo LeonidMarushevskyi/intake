@@ -40,11 +40,6 @@ const ReferralInformationEditView = ({screening, onChange}) => (
 
       <fieldset className='double-gap-top'>
         <legend>Incident Address</legend>
-        <input
-          type='hidden'
-          id='address_id'
-          value={screening.getIn(['address', 'id']) || ''}
-        />
         <div className='row'>
           <InputField
             wrapperClassName='col-md-6'
