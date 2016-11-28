@@ -1,8 +1,11 @@
 import * as personActions from 'actions/personActions'
+import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
+import InputField from 'components/common/InputField'
 import React from 'react'
 import SUFFIX from 'Suffix'
+import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 import {Link, browserHistory} from 'react-router'
 import {bindActionCreators} from 'redux'
@@ -54,120 +57,104 @@ export class PersonEditPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-3'>
-              <label className='no-gap' htmlFor='first_name'>First Name</label>
-              <input
-                type='text'
-                id='first_name'
-                value={person.get('first_name') || ''}
-                onChange={(event) => this.setField(['first_name'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-3'>
-              <label className='no-gap' htmlFor='middle_name'>Middle Name</label>
-              <input
-                type='text'
-                id='middle_name'
-                value={person.get('middle_name') || ''}
-                onChange={(event) => this.setField(['middle_name'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-3'>
-              <label className='no-gap' htmlFor='last_name'>Last Name</label>
-              <input
-                type='text'
-                id='last_name'
-                value={person.get('last_name') || ''}
-                onChange={(event) => this.setField(['last_name'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-3'>
-              <label className='no-gap-top-desktop' htmlFor='suffix'>Suffix</label>
-              <select
-                id='suffix'
-                value={person.get('suffix') || ''}
-                onChange={(event) => this.setField(['suffix'], event.target.value)}
-              >
-                <option key='' value=''></option>
-                {Object.keys(SUFFIX).map((item) => <option key={item} value={item}>{SUFFIX[item]}</option>)}
-              </select>
-            </div>
+            <InputField
+              wrapperClassName='col-md-3'
+              labelClassName='no-gap'
+              id='first_name'
+              label='First Name'
+              value={person.get('first_name') || ''}
+              onChange={(event) => this.setField(['first_name'], event.target.value)}
+            />
+            <InputField
+              wrapperClassName='col-md-3'
+              labelClassName='no-gap'
+              id='middle_name'
+              label='Middle Name'
+              value={person.get('middle_name') || ''}
+              onChange={(event) => this.setField(['middle_name'], event.target.value)}
+            />
+            <InputField
+              wrapperClassName='col-md-3'
+              labelClassName='no-gap'
+              id='last_name'
+              label='Last Name'
+              value={person.get('last_name') || ''}
+              onChange={(event) => this.setField(['last_name'], event.target.value)}
+            />
+            <SelectField
+              wrapperClassName='col-md-3'
+              labelClassName='no-gap-top-desktop'
+              id='suffix'
+              label='Suffix'
+              value={person.get('suffix') || ''}
+              onChange={(event) => this.setField(['suffix'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(SUFFIX).map((item) => <option key={item} value={item}>{SUFFIX[item]}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='date_of_birth'>Date of birth</label>
-              <input
-                type='date'
-                className='input-type-date'
-                id='date_of_birth'
-                value={person.get('date_of_birth') || ''}
-                onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='gender'>Gender</label>
-              <select
-                id='gender'
-                value={person.get('gender') || ''}
-                onChange={(event) => this.setField(['gender'], event.target.value)}
-              >
-                <option key='' value=''></option>
-                {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
-              </select>
-            </div>
+            <DateField
+              wrapperClassName='col-md-6'
+              id='date_of_birth'
+              label='Date of birth'
+              value={person.get('date_of_birth') || ''}
+              onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
+            />
+            <SelectField
+              wrapperClassName='col-md-6'
+              id='gender'
+              label='Gender'
+              value={person.get('gender') || ''}
+              onChange={(event) => this.setField(['gender'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='ssn'>Social security number</label>
-              <input
-                type='text'
-                id='ssn'
-                value={person.get('ssn') || ''}
-                onChange={(event) => this.setField(['ssn'], event.target.value)}
-              />
-            </div>
+            <InputField
+              wrapperClassName='col-md-6'
+              id='ssn'
+              label='Social security number'
+              value={person.get('ssn') || ''}
+              onChange={(event) => this.setField(['ssn'], event.target.value)}
+            />
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='street_address'>Address</label>
-              <input
-                type='text'
-                id='street_address'
-                value={person.getIn(['address', 'street_address']) || ''}
-                onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='city'>City</label>
-              <input
-                type='text'
-                id='city'
-                value={person.getIn(['address', 'city']) || ''}
-                onChange={(event) => this.setField(['address', 'city'], event.target.value)}
-              />
-            </div>
+            <InputField
+              wrapperClassName='col-md-6'
+              id='street_address'
+              label='Address'
+              value={person.getIn(['address', 'street_address']) || ''}
+              onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
+            />
+            <InputField
+              wrapperClassName='col-md-6'
+              id='city'
+              label='City'
+              value={person.getIn(['address', 'city']) || ''}
+              onChange={(event) => this.setField(['address', 'city'], event.target.value)}
+            />
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='state'>State</label>
-              <select
-                id='state'
-                value={person.getIn(['address', 'state']) || ''}
-                onChange={(event) => this.setField(['address', 'state'], event.target.value)}
-              >
-                <option key= '' value=''></option>
-                {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
-              </select>
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='zip'>Zip</label>
-              <input
-                type='text'
-                id='zip'
-                value={person.getIn(['address', 'zip']) || ''}
-                onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
-              />
-            </div>
+            <SelectField
+              wrapperClassName='col-md-6'
+              id='state'
+              label='State'
+              value={person.getIn(['address', 'state']) || ''}
+              onChange={(event) => this.setField(['address', 'state'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
+            </SelectField>
+            <InputField
+              wrapperClassName='col-md-6'
+              id='zip'
+              label='Zip'
+              value={person.getIn(['address', 'zip']) || ''}
+              onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
+            />
           </div>
           <div className='row'>
             <div className='centered'>

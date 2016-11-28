@@ -2,43 +2,25 @@ import Immutable from 'immutable'
 import React from 'react'
 import {PersonEditPage} from 'components/people/PersonEditPage'
 import {browserHistory} from 'react-router'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('PersonEditPage', () => {
   let component
-  let actionsSpy
   describe('render', () => {
     beforeEach(() => {
-      actionsSpy = {
-        fetchPerson: jasmine.createSpy(),
+      const actionsSpy = {
+        fetchPerson: () => null,
       }
       const props = {
         params: {id: 1},
         person: Immutable.Map(),
         actions: actionsSpy,
       }
-      component = mount(<PersonEditPage {...props} />)
+      component = shallow(<PersonEditPage {...props} />)
     })
 
     it('renders the card header', () => {
       expect(component.find('.card-header').text()).toEqual('Edit Basic Demographics Card')
-    })
-
-    it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(11)
-      expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
-        'First Name',
-        'Middle Name',
-        'Last Name',
-        'Suffix',
-        'Date of birth',
-        'Gender',
-        'Social security number',
-        'Address',
-        'City',
-        'State',
-        'Zip',
-      ])
     })
 
     it('renders the person input fields', () => {
@@ -48,7 +30,7 @@ describe('PersonEditPage', () => {
           first_name: 'Kevin',
           middle_name: 'Culkin',
           last_name: 'McCallister',
-          suffix: 'PhD',
+          suffix: 'phd',
           gender: 'male',
           date_of_birth: '11/16/1990',
           ssn: '111223333',
@@ -62,17 +44,17 @@ describe('PersonEditPage', () => {
         }),
       })
 
-      expect(component.find('#first_name').props().value).toEqual('Kevin')
-      expect(component.find('#middle_name').props().value).toEqual('Culkin')
-      expect(component.find('#last_name').props().value).toEqual('McCallister')
-      expect(component.find('#suffix').props().value).toEqual('PhD')
-      expect(component.find('#gender').props().value).toEqual('male')
-      expect(component.find('#date_of_birth').props().value).toEqual('11/16/1990')
-      expect(component.find('#ssn').props().value).toEqual('111223333')
-      expect(component.find('#street_address').props().value).toEqual('671 Lincoln Avenue')
-      expect(component.find('#city').props().value).toEqual('Winnetka')
-      expect(component.find('#state').props().value).toEqual('IL')
-      expect(component.find('#zip').props().value).toEqual(60093)
+      expect(component.find('InputField[label="First Name"]').props().value).toEqual('Kevin')
+      expect(component.find('InputField[label="Middle Name"]').props().value).toEqual('Culkin')
+      expect(component.find('InputField[label="Last Name"]').props().value).toEqual('McCallister')
+      expect(component.find('SelectField[label="Suffix"]').props().value).toEqual('phd')
+      expect(component.find('DateField[label="Date of birth"]').props().value).toEqual('11/16/1990')
+      expect(component.find('SelectField[label="Gender"]').props().value).toEqual('male')
+      expect(component.find('InputField[label="Social security number"]').props().value).toEqual('111223333')
+      expect(component.find('InputField[label="Address"]').props().value).toEqual('671 Lincoln Avenue')
+      expect(component.find('InputField[label="City"]').props().value).toEqual('Winnetka')
+      expect(component.find('SelectField[label="State"]').props().value).toEqual('IL')
+      expect(component.find('InputField[label="Zip"]').props().value).toEqual(60093)
     })
 
     it('renders the save button', () => {
@@ -80,16 +62,28 @@ describe('PersonEditPage', () => {
     })
 
     it('renders the cancel link', () => {
-      expect(component.find('Link').text()).toEqual('Cancel')
+      expect(component.find('Link').html()).toContain('Cancel')
       expect(component.find('Link').props().to).toEqual('/people/1')
     })
+  })
 
+  describe('componentDidMount', () => {
     it('dispatches fetchPerson', () => {
+      const actionsSpy = {
+        fetchPerson: jasmine.createSpy('fetchPerson'),
+      }
+      const props = {
+        params: {id: 1},
+        person: Immutable.Map(),
+        actions: actionsSpy,
+      }
+      component = mount(<PersonEditPage {...props} />)
       expect(actionsSpy.fetchPerson).toHaveBeenCalledWith(1)
     })
   })
 
   describe('update', () => {
+    let actionsSpy
     beforeEach(() => {
       actionsSpy = {
         fetchPerson: jasmine.createSpy('fetchPerson'),

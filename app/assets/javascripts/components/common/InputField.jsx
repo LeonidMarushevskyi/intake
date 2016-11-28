@@ -13,6 +13,9 @@ InputField.propTypes = {
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func.isRequired,
-  value: React.PropTypes.string,
+  value: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number
+  ]),
 }
 export default InputField
