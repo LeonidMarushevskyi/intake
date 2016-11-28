@@ -16,17 +16,18 @@ export class PersonNewPage extends React.Component {
     super(...arguments)
     this.state = {
       person: Immutable.fromJS({
-        first_name: '',
-        last_name: '',
-        name_suffix: '',
-        gender: '',
-        date_of_birth: '',
-        ssn: '',
+        first_name: null,
+        middle_name: null,
+        last_name: null,
+        name_suffix: null,
+        gender: null,
+        date_of_birth: null,
+        ssn: null,
         address: {
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
+          street_address: null,
+          city: null,
+          state: null,
+          zip: null,
         },
       }),
     }
