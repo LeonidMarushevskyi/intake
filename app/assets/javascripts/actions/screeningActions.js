@@ -15,7 +15,7 @@ export function create() {
   return Utils.request('POST', '/screenings.json')
 }
 
-function fetchScreeningSuccess(screening) {
+export function fetchScreeningSuccess(screening) {
   return {type: types.FETCH_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
 }
 
