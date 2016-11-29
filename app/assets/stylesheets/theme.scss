@@ -759,6 +759,19 @@ tbody tr th {
       margin-bottom: $base-spacing;
       margin-top: $double-spacing;
     }
+
+    @media screen and (max-width: 767px) {
+      .centered {
+        margin-left: $base-spacing;
+        margin-right: $base-spacing;
+      }
+      .btn {
+        margin-bottom: 0;
+        margin-top: $base-spacing;
+      }
+    }
+
+
   }
 
   &.edit {
