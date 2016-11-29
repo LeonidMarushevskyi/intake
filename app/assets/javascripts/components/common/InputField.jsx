@@ -1,14 +1,14 @@
 import React from 'react'
 
-const InputField = ({wrapperClassName, labelClassName, id, label, onChange, value}) => (
-  <div className={wrapperClassName}>
+const InputField = ({gridClassName, labelClassName, id, label, onChange, value}) => (
+  <div className={gridClassName}>
     <label className={labelClassName} htmlFor={id}>{label}</label>
     <input id={id} type='text' value={value} onChange={onChange}/>
   </div>
 )
 
 InputField.propTypes = {
-  wrapperClassName: React.PropTypes.string,
+  gridClassName: React.PropTypes.string,
   labelClassName: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,

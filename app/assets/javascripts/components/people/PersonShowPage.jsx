@@ -31,45 +31,45 @@ export class PersonShowPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <ShowField wrapperClassName='col-md-3' labelClassName='no-gap' label='First Name'>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='First Name'>
               {person.get('first_name')}
             </ShowField>
-            <ShowField wrapperClassName='col-md-3' labelClassName='no-gap' label='Middle Name'>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Middle Name'>
               {person.get('middle_name')}
             </ShowField>
-            <ShowField wrapperClassName='col-md-3' labelClassName='no-gap' label='Last Name'>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Last Name'>
               {person.get('last_name')}
             </ShowField>
-            <ShowField wrapperClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
               {SUFFIX[person.get('suffix')]}
             </ShowField>
           </div>
           <div className='row gap-top'>
-            <ShowField wrapperClassName='col-md-6' label='Date of birth'>
+            <ShowField gridClassName='col-md-6' label='Date of birth'>
               {person.get('date_of_birth')}
             </ShowField>
-            <ShowField wrapperClassName='col-md-6' label='Gender'>
+            <ShowField gridClassName='col-md-6' label='Gender'>
               {Gender[person.get('gender')]}
             </ShowField>
           </div>
           <div className='row gap-top'>
-            <ShowField wrapperClassName='col-md-6' label='Social security number'>
+            <ShowField gridClassName='col-md-6' label='Social security number'>
               {person.get('ssn')}
             </ShowField>
           </div>
           <div className='row gap-top'>
-            <ShowField wrapperClassName='col-md-6' label='Address'>
+            <ShowField gridClassName='col-md-6' label='Address'>
               {person.getIn(['address', 'street_address'])}
             </ShowField>
-            <ShowField wrapperClassName='col-md-6' label='City'>
+            <ShowField gridClassName='col-md-6' label='City'>
               {person.getIn(['address', 'city'])}
             </ShowField>
           </div>
           <div className='row gap-top'>
-            <ShowField wrapperClassName='col-md-6' label='State'>
+            <ShowField gridClassName='col-md-6' label='State'>
               {US_STATE[person.getIn(['address', 'state'])]}
             </ShowField>
-            <ShowField wrapperClassName='col-md-6' label='Zip'>
+            <ShowField gridClassName='col-md-6' label='Zip'>
               {person.getIn(['address', 'zip'])}
             </ShowField>
           </div>

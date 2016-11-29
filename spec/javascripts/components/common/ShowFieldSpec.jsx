@@ -6,7 +6,7 @@ describe('ShowField', () => {
   let component
   beforeEach(() => {
     const props = {
-      wrapperClassName: 'myWrapperTest',
+      gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       label: 'this is my label',
     }

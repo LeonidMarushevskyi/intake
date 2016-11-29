@@ -7,7 +7,7 @@ describe('SelectField', () => {
   let onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
     const props = {
-      wrapperClassName: 'myWrapperTest',
+      gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
       label: 'this is my label',

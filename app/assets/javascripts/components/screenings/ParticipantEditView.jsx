@@ -16,7 +16,7 @@ const ParticipantEditView = ({participant}) => (
     <div className='card-body'>
       <div className='row'>
         <InputField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           labelClassName='no-gap'
           id='first_name'
           label='First Name'
@@ -24,7 +24,7 @@ const ParticipantEditView = ({participant}) => (
           onChange={() => null}
         />
         <InputField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           labelClassName='no-gap-top-desktop'
           id='last_name'
           label='Last Name'
@@ -34,14 +34,14 @@ const ParticipantEditView = ({participant}) => (
       </div>
       <div className='row'>
         <DateField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='date_of_birth'
           label='Date of birth'
           value={participant.get('date_of_birth') || ''}
           onChange={() => null}
         />
         <SelectField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='gender'
           label='Gender'
           value={participant.get('gender') || ''}
@@ -53,7 +53,7 @@ const ParticipantEditView = ({participant}) => (
       </div>
       <div className='row'>
         <InputField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='ssn'
           label='Social security number'
           value={participant.get('ssn') || ''}

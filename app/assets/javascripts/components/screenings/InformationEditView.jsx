@@ -12,7 +12,7 @@ const InformationEditView = ({screening, onChange}) => (
     <div className='card-body'>
       <div className='row'>
         <InputField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           labelClassName='no-gap'
           id='name'
           label='Title/Name of Screening'
@@ -23,14 +23,14 @@ const InformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <DateField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='started_at'
           label='Screening Start Date/Time'
           value={screening.get('started_at') || ''}
           onChange={(event) => onChange(['started_at'], event.target.value)}
         />
         <DateField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='ended_at'
           label='Screening End Date/Time'
           value={screening.get('ended_at') || ''}
@@ -39,7 +39,7 @@ const InformationEditView = ({screening, onChange}) => (
         </div>
         <div className='row'>
           <SelectField
-            wrapperClassName='col-md-6'
+            gridClassName='col-md-6'
             id='communication_method'
             label='Communication Method'
             value={screening.get('communication_method') || ''}

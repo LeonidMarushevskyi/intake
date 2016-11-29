@@ -14,20 +14,20 @@ const InformationShowView = ({screening}) => (
     </div>
     <div className='card-body'>
       <div className='row'>
-        <ShowField wrapperClassName='col-md-6' labelClassName='no-gap' label='Title/Name of Screening'>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField wrapperClassName='col-md-6' labelClassName='no-gap' label='Screening Start Date/Time'>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Screening Start Date/Time'>
           {parseDateTime(screening.get('started_at'))}
         </ShowField>
-        <ShowField wrapperClassName='col-md-6' labelClassName='no-gap' label='Screening End Date/Time'>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Screening End Date/Time'>
           {parseDateTime(screening.get('ended_at'))}
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField wrapperClassName='col-md-6' labelClassName='no-gap' label='Communication Method'>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Communication Method'>
           {COMMUNICATION_METHOD[screening.get('communication_method')]}
         </ShowField>
       </div>

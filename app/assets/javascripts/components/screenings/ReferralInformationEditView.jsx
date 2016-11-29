@@ -17,7 +17,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
     <div className='card-body'>
       <div className='row'>
         <DateField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           labelClassName='no-gap'
           id='incident_date'
           label='Incident Date'
@@ -27,7 +27,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <SelectField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='incident_county'
           label='Incident County'
           value={screening.get('incident_county') || ''}
@@ -42,7 +42,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
         <legend>Incident Address</legend>
         <div className='row'>
           <InputField
-            wrapperClassName='col-md-6'
+            gridClassName='col-md-6'
             labelClassName='no-gap'
             id='street_address'
             label='Address'
@@ -50,7 +50,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             onChange={(event) => onChange(['address', 'street_address'], event.target.value)}
           />
           <InputField
-            wrapperClassName='col-md-6'
+            gridClassName='col-md-6'
             labelClassName='no-gap'
             id='city'
             label= 'City'
@@ -60,7 +60,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
         </div>
         <div className='row'>
           <SelectField
-            wrapperClassName='col-md-6'
+            gridClassName='col-md-6'
             id='state'
             label='State'
             value={screening.getIn(['address', 'state']) || ''}
@@ -70,7 +70,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
           </SelectField>
           <InputField
-            wrapperClassName='col-md-6'
+            gridClassName='col-md-6'
             id='zip'
             label='Zip'
             value={screening.getIn(['address', 'zip']) || ''}
@@ -80,7 +80,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </fieldset>
       <div className='row double-gap-top'>
         <SelectField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='location_type'
           label='Location Type'
           value={screening.get('location_type')  || ''}
@@ -98,7 +98,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <SelectField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='response_time'
           label='Response Time'
           value={screening.get('response_time') || ''}
@@ -110,7 +110,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
       </div>
       <div className='row'>
         <SelectField
-          wrapperClassName='col-md-6'
+          gridClassName='col-md-6'
           id='screening_decision'
           label= 'Screening Decision'
           value={screening.get('screening_decision') || ''}

@@ -1,14 +1,14 @@
 import React from 'react'
 
-const SelectField = ({wrapperClassName, labelClassName, id, label, value, onChange, children}) => (
-  <div className={wrapperClassName}>
+const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, children}) => (
+  <div className={gridClassName}>
     <label className={labelClassName} htmlFor={id}>{label}</label>
     <select id={id} value={value} onChange={onChange}>{children}</select>
   </div>
 )
 
 SelectField.propTypes = {
-  wrapperClassName: React.PropTypes.string,
+  gridClassName: React.PropTypes.string,
   labelClassName: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,

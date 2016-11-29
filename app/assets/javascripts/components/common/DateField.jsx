@@ -1,14 +1,14 @@
 import React from 'react'
 
-const DateField = ({wrapperClassName, labelClassName, id, label, onChange, value}) => (
-  <div className={wrapperClassName}>
+const DateField = ({gridClassName, labelClassName, id, label, onChange, value}) => (
+  <div className={gridClassName}>
     <label className={labelClassName} htmlFor={id}>{label}</label>
     <input id={id} type='date' className='input-type-date' value={value} onChange={onChange}/>
   </div>
 )
 
 DateField.propTypes = {
-  wrapperClassName: React.PropTypes.string,
+  gridClassName: React.PropTypes.string,
   labelClassName: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,

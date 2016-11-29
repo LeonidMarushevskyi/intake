@@ -7,7 +7,7 @@ describe('InputField', () => {
   let onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
     const props = {
-      wrapperClassName: 'myWrapperTest',
+      gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myInputFieldId',
       label: 'this is my label',

@@ -58,7 +58,7 @@ export class PersonEditPage extends React.Component {
         <div className='card-body'>
           <div className='row'>
             <InputField
-              wrapperClassName='col-md-3'
+              gridClassName='col-md-3'
               labelClassName='no-gap'
               id='first_name'
               label='First Name'
@@ -66,7 +66,7 @@ export class PersonEditPage extends React.Component {
               onChange={(event) => this.setField(['first_name'], event.target.value)}
             />
             <InputField
-              wrapperClassName='col-md-3'
+              gridClassName='col-md-3'
               labelClassName='no-gap'
               id='middle_name'
               label='Middle Name'
@@ -74,7 +74,7 @@ export class PersonEditPage extends React.Component {
               onChange={(event) => this.setField(['middle_name'], event.target.value)}
             />
             <InputField
-              wrapperClassName='col-md-3'
+              gridClassName='col-md-3'
               labelClassName='no-gap'
               id='last_name'
               label='Last Name'
@@ -82,7 +82,7 @@ export class PersonEditPage extends React.Component {
               onChange={(event) => this.setField(['last_name'], event.target.value)}
             />
             <SelectField
-              wrapperClassName='col-md-3'
+              gridClassName='col-md-3'
               labelClassName='no-gap-top-desktop'
               id='suffix'
               label='Suffix'
@@ -95,14 +95,14 @@ export class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <DateField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='date_of_birth'
               label='Date of birth'
               value={person.get('date_of_birth') || ''}
               onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
             />
             <SelectField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='gender'
               label='Gender'
               value={person.get('gender') || ''}
@@ -114,7 +114,7 @@ export class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <InputField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='ssn'
               label='Social security number'
               value={person.get('ssn') || ''}
@@ -123,14 +123,14 @@ export class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <InputField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='street_address'
               label='Address'
               value={person.getIn(['address', 'street_address']) || ''}
               onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
             />
             <InputField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='city'
               label='City'
               value={person.getIn(['address', 'city']) || ''}
@@ -139,7 +139,7 @@ export class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <SelectField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='state'
               label='State'
               value={person.getIn(['address', 'state']) || ''}
@@ -149,7 +149,7 @@ export class PersonEditPage extends React.Component {
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
-              wrapperClassName='col-md-6'
+              gridClassName='col-md-6'
               id='zip'
               label='Zip'
               value={person.getIn(['address', 'zip']) || ''}

@@ -16,43 +16,43 @@ const ReferralInformationShowView = ({screening}) => {
       </div>
       <div className='card-body'>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Incident Date'>
+          <ShowField gridClassName='col-md-6' label='Incident Date'>
             {incidentDate}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Incident County'>
+          <ShowField gridClassName='col-md-6' label='Incident County'>
             {COUNTY[screening.get('incident_county')]}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Address'>
+          <ShowField gridClassName='col-md-6' label='Address'>
             {screening.getIn(['address', 'street_address'])}
           </ShowField>
-          <ShowField wrapperClassName='col-md-6' label='City'>
+          <ShowField gridClassName='col-md-6' label='City'>
             {screening.getIn(['address', 'city'])}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='State'>
+          <ShowField gridClassName='col-md-6' label='State'>
             {US_STATE[screening.getIn(['address', 'state'])]}
           </ShowField>
-          <ShowField wrapperClassName='col-md-6' label='Zip'>
+          <ShowField gridClassName='col-md-6' label='Zip'>
             {screening.getIn(['address', 'zip'])}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Location Type'>
+          <ShowField gridClassName='col-md-6' label='Location Type'>
             {screening.get('location_type')}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Response Time'>
+          <ShowField gridClassName='col-md-6' label='Response Time'>
             {RESPONSE_TIME[screening.get('response_time')]}
           </ShowField>
         </div>
         <div className='row'>
-          <ShowField wrapperClassName='col-md-6' label='Screening Decision'>
+          <ShowField gridClassName='col-md-6' label='Screening Decision'>
             {SCREENING_DECISION[screening.get('screening_decision')]}
           </ShowField>
         </div>
