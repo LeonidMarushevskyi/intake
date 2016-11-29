@@ -2,55 +2,27 @@ import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
-import React from 'react'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
+import React from 'react'
 import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
 import {IndexLink, Link} from 'react-router'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
-export default class ScreeningShowPage extends React.Component {
-  constructor() {
-    super(...arguments)
+export class ScreeningShowPage extends React.Component {
+  constructor(props, context) {
+    super(props, context)
     this.state = {
-      screening: Immutable.fromJS({
-        reference: '',
-        name: '',
-        started_at: '',
-        ended_at: '',
-        communication_method: '',
-        participants: [],
-        report_narrative: '',
-        incident_date: '',
-        incident_county: '',
-        address: Immutable.fromJS({
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
-        }),
-        location_type: '',
-        response_time: '',
-        screening_decision: '',
-      }),
+      screening: props.screening,
       loaded: false,
     }
-    this.fetch = this.fetch.bind(this)
     this.cardSave = this.cardSave.bind(this)
     this.setField = this.setField.bind(this)
   }
 
   componentDidMount() {
-    this.fetch()
-  }
-
-  fetch() {
-    const {params} = this.props
-    screeningActions.fetch(params.id)
-      .then((jsonResponse) => {
-        this.setState({
-          screening: Immutable.fromJS(jsonResponse),
-          loaded: true,
-        })
-      })
+    this.props.actions.fetchScreening(this.props.params.id)
+      .then(() => this.setState({loaded: true}))
   }
 
   cardSave(fieldSeq, value) {
@@ -69,10 +41,11 @@ export default class ScreeningShowPage extends React.Component {
 
   renderParticipantsCard() {
     const {screening} = this.state
+    const participants = screening.get('participants') || Immutable.List()
     return (
       <div>
         {
-          screening.get('participants').map((participant) =>
+          participants.map((participant) =>
             <ParticipantCardView key={participant.get('id')} participant={participant} mode='show'/>
           )
         }
@@ -103,4 +76,18 @@ export default class ScreeningShowPage extends React.Component {
 
 ScreeningShowPage.propTypes = {
   params: React.PropTypes.object.isRequired,
+  screening: React.PropTypes.object.isRequired,
+  actions: React.PropTypes.object.isRequired,
 }
+
+function mapStateToProps(state, ownProps) {
+  return {screening: state.screening}
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    actions: bindActionCreators(screeningActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningShowPage)
