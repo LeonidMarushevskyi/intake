@@ -7,7 +7,7 @@ describe('Store', () => {
   let initialState
   let store
   beforeEach(() => {
-    initialState = {person: Immutable.Map()}
+    initialState = {person: Immutable.Map(), screening: Immutable.Map()}
     store = createStore(rootReducer, initialState)
   })
 
@@ -59,6 +59,7 @@ describe('Store', () => {
 
   it('handles update person', () => {
     initialState = {
+      ...initialState,
       person: Immutable.fromJS({
         id: 1,
         first_name: 'Kevin',
