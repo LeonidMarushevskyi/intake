@@ -1,13 +1,14 @@
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
-import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
+import PHONE_NUMBER_TYPE from 'PhoneNumberType'
+import React from 'react'
+import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import ShowField from 'components/common/ShowField'
 
 export class PersonShowPage extends React.Component {
   constructor() {
@@ -43,6 +44,20 @@ export class PersonShowPage extends React.Component {
             <ShowField gridClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
               {NAME_SUFFIX[person.get('name_suffix')]}
             </ShowField>
+          </div>
+          <div className='row gap-top'>
+            {
+              person.get('phone_numbers') && person.get('phone_numbers').map((phoneNumber) => (
+                <div key={phoneNumber.get('id')}>
+                  <ShowField gridClassName='col-md-6' label='Phone Number'>
+                    {phoneNumber.get('phone_number')}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-6' label='Phone Number Type'>
+                    {PHONE_NUMBER_TYPE[phoneNumber.get('phone_number_type')]}
+                  </ShowField>
+                </div>
+              ))
+            }
           </div>
           <div className='row gap-top'>
             <ShowField gridClassName='col-md-6' label='Date of birth'>
