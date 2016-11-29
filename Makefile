@@ -63,8 +63,6 @@ build:
 	${INFO} "Building application artifacts..."
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up builder
 	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) builder
-	${INFO} "Deleting old application artifacts..."
-	@ rm -rf release
 	${INFO} "Copying application artifacts..."
 	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q builder):/build_artefacts/. release
 	${INFO} "Build complete"
