@@ -20,7 +20,7 @@ feature 'Create Person' do
       last_name: 'Simpson',
       middle_name: 'Jay',
       ssn: '123-23-1234',
-      suffix: 'esq',
+      name_suffix: 'esq',
       address: address
     )
 

@@ -2,7 +2,7 @@ import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
-import SUFFIX from 'Suffix'
+import NAME_SUFFIX from 'NameSuffix'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
@@ -41,7 +41,7 @@ export class PersonShowPage extends React.Component {
               {person.get('last_name')}
             </ShowField>
             <ShowField gridClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
-              {SUFFIX[person.get('suffix')]}
+              {NAME_SUFFIX[person.get('name_suffix')]}
             </ShowField>
           </div>
           <div className='row gap-top'>

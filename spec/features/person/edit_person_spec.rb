@@ -17,7 +17,7 @@ feature 'Edit Person' do
       gender: 'male',
       last_name: 'Simpson',
       middle_name: 'Jay',
-      suffix: 'esq',
+      name_suffix: 'esq',
       ssn: '123-23-1234',
       address: address
     )

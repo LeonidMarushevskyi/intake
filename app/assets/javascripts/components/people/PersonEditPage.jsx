@@ -4,7 +4,7 @@ import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import React from 'react'
-import SUFFIX from 'Suffix'
+import NAME_SUFFIX from 'NameSuffix'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 import {Link, browserHistory} from 'react-router'
@@ -84,13 +84,13 @@ export class PersonEditPage extends React.Component {
             <SelectField
               gridClassName='col-md-3'
               labelClassName='no-gap-top-desktop'
-              id='suffix'
+              id='name_suffix'
               label='Suffix'
-              value={person.get('suffix') || ''}
-              onChange={(event) => this.setField(['suffix'], event.target.value)}
+              value={person.get('name_suffix') || ''}
+              onChange={(event) => this.setField(['name_suffix'], event.target.value)}
             >
               <option key='' value=''></option>
-              {Object.keys(SUFFIX).map((item) => <option key={item} value={item}>{SUFFIX[item]}</option>)}
+              {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
           <div className='row'>

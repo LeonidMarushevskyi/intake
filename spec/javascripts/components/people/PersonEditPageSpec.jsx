@@ -30,7 +30,7 @@ describe('PersonEditPage', () => {
           first_name: 'Kevin',
           middle_name: 'Culkin',
           last_name: 'McCallister',
-          suffix: 'phd',
+          name_suffix: 'phd',
           gender: 'male',
           date_of_birth: '11/16/1990',
           ssn: '111223333',

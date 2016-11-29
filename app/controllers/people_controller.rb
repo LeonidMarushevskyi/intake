@@ -62,7 +62,7 @@ class PeopleController < ApplicationController
       :first_name,
       :middle_name,
       :last_name,
-      :suffix,
+      :name_suffix,
       :gender,
       :date_of_birth,
       :ssn,

@@ -11,7 +11,7 @@ class Person
   attribute :last_name
   attribute :middle_name
   attribute :ssn
-  attribute :suffix
+  attribute :name_suffix
 
   attribute :address, Address
 end
