@@ -79,7 +79,9 @@ release:
 	${INFO} "Release image build complete"
 
 clean:
-	${INFO} "Destroying development environment..."
+	${INFO} "Deleting application release artifacts..."
+	@ rm -rf release
+		${INFO} "Destroying development environment..."
 	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) down --volumes
 	${INFO} "Destroying release environment..."
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down --volumes
