@@ -1,4 +1,6 @@
 import * as Utils from 'utils/http'
+import * as types from 'actions/actionTypes'
+import Immutable from 'immutable'
 
 export function save(id, screening) {
   const url = `/screenings/${id}.json`
@@ -11,4 +13,15 @@ export function fetch(id) {
 
 export function create() {
   return Utils.request('POST', '/screenings.json')
+}
+
+function fetchScreeningSuccess(screening) {
+  return {type: types.FETCH_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
+}
+
+export function fetchScreening(screeningId) {
+  return (dispatch) => (
+    Utils.request('GET', `/screenings/${screeningId}.json`, null, {contentType: 'application/json'})
+    .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
+  )
 }
