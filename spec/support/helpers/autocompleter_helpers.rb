@@ -7,6 +7,12 @@ module AutocompleterHelpers
   include KeyboardHelper
   RESULTS_CONTAINER = '.react-autosuggest__suggestions-container ul'
 
+  def fill_in_react_select(selector, with:)
+    input = find_field(selector)
+    input.send_keys with
+    input.native.send_keys :return
+  end
+
   def fill_in_autocompleter(locator, options)
     value = options[:with]
     populate_autocompleter_with_options(locator, value)

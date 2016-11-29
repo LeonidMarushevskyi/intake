@@ -21,7 +21,8 @@ feature 'Create Person' do
       middle_name: 'Jay',
       ssn: '123-23-1234',
       name_suffix: 'esq',
-      address: address
+      address: address,
+      languages: %w(english farsi)
     )
 
     visit root_path
@@ -32,6 +33,8 @@ feature 'Create Person' do
     fill_in 'Last Name', with: 'Simpson'
     select 'Esq', from: 'Suffix'
     select 'Male', from: 'Gender'
+    fill_in_react_select 'Language', with: 'English'
+    fill_in_react_select 'Language', with: 'Farsi'
     fill_in 'Date of birth', with: '05/29/1990'
     fill_in 'Social security number', with: '123-23-1234'
     fill_in 'Address', with: '123 fake st'
