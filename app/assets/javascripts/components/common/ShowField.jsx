@@ -17,5 +17,3 @@ ShowField.propTypes = {
   ]),
 }
 export default ShowField
-
-
