@@ -9,12 +9,11 @@
 }
 
 .no-gap {
-  margin: 0;
+  margin-top: 0;
 }
 
 @media screen and (min-width: 767px) {
   label.no-gap-top-desktop {
-    margin-bottom: 0;
     margin-top: 0;
   }
 }
