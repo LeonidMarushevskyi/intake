@@ -9,7 +9,9 @@ class Person
   attribute :first_name
   attribute :gender
   attribute :last_name
+  attribute :middle_name
   attribute :ssn
+  attribute :name_suffix
 
   attribute :address, Address
 end

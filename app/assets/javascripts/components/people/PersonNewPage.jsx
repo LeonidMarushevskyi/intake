@@ -1,7 +1,11 @@
 import * as personActions from 'actions/personActions'
+import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
+import InputField from 'components/common/InputField'
 import React from 'react'
+import NAME_SUFFIX from 'NameSuffix'
+import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -14,6 +18,7 @@ export class PersonNewPage extends React.Component {
       person: Immutable.fromJS({
         first_name: '',
         last_name: '',
+        name_suffix: '',
         gender: '',
         date_of_birth: '',
         ssn: '',
@@ -54,90 +59,93 @@ export class PersonNewPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-6'>
-              <label className='no-gap' htmlFor='first_name'>First Name</label>
-              <input
-                type='text'
-                id='first_name'
-                onChange={(event) => this.setField(['first_name'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-6'>
-              <label className='no-gap-top-desktop' htmlFor='last_name'>Last Name</label>
-              <input
-                type='text'
-                id='last_name'
-                onChange={(event) => this.setField(['last_name'], event.target.value)}
-              />
-            </div>
+            <InputField
+              gridClassName='col-md-3'
+              labelClassName='no-gap'
+              id='first_name'
+              label='First Name'
+              onChange={(event) => this.setField(['first_name'], event.target.value)}
+            />
+            <InputField
+              gridClassName='col-md-3'
+              labelClassName='no-gap'
+              id='middle_name'
+              label='Middle Name'
+              onChange={(event) => this.setField(['middle_name'], event.target.value)}
+            />
+            <InputField
+              gridClassName='col-md-3'
+              labelClassName='no-gap'
+              id='last_name'
+              label='Last Name'
+              onChange={(event) => this.setField(['last_name'], event.target.value)}
+            />
+            <SelectField
+              gridClassName='col-md-3'
+              labelClassName='no-gap-top-desktop'
+              id='name_suffix'
+              label='Suffix'
+              onChange={(event) => this.setField(['name_suffix'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='date_of_birth'>Date of birth</label>
-              <input
-                type='date'
-                className='input-type-date'
-                id='date_of_birth'
-                onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='gender'>Gender</label>
-              <select id='gender'
-                onChange={(event) => this.setField(['gender'], event.target.value)}
-              >
-                <option key='' value=''></option>
-                {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
-              </select>
-            </div>
+            <DateField
+              gridClassName='col-md-6'
+              id='date_of_birth'
+              label='Date of birth'
+              onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
+            />
+            <SelectField
+              gridClassName='col-md-6'
+              id='gender'
+              label='Gender'
+              onChange={(event) => this.setField(['gender'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='ssn'>Social security number</label>
-              <input
-                type='text'
-                id='ssn'
-                onChange={(event) => this.setField(['ssn'], event.target.value)}
-              />
-            </div>
+            <InputField
+              gridClassName='col-md-6'
+              id='ssn'
+              label='Social security number'
+              onChange={(event) => this.setField(['ssn'], event.target.value)}
+            />
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='street_address'>Address</label>
-              <input
-                type='text'
-                id='street_address'
-                onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
-              />
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='city'>City</label>
-              <input
-                type='text'
-                id='city'
-                onChange={(event) => this.setField(['address', 'city'], event.target.value)}
-              />
-            </div>
+            <InputField
+              gridClassName='col-md-6'
+              id='street_address'
+              label='Address'
+              onChange={(event) => this.setField(['address', 'street_address'], event.target.value)}
+            />
+            <InputField
+              gridClassName='col-md-6'
+              id='city'
+              label='City'
+              onChange={(event) => this.setField(['address', 'city'], event.target.value)}
+            />
           </div>
           <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='state'>State</label>
-              <select
-                id='state'
-                onChange={(event) => this.setField(['address', 'state'], event.target.value)}
-              >
-                <option key= '' value=''></option>
-                {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
-              </select>
-            </div>
-            <div className='col-md-6'>
-              <label htmlFor='zip'>Zip</label>
-              <input
-                type='text'
-                id='zip'
-                onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
-              />
-            </div>
+            <SelectField
+              gridClassName='col-md-6'
+              id='state'
+              label='State'
+              onChange={(event) => this.setField(['address', 'state'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
+            </SelectField>
+            <InputField
+              gridClassName='col-md-6'
+              id='zip'
+              label='Zip'
+              onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
+            />
           </div>
           <div className='row'>
             <div className='centered'>

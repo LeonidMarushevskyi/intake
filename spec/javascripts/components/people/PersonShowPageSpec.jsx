@@ -1,18 +1,18 @@
 import Immutable from 'immutable'
 import React from 'react'
 import {PersonShowPage} from 'components/people/PersonShowPage'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('PersonShowPage', () => {
   describe('render', () => {
     let component
-    let fetchPerson
 
     beforeEach(() => {
-      fetchPerson = jasmine.createSpy('fetchPerson')
       const person = Immutable.fromJS({
         first_name: 'Kevin',
+        middle_name: 'Culkin',
         last_name: 'McCallister',
+        name_suffix: 'phd',
         gender: 'male',
         date_of_birth: '11/16/1990',
         ssn: '111223333',
@@ -24,52 +24,64 @@ describe('PersonShowPage', () => {
         },
       })
       const props = {
-        actions: { fetchPerson: fetchPerson },
         params: {id: 99},
+        actions: { fetchPerson: () => null },
         person: person,
       }
-      component = mount(<PersonShowPage {...props} />)
+      component = shallow(<PersonShowPage {...props} />)
     })
 
     it('renders the card header', () => {
       expect(component.find('.card-header').text()).toContain('Basic Demographics Card')
     })
 
-    it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(9)
-      expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
-        'First Name',
-        'Last Name',
-        'Date of birth',
-        'Gender',
-        'Social security number',
-        'Address',
-        'City',
-        'State',
-        'Zip',
-      ])
-    })
-
-    it('calls fetchPerson action', () => {
-      expect(fetchPerson).toHaveBeenCalledWith(99)
-    })
-
-    it('renders the person value fields', () => {
-      expect(component.find('.card-body').text()).toContain('Kevin')
-      expect(component.find('.card-body').text()).toContain('McCallister')
-      expect(component.find('.card-body').text()).toContain('Male')
-      expect(component.find('.card-body').text()).toContain('11/16/1990')
-      expect(component.find('.card-body').text()).toContain('111223333')
-      expect(component.find('.card-body').text()).toContain('671 Lincoln Avenue')
-      expect(component.find('.card-body').text()).toContain('Winnetka')
-      expect(component.find('.card-body').text()).toContain('Illinois')
-      expect(component.find('.card-body').text()).toContain('60093')
+    it('renders the person show fields', () => {
+      expect(component.find('ShowField').length).toEqual(11)
+      expect(component.find('ShowField[label="First Name"]').html())
+        .toContain('Kevin')
+      expect(component.find('ShowField[label="Middle Name"]').html())
+        .toContain('Culkin')
+      expect(component.find('ShowField[label="Last Name"]').html())
+        .toContain('McCallister')
+      expect(component.find('ShowField[label="Suffix"]').html())
+        .toContain('PhD')
+      expect(component.find('ShowField[label="Date of birth"]').html())
+        .toContain('11/16/1990')
+      expect(component.find('ShowField[label="Gender"]').html())
+        .toContain('Male')
+      expect(component.find('ShowField[label="Social security number"]').html())
+        .toContain('111223333')
+      expect(component.find('ShowField[label="Address"]').html())
+        .toContain('671 Lincoln Avenue')
+      expect(component.find('ShowField[label="City"]').html())
+        .toContain('Winnetka')
+      expect(component.find('ShowField[label="State"]').html())
+        .toContain('Illinois')
+      expect(component.find('ShowField[label="Zip"]').html())
+        .toContain('60093')
     })
 
     it('renders the edit link', () => {
       expect(component.find('Link').length).toEqual(1)
       expect(component.find('Link').props()['aria-label']).toEqual('Edit Person')
       expect(component.find('Link').props().to).toEqual('/people/99/edit')
+    })
+  })
+
+  describe('componentDidMount', () => {
+    let fetchPerson
+    beforeEach(() => {
+      fetchPerson = jasmine.createSpy('fetchPerson')
+      const props = {
+        params: {id: 99},
+        actions: { fetchPerson: fetchPerson },
+        person: Immutable.Map(),
+      }
+      const component = mount(<PersonShowPage {...props} />)
+    })
+
+    it('calls fetchPerson action', () => {
+      expect(fetchPerson).toHaveBeenCalledWith(99)
     })
   })
 })

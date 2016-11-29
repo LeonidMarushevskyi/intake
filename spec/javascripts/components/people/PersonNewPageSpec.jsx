@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import {browserHistory} from 'react-router'
 import {PersonNewPage} from 'components/people/PersonNewPage'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 
 describe('PersonNewPage', () => {
   let component
@@ -13,34 +13,25 @@ describe('PersonNewPage', () => {
         person: Immutable.Map(),
         actions: {},
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
     })
 
     it('renders the card header', () => {
       expect(component.find('.card-header').text()).toEqual('Basic Demographics card')
     })
 
-    it('renders the person label fields', () => {
-      expect(component.find('label').length).toEqual(9)
-      expect(component.find('label').nodes.map((element) => element.textContent)).toEqual([
-        'First Name',
-        'Last Name',
-        'Date of birth',
-        'Gender',
-        'Social security number',
-        'Address',
-        'City',
-        'State',
-        'Zip',
-      ])
-    })
-
     it('renders the person input fields', () => {
-      expect(component.find('input').length).toEqual(7)
-    })
-
-    it('renders the person select fields', () => {
-      expect(component.find('select').length).toEqual(2)
+      expect(component.find('InputField[label="First Name"]').length).toEqual(1)
+      expect(component.find('InputField[label="Middle Name"]').length).toEqual(1)
+      expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
+      expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
+      expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
+      expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
+      expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
+      expect(component.find('InputField[label="Address"]').length).toEqual(1)
+      expect(component.find('InputField[label="City"]').length).toEqual(1)
+      expect(component.find('SelectField[label="State"]').length).toEqual(1)
+      expect(component.find('InputField[label="Zip"]').length).toEqual(1)
     })
 
     it('renders the save button', () => {

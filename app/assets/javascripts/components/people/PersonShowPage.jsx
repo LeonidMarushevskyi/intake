@@ -2,10 +2,12 @@ import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import React from 'react'
+import NAME_SUFFIX from 'NameSuffix'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import ShowField from 'components/common/ShowField'
 
 export class PersonShowPage extends React.Component {
   constructor() {
@@ -29,50 +31,47 @@ export class PersonShowPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <div className='col-md-6'>
-              <label className='no-gap'>First Name</label>
-              <div className='c-gray'>{person.get('first_name')}</div>
-            </div>
-            <div className='col-md-6'>
-              <label className='no-gap-top-desktop'>Last Name</label>
-              <div className='c-gray'>{person.get('last_name')}</div>
-            </div>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='First Name'>
+              {person.get('first_name')}
+            </ShowField>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Middle Name'>
+              {person.get('middle_name')}
+            </ShowField>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Last Name'>
+              {person.get('last_name')}
+            </ShowField>
+            <ShowField gridClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
+              {NAME_SUFFIX[person.get('name_suffix')]}
+            </ShowField>
           </div>
           <div className='row gap-top'>
-            <div className='col-md-6'>
-              <label>Date of birth</label>
-              <div className='c-gray'>{person.get('date_of_birth')}</div>
-            </div>
-            <div className='col-md-6'>
-              <label>Gender</label>
-              <div className='c-gray'>{Gender[person.get('gender')]}</div>
-            </div>
+            <ShowField gridClassName='col-md-6' label='Date of birth'>
+              {person.get('date_of_birth')}
+            </ShowField>
+            <ShowField gridClassName='col-md-6' label='Gender'>
+              {Gender[person.get('gender')]}
+            </ShowField>
           </div>
           <div className='row gap-top'>
-            <div className='col-md-6'>
-              <label>Social security number</label>
-              <div className='c-gray'>{person.get('ssn')}</div>
-            </div>
+            <ShowField gridClassName='col-md-6' label='Social security number'>
+              {person.get('ssn')}
+            </ShowField>
           </div>
           <div className='row gap-top'>
-            <div className='col-md-6'>
-              <label>Address</label>
-              <div className='c-gray'>{person.getIn(['address', 'street_address'])}</div>
-            </div>
-            <div className='col-md-6'>
-              <label>City</label>
-              <div className='c-gray'>{person.getIn(['address', 'city'])}</div>
-            </div>
+            <ShowField gridClassName='col-md-6' label='Address'>
+              {person.getIn(['address', 'street_address'])}
+            </ShowField>
+            <ShowField gridClassName='col-md-6' label='City'>
+              {person.getIn(['address', 'city'])}
+            </ShowField>
           </div>
           <div className='row gap-top'>
-            <div className='col-md-6'>
-              <label>State</label>
-              <div className='c-gray'>{US_STATE[person.getIn(['address', 'state'])]}</div>
-            </div>
-            <div className='col-md-6'>
-              <label>Zip</label>
-              <div className='c-gray'>{person.getIn(['address', 'zip'])}</div>
-            </div>
+            <ShowField gridClassName='col-md-6' label='State'>
+              {US_STATE[person.getIn(['address', 'state'])]}
+            </ShowField>
+            <ShowField gridClassName='col-md-6' label='Zip'>
+              {person.getIn(['address', 'zip'])}
+            </ShowField>
           </div>
         </div>
       </div>

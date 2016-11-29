@@ -1,4 +1,5 @@
 import EditLink from 'components/common/EditLink'
+import ShowField from 'components/common/ShowField'
 import React from 'react'
 
 const NarrativeShowView = ({narrative, onEdit}) => (
@@ -9,10 +10,9 @@ const NarrativeShowView = ({narrative, onEdit}) => (
     </div>
     <div className='card-body'>
       <div className='row'>
-        <div className='col-md-6'>
-          <label className='no-gap'>Report Narrative</label>
-          <div className='c-gray'>{narrative}</div>
-        </div>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Report Narrative'>
+          {narrative}
+        </ShowField>
       </div>
     </div>
   </div>
