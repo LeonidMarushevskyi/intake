@@ -3,40 +3,15 @@ PROJECT_NAME ?= intake_accelerator
 ORG_NAME ?= cwds
 REPO_NAME ?= intake
 
-# Filenames
-TEST_COMPOSE_FILE := docker/test/docker-compose.yml
-REL_COMPOSE_FILE := docker/release/docker-compose.yml
+export HTTP_PORT ?= 81
+export APP_VERSION ?= 1.$(GIT_HASH)
 
-# Docker Compose Project Names
-REL_PROJECT := $(PROJECT_NAME)$(BUILD_ID)
-TEST_PROJECT := $(PROJECT_NAME)_test
-
-# Application Service Name - must match Docker Compose release specification application service name
-APP_SERVICE_NAME := app
-
-# Build tag expression - can be used to evaulate a shell expression at runtime
-BUILD_TAG_EXPRESSION ?= date -u +%m%d%Y%H%M%S
-
-# Execute shell expression
-BUILD_EXPRESSION := $(shell $(BUILD_TAG_EXPRESSION))
-
-# Build tag - defaults to BUILD_EXPRESSION if not defined
-BUILD_TAG ?= $(BUILD_EXPRESSION)
-
-# Check and Inspect Logic
-INSPECT := $$(docker-compose -p $$1 -f $$2 ps -q $$3 | xargs -I ARGS docker inspect -f "{{ .State.ExitCode }}" ARGS)
-CHECK := @bash -c '\
-  if [[ $(INSPECT) -ne 0 ]]; \
-  then exit $(INSPECT); fi' VALUE
-
-# Use these settings to specify a custom Docker registry
-DOCKER_REGISTRY ?= docker.io
-
-# WARNING: Set DOCKER_REGISTRY_AUTH to empty for Docker Hub
-# Set DOCKER_REGISTRY_AUTH to auth endpoint for private Docker registry
-DOCKER_REGISTRY_AUTH ?=
+include Makefile.settings
 
 .PHONY: test build release clean tag buildtag login logout publish
+
+version:
+	@ echo $(APP_VERSION)
 
 test:
 	${INFO} "Pulling latest images..."
@@ -112,46 +87,6 @@ publish:
 	@ $(foreach tag,$(shell echo $(REPO_EXPR)), docker push $(tag);)
 	${INFO} "Publish complete"
 
-# Cosmetics
-YELLOW := "\e[1;33m"
-NC := "\e[0m"
-
-# Shell Functions
-INFO := @bash -c '\
-  printf $(YELLOW); \
-  echo "=> $$1"; \
-  printf $(NC)' SOME_VALUE
-
-# Get container id of application service container
-APP_CONTAINER_ID := $$(docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) ps -q $(APP_SERVICE_NAME))
-
-# Get image id of application service
-IMAGE_ID := $$(docker inspect -f '{{ .Image }}' $(APP_CONTAINER_ID))
-
-# Repository Filter
-ifeq ($(DOCKER_REGISTRY), docker.io)
-  REPO_FILTER := $(ORG_NAME)/$(REPO_NAME)[^[:space:]|\$$]*
-else
-  REPO_FILTER := $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME)[^[:space:]|\$$]*
-endif
-
-# Introspect repository tags
-REPO_EXPR := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
-
-# Extract build tag arguments
-ifeq (buildtag,$(firstword $(MAKECMDGOALS)))
-  BUILDTAG_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  ifeq ($(BUILDTAG_ARGS),)
-  $(error You must specify a tag)
-  endif
-  $(eval $(BUILDTAG_ARGS):;@:)
-endif
-
-# Extract tag arguments
-ifeq (tag,$(firstword $(MAKECMDGOALS)))
-  TAG_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  ifeq ($(TAG_ARGS),)
-    $(error You must specify a tag)
-  endif
-  $(eval $(TAG_ARGS):;@:)
-endif
+# Make will not attempt to evaluate arguments passed tasks as targets
+%:
+	@:
