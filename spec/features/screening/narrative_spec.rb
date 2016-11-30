@@ -26,6 +26,12 @@ feature 'screening narrative card' do
     within '#narrative-card.show' do
       expect(page).to have_content 'This is my report narrative'
     end
+
+    click_link 'Edit narrative'
+
+    within '#narrative-card.edit' do
+      expect(page).to have_field('Report Narrative', with: 'This is my report narrative')
+    end
   end
 
   scenario 'user edits narrative card from screening edit page and cancels' do

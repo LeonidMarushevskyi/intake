@@ -22,7 +22,7 @@ export default class NarrativeCardView extends React.Component {
 
   onCancel(event) {
     event.preventDefault()
-    this.setState({mode: 'show'})
+    this.setState({mode: 'show', narrative: this.props.narrative})
   }
 
   onSave() {
