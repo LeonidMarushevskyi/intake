@@ -35,28 +35,25 @@ export class PhoneNumbersEditView extends React.Component {
     })
   }
 
-  editAddedPhoneNumber(origPhoneNumber, fieldChanged, newValue) {
+  editAddedPhoneNumber(fieldSeq, value) {
     const {phoneNumbers} = this.props
-    const indexOfOrigNumber = phoneNumbers.indexOf(origPhoneNumber)
-    const newPhoneNumbers = phoneNumbers.set(indexOfOrigNumber, origPhoneNumber.set(fieldChanged, newValue))
+    const newPhoneNumbers = phoneNumbers.setIn(fieldSeq, value)
     this.props.onChange(newPhoneNumbers)
   }
 
-  deletePhoneNumber(origPhoneNumber) {
+  deletePhoneNumber(index) {
     const {phoneNumbers} = this.props
-    const indexOfOrigNumber = phoneNumbers.indexOf(origPhoneNumber)
-    const newPhoneNumbers = phoneNumbers.delete(indexOfOrigNumber)
+    const newPhoneNumbers = phoneNumbers.delete(index)
     this.props.onChange(newPhoneNumbers)
   }
 
   renderAddedPhoneNumbersSection() {
     const {phoneNumbers} = this.props
     return (
-      phoneNumbers.map((number) => {
-        const phone_number = number.get('phone_number')
-        const phone_number_type = number.get('phone_number_type')
+      phoneNumbers.map((number, index) => {
+        const {phone_number, phone_number_type}= number.toJS()
         return (
-          <div key={`${phone_number}-${phone_number_type}`} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
+          <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
             <div className='col-md-6'>
               <label className='no-gap' htmlFor='phone_number'>Phone Number</label>
               <input
@@ -64,7 +61,7 @@ export class PhoneNumbersEditView extends React.Component {
                 type='tel'
                 placeholder='Ex: 910-435-3223'
                 value={phone_number || ''}
-                onChange={(event) => this.editAddedPhoneNumber(number, 'phone_number', event.target.value)}
+                onChange={(event) => this.editAddedPhoneNumber([index, 'phone_number'], event.target.value)}
               />
             </div>
             <div className='col-md-4'>
@@ -72,7 +69,7 @@ export class PhoneNumbersEditView extends React.Component {
               <select
                 id='phone_number_type'
                 value={phone_number_type || ''}
-                onChange={(event) => this.editAddedPhoneNumber(number, 'phone_number_type', event.target.value)}
+                onChange={(event) => this.editAddedPhoneNumber([index, 'phone_number_type'], event.target.value)}
               >
                 <option key='' value=''></option>
                 {
@@ -85,7 +82,7 @@ export class PhoneNumbersEditView extends React.Component {
             <div className='col-md-2'>
               <button
                 className='btn bg-secondary-red c-white'
-                onClick={() => this.deletePhoneNumber(number)}
+                onClick={() => this.deletePhoneNumber(index)}
               >Delete</button>
             </div>
           </div>
