@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {PersonNewPage} from 'components/people/PersonNewPage'
 import {shallow} from 'enzyme'
+import {browserHistory} from 'react-router'
 
 describe('PersonNewPage', () => {
   let component
@@ -35,6 +35,21 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="Zip"]').length).toEqual(1)
     })
 
+    it('renders the language field', () => {
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
+      expect(component.find('Select[multi]').props().value).toEqual([])
+    })
+
+    it('renders the language field after changes', () => {
+      const newSelectedLanguages = [
+        {label: 'Farsi', value: 'farsi'},
+        {label: 'English', value: 'english'},
+      ]
+      component.find('Select[multi]').simulate('change', newSelectedLanguages)
+      expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
+    })
+
     it('renders the save button', () => {
       expect(component.find('button').length).toEqual(1)
     })
@@ -52,15 +67,15 @@ describe('PersonNewPage', () => {
     })
 
     it('dispatches createPerson', () => {
-      const personProps = {first_name: 'Bart'}
       const props = {
         person: Immutable.Map(),
         actions: {createPerson: createPerson}
       }
       component = shallow(<PersonNewPage {...props} />)
-      component.setState({person: Immutable.fromJS(personProps)})
+      component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Bart'}})
       component.find('button.btn-primary').simulate('click')
-      expect(createPerson).toHaveBeenCalledWith({person: personProps})
+      expect(createPerson).toHaveBeenCalled()
+      expect(createPerson.calls.argsFor(0)[0].person.first_name).toEqual('Bart')
     })
 
     it('redirects to show', () => {

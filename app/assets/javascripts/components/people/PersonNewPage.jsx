@@ -1,10 +1,12 @@
 import * as personActions from 'actions/personActions'
 import DateField from 'components/common/DateField'
+import LANGUAGE from 'Language'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
-import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
+import React from 'react'
+import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
@@ -31,6 +33,7 @@ export class PersonNewPage extends React.Component {
           zip: null,
         },
         phone_numbers: [],
+        languages: [],
       }),
     }
     this.setField = this.setField.bind(this)
@@ -55,6 +58,7 @@ export class PersonNewPage extends React.Component {
   }
 
   render() {
+    const {person} = this.state
     return (
       <div className='card edit double-gap-top'>
         <div className='card-header'>
@@ -114,6 +118,21 @@ export class PersonNewPage extends React.Component {
               <option key='' value=''></option>
               {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
             </SelectField>
+          </div>
+          <div className='row'>
+            <div className='col-md-6'>
+              <label htmlFor='languages'>Language(s)</label>
+              <Select
+                multi
+                inputProps={{id: 'languages'}}
+                options={LANGUAGE}
+                value={person.get('languages').toJS()}
+                onChange={(languages) => this.setField(
+                  ['languages'],
+                  Immutable.List(languages.map((language) => language.value))
+                )}
+              />
+            </div>
           </div>
           <div className='row'>
             <InputField
