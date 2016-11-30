@@ -71,7 +71,12 @@ describe('person actions', () => {
         }),
       })
       store.dispatch(personActions.updatePerson({person: updatedPerson}))
-      expect(Utils.request).toHaveBeenCalledWith('PUT', '/people/1.json', {person: updatedPerson})
+      expect(Utils.request).toHaveBeenCalledWith(
+        'PUT',
+        '/people/1.json',
+        JSON.stringify({person: updatedPerson}),
+        {contentType: 'application/json'}
+      )
       expect(store.getActions()).toEqual(expectedActions)
     })
   })

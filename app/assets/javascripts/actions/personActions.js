@@ -33,7 +33,7 @@ export function updatePersonSuccess(person) {
 export function updatePerson(person) {
   return (dispatch) => {
     const {person: {id: personId}} = person
-    return Utils.request('PUT', `/people/${personId}.json`, person)
+    return Utils.request('PUT', `/people/${personId}.json`, JSON.stringify(person), {contentType: 'application/json'})
       .then((jsonResponse) => {
         dispatch(updatePersonSuccess(Immutable.fromJS(jsonResponse)))
       })
