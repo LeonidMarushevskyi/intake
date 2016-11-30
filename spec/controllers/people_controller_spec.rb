@@ -92,7 +92,14 @@ describe PeopleController do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [{
+          id: '2',
+          phone_number: '333-333-3333',
+          phone_number_type: 'home',
+          created_at: '2016-08-11T18:24:22.157Z',
+          updated_at: '2016-08-11T18:24:22.157Z'
+        }]
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }

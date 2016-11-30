@@ -3,11 +3,12 @@ import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
-import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
+import React from 'react'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 import {Link, browserHistory} from 'react-router'
+import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -93,6 +94,10 @@ export class PersonEditPage extends React.Component {
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
+           <PhoneNumbersEditView
+             phoneNumbers={this.state.person.get('phone_numbers') || Immutable.List()}
+             onChange={(phoneNumbers) => this.setField(['phone_numbers'], phoneNumbers)}
+           />
           <div className='row'>
             <DateField
               gridClassName='col-md-6'

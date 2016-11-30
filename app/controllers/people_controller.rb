@@ -76,7 +76,9 @@ class PeopleController < ApplicationController
       phone_numbers: [
         :id,
         :phone_number,
-        :phone_number_type
+        :phone_number_type,
+        :created_at,
+        :updated_at
       ]
     )
   end
