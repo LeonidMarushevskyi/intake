@@ -31,4 +31,8 @@ services:
   builder:
     build:
       context: ../../
-      dockerfile: docker/test/Dockerfile.build
+      dockerfile: docker/test/Dockerfile
+    environment:
+      APP_VERSION: ${APP_VERSION}
+    command:
+      - build.sh
