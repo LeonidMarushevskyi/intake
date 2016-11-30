@@ -25,31 +25,48 @@ describe('NarrativeCardView', () => {
         expect(component.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
       })
 
-      describe("and a user clicks 'Cancel'", () => {
+      describe("when 'Cancel' is clicked", () => {
         beforeEach(() => {
           const cancelButton = component.find('button[children="Cancel"]')
           cancelButton.simulate('click')
         })
 
         it('the narrative show view is rendered', () => {
-          expect(component.find('NarrativeShowView').length).toEqual(1)
+          expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
         })
       })
 
-      describe('and the user enters a narrative and submits the form', () => {
+      describe("when the narrative is edited", () => {
         beforeEach(() => {
-          const reportNarrative = component.find('#report_narrative')
-          reportNarrative.simulate('change', {target: {value: 'This is my new narrative'}})
-          const form = component.find('form')
-          form.simulate('submit')
+          component.find('textarea').simulate('change', {target: {value: 'this is my new text'}})
         })
 
-        it('calls the props onSave', () => {
-          expect(onSave).toHaveBeenCalledWith('This is my new narrative')
+        describe("and 'Cancel' is clicked and 'Edit' is clicked", () => {
+          beforeEach(() => {
+            const cancelButton = component.find('button[children="Cancel"]')
+            cancelButton.simulate('click')
+            const editLink = component.find('a[aria-label="Edit narrative"]')
+            editLink.simulate('click')
+          })
+
+          it('the narrative edit view is rendered with the original narrative', () => {
+            expect(component.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
+          })
         })
 
-        it('the narrative show view is rendered', () => {
-          expect(component.find('NarrativeShowView').length).toEqual(1)
+        describe("and 'Save' is clicked", () => {
+          beforeEach(() => {
+            const form = component.find('form')
+            form.simulate('submit')
+          })
+
+          it('calls the props onSave', () => {
+            expect(onSave).toHaveBeenCalledWith('this is my new text')
+          })
+
+          it('the narrative show view is rendered', () => {
+            expect(component.find('NarrativeShowView').length).toEqual(1)
+          })
         })
       })
     })
