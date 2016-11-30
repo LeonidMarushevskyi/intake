@@ -28,10 +28,22 @@ feature 'Edit Phone Number' do
       select 'Home', from: 'Phone Number Type'
     end
 
+    within '#new_phone_number' do
+
+      fill_in 'Phone Number', with: '330-789-4587'
+      select 'Work', from: 'Phone Number Type'
+      click_button 'Add'
+    end
+
     click_button 'Save'
 
     person.phone_numbers.first.phone_number = '917-578-1234'
     person.phone_numbers.first.phone_number_type = 'home'
+    person.phone_numbers << PhoneNumber.new(
+      phone_number: '330-789-4587',
+      phone_number_type: 'work'
+    )
+
     expect(a_request(:put, api_person_path(person.id))
       .with(body: person.to_json)).to have_been_made
   end

@@ -24,10 +24,14 @@ describe('PhoneNumbersEditView', () => {
   describe('render', () => {
     it('renders the new and added phone numbers', () => {
       expect(component.find('.bg-gray-lightest').length).toEqual(2)
-      expect(component.find('#added_phone_numbers input').props().value).toEqual('111-111-1111')
-      expect(component.find('#added_phone_numbers select').props().value).toEqual('cell')
-      expect(component.find('#new_phone_number input').props().value).toEqual('222-222-2222')
-      expect(component.find('#new_phone_number select').props().value).toEqual('work')
+      expect(component.find('#added_phone_numbers InputField').props().value).toEqual('111-111-1111')
+      expect(component.find('#added_phone_numbers InputField').props().placeholder).toEqual('Ex: 910-435-3223')
+      expect(component.find('#added_phone_numbers InputField').props().type).toEqual('tel')
+      expect(component.find('#added_phone_numbers SelectField').props().value).toEqual('cell')
+      expect(component.find('#new_phone_number InputField').props().value).toEqual('222-222-2222')
+      expect(component.find('#new_phone_number InputField').props().placeholder).toEqual('Ex: 910-435-3223')
+      expect(component.find('#new_phone_number InputField').props().type).toEqual('tel')
+      expect(component.find('#new_phone_number SelectField').props().value).toEqual('work')
     })
   })
 
@@ -40,14 +44,14 @@ describe('PhoneNumbersEditView', () => {
         {phone_number: '111-111-1111', phone_number_type: 'cell'},
         {phone_number: '222-222-2222', phone_number_type: 'work'},
       ])
-      expect(component.find('#new_phone_number input').props().value).toEqual('')
-      expect(component.find('#new_phone_number select').props().value).toEqual('')
+      expect(component.find('#new_phone_number InputField').props().value).toEqual('')
+      expect(component.find('#new_phone_number SelectField[label="Phone Number Type"]').props().value).toEqual('')
     })
   })
 
   describe('edit', () => {
     it('calls onChange with the new phone numbers', () => {
-      const input = component.find('#added_phone_numbers input')
+      const input = component.find('#added_phone_numbers InputField')
       input.simulate('change', {target: {value: '332-333-3333'}})
 
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()

@@ -31,6 +31,8 @@ services:
       - "3001:3000"
     environment:
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+    tty: true
+    stdin_open: true
   db:
     extends:
       file: ../intake_api_prototype/docker-compose.common.yml
