@@ -15,66 +15,66 @@ version:
 
 test:
 	${INFO} "Pulling latest images..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) pull
+	@ docker-compose $(TEST_ARGS) pull
 	${INFO} "Building images..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull rspec_test
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull lint
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build --pull javascript_test
+	@ docker-compose $(TEST_ARGS) build --pull rspec_test
+	@ docker-compose $(TEST_ARGS) build lint javascript_test
 	${INFO} "Running tests..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up rspec_test
-	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q rspec_test):/reports/. reports
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up lint
-	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q lint):/reports/. reports
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up javascript_test
-	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q javascript_test):/reports/. reports
-	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) rspec_test
-	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) lint
-	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) javascript_test
+	@ docker-compose $(TEST_ARGS) up rspec_test
+	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q rspec_test):/reports/. reports
+	@ docker-compose $(TEST_ARGS) up lint
+	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q lint):/reports/. reports
+	@ docker-compose $(TEST_ARGS) up javascript_test
+	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q javascript_test):/reports/. reports
+	@ $(call check_exit_code,$(TEST_ARGS),rspec_test)
+	@ $(call check_exit_code,$(TEST_ARGS),lint)
+	@ $(call check_exit_code,$(TEST_ARGS),javascript_test)
 	${INFO} "Testing complete"
 
 build:
-	${INFO} "Creating builder image..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) build builder
+	${INFO} "Building images..."
+	@ docker-compose $(TEST_ARGS) build builder
 	${INFO} "Building application artifacts..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) up builder
-	${CHECK} $(TEST_PROJECT) $(TEST_COMPOSE_FILE) builder
+	@ docker-compose $(TEST_ARGS) up builder
+	@ $(call check_exit_code,$(TEST_ARGS),builder)
 	${INFO} "Copying application artifacts..."
-	@ docker cp $$(docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) ps -q builder):/build_artefacts/. release
+	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q builder):/build_artefacts/. release
 	${INFO} "Build complete"
 
 release:
 	${INFO} "Pulling latest images..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) pull
+	@ docker-compose $(RELEASE_ARGS) pull
 	${INFO} "Building images..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) up -d nginx
-	${INFO} "Release image build complete"
+	@ docker-compose $(RELEASE_ARGS) build app
+	@ docker-compose $(RELEASE_ARGS) build --pull nginx
+	${INFO} "Release image build complete..."
+	${INFO} "Starting application..."
+	@ docker-compose $(RELEASE_ARGS) up -d nginx
+	@ $(call check_service_health,$(RELEASE_ARGS),nginx)
+	${INFO} "Application is running at http://$(DOCKER_HOST_IP):$(call get_port_mapping,$(RELEASE_ARGS),nginx,$(HTTP_PORT))"
 
 clean:
 	${INFO} "Deleting application release artifacts..."
 	@ rm -rf release
-		${INFO} "Destroying development environment..."
-	@ docker-compose -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) down --volumes
+	${INFO} "Destroying development environment..."
+	@ docker-compose $(TEST_ARGS) down --volumes || true
 	${INFO} "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down --volumes
-	${INFO} "Removing local images..."
-	@ docker images -q -f label=application=$(PROJECT_NAME) | sort -u | xargs -I ARGS docker rmi -f ARGS
+	@ docker-compose $(RELEASE_ARGS) down --volumes || true
+	${INFO} "Removing dangling images..."
+	@ docker images -q -f label=application=$(PROJECT_NAME) -f dangling=true | xargs -I ARGS docker rmi -f ARGS
 	${INFO} "Clean complete"
 
 tag:
 	${INFO} "Tagging release image with tags $(TAG_ARGS)..."
-	@ $(foreach tag,$(TAG_ARGS), docker tag $(IMAGE_ID) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(tag);)
+	@ $(foreach tag,$(TAG_ARGS),$(call tag_image,$(RELEASE_ARGS),app,$(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(tag));)
 	${INFO} "Tagging complete"
 
-buildtag:
-	${INFO} "Tagging release image with suffix $(BUILD_TAG) and build tags $(BUILDTAG_ARGS)..."
-	@ $(foreach tag,$(BUILDTAG_ARGS), docker tag $(IMAGE_ID) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(tag).$(BUILD_TAG);)
-	${INFO} "Tagging complete"
+tag%default:
+	@ make tag latest $(APP_VERSION) $(GIT_TAG)
 
 login:
 	${INFO} "Logging in to Docker registry $$DOCKER_REGISTRY..."
-	@ docker login -u $$DOCKER_USER -p $$DOCKER_PASSWORD $(DOCKER_REGISTRY_AUTH)
+	@ eval $(DOCKER_LOGIN_EXPRESSION)
 	${INFO} "Logged in to Docker registry $$DOCKER_REGISTRY"
 
 logout:
@@ -83,8 +83,8 @@ logout:
 	${INFO} "Logged out of Docker registry $$DOCKER_REGISTRY"
 
 publish:
-	${INFO} "Publishing release image $(IMAGE_ID) to $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME)..."
-	@ $(foreach tag,$(shell echo $(REPO_EXPR)), docker push $(tag);)
+	${INFO} "Publishing release image $(call get_image_id,$(RELEASE_ARGS),app) to $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME)..."
+	@ $(call publish_image,$(RELEASE_ARGS),app,$(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME))
 	${INFO} "Publish complete"
 
 # Make will not attempt to evaluate arguments passed tasks as targets
