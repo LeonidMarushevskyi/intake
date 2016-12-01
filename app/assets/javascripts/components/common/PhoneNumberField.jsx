@@ -16,8 +16,8 @@ const PhoneNumberField = ({phoneNumber, phoneNumberType, onChange}) => (
       onChange={(event) => onChange('phone_number', event.target.value)}
     />
     <SelectField
-      gridClassName='col-md-4'
-      labelClassName='no-gap'
+      gridClassName='col-md-6'
+      labelClassName='no-gap-top-desktop'
       label='Phone Number Type'
       id='phone_number_type'
       value={phoneNumberType}

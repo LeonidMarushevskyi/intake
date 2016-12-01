@@ -5,37 +5,18 @@ import PhoneNumberField from 'components/common/PhoneNumberField'
 export class PhoneNumbersEditView extends React.Component {
   constructor() {
     super(...arguments)
-    this.state = {
-      new_phone_number: Immutable.Map({
-        phone_number: '',
-        phone_number_type: '',
-      })
-    }
-
     this.addPhoneNumber = this.addPhoneNumber.bind(this)
-    this.editAddedPhoneNumber = this.editAddedPhoneNumber.bind(this)
+    this.editPhoneNumber = this.editPhoneNumber.bind(this)
     this.deletePhoneNumber = this.deletePhoneNumber.bind(this)
-    this.setField = this.setField.bind(this)
-  }
-
-  setField(fieldSeq, value) {
-    const new_phone_number = this.state.new_phone_number.set(fieldSeq, value)
-    this.setState({new_phone_number: new_phone_number})
   }
 
   addPhoneNumber() {
-    const {new_phone_number} = this.state
-    const newPhoneNumbers = this.props.phoneNumbers.push(Immutable.Map(new_phone_number))
+    const NEW_PHONE_NUMBER = Immutable.Map({phone_number: '', phone_number_type: ''})
+    const newPhoneNumbers = this.props.phoneNumbers.push(NEW_PHONE_NUMBER)
     this.props.onChange(newPhoneNumbers)
-    this.setState({
-      new_phone_number: Immutable.Map({
-        phone_number: '',
-        phone_number_type: ''
-      })
-    })
   }
 
-  editAddedPhoneNumber(fieldSeq, value) {
+  editPhoneNumber(fieldSeq, value) {
     const {phoneNumbers} = this.props
     const newPhoneNumbers = phoneNumbers.setIn(fieldSeq, value)
     this.props.onChange(newPhoneNumbers)
@@ -47,54 +28,43 @@ export class PhoneNumbersEditView extends React.Component {
     this.props.onChange(newPhoneNumbers)
   }
 
-  renderAddedPhoneNumbersSection() {
+  render() {
     const {phoneNumbers} = this.props
     return (
-      phoneNumbers.map((number, index) => {
-        const {phone_number, phone_number_type}= number.toJS()
-        return (
-          <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
-            <PhoneNumberField
-              phoneNumber={phone_number}
-              phoneNumberType={phone_number_type}
-              onChange={(field, value) => this.editAddedPhoneNumber([index, field], value)}
-            />
-            <div className='col-md-2'>
-              <button
-                className='btn bg-secondary-red c-white'
-                onClick={() => this.deletePhoneNumber(index)}
-              >
-                Delete
-              </button>
-            </div>
+      <div id='phone-numbers'>
+        {
+          phoneNumbers.map((number, index) => {
+            const {phone_number, phone_number_type}= number.toJS()
+            return (
+              <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
+                <PhoneNumberField
+                  phoneNumber={phone_number}
+                  phoneNumberType={phone_number_type}
+                  onChange={(field, value) => this.editPhoneNumber([index, field], value)}
+                />
+                <a className='pull-right'
+                  aria-label='Delete phone number'
+                  href='#'
+                  onClick={() => this.deletePhoneNumber(index)}
+                >
+                  <i className='fa fa-times' />
+                </a>
+              </div>
+              )
+          })
+        }
+        <div className='row'>
+          <div className='col-md-12'>
+            <button
+              className='btn btn-default btn-block'
+              onClick={this.addPhoneNumber}
+              aria-label='Add new phone number'
+            >
+              <i className="fa fa-plus" />
+              <span> Add new phone number</span>
+            </button>
           </div>
-        )
-      })
-    )
-  }
-
-  renderNewPhoneNumberSection() {
-    const number = this.state.new_phone_number
-    const {phone_number, phone_number_type}= number.toJS()
-    return (
-      <div className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
-        <PhoneNumberField
-          phoneNumber={phone_number}
-          phoneNumberType={phone_number_type}
-          onChange={(field, value) => this.setField(field, value)}
-        />
-        <div className='col-md-2'>
-          <button className='btn bg-gray-dark c-white' onClick={this.addPhoneNumber}>Add</button>
         </div>
-      </div>
-    )
-  }
-
-  render() {
-    return (
-      <div>
-        <div id='added_phone_numbers'>{this.renderAddedPhoneNumbersSection()}</div>
-        <div id='new_phone_number'>{this.renderNewPhoneNumberSection()}</div>
       </div>
     )
   }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-feature 'Create Person' do
-  scenario 'add and remove phone numbers' do
+feature 'Create Phone Number' do
+  scenario 'add and remove phone numbers on a new person' do
     person = FactoryGirl.create(
       :person,
       id: nil,
@@ -17,31 +17,21 @@ feature 'Create Person' do
     )
     visit new_person_path
 
-    within '#new_phone_number' do
+    click_button 'Add new phone number'
+
+    within '#phone-numbers' do
       fill_in 'Phone Number', with: '917-578-2010'
       select 'Work', from: 'Phone Number Type'
-      click_button 'Add'
+      expect(page).to have_link('Delete phone number')
     end
 
-    expect(all('.bg-gray-lightest').size).to eq 2
-    within '#added_phone_numbers' do
-      expect(page).to have_field('Phone Number', with: '917-578-2010')
-      expect(page).to have_field('Phone Number Type', with: 'work')
-      expect(page).to have_button('Delete')
-    end
+    click_button 'Add new phone number'
 
-    within '#new_phone_number' do
-      fill_in 'Phone Number', with: '789-578-2014'
-      select 'Home', from: 'Phone Number Type'
-      click_button 'Add'
-    end
-
-    expect(all('.bg-gray-lightest').size).to eq 3
-    within '#added_phone_numbers' do
-      within all('.bg-gray-lightest').last do
-        expect(page).to have_field('Phone Number', with: '789-578-2014')
-        expect(page).to have_field('Phone Number Type', with: 'home')
-        click_button 'Delete'
+    within '#phone-numbers' do
+      within all('.item').last do
+        fill_in 'Phone Number', with: '789-578-2014'
+        select 'Home', from: 'Phone Number Type'
+        click_link 'Delete phone number'
       end
     end
 

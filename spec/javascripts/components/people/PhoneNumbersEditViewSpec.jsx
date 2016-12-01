@@ -15,40 +15,30 @@ describe('PhoneNumbersEditView', () => {
         onChange={onChangePhoneNumbersSpy}
       />
     )
-    component.setState({
-      new_phone_number: Immutable.Map({
-        phone_number: '222-222-2222',
-        phone_number_type: 'work',
-      })
-    })
   })
 
   describe('render', () => {
-    it('renders the new and added phone numbers', () => {
-      expect(component.find('PhoneNumberField').length).toEqual(2)
-      expect(component.find('#added_phone_numbers PhoneNumberField').props().phoneNumber).toEqual('111-111-1111')
-      expect(component.find('#added_phone_numbers PhoneNumberField').props().phoneNumberType).toEqual('cell')
-      expect(component.find('#new_phone_number PhoneNumberField').props().phoneNumber).toEqual('222-222-2222')
-      expect(component.find('#new_phone_number PhoneNumberField').props().phoneNumberType).toEqual('work')
+    it('renders numbers', () => {
+      expect(component.find('PhoneNumberField').length).toEqual(1)
+      expect(component.find('PhoneNumberField').props().phoneNumber).toEqual('111-111-1111')
+      expect(component.find('PhoneNumberField').props().phoneNumberType).toEqual('cell')
     })
   })
 
-  describe('add', () => {
+  describe('when "Add new phone number" is clicked', () => {
     it('calls onChange and resets state', () => {
-      component.find('button[children="Add"]').simulate('click')
+      component.find('button[aria-label="Add new phone number"]').simulate('click')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
         {phone_number: '111-111-1111', phone_number_type: 'cell'},
-        {phone_number: '222-222-2222', phone_number_type: 'work'},
+        {phone_number: '', phone_number_type: ''},
       ])
-      expect(component.find('#new_phone_number PhoneNumberField').props().phoneNumber).toEqual('')
-      expect(component.find('#new_phone_number PhoneNumberField').props().phoneNumberType).toEqual('')
     })
   })
 
-  describe('edit', () => {
+  describe('when an existing phone number is changed', () => {
     it('calls onChange with the new phone numbers', () => {
-      const input = component.find('#added_phone_numbers PhoneNumberField')
+      const input = component.find('PhoneNumberField')
       input.simulate('change', 'phone_number', '332-333-3333')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
@@ -59,7 +49,7 @@ describe('PhoneNumbersEditView', () => {
 
   describe('delete', () => {
     it('calls onChange with the new phone numbers', () => {
-      component.find('button[children="Delete"]').simulate('click')
+      component.find('a[aria-label="Delete phone number"]').simulate('click')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalledWith(Immutable.fromJS([]))
     })
   })

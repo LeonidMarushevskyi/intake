@@ -20,7 +20,7 @@ feature 'Edit Phone Number' do
       .and_return(body: person.to_json, status: 200, headers: { 'Content-Type' => 'application/json' })
     visit edit_person_path(id: person.id)
 
-    within '#added_phone_numbers' do
+    within '#phone-numbers' do
       expect(page).to have_field('Phone Number', with: '917-578-2010')
       expect(page).to have_field('Phone Number Type', with: 'work')
 
@@ -28,11 +28,13 @@ feature 'Edit Phone Number' do
       select 'Home', from: 'Phone Number Type'
     end
 
-    within '#new_phone_number' do
+    click_button 'Add new phone number'
 
-      fill_in 'Phone Number', with: '330-789-4587'
-      select 'Work', from: 'Phone Number Type'
-      click_button 'Add'
+    within '#phone-numbers' do
+      within all('.item').last do
+        fill_in 'Phone Number', with: '330-789-4587'
+        select 'Work', from: 'Phone Number Type'
+      end
     end
 
     click_button 'Save'
