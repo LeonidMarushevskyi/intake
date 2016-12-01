@@ -1,8 +1,6 @@
 import Immutable from 'immutable'
-import InputField from 'components/common/InputField'
-import PHONE_NUMBER_TYPE from 'PhoneNumberType'
 import React from 'react'
-import SelectField from 'components/common/SelectField'
+import PhoneNumberField from 'components/common/PhoneNumberField'
 
 export class PhoneNumbersEditView extends React.Component {
   constructor() {
@@ -55,37 +53,19 @@ export class PhoneNumbersEditView extends React.Component {
       phoneNumbers.map((number, index) => {
         const {phone_number, phone_number_type}= number.toJS()
         return (
-        <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
-          <InputField
-            gridClassName='col-md-6'
-            labelClassName='no-gap'
-            id='phone_number'
-            type='tel'
-            placeholder='Ex: 910-435-3223'
-            label='Phone Number'
-            value={phone_number}
-            onChange={(event) => this.editAddedPhoneNumber([index, 'phone_number'], event.target.value)}
-          />
-            <SelectField
-              gridClassName='col-md-4'
-              labelClassName='no-gap'
-              label='Phone Number Type'
-              id='phone_number_type'
-              value={phone_number_type}
-              onChange={(event) => this.editAddedPhoneNumber([index, 'phone_number_type'], event.target.value)}
-            >
-              <option key='' value=''></option>
-              {
-                Object.keys(PHONE_NUMBER_TYPE).map((item) =>
-                  <option key={item} value={item}>{PHONE_NUMBER_TYPE[item]}</option>
-                  )
-              }
-            </SelectField>
+          <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
+            <PhoneNumberField
+              phoneNumber={phone_number}
+              phoneNumberType={phone_number_type}
+              onChange={(field, value) => this.editAddedPhoneNumber([index, field], value)}
+            />
             <div className='col-md-2'>
               <button
                 className='btn bg-secondary-red c-white'
                 onClick={() => this.deletePhoneNumber(index)}
-              >Delete</button>
+              >
+                Delete
+              </button>
             </div>
           </div>
         )
@@ -95,35 +75,14 @@ export class PhoneNumbersEditView extends React.Component {
 
   renderNewPhoneNumberSection() {
     const number = this.state.new_phone_number
-    const phone_number = number.get('phone_number')
-    const phone_number_type = number.get('phone_number_type')
+    const {phone_number, phone_number_type}= number.toJS()
     return (
       <div className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
-        <InputField
-          gridClassName='col-md-6'
-          labelClassName='no-gap'
-          id='phone_number'
-          type='tel'
-          placeholder='Ex: 910-435-3223'
-          label='Phone Number'
-          value={phone_number}
-          onChange={(event) => this.setField('phone_number', event.target.value)}
+        <PhoneNumberField
+          phoneNumber={phone_number}
+          phoneNumberType={phone_number_type}
+          onChange={(field, value) => this.setField(field, value)}
         />
-        <SelectField
-          gridClassName='col-md-4'
-          labelClassName='no-gap'
-          label='Phone Number Type'
-          id='phone_number_type'
-          value={phone_number_type || ''}
-          onChange={(event) => this.setField('phone_number_type', event.target.value)}
-        >
-          <option key='' value=''></option>
-          {
-            Object.keys(PHONE_NUMBER_TYPE).map((item) =>
-              <option key={item} value={item}>{PHONE_NUMBER_TYPE[item]}</option>
-              )
-          }
-        </SelectField>
         <div className='col-md-2'>
           <button className='btn bg-gray-dark c-white' onClick={this.addPhoneNumber}>Add</button>
         </div>
