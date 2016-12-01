@@ -5,19 +5,17 @@ import InputField from 'components/common/InputField'
 describe('InputField', () => {
   let component
   let onChange = jasmine.createSpy('onChange')
+  const props = {
+    gridClassName: 'myWrapperTest',
+    labelClassName: 'myLabelTest',
+    id: 'myInputFieldId',
+    label: 'this is my label',
+    placeholder: 'This is some placeholder text...',
+    onChange: onChange,
+    value: 'this is my field value',
+  }
   beforeEach(() => {
-    const props = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      placeholder: 'This is some placeholder text...',
-      onChange: onChange,
-      value: 'this is my field value',
-    }
-    component = shallow(
-      <InputField {...props}/>
-    )
+    component = shallow(<InputField {...props}/>)
   })
 
   it('renders the wrapperClass', () => {
@@ -36,12 +34,24 @@ describe('InputField', () => {
     expect(labelElement.text()).toEqual('this is my label')
   })
 
-  it('renders the input element', () => {
+  it('renders the input placeholder', () => {
     const inputElement = component.find('input')
-    expect(inputElement.length).toEqual(1)
-    expect(inputElement.props().type).toEqual('text')
     expect(inputElement.props().placeholder).toEqual('This is some placeholder text...')
+  })
+
+  it('renders the input value', () => {
+    const inputElement = component.find('input')
     expect(inputElement.props().value).toEqual('this is my field value')
+  })
+
+  it('renders the input type', () => {
+    const inputElement = component.find('input')
+    const inputElementWithType = shallow(
+      <InputField {...props} type='tel'/>
+    ).find('input')
+
+    expect(inputElement.props().type).toEqual('text')
+    expect(inputElementWithType.props().type).toEqual('tel')
   })
 
   it('calls onChange when a change event occurs on input field', () => {
