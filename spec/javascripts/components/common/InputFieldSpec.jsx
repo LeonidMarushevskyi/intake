@@ -11,6 +11,7 @@ describe('InputField', () => {
       labelClassName: 'myLabelTest',
       id: 'myInputFieldId',
       label: 'this is my label',
+      placeholder: 'This is some placeholder text...',
       onChange: onChange,
       value: 'this is my field value',
     }
@@ -39,6 +40,7 @@ describe('InputField', () => {
     const inputElement = component.find('input')
     expect(inputElement.length).toEqual(1)
     expect(inputElement.props().type).toEqual('text')
+    expect(inputElement.props().placeholder).toEqual('This is some placeholder text...')
     expect(inputElement.props().value).toEqual('this is my field value')
   })
 
