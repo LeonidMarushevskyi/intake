@@ -80,7 +80,8 @@ class PeopleController < ApplicationController
         :type,
         :created_at,
         :updated_at
-      ]
+      ],
+      languages: []
     )
   end
 end

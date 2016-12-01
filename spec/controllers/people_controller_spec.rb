@@ -30,7 +30,8 @@ describe PeopleController do
         phone_numbers: [
           { id: '', number: '111-111-1111', type: 'Cell' },
           { id: '', number: '222-222-2222', type: 'Home' }
-        ]
+        ],
+        languages: %w(english farsi)
       }.with_indifferent_access
     end
     let(:created_person) do
