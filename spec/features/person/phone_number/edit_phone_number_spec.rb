@@ -11,13 +11,15 @@ feature 'Edit Phone Number' do
         phone_number: '917-578-2010',
         phone_number_type: 'work',
         created_at: '2016-08-11T18:24:22.157Z',
-        updated_at: '2016-08-11T18:24:22.157Z',
+        updated_at: '2016-08-11T18:24:22.157Z'
       }],
       address: FactoryGirl.create(:address, id: nil)
     )
 
     stub_request(:get, api_person_path(person.id))
-      .and_return(body: person.to_json, status: 200, headers: { 'Content-Type' => 'application/json' })
+      .and_return(body: person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
     visit edit_person_path(id: person.id)
 
     within '#phone-numbers' do
@@ -31,7 +33,7 @@ feature 'Edit Phone Number' do
     click_button 'Add new phone number'
 
     within '#phone-numbers' do
-      within all('.item').last do
+      within all('.list-item').last do
         fill_in 'Phone Number', with: '330-789-4587'
         select 'Work', from: 'Phone Number Type'
       end
@@ -50,4 +52,3 @@ feature 'Edit Phone Number' do
       .with(body: person.to_json)).to have_been_made
   end
 end
-

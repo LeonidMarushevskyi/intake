@@ -29,7 +29,7 @@ describe PeopleController do
         },
         phone_numbers: [
           { id: '', phone_number: '111-111-1111', phone_number_type: 'cell' },
-          { id: '', phone_number: '222-222-2222', phone_number_type: 'home' },
+          { id: '', phone_number: '222-222-2222', phone_number_type: 'home' }
         ]
       }.with_indifferent_access
     end

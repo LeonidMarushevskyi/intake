@@ -11,7 +11,7 @@ feature 'Create Phone Number' do
         phone_number: '917-578-2010',
         phone_number_type: 'work',
         created_at: nil,
-        updated_at: nil,
+        updated_at: nil
       }],
       address: FactoryGirl.create(:address, id: nil)
     )
@@ -28,7 +28,7 @@ feature 'Create Phone Number' do
     click_button 'Add new phone number'
 
     within '#phone-numbers' do
-      within all('.item').last do
+      within all('.list-item').last do
         fill_in 'Phone Number', with: '789-578-2014'
         select 'Home', from: 'Phone Number Type'
         click_link 'Delete phone number'

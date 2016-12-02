@@ -36,13 +36,13 @@ export class PhoneNumbersEditView extends React.Component {
           phoneNumbers.map((number, index) => {
             const {phone_number, phone_number_type}= number.toJS()
             return (
-              <div key={index} className='row item bg-gray-lightest double-gap-top pad-top pad-bottom'>
+              <div key={index} className='row list-item'>
                 <PhoneNumberField
                   phoneNumber={phone_number}
                   phoneNumberType={phone_number_type}
                   onChange={(field, value) => this.editPhoneNumber([index, field], value)}
                 />
-                <a className='pull-right'
+                <a className='list-item__a'
                   aria-label='Delete phone number'
                   href='#'
                   onClick={() => this.deletePhoneNumber(index)}

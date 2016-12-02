@@ -10,7 +10,7 @@ feature 'Show Person' do
         phone_number: '917-578-2010',
         phone_number_type: 'work',
         created_at: '2016-08-11T18:24:22.157Z',
-        updated_at: '2016-08-11T18:24:22.157Z',
+        updated_at: '2016-08-11T18:24:22.157Z'
       }],
       address: FactoryGirl.create(:address, id: nil)
     )
@@ -25,4 +25,3 @@ feature 'Show Person' do
     expect(page).to have_content('Work')
   end
 end
-
