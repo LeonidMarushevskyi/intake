@@ -197,14 +197,14 @@ ol {
   background-image: url('calendar.svg');
   background-position: 99%;
   background-repeat: no-repeat;
-  background-size: 3rem;
+  background-size: 2.5rem;
 }
 
 .input-type-autocompleter {
   background-image: url('search.svg');
   background-position: 99%;
   background-repeat: no-repeat;
-  background-size: 3rem;
+  background-size: 2.5rem;
 }
 
 /////////////////////////////////////////
@@ -292,8 +292,8 @@ select:focus {
 
 label {
   display: block;
-  font-weight: $normal-weight;
-  margin-top: 3rem;
+  font-weight: $semibold-weight;
+  margin-top: 2rem;
   max-width: 46rem;
 }
 
@@ -732,7 +732,7 @@ tbody tr th {
 
     span {
       float: left;
-      font-weight: $extralight-weight;
+      font-weight: $normal-weight;
       margin: 0;
       padding: 0;
       text-transform: uppercase;
@@ -759,6 +759,20 @@ tbody tr th {
       margin-bottom: $base-spacing;
       margin-top: $double-spacing;
     }
+
+    @media screen and (max-width: 767px) {
+      .centered {
+        margin-left: $base-spacing;
+        margin-right: $base-spacing;
+      }
+
+      .btn {
+        margin-bottom: 0;
+        margin-top: $base-spacing;
+      }
+    }
+
+
   }
 
   &.edit {
