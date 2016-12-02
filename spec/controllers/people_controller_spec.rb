@@ -100,7 +100,8 @@ describe PeopleController do
           type: 'Home',
           created_at: '2016-08-11T18:24:22.157Z',
           updated_at: '2016-08-11T18:24:22.157Z'
-        }]
+        }],
+        languages: ['armenian']
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }
