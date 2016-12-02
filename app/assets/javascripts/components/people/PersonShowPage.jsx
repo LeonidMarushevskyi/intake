@@ -1,8 +1,9 @@
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
-import NAME_SUFFIX from 'NameSuffix'
+import LANGUAGE from 'Language'
 import React from 'react'
+import NAME_SUFFIX from 'NameSuffix'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
@@ -20,6 +21,9 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
+    const {
+      languages,
+    } = person.toJS()
 
     return (
       <div className='card double-gap-top'>
@@ -64,6 +68,11 @@ export class PersonShowPage extends React.Component {
             </ShowField>
             <ShowField gridClassName='col-md-6' label='Gender'>
               {Gender[person.get('gender')]}
+            </ShowField>
+          </div>
+          <div className='row gap-top'>
+            <ShowField gridClassName='col-md-12' label='Language(s)'>
+              {(languages || []).map((language) => LANGUAGE[language]).join(', ')}
             </ShowField>
           </div>
           <div className='row gap-top'>

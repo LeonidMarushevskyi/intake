@@ -30,7 +30,8 @@ describe('PersonShowPage', () => {
           id: '2',
           number:'517-566-2111',
           type: 'Home',
-        }]
+        }],
+        languages: ['turkish', 'thai', 'vietnamese'],
       })
       const props = {
         params: {id: 99},
@@ -45,7 +46,6 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the person show fields', () => {
-      expect(component.find('ShowField').length).toEqual(15)
       expect(component.find('ShowField[label="First Name"]').html())
         .toContain('Kevin')
       expect(component.find('ShowField[label="Middle Name"]').html())
@@ -66,6 +66,8 @@ describe('PersonShowPage', () => {
         .toContain('11/16/1990')
       expect(component.find('ShowField[label="Gender"]').html())
         .toContain('Male')
+      expect(component.find('ShowField[label="Language(s)"]').html())
+        .toContain('Turkish, Thai, Vietnamese')
       expect(component.find('ShowField[label="Social security number"]').html())
         .toContain('111223333')
       expect(component.find('ShowField[label="Address"]').html())
