@@ -1,9 +1,9 @@
 import * as personActions from 'actions/personActions'
 import DateField from 'components/common/DateField'
-import LANGUAGE from 'Language'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
+import LANGUAGE from 'Language'
 import NAME_SUFFIX from 'NameSuffix'
 import React from 'react'
 import Select from 'react-select'
@@ -13,6 +13,7 @@ import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
+import {selectOptions} from 'utils/selectHelper'
 
 export class PersonNewPage extends React.Component {
   constructor() {
@@ -125,7 +126,7 @@ export class PersonNewPage extends React.Component {
               <Select
                 multi
                 inputProps={{id: 'languages'}}
-                options={LANGUAGE}
+                options={selectOptions(LANGUAGE)}
                 value={person.get('languages').toJS()}
                 onChange={(languages) => this.setField(
                   ['languages'],
