@@ -72,7 +72,7 @@ export class PersonShowPage extends React.Component {
           </div>
           <div className='row gap-top'>
             <ShowField gridClassName='col-md-12' label='Language(s)'>
-              {(languages || []).map((language) => LANGUAGE[language]).join(', ')}
+              {(languages || []).join(', ')}
             </ShowField>
           </div>
           <div className='row gap-top'>

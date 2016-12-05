@@ -20,7 +20,7 @@ feature 'Edit Person' do
       name_suffix: 'esq',
       ssn: '123-23-1234',
       address: address,
-      languages: ['armenian']
+      languages: ['Armenian']
     )
   end
 
@@ -102,7 +102,7 @@ feature 'Edit Person' do
     fill_in_react_select 'Language(s)', with: 'Farsi'
     remove_react_select_option('Language(s)', 'Armenian')
 
-    person.languages = %w(english farsi)
+    person.languages = %w(English Farsi)
     stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)
       .and_return(status: 200,

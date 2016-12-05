@@ -22,7 +22,7 @@ feature 'Create Person' do
       ssn: '123-23-1234',
       name_suffix: 'esq',
       address: address,
-      languages: %w(english farsi)
+      languages: %w(English Farsi)
     )
 
     visit root_path

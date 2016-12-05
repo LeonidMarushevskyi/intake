@@ -19,7 +19,7 @@ feature 'Show Person' do
         state: 'NY',
         zip: '12345'
       ),
-      languages: %w(turkish thai vietnamese)
+      languages: %w(Turkish Thai Vietnamese)
     )
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,

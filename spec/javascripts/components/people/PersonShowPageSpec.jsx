@@ -31,7 +31,7 @@ describe('PersonShowPage', () => {
           number:'517-566-2111',
           type: 'Home',
         }],
-        languages: ['turkish', 'thai', 'vietnamese'],
+        languages: ['Turkish', 'Thai', 'Vietnamese'],
       })
       const props = {
         params: {id: 99},

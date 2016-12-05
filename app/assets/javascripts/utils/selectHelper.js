@@ -1,7 +1,6 @@
-export function selectOptions(lookupObject) {
-  const keys = Object.keys(lookupObject)
-  return keys.map((key) => Object.assign({
-    label: lookupObject[key],
-    value: key,
+export function selectOptions(options) {
+  return options.map((option) => Object.assign({
+    label: option,
+    value: option,
   }))
 }
