@@ -25,9 +25,7 @@ const PhoneNumberField = ({phoneNumber, phoneNumberType, onChange}) => (
     >
       <option key='' value=''></option>
       {
-        Object.keys(PHONE_NUMBER_TYPE).map((item) =>
-          <option key={item} value={item}>{PHONE_NUMBER_TYPE[item]}</option>
-          )
+        PHONE_NUMBER_TYPE.map((item) => <option key={item} value={item}>{item}</option>)
       }
     </SelectField>
   </div>

@@ -2,7 +2,6 @@ import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import NAME_SUFFIX from 'NameSuffix'
-import PHONE_NUMBER_TYPE from 'PhoneNumberType'
 import React from 'react'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
@@ -53,7 +52,7 @@ export class PersonShowPage extends React.Component {
                     {phoneNumber.get('phone_number')}
                   </ShowField>
                   <ShowField gridClassName='col-md-6' label='Phone Number Type'>
-                    {PHONE_NUMBER_TYPE[phoneNumber.get('phone_number_type')]}
+                    {phoneNumber.get('phone_number_type')}
                   </ShowField>
                 </div>
               ))
