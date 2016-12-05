@@ -9,7 +9,7 @@ feature 'Create Phone Number' do
       phone_numbers: [{
         id: nil,
         phone_number: '917-578-2010',
-        phone_number_type: 'work',
+        phone_number_type: 'Work',
         created_at: nil,
         updated_at: nil
       }],

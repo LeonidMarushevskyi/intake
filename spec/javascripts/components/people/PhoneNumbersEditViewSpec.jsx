@@ -7,7 +7,7 @@ describe('PhoneNumbersEditView', () => {
   let component
   let onChangePhoneNumbersSpy
   beforeEach(() => {
-    const phoneNumbers = Immutable.fromJS([{phone_number: '111-111-1111', phone_number_type: 'cell'}])
+    const phoneNumbers = Immutable.fromJS([{phone_number: '111-111-1111', phone_number_type: 'Cell'}])
     onChangePhoneNumbersSpy = jasmine.createSpy('onChange')
     component = shallow(
       <PhoneNumbersEditView
@@ -21,7 +21,7 @@ describe('PhoneNumbersEditView', () => {
     it('renders numbers', () => {
       expect(component.find('PhoneNumberField').length).toEqual(1)
       expect(component.find('PhoneNumberField').props().phoneNumber).toEqual('111-111-1111')
-      expect(component.find('PhoneNumberField').props().phoneNumberType).toEqual('cell')
+      expect(component.find('PhoneNumberField').props().phoneNumberType).toEqual('Cell')
     })
   })
 
@@ -30,7 +30,7 @@ describe('PhoneNumbersEditView', () => {
       component.find('button[aria-label="Add new phone number"]').simulate('click')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
-        {phone_number: '111-111-1111', phone_number_type: 'cell'},
+        {phone_number: '111-111-1111', phone_number_type: 'Cell'},
         {phone_number: '', phone_number_type: ''},
       ])
     })
@@ -42,7 +42,7 @@ describe('PhoneNumbersEditView', () => {
       input.simulate('change', 'phone_number', '332-333-3333')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
-          {phone_number: '332-333-3333', phone_number_type: 'cell'}
+          {phone_number: '332-333-3333', phone_number_type: 'Cell'}
       ])
     })
   })

@@ -7,7 +7,7 @@ describe PhoneNumber do
       attributes = {
         id: 1,
         phone_number: '111-111-1111',
-        phone_number_type: 'cell',
+        phone_number_type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',
         updated_at: '2016-11-28T21:51:44.354Z'
       }.with_indifferent_access
@@ -16,7 +16,7 @@ describe PhoneNumber do
       ).to include({
         id: 1,
         phone_number: '111-111-1111',
-        phone_number_type: 'cell',
+        phone_number_type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',
         updated_at: '2016-11-28T21:51:44.354Z'
       }.with_indifferent_access)

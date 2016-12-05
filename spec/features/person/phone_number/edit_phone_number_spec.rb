@@ -9,7 +9,7 @@ feature 'Edit Phone Number' do
       phone_numbers: [{
         id: 1,
         phone_number: '917-578-2010',
-        phone_number_type: 'work',
+        phone_number_type: 'Work',
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
@@ -24,7 +24,7 @@ feature 'Edit Phone Number' do
 
     within '#phone-numbers' do
       expect(page).to have_field('Phone Number', with: '917-578-2010')
-      expect(page).to have_field('Phone Number Type', with: 'work')
+      expect(page).to have_field('Phone Number Type', with: 'Work')
 
       fill_in 'Phone Number', with: '917-578-1234'
       select 'Home', from: 'Phone Number Type'
@@ -42,10 +42,10 @@ feature 'Edit Phone Number' do
     click_button 'Save'
 
     person.phone_numbers.first.phone_number = '917-578-1234'
-    person.phone_numbers.first.phone_number_type = 'home'
+    person.phone_numbers.first.phone_number_type = 'Home'
     person.phone_numbers << PhoneNumber.new(
       phone_number: '330-789-4587',
-      phone_number_type: 'work'
+      phone_number_type: 'Work'
     )
 
     expect(a_request(:put, api_person_path(person.id))

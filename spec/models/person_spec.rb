@@ -21,8 +21,8 @@ describe Person do
           zip: '12345'
         },
         phone_numbers: [
-          { id: 1, phone_number: '111-111-1111', phone_number_type: 'cell' },
-          { id: 2, phone_number: '222-222-2222', phone_number_type: 'home' }
+          { id: 1, phone_number: '111-111-1111', phone_number_type: 'Cell' },
+          { id: 2, phone_number: '222-222-2222', phone_number_type: 'Home' }
         ]
       }.with_indifferent_access
       expect(
@@ -47,14 +47,14 @@ describe Person do
           {
             id: 1,
             phone_number: '111-111-1111',
-            phone_number_type: 'cell',
+            phone_number_type: 'Cell',
             created_at: nil,
             updated_at: nil
           },
           {
             id: 2,
             phone_number: '222-222-2222',
-            phone_number_type: 'home',
+            phone_number_type: 'Home',
             created_at: nil,
             updated_at: nil
           }

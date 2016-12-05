@@ -25,11 +25,11 @@ describe('PersonShowPage', () => {
         phone_numbers: [{
           id: '1',
           phone_number:'917-578-2010',
-          phone_number_type: 'work',
+          phone_number_type: 'Work',
         }, {
           id: '2',
           phone_number:'517-566-2111',
-          phone_number_type: 'home',
+          phone_number_type: 'Home',
         }]
       })
       const props = {

@@ -28,8 +28,8 @@ describe PeopleController do
           zip: '12345'
         },
         phone_numbers: [
-          { id: '', phone_number: '111-111-1111', phone_number_type: 'cell' },
-          { id: '', phone_number: '222-222-2222', phone_number_type: 'home' }
+          { id: '', phone_number: '111-111-1111', phone_number_type: 'Cell' },
+          { id: '', phone_number: '222-222-2222', phone_number_type: 'Home' }
         ]
       }.with_indifferent_access
     end
@@ -96,7 +96,7 @@ describe PeopleController do
         phone_numbers: [{
           id: '2',
           phone_number: '333-333-3333',
-          phone_number_type: 'home',
+          phone_number_type: 'Home',
           created_at: '2016-08-11T18:24:22.157Z',
           updated_at: '2016-08-11T18:24:22.157Z'
         }]

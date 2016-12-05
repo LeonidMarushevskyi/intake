@@ -8,7 +8,7 @@ feature 'Show Person' do
       phone_numbers: [{
         id: 1,
         phone_number: '917-578-2010',
-        phone_number_type: 'work',
+        phone_number_type: 'Work',
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
