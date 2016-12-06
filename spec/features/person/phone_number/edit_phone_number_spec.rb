@@ -8,8 +8,8 @@ feature 'Edit Phone Number' do
       id: 1,
       phone_numbers: [{
         id: 1,
-        phone_number: '917-578-2010',
-        phone_number_type: 'Work',
+        number: '917-578-2010',
+        type: 'Work',
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
@@ -41,11 +41,11 @@ feature 'Edit Phone Number' do
 
     click_button 'Save'
 
-    person.phone_numbers.first.phone_number = '917-578-1234'
-    person.phone_numbers.first.phone_number_type = 'Home'
+    person.phone_numbers.first.number = '917-578-1234'
+    person.phone_numbers.first.type = 'Home'
     person.phone_numbers << PhoneNumber.new(
-      phone_number: '330-789-4587',
-      phone_number_type: 'Work'
+      number: '330-789-4587',
+      type: 'Work'
     )
 
     expect(a_request(:put, api_person_path(person.id))

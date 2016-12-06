@@ -6,8 +6,8 @@ describe('PhoneNumberField', () => {
   let component
   let onChange = jasmine.createSpy('onChange')
   const props = {
-    phoneNumber: '222-222-2222',
-    phoneNumberType: 'Work',
+    Number: '222-222-2222',
+    Type: 'Work',
     onChange: onChange,
   }
   beforeEach(() => {
@@ -28,11 +28,11 @@ describe('PhoneNumberField', () => {
 
   it('calls onChange when phone number field has changed', () => {
     component.find('InputField').simulate('change', {target: {value: '333-333-3333'}})
-    expect(onChange).toHaveBeenCalledWith('phone_number', '333-333-3333')
+    expect(onChange).toHaveBeenCalledWith('number', '333-333-3333')
   })
 
   it('calls onChange when phone number type field has changed', () => {
     component.find('SelectField').simulate('change', {target: {value: 'Home'}})
-    expect(onChange).toHaveBeenCalledWith('phone_number_type', 'Home')
+    expect(onChange).toHaveBeenCalledWith('type', 'Home')
   })
 })

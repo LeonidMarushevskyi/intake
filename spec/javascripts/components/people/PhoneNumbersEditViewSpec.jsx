@@ -7,7 +7,7 @@ describe('PhoneNumbersEditView', () => {
   let component
   let onChangePhoneNumbersSpy
   beforeEach(() => {
-    const phoneNumbers = Immutable.fromJS([{phone_number: '111-111-1111', phone_number_type: 'Cell'}])
+    const phoneNumbers = Immutable.fromJS([{number: '111-111-1111', type: 'Cell'}])
     onChangePhoneNumbersSpy = jasmine.createSpy('onChange')
     component = shallow(
       <PhoneNumbersEditView
@@ -20,8 +20,8 @@ describe('PhoneNumbersEditView', () => {
   describe('render', () => {
     it('renders numbers', () => {
       expect(component.find('PhoneNumberField').length).toEqual(1)
-      expect(component.find('PhoneNumberField').props().phoneNumber).toEqual('111-111-1111')
-      expect(component.find('PhoneNumberField').props().phoneNumberType).toEqual('Cell')
+      expect(component.find('PhoneNumberField').props().Number).toEqual('111-111-1111')
+      expect(component.find('PhoneNumberField').props().Type).toEqual('Cell')
     })
   })
 
@@ -30,8 +30,8 @@ describe('PhoneNumbersEditView', () => {
       component.find('button[aria-label="Add new phone number"]').simulate('click')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
-        {phone_number: '111-111-1111', phone_number_type: 'Cell'},
-        {phone_number: '', phone_number_type: ''},
+        {number: '111-111-1111', type: 'Cell'},
+        {number: '', type: ''},
       ])
     })
   })
@@ -39,10 +39,10 @@ describe('PhoneNumbersEditView', () => {
   describe('when an existing phone number is changed', () => {
     it('calls onChange with the new phone numbers', () => {
       const input = component.find('PhoneNumberField')
-      input.simulate('change', 'phone_number', '332-333-3333')
+      input.simulate('change', 'number', '332-333-3333')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
-          {phone_number: '332-333-3333', phone_number_type: 'Cell'}
+          {number: '332-333-3333', type: 'Cell'}
       ])
     })
   })

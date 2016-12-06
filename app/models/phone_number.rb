@@ -6,8 +6,8 @@ class PhoneNumber # :nodoc:
   include ActiveModel::Model
 
   attribute :id
-  attribute :phone_number
-  attribute :phone_number_type
+  attribute :number
+  attribute :type
   attribute :created_at
   attribute :updated_at
 end

@@ -11,7 +11,7 @@ export class PhoneNumbersEditView extends React.Component {
   }
 
   addPhoneNumber() {
-    const NEW_PHONE_NUMBER = Immutable.Map({phone_number: '', phone_number_type: ''})
+    const NEW_PHONE_NUMBER = Immutable.Map({number: '', type: ''})
     const newPhoneNumbers = this.props.phoneNumbers.push(NEW_PHONE_NUMBER)
     this.props.onChange(newPhoneNumbers)
   }
@@ -33,13 +33,13 @@ export class PhoneNumbersEditView extends React.Component {
     return (
       <div id='phone-numbers'>
         {
-          phoneNumbers.map((number, index) => {
-            const {phone_number, phone_number_type}= number.toJS()
+          phoneNumbers.map((numbers, index) => {
+            const {number, type}= numbers.toJS()
             return (
               <div key={index} className='row list-item'>
                 <PhoneNumberField
-                  phoneNumber={phone_number}
-                  phoneNumberType={phone_number_type}
+                  Number={number}
+                  Type={type}
                   onChange={(field, value) => this.editPhoneNumber([index, field], value)}
                 />
                 <a className='list-item__a'

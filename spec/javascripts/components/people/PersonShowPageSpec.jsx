@@ -24,12 +24,12 @@ describe('PersonShowPage', () => {
         },
         phone_numbers: [{
           id: '1',
-          phone_number:'917-578-2010',
-          phone_number_type: 'Work',
+          number:'917-578-2010',
+          type: 'Work',
         }, {
           id: '2',
-          phone_number:'517-566-2111',
-          phone_number_type: 'Home',
+          number:'517-566-2111',
+          type: 'Home',
         }]
       })
       const props = {

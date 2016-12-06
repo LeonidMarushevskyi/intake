@@ -6,8 +6,8 @@ describe PhoneNumber do
     it 'returns the attributes of a phone number as a hash' do
       attributes = {
         id: 1,
-        phone_number: '111-111-1111',
-        phone_number_type: 'Cell',
+        number: '111-111-1111',
+        type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',
         updated_at: '2016-11-28T21:51:44.354Z'
       }.with_indifferent_access
@@ -15,8 +15,8 @@ describe PhoneNumber do
         described_class.new(attributes).as_json.with_indifferent_access
       ).to include({
         id: 1,
-        phone_number: '111-111-1111',
-        phone_number_type: 'Cell',
+        number: '111-111-1111',
+        type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',
         updated_at: '2016-11-28T21:51:44.354Z'
       }.with_indifferent_access)

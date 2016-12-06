@@ -49,10 +49,10 @@ export class PersonShowPage extends React.Component {
               person.get('phone_numbers') && person.get('phone_numbers').map((phoneNumber) => (
                 <div key={phoneNumber.get('id')}>
                   <ShowField gridClassName='col-md-6' label='Phone Number'>
-                    {phoneNumber.get('phone_number')}
+                    {phoneNumber.get('number')}
                   </ShowField>
                   <ShowField gridClassName='col-md-6' label='Phone Number Type'>
-                    {phoneNumber.get('phone_number_type')}
+                    {phoneNumber.get('type')}
                   </ShowField>
                 </div>
               ))
