@@ -49,7 +49,8 @@ describe('PhoneNumbersEditView', () => {
 
   describe('delete', () => {
     it('calls onChange with the new phone numbers', () => {
-      component.find('a[aria-label="Delete phone number"]').simulate('click')
+      const event = jasmine.createSpyObj('event', ['preventDefault'])
+      component.find('a[aria-label="Delete phone number"]').simulate('click', event)
       expect(onChangePhoneNumbersSpy).toHaveBeenCalledWith(Immutable.fromJS([]))
     })
   })
