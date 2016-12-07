@@ -45,7 +45,10 @@ export class PhoneNumbersEditView extends React.Component {
                 <a className='list-item__a'
                   aria-label='Delete phone number'
                   href='#'
-                  onClick={() => this.deletePhoneNumber(index)}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    this.deletePhoneNumber(index)
+                  }}
                 >
                   <i className='fa fa-times' />
                 </a>
