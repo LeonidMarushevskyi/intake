@@ -20,7 +20,7 @@ export function createPersonSuccess(person) {
 
 export function createPerson(person) {
   return (dispatch) =>
-    Utils.request('POST', '/people.json', person)
+    Utils.request('POST', '/people.json', JSON.stringify(person), {contentType: 'application/json'})
       .then((jsonResponse) => {
         dispatch(createPersonSuccess(Immutable.fromJS(jsonResponse)))
       })
@@ -33,7 +33,7 @@ export function updatePersonSuccess(person) {
 export function updatePerson(person) {
   return (dispatch) => {
     const {person: {id: personId}} = person
-    return Utils.request('PUT', `/people/${personId}.json`, person)
+    return Utils.request('PUT', `/people/${personId}.json`, JSON.stringify(person), {contentType: 'application/json'})
       .then((jsonResponse) => {
         dispatch(updatePersonSuccess(Immutable.fromJS(jsonResponse)))
       })

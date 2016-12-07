@@ -7,6 +7,7 @@ import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
+import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
@@ -16,18 +17,20 @@ export class PersonNewPage extends React.Component {
     super(...arguments)
     this.state = {
       person: Immutable.fromJS({
-        first_name: '',
-        last_name: '',
-        name_suffix: '',
-        gender: '',
-        date_of_birth: '',
-        ssn: '',
+        first_name: null,
+        middle_name: null,
+        last_name: null,
+        name_suffix: null,
+        gender: null,
+        date_of_birth: null,
+        ssn: null,
         address: {
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
+          street_address: null,
+          city: null,
+          state: null,
+          zip: null,
         },
+        phone_numbers: [],
       }),
     }
     this.setField = this.setField.bind(this)
@@ -91,6 +94,10 @@ export class PersonNewPage extends React.Component {
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
+          <PhoneNumbersEditView
+            phoneNumbers={this.state.person.get('phone_numbers') || Immutable.List()}
+            onChange={(phoneNumbers) => this.setField(['phone_numbers'], phoneNumbers)}
+          />
           <div className='row'>
             <DateField
               gridClassName='col-md-6'
@@ -152,8 +159,8 @@ export class PersonNewPage extends React.Component {
               <button className='btn btn-primary' onClick={this.save}>Save</button>
             </div>
           </div>
+        </div>
       </div>
-    </div>
     )
   }
 }

@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import {browserHistory} from 'react-router'
 import {PersonNewPage} from 'components/people/PersonNewPage'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('PersonNewPage', () => {
   let component
@@ -25,6 +25,7 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="Middle Name"]').length).toEqual(1)
       expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
       expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
+      expect(component.find('PhoneNumbersEditView').length).toEqual(1)
       expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
       expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
       expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
@@ -56,7 +57,7 @@ describe('PersonNewPage', () => {
         person: Immutable.Map(),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
       component.setState({person: Immutable.fromJS(personProps)})
       component.find('button.btn-primary').simulate('click')
       expect(createPerson).toHaveBeenCalledWith({person: personProps})
@@ -67,7 +68,7 @@ describe('PersonNewPage', () => {
         person: Immutable.fromJS({id: 1}),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
       component.find('button.btn-primary').simulate('click')
       expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
