@@ -1,4 +1,4 @@
-node {
+node('Slave') {
     checkout scm
     def branch = env.BRANCH_NAME ?: 'master'
     def curStage = 'Start'
