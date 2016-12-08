@@ -10,4 +10,5 @@ class Address # :nodoc:
   attribute :state
   attribute :street_address
   attribute :zip
+  attribute :type
 end

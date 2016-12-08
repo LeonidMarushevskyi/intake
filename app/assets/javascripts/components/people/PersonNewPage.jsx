@@ -1,4 +1,5 @@
 import * as personActions from 'actions/personActions'
+import ADDRESS_TYPE from 'AddressType'
 import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
@@ -32,6 +33,7 @@ export class PersonNewPage extends React.Component {
           city: null,
           state: null,
           zip: null,
+          type: null,
         },
         phone_numbers: [],
         languages: [],
@@ -159,7 +161,7 @@ export class PersonNewPage extends React.Component {
           </div>
           <div className='row'>
             <SelectField
-              gridClassName='col-md-6'
+              gridClassName='col-md-4'
               id='state'
               label='State'
               onChange={(event) => this.setField(['address', 'state'], event.target.value)}
@@ -168,11 +170,20 @@ export class PersonNewPage extends React.Component {
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
-              gridClassName='col-md-6'
+              gridClassName='col-md-2'
               id='zip'
               label='Zip'
               onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
             />
+            <SelectField
+              gridClassName='col-md-6'
+              id='address_type'
+              label='Address Type'
+              onChange={(event) => this.setField(['address', 'type'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
             <div className='centered'>
