@@ -790,3 +790,17 @@ tbody tr th {
     }
   }
 }
+
+.list-item {
+  background-color: $gray-lightest;
+  margin-top: $double-spacing;
+  padding: $base-spacing 0;
+  position: relative;
+}
+
+.list-item__a {
+  font-size: 2rem;
+  position: absolute;
+  right: 1.3rem;
+  top: .7rem;
+}

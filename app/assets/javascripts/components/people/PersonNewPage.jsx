@@ -3,31 +3,38 @@ import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
-import React from 'react'
+import LANGUAGE from 'Language'
 import NAME_SUFFIX from 'NameSuffix'
+import React from 'react'
+import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
+import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
+import {selectOptions} from 'utils/selectHelper'
 
 export class PersonNewPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
       person: Immutable.fromJS({
-        first_name: '',
-        last_name: '',
-        name_suffix: '',
-        gender: '',
-        date_of_birth: '',
-        ssn: '',
+        first_name: null,
+        middle_name: null,
+        last_name: null,
+        name_suffix: null,
+        gender: null,
+        date_of_birth: null,
+        ssn: null,
         address: {
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
+          street_address: null,
+          city: null,
+          state: null,
+          zip: null,
         },
+        phone_numbers: [],
+        languages: [],
       }),
     }
     this.setField = this.setField.bind(this)
@@ -52,6 +59,7 @@ export class PersonNewPage extends React.Component {
   }
 
   render() {
+    const {person} = this.state
     return (
       <div className='card edit double-gap-top'>
         <div className='card-header'>
@@ -91,6 +99,10 @@ export class PersonNewPage extends React.Component {
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
+          <PhoneNumbersEditView
+            phoneNumbers={this.state.person.get('phone_numbers') || Immutable.List()}
+            onChange={(phoneNumbers) => this.setField(['phone_numbers'], phoneNumbers)}
+          />
           <div className='row'>
             <DateField
               gridClassName='col-md-6'
@@ -107,6 +119,21 @@ export class PersonNewPage extends React.Component {
               <option key='' value=''></option>
               {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
             </SelectField>
+          </div>
+          <div className='row'>
+            <div className='col-md-6'>
+              <label htmlFor='languages'>Language(s)</label>
+              <Select
+                multi
+                inputProps={{id: 'languages'}}
+                options={selectOptions(LANGUAGE)}
+                value={person.get('languages').toJS()}
+                onChange={(languages) => this.setField(
+                  ['languages'],
+                  Immutable.List(languages.map((language) => language.value))
+                )}
+              />
+            </div>
           </div>
           <div className='row'>
             <InputField
@@ -152,8 +179,8 @@ export class PersonNewPage extends React.Component {
               <button className='btn btn-primary' onClick={this.save}>Save</button>
             </div>
           </div>
+        </div>
       </div>
-    </div>
     )
   }
 }

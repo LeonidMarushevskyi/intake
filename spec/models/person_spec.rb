@@ -19,11 +19,14 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [
+          { id: 1, number: '111-111-1111', type: 'Cell' },
+          { id: 2, number: '222-222-2222', type: 'Home' }
+        ],
+        languages: %w(English Farsi)
       }.with_indifferent_access
-      expect(
-        described_class.new(attributes).as_json
-      ).to eq({
+      expect(described_class.new(attributes).as_json).to eq({
         id: 1,
         first_name: 'Homer',
         middle_name: 'Jay',
@@ -38,7 +41,21 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [{
+          id: 1,
+          number: '111-111-1111',
+          type: 'Cell',
+          created_at: nil,
+          updated_at: nil
+        }, {
+          id: 2,
+          number: '222-222-2222',
+          type: 'Home',
+          created_at: nil,
+          updated_at: nil
+        }],
+        languages: %w(English Farsi)
       }.with_indifferent_access)
     end
   end

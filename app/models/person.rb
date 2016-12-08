@@ -14,4 +14,6 @@ class Person
   attribute :name_suffix
 
   attribute :address, Address
+  attribute :phone_numbers, Array[PhoneNumber]
+  attribute :languages, Array
 end

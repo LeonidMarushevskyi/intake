@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {PersonNewPage} from 'components/people/PersonNewPage'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
+import {browserHistory} from 'react-router'
 
 describe('PersonNewPage', () => {
   let component
@@ -25,6 +25,7 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="Middle Name"]').length).toEqual(1)
       expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
       expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
+      expect(component.find('PhoneNumbersEditView').length).toEqual(1)
       expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
       expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
       expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
@@ -32,6 +33,21 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="City"]').length).toEqual(1)
       expect(component.find('SelectField[label="State"]').length).toEqual(1)
       expect(component.find('InputField[label="Zip"]').length).toEqual(1)
+    })
+
+    it('renders the language field', () => {
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
+      expect(component.find('Select[multi]').props().value).toEqual([])
+    })
+
+    it('renders the language field after changes', () => {
+      const newSelectedLanguages = [
+        {label: 'Farsi', value: 'farsi'},
+        {label: 'English', value: 'english'},
+      ]
+      component.find('Select[multi]').simulate('change', newSelectedLanguages)
+      expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
     })
 
     it('renders the save button', () => {
@@ -51,15 +67,15 @@ describe('PersonNewPage', () => {
     })
 
     it('dispatches createPerson', () => {
-      const personProps = {first_name: 'Bart'}
       const props = {
         person: Immutable.Map(),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
-      component.setState({person: Immutable.fromJS(personProps)})
+      component = shallow(<PersonNewPage {...props} />)
+      component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Bart'}})
       component.find('button.btn-primary').simulate('click')
-      expect(createPerson).toHaveBeenCalledWith({person: personProps})
+      expect(createPerson).toHaveBeenCalled()
+      expect(createPerson.calls.argsFor(0)[0].person.first_name).toEqual('Bart')
     })
 
     it('redirects to show', () => {
@@ -67,7 +83,7 @@ describe('PersonNewPage', () => {
         person: Immutable.fromJS({id: 1}),
         actions: {createPerson: createPerson}
       }
-      component = mount(<PersonNewPage {...props} />)
+      component = shallow(<PersonNewPage {...props} />)
       component.find('button.btn-primary').simulate('click')
       expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })

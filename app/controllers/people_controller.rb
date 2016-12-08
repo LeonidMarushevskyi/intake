@@ -56,6 +56,7 @@ class PeopleController < ApplicationController
     render json: people.map(&:attributes)
   end
 
+  # rubocop:disable MethodLength
   def person_params
     params.require(:person).permit(
       :id,
@@ -72,7 +73,15 @@ class PeopleController < ApplicationController
         :city,
         :state,
         :zip
-      ]
+      ],
+      phone_numbers: [
+        :id,
+        :number,
+        :type,
+        :created_at,
+        :updated_at
+      ],
+      languages: []
     )
   end
 end

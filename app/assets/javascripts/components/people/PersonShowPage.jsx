@@ -1,13 +1,14 @@
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import Immutable from 'immutable'
+import LANGUAGE from 'Language'
 import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
+import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import ShowField from 'components/common/ShowField'
 
 export class PersonShowPage extends React.Component {
   constructor() {
@@ -20,6 +21,9 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
+    const {
+      languages,
+    } = person.toJS()
 
     return (
       <div className='card double-gap-top'>
@@ -45,11 +49,30 @@ export class PersonShowPage extends React.Component {
             </ShowField>
           </div>
           <div className='row gap-top'>
+            {
+              person.get('phone_numbers') && person.get('phone_numbers').map((phoneNumber) => (
+                <div key={phoneNumber.get('id')}>
+                  <ShowField gridClassName='col-md-6' label='Phone Number'>
+                    {phoneNumber.get('number')}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-6' label='Phone Number Type'>
+                    {phoneNumber.get('type')}
+                  </ShowField>
+                </div>
+              ))
+            }
+          </div>
+          <div className='row gap-top'>
             <ShowField gridClassName='col-md-6' label='Date of birth'>
               {person.get('date_of_birth')}
             </ShowField>
             <ShowField gridClassName='col-md-6' label='Gender'>
               {Gender[person.get('gender')]}
+            </ShowField>
+          </div>
+          <div className='row gap-top'>
+            <ShowField gridClassName='col-md-12' label='Language(s)'>
+              {(languages || []).join(', ')}
             </ShowField>
           </div>
           <div className='row gap-top'>

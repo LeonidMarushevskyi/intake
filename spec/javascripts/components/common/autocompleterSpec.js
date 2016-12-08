@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import Autocompleter from 'Autocompleter'
+import Autocompleter from 'components/common/Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'

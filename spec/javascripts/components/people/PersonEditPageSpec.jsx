@@ -41,6 +41,7 @@ describe('PersonEditPage', () => {
             state: 'IL',
             zip: 60093,
           },
+          languages: [],
         }),
       })
 
@@ -55,6 +56,21 @@ describe('PersonEditPage', () => {
       expect(component.find('InputField[label="City"]').props().value).toEqual('Winnetka')
       expect(component.find('SelectField[label="State"]').props().value).toEqual('IL')
       expect(component.find('InputField[label="Zip"]').props().value).toEqual(60093)
+    })
+
+    it('renders the language field', () => {
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
+      expect(component.find('Select[multi]').props().value).toEqual([])
+    })
+
+    it('renders the language field after changes', () => {
+      const newSelectedLanguages = [
+        {label: 'Farsi', value: 'farsi'},
+        {label: 'English', value: 'english'},
+      ]
+      component.find('Select[multi]').simulate('change', newSelectedLanguages)
+      expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
     })
 
     it('renders the save button', () => {
@@ -99,14 +115,14 @@ describe('PersonEditPage', () => {
         person: Immutable.Map({id: 1, first_name: 'Bart'}),
         actions: actionsSpy,
       }
-      component = mount(<PersonEditPage {...props} />)
+      component = shallow(<PersonEditPage {...props} />)
     })
 
     it('dispatches updatePerson', () => {
-      const updatedPersonProps = {id: 1, first_name: 'Lisa'}
-      component.setState({person: Immutable.fromJS(updatedPersonProps)})
+      component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Lisa'}})
       component.find('button.btn-primary').simulate('click')
-      expect(actionsSpy.updatePerson).toHaveBeenCalledWith({person: updatedPersonProps})
+      expect(actionsSpy.updatePerson).toHaveBeenCalled()
+      expect(actionsSpy.updatePerson.calls.argsFor(0)[0].person.first_name).toEqual('Lisa')
     })
 
     it('redirects to show', () => {

@@ -26,7 +26,12 @@ describe PeopleController do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [
+          { id: '', number: '111-111-1111', type: 'Cell' },
+          { id: '', number: '222-222-2222', type: 'Home' }
+        ],
+        languages: %w(English Farsi)
       }.with_indifferent_access
     end
     let(:created_person) do
@@ -88,7 +93,15 @@ describe PeopleController do
           city: 'Springfield',
           state: 'NY',
           zip: '12345'
-        }
+        },
+        phone_numbers: [{
+          id: '2',
+          number: '333-333-3333',
+          type: 'Home',
+          created_at: '2016-08-11T18:24:22.157Z',
+          updated_at: '2016-08-11T18:24:22.157Z'
+        }],
+        languages: ['Armenian']
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }

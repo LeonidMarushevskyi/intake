@@ -22,6 +22,16 @@ describe('PersonShowPage', () => {
           state: 'IL',
           zip: 60093,
         },
+        phone_numbers: [{
+          id: '1',
+          number:'917-578-2010',
+          type: 'Work',
+        }, {
+          id: '2',
+          number:'517-566-2111',
+          type: 'Home',
+        }],
+        languages: ['Turkish', 'Thai', 'Vietnamese'],
       })
       const props = {
         params: {id: 99},
@@ -36,7 +46,6 @@ describe('PersonShowPage', () => {
     })
 
     it('renders the person show fields', () => {
-      expect(component.find('ShowField').length).toEqual(11)
       expect(component.find('ShowField[label="First Name"]').html())
         .toContain('Kevin')
       expect(component.find('ShowField[label="Middle Name"]').html())
@@ -45,10 +54,20 @@ describe('PersonShowPage', () => {
         .toContain('McCallister')
       expect(component.find('ShowField[label="Suffix"]').html())
         .toContain('PhD')
+      expect(component.find('ShowField[label="Phone Number"]').first().html())
+        .toContain('917-578-2010')
+      expect(component.find('ShowField[label="Phone Number Type"]').first().html())
+        .toContain('Work')
+      expect(component.find('ShowField[label="Phone Number"]').last().html())
+        .toContain('517-566-2111')
+      expect(component.find('ShowField[label="Phone Number Type"]').last().html())
+        .toContain('Home')
       expect(component.find('ShowField[label="Date of birth"]').html())
         .toContain('11/16/1990')
       expect(component.find('ShowField[label="Gender"]').html())
         .toContain('Male')
+      expect(component.find('ShowField[label="Language(s)"]').html())
+        .toContain('Turkish, Thai, Vietnamese')
       expect(component.find('ShowField[label="Social security number"]').html())
         .toContain('111223333')
       expect(component.find('ShowField[label="Address"]').html())

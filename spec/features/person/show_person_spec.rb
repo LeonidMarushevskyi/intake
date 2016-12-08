@@ -18,7 +18,8 @@ feature 'Show Person' do
         city: 'Springfield',
         state: 'NY',
         zip: '12345'
-      )
+      ),
+      languages: %w(Turkish Thai Vietnamese)
     )
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,
@@ -32,6 +33,7 @@ feature 'Show Person' do
     expect(page).to have_content('Simpson')
     expect(page).to have_content('Esq')
     expect(page).to have_content('Male')
+    expect(page).to have_content('Turkish, Thai, Vietnamese')
     expect(page).to have_content('05/29/1990')
     expect(page).to have_content('123-23-1234')
     expect(page).to have_content('123 fake st')
