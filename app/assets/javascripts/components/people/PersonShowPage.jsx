@@ -21,9 +21,7 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
-    const {
-      languages,
-    } = person.toJS()
+    const { languages } = person.toJS()
 
     return (
       <div className='card double-gap-top'>
