@@ -28,7 +28,7 @@ export class ScreeningShowPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     const screeningChanged = this.props.screening &&
       nextProps.screening &&
-      this.props.screening.get('id') != nextProps.screening.get('id')
+      this.props.screening.get('id') !== nextProps.screening.get('id')
     if (screeningChanged) {
       this.setState({screening: nextProps.screening})
     }
@@ -66,11 +66,14 @@ export class ScreeningShowPage extends React.Component {
         <h1>{`Screening #${screening.get('reference')}`}</h1>
         <InformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
-        {loaded && <NarrativeCardView
-          narrative={screening.get('report_narrative')}
-          mode='show'
-          onSave={(value) => this.cardSave(['report_narrative'], value)}
-                   />}
+        {
+          loaded &&
+            <NarrativeCardView
+              narrative={screening.get('report_narrative')}
+              mode='show'
+              onSave={(value) => this.cardSave(['report_narrative'], value)}
+            />
+        }
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
@@ -80,18 +83,18 @@ export class ScreeningShowPage extends React.Component {
 }
 
 ScreeningShowPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
-  actions: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, _ownProps) {
   return {screening: state.screening}
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, _ownProps) {
   return {
-    actions: bindActionCreators(screeningActions, dispatch)
+    actions: bindActionCreators(screeningActions, dispatch),
   }
 }
 

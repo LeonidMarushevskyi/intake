@@ -1,4 +1,3 @@
-import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningShowPage} from 'components/screenings/ScreeningShowPage'
@@ -7,24 +6,22 @@ import {shallow, mount} from 'enzyme'
 describe('ScreeningShowPage', () => {
   describe('render', () => {
     it('renders the screening reference', () => {
-      let component
       const props = {
         params: {id: 1},
         screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
-        actions: { fetchScreening: () => null }
+        actions: {fetchScreening: () => null},
       }
-      component = shallow(<ScreeningShowPage {...props} />)
+      const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
 
     it('renders the home and edit link', () => {
-      let component
       const props = {
         params: {id: 1},
         screening: Immutable.Map(),
-        actions: { fetchScreening: () => null }
+        actions: {fetchScreening: () => null},
       }
-      component = shallow(<ScreeningShowPage {...props} />)
+      const component = shallow(<ScreeningShowPage {...props} />)
       const homeLink = component.find({to: '/'})
       const editLink = component.find({to: '/screenings/1/edit'})
       expect(homeLink.html()).toContain('Home')
@@ -35,7 +32,7 @@ describe('ScreeningShowPage', () => {
       const props = {
         params: {id: 1},
         screening: Immutable.Map(),
-        actions: { fetchScreening: () => null }
+        actions: {fetchScreening: () => null},
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('InformationShowView').length).toEqual(1)
@@ -51,7 +48,7 @@ describe('ScreeningShowPage', () => {
         const props = {
           params: {id: 1},
           screening: Immutable.fromJS({participants: participants}),
-          actions: { fetchScreening: () => null }
+          actions: {fetchScreening: () => null},
         }
         const component = shallow(<ScreeningShowPage {...props} />)
         expect(component.find('ParticipantCardView').length).toEqual(2)
@@ -83,17 +80,16 @@ describe('ScreeningShowPage', () => {
   })
 
   describe('componentDidMount', () => {
-    let component
     const fetchScreening = jasmine.createSpy('fetchScreening')
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
-        params: { id: 222 },
-        actions: { fetchScreening },
+        params: {id: 222},
+        actions: {fetchScreening},
         screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(promiseSpyObj)
-      component = mount(<ScreeningShowPage {...props} />)
+      mount(<ScreeningShowPage {...props} />)
     })
 
     it('GETs the screening from the server', () => {
@@ -103,7 +99,7 @@ describe('ScreeningShowPage', () => {
 
   describe('componentWillReceiveProps', () => {
     it('updates the component when screening is loaded', () => {
-      const props = { screening: Immutable.Map(), actions: {}, params: {} }
+      const props = {screening: Immutable.Map(), actions: {}, params: {}}
       const component = shallow(<ScreeningShowPage {...props}/>)
       const screening = Immutable.fromJS({id: 1, reference: 'My New Reference'})
       component.setProps({screening})
@@ -118,7 +114,7 @@ describe('ScreeningShowPage', () => {
       const props = {
         params: {id: 1},
         screening: Immutable.Map(),
-        actions: { saveScreening }
+        actions: {saveScreening},
       }
       component = shallow(<ScreeningShowPage {...props} />)
     })
