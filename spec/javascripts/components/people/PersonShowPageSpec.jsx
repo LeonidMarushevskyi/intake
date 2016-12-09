@@ -21,6 +21,7 @@ describe('PersonShowPage', () => {
           city: 'Winnetka',
           state: 'IL',
           zip: 60093,
+          type: 'Placement'
         },
         phone_numbers: [{
           id: '1',
@@ -78,6 +79,8 @@ describe('PersonShowPage', () => {
         .toContain('Illinois')
       expect(component.find('ShowField[label="Zip"]').html())
         .toContain('60093')
+      expect(component.find('ShowField[label="Address Type"]').html())
+        .toContain('Placement')
     })
 
     it('renders the edit link', () => {

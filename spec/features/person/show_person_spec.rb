@@ -17,7 +17,8 @@ feature 'Show Person' do
         street_address: '123 fake st',
         city: 'Springfield',
         state: 'NY',
-        zip: '12345'
+        zip: '12345',
+        type: 'Placement'
       ),
       languages: %w(Turkish Thai Vietnamese)
     )
@@ -40,6 +41,7 @@ feature 'Show Person' do
     expect(page).to have_content('Springfield')
     expect(page).to have_content('New York')
     expect(page).to have_content('12345')
+    expect(page).to have_content('Placement')
     expect(page).to_not have_content('Save')
     expect(page).to have_link('Edit Person', href: edit_person_path(id: person.id))
   end
