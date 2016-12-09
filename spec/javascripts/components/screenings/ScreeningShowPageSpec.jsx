@@ -103,25 +103,19 @@ describe('ScreeningShowPage', () => {
 
   describe('cardSave', () => {
     let component
-    const screeningWithRequiredAttributes = {
-      participants: [],
-      report_narrative: 'A Sample Narrative',
-    }
-    const props = {
-      params: {id: 1},
-      screening: Immutable.Map(),
-      actions: { fetchScreening: () => null }
-    }
-    const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
-      promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
-      spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
+      const props = {
+        params: {id: 1},
+        screening: Immutable.Map(),
+        actions: { saveScreening }
+      }
       component = shallow(<ScreeningShowPage {...props} />)
     })
 
     it('calls screening save', () => {
       component.instance().cardSave(['report_narrative'], 'This is my new narrative')
-      expect(screeningActions.save).toHaveBeenCalled()
+      expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
     })
   })
 })

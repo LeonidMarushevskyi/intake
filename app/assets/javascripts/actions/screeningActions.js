@@ -25,3 +25,18 @@ export function fetchScreening(screeningId) {
     .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
   )
 }
+
+export function updateScreeningSuccess(screening) {
+  return {type: types.UPDATE_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
+}
+
+export function saveScreening(screening) {
+  return (dispatch) => (
+    Utils.request(
+      'POST',
+      `/screenings/${screening.id}.json`,
+      {screening: screening},
+      {contentType: 'application/json'}
+    ).then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
+  )
+}
