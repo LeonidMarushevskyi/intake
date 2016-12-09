@@ -130,6 +130,20 @@ describe('PersonEditPage', () => {
       })
     })
 
+    describe('address type', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Address Type"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with address type', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Address Type"]')
+          .simulate('change', { target: { value: 'Placement'} })
+        expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
+      })
+    })
+
     it('renders the save button', () => {
       expect(component.find('button.btn-primary').text()).toEqual('Save')
     })

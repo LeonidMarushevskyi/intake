@@ -8,7 +8,8 @@ feature 'Edit Person' do
       street_address: '123 fake st',
       city: 'Springfield',
       state: 'NY',
-      zip: '12345'
+      zip: '12345',
+      type: 'Placement'
     )
     FactoryGirl.create(
       :person,
@@ -51,6 +52,7 @@ feature 'Edit Person' do
       expect(page).to have_field('City', with: 'Springfield')
       expect(page).to have_field('State', with: 'NY')
       expect(page).to have_field('Zip', with: '12345')
+      expect(page).to have_field('Address Type', with: 'Placement')
     end
     expect(page).to have_link 'Cancel'
     expect(page).to have_button 'Save'
