@@ -33,9 +33,9 @@ export function updateScreeningSuccess(screening) {
 export function saveScreening(screening) {
   return (dispatch) => (
     Utils.request(
-      'POST',
+      'PUT',
       `/screenings/${screening.id}.json`,
-      {screening: screening},
+      JSON.stringify({screening: screening}),
       {contentType: 'application/json'}
     ).then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
   )

@@ -101,6 +101,16 @@ describe('ScreeningShowPage', () => {
     })
   })
 
+  describe('componentWillReceiveProps', () => {
+    it('updates the component when screening is loaded', () => {
+      const props = { screening: Immutable.Map(), actions: {}, params: {} }
+      const component = shallow(<ScreeningShowPage {...props}/>)
+      const screening = Immutable.fromJS({id: 1, reference: 'My New Reference'})
+      component.setProps({screening})
+      expect(component.find('h1').text()).toContain('My New Reference')
+    })
+  })
+
   describe('cardSave', () => {
     let component
     const saveScreening = jasmine.createSpy('saveScreening')

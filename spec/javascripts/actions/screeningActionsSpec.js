@@ -47,7 +47,7 @@ describe('screening actions', () => {
     it('posts the screening to the server', () => {
       store.dispatch(screeningActions.saveScreening(screening))
       expect(Utils.request).toHaveBeenCalledWith(
-        'POST',
+        'PUT',
         `/screenings/${screening.id}.json`,
         JSON.stringify({screening: screening}),
         {contentType: 'application/json'}

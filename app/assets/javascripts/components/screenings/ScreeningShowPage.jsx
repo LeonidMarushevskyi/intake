@@ -25,9 +25,18 @@ export class ScreeningShowPage extends React.Component {
       .then(() => this.setState({loaded: true}))
   }
 
+  componentWillReceiveProps(nextProps) {
+    const screeningChanged = this.props.screening &&
+      nextProps.screening &&
+      this.props.screening.get('id') != nextProps.screening.get('id')
+    if (screeningChanged) {
+      this.setState({screening: nextProps.screening})
+    }
+  }
+
   cardSave(fieldSeq, value) {
     const screening = this.state.screening.setIn(fieldSeq, value)
-    this.props.actions.saveScreening(screening.toJS())
+    return this.props.actions.saveScreening(screening.toJS())
   }
 
   setField(fieldSeq, value) {
