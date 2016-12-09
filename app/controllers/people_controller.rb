@@ -72,7 +72,8 @@ class PeopleController < ApplicationController
         :street_address,
         :city,
         :state,
-        :zip
+        :zip,
+        :type
       ],
       phone_numbers: [
         :id,

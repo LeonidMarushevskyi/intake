@@ -17,13 +17,6 @@ describe('PersonEditPage', () => {
         actions: actionsSpy,
       }
       component = shallow(<PersonEditPage {...props} />)
-    })
-
-    it('renders the card header', () => {
-      expect(component.find('.card-header').text()).toEqual('Edit Basic Demographics Card')
-    })
-
-    it('renders the person input fields', () => {
       component.setState({
         person: Immutable.fromJS({
           id: 1,
@@ -45,32 +38,110 @@ describe('PersonEditPage', () => {
         }),
       })
 
+    })
+
+    it('renders the card header', () => {
+      expect(component.find('.card-header').text()).toEqual('Edit Basic Demographics Card')
+    })
+
+    it('renders the person input fields', () => {
       expect(component.find('InputField[label="First Name"]').props().value).toEqual('Kevin')
       expect(component.find('InputField[label="Middle Name"]').props().value).toEqual('Culkin')
       expect(component.find('InputField[label="Last Name"]').props().value).toEqual('McCallister')
-      expect(component.find('SelectField[label="Suffix"]').props().value).toEqual('phd')
       expect(component.find('DateField[label="Date of birth"]').props().value).toEqual('11/16/1990')
-      expect(component.find('SelectField[label="Gender"]').props().value).toEqual('male')
       expect(component.find('InputField[label="Social security number"]').props().value).toEqual('111223333')
       expect(component.find('InputField[label="Address"]').props().value).toEqual('671 Lincoln Avenue')
       expect(component.find('InputField[label="City"]').props().value).toEqual('Winnetka')
-      expect(component.find('SelectField[label="State"]').props().value).toEqual('IL')
       expect(component.find('InputField[label="Zip"]').props().value).toEqual(60093)
     })
 
-    it('renders the language field', () => {
-      expect(component.find('Select[multi]').length).toEqual(1)
-      expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
-      expect(component.find('Select[multi]').props().value).toEqual([])
+    describe('languages', () => {
+      it('renders the language field', () => {
+        expect(component.find('Select[multi]').length).toEqual(1)
+        expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
+        expect(component.find('Select[multi]').props().value).toEqual([])
+      })
+
+      it('renders the language field after changes', () => {
+        const newSelectedLanguages = [
+          {label: 'Farsi', value: 'farsi'},
+          {label: 'English', value: 'english'},
+        ]
+        component.find('Select[multi]').simulate('change', newSelectedLanguages)
+        expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
+      })
     })
 
-    it('renders the language field after changes', () => {
-      const newSelectedLanguages = [
-        {label: 'Farsi', value: 'farsi'},
-        {label: 'English', value: 'english'},
-      ]
-      component.find('Select[multi]').simulate('change', newSelectedLanguages)
-      expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
+    describe('suffix', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Suffix"]').props().value).toEqual('phd')
+      })
+
+      it('change event calls setField with suffix', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Suffix"]')
+          .simulate('change', { target: { value: 'Jr'} })
+        expect(instance.setField).toHaveBeenCalledWith(['name_suffix'], 'Jr')
+      })
+    })
+
+    describe('phone numbers', () => {
+      it('renders a phone number edit view', () => {
+        expect(component.find('PhoneNumbersEditView').props().phoneNumbers).toEqual(Immutable.List())
+      })
+
+      it('change event calls setField with phone numbers', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('PhoneNumbersEditView')
+          .simulate('change', Immutable.List())
+        expect(instance.setField).toHaveBeenCalledWith(
+          ['phone_numbers'], Immutable.List()
+        )
+      })
+    })
+
+    describe('gender', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Gender"]').props().value).toEqual('male')
+      })
+
+      it('change event calls setField with gender', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Gender"]')
+          .simulate('change', { target: { value: 'female'} })
+        expect(instance.setField).toHaveBeenCalledWith(['gender'], 'female')
+      })
+    })
+
+    describe('address state', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="State"]').props().value).toEqual('IL')
+      })
+
+      it('change event calls setField with state', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="State"]')
+          .simulate('change', { target: { value: 'New York'} })
+        expect(instance.setField).toHaveBeenCalledWith(['address','state'], 'New York')
+      })
+    })
+
+    describe('address type', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Address Type"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with address type', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Address Type"]')
+          .simulate('change', { target: { value: 'Placement'} })
+        expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
+      })
     })
 
     it('renders the save button', () => {

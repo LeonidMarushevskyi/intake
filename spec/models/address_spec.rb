@@ -9,7 +9,8 @@ describe Address do
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',
-        zip: 11_222
+        zip: 11_222,
+        type: 'Placement'
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json.with_indifferent_access
@@ -18,7 +19,8 @@ describe Address do
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',
-        zip: 11_222
+        zip: 11_222,
+        type: 'Placement'
       }.with_indifferent_access)
     end
   end

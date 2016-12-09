@@ -24,30 +24,100 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="First Name"]').length).toEqual(1)
       expect(component.find('InputField[label="Middle Name"]').length).toEqual(1)
       expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
-      expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
-      expect(component.find('PhoneNumbersEditView').length).toEqual(1)
       expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
-      expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
       expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
       expect(component.find('InputField[label="Address"]').length).toEqual(1)
       expect(component.find('InputField[label="City"]').length).toEqual(1)
-      expect(component.find('SelectField[label="State"]').length).toEqual(1)
       expect(component.find('InputField[label="Zip"]').length).toEqual(1)
     })
 
-    it('renders the language field', () => {
-      expect(component.find('Select[multi]').length).toEqual(1)
-      expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
-      expect(component.find('Select[multi]').props().value).toEqual([])
+    describe('suffix', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Suffix"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with suffix', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Suffix"]')
+          .simulate('change', { target: { value: 'Jr'} })
+        expect(instance.setField).toHaveBeenCalledWith(['name_suffix'], 'Jr')
+      })
     })
 
-    it('renders the language field after changes', () => {
-      const newSelectedLanguages = [
-        {label: 'Farsi', value: 'farsi'},
-        {label: 'English', value: 'english'},
-      ]
-      component.find('Select[multi]').simulate('change', newSelectedLanguages)
-      expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
+    describe('phone numbers', () => {
+      it('renders a phone number edit view', () => {
+        expect(component.find('PhoneNumbersEditView').length).toEqual(1)
+      })
+
+      it('change event calls setField with phone numbers', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('PhoneNumbersEditView')
+          .simulate('change', Immutable.List())
+        expect(instance.setField).toHaveBeenCalledWith(
+          ['phone_numbers'], Immutable.List()
+        )
+      })
+    })
+
+    describe('gender', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Gender"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with gender', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Gender"]')
+          .simulate('change', { target: { value: 'female'} })
+        expect(instance.setField).toHaveBeenCalledWith(['gender'], 'female')
+      })
+    })
+
+    describe('address state', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="State"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with state', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="State"]')
+          .simulate('change', { target: { value: 'New York'} })
+        expect(instance.setField).toHaveBeenCalledWith(['address','state'], 'New York')
+      })
+    })
+
+    describe('languages', () => {
+      it('renders the language field', () => {
+        expect(component.find('Select[multi]').length).toEqual(1)
+        expect(component.find('Select[multi]').props().inputProps.id).toEqual('languages')
+        expect(component.find('Select[multi]').props().value).toEqual([])
+      })
+
+      it('renders the language field after changes', () => {
+        const newSelectedLanguages = [
+          {label: 'Farsi', value: 'farsi'},
+          {label: 'English', value: 'english'},
+        ]
+        component.find('Select[multi]').simulate('change', newSelectedLanguages)
+        expect(component.find('Select[multi]').props().value).toEqual(['farsi', 'english'])
+      })
+    })
+
+    describe('address type', () => {
+      it('renders a select field', () => {
+        expect(component.find('SelectField[label="Address Type"]').length).toEqual(1)
+      })
+
+      it('change event calls setField with address type', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('SelectField[label="Address Type"]')
+          .simulate('change', { target: { value: 'Placement'} })
+        expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
+      })
     })
 
     it('renders the save button', () => {

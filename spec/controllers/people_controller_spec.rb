@@ -25,7 +25,8 @@ describe PeopleController do
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
-          zip: '12345'
+          zip: '12345',
+          type: 'placement'
         },
         phone_numbers: [
           { id: '', number: '111-111-1111', type: 'Cell' },
@@ -92,7 +93,8 @@ describe PeopleController do
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
-          zip: '12345'
+          zip: '12345',
+          type: 'placement'
         },
         phone_numbers: [{
           id: '2',

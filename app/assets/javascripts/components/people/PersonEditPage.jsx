@@ -1,4 +1,5 @@
 import * as personActions from 'actions/personActions'
+import ADDRESS_TYPE from 'AddressType'
 import DateField from 'components/common/DateField'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
@@ -176,7 +177,7 @@ export class PersonEditPage extends React.Component {
           </div>
           <div className='row'>
             <SelectField
-              gridClassName='col-md-6'
+              gridClassName='col-md-4'
               id='state'
               label='State'
               value={person.getIn(['address', 'state']) || ''}
@@ -186,12 +187,22 @@ export class PersonEditPage extends React.Component {
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
-              gridClassName='col-md-6'
+              gridClassName='col-md-2'
               id='zip'
               label='Zip'
               value={person.getIn(['address', 'zip']) || ''}
               onChange={(event) => this.setField(['address', 'zip'], event.target.value)}
             />
+            <SelectField
+              gridClassName='col-md-6'
+              id='type'
+              label='Address Type'
+              value={person.getIn(['address', 'type']) || ''}
+              onChange={(event) => this.setField(['address', 'type'], event.target.value)}
+            >
+              <option key='' value=''></option>
+              {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
+            </SelectField>
           </div>
           <div className='row'>
             <div className='centered'>

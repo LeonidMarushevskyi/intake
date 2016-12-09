@@ -9,7 +9,8 @@ feature 'Create Person' do
       id: nil,
       state: 'NY',
       street_address: '123 fake st',
-      zip: '12345'
+      zip: '12345',
+      type: 'Placement'
     )
     person = FactoryGirl.create(
       :person,
@@ -41,6 +42,7 @@ feature 'Create Person' do
     fill_in 'City', with: 'Springfield'
     select 'New York', from: 'State'
     fill_in 'Zip', with: '12345'
+    select 'Placement', from: 'Address Type'
 
     stub_request(:post, api_people_path)
       .with(body: person.to_json)

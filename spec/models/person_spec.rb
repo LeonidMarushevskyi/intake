@@ -18,7 +18,8 @@ describe Person do
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
-          zip: '12345'
+          zip: '12345',
+          type: 'Placement'
         },
         phone_numbers: [
           { id: 1, number: '111-111-1111', type: 'Cell' },
@@ -40,7 +41,8 @@ describe Person do
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
-          zip: '12345'
+          zip: '12345',
+          type: 'Placement'
         },
         phone_numbers: [{
           id: 1,
