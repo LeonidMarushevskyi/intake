@@ -12,12 +12,8 @@ import {connect} from 'react-redux'
 export class ScreeningShowPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      screening: props.screening,
-      loaded: false,
-    }
+    this.state = {loaded: false}
     this.cardSave = this.cardSave.bind(this)
-    this.setField = this.setField.bind(this)
   }
 
   componentDidMount() {
@@ -25,27 +21,13 @@ export class ScreeningShowPage extends React.Component {
       .then(() => this.setState({loaded: true}))
   }
 
-  componentWillReceiveProps(nextProps) {
-    const screeningChanged = this.props.screening &&
-      nextProps.screening &&
-      this.props.screening.get('id') !== nextProps.screening.get('id')
-    if (screeningChanged) {
-      this.setState({screening: nextProps.screening})
-    }
-  }
-
   cardSave(fieldSeq, value) {
-    const screening = this.state.screening.setIn(fieldSeq, value)
+    const screening = this.props.screening.setIn(fieldSeq, value)
     return this.props.actions.saveScreening(screening.toJS())
   }
 
-  setField(fieldSeq, value) {
-    const screening = this.state.screening.setIn(fieldSeq, value)
-    this.setState({screening: screening})
-  }
-
   renderParticipantsCard() {
-    const {screening} = this.state
+    const {screening} = this.props
     const participants = screening.get('participants') || Immutable.List()
     return (
       <div>
@@ -59,8 +41,8 @@ export class ScreeningShowPage extends React.Component {
   }
 
   render() {
-    const {params} = this.props
-    const {screening, loaded} = this.state
+    const {params, screening} = this.props
+    const {loaded} = this.state
     return (
       <div>
         <h1>{`Screening #${screening.get('reference')}`}</h1>
