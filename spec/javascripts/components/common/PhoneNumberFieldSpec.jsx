@@ -4,7 +4,7 @@ import PhoneNumberField from 'components/common/PhoneNumberField'
 
 describe('PhoneNumberField', () => {
   let component
-  let onChange = jasmine.createSpy('onChange')
+  const onChange = jasmine.createSpy('onChange')
   const props = {
     Number: '222-222-2222',
     Type: 'Work',

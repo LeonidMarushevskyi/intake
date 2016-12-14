@@ -92,7 +92,7 @@ export default class ScreeningShowPage extends React.Component {
           narrative={screening.get('report_narrative')}
           mode='show'
           onSave={(value) => this.cardSave(['report_narrative'], value)}
-        />}
+                   />}
         <ReferralInformationShowView screening={screening}/>
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>

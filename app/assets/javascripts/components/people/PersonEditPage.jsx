@@ -108,7 +108,7 @@ export class PersonEditPage extends React.Component {
               value={person.get('name_suffix') || ''}
               onChange={(event) => this.setField(['name_suffix'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
@@ -131,7 +131,7 @@ export class PersonEditPage extends React.Component {
               value={person.get('gender') || ''}
               onChange={(event) => this.setField(['gender'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
             </SelectField>
           </div>
@@ -183,7 +183,7 @@ export class PersonEditPage extends React.Component {
               value={person.getIn(['address', 'state']) || ''}
               onChange={(event) => this.setField(['address', 'state'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
@@ -200,7 +200,7 @@ export class PersonEditPage extends React.Component {
               value={person.getIn(['address', 'type']) || ''}
               onChange={(event) => this.setField(['address', 'type'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
             </SelectField>
           </div>
@@ -217,18 +217,18 @@ export class PersonEditPage extends React.Component {
 }
 
 PersonEditPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   person: React.PropTypes.object.isRequired,
-  actions: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, _ownProps) {
   return {person: state.person}
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, _ownProps) {
   return {
-    actions: bindActionCreators(personActions, dispatch)
+    actions: bindActionCreators(personActions, dispatch),
   }
 }
 

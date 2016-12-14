@@ -97,7 +97,7 @@ export class PersonNewPage extends React.Component {
               label='Suffix'
               onChange={(event) => this.setField(['name_suffix'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
@@ -118,7 +118,7 @@ export class PersonNewPage extends React.Component {
               label='Gender'
               onChange={(event) => this.setField(['gender'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
             </SelectField>
           </div>
@@ -166,7 +166,7 @@ export class PersonNewPage extends React.Component {
               label='State'
               onChange={(event) => this.setField(['address', 'state'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
@@ -181,7 +181,7 @@ export class PersonNewPage extends React.Component {
               label='Address Type'
               onChange={(event) => this.setField(['address', 'type'], event.target.value)}
             >
-              <option key='' value=''></option>
+              <option key='' value='' />
               {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
             </SelectField>
           </div>
@@ -197,17 +197,17 @@ export class PersonNewPage extends React.Component {
 }
 
 PersonNewPage.propTypes = {
-  person: React.PropTypes.object,
   actions: React.PropTypes.object.isRequired,
+  person: React.PropTypes.object,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, _ownProps) {
   return {person: state.person}
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, _ownProps) {
   return {
-    actions: bindActionCreators(personActions, dispatch)
+    actions: bindActionCreators(personActions, dispatch),
   }
 }
 

@@ -37,16 +37,18 @@ export default class ScreeningEditPage extends React.Component {
       loaded: false,
     }
 
-    const methods =[
+    const methods = [
       'fetch',
       'setField',
       'addParticipant',
       'update',
       'createParticipant',
       'cardSave',
-      'saveAll'
+      'saveAll',
     ]
-    methods.forEach((method) => this[method] = this[method].bind(this))
+    methods.forEach((method) => {
+      this[method] = this[method].bind(this)
+    })
   }
 
   componentDidMount() {
@@ -98,7 +100,7 @@ export default class ScreeningEditPage extends React.Component {
     const {screening} = this.state
     const participants = screening.get('participants').push(Immutable.Map(participant))
     this.setState({
-      screening: screening.merge({participants: participants})
+      screening: screening.merge({participants: participants}),
     })
   }
 
@@ -112,12 +114,11 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   saveAll() {
-    if(this.state.loaded) {
+    if (this.state.loaded) {
       const narrativeCardSave = this.refs.narrativeCard.onSave()
       narrativeCardSave.then(() => this.update())
     }
   }
-
 
   renderParticipantsCard() {
     const {screening} = this.state
@@ -152,12 +153,15 @@ export default class ScreeningEditPage extends React.Component {
         <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
         <InformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
-        {loaded && <NarrativeCardView
-          ref='narrativeCard'
-          narrative={screening.get('report_narrative')}
-          mode='edit'
-          onSave={(value) => this.cardSave(['report_narrative'], value)}
-        />}
+        {
+          loaded &&
+            <NarrativeCardView
+              ref='narrativeCard'
+              narrative={screening.get('report_narrative')}
+              mode='edit'
+              onSave={(value) => this.cardSave(['report_narrative'], value)}
+            />
+        }
         <ReferralInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>

@@ -9,9 +9,9 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value}) 
 
 DateField.propTypes = {
   gridClassName: React.PropTypes.string,
-  labelClassName: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
+  labelClassName: React.PropTypes.string,
   onChange: React.PropTypes.func.isRequired,
   value: React.PropTypes.string,
 }

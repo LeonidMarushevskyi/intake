@@ -45,7 +45,7 @@ const InformationEditView = ({screening, onChange}) => (
             value={screening.get('communication_method') || ''}
             onChange={(event) => onChange(['communication_method'], event.target.value)}
           >
-            <option key='' value=''></option>
+            <option key='' value='' />
             {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
           </SelectField>
       </div>
@@ -54,7 +54,7 @@ const InformationEditView = ({screening, onChange}) => (
 )
 
 InformationEditView.propTypes = {
-  screening: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }
 export default InformationEditView

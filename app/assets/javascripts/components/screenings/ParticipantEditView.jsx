@@ -10,7 +10,7 @@ const ParticipantEditView = ({participant}) => (
     <div className='card-header'>
       <span>{`${participant.get('first_name')} ${participant.get('last_name')}`}</span>
       <Link aria-label='Delete participant' className='pull-right' href='#'>
-        <i className='fa fa-times'></i>
+        <i className='fa fa-times' />
       </Link>
     </div>
     <div className='card-body'>
@@ -47,7 +47,7 @@ const ParticipantEditView = ({participant}) => (
           value={participant.get('gender') || ''}
           onChange={() => null}
         >
-          <option key='' value=''></option>
+          <option key='' value='' />
           {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
         </SelectField>
       </div>

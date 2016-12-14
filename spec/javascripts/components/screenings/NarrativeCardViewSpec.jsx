@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import React from 'react'
 import {mount} from 'enzyme'
@@ -36,7 +35,7 @@ describe('NarrativeCardView', () => {
         })
       })
 
-      describe("when the narrative is edited", () => {
+      describe('when the narrative is edited', () => {
         beforeEach(() => {
           component.find('textarea').simulate('change', {target: {value: 'this is my new text'}})
         })

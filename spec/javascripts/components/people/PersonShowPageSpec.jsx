@@ -21,22 +21,22 @@ describe('PersonShowPage', () => {
           city: 'Winnetka',
           state: 'IL',
           zip: 60093,
-          type: 'Placement'
+          type: 'Placement',
         },
         phone_numbers: [{
           id: '1',
-          number:'917-578-2010',
+          number: '917-578-2010',
           type: 'Work',
         }, {
           id: '2',
-          number:'517-566-2111',
+          number: '517-566-2111',
           type: 'Home',
         }],
         languages: ['Turkish', 'Thai', 'Vietnamese'],
       })
       const props = {
         params: {id: 99},
-        actions: { fetchPerson: () => null },
+        actions: {fetchPerson: () => null},
         person: person,
       }
       component = shallow(<PersonShowPage {...props} />)
@@ -96,10 +96,10 @@ describe('PersonShowPage', () => {
       fetchPerson = jasmine.createSpy('fetchPerson')
       const props = {
         params: {id: 99},
-        actions: { fetchPerson: fetchPerson },
+        actions: {fetchPerson: fetchPerson},
         person: Immutable.Map(),
       }
-      const component = mount(<PersonShowPage {...props} />)
+      mount(<PersonShowPage {...props} />)
     })
 
     it('calls fetchPerson action', () => {

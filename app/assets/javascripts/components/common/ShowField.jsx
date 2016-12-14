@@ -8,12 +8,12 @@ const ShowField = ({gridClassName, labelClassName, label, children}) => (
 )
 
 ShowField.propTypes = {
-  gridClassName: React.PropTypes.string,
-  labelClassName: React.PropTypes.string,
-  label: React.PropTypes.string.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
   ]),
+  gridClassName: React.PropTypes.string,
+  label: React.PropTypes.string.isRequired,
+  labelClassName: React.PropTypes.string,
 }
 export default ShowField

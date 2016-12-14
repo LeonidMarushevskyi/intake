@@ -19,7 +19,7 @@ const NarrativeShowView = ({narrative, onEdit}) => (
 )
 
 NarrativeShowView.propTypes = {
-  onEdit: React.PropTypes.func.isRequired,
   narrative: React.PropTypes.string.isRequired,
+  onEdit: React.PropTypes.func.isRequired,
 }
 export default NarrativeShowView

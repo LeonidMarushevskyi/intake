@@ -44,8 +44,8 @@ describe('InformationEditView', () => {
 
     it('fires the call the onChange function when a field changes', () => {
       const comMethodSelect = component.find('#screening-information-card select')
-      comMethodSelect.simulate('change', {target: { value: 'fax'}})
-      expect(onChange).toHaveBeenCalledWith([ 'communication_method' ], 'fax')
+      comMethodSelect.simulate('change', {target: {value: 'fax'}})
+      expect(onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
     })
   })
 })

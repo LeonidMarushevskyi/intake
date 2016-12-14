@@ -1,7 +1,5 @@
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
-import Immutable from 'immutable'
-import LANGUAGE from 'Language'
 import React from 'react'
 import NAME_SUFFIX from 'NameSuffix'
 import ShowField from 'components/common/ShowField'
@@ -21,14 +19,14 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
-    const { languages } = person.toJS()
+    const {languages} = person.toJS()
 
     return (
       <div className='card double-gap-top'>
         <div className='card-header'>
           <span>Basic Demographics Card</span>
           <Link to={`/people/${params.id}/edit`} aria-label='Edit Person'>
-            <i className='fa fa-pencil'></i>
+            <i className='fa fa-pencil' />
           </Link>
         </div>
         <div className='card-body'>
@@ -104,18 +102,18 @@ export class PersonShowPage extends React.Component {
 }
 
 PersonShowPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   person: React.PropTypes.object.isRequired,
-  actions: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, _ownProps) {
   return {person: state.person}
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch, _ownProps) {
   return {
-    actions: bindActionCreators(personActions, dispatch)
+    actions: bindActionCreators(personActions, dispatch),
   }
 }
 

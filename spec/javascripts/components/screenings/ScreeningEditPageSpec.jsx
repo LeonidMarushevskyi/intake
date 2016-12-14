@@ -3,7 +3,6 @@ import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
-import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
@@ -31,13 +30,13 @@ describe('ScreeningEditPage', () => {
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
           ...screeningWithRequiredAttributes,
-        })
+        }),
       })
       expect(component.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
     })
 
     it('renders the screening information edit view', () => {
-      const screening =  Immutable.fromJS({
+      const screening = Immutable.fromJS({
         name: 'The Rocky Horror Picture Show',
         started_at: '2016-08-13T10:00:00.000Z',
         ended_at: '2016-08-22T11:00:00.000Z',
@@ -209,7 +208,7 @@ describe('ScreeningEditPage', () => {
         loaded: true,
       })
       const nameOfScreening = component.find('#name')
-      nameOfScreening.simulate('change', { target: { value: 'my screening' }})
+      nameOfScreening.simulate('change', {target: {value: 'my screening'}})
       saveButton = component.find('button.btn.btn-primary').last()
     })
 
@@ -225,7 +224,7 @@ describe('ScreeningEditPage', () => {
     describe('with narrative changes', () => {
       beforeEach(() => {
         const narrative = component.find('#report_narrative')
-        narrative.simulate('change', { target: { value: 'Changed narrative' }})
+        narrative.simulate('change', {target: {value: 'Changed narrative'}})
       })
 
       it('calls save action with updated narrative', () => {

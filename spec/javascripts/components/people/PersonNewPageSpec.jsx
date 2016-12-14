@@ -40,7 +40,7 @@ describe('PersonNewPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Suffix"]')
-          .simulate('change', { target: { value: 'Jr'} })
+          .simulate('change', {target: {value: 'Jr'}})
         expect(instance.setField).toHaveBeenCalledWith(['name_suffix'], 'Jr')
       })
     })
@@ -70,7 +70,7 @@ describe('PersonNewPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Gender"]')
-          .simulate('change', { target: { value: 'female'} })
+          .simulate('change', {target: {value: 'female'}})
         expect(instance.setField).toHaveBeenCalledWith(['gender'], 'female')
       })
     })
@@ -84,8 +84,8 @@ describe('PersonNewPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="State"]')
-          .simulate('change', { target: { value: 'New York'} })
-        expect(instance.setField).toHaveBeenCalledWith(['address','state'], 'New York')
+          .simulate('change', {target: {value: 'New York'}})
+        expect(instance.setField).toHaveBeenCalledWith(['address', 'state'], 'New York')
       })
     })
 
@@ -115,7 +115,7 @@ describe('PersonNewPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Address Type"]')
-          .simulate('change', { target: { value: 'Placement'} })
+          .simulate('change', {target: {value: 'Placement'}})
         expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
       })
     })
@@ -139,7 +139,7 @@ describe('PersonNewPage', () => {
     it('dispatches createPerson', () => {
       const props = {
         person: Immutable.Map(),
-        actions: {createPerson: createPerson}
+        actions: {createPerson: createPerson},
       }
       component = shallow(<PersonNewPage {...props} />)
       component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Bart'}})
@@ -151,7 +151,7 @@ describe('PersonNewPage', () => {
     it('redirects to show', () => {
       const props = {
         person: Immutable.fromJS({id: 1}),
-        actions: {createPerson: createPerson}
+        actions: {createPerson: createPerson},
       }
       component = shallow(<PersonNewPage {...props} />)
       component.find('button.btn-primary').simulate('click')

@@ -12,15 +12,15 @@ InputField.defaultProps = {
 }
 InputField.propTypes = {
   gridClassName: React.PropTypes.string,
-  labelClassName: React.PropTypes.string,
   id: React.PropTypes.string.isRequired,
   label: React.PropTypes.string.isRequired,
+  labelClassName: React.PropTypes.string,
   onChange: React.PropTypes.func.isRequired,
   placeholder: React.PropTypes.string,
+  type: React.PropTypes.string,
   value: React.PropTypes.oneOfType([
     React.PropTypes.string,
-    React.PropTypes.number
+    React.PropTypes.number,
   ]),
-  type: React.PropTypes.string,
 }
 export default InputField

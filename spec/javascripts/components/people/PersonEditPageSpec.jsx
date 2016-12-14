@@ -37,7 +37,6 @@ describe('PersonEditPage', () => {
           languages: [],
         }),
       })
-
     })
 
     it('renders the card header', () => {
@@ -81,7 +80,7 @@ describe('PersonEditPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Suffix"]')
-          .simulate('change', { target: { value: 'Jr'} })
+          .simulate('change', {target: {value: 'Jr'}})
         expect(instance.setField).toHaveBeenCalledWith(['name_suffix'], 'Jr')
       })
     })
@@ -111,7 +110,7 @@ describe('PersonEditPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Gender"]')
-          .simulate('change', { target: { value: 'female'} })
+          .simulate('change', {target: {value: 'female'}})
         expect(instance.setField).toHaveBeenCalledWith(['gender'], 'female')
       })
     })
@@ -125,8 +124,8 @@ describe('PersonEditPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="State"]')
-          .simulate('change', { target: { value: 'New York'} })
-        expect(instance.setField).toHaveBeenCalledWith(['address','state'], 'New York')
+          .simulate('change', {target: {value: 'New York'}})
+        expect(instance.setField).toHaveBeenCalledWith(['address', 'state'], 'New York')
       })
     })
 
@@ -139,7 +138,7 @@ describe('PersonEditPage', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('SelectField[label="Address Type"]')
-          .simulate('change', { target: { value: 'Placement'} })
+          .simulate('change', {target: {value: 'Placement'}})
         expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
       })
     })

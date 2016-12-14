@@ -4,7 +4,7 @@ import DateField from 'components/common/DateField'
 
 describe('DateField', () => {
   let component
-  let onChange = jasmine.createSpy('onChange')
+  const onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
     const props = {
       gridClassName: 'myWrapperTest',

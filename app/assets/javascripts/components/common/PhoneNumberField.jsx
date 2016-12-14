@@ -23,12 +23,17 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
       value={Type}
       onChange={(event) => onChange('type', event.target.value)}
     >
-      <option key='' value=''></option>
+      <option key='' value='' />
       {
         PHONE_NUMBER_TYPE.map((item) => <option key={item} value={item}>{item}</option>)
       }
     </SelectField>
   </div>
 )
+PhoneNumberField.propTypes = {
+  Number: React.PropTypes.string,
+  Type: React.PropTypes.string,
+  onChange: React.PropTypes.func.isRequired,
+}
 export default PhoneNumberField
 

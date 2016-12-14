@@ -24,8 +24,8 @@ describe('ScreeningShowPage', () => {
       component.setState({
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
-          participants: []
-        })
+          participants: [],
+        }),
       })
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
@@ -73,7 +73,7 @@ describe('ScreeningShowPage', () => {
       })
 
       it('renders the narrative card', () => {
-       expect(component.find('NarrativeCardView').length).toEqual(1)
+        expect(component.find('NarrativeCardView').length).toEqual(1)
       })
 
       it('has screening passed in props', () => {

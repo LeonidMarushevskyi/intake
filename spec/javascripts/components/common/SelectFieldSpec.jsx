@@ -4,7 +4,7 @@ import SelectField from 'components/common/SelectField'
 
 describe('SelectField', () => {
   let component
-  let onChange = jasmine.createSpy('onChange')
+  const onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
     const props = {
       gridClassName: 'myWrapperTest',

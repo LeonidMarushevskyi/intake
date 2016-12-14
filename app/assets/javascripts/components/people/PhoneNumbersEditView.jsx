@@ -34,7 +34,7 @@ export class PhoneNumbersEditView extends React.Component {
       <div id='phone-numbers'>
         {
           phoneNumbers.map((numbers, index) => {
-            const {number, type}= numbers.toJS()
+            const {number, type} = numbers.toJS()
             return (
               <div key={index} className='row list-item'>
                 <PhoneNumberField
@@ -63,7 +63,7 @@ export class PhoneNumbersEditView extends React.Component {
               onClick={this.addPhoneNumber}
               aria-label='Add new phone number'
             >
-              <i className="fa fa-plus" />
+              <i className='fa fa-plus' />
               <span> Add new phone number</span>
             </button>
           </div>
@@ -74,6 +74,6 @@ export class PhoneNumbersEditView extends React.Component {
 }
 
 PhoneNumbersEditView.propTypes = {
-  phoneNumbers: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
+  phoneNumbers: React.PropTypes.object.isRequired,
 }

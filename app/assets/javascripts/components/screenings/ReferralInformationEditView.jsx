@@ -7,7 +7,6 @@ import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
-import moment from 'moment'
 
 const ReferralInformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='referral-information-card'>
@@ -33,7 +32,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           value={screening.get('incident_county') || ''}
           onChange={(event) => onChange(['incident_county'], event.target.value)}
         >
-          <option key='' value=''></option>
+          <option key='' value='' />
           {Object.keys(COUNTY).map((item) => <option key={item} value={item}>{COUNTY[item]}</option>)}
         </SelectField>
       </div>
@@ -66,7 +65,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             value={screening.getIn(['address', 'state']) || ''}
             onChange={(event) => onChange(['address', 'state'], event.target.value)}
           >
-            <option key='' value=''></option>
+            <option key='' value='' />
             {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
           </SelectField>
           <InputField
@@ -83,17 +82,16 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           gridClassName='col-md-6'
           id='location_type'
           label='Location Type'
-          value={screening.get('location_type')  || ''}
+          value={screening.get('location_type') || ''}
           onChange={(event) => onChange(['location_type'], event.target.value)}
         >
-          <option key='' value=''></option>
-          {Object.keys(LOCATION_TYPE).map((group) => {
-            return (
-              <optgroup key={group} label={group}>
-                {LOCATION_TYPE[group].map((item) => <option key={item} value={item}>{item}</option>)}
-              </optgroup>
-              )
-          })}
+          <option key='' value='' />
+          {Object.keys(LOCATION_TYPE).map((group) => (
+            <optgroup key={group} label={group}>
+              {LOCATION_TYPE[group].map((item) => <option key={item} value={item}>{item}</option>)}
+            </optgroup>
+            )
+          )}
         </SelectField>
       </div>
       <div className='row'>
@@ -104,7 +102,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           value={screening.get('response_time') || ''}
           onChange={(event) => onChange(['response_time'], event.target.value)}
         >
-          <option key='' value=''></option>
+          <option key='' value='' />
           {Object.keys(RESPONSE_TIME).map((item) => <option key={item} value={item}>{RESPONSE_TIME[item]}</option>)}
         </SelectField>
       </div>
@@ -116,7 +114,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           value={screening.get('screening_decision') || ''}
           onChange={(event) => onChange(['screening_decision'], event.target.value)}
         >
-          <option key='' value=''></option>
+          <option key='' value='' />
           {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
         </SelectField>
       </div>
@@ -125,7 +123,7 @@ const ReferralInformationEditView = ({screening, onChange}) => (
 )
 
 ReferralInformationEditView.propTypes = {
-  screening: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }
 export default ReferralInformationEditView

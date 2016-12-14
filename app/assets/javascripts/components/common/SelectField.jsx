@@ -8,15 +8,15 @@ const SelectField = ({gridClassName, labelClassName, id, label, value, onChange,
 )
 
 SelectField.propTypes = {
-  gridClassName: React.PropTypes.string,
-  labelClassName: React.PropTypes.string,
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string,
-  onChange: React.PropTypes.func.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.array,
     React.PropTypes.object,
   ]).isRequired,
+  gridClassName: React.PropTypes.string,
+  id: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string.isRequired,
+  labelClassName: React.PropTypes.string,
+  onChange: React.PropTypes.func.isRequired,
+  value: React.PropTypes.string,
 }
 export default SelectField

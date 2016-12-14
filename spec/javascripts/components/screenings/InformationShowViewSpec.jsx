@@ -6,7 +6,6 @@ import {shallow} from 'enzyme'
 describe('InformationShowView', () => {
   let component
   beforeEach(() => {
-    const props = {params: {id: 1}}
     component = shallow(<InformationShowView screening={Immutable.Map({})} />)
   })
 

@@ -4,7 +4,7 @@ import InputField from 'components/common/InputField'
 
 describe('InputField', () => {
   let component
-  let onChange = jasmine.createSpy('onChange')
+  const onChange = jasmine.createSpy('onChange')
   const props = {
     gridClassName: 'myWrapperTest',
     labelClassName: 'myLabelTest',

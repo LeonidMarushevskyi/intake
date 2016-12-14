@@ -9,7 +9,7 @@ const ParticipantShowView = ({participant, onEdit}) => (
     <div className='card-header'>
       <span>{`${participant.get('first_name')} ${participant.get('last_name')}`}</span>
       <Link aria-label='Delete participant' className='pull-right' href='#'>
-        <i className='fa fa-times'></i>
+        <i className='fa fa-times' />
       </Link>
       <EditLink ariaLabel='Edit participant' onClick={onEdit} />
     </div>

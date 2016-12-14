@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import React from 'react'
 import NarrativeShowView from 'components/screenings/NarrativeShowView'
 import {shallow} from 'enzyme'
