@@ -8,8 +8,10 @@ import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
-export default class ScreeningEditPage extends React.Component {
+export class ScreeningEditPage extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
@@ -38,7 +40,6 @@ export default class ScreeningEditPage extends React.Component {
     }
 
     const methods = [
-      'fetch',
       'setField',
       'addParticipant',
       'update',
@@ -52,25 +53,17 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   componentDidMount() {
-    this.fetch()
+    this.props.actions.fetchScreening(this.props.params.id)
+      .then(() => this.setState({loaded: true}))
   }
 
-  fetch() {
-    const {params} = this.props
-    screeningActions.fetch(params.id)
-      .then((jsonResponse) => {
-        this.setState({
-          screening: Immutable.fromJS(jsonResponse),
-          loaded: true,
-        })
-      })
+  componentWillReceiveProps(nextProps) {
+    this.setState({screening: nextProps.screening})
   }
 
   show() {
     const {params} = this.props
-    browserHistory.push({
-      pathname: `/screenings/${params.id}`,
-    })
+    browserHistory.push({pathname: `/screenings/${params.id}`})
   }
 
   update() {
@@ -174,5 +167,19 @@ export default class ScreeningEditPage extends React.Component {
 }
 
 ScreeningEditPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }
+
+function mapStateToProps(state, _ownProps) {
+  return {screening: state.screening}
+}
+
+function mapDispatchToProps(dispatch, _ownProps) {
+  return {
+    actions: bindActionCreators(screeningActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningEditPage)

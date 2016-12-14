@@ -2,7 +2,7 @@ import * as screeningActions from 'actions/screeningActions'
 import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
-import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
+import {ScreeningEditPage} from 'components/screenings/ScreeningEditPage'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
@@ -11,17 +11,17 @@ describe('ScreeningEditPage', () => {
     participants: [],
     report_narrative: 'A Sample Narrative',
   }
-  const props = {params: {id: 1}}
   const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-
-  var loadComponent = () => {
-    spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
-    promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
-  }
 
   describe('render', () => {
     beforeEach(() => {
-      loadComponent()
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      fetchScreening.and.returnValue(Promise.resolve())
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 1},
+        screening: Immutable.Map(),
+      }
       component = mount(<ScreeningEditPage {...props} />)
     })
 
@@ -92,18 +92,24 @@ describe('ScreeningEditPage', () => {
         component.setState({screening: screening})
       })
 
-      it('renders the narrative card', () => {
-        expect(component.find('NarrativeCardView').length).toEqual(1)
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the narrative card', () => {
+          expect(component.find('NarrativeCardView').length).toEqual(0)
+        })
       })
 
-      it('has screening passed in props', () => {
-        expect(component.find('NarrativeCardView').props().narrative).toEqual(
-          screening.get('report_narrative')
-        )
-      })
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
 
-      it('has mode set to edit', () => {
-        expect(component.find('NarrativeCardView').props().mode).toEqual('edit')
+        it('renders the narrative card', () => {
+          expect(component.find('NarrativeCardView').length).toEqual(1)
+          expect(component.find('NarrativeCardView').props().narrative).toEqual(
+            screening.get('report_narrative')
+          )
+          expect(component.find('NarrativeCardView').props().mode).toEqual('edit')
+        })
       })
     })
 
@@ -129,26 +135,36 @@ describe('ScreeningEditPage', () => {
     })
   })
 
-  describe('fetch', () => {
-    let component
+  describe('componentDidMount', () => {
+    const fetchScreening = jasmine.createSpy('fetchScreening')
     beforeEach(() => {
-      loadComponent()
-      component = mount(<ScreeningEditPage {...props} />)
+      const props = {
+        params: {id: 222},
+        actions: {fetchScreening},
+        screening: Immutable.Map(),
+      }
+      fetchScreening.and.returnValue(Promise.resolve())
+      mount(<ScreeningEditPage {...props} />)
     })
 
-    it('GETs the screening data from the server', () => {
-      component.instance().fetch()
-      expect(screeningActions.fetch).toHaveBeenCalledWith(1)
+    it('GETs the screening from the server', () => {
+      expect(fetchScreening).toHaveBeenCalledWith(222)
     })
   })
 
   describe('createParticipant', () => {
     const personId = 3
     const person = {id: personId}
+    const fetchScreening = jasmine.createSpy('fetchScreening')
+    fetchScreening.and.returnValue(Promise.resolve())
+    const props = {
+      actions: {fetchScreening},
+      params: {id: 1},
+      screening: Immutable.Map(),
+    }
     const participant = {id: null, screening_id: props.params.id, person_id: personId}
 
     beforeEach(() => {
-      loadComponent()
       const jsonResponse = {id: 99, first_name: 'Bart'}
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
       spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
@@ -169,7 +185,13 @@ describe('ScreeningEditPage', () => {
   describe('addParticipant', () => {
     let component
     beforeEach(() => {
-      loadComponent()
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      fetchScreening.and.returnValue(Promise.resolve())
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 1},
+        screening: Immutable.Map(),
+      }
       component = mount(<ScreeningEditPage {...props} />).instance()
     })
 
@@ -200,7 +222,13 @@ describe('ScreeningEditPage', () => {
     let component
     let saveButton
     beforeEach(() => {
-      loadComponent()
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      fetchScreening.and.returnValue(Promise.resolve())
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 1},
+        screening: Immutable.Map(),
+      }
       createSpyOnSave()
       component = mount(<ScreeningEditPage {...props} />)
       component.setState({
@@ -241,7 +269,13 @@ describe('ScreeningEditPage', () => {
   describe('cardSave', () => {
     let component
     beforeEach(() => {
-      loadComponent()
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      fetchScreening.and.returnValue(Promise.resolve())
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 1},
+        screening: Immutable.Map(),
+      }
       createSpyOnSave()
       component = mount(<ScreeningEditPage {...props} />)
     })
