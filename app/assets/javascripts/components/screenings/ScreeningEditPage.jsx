@@ -12,30 +12,10 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 export class ScreeningEditPage extends React.Component {
-  constructor() {
-    super(...arguments)
+  constructor(props, context) {
+    super(props, context)
     this.state = {
-      screening: Immutable.fromJS({
-        reference: '',
-        name: '',
-        started_at: '',
-        ended_at: '',
-        communication_method: '',
-        participants: [],
-        report_narrative: '',
-        incident_date: '',
-        incident_county: '',
-        address: Immutable.fromJS({
-          id: '',
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
-        }),
-        location_type: '',
-        response_time: '',
-        screening_decision: '',
-      }),
+      screening: props.screening,
       loaded: false,
     }
 
@@ -91,10 +71,9 @@ export class ScreeningEditPage extends React.Component {
 
   addParticipant(participant) {
     const {screening} = this.state
-    const participants = screening.get('participants').push(Immutable.Map(participant))
-    this.setState({
-      screening: screening.merge({participants: participants}),
-    })
+    const participants = screening.get('participants') || Immutable.List()
+    const newParticipant = Immutable.Map(participant)
+    this.setField(['participants'], participants.push(newParticipant))
   }
 
   createParticipant(person) {
@@ -115,6 +94,7 @@ export class ScreeningEditPage extends React.Component {
 
   renderParticipantsCard() {
     const {screening} = this.state
+    const participants = screening.get('participants') || Immutable.List()
     return (
       <div>
         <div className='card edit double-gap-top' id='participants-card'>
@@ -131,7 +111,7 @@ export class ScreeningEditPage extends React.Component {
           </div>
         </div>
         {
-          screening.get('participants').map((participant) =>
+          participants.map((participant) =>
             <ParticipantCardView key={participant.get('id')} participant={participant} mode='edit'/>
           )
         }

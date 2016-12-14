@@ -35,7 +35,7 @@ const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => {
 }
 
 NarrativeEditView.propTypes = {
-  narrative: React.PropTypes.string.isRequired,
+  narrative: React.PropTypes.string,
   onCancel: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
