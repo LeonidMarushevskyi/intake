@@ -1,14 +1,12 @@
-import * as screeningActions from 'actions/screeningActions'
 import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningEditPage} from 'components/screenings/ScreeningEditPage'
+import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
   let component
-  const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-
   describe('render', () => {
     it('renders the screening reference', () => {
       const props = {
@@ -141,8 +139,32 @@ describe('ScreeningEditPage', () => {
     })
   })
 
+  describe('update', () => {
+    const saveScreening = jasmine.createSpy('saveScreening')
+    beforeEach(() => {
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      promiseSpyObj.then.and.callFake((then) => then({}))
+      saveScreening.and.returnValue(promiseSpyObj)
+      const props = {
+        params: {id: 1},
+        screening: Immutable.Map({name: 'mock screening'}),
+        actions: {saveScreening},
+      }
+      spyOn(browserHistory, 'push')
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.instance().update()
+    })
+
+    it('calls screening save', () => {
+      expect(saveScreening).toHaveBeenCalledWith({name: 'mock screening'})
+    })
+
+    it('pushes show page to browser history', () => {
+      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1'})
+    })
+  })
+
   describe('cardSave', () => {
-    let component
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
@@ -150,11 +172,11 @@ describe('ScreeningEditPage', () => {
         screening: Immutable.Map(),
         actions: {saveScreening},
       }
-      component = shallow(<ScreeningEditPage {...props} />)
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
     })
 
     it('calls screening save', () => {
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
       expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
     })
   })
@@ -189,7 +211,6 @@ describe('ScreeningEditPage', () => {
     })
   })
 
-
   describe('createParticipant', () => {
     const personId = 3
     const person = {id: personId}
@@ -204,6 +225,7 @@ describe('ScreeningEditPage', () => {
 
     beforeEach(() => {
       const jsonResponse = {id: 99, first_name: 'Bart'}
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
       spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
       component = shallow(<ScreeningEditPage {...props} />)

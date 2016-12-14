@@ -47,12 +47,10 @@ export class ScreeningEditPage extends React.Component {
   }
 
   update() {
-    const {params} = this.props
-    screeningActions.save(params.id, this.state.screening.toJS())
-      .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
-        this.show()
-      })
+    const {screening} = this.state
+    this.props.actions.saveScreening(screening.toJS()).then(() =>
+      this.show()
+    )
   }
 
   setField(fieldSeq, value) {
