@@ -8,6 +8,32 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('screening actions', () => {
+  describe('createScreening', () => {
+    const screening = {id: '3', name: 'mock_screening'}
+    const store = mockStore()
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction(screening))
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('posts the screening to the server', () => {
+      store.dispatch(screeningActions.createScreening())
+      expect(Utils.request).toHaveBeenCalledWith(
+        'POST',
+        '/screenings',
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a createScreeningSuccess', () => {
+      store.dispatch(screeningActions.createScreening())
+      expect(store.getActions()[0].type).toEqual(types.CREATE_SCREENING_SUCCESS)
+      expect(store.getActions()[0].screening.toJS()).toEqual(screening)
+    })
+  })
+
   describe('fetchScreening', () => {
     const screeningId = 1
     const store = mockStore()
@@ -44,7 +70,7 @@ describe('screening actions', () => {
       spyOn(Utils, 'request').and.returnValue(promiseObject)
     })
 
-    it('posts the screening to the server', () => {
+    it('puts the screening to the server', () => {
       store.dispatch(screeningActions.saveScreening(screening))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
