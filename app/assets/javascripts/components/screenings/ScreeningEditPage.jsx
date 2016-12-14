@@ -61,12 +61,8 @@ export class ScreeningEditPage extends React.Component {
   }
 
   cardSave(fieldSeq, value) {
-    const {params} = this.props
-    const screening = this.state.screening.setIn(fieldSeq, value)
-    return screeningActions.save(params.id, screening.toJS())
-      .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
-      })
+    const screening = this.props.screening.setIn(fieldSeq, value)
+    return this.props.actions.saveScreening(screening.toJS())
   }
 
   addParticipant(participant) {

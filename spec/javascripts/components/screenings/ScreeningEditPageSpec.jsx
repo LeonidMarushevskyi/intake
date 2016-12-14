@@ -201,37 +201,32 @@ describe('ScreeningEditPage', () => {
     })
   })
 
-  var createSpyOnSave = () => {
-    spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-    promiseSpyObj.then.and.callFake((afterThen) => afterThen({}))
-    promiseSpyObj.then.and.returnValue(promiseSpyObj)
-  }
-
-  describe('saving', () => {
+  describe('saveAll', () => {
     let component
     let saveButton
+    const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      saveScreening.and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.returnValue(promiseSpyObj)
+      // the above line is needed for the return from narrative card save
       const fetchScreening = jasmine.createSpy('fetchScreening')
       fetchScreening.and.returnValue(Promise.resolve())
+
       const props = {
-        actions: {fetchScreening},
         params: {id: 1},
-        screening: Immutable.Map(),
+        screening: Immutable.Map({name: 'my screening', report_narrative: null}),
+        actions: {fetchScreening, saveScreening},
       }
-      createSpyOnSave()
       component = mount(<ScreeningEditPage {...props} />)
       component.setState({loaded: true})
-      const nameOfScreening = component.find('#name')
-      nameOfScreening.simulate('change', {target: {value: 'my screening'}})
       saveButton = component.find('button.btn.btn-primary').last()
     })
 
     it('calls save action with current screening', () => {
       saveButton.simulate('click')
-      expect(screeningActions.save).toHaveBeenCalled()
-      expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
-      expect(screeningActions.save.calls.argsFor(0)[1].name).toEqual(
-        'my screening'
+      expect(saveScreening).toHaveBeenCalledWith(
+        {name: 'my screening', report_narrative: null}
       )
     })
 
@@ -243,10 +238,8 @@ describe('ScreeningEditPage', () => {
 
       it('calls save action with updated narrative', () => {
         saveButton.simulate('click')
-        expect(screeningActions.save).toHaveBeenCalled()
-        expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
-        expect(screeningActions.save.calls.argsFor(0)[1].report_narrative).toEqual(
-          'Changed narrative'
+        expect(saveScreening).toHaveBeenCalledWith(
+          {name: 'my screening', report_narrative: 'Changed narrative'}
         )
       })
     })
@@ -254,28 +247,19 @@ describe('ScreeningEditPage', () => {
 
   describe('cardSave', () => {
     let component
+    const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
-      const fetchScreening = jasmine.createSpy('fetchScreening')
-      fetchScreening.and.returnValue(Promise.resolve())
       const props = {
-        actions: {fetchScreening},
         params: {id: 1},
         screening: Immutable.Map(),
+        actions: {saveScreening},
       }
-      createSpyOnSave()
-      component = mount(<ScreeningEditPage {...props} />)
+      component = shallow(<ScreeningEditPage {...props} />)
     })
 
     it('calls screening save', () => {
       component.instance().cardSave(['report_narrative'], 'This is my new narrative')
-      expect(screeningActions.save).toHaveBeenCalled()
-    })
-
-    it('does not redirect to the screening show page', () => {
-      const instance = component.instance()
-      spyOn(instance, 'show')
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
-      expect(instance.show).not.toHaveBeenCalled()
+      expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
     })
   })
 })
