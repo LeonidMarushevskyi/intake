@@ -82,11 +82,18 @@ export default class Autocompleter extends React.Component {
       ageInfo = `${ageInYears} yrs old (${dob.format('M/D/YYYY')})`
     }
     return (
-      <div>
-        <div>{`${first_name} ${last_name}`}</div>
-        <div>{Gender[gender]}</div>
-        <div>{ageInfo}</div>
-        {this.renderAddress(address)}
+      <div className='row'>
+        <div className='col-md-2'>
+          <img src='/assets/default-profile.svg' />
+        </div>
+        <div className='col-md-4'>
+          <strong>{[first_name, last_name].filter(Boolean).join(' ')}</strong>
+          <div>{Gender[gender]}</div>
+          <div>{ageInfo}</div>
+        </div>
+        <div className='col-md-6'>
+          {this.renderAddress(address)}
+        </div>
       </div>
     )
   }

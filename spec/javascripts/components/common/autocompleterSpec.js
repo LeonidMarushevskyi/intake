@@ -72,7 +72,7 @@ describe('<Autcompleter />', () => {
       const component = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
+      expect(shallow(value).html()).toContain('<strong>Bart Simpson</strong>')
     })
 
     it('renders the gender', () => {
