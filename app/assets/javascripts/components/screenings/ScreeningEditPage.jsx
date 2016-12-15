@@ -36,7 +36,9 @@ export class ScreeningEditPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({screening: nextProps.screening})
+    if (!this.props.screening.get('id')) {
+      this.setState({screening: nextProps.screening})
+    }
   }
 
   show() {
