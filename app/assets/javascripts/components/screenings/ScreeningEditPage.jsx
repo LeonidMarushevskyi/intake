@@ -157,7 +157,7 @@ export default class ScreeningEditPage extends React.Component {
           loaded &&
             <NarrativeCardView
               ref='narrativeCard'
-              narrative={screening.get('report_narrative')}
+              narrative={screening.get('report_narrative') || ''}
               mode='edit'
               onSave={(value) => this.cardSave(['report_narrative'], value)}
             />
