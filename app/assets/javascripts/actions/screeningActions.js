@@ -38,3 +38,19 @@ export function saveScreening(screening) {
     ).then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
   )
 }
+
+export function createParticipantSuccess(participant) {
+  return {type: types.CREATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+}
+
+export function createParticipant(participant) {
+  return (dispatch) => (
+    Utils.request(
+      'POST',
+      `/screenings/${participant.screening_id}/participants.json`,
+      JSON.stringify({participant: participant}),
+      {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(createParticipantSuccess(jsonResponse)))
+  )
+}

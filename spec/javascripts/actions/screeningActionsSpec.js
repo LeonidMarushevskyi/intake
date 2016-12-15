@@ -86,4 +86,30 @@ describe('screening actions', () => {
       expect(store.getActions()[0].screening.toJS()).toEqual(screening)
     })
   })
+
+  describe('createParticipant', () => {
+    const participant = {screening_id: 1, person_id: 2, id: null}
+    const store = mockStore()
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('posts the participant to the server', () => {
+      store.dispatch(screeningActions.createParticipant(participant))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'POST',
+        '/screenings/1/participants.json',
+        JSON.stringify({participant: participant}),
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a createParticipantSuccess', () => {
+      store.dispatch(screeningActions.createParticipant(participant))
+      expect(store.getActions()[0].type).toEqual(types.CREATE_PARTICIPANT_SUCCESS)
+      expect(store.getActions()[0].participant.toJS()).toEqual(participant)
+    })
+  })
 })
