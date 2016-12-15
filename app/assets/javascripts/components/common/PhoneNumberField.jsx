@@ -21,9 +21,9 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
       label='Phone Number Type'
       id='type'
       value={Type}
-      onChange={(event) => onChange('type', event.target.value)}
+      onChange={(event) => onChange('type', event.target.value || null)}
     >
-      <option key='' value='' />
+      <option key='' />
       {
         PHONE_NUMBER_TYPE.map((item) => <option key={item} value={item}>{item}</option>)
       }

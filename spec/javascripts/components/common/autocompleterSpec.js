@@ -72,7 +72,7 @@ describe('<Autcompleter />', () => {
       const component = shallow(<Autocompleter />)
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('<div>Bart Simpson</div>')
+      expect(shallow(value).html()).toContain('<strong>Bart Simpson</strong>')
     })
 
     it('renders the gender', () => {
@@ -102,6 +102,40 @@ describe('<Autcompleter />', () => {
       const suggestion = {date_of_birth: null}
       const value = component.instance().renderSuggestion(suggestion)
       expect(shallow(value).html()).not.toContain('yrs old')
+    })
+
+    describe('address', () => {
+      it('gets rendered', () => {
+        const component = shallow(<Autocompleter />)
+        const suggestion = {
+          address: {
+            id: 1,
+            street_address: '234 Fake Street',
+            city: 'Flushing',
+            state: 'NM',
+            zip: 11344,
+            type: 'School',
+          },
+        }
+        const value = component.instance().renderSuggestion(suggestion)
+        expect(shallow(value).html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><strong class="c-gray half-pad-right">School</strong><span>234 Fake Street, Flushing, NM 11344</span></div>')
+      })
+
+      it('gets rendered correctly when partial address is given', () => {
+        const component = shallow(<Autocompleter />)
+        const suggestion = {
+          address: {
+            id: 1,
+            street_address: null,
+            city: null,
+            state: 'NM',
+            zip: 11344,
+            type: null,
+          },
+        }
+        const value = component.instance().renderSuggestion(suggestion)
+        expect(shallow(value).html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
+      })
     })
   })
 

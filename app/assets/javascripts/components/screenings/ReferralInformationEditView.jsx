@@ -30,9 +30,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           id='incident_county'
           label='Incident County'
           value={screening.get('incident_county') || ''}
-          onChange={(event) => onChange(['incident_county'], event.target.value)}
+          onChange={(event) => onChange(['incident_county'], event.target.value || null)}
         >
-          <option key='' value='' />
+          <option key='' />
           {Object.keys(COUNTY).map((item) => <option key={item} value={item}>{COUNTY[item]}</option>)}
         </SelectField>
       </div>
@@ -63,9 +63,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
             id='state'
             label='State'
             value={screening.getIn(['address', 'state']) || ''}
-            onChange={(event) => onChange(['address', 'state'], event.target.value)}
+            onChange={(event) => onChange(['address', 'state'], event.target.value || null)}
           >
-            <option key='' value='' />
+            <option key='' />
             {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
           </SelectField>
           <InputField
@@ -83,9 +83,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           id='location_type'
           label='Location Type'
           value={screening.get('location_type') || ''}
-          onChange={(event) => onChange(['location_type'], event.target.value)}
+          onChange={(event) => onChange(['location_type'], event.target.value || null)}
         >
-          <option key='' value='' />
+          <option key='' />
           {Object.keys(LOCATION_TYPE).map((group) => (
             <optgroup key={group} label={group}>
               {LOCATION_TYPE[group].map((item) => <option key={item} value={item}>{item}</option>)}
@@ -100,9 +100,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           id='response_time'
           label='Response Time'
           value={screening.get('response_time') || ''}
-          onChange={(event) => onChange(['response_time'], event.target.value)}
+          onChange={(event) => onChange(['response_time'], event.target.value || null)}
         >
-          <option key='' value='' />
+          <option key='' />
           {Object.keys(RESPONSE_TIME).map((item) => <option key={item} value={item}>{RESPONSE_TIME[item]}</option>)}
         </SelectField>
       </div>
@@ -112,9 +112,9 @@ const ReferralInformationEditView = ({screening, onChange}) => (
           id='screening_decision'
           label= 'Screening Decision'
           value={screening.get('screening_decision') || ''}
-          onChange={(event) => onChange(['screening_decision'], event.target.value)}
+          onChange={(event) => onChange(['screening_decision'], event.target.value || null)}
         >
-          <option key='' value='' />
+          <option key='' />
           {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
         </SelectField>
       </div>

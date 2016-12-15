@@ -43,9 +43,9 @@ const InformationEditView = ({screening, onChange}) => (
             id='communication_method'
             label='Communication Method'
             value={screening.get('communication_method') || ''}
-            onChange={(event) => onChange(['communication_method'], event.target.value)}
+            onChange={(event) => onChange(['communication_method'], event.target.value || null)}
           >
-            <option key='' value='' />
+            <option key='' />
             {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
           </SelectField>
       </div>

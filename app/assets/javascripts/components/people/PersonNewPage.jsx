@@ -95,9 +95,9 @@ export class PersonNewPage extends React.Component {
               labelClassName='no-gap-top-desktop'
               id='name_suffix'
               label='Suffix'
-              onChange={(event) => this.setField(['name_suffix'], event.target.value)}
+              onChange={(event) => this.setField(['name_suffix'], event.target.value || null)}
             >
-              <option key='' value='' />
+              <option key='' />
               {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
             </SelectField>
           </div>
@@ -116,9 +116,9 @@ export class PersonNewPage extends React.Component {
               gridClassName='col-md-6'
               id='gender'
               label='Gender'
-              onChange={(event) => this.setField(['gender'], event.target.value)}
+              onChange={(event) => this.setField(['gender'], event.target.value || null)}
             >
-              <option key='' value='' />
+              <option key='' />
               {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
             </SelectField>
           </div>
@@ -164,9 +164,9 @@ export class PersonNewPage extends React.Component {
               gridClassName='col-md-4'
               id='state'
               label='State'
-              onChange={(event) => this.setField(['address', 'state'], event.target.value)}
+              onChange={(event) => this.setField(['address', 'state'], event.target.value || null)}
             >
-              <option key='' value='' />
+              <option key='' />
               {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
             </SelectField>
             <InputField
@@ -179,9 +179,9 @@ export class PersonNewPage extends React.Component {
               gridClassName='col-md-6'
               id='address_type'
               label='Address Type'
-              onChange={(event) => this.setField(['address', 'type'], event.target.value)}
+              onChange={(event) => this.setField(['address', 'type'], event.target.value || null)}
             >
-              <option key='' value='' />
+              <option key='' />
               {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
             </SelectField>
           </div>

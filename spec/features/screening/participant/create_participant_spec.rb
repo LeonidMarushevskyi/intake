@@ -22,6 +22,16 @@ end
 feature 'Edit Screening' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
+  let(:marge_address) do
+    FactoryGirl.create(
+      :address,
+      street_address: '123 Fake St',
+      city: 'Springfield',
+      state: 'NY',
+      zip: '12345',
+      type: 'Home'
+    )
+  end
   let(:marge) do
     Person.new(
       id: 99,
@@ -29,7 +39,8 @@ feature 'Edit Screening' do
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
-      ssn: '123-23-1234'
+      ssn: '123-23-1234',
+      address: marge_address
     )
   end
 
@@ -105,6 +116,8 @@ feature 'Edit Screening' do
       expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
       expect(page).to have_content '15 yrs old'
       expect(page).to have_content 'Female'
+      expect(page).to have_content 'Home'
+      expect(page).to have_content '123 Fake St, Springfield, NY 12345'
     end
   end
 end
