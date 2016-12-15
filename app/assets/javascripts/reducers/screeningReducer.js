@@ -7,6 +7,10 @@ export default function screeningReducer(state = Immutable.Map(), action) {
     case types.FETCH_SCREENING_SUCCESS:
     case types.UPDATE_SCREENING_SUCCESS:
       return action.screening
+    case types.CREATE_PARTICIPANT_SUCCESS:
+      return state.update('participants', (participants) =>
+        participants.push(action.participant)
+      )
     default:
       return state
   }

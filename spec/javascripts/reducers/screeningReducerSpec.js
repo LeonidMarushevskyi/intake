@@ -26,4 +26,31 @@ describe('screeningReducer', () => {
       expect(screeningReducer(Immutable.Map(), action).toJS()).toEqual(screening)
     })
   })
+
+  describe('on CREATE_PARTICIPANT_SUCCESS', () => {
+    it('returns the screening with new participant from the action', () => {
+      const newParticipant = {
+        id: 2, screening_id: 1, person_id: 3,
+      }
+      const oldParticipant = {
+        id: 3, screening_id: 1, person_id: 4,
+      }
+      const screening = Immutable.fromJS({
+        id: 1,
+        name: 'mock_screening',
+        participants: [
+          oldParticipant,
+        ],
+      })
+      const action = screeningActions.createParticipantSuccess(newParticipant)
+      expect(screeningReducer(screening, action).toJS()).toEqual({
+        id: 1,
+        name: 'mock_screening',
+        participants: [
+          oldParticipant,
+          newParticipant,
+        ],
+      })
+    })
+  })
 })
