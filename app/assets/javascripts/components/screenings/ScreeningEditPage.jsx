@@ -75,8 +75,7 @@ export class ScreeningEditPage extends React.Component {
   }
 
   renderParticipantsCard() {
-    const {screening} = this.state
-    const participants = screening.get('participants') || Immutable.List()
+    const {participants} = this.props
     return (
       <div>
         <div className='card edit double-gap-top' id='participants-card'>
@@ -135,7 +134,10 @@ ScreeningEditPage.propTypes = {
 }
 
 function mapStateToProps(state, _ownProps) {
-  return {screening: state.screening}
+  return {
+    screening: state.screening,
+    participants: state.participants,
+  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
