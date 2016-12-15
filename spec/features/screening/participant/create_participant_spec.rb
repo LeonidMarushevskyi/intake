@@ -14,7 +14,7 @@ def build_participant_from_person_and_screening(person, screening)
     ]
   ).merge(
     id: nil,
-    person_id: person.id.to_s,
+    person_id: person.id,
     screening_id: screening.id.to_s
   )
 end
