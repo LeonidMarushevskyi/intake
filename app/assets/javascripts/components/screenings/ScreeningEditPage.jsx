@@ -35,9 +35,7 @@ export class ScreeningEditPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.screening.get('id')) {
-      this.setState({screening: nextProps.screening})
-    }
+    this.setState({screening: nextProps.screening})
   }
 
   show() {
@@ -47,9 +45,7 @@ export class ScreeningEditPage extends React.Component {
 
   update() {
     const {screening} = this.state
-    this.props.actions.saveScreening(screening.toJS()).then(() =>
-      this.show()
-    )
+    this.props.actions.saveScreening(screening.toJS()).then(() => this.show())
   }
 
   setField(fieldSeq, value) {
@@ -58,7 +54,7 @@ export class ScreeningEditPage extends React.Component {
   }
 
   cardSave(fieldSeq, value) {
-    const screening = this.props.screening.setIn(fieldSeq, value)
+    const screening = this.state.screening.setIn(fieldSeq, value)
     return this.props.actions.saveScreening(screening.toJS())
   }
 
@@ -112,7 +108,7 @@ export class ScreeningEditPage extends React.Component {
           loaded &&
             <NarrativeCardView
               ref='narrativeCard'
-              narrative={screening.get('report_narrative') || ''}
+              narrative={screening.get('report_narrative')}
               mode='edit'
               onSave={(value) => this.cardSave(['report_narrative'], value)}
             />
