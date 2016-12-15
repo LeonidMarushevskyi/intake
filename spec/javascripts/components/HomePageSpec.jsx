@@ -1,18 +1,24 @@
-import * as screeningActions from 'actions/screeningActions'
-import {shallow} from 'enzyme'
-import {browserHistory} from 'react-router'
-import HomePage from 'components/HomePage'
+import Immutable from 'immutable'
 import React from 'react'
+import {HomePage} from 'components/HomePage'
+import {browserHistory} from 'react-router'
+import {shallow} from 'enzyme'
 
 describe('HomePage', () => {
   let component
+  let createScreening
   beforeEach(() => {
-    const jsonResponse = {id: '1'}
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
-    spyOn(screeningActions, 'create').and.returnValue(promiseSpyObj)
+    promiseSpyObj.then.and.callFake((then) => then())
+    createScreening = jasmine.createSpy('createScreening')
+    createScreening.and.returnValue(promiseSpyObj)
+
     spyOn(browserHistory, 'push')
-    component = shallow(<HomePage />)
+    const props = {
+      actions: {createScreening},
+      screening: Immutable.Map({id: 1}),
+    }
+    component = shallow(<HomePage {...props} />)
   })
 
   it('renders the create screening link', () => {
@@ -33,7 +39,7 @@ describe('HomePage', () => {
   it('sends a POST request to the server and redirects to edit', () => {
     const createScreeningLink = component.find('a[href="#"]')
     createScreeningLink.simulate('click')
-    expect(screeningActions.create).toHaveBeenCalled()
+    expect(createScreening).toHaveBeenCalled()
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
   })
 })
