@@ -11,6 +11,7 @@ describe('ScreeningEditPage', () => {
       const props = {
         actions: {},
         params: {id: 1},
+        participants: Immutable.List(),
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
         }),
@@ -29,6 +30,7 @@ describe('ScreeningEditPage', () => {
       const props = {
         actions: {},
         params: {id: 1},
+        participants: Immutable.List(),
         screening,
       }
       component = shallow(<ScreeningEditPage {...props} />)
@@ -39,15 +41,15 @@ describe('ScreeningEditPage', () => {
 
     describe('participants card', () => {
       beforeEach(() => {
-        const participants = [
+        const participants = Immutable.fromJS([
           {id: 1, first_name: 'Melissa', last_name: 'Powers'},
           {id: 2, first_name: 'Marshall', last_name: 'Powers'},
-        ]
-        const screening = Immutable.fromJS({participants: participants})
+        ])
         const props = {
           actions: {},
           params: {id: 1},
-          screening,
+          participants,
+          screening: Immutable.Map(),
         }
         component = shallow(<ScreeningEditPage {...props} />)
       })
@@ -81,6 +83,7 @@ describe('ScreeningEditPage', () => {
         const props = {
           actions: {},
           params: {id: 1},
+          participants: Immutable.List(),
           screening,
         }
         component = shallow(<ScreeningEditPage {...props} />)
@@ -112,6 +115,7 @@ describe('ScreeningEditPage', () => {
       const props = {
         actions: {},
         params: {id: 1},
+        participants: Immutable.List(),
         screening,
       }
       component = shallow(<ScreeningEditPage {...props} />)
@@ -125,8 +129,9 @@ describe('ScreeningEditPage', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
     beforeEach(() => {
       const props = {
-        params: {id: 222},
         actions: {fetchScreening},
+        params: {id: 222},
+        participants: Immutable.List(),
         screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(Promise.resolve())
@@ -145,9 +150,10 @@ describe('ScreeningEditPage', () => {
       promiseSpyObj.then.and.callFake((then) => then({}))
       saveScreening.and.returnValue(promiseSpyObj)
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map({name: 'mock screening'}),
         actions: {saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map({name: 'mock screening'}),
       }
       spyOn(browserHistory, 'push')
       const component = shallow(<ScreeningEditPage {...props} />)
@@ -167,9 +173,10 @@ describe('ScreeningEditPage', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map(),
         actions: {saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningEditPage {...props} />)
       component.instance().cardSave(['report_narrative'], 'This is my new narrative')
@@ -190,6 +197,7 @@ describe('ScreeningEditPage', () => {
       const props = {
         actions: {createParticipant},
         params: {id: 1},
+        participants: Immutable.List(),
         screening: Immutable.Map(),
       }
       participant = {id: null, screening_id: props.params.id, person_id: person.id}
@@ -215,9 +223,10 @@ describe('ScreeningEditPage', () => {
       fetchScreening.and.returnValue(Promise.resolve())
 
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map({name: 'my screening', report_narrative: null}),
         actions: {fetchScreening, saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map({name: 'my screening', report_narrative: null}),
       }
       component = mount(<ScreeningEditPage {...props} />)
       component.setState({loaded: true})

@@ -1,5 +1,4 @@
 import * as screeningActions from 'actions/screeningActions'
-import Immutable from 'immutable'
 import InformationShowView from 'components/screenings/InformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
@@ -27,8 +26,7 @@ export class ScreeningShowPage extends React.Component {
   }
 
   renderParticipantsCard() {
-    const {screening} = this.props
-    const participants = screening.get('participants') || Immutable.List()
+    const {participants} = this.props
     return (
       <div>
         {
@@ -67,11 +65,15 @@ export class ScreeningShowPage extends React.Component {
 ScreeningShowPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
+  participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, _ownProps) {
-  return {screening: state.screening}
+  return {
+    participants: state.participants,
+    screening: state.screening,
+  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {

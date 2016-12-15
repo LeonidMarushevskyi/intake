@@ -1,6 +1,5 @@
 import {browserHistory} from 'react-router'
 import * as screeningActions from 'actions/screeningActions'
-import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'components/common/Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
@@ -132,13 +131,14 @@ export class ScreeningEditPage extends React.Component {
 ScreeningEditPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
+  participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, _ownProps) {
   return {
-    screening: state.screening,
     participants: state.participants,
+    screening: state.screening,
   }
 }
 

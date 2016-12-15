@@ -7,9 +7,10 @@ describe('ScreeningShowPage', () => {
   describe('render', () => {
     it('renders the screening reference', () => {
       const props = {
-        params: {id: 1},
-        screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
         actions: {fetchScreening: () => null},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
@@ -17,9 +18,10 @@ describe('ScreeningShowPage', () => {
 
     it('renders the home and edit link', () => {
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map(),
         actions: {fetchScreening: () => null},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       const homeLink = component.find({to: '/'})
@@ -30,9 +32,10 @@ describe('ScreeningShowPage', () => {
 
     it('render show views', () => {
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map(),
         actions: {fetchScreening: () => null},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('InformationShowView').length).toEqual(1)
@@ -41,14 +44,15 @@ describe('ScreeningShowPage', () => {
 
     describe('participants card', () => {
       it('renders the participants card for each participant', () => {
-        const participants = [
-          {id: 1, first_name: 'Rodney', last_name: 'Mullens'},
-          {id: 5, first_name: 'Tony', last_name: 'Hawk'},
-        ]
+        const participants = Immutable.fromJS([
+          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
+          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+        ])
         const props = {
-          params: {id: 1},
-          screening: Immutable.fromJS({participants: participants}),
           actions: {fetchScreening: () => null},
+          params: {id: 1},
+          participants,
+          screening: Immutable.Map(),
         }
         const component = shallow(<ScreeningShowPage {...props} />)
         expect(component.find('ParticipantCardView').length).toEqual(2)
@@ -62,9 +66,10 @@ describe('ScreeningShowPage', () => {
       let component
       beforeEach(() => {
         const props = {
-          params: {id: 1},
-          screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
           actions: {},
+          params: {id: 1},
+          participants: Immutable.List(),
+          screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
         }
         component = shallow(<ScreeningShowPage {...props} />)
         component.instance().setState({loaded: true})
@@ -84,8 +89,9 @@ describe('ScreeningShowPage', () => {
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
-        params: {id: 222},
         actions: {fetchScreening},
+        params: {id: 222},
+        participants: Immutable.List(),
         screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -99,7 +105,12 @@ describe('ScreeningShowPage', () => {
 
   describe('componentWillReceiveProps', () => {
     it('updates the component when screening is loaded', () => {
-      const props = {screening: Immutable.Map(), actions: {}, params: {}}
+      const props = {
+        actions: {},
+        params: {},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
       const component = shallow(<ScreeningShowPage {...props}/>)
       const screening = Immutable.fromJS({id: 1, reference: 'My New Reference'})
       component.setProps({screening})
@@ -112,9 +123,10 @@ describe('ScreeningShowPage', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
-        params: {id: 1},
-        screening: Immutable.Map(),
         actions: {saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
       }
       component = shallow(<ScreeningShowPage {...props} />)
     })
