@@ -58,8 +58,23 @@ export default class Autocompleter extends React.Component {
     return `${suggestion.first_name} ${suggestion.last_name}`
   }
 
+  renderAddress(address) {
+    let addressIcon
+    let addressInfo
+    let addressType
+
+    if (address) {
+      const {type, street_address, city, state, zip} = address
+      const state_zip = [state, zip].filter(Boolean).join(' ')
+      addressIcon = <i className='fa fa-map-marker c-gray half-pad-right' />
+      addressType = type ? <strong className='c-gray half-pad-right'>{type}</strong> : null
+      addressInfo = <span>{[street_address, city, state_zip].filter(Boolean).join(', ')}</span>
+    }
+    return <div>{addressIcon}{addressType}{addressInfo}</div>
+  }
+
   renderSuggestion(suggestion) {
-    const {first_name, last_name, date_of_birth, gender} = suggestion
+    const {first_name, last_name, date_of_birth, gender, address} = suggestion
     let ageInfo
     const dob = moment(date_of_birth, 'YYYY-MM-DD')
     if (dob.isValid()) {
@@ -71,6 +86,7 @@ export default class Autocompleter extends React.Component {
         <div>{`${first_name} ${last_name}`}</div>
         <div>{Gender[gender]}</div>
         <div>{ageInfo}</div>
+        {this.renderAddress(address)}
       </div>
     )
   }
@@ -100,7 +116,7 @@ export default class Autocompleter extends React.Component {
           onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
           onSuggestionSelected={this.onSuggestionSelected.bind(this)}
           getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
+          renderSuggestion={this.renderSuggestion.bind(this)}
           inputProps={inputProps}
           renderSuggestionsContainer={this.renderSuggestionsContainer}
         />
