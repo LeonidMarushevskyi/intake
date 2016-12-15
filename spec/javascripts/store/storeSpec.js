@@ -1,4 +1,5 @@
 import * as personActions from 'actions/personActions'
+import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import rootReducer from 'reducers'
 import {createStore} from 'redux'
@@ -7,7 +8,7 @@ describe('Store', () => {
   let initialState
   let store
   beforeEach(() => {
-    initialState = {person: Immutable.Map(), screening: Immutable.Map()}
+    initialState = {person: Immutable.Map(), screening: Immutable.Map(), participants: Immutable.List()}
     store = createStore(rootReducer, initialState)
   })
 
@@ -83,5 +84,52 @@ describe('Store', () => {
     const action = personActions.updatePersonSuccess(updatedPerson)
     store.dispatch(action)
     expect(store.getState().person).toEqual(updatedPerson)
+  })
+
+  it('handles fetch screening', () => {
+    expect(store.getState()).toEqual(initialState)
+    const participant = {id: 2, person_id: 3, screening_id: 1}
+    const screening = {
+      id: 1,
+      name: 'Mock screening',
+      participants: [participant],
+    }
+    const action = screeningActions.fetchScreeningSuccess(screening)
+    store.dispatch(action)
+    expect(store.getState().screening.toJS()).toEqual(screening)
+    expect(store.getState().participants.toJS()).toEqual([participant])
+  })
+
+  it('handles create screening', () => {
+    expect(store.getState()).toEqual(initialState)
+    const screening = {
+      id: 1,
+      name: 'Mock screening',
+      participants: [],
+    }
+    const action = screeningActions.createScreeningSuccess(screening)
+    store.dispatch(action)
+    expect(store.getState().screening.toJS()).toEqual(screening)
+    expect(store.getState().participants.toJS()).toEqual([])
+  })
+
+  it('handles update screening', () => {
+    const participant = {id: 2, person_id: 3, screening_id: 1}
+    initialState = {
+      ...initialState,
+      screening: Immutable.fromJS({
+        id: 1,
+        name: 'Mock screening',
+        participants: [],
+      }),
+    }
+    store = createStore(rootReducer, initialState)
+    expect(store.getState()).toEqual(initialState)
+    const updatedScreening = initialState.screening
+      .set('participants', Immutable.fromJS([participant])).toJS()
+    const action = screeningActions.updateScreeningSuccess(updatedScreening)
+    store.dispatch(action)
+    expect(store.getState().screening.toJS()).toEqual(updatedScreening)
+    expect(store.getState().participants.toJS()).toEqual([participant])
   })
 })
