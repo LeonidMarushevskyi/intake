@@ -1,6 +1,5 @@
 import {browserHistory} from 'react-router'
 import * as screeningActions from 'actions/screeningActions'
-import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'components/common/Autocompleter'
@@ -21,7 +20,6 @@ export class ScreeningEditPage extends React.Component {
 
     const methods = [
       'setField',
-      'addParticipant',
       'update',
       'createParticipant',
       'cardSave',
@@ -63,20 +61,10 @@ export class ScreeningEditPage extends React.Component {
     return this.props.actions.saveScreening(screening.toJS())
   }
 
-  addParticipant(participant) {
-    const {screening} = this.state
-    const participants = screening.get('participants') || Immutable.List()
-    const newParticipant = Immutable.Map(participant)
-    this.setField(['participants'], participants.push(newParticipant))
-  }
-
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
-    participantActions.create(params.id, participant)
-      .then((jsonResponse) => {
-        this.addParticipant(jsonResponse)
-      })
+    this.props.actions.createParticipant(participant)
   }
 
   saveAll() {
