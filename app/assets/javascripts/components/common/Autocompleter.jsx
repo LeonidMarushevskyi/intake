@@ -58,6 +58,12 @@ export default class Autocompleter extends React.Component {
     return `${suggestion.first_name} ${suggestion.last_name}`
   }
 
+  renderSSN(ssn) {
+    return (
+      ssn ? <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div> : null
+    )
+  }
+
   renderAddress(address) {
     let addressIcon
     let addressInfo
@@ -74,7 +80,7 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestion(suggestion) {
-    const {first_name, last_name, date_of_birth, gender, address} = suggestion
+    const {first_name, last_name, date_of_birth, gender, ssn, address} = suggestion
     let ageInfo
     const dob = moment(date_of_birth, 'YYYY-MM-DD')
     if (dob.isValid()) {
@@ -90,6 +96,7 @@ export default class Autocompleter extends React.Component {
           <strong>{[first_name, last_name].filter(Boolean).join(' ')}</strong>
           <div>{Gender[gender]}</div>
           <div>{ageInfo}</div>
+          {this.renderSSN(ssn)}
         </div>
         <div className='col-md-6'>
           {this.renderAddress(address)}

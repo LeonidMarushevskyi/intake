@@ -104,6 +104,22 @@ describe('<Autcompleter />', () => {
       expect(shallow(value).html()).not.toContain('yrs old')
     })
 
+    describe('SSN', () => {
+      it('gets rendered when present', () => {
+        const component = shallow(<Autocompleter />)
+        const suggestion = {ssn: '123-456-7890'}
+        const value = component.instance().renderSuggestion(suggestion)
+        expect(shallow(value).html()).toContain('<div><strong class="c-gray half-pad-right">SSN</strong><span>123-456-7890</span></div>')
+      })
+
+      it('does not get rendered when NOT present', () => {
+        const component = shallow(<Autocompleter />)
+        const suggestion = {ssn: null}
+        const value = component.instance().renderSuggestion(suggestion)
+        expect(shallow(value).html()).not.toContain('SSN')
+      })
+    })
+
     describe('address', () => {
       it('gets rendered', () => {
         const component = shallow(<Autocompleter />)

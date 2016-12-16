@@ -121,6 +121,8 @@ feature 'Edit Screening' do
       expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
       expect(page).to have_content '15 yrs old'
       expect(page).to have_content 'Female'
+      expect(page).to have_content 'SSN'
+      expect(page).to have_content '123-23-1234'
       expect(page).to have_content 'Home'
       expect(page).to have_content '123 Fake St, Springfield, NY 12345'
     end
