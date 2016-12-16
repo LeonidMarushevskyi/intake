@@ -56,7 +56,7 @@ export class PersonNewPage extends React.Component {
   }
 
   save() {
-    this.props.actions.createPerson({person: this.state.person.toJS()})
+    this.props.actions.createPerson(this.state.person.toJS())
       .then(() => this.show())
   }
 

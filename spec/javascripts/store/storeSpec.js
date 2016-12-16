@@ -14,7 +14,7 @@ describe('Store', () => {
 
   it('handles fetch person', () => {
     expect(store.getState()).toEqual(initialState)
-    const person = Immutable.fromJS({
+    const person = {
       id: 1,
       first_name: 'Kevin',
       last_name: 'McCallister',
@@ -28,16 +28,15 @@ describe('Store', () => {
         state: 'IL',
         zip: 60093,
       },
-    })
+    }
     const action = personActions.fetchPersonSuccess(person)
     store.dispatch(action)
-
-    expect(store.getState().person).toEqual(person)
+    expect(store.getState().person.toJS()).toEqual(person)
   })
 
   it('handles create person', () => {
     expect(store.getState()).toEqual(initialState)
-    const person = Immutable.fromJS({
+    const person = {
       id: 1,
       first_name: 'Kevin',
       last_name: 'McCallister',
@@ -51,11 +50,10 @@ describe('Store', () => {
         state: 'IL',
         zip: 60093,
       },
-    })
+    }
     const action = personActions.createPersonSuccess(person)
     store.dispatch(action)
-
-    expect(store.getState().person).toEqual(person)
+    expect(store.getState().person.toJS()).toEqual(person)
   })
 
   it('handles update person', () => {
@@ -79,11 +77,10 @@ describe('Store', () => {
     }
     store = createStore(rootReducer, initialState)
     expect(store.getState()).toEqual(initialState)
-
-    const updatedPerson = initialState.person.set('first_name', 'Bart')
+    const updatedPerson = initialState.person.set('first_name', 'Bart').toJS()
     const action = personActions.updatePersonSuccess(updatedPerson)
     store.dispatch(action)
-    expect(store.getState().person).toEqual(updatedPerson)
+    expect(store.getState().person.toJS()).toEqual(updatedPerson)
   })
 
   it('handles fetch screening', () => {
@@ -130,6 +127,22 @@ describe('Store', () => {
     const action = screeningActions.updateScreeningSuccess(updatedScreening)
     store.dispatch(action)
     expect(store.getState().screening.toJS()).toEqual(updatedScreening)
+    expect(store.getState().participants.toJS()).toEqual([participant])
+  })
+
+  it('handles create participant', () => {
+    expect(store.getState()).toEqual(initialState)
+    const participant = {id: 2, person_id: 3, screening_id: 1}
+    initialState = {
+      ...initialState,
+      screening: Immutable.fromJS({
+        id: 1,
+        name: 'Mock screening',
+        participants: [],
+      }),
+    }
+    const action = screeningActions.createParticipantSuccess(participant)
+    store.dispatch(action)
     expect(store.getState().participants.toJS()).toEqual([participant])
   })
 })

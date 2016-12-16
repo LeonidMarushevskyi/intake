@@ -41,7 +41,7 @@ describe('person actions', () => {
       ]
       const store = mockStore()
 
-      store.dispatch(personActions.createPerson({person: person}))
+      store.dispatch(personActions.createPerson(person))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
         '/people.json',
@@ -70,7 +70,7 @@ describe('person actions', () => {
           last_name: 'Simpson',
         }),
       })
-      store.dispatch(personActions.updatePerson({person: updatedPerson}))
+      store.dispatch(personActions.updatePerson(updatedPerson))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
         '/people/1.json',

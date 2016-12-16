@@ -144,8 +144,7 @@ describe('PersonNewPage', () => {
       component = shallow(<PersonNewPage {...props} />)
       component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Bart'}})
       component.find('button.btn-primary').simulate('click')
-      expect(createPerson).toHaveBeenCalled()
-      expect(createPerson.calls.argsFor(0)[0].person.first_name).toEqual('Bart')
+      expect(createPerson.calls.argsFor(0)[0].first_name).toEqual('Bart')
     })
 
     it('redirects to show', () => {

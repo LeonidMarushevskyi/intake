@@ -50,7 +50,7 @@ export class PersonEditPage extends React.Component {
   }
 
   update() {
-    this.props.actions.updatePerson({person: this.state.person.toJS()})
+    this.props.actions.updatePerson(this.state.person.toJS())
       .then(() => this.show())
   }
 

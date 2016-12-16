@@ -192,7 +192,7 @@ describe('PersonEditPage', () => {
       component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Lisa'}})
       component.find('button.btn-primary').simulate('click')
       expect(actionsSpy.updatePerson).toHaveBeenCalled()
-      expect(actionsSpy.updatePerson.calls.argsFor(0)[0].person.first_name).toEqual('Lisa')
+      expect(actionsSpy.updatePerson.calls.argsFor(0)[0].first_name).toEqual('Lisa')
     })
 
     it('redirects to show', () => {
