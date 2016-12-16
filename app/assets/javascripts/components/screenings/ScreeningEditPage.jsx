@@ -1,46 +1,24 @@
 import {browserHistory} from 'react-router'
 import * as screeningActions from 'actions/screeningActions'
-import * as participantActions from 'actions/participantActions'
-import Immutable from 'immutable'
 import React from 'react'
 import Autocompleter from 'components/common/Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
-export default class ScreeningEditPage extends React.Component {
-  constructor() {
-    super(...arguments)
+export class ScreeningEditPage extends React.Component {
+  constructor(props, context) {
+    super(props, context)
     this.state = {
-      screening: Immutable.fromJS({
-        reference: '',
-        name: '',
-        started_at: '',
-        ended_at: '',
-        communication_method: '',
-        participants: [],
-        report_narrative: '',
-        incident_date: '',
-        incident_county: '',
-        address: Immutable.fromJS({
-          id: '',
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
-        }),
-        location_type: '',
-        response_time: '',
-        screening_decision: '',
-      }),
+      screening: props.screening,
       loaded: false,
     }
 
     const methods = [
-      'fetch',
       'setField',
-      'addParticipant',
       'update',
       'createParticipant',
       'cardSave',
@@ -52,34 +30,22 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   componentDidMount() {
-    this.fetch()
+    this.props.actions.fetchScreening(this.props.params.id)
+      .then(() => this.setState({loaded: true}))
   }
 
-  fetch() {
-    const {params} = this.props
-    screeningActions.fetch(params.id)
-      .then((jsonResponse) => {
-        this.setState({
-          screening: Immutable.fromJS(jsonResponse),
-          loaded: true,
-        })
-      })
+  componentWillReceiveProps(nextProps) {
+    this.setState({screening: nextProps.screening})
   }
 
   show() {
     const {params} = this.props
-    browserHistory.push({
-      pathname: `/screenings/${params.id}`,
-    })
+    browserHistory.push({pathname: `/screenings/${params.id}`})
   }
 
   update() {
-    const {params} = this.props
-    screeningActions.save(params.id, this.state.screening.toJS())
-      .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
-        this.show()
-      })
+    const {screening} = this.state
+    this.props.actions.saveScreening(screening.toJS()).then(() => this.show())
   }
 
   setField(fieldSeq, value) {
@@ -88,29 +54,14 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   cardSave(fieldSeq, value) {
-    const {params} = this.props
     const screening = this.state.screening.setIn(fieldSeq, value)
-    return screeningActions.save(params.id, screening.toJS())
-      .then((jsonResponse) => {
-        this.setState({screening: Immutable.fromJS(jsonResponse)})
-      })
-  }
-
-  addParticipant(participant) {
-    const {screening} = this.state
-    const participants = screening.get('participants').push(Immutable.Map(participant))
-    this.setState({
-      screening: screening.merge({participants: participants}),
-    })
+    return this.props.actions.saveScreening(screening.toJS())
   }
 
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
-    participantActions.create(params.id, participant)
-      .then((jsonResponse) => {
-        this.addParticipant(jsonResponse)
-      })
+    this.props.actions.createParticipant(participant)
   }
 
   saveAll() {
@@ -121,7 +72,7 @@ export default class ScreeningEditPage extends React.Component {
   }
 
   renderParticipantsCard() {
-    const {screening} = this.state
+    const {participants} = this.props
     return (
       <div>
         <div className='card edit double-gap-top' id='participants-card'>
@@ -138,7 +89,7 @@ export default class ScreeningEditPage extends React.Component {
           </div>
         </div>
         {
-          screening.get('participants').map((participant) =>
+          participants.map((participant) =>
             <ParticipantCardView key={participant.get('id')} participant={participant} mode='edit'/>
           )
         }
@@ -157,7 +108,7 @@ export default class ScreeningEditPage extends React.Component {
           loaded &&
             <NarrativeCardView
               ref='narrativeCard'
-              narrative={screening.get('report_narrative') || ''}
+              narrative={screening.get('report_narrative')}
               mode='edit'
               onSave={(value) => this.cardSave(['report_narrative'], value)}
             />
@@ -174,5 +125,23 @@ export default class ScreeningEditPage extends React.Component {
 }
 
 ScreeningEditPage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
+  participants: React.PropTypes.object.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }
+
+function mapStateToProps(state, _ownProps) {
+  return {
+    participants: state.participants,
+    screening: state.screening,
+  }
+}
+
+function mapDispatchToProps(dispatch, _ownProps) {
+  return {
+    actions: bindActionCreators(screeningActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningEditPage)

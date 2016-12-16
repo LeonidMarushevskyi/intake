@@ -1,37 +1,22 @@
-import * as screeningActions from 'actions/screeningActions'
-import * as participantActions from 'actions/participantActions'
 import Immutable from 'immutable'
 import React from 'react'
-import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
+import {ScreeningEditPage} from 'components/screenings/ScreeningEditPage'
+import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
   let component
-  const screeningWithRequiredAttributes = {
-    participants: [],
-    report_narrative: 'A Sample Narrative',
-  }
-  const props = {params: {id: 1}}
-  const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-
-  var loadComponent = () => {
-    spyOn(screeningActions, 'fetch').and.returnValue(promiseSpyObj)
-    promiseSpyObj.then.and.callFake((then) => then(screeningWithRequiredAttributes))
-  }
-
   describe('render', () => {
-    beforeEach(() => {
-      loadComponent()
-      component = mount(<ScreeningEditPage {...props} />)
-    })
-
     it('renders the screening reference', () => {
-      component.setState({
+      const props = {
+        actions: {},
+        params: {id: 1},
+        participants: Immutable.List(),
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
-          ...screeningWithRequiredAttributes,
         }),
-      })
+      }
+      component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('h1').text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
     })
 
@@ -41,15 +26,34 @@ describe('ScreeningEditPage', () => {
         started_at: '2016-08-13T10:00:00.000Z',
         ended_at: '2016-08-22T11:00:00.000Z',
         communication_method: 'mail',
-        ...screeningWithRequiredAttributes,
       })
-      component.setState({screening: screening})
+      const props = {
+        actions: {},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening,
+      }
+      component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('InformationEditView').length).toEqual(1)
       expect(component.find('InformationEditView').props().screening).toEqual(screening)
       expect(component.find('InformationEditView').props().onChange).toEqual(component.instance().setField)
     })
 
     describe('participants card', () => {
+      beforeEach(() => {
+        const participants = Immutable.fromJS([
+          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
+          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+        ])
+        const props = {
+          actions: {},
+          params: {id: 1},
+          participants,
+          screening: Immutable.Map(),
+        }
+        component = shallow(<ScreeningEditPage {...props} />)
+      })
+
       it('renders the card header', () => {
         expect(component.find('#participants-card .card-header').text()).toContain('Participants')
       })
@@ -66,15 +70,6 @@ describe('ScreeningEditPage', () => {
       })
 
       it('renders the participants card for each participant', () => {
-        const participants = [
-          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
-          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
-        ]
-        const screening = Immutable.fromJS({
-          ...screeningWithRequiredAttributes,
-          participants: participants,
-        })
-        component.setState({screening: screening})
         expect(component.find('ParticipantCardView').length).toEqual(2)
         expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
           ['edit', 'edit']
@@ -83,141 +78,165 @@ describe('ScreeningEditPage', () => {
     })
 
     describe('narrative card', () => {
-      let screening
       beforeEach(() => {
-        screening = Immutable.fromJS({
-          report_narrative: 'this is a narrative report',
-          ...screeningWithRequiredAttributes,
+        const screening = Immutable.fromJS({report_narrative: 'this is a narrative report'})
+        const props = {
+          actions: {},
+          params: {id: 1},
+          participants: Immutable.List(),
+          screening,
+        }
+        component = shallow(<ScreeningEditPage {...props} />)
+      })
+
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the narrative card', () => {
+          expect(component.find('NarrativeCardView').length).toEqual(0)
         })
-        component.setState({screening: screening})
       })
 
-      it('renders the narrative card', () => {
-        expect(component.find('NarrativeCardView').length).toEqual(1)
-      })
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
 
-      it('has screening passed in props', () => {
-        expect(component.find('NarrativeCardView').props().narrative).toEqual(
-          screening.get('report_narrative')
-        )
-      })
-
-      it('has mode set to edit', () => {
-        expect(component.find('NarrativeCardView').props().mode).toEqual('edit')
+        it('renders the narrative card', () => {
+          expect(component.find('NarrativeCardView').length).toEqual(1)
+          expect(component.find('NarrativeCardView').props().narrative).toEqual(
+            'this is a narrative report'
+          )
+          expect(component.find('NarrativeCardView').props().mode).toEqual('edit')
+        })
       })
     })
 
     it('renders the referral edit view', () => {
-      const screening = Immutable.fromJS({
-        incident_date: '2006-01-21',
-        incident_county: 'alpine',
-        address: {
-          street_address: '1500 7th St',
-          city: 'Sacramento',
-          state: 'CA',
-          zip: 95814,
-        },
-        location_type: 'Juvenile Detention',
-        response_time: 'within_twenty_four_hours',
-        screening_decision: 'accept_for_investigation',
-        ...screeningWithRequiredAttributes,
-      })
-      component.setState({screening: screening})
+      const screening = Immutable.fromJS({name: 'my screening'})
+      const props = {
+        actions: {},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening,
+      }
+      component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('ReferralInformationEditView').length).toEqual(1)
       expect(component.find('ReferralInformationEditView').props().screening).toEqual(screening)
       expect(component.find('ReferralInformationEditView').props().onChange).toEqual(component.instance().setField)
     })
   })
 
-  describe('fetch', () => {
-    let component
+  describe('componentDidMount', () => {
+    const fetchScreening = jasmine.createSpy('fetchScreening')
     beforeEach(() => {
-      loadComponent()
-      component = mount(<ScreeningEditPage {...props} />)
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 222},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
+      fetchScreening.and.returnValue(Promise.resolve())
+      mount(<ScreeningEditPage {...props} />)
     })
 
-    it('GETs the screening data from the server', () => {
-      component.instance().fetch()
-      expect(screeningActions.fetch).toHaveBeenCalledWith(1)
+    it('GETs the screening from the server', () => {
+      expect(fetchScreening).toHaveBeenCalledWith(222)
+    })
+  })
+
+  describe('update', () => {
+    const saveScreening = jasmine.createSpy('saveScreening')
+    beforeEach(() => {
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      promiseSpyObj.then.and.callFake((then) => then({}))
+      saveScreening.and.returnValue(promiseSpyObj)
+      const props = {
+        actions: {saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map({name: 'mock screening'}),
+      }
+      spyOn(browserHistory, 'push')
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.instance().update()
+    })
+
+    it('calls screening save', () => {
+      expect(saveScreening).toHaveBeenCalledWith({name: 'mock screening'})
+    })
+
+    it('pushes show page to browser history', () => {
+      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1'})
+    })
+  })
+
+  describe('cardSave', () => {
+    const saveScreening = jasmine.createSpy('saveScreening')
+    beforeEach(() => {
+      const props = {
+        actions: {saveScreening},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
+    })
+
+    it('calls screening save', () => {
+      expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
     })
   })
 
   describe('createParticipant', () => {
-    const personId = 3
-    const person = {id: personId}
-    const participant = {id: null, screening_id: props.params.id, person_id: personId}
+    const person = {id: 3}
+    let createParticipant
+    let participant
 
     beforeEach(() => {
-      loadComponent()
-      const jsonResponse = {id: 99, first_name: 'Bart'}
-      promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
-      spyOn(participantActions, 'create').and.returnValue(promiseSpyObj)
+      createParticipant = jasmine.createSpy('createParticipant')
+      const props = {
+        actions: {createParticipant},
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
+      participant = {id: null, screening_id: props.params.id, person_id: person.id}
       component = shallow(<ScreeningEditPage {...props} />)
     })
 
-    it('POSTs the participant data to the server', () => {
+    it('calls the createParticipant action', () => {
       component.instance().createParticipant(person)
-      expect(participantActions.create).toHaveBeenCalledWith(1, participant)
-    })
-
-    it('adds the newly created participant', () => {
-      component.instance().createParticipant(person)
-      expect(component.instance().state.screening.toJS().participants).toEqual([{id: 99, first_name: 'Bart'}])
+      expect(createParticipant).toHaveBeenCalledWith(participant)
     })
   })
 
-  describe('addParticipant', () => {
-    let component
-    beforeEach(() => {
-      loadComponent()
-      component = mount(<ScreeningEditPage {...props} />).instance()
-    })
-
-    it('adds the participant to an empty list of participants', () => {
-      component.addParticipant({id: 1})
-      const participants = component.state.screening.get('participants')
-      expect(participants.size).toEqual(1)
-      expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
-    })
-
-    it('adds the participant to a non empty list of participants', () => {
-      component.addParticipant({id: 1})
-      component.addParticipant({id: 2})
-      const participants = component.state.screening.get('participants')
-      expect(participants.size).toEqual(2)
-      expect(participants.get(0)).toEqual(Immutable.Map({id: 1}))
-      expect(participants.get(1)).toEqual(Immutable.Map({id: 2}))
-    })
-  })
-
-  var createSpyOnSave = () => {
-    spyOn(screeningActions, 'save').and.returnValue(promiseSpyObj)
-    promiseSpyObj.then.and.callFake((afterThen) => afterThen(screeningWithRequiredAttributes))
-    promiseSpyObj.then.and.returnValue(promiseSpyObj)
-  }
-
-  describe('saving', () => {
+  describe('saveAll', () => {
     let component
     let saveButton
+    const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
-      loadComponent()
-      createSpyOnSave()
+      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
+      saveScreening.and.returnValue(promiseSpyObj)
+      promiseSpyObj.then.and.returnValue(promiseSpyObj)
+      // the above line is needed for the return from narrative card save
+      const props = {
+        actions: {
+          fetchScreening: () => Promise.resolve(),
+          saveScreening,
+        },
+        params: {id: 1},
+        participants: Immutable.List(),
+        screening: Immutable.Map({name: 'my screening', report_narrative: null}),
+      }
       component = mount(<ScreeningEditPage {...props} />)
-      component.setState({
-        screening: Immutable.fromJS(screeningWithRequiredAttributes),
-        loaded: true,
-      })
-      const nameOfScreening = component.find('#name')
-      nameOfScreening.simulate('change', {target: {value: 'my screening'}})
+      component.setState({loaded: true})
       saveButton = component.find('button.btn.btn-primary').last()
     })
 
     it('calls save action with current screening', () => {
       saveButton.simulate('click')
-      expect(screeningActions.save).toHaveBeenCalled()
-      expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
-      expect(screeningActions.save.calls.argsFor(0)[1].name).toEqual(
-        'my screening'
+      expect(saveScreening).toHaveBeenCalledWith(
+        {name: 'my screening', report_narrative: null}
       )
     })
 
@@ -229,33 +248,10 @@ describe('ScreeningEditPage', () => {
 
       it('calls save action with updated narrative', () => {
         saveButton.simulate('click')
-        expect(screeningActions.save).toHaveBeenCalled()
-        expect(screeningActions.save.calls.argsFor(0)[0]).toEqual(1)
-        expect(screeningActions.save.calls.argsFor(0)[1].report_narrative).toEqual(
-          'Changed narrative'
+        expect(saveScreening).toHaveBeenCalledWith(
+          {name: 'my screening', report_narrative: 'Changed narrative'}
         )
       })
-    })
-  })
-
-  describe('cardSave', () => {
-    let component
-    beforeEach(() => {
-      loadComponent()
-      createSpyOnSave()
-      component = mount(<ScreeningEditPage {...props} />)
-    })
-
-    it('calls screening save', () => {
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
-      expect(screeningActions.save).toHaveBeenCalled()
-    })
-
-    it('does not redirect to the screening show page', () => {
-      const instance = component.instance()
-      spyOn(instance, 'show')
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
-      expect(instance.show).not.toHaveBeenCalled()
     })
   })
 })

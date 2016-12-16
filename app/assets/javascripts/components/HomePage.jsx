@@ -1,16 +1,23 @@
 import * as screeningActions from 'actions/screeningActions'
 import React from 'react'
 import {Link} from 'react-router'
+import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
+import {connect} from 'react-redux'
 
-export default class HomePage extends React.Component {
+export class HomePage extends React.Component {
+  constructor() {
+    super(...arguments)
+    this.createScreening = this.createScreening.bind(this)
+  }
+
   createScreening() {
-    screeningActions.create()
-      .then((jsonResponse) => {
-        browserHistory.push({
-          pathname: `/screenings/${jsonResponse.id}/edit`,
-        })
+    this.props.actions.createScreening().then(() => {
+      const {screening} = this.props
+      browserHistory.push({
+        pathname: `/screenings/${screening.get('id')}/edit`,
       })
+    })
   }
 
   render() {
@@ -24,3 +31,20 @@ export default class HomePage extends React.Component {
     )
   }
 }
+
+HomePage.propTypes = {
+  actions: React.PropTypes.object.isRequired,
+  screening: React.PropTypes.object.isRequired,
+}
+
+function mapStateToProps(state, _ownProps) {
+  return {screening: state.screening}
+}
+
+function mapDispatchToProps(dispatch, _ownProps) {
+  return {
+    actions: bindActionCreators(screeningActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage)

@@ -14,7 +14,7 @@ def build_participant_from_person_and_screening(person, screening)
     ]
   ).merge(
     id: nil,
-    person_id: person.id.to_s,
+    person_id: person.id,
     screening_id: screening.id.to_s
   )
 end
@@ -69,6 +69,8 @@ feature 'Edit Screening' do
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
 
+    fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
+
     within '#participants-card' do
       fill_in_autocompleter 'Participants', with: 'Marge'
       find('li', text: 'Marge Simpson').click
@@ -77,6 +79,9 @@ feature 'Edit Screening' do
     expect(
       a_request(:post, api_participants_path).with(body: participant_marge.to_json)
     ).to have_been_made
+
+    # adding participant doesnt change screening modifications
+    expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
 
     existing_screening.assign_attributes(participants: [created_participant_marge])
 
