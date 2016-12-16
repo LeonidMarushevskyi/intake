@@ -219,11 +219,11 @@ describe('ScreeningEditPage', () => {
       saveScreening.and.returnValue(promiseSpyObj)
       promiseSpyObj.then.and.returnValue(promiseSpyObj)
       // the above line is needed for the return from narrative card save
-      const fetchScreening = jasmine.createSpy('fetchScreening')
-      fetchScreening.and.returnValue(Promise.resolve())
-
       const props = {
-        actions: {fetchScreening, saveScreening},
+        actions: {
+          fetchScreening: () => Promise.resolve(),
+          saveScreening,
+        },
         params: {id: 1},
         participants: Immutable.List(),
         screening: Immutable.Map({name: 'my screening', report_narrative: null}),
