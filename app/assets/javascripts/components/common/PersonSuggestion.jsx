@@ -40,7 +40,7 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, ssn, addres
 )
 
 PersonSuggestion.propTypes = {
-  address: React.PropTypes.object({
+  address: React.PropTypes.shape({
     city: React.PropTypes.string,
     state: React.PropTypes.string,
     streetAddress: React.PropTypes.string,
