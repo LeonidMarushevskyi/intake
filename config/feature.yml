@@ -1,0 +1,13 @@
+# config/feature.yml
+development:
+  features:
+    release_one: false
+
+test:
+  features:
+    release_one: false
+
+production:
+  features:
+    release_one: true
+
