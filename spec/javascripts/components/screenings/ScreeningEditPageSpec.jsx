@@ -143,6 +143,37 @@ describe('ScreeningEditPage', () => {
     })
   })
 
+  describe('componentWillReceiveProps', () => {
+    let component
+    const newScreeningState = Immutable.fromJS({report_narrative: 'my updated narrative'})
+    beforeEach(() => {
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      fetchScreening.and.returnValue(Promise.resolve())
+      const props = {
+        actions: {fetchScreening},
+        params: {id: 222},
+        participants: Immutable.List(),
+        screening: Immutable.fromJS({report_narrative: 'my narrative'}),
+      }
+      component = mount(<ScreeningEditPage {...props} />)
+      component.setState({screening: newScreeningState})
+      component.setProps(props)
+    })
+
+    it("doesn't update state if screening prop hasn't changed", () => {
+      const instance = component.instance()
+      expect(instance.state.screening).toEqual(newScreeningState)
+    })
+
+    it('updates state when screening prop changes', () => {
+      const screening = Immutable.fromJS({id: 1})
+      component.setProps({screening})
+      const instance = component.instance()
+      expect(instance.state.screening).not.toEqual(newScreeningState)
+      expect(instance.state.screening).toEqual(screening)
+    })
+  })
+
   describe('update', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
