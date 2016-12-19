@@ -1,12 +1,18 @@
-import $ from 'jquery'
+import * as Utils from 'utils/http'
 import Autocompleter from 'components/common/Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
-import moment from 'moment'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('<Autcompleter />', () => {
+  function stubSuggestions(suggestions) {
+    const promise = jasmine.createSpyObj('promise', ['then'])
+    promise.then.and.callFake((thenFunc) => thenFunc(suggestions))
+    spyOn(Utils, 'request')
+    Utils.request.and.returnValue(promise)
+  }
+
   beforeEach(() => {
     jasmine.addMatchers(matchers)
   })
@@ -28,9 +34,7 @@ describe('<Autcompleter />', () => {
   describe('#onSuggestionsFetchRequested', () => {
     it('uses the people search api to get the result for the search term', () => {
       const bart_simpson = {first_name: 'Bart', last_name: 'Simpson'}
-      const promise = $.Deferred()
-      promise.resolve([bart_simpson])
-      spyOn($, 'get').and.returnValue(promise)
+      stubSuggestions([bart_simpson])
       const component = shallow(<Autocompleter />)
       component.instance().onSuggestionsFetchRequested({value: 'Simpson'})
       expect(component.state('suggestions')).toEqual([bart_simpson])
@@ -68,79 +72,49 @@ describe('<Autcompleter />', () => {
   })
 
   describe('#renderSuggestion', () => {
-    it('renders the first name and last name', () => {
-      const component = shallow(<Autocompleter />)
-      const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
-      const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('<strong>Bart Simpson</strong>')
+    let component
+    beforeEach(() => {
+      component = mount(<Autocompleter />)
+      const result = [{
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        gender: 'female',
+        date_of_birth: '1990-02-13',
+        ssn: '123-45-6789',
+        address: {
+          id: 1,
+          street_address: '234 Fake Street',
+          city: 'Flushing',
+          state: 'NM',
+          zip: 11344,
+          type: 'School',
+        },
+      }]
+      stubSuggestions(result)
     })
 
-    it('renders the gender', () => {
-      const component = shallow(<Autocompleter />)
-      const suggestion = {gender: 'female'}
-      const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('<div>Female</div>')
-    })
-
-    it('renders the date of birth in format D/M/YYYY', () => {
-      const component = shallow(<Autocompleter />)
-      const suggestion = {date_of_birth: '1990-02-13'}
-      const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('(2/13/1990)')
-    })
-
-    it('renders the age', () => {
-      const component = shallow(<Autocompleter />)
-      const date_of_birth = moment().subtract(15, 'years').format('YYYY-MM-DD')
-      const suggestion = {date_of_birth: date_of_birth}
-      const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).toContain('15 yrs old')
-    })
-
-    it('does not render age when date of birth is not present', () => {
-      const component = shallow(<Autocompleter />)
-      const suggestion = {date_of_birth: null}
-      const value = component.instance().renderSuggestion(suggestion)
-      expect(shallow(value).html()).not.toContain('yrs old')
-    })
-
-    describe('address', () => {
-      it('gets rendered', () => {
-        const component = shallow(<Autocompleter />)
-        const suggestion = {
-          address: {
-            id: 1,
-            street_address: '234 Fake Street',
-            city: 'Flushing',
-            state: 'NM',
-            zip: 11344,
-            type: 'School',
-          },
-        }
-        const value = component.instance().renderSuggestion(suggestion)
-        expect(shallow(value).html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><strong class="c-gray half-pad-right">School</strong><span>234 Fake Street, Flushing, NM 11344</span></div>')
-      })
-
-      it('gets rendered correctly when partial address is given', () => {
-        const component = shallow(<Autocompleter />)
-        const suggestion = {
-          address: {
-            id: 1,
-            street_address: null,
-            city: null,
-            state: 'NM',
-            zip: 11344,
-            type: null,
-          },
-        }
-        const value = component.instance().renderSuggestion(suggestion)
-        expect(shallow(value).html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
+    it('renders the PersonSuggestion view', () => {
+      component.find('input').simulate('focus')
+      component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
+      expect(component.find('PersonSuggestion').props()).toEqual({
+        firstName: 'Bart',
+        lastName: 'Simpson',
+        gender: 'female',
+        dateOfBirth: '1990-02-13',
+        ssn: '123-45-6789',
+        address: {
+          streetAddress: '234 Fake Street',
+          city: 'Flushing',
+          state: 'NM',
+          zip: 11344,
+          type: 'School',
+        },
       })
     })
   })
 
   describe('#renderSuggestionsContainer', () => {
-    it('rendres the suggestions container', () => {
+    it('renders the suggestions container', () => {
       const component = shallow(<Autocompleter />)
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).html()).toBe('<div class="baz">foobar</div>')
