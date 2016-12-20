@@ -21,8 +21,8 @@ feature 'Edit Address' do
   before do
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,
-    status: 200,
-    headers: { 'Content-Type' => 'application/json' })
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
   end
 
   scenario 'when a user navigates to edit page' do

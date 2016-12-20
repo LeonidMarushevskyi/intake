@@ -3,15 +3,6 @@ require 'rails_helper'
 
 feature 'Create Person' do
   scenario 'via the create person link on the home page' do
-    address = FactoryGirl.create(
-      :address,
-      city: 'Springfield',
-      id: nil,
-      state: 'NY',
-      street_address: '123 fake st',
-      zip: '12345',
-      type: 'Placement'
-    )
     person = FactoryGirl.create(
       :person,
       date_of_birth: '05/29/1990',
@@ -22,7 +13,6 @@ feature 'Create Person' do
       middle_name: 'Jay',
       ssn: '123-23-1234',
       name_suffix: 'esq',
-      address: address,
       languages: %w(English Farsi)
     )
 
@@ -38,11 +28,6 @@ feature 'Create Person' do
     fill_in_react_select 'Language(s)', with: 'Farsi'
     fill_in 'Date of birth', with: '05/29/1990'
     fill_in 'Social security number', with: '123-23-1234'
-    fill_in 'Address', with: '123 fake st'
-    fill_in 'City', with: 'Springfield'
-    select 'New York', from: 'State'
-    fill_in 'Zip', with: '12345'
-    select 'Placement', from: 'Address Type'
 
     stub_request(:post, api_people_path)
       .with(body: person.to_json)

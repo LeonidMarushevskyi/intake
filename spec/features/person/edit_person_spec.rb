@@ -3,14 +3,6 @@ require 'rails_helper'
 
 feature 'Edit Person' do
   let(:person) do
-    address = FactoryGirl.create(
-      :address,
-      street_address: '123 fake st',
-      city: 'Springfield',
-      state: 'NY',
-      zip: '12345',
-      type: 'Placement'
-    )
     FactoryGirl.create(
       :person,
       date_of_birth: '05/29/1990',
@@ -20,7 +12,6 @@ feature 'Edit Person' do
       middle_name: 'Jay',
       name_suffix: 'esq',
       ssn: '123-23-1234',
-      address: address,
       languages: ['Armenian']
     )
   end
@@ -48,11 +39,6 @@ feature 'Edit Person' do
       has_react_select_field('Language(s)', with: ['Armenian'])
       expect(page).to have_field('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Social security number', with: '123-23-1234')
-      expect(page).to have_field('Address', with: '123 fake st')
-      expect(page).to have_field('City', with: 'Springfield')
-      expect(page).to have_field('State', with: 'NY')
-      expect(page).to have_field('Zip', with: '12345')
-      expect(page).to have_field('Address Type', with: 'Placement')
     end
     expect(page).to have_link 'Cancel'
     expect(page).to have_button 'Save'

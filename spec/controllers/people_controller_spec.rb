@@ -20,14 +20,14 @@ describe PeopleController do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
+        addresses: [{
           id: '',
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
           type: 'placement'
-        },
+        }],
         phone_numbers: [
           { id: '', number: '111-111-1111', type: 'Cell' },
           { id: '', number: '222-222-2222', type: 'Home' }
@@ -88,14 +88,14 @@ describe PeopleController do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
+        addresses: [{
           id: '1',
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
           type: 'placement'
-        },
+        }],
         phone_numbers: [{
           id: '2',
           number: '333-333-3333',

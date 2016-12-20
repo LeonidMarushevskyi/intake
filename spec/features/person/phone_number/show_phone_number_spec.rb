@@ -12,7 +12,7 @@ feature 'Show Person' do
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
-      address: FactoryGirl.create(:address, id: nil)
+      addresses: FactoryGirl.create(:address, id: nil)
     )
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,

@@ -12,14 +12,6 @@ feature 'Show Person' do
       gender: 'male',
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
-      address: FactoryGirl.create(
-        :address,
-        street_address: '123 fake st',
-        city: 'Springfield',
-        state: 'NY',
-        zip: '12345',
-        type: 'Placement'
-      ),
       languages: %w(Turkish Thai Vietnamese)
     )
     stub_request(:get, api_person_path(person.id))
@@ -37,11 +29,6 @@ feature 'Show Person' do
     expect(page).to have_content('Turkish, Thai, Vietnamese')
     expect(page).to have_content('05/29/1990')
     expect(page).to have_content('123-23-1234')
-    expect(page).to have_content('123 fake st')
-    expect(page).to have_content('Springfield')
-    expect(page).to have_content('New York')
-    expect(page).to have_content('12345')
-    expect(page).to have_content('Placement')
     expect(page).to_not have_content('Save')
     expect(page).to have_link('Edit Person', href: edit_person_path(id: person.id))
   end

@@ -13,7 +13,7 @@ feature 'Create Phone Number' do
         created_at: nil,
         updated_at: nil
       }],
-      address: FactoryGirl.create(:address, id: nil)
+      addresses: []
     )
     visit new_person_path
 

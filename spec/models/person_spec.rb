@@ -13,14 +13,24 @@ describe Person do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
-          id: 2,
-          street_address: '123 fake st',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345',
-          type: 'Placement'
-        },
+        addresses: [
+          {
+            id: 2,
+            street_address: '123 fake st',
+            city: 'Springfield',
+            state: 'NY',
+            zip: '12345',
+            type: 'Placement'
+          },
+          {
+            id: 3,
+            street_address: '711 capital mall',
+            city: 'Sacramento',
+            state: 'CA',
+            zip: '95822',
+            type: 'Home'
+          }
+        ],
         phone_numbers: [
           { id: 1, number: '111-111-1111', type: 'Cell' },
           { id: 2, number: '222-222-2222', type: 'Home' }
@@ -36,14 +46,21 @@ describe Person do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
-        address: {
+        addresses: [{
           id: 2,
           street_address: '123 fake st',
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
           type: 'Placement'
-        },
+        }, {
+          id: 3,
+          street_address: '711 capital mall',
+          city: 'Sacramento',
+          state: 'CA',
+          zip: '95822',
+          type: 'Home'
+        }],
         phone_numbers: [{
           id: 1,
           number: '111-111-1111',
