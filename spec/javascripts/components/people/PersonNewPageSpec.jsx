@@ -26,9 +26,6 @@ describe('PersonNewPage', () => {
       expect(component.find('InputField[label="Last Name"]').length).toEqual(1)
       expect(component.find('DateField[label="Date of birth"]').length).toEqual(1)
       expect(component.find('InputField[label="Social security number"]').length).toEqual(1)
-      expect(component.find('InputField[label="Address"]').length).toEqual(1)
-      expect(component.find('InputField[label="City"]').length).toEqual(1)
-      expect(component.find('InputField[label="Zip"]').length).toEqual(1)
     })
 
     describe('suffix', () => {
@@ -75,20 +72,6 @@ describe('PersonNewPage', () => {
       })
     })
 
-    describe('address state', () => {
-      it('renders a select field', () => {
-        expect(component.find('SelectField[label="State"]').length).toEqual(1)
-      })
-
-      it('change event calls setField with state', () => {
-        const instance = component.instance()
-        spyOn(instance, 'setField')
-        component.find('SelectField[label="State"]')
-          .simulate('change', {target: {value: 'New York'}})
-        expect(instance.setField).toHaveBeenCalledWith(['address', 'state'], 'New York')
-      })
-    })
-
     describe('languages', () => {
       it('renders the language field', () => {
         expect(component.find('Select[multi]').length).toEqual(1)
@@ -106,17 +89,19 @@ describe('PersonNewPage', () => {
       })
     })
 
-    describe('address type', () => {
-      it('renders a select field', () => {
-        expect(component.find('SelectField[label="Address Type"]').length).toEqual(1)
+    describe('addresses ', () => {
+      it('renders a address edit view', () => {
+        expect(component.find('AddressEditView').length).toEqual(1)
       })
 
-      it('change event calls setField with address type', () => {
+      it('change event calls setField with addresses', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
-        component.find('SelectField[label="Address Type"]')
-          .simulate('change', {target: {value: 'Placement'}})
-        expect(instance.setField).toHaveBeenCalledWith(['address', 'type'], 'Placement')
+        component.find('AddressEditView')
+          .simulate('change', Immutable.List())
+        expect(instance.setField).toHaveBeenCalledWith(
+          ['addresses'], Immutable.List()
+        )
       })
     })
 

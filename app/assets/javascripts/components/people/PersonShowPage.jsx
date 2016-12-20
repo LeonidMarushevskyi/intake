@@ -77,23 +77,27 @@ export class PersonShowPage extends React.Component {
             </ShowField>
           </div>
           <div className='row gap-top'>
-            <ShowField gridClassName='col-md-6' label='Address'>
-              {person.getIn(['address', 'street_address'])}
-            </ShowField>
-            <ShowField gridClassName='col-md-6' label='City'>
-              {person.getIn(['address', 'city'])}
-            </ShowField>
-          </div>
-          <div className='row gap-top'>
-            <ShowField gridClassName='col-md-4' label='State'>
-              {US_STATE[person.getIn(['address', 'state'])]}
-            </ShowField>
-            <ShowField gridClassName='col-md-2' label='Zip'>
-              {person.getIn(['address', 'zip'])}
-            </ShowField>
-            <ShowField gridClassName='col-md-6' label='Address Type'>
-              {person.getIn(['address', 'type'])}
-            </ShowField>
+            {
+              person.get('addresses') && person.get('addresses').map((address) => (
+                <div key={address.get('id')}>
+                  <ShowField gridClassName='col-md-6' label='Address'>
+                    {address.get('street_address')}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-6' label='City'>
+                    {address.get('city')}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-4' label='State'>
+                    {US_STATE[address.get('state')]}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-2' label='Zip'>
+                    {address.get('zip')}
+                  </ShowField>
+                  <ShowField gridClassName='col-md-6' label='Address Type'>
+                    {address.get('type')}
+                  </ShowField>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>

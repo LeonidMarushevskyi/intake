@@ -16,13 +16,24 @@ describe('PersonShowPage', () => {
         gender: 'male',
         date_of_birth: '11/16/1990',
         ssn: '111223333',
-        address: {
-          street_address: '671 Lincoln Avenue',
-          city: 'Winnetka',
-          state: 'IL',
-          zip: 60093,
-          type: 'Placement',
-        },
+        addresses: [
+          {
+            id: '1',
+            street_address: '671 Lincoln Avenue',
+            city: 'Winnetka',
+            state: 'IL',
+            zip: 60093,
+            type: 'Placement'
+          },
+          {
+            id: '2',
+            street_address: '123 Capital Mall',
+            city: 'Sacramento',
+            state: 'CA',
+            zip: 95823,
+            type: 'Home'
+          }
+        ],
         phone_numbers: [{
           id: '1',
           number: '917-578-2010',
@@ -71,16 +82,26 @@ describe('PersonShowPage', () => {
         .toContain('Turkish, Thai, Vietnamese')
       expect(component.find('ShowField[label="Social security number"]').html())
         .toContain('111223333')
-      expect(component.find('ShowField[label="Address"]').html())
+      expect(component.find('ShowField[label="Address"]').first().html())
         .toContain('671 Lincoln Avenue')
-      expect(component.find('ShowField[label="City"]').html())
+      expect(component.find('ShowField[label="City"]').first().html())
         .toContain('Winnetka')
-      expect(component.find('ShowField[label="State"]').html())
+      expect(component.find('ShowField[label="State"]').first().html())
         .toContain('Illinois')
-      expect(component.find('ShowField[label="Zip"]').html())
+      expect(component.find('ShowField[label="Zip"]').first().html())
         .toContain('60093')
-      expect(component.find('ShowField[label="Address Type"]').html())
+      expect(component.find('ShowField[label="Address Type"]').first().html())
         .toContain('Placement')
+      expect(component.find('ShowField[label="Address"]').last().html())
+        .toContain('123 Capital Mall')
+      expect(component.find('ShowField[label="City"]').last().html())
+        .toContain('Sacramento')
+      expect(component.find('ShowField[label="State"]').last().html())
+        .toContain('California')
+      expect(component.find('ShowField[label="Zip"]').last().html())
+        .toContain('95823')
+      expect(component.find('ShowField[label="Address Type"]').last().html())
+        .toContain('Home')
     })
 
     it('renders the edit link', () => {
