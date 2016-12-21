@@ -81,14 +81,14 @@ describe('<Autcompleter />', () => {
         gender: 'female',
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
-        address: {
+        addresses: [{
           id: 1,
           street_address: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',
           zip: 11344,
           type: 'School',
-        },
+        }],
       }]
       stubSuggestions(result)
     })

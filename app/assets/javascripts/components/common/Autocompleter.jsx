@@ -48,7 +48,9 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestion(suggestion) {
-    const {first_name, last_name, gender, date_of_birth, ssn, address} = suggestion
+    const {first_name, last_name, gender, date_of_birth, ssn, addresses} = suggestion
+    const first = 0
+    const address = addresses[first]
     const addressInfo = {
       city: address.city,
       state: address.state,

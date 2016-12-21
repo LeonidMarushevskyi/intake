@@ -40,7 +40,7 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
-      address: marge_address
+      addresses: [marge_address]
     )
   end
 
