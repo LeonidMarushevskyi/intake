@@ -26,9 +26,7 @@ export default class Autocompleter extends React.Component {
   }
 
   onChange(event, {newValue}) {
-    this.setState({
-      value: newValue,
-    })
+    this.setState({value: newValue})
   }
 
   onSuggestionsFetchRequested({value}) {
@@ -37,16 +35,12 @@ export default class Autocompleter extends React.Component {
 
   onSuggestionSelected(event, {suggestion}) {
     this.onSuggestionsClearRequested()
-    this.setState({
-      value: '',
-    })
+    this.setState({value: ''})
     this.props.onSelect(suggestion)
   }
 
   onSuggestionsClearRequested() {
-    this.setState({
-      suggestions: [],
-    })
+    this.setState({suggestions: []})
   }
 
   getSuggestionValue(suggestion) {
