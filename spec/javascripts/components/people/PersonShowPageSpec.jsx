@@ -23,7 +23,7 @@ describe('PersonShowPage', () => {
             city: 'Winnetka',
             state: 'IL',
             zip: 60093,
-            type: 'Placement'
+            type: 'Placement',
           },
           {
             id: '2',
@@ -31,8 +31,8 @@ describe('PersonShowPage', () => {
             city: 'Sacramento',
             state: 'CA',
             zip: 95823,
-            type: 'Home'
-          }
+            type: 'Home',
+          },
         ],
         phone_numbers: [{
           id: '1',

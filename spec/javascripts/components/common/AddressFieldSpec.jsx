@@ -4,7 +4,7 @@ import AddressField from 'components/common/AddressField'
 
 describe('AddressField', () => {
   let component
-  let onChange = jasmine.createSpy('onChange')
+  const onChange = jasmine.createSpy('onChange')
   const props = {
     streetAddress: '123 fake street',
     city: 'SpringField',

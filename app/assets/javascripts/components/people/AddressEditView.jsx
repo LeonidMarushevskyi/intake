@@ -10,13 +10,13 @@ export class AddressEditView extends React.Component {
     this.deleteAddress = this.deleteAddress.bind(this)
   }
 
-  addAddress(){
+  addAddress() {
     const new_address = Immutable.Map({
       street_address: '',
       city: '',
       state: '',
       zip: '',
-      type: ''
+      type: '',
     })
     const newaddresses = this.props.addresses.push(new_address)
     this.props.onChange(newaddresses)
@@ -26,10 +26,9 @@ export class AddressEditView extends React.Component {
     const {addresses} = this.props
     const newaddresses = addresses.setIn(fieldSeq, value)
     this.props.onChange(newaddresses)
-
   }
 
-  deleteAddress(index){
+  deleteAddress(index) {
     const {addresses} = this.props
     const newaddresses = addresses.delete(index)
     this.props.onChange(newaddresses)
@@ -41,7 +40,7 @@ export class AddressEditView extends React.Component {
       <div id='addresses'>
         {
           addresses.map((area, index) => {
-            const {street_address, city, state, zip, type}= area.toJS()
+            const {street_address, city, state, zip, type} = area.toJS()
             return (
               <div key={index} className='row list-item'>
                 <AddressField
@@ -73,7 +72,7 @@ export class AddressEditView extends React.Component {
               onClick={this.addAddress}
               aria-label='Add address'
             >
-              <i className="fa fa-plus" />
+              <i className='fa fa-plus' />
               <span> Add new address</span>
             </button>
           </div>

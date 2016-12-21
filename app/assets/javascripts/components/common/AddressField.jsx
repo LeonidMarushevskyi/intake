@@ -30,7 +30,7 @@ const AddressField = ({streetAddress, city, state, zip, type, onChange}) => (
         onChange={(event) => onChange('state', event.target.value)}
         value={state}
       >
-        <option key='' value=''></option>
+        <option key='' value='' />
         {Object.keys(US_STATE).map((item) => <option key={item} value={item}>{US_STATE[item]}</option>)}
       </SelectField>
       <InputField
@@ -49,9 +49,17 @@ const AddressField = ({streetAddress, city, state, zip, type, onChange}) => (
         onChange={(event) => onChange('type', event.target.value)}
         value={type}
       >
-        <option key='' value=''></option>
+        <option key='' value='' />
         {ADDRESS_TYPE.map((item) => <option key={item} value={item}>{item}</option>)}
       </SelectField>
   </div>
 )
+AddressField.propTypes = {
+  city: React.PropTypes.string,
+  onChange: React.PropTypes.func,
+  state: React.PropTypes.string,
+  streetAddress: React.PropTypes.string,
+  type: React.PropTypes.string,
+  zip: React.PropTypes.string,
+}
 export default AddressField

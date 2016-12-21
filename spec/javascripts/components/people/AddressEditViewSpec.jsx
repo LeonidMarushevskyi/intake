@@ -7,20 +7,20 @@ describe('AddressEditView', () => {
   let component
   let onChangeaddressSpy
   beforeEach(() => {
-  const addresses = Immutable.fromJS(
-    [{street_address: '123 fake st',
-      city: 'Springfield',
-      state: 'NY',
-      zip: '12345',
-      type: 'Placement'
-    }])
-  onChangeaddressSpy = jasmine.createSpy('onChange')
-  component = shallow(
-    <AddressEditView
-      addresses={addresses}
-      onChange={onChangeaddressSpy}
-    />
-  )
+    const addresses = Immutable.fromJS(
+      [{street_address: '123 fake st',
+        city: 'Springfield',
+        state: 'NY',
+        zip: '12345',
+        type: 'Placement',
+      }])
+    onChangeaddressSpy = jasmine.createSpy('onChange')
+    component = shallow(
+      <AddressEditView
+        addresses={addresses}
+        onChange={onChangeaddressSpy}
+      />
+    )
   })
   describe('render', () => {
     it('renders each of the address fields', () => {
@@ -41,13 +41,13 @@ describe('AddressEditView', () => {
           city: 'Springfield',
           state: 'NY',
           zip: '56789',
-          type: 'Placement'
-        }
+          type: 'Placement',
+        },
       ])
     })
 
     it('calls onChange when "Add new address" is clicked', () => {
-     component.find('button[aria-label="Add address"]').simulate('click')
+      component.find('button[aria-label="Add address"]').simulate('click')
       expect(onChangeaddressSpy).toHaveBeenCalled()
       expect(onChangeaddressSpy.calls.argsFor(0)[0].toJS()).toEqual([
         {
@@ -55,21 +55,21 @@ describe('AddressEditView', () => {
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
-          type: 'Placement'
+          type: 'Placement',
         },
         {
           street_address: '',
           city: '',
           state: '',
           zip: '',
-          type: ''
+          type: '',
         },
       ])
     })
 
     it('calls onChange when is delete address is click', () => {
       const event = jasmine.createSpyObj('event', ['preventDefault'])
-      component.find('a[aria-label="Delete address"]').simulate('click',event)
+      component.find('a[aria-label="Delete address"]').simulate('click', event)
       expect(onChangeaddressSpy).toHaveBeenCalledWith(Immutable.fromJS([]))
     })
   })
