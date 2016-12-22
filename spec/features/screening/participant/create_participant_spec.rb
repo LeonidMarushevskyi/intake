@@ -48,7 +48,10 @@ feature 'Edit Screening' do
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
-    allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
+    stub_request(:get, api_people_search_path(search_term: marge.first_name))
+      .and_return(body: [marge].to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
     visit edit_screening_path(id: existing_screening.id)
   end
 

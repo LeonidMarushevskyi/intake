@@ -52,8 +52,8 @@ class PeopleController < ApplicationController
   end
 
   def search
-    people = PeopleRepo.search(params[:search_term])
-    render json: people.map(&:attributes)
+    people_results = PersonRepository.search(params[:search_term])
+    render json: people_results
   end
 
   # rubocop:disable MethodLength

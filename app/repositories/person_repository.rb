@@ -4,6 +4,7 @@
 # resource via the API
 class PersonRepository
   PEOPLE_PATH = '/api/v1/people'
+  PEOPLE_SEARCH_PATH = '/api/v1/people_search'
   CONTENT_TYPE = 'application/json'
 
   def self.create(person)
@@ -26,6 +27,14 @@ class PersonRepository
     raise 'Error updating person' if response.status != 200
     Rails.logger.info response.body.inspect
     Person.new(response.body)
+  end
+
+  def self.search(search_term)
+    response = make_api_call("#{PEOPLE_SEARCH_PATH}?search_term=#{search_term}", :get)
+    raise 'Error searching people' if response.status != 200
+    response.body.map do |result_attributes|
+      Person.new(result_attributes)
+    end
   end
 
   def self.make_api_call(url, method, attributes = nil)

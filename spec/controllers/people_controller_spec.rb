@@ -131,17 +131,14 @@ describe PeopleController do
         Person.new(first_name: 'Bart', last_name: 'Simpson'),
         Person.new(first_name: 'John', last_name: 'Smith')
       ]
-      allow(PeopleRepo).to receive(:search)
+      allow(PersonRepository).to receive(:search)
         .with('foobarbaz')
         .and_return(people)
 
       process :search, method: :get, params: { search_term: 'foobarbaz' }
 
-      body = JSON.parse(response.body)
-      expect(body.first['first_name']).to eq('Bart')
-      expect(body.first['last_name']).to eq('Simpson')
-      expect(body.last['first_name']).to eq('John')
-      expect(body.last['last_name']).to eq('Smith')
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)).to eq(people.as_json)
     end
   end
 end
