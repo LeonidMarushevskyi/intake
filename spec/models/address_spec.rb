@@ -9,7 +9,7 @@ describe Address do
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',
-        zip: 11_222,
+        zip: '11222',
         type: 'Placement'
       }.with_indifferent_access
       expect(
@@ -19,7 +19,7 @@ describe Address do
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',
-        zip: 11_222,
+        zip: '11222',
         type: 'Placement'
       }.with_indifferent_access)
     end

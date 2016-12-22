@@ -26,7 +26,7 @@ describe('Store', () => {
         street_address: '671 Lincoln Avenue',
         city: 'Winnetka',
         state: 'IL',
-        zip: 60093,
+        zip: '60093',
       },
     }
     const action = personActions.fetchPersonSuccess(person)
@@ -48,7 +48,7 @@ describe('Store', () => {
         street_address: '671 Lincoln Avenue',
         city: 'Winnetka',
         state: 'IL',
-        zip: 60093,
+        zip: '60093',
       },
     }
     const action = personActions.createPersonSuccess(person)
@@ -71,7 +71,7 @@ describe('Store', () => {
           street_address: '671 Lincoln Avenue',
           city: 'Winnetka',
           state: 'IL',
-          zip: 60093,
+          zip: '60093',
         },
       }),
     }

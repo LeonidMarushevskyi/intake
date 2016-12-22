@@ -11,7 +11,7 @@ feature 'Show Screening' do
       street_address: '123 fake st',
       city: 'Springfield',
       state: 'NY',
-      zip: 12_345
+      zip: '12345'
     )
     existing_screening = FactoryGirl.create(
       :screening,

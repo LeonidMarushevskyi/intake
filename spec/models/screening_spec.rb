@@ -24,7 +24,7 @@ describe Screening do
           street_address: '123 Fake St',
           city: 'NY',
           state: 'NY',
-          zip: 11_222
+          zip: '11222'
         },
         participants: [
           { id: 1, first_name: 'Homer', last_name: 'Simpson', person_id: 3, screening_id: 2 }
@@ -50,7 +50,7 @@ describe Screening do
           street_address: '123 Fake St',
           city: 'NY',
           state: 'NY',
-          zip: 11_222
+          zip: '11222'
         ),
         participants: include(
           id: 1,

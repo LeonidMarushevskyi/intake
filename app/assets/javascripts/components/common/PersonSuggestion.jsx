@@ -45,7 +45,7 @@ PersonSuggestion.propTypes = {
     state: React.PropTypes.string,
     streetAddress: React.PropTypes.string,
     type: React.PropTypes.string,
-    zip: React.PropTypes.number,
+    zip: React.PropTypes.string,
   }),
   dateOfBirth: React.PropTypes.string,
   firstName: React.PropTypes.string,

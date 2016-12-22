@@ -17,7 +17,7 @@ describe('ReferralInformationShowView', () => {
         street_address: '1500 7th St',
         city: 'Sacramento',
         state: 'CA',
-        zip: 95814,
+        zip: '95814',
       },
       location_type: 'Juvenile Detention',
       response_time: 'within_twenty_four_hours',

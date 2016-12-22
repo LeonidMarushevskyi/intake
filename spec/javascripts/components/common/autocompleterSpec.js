@@ -86,7 +86,7 @@ describe('<Autcompleter />', () => {
           street_address: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',
-          zip: 11344,
+          zip: '11344',
           type: 'School',
         }],
       }]
@@ -106,7 +106,7 @@ describe('<Autcompleter />', () => {
           streetAddress: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',
-          zip: 11344,
+          zip: '11344',
           type: 'School',
         },
       })

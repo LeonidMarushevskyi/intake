@@ -16,7 +16,7 @@ describe('ReferralInformationEditView', () => {
         street_address: '1500 7th St',
         city: 'Sacramento',
         state: 'CA',
-        zip: 95814,
+        zip: '95814',
       }),
       location_type: 'Juvenile Detention',
       response_time: 'within_twenty_four_hours',
@@ -39,7 +39,7 @@ describe('ReferralInformationEditView', () => {
     expect(component.find('InputField[label="City"]').props().value)
       .toEqual('Sacramento')
     expect(component.find('InputField[label="Zip"]').props().value)
-      .toEqual(95814)
+      .toEqual('95814')
     expect(component.find('SelectField[label="State"]').props().value)
       .toEqual('CA')
     expect(component.find('SelectField[label="Location Type"]').props().value)

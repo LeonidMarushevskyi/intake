@@ -22,7 +22,7 @@ describe('PersonShowPage', () => {
             street_address: '671 Lincoln Avenue',
             city: 'Winnetka',
             state: 'IL',
-            zip: 60093,
+            zip: '60093',
             type: 'Placement',
           },
           {
@@ -30,7 +30,7 @@ describe('PersonShowPage', () => {
             street_address: '123 Capital Mall',
             city: 'Sacramento',
             state: 'CA',
-            zip: 95823,
+            zip: '95823',
             type: 'Home',
           },
         ],
