@@ -91,13 +91,13 @@ describe('PersonNewPage', () => {
 
     describe('addresses ', () => {
       it('renders a address edit view', () => {
-        expect(component.find('AddressEditView').length).toEqual(1)
+        expect(component.find('AddressesEditView').length).toEqual(1)
       })
 
       it('change event calls setField with addresses', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
-        component.find('AddressEditView')
+        component.find('AddressesEditView')
           .simulate('change', Immutable.List())
         expect(instance.setField).toHaveBeenCalledWith(
           ['addresses'], Immutable.List()

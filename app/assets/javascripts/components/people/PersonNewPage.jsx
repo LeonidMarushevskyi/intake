@@ -8,7 +8,7 @@ import NAME_SUFFIX from 'NameSuffix'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
-import {AddressEditView} from 'components/people/AddressEditView'
+import {AddressesEditView} from 'components/people/AddressesEditView'
 import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -138,7 +138,7 @@ export class PersonNewPage extends React.Component {
               onChange={(event) => this.setField(['ssn'], event.target.value)}
             />
           </div>
-          <AddressEditView
+          <AddressesEditView
             addresses={this.state.person.get('addresses') || Immutable.List()}
             onChange={(addresses) => this.setField(['addresses'], addresses)}
           />

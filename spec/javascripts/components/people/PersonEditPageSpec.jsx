@@ -107,13 +107,13 @@ describe('PersonEditPage', () => {
 
     describe('Addresses', () => {
       it('renders an address edit view', () => {
-        expect(component.find('AddressEditView').props().addresses).toEqual(Immutable.List())
+        expect(component.find('AddressesEditView').props().addresses).toEqual(Immutable.List())
       })
 
       it('change event calls setField with addresses', () => {
         const instance = component.instance()
         spyOn(instance, 'setField')
-        component.find('AddressEditView')
+        component.find('AddressesEditView')
           .simulate('change', Immutable.List())
         expect(instance.setField).toHaveBeenCalledWith(
           ['addresses'], Immutable.List()

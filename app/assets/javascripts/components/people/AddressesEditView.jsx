@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
 import React from 'react'
-import AddressField from 'components/common/AddressField'
+import AddressEditView from 'components/common/AddressEditView'
 
-export class AddressEditView extends React.Component {
+export class AddressesEditView extends React.Component {
   constructor() {
     super(...arguments)
     this.addAddress = this.addAddress.bind(this)
@@ -43,7 +43,7 @@ export class AddressEditView extends React.Component {
             const {street_address, city, state, zip, type} = area.toJS()
             return (
               <div key={index} className='row list-item'>
-                <AddressField
+                <AddressEditView
                   streetAddress={street_address}
                   city={city}
                   state={state}
@@ -82,7 +82,7 @@ export class AddressEditView extends React.Component {
   }
 }
 
-AddressEditView.propTypes = {
+AddressesEditView.propTypes = {
   addresses: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
 }

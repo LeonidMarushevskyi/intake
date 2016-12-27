@@ -1,8 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import AddressField from 'components/common/AddressField'
+import AddressEditView from 'components/common/AddressEditView'
 
-describe('AddressField', () => {
+describe('AddressEditView', () => {
   let component
   const onChange = jasmine.createSpy('onChange')
   const props = {
@@ -14,7 +14,7 @@ describe('AddressField', () => {
     onChange: onChange,
   }
   beforeEach(() => {
-    component = shallow(<AddressField {...props}/>)
+    component = shallow(<AddressEditView {...props}/>)
   })
 
   it('renders the street address as input field', () => {

@@ -1,9 +1,9 @@
 import Immutable from 'immutable'
 import React from 'react'
-import {AddressEditView} from 'components/people/AddressEditView'
+import {AddressesEditView} from 'components/people/AddressesEditView'
 import {shallow} from 'enzyme'
 
-describe('AddressEditView', () => {
+describe('AddressesEditView', () => {
   let component
   let onChangeaddressSpy
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('AddressEditView', () => {
       }])
     onChangeaddressSpy = jasmine.createSpy('onChange')
     component = shallow(
-      <AddressEditView
+      <AddressesEditView
         addresses={addresses}
         onChange={onChangeaddressSpy}
       />
@@ -24,16 +24,16 @@ describe('AddressEditView', () => {
   })
   describe('render', () => {
     it('renders each of the address fields', () => {
-      expect(component.find('AddressField').length).toEqual(1)
-      expect(component.find('AddressField').props().streetAddress).toEqual('123 fake st')
-      expect(component.find('AddressField').props().city).toEqual('Springfield')
-      expect(component.find('AddressField').props().state).toEqual('NY')
-      expect(component.find('AddressField').props().zip).toEqual('12345')
-      expect(component.find('AddressField').props().type).toEqual('Placement')
+      expect(component.find('AddressEditView').length).toEqual(1)
+      expect(component.find('AddressEditView').props().streetAddress).toEqual('123 fake st')
+      expect(component.find('AddressEditView').props().city).toEqual('Springfield')
+      expect(component.find('AddressEditView').props().state).toEqual('NY')
+      expect(component.find('AddressEditView').props().zip).toEqual('12345')
+      expect(component.find('AddressEditView').props().type).toEqual('Placement')
     })
 
     it('calls onChange when the address field changes', () => {
-      component.find('AddressField').simulate('change', 'zip', '56789')
+      component.find('AddressEditView').simulate('change', 'zip', '56789')
       expect(onChangeaddressSpy).toHaveBeenCalled()
       expect(onChangeaddressSpy.calls.argsFor(0)[0].toJS()).toEqual([
         {
