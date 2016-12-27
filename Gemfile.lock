@@ -127,6 +127,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    feature (1.4.0)
     ffi (1.9.14)
     fpm (1.6.2)
       archive-tar-minitar
@@ -372,6 +373,7 @@ DEPENDENCIES
   faker
   faraday
   faraday_middleware
+  feature
   fpm
   haml-lint
   haml-rails

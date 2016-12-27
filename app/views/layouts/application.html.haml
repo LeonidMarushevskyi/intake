@@ -4,4 +4,7 @@
     = render 'layouts/head'
   %body
     .container
-      #app= yield
+      - Feature.with(:release_one) do
+        #app-release-one= yield
+      - Feature.without(:release_one) do
+        #app= yield

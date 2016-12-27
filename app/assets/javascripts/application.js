@@ -10,11 +10,24 @@ import routes from 'routes'
 import {Provider} from 'react-redux'
 import {Router, browserHistory} from 'react-router'
 
-const store = configureStore()
+import Autocompleter from 'components/common/Autocompleter'
 
-ReactDOM.render(
-  <Provider store={store}>
+const store = configureStore()
+if (document.getElementById('app')) {
+  ReactDOM.render(
+    <Provider store={store}>
     <Router history={browserHistory} routes={routes} />
-  </Provider>,
-  document.getElementById('app')
-)
+    </Provider>,
+    document.getElementById('app')
+  )
+}
+
+if (document.getElementById('app-release-one')) {
+  ReactDOM.render(
+    <div>
+      <label className='no-gap' htmlFor='people'>People</label>
+      <Autocompleter id='people' />
+    </div>,
+    document.getElementById('app-release-one')
+  )
+}
