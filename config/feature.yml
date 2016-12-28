@@ -9,5 +9,5 @@ test:
 
 production:
   features:
-    release_one: true
+    release_one: false
 
