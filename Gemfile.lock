@@ -95,25 +95,6 @@ GEM
       json
       thread
       thread_safe
-    elasticsearch (2.0.0)
-      elasticsearch-api (= 2.0.0)
-      elasticsearch-transport (= 2.0.0)
-    elasticsearch-api (2.0.0)
-      multi_json
-    elasticsearch-model (0.1.9)
-      activesupport (> 3)
-      elasticsearch (> 0.4)
-      hashie
-    elasticsearch-persistence (0.1.9)
-      activemodel (> 3)
-      activesupport (> 3)
-      elasticsearch (> 0.4)
-      elasticsearch-model (>= 0.1)
-      hashie
-      virtus
-    elasticsearch-transport (2.0.0)
-      faraday
-      multi_json
     equalizer (0.0.11)
     erubis (2.7.0)
     factory_girl (4.5.0)
@@ -158,7 +139,6 @@ GEM
       rubocop (>= 0.36.0)
       sysexits (~> 1.1)
     hashdiff (0.3.0)
-    hashie (3.4.5)
     highline (1.7.8)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
@@ -192,7 +172,6 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
-    multi_json (1.12.1)
     multipart-post (2.0.0)
     mustache (0.99.8)
     nio4r (1.2.1)
@@ -368,7 +347,6 @@ DEPENDENCIES
   capybara-screenshot
   ci_reporter_rspec
   devise (= 4.1.1)
-  elasticsearch-persistence
   factory_girl_rails
   faker
   faraday

@@ -2,7 +2,6 @@
 source 'https://rubygems.org'
 
 gem 'devise', '4.1.1'
-gem 'elasticsearch-persistence'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'haml-rails'
