@@ -19,7 +19,7 @@ feature 'home page' do
         gender: 'female',
         last_name: 'Simpson',
         ssn: '123-23-1234',
-        address: address
+        addresses: [address]
       )
       allow(PeopleRepo).to receive(:search).with('Marge').and_return([marge])
 
