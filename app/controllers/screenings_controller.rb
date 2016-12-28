@@ -70,7 +70,7 @@ class ScreeningsController < ApplicationController # :nodoc:
     respond_to do |format|
       format.html
       format.json do
-        screenings = ScreeningsRepo.search(query).results
+        screenings = ScreeningRepository.search(query)
         render json: screenings
       end
     end

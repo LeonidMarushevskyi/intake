@@ -4,6 +4,7 @@
 # resource via the API
 class ScreeningRepository
   SCREENINGS_PATH = '/api/v1/screenings'
+  SCREENINGS_SEARCH_PATH = '/api/v1/screenings_search'
   CONTENT_TYPE = 'application/json'
 
   def self.create(screening)
@@ -26,6 +27,14 @@ class ScreeningRepository
     raise 'Error updating screening' if response.status != 200
     Rails.logger.info response.body.inspect
     Screening.new(response.body)
+  end
+
+  def self.search(query)
+    response = make_api_call(SCREENINGS_SEARCH_PATH, :get, query)
+    raise 'Error searching screening' if response.status != 200
+    response.body.map do |result_attributes|
+      Screening.new(result_attributes)
+    end
   end
 
   def self.make_api_call(url, method, attributes = nil)

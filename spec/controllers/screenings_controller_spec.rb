@@ -116,11 +116,10 @@ describe ScreeningsController do
   describe '#index' do
     context 'without query params' do
       let(:screenings) { double(:screenings, as_json: [{ id: 1 }]) }
-      let(:search) { double(:search, results: screenings) }
       before do
-        allow(ScreeningsRepo).to receive(:search)
+        allow(ScreeningRepository).to receive(:search)
           .with(query: { filtered: { filter: { bool: { must: [] } } } })
-          .and_return(search)
+          .and_return(screenings)
       end
 
       it 'renders screenings as json' do
@@ -149,15 +148,14 @@ describe ScreeningsController do
         }
       end
       let(:screenings) { double(:screenings, as_json: []) }
-      let(:search) { double(:search, results: screenings) }
       let(:params) do
         { response_times: %w(immediate within_twenty_four_hours) }
       end
 
       before do
-        expect(ScreeningsRepo).to receive(:search)
+        expect(ScreeningRepository).to receive(:search)
           .with(query: query)
-          .and_return(search)
+          .and_return(screenings)
       end
 
       it 'renders screenings returned from filtered query' do

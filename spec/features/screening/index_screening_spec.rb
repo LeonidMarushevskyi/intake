@@ -31,9 +31,12 @@ feature 'Screenings Index' do
     )
     screenings = [screening_one, screening_two, screening_three]
 
-    search = double(:search, results: screenings)
     query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    expect(ScreeningsRepo).to receive(:search).with(query).and_return(search)
+    stub_request(:get, api_screenings_search_path)
+      .with(body: query.to_json)
+      .and_return(body: screenings.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     visit screenings_path
 
@@ -98,11 +101,14 @@ feature 'Screenings Index' do
     )
     screenings = [screening_one, screening_two, screening_three]
 
-    search = double(:search, results: screenings)
     query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    expect(ScreeningsRepo).to receive(:search).with(query).and_return(search)
+    stub_request(:get, api_screenings_search_path)
+      .with(body: query)
+      .and_return(body: screenings.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
-    immediate_screenings = double(:search, results: [screening_one])
+    immediate_screenings = [screening_one]
     immediate_query = {
       query: {
         filtered: {
@@ -116,10 +122,12 @@ feature 'Screenings Index' do
         }
       }
     }
-    expect(ScreeningsRepo).to receive(:search)
-      .with(immediate_query).and_return(immediate_screenings)
-
-    immediate_and_24hrs_screenings = double(:search, results: [screening_one, screening_two])
+    stub_request(:get, api_screenings_search_path)
+      .with(body: immediate_query)
+      .and_return(body: immediate_screenings.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+    immediate_and_24hrs_screenings = [screening_one, screening_two]
     immediate_and_24hrs_query = {
       query: {
         filtered: {
@@ -133,8 +141,12 @@ feature 'Screenings Index' do
         }
       }
     }
-    expect(ScreeningsRepo).to receive(:search)
-      .with(immediate_and_24hrs_query).and_return(immediate_and_24hrs_screenings)
+    stub_request(:get, api_screenings_search_path)
+      .with(body: immediate_and_24hrs_query)
+      .and_return(body: immediate_and_24hrs_screenings.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+
     visit screenings_path
 
     find('label', text: 'Immediate').click

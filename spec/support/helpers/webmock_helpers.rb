@@ -25,6 +25,10 @@ module WebmockHelpers
     %r{.*/api/v1/screenings/#{id}}
   end
 
+  def api_screenings_search_path
+    %r{.*/api/v1/screenings_search}
+  end
+
   def api_participants_path
     %r{.*/api/v1/participants}
   end

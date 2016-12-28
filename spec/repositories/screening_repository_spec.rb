@@ -16,7 +16,7 @@ describe ScreeningRepository do
       expect(mock_request).to receive(:body=).with(new_screening.to_json)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(created_screening)
-      expect(ScreeningRepository.create(new_screening)).to eq(created_screening)
+      expect(described_class.create(new_screening)).to eq(created_screening)
     end
 
     it 'raise an error if the response code is not 201' do
@@ -24,7 +24,7 @@ describe ScreeningRepository do
       allow(API.connection).to receive(:post).and_return(mock_response)
 
       expect do
-        ScreeningRepository.create(nil)
+        described_class.create(nil)
       end.to raise_error('Error creating screening')
     end
   end
@@ -42,7 +42,7 @@ describe ScreeningRepository do
       expect(mock_request).to_not receive(:body=)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(found_screening)
-      expect(ScreeningRepository.find(1)).to eq(found_screening)
+      expect(described_class.find(1)).to eq(found_screening)
     end
 
     it 'raise an error if the response code is not 200' do
@@ -50,7 +50,7 @@ describe ScreeningRepository do
       allow(API.connection).to receive(:get).and_return(mock_response)
 
       expect do
-        ScreeningRepository.find(1)
+        described_class.find(1)
       end.to raise_error('Error finding screening')
     end
   end
@@ -69,7 +69,7 @@ describe ScreeningRepository do
       expect(mock_request).to receive(:body=).with(created_screening.to_json)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(updated_screening)
-      expect(ScreeningRepository.update(created_screening)).to eq(updated_screening)
+      expect(described_class.update(created_screening)).to eq(updated_screening)
     end
 
     it 'raise an error if the response code is not 201' do
@@ -78,15 +78,47 @@ describe ScreeningRepository do
       allow(API.connection).to receive(:put).and_return(mock_response)
 
       expect do
-        ScreeningRepository.update(created_screening)
+        described_class.update(created_screening)
       end.to raise_error('Error updating screening')
     end
 
     it 'raises an error if screening id is not present' do
       created_screening = double(:screening, id: nil)
       expect do
-        ScreeningRepository.update(created_screening)
+        described_class.update(created_screening)
       end.to raise_error('Error updating screening: id is required')
+    end
+  end
+
+  describe '.search' do
+    it 'raise an error if the response code is not 200' do
+      stub_request(:get, %r{/api/v1/screenings_search})
+        .and_return(status: 500, headers: { 'Content-Type': 'application/json' })
+
+      expect do
+        described_class.search({})
+      end.to raise_error('Error searching screening')
+    end
+
+    it 'returns the screening results when screening search is successful' do
+      results = [{ id: 1 }, { id: 2 }].to_json
+      query = { query: { filtered: { filter: { bool: { must: [] } } } } }
+      stub_request(:get, %r{/api/v1/screenings_search})
+        .with(body: query.to_json)
+        .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
+
+      expect(described_class.search(query)[0].id).to eq(1)
+      expect(described_class.search(query)[1].id).to eq(2)
+    end
+
+    it 'sends a GET request to api screening search' do
+      query = { 'query' => { 'filtered' => { 'filter' => { 'bool' => { 'must': [] } } } } }
+      stub_request(:get, %r{/api/v1/screenings_search})
+        .with(body: query.to_json, headers: { 'Content-Type': 'application/json' })
+        .and_return(body: [].to_json, status: 200, headers: { 'Content-Type': 'application/json' })
+
+      described_class.search(query)
+      expect(a_request(:get, %r{/api/v1/screenings_search}).with(body: query)).to have_been_made
     end
   end
 end
