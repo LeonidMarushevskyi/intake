@@ -13,7 +13,9 @@ gem 'feature'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
+  gem 'fpm'
   gem 'haml-lint'
+  gem 'i18n-tasks'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
@@ -22,11 +24,10 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'pry-theme'
   gem 'rspec-rails', '~> 3.4'
-  gem 'rubocop-junit-formatter'
   gem 'rubocop'
-  gem 'i18n-tasks'
+  gem 'rubocop-junit-formatter'
   gem 'scss_lint'
-  gem 'fpm'
+  gem 'timecop'
 end
 
 group :development do

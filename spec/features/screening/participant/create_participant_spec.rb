@@ -44,6 +44,7 @@ feature 'Edit Screening' do
   end
 
   before do
+    Timecop.travel(Time.parse('2016-12-28 17:01 PST').utc)
     stub_request(:get, api_screening_path(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,

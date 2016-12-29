@@ -3,7 +3,7 @@ import React from 'react'
 import moment from 'moment'
 
 const AgeInfo = ({dateOfBirth}) => {
-  const dob = moment(dateOfBirth, 'YYYY-MM-DD')
+  const dob = moment.utc(dateOfBirth, 'YYYY-MM-DD')
   const ageInYears = dob.isValid() && moment().diff(dob, 'years')
   return (
     dob.isValid() && <div>{`${ageInYears} yrs old (${dob.format('M/D/YYYY')})`}</div>
