@@ -22,6 +22,7 @@ describe('AddressesEditView', () => {
       />
     )
   })
+
   describe('render', () => {
     it('renders each of the address fields', () => {
       expect(component.find('AddressEditView').length).toEqual(1)
@@ -58,11 +59,11 @@ describe('AddressesEditView', () => {
           type: 'Placement',
         },
         {
-          street_address: '',
-          city: '',
-          state: '',
-          zip: '',
-          type: '',
+          street_address: null,
+          city: null,
+          state: null,
+          zip: null,
+          type: null,
         },
       ])
     })

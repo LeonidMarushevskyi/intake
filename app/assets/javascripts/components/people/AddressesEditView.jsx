@@ -12,11 +12,11 @@ export class AddressesEditView extends React.Component {
 
   addAddress() {
     const new_address = Immutable.Map({
-      street_address: '',
-      city: '',
-      state: '',
-      zip: '',
-      type: '',
+      street_address: null,
+      city: null,
+      state: null,
+      zip: null,
+      type: null,
     })
     const newaddresses = this.props.addresses.push(new_address)
     this.props.onChange(newaddresses)
@@ -44,11 +44,11 @@ export class AddressesEditView extends React.Component {
             return (
               <div key={index} className='row list-item'>
                 <AddressEditView
-                  streetAddress={street_address}
-                  city={city}
-                  state={state}
-                  zip={zip}
-                  type={type}
+                  streetAddress={street_address || ''}
+                  city={city || ''}
+                  state={state || ''}
+                  zip={zip || ''}
+                  type={type || ''}
                   onChange={(field, value) => this.editAddress([index, field], value)}
                 />
                 <a className='list-item__a'
