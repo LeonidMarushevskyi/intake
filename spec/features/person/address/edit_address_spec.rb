@@ -43,7 +43,11 @@ feature 'Edit Address' do
 
   scenario 'when a user cancels after editing and existing address' do
     visit edit_person_path(id: person.id)
-    fill_in 'Address', with: '711 Capital Mall'
+    within '#addresses' do
+      within all('.list-item').first do
+        fill_in 'Address', with: '711 Capital Mall'
+      end
+    end
     click_link 'Cancel'
 
     expect(page).to have_current_path(person_path(id: person.id))
@@ -77,7 +81,39 @@ feature 'Edit Address' do
 
     click_button 'Save'
     expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
+    expect(page).to have_current_path(person_path(id: person.id))
+  end
 
+  scenario 'when a user attempts to add a blank address' do
+    visit edit_person_path(id: person.id)
+    click_button 'Add new address'
+
+    within '#addresses' do
+      expect(page).to have_field('Address', with: '711 Capital Mall')
+      expect(page).to have_field('City', with: 'Springfield')
+      expect(page).to have_field('State', with: 'NY')
+      expect(page).to have_field('Zip', with: '12345')
+      expect(page).to have_field('Address Type', with: 'Home')
+
+      expect(page).to have_field('Address', with: '')
+      expect(page).to have_field('City', with: '')
+      expect(page).to have_field('State', with: '')
+      expect(page).to have_field('Zip', with: '')
+      expect(page).to have_field('Address Type', with: '')
+    end
+
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json)
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, api_person_path(person.id))
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+
+    click_button 'Save'
+    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
     expect(page).to have_current_path(person_path(id: person.id))
   end
 end
