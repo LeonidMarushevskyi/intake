@@ -77,7 +77,7 @@ feature 'Create Address' do
   end
 
   scenario 'create a person with empty address ' do
-     person = FactoryGirl.create(
+    person = FactoryGirl.create(
       :person,
       id: nil,
       phone_numbers: [],

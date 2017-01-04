@@ -48,7 +48,7 @@ export class AddressesEditView extends React.Component {
                   city={city || ''}
                   state={state || ''}
                   zip={zip || ''}
-                  type={type}
+                  type={type || ''}
                   onChange={(field, value) => this.editAddress([index, field], value)}
                 />
                 <a className='list-item__a'
