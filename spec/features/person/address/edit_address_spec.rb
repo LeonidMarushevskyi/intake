@@ -86,14 +86,21 @@ feature 'Edit Address' do
 
   scenario 'when a user attempts to add a blank address' do
     visit edit_person_path(id: person.id)
+    first_address = person.addresses.first
     click_button 'Add new address'
 
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json)
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+
     within '#addresses' do
-      expect(page).to have_field('Address', with: '711 Capital Mall')
-      expect(page).to have_field('City', with: 'Springfield')
-      expect(page).to have_field('State', with: 'NY')
-      expect(page).to have_field('Zip', with: '12345')
-      expect(page).to have_field('Address Type', with: 'Home')
+      expect(page).to have_field('Address', with: first_address.street_address)
+      expect(page).to have_field('City', with: first_address.city)
+      expect(page).to have_field('State', with: first_address.state)
+      expect(page).to have_field('Zip', with: first_address.zip)
+      expect(page).to have_field('Address Type', with: first_address.type)
 
       expect(page).to have_field('Address', with: '')
       expect(page).to have_field('City', with: '')
@@ -101,16 +108,6 @@ feature 'Edit Address' do
       expect(page).to have_field('Zip', with: '')
       expect(page).to have_field('Address Type', with: '')
     end
-
-    stub_request(:put, api_person_path(person.id))
-      .with(body: person.to_json)
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(person.id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
     expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made

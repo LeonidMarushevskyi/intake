@@ -2,17 +2,20 @@ import * as types from 'actions/actionTypes'
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 
+function isEmpty(valueToCheck) {
+  return (!valueToCheck || !(valueToCheck.trim()))
+}
+
 export function parseBlankAddresses(person) {
   const addresses = person.addresses
   if (addresses) {
     const blankIndexes = []
     const elementsToRemove = 1
     addresses.map((address, index) => {
-      if ((address.street_address === null || address.street_address === '') &&
-        (address.city === null || address.city === '') &&
-        (address.state === null || address.state === '') &&
-        (address.zip === null || address.zip === '') &&
-        (address.type === null || address.type === '')) {
+      if (isEmpty(address.street_address) &&
+        isEmpty(address.city) &&
+        isEmpty(address.state) &&
+        isEmpty(address.zip)) {
         blankIndexes.push(index)
       }
     })

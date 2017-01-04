@@ -11,27 +11,25 @@ export class AddressesEditView extends React.Component {
   }
 
   addAddress() {
-    const new_address = Immutable.Map({
+    const newAddress = Immutable.Map({
       street_address: null,
       city: null,
       state: null,
       zip: null,
       type: null,
     })
-    const newaddresses = this.props.addresses.push(new_address)
-    this.props.onChange(newaddresses)
+    const addresses = this.props.addresses.push(newAddress)
+    this.props.onChange(addresses)
   }
 
   editAddress(fieldSeq, value) {
-    const {addresses} = this.props
-    const newaddresses = addresses.setIn(fieldSeq, value)
-    this.props.onChange(newaddresses)
+    const addresses = this.props.addresses.setIn(fieldSeq, value)
+    this.props.onChange(addresses)
   }
 
   deleteAddress(index) {
-    const {addresses} = this.props
-    const newaddresses = addresses.delete(index)
-    this.props.onChange(newaddresses)
+    const addresses = this.props.addresses.delete(index)
+    this.props.onChange(addresses)
   }
 
   render() {

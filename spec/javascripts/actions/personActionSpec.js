@@ -62,7 +62,7 @@ describe('person actions', () => {
         type: null,
       }
       const address2 = {
-        street_address: '',
+        street_address: '   ',
         city: '',
         state: '',
         zip: '',
