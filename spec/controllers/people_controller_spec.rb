@@ -135,7 +135,7 @@ describe PeopleController do
         .with('foobarbaz')
         .and_return(people)
 
-      process :search, method: :get, params: { query: 'foobarbaz' }
+      process :search, method: :get, params: { search_term: 'foobarbaz' }
 
       body = JSON.parse(response.body)
       expect(body.first['first_name']).to eq('Bart')

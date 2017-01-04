@@ -52,7 +52,7 @@ class PeopleController < ApplicationController
   end
 
   def search
-    people = PeopleRepo.search(params[:query])
+    people = PeopleRepo.search(params[:search_term])
     render json: people.map(&:attributes)
   end
 
