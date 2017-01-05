@@ -2,9 +2,9 @@
 PROJECT_NAME ?= intake_accelerator
 ORG_NAME ?= cwds
 REPO_NAME ?= intake
-DOCKER_REGISTRY ?= 429614120872.dkr.ecr.us-west-2.amazonaws.com
-AWS_ACCOUNT_ID ?= 429614120872
-DOCKER_LOGIN_EXPRESSION := $$(aws ecr get-login --registry-ids $(AWS_ACCOUNT_ID))
+# DOCKER_REGISTRY ?= 429614120872.dkr.ecr.us-west-2.amazonaws.com
+# AWS_ACCOUNT_ID ?= 429614120872
+# DOCKER_LOGIN_EXPRESSION := $$(aws ecr get-login --registry-ids $(AWS_ACCOUNT_ID))
 
 export HTTP_PORT ?= 81
 export APP_VERSION ?= 1.$(GIT_HASH)
