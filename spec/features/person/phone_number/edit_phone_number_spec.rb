@@ -13,7 +13,7 @@ feature 'Edit Phone Number' do
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
-      addresses: FactoryGirl.create(:address, id: nil)
+      addresses: []
     )
 
     stub_request(:get, api_person_path(person.id))
@@ -63,7 +63,7 @@ feature 'Edit Phone Number' do
         created_at: '2016-08-11T18:24:22.157Z',
         updated_at: '2016-08-11T18:24:22.157Z'
       }],
-      addresses: FactoryGirl.create(:address, id: nil)
+      addresses: []
     )
 
     stub_request(:get, api_person_path(person.id))

@@ -52,6 +52,38 @@ describe('person actions', () => {
     })
   })
 
+  describe('Parse Blank Addresses', () => {
+    it('parse blank addresses', () => {
+      const address1 = {
+        street_address: 'fake st',
+        city: null,
+        state: null,
+        zip: '12455',
+        type: null,
+      }
+      const address2 = {
+        street_address: '   ',
+        city: '',
+        state: '',
+        zip: '',
+        type: '',
+      }
+      const address3 = {
+        street_address: null,
+        city: null,
+        state: null,
+        zip: null,
+        type: null,
+      }
+
+      const person = {first_name: 'Simpson', addresses: [address1, address2, address3]}
+      const newPerson = {first_name: 'Simpson', addresses: [address1]}
+      const store = mockStore()
+      store.dispatch(personActions.parseBlankAddresses(person))
+      expect(person).toEqual(newPerson)
+    })
+  })
+
   describe('updatePerson', () => {
     it('dispatches updatePersonRequest and updatePersonSuccess', () => {
       const updatedPerson = {id: 1, first_name: 'Lisa', last_name: 'Simpson'}
