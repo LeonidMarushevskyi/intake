@@ -21,7 +21,10 @@ feature 'home page' do
         ssn: '123-23-1234',
         addresses: [address]
       )
-      allow(PeopleRepo).to receive(:search).with('Marge').and_return([marge])
+      stub_request(:get, api_people_search_path(search_term: marge.first_name))
+        .and_return(body: [marge].to_json,
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
 
       visit root_path
 

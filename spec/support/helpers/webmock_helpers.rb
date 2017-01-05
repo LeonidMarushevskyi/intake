@@ -13,6 +13,10 @@ module WebmockHelpers
     %r{.*/api/v1/people}
   end
 
+  def api_people_search_path(search_term:)
+    %r{.*/api/v1/people_search\?search_term=#{search_term}}
+  end
+
   def api_screenings_path
     %r{.*/api/v1/screenings}
   end

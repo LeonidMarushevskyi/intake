@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'rails_helper'
 require 'spec_helper'
 
@@ -49,12 +48,14 @@ feature 'Edit Screening' do
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
-    allow(PeopleRepo).to receive(:search).with(marge.first_name).and_return([marge])
+    stub_request(:get, api_people_search_path(search_term: marge.first_name))
+      .and_return(body: [marge].to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+    visit edit_screening_path(id: existing_screening.id)
   end
 
   scenario 'creating a new participant' do
-    visit edit_screening_path(id: existing_screening.id)
-
     participant_marge = FactoryGirl.build(
       :participant,
       build_participant_from_person_and_screening(marge, existing_screening)
@@ -63,9 +64,10 @@ feature 'Edit Screening' do
       :participant,
       participant_marge.as_json.merge(id: 23)
     )
+
     stub_request(:post, api_participants_path)
       .with(body: participant_marge.to_json)
-      .and_return(body: participant_marge.to_json,
+      .and_return(body: created_participant_marge.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
 
@@ -76,23 +78,13 @@ feature 'Edit Screening' do
       find('li', text: 'Marge Simpson').click
     end
 
-    expect(
-      a_request(:post, api_participants_path).with(body: participant_marge.to_json)
-    ).to have_been_made
+    expect(a_request(:post, api_participants_path)
+      .with(body: participant_marge.to_json)).to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
 
-    existing_screening.assign_attributes(participants: [created_participant_marge])
-
-    stub_request(:get, api_screening_path(existing_screening.id))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
-
-    visit edit_screening_path(id: existing_screening.id)
-
-    within edit_participant_card_selector(created_participant_marge[:id]) do
+    within edit_participant_card_selector(created_participant_marge.id) do
       within '.card-header' do
         expect(page).to have_content 'MARGE SIMPSON'
         expect(page).to have_link 'Delete participant'
@@ -111,8 +103,6 @@ feature 'Edit Screening' do
   end
 
   scenario 'searching for a person with the participant autocompleter' do
-    visit edit_screening_path(id: existing_screening.id)
-
     within '#participants-card' do
       fill_in_autocompleter 'Participants', with: 'Marge'
     end

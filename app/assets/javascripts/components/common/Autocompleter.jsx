@@ -16,7 +16,7 @@ export default class Autocompleter extends React.Component {
 
   loadSuggestions(value) {
     this.setState({isLoading: true})
-    Utils.request('GET', '/people/search', {query: value})
+    Utils.request('GET', '/people/search', {search_term: value})
       .then((result) =>
         this.setState({
           isLoading: false,
