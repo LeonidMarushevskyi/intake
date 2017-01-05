@@ -9,4 +9,4 @@ input_dir="/ca_intake"
 rm -rf public/assets && RAILS_ENV=production bin/gulp
 
 bundle exec fpm --deb-no-default-config-files -s dir -t deb --name "intake_accelerator" \
---version "1.$revision" --package "$output_dir" "$input_dir"
+--version "${APP_VERSION}" --package "$output_dir" "$input_dir"

@@ -14,7 +14,6 @@ services:
     environment:
       RAILS_ENV: production
       API_URL: "http://app:3000"
-
   nginx:
     build:
       context: .
@@ -22,6 +21,6 @@ services:
     links:
       - app
     ports:
-      - "81:81"
+      - "${HTTP_PORT}"
     volumes:
       - webroot:/ca_intake
