@@ -10,18 +10,30 @@ feature 'Edit Screening' do
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
-      ssn: '123-23-1234',
+      ssn: '123-23-1234'
     }
   end
   let(:person) { Person.new(person_attributes) }
-  let(:participant) { FactoryGirl.build(:participant, person_attributes.merge({person_id: person.id})) }
-  let(:screening) { FactoryGirl.build(:screening, participants: [participant]) }
+  let(:participant) do
+    FactoryGirl.build(
+      :participant,
+      person_attributes.merge(person_id: person.id)
+    )
+  end
+  let(:screening) do
+    FactoryGirl.build(
+      :screening,
+      participants: [participant]
+    )
+  end
 
   scenario 'editing a screening with a participant' do
     stub_request(:get, api_screening_path(screening.id))
-      .and_return(body: screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(
+        body: screening.to_json,
+        status: 200,
+        headers: { 'Content-Type' => 'application/json' }
+      )
 
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(participant.id) do
