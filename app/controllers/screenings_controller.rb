@@ -70,7 +70,7 @@ class ScreeningsController < ApplicationController # :nodoc:
     respond_to do |format|
       format.html
       format.json do
-        screenings = ScreeningRepository.search(query)
+        screenings = ScreeningRepository.search(screening_index_params.to_h)
         render json: screenings
       end
     end
@@ -78,25 +78,8 @@ class ScreeningsController < ApplicationController # :nodoc:
 
   private
 
-  def query
-    { query: { filtered: { filter: { bool: { must: search_terms } } } } }
-  end
-
-  def search_terms
-    terms = []
-
-    terms << { terms: { response_time: response_times } } if response_times
-    terms << { terms: { screening_decision: screening_decisions } } if screening_decisions
-
-    terms
-  end
-
-  def response_times
-    params[:response_times]
-  end
-
-  def screening_decisions
-    params[:screening_decisions]
+  def screening_index_params
+    params.permit(response_times: [], screening_decisions: [])
   end
 
   def screening_params

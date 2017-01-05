@@ -92,7 +92,7 @@ describe ScreeningRepository do
 
   describe '.search' do
     it 'raise an error if the response code is not 200' do
-      stub_request(:get, %r{/api/v1/screenings_search})
+      stub_request(:get, %r{/api/v1/screenings})
         .and_return(status: 500, headers: { 'Content-Type': 'application/json' })
 
       expect do
@@ -102,23 +102,21 @@ describe ScreeningRepository do
 
     it 'returns the screening results when screening search is successful' do
       results = [{ id: 1 }, { id: 2 }].to_json
-      query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-      stub_request(:get, %r{/api/v1/screenings_search})
-        .with(body: query.to_json)
+      search_terms = { response_times: %w(immediate within_twenty_four_hours) }
+      stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
         .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
 
-      expect(described_class.search(query)[0].id).to eq(1)
-      expect(described_class.search(query)[1].id).to eq(2)
+      expect(described_class.search(search_terms)[0].id).to eq(1)
+      expect(described_class.search(search_terms)[1].id).to eq(2)
     end
 
     it 'sends a GET request to api screening search' do
-      query = { 'query' => { 'filtered' => { 'filter' => { 'bool' => { 'must': [] } } } } }
-      stub_request(:get, %r{/api/v1/screenings_search})
-        .with(body: query.to_json, headers: { 'Content-Type': 'application/json' })
+      search_terms = { response_times: %w(immediate within_twenty_four_hours) }
+      stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
         .and_return(body: [].to_json, status: 200, headers: { 'Content-Type': 'application/json' })
 
-      described_class.search(query)
-      expect(a_request(:get, %r{/api/v1/screenings_search}).with(body: query)).to have_been_made
+      described_class.search(search_terms)
+      expect(a_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})).to have_been_made
     end
   end
 end

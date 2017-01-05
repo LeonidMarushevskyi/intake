@@ -4,7 +4,6 @@
 # resource via the API
 class ScreeningRepository
   SCREENINGS_PATH = '/api/v1/screenings'
-  SCREENINGS_SEARCH_PATH = '/api/v1/screenings_search'
   CONTENT_TYPE = 'application/json'
 
   def self.create(screening)
@@ -29,8 +28,8 @@ class ScreeningRepository
     Screening.new(response.body)
   end
 
-  def self.search(query)
-    response = make_api_call(SCREENINGS_SEARCH_PATH, :get, query)
+  def self.search(search_terms)
+    response = make_api_call("#{SCREENINGS_PATH}?#{search_terms.to_query}", :get)
     raise 'Error searching screening' if response.status != 200
     response.body.map do |result_attributes|
       Screening.new(result_attributes)

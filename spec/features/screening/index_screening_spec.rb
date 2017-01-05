@@ -31,9 +31,7 @@ feature 'Screenings Index' do
     )
     screenings = [screening_one, screening_two, screening_three]
 
-    query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    stub_request(:get, api_screenings_search_path)
-      .with(body: query.to_json)
+    stub_request(:get, api_screenings_path)
       .and_return(body: screenings.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -101,48 +99,19 @@ feature 'Screenings Index' do
     )
     screenings = [screening_one, screening_two, screening_three]
 
-    query = { query: { filtered: { filter: { bool: { must: [] } } } } }
-    stub_request(:get, api_screenings_search_path)
-      .with(body: query)
+    stub_request(:get, api_screenings_path)
       .and_return(body: screenings.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
     immediate_screenings = [screening_one]
-    immediate_query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [
-                { terms: { response_time: ['immediate'] } }
-              ]
-            }
-          }
-        }
-      }
-    }
-    stub_request(:get, api_screenings_search_path)
-      .with(body: immediate_query)
+    stub_request(:get, %r{/api/v1/screenings\?response_times%5B%5D=immediate})
       .and_return(body: immediate_screenings.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
     immediate_and_24hrs_screenings = [screening_one, screening_two]
-    immediate_and_24hrs_query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [
-                { terms: { response_time: %w(immediate within_twenty_four_hours) } }
-              ]
-            }
-          }
-        }
-      }
-    }
-    stub_request(:get, api_screenings_search_path)
-      .with(body: immediate_and_24hrs_query)
+    search_terms = { response_times: %w(immediate within_twenty_four_hours) }
+    stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
       .and_return(body: immediate_and_24hrs_screenings.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
