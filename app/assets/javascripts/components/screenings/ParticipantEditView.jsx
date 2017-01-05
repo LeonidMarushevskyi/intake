@@ -8,7 +8,7 @@ import {Link} from 'react-router'
 const ParticipantEditView = ({participant}) => (
   <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      <span>{`${participant.get('first_name')} ${participant.get('last_name')}`}</span>
+      <span>{`${[participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')}`}</span>
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times' />
       </Link>

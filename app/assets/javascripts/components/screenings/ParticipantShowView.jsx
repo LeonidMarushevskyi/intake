@@ -7,7 +7,7 @@ import {Link} from 'react-router'
 const ParticipantShowView = ({participant, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      <span>{`${participant.get('first_name')} ${participant.get('last_name')}`}</span>
+      <span>{`${[participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')}`}</span>
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times' />
       </Link>
@@ -20,7 +20,7 @@ const ParticipantShowView = ({participant, onEdit}) => (
         </div>
         <div className='col-md-5'>
           <ShowField labelClassName='no-gap' label='Name'>
-            {`${participant.get('first_name')} ${participant.get('last_name')}`}
+            {`${[participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')}`}
           </ShowField>
           <ShowField label='Gender'>
             {GENDER[participant.get('gender')]}

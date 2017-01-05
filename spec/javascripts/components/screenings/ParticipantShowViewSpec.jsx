@@ -3,7 +3,7 @@ import ParticipantShowView from 'components/screenings/ParticipantShowView'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-describe('ParticipanShowView', () => {
+describe('ParticipantShowView', () => {
   let component
   let onEdit
   beforeEach(() => {
@@ -55,5 +55,30 @@ describe('ParticipanShowView', () => {
   it('calls the onEdit function when edit link is clicked', () => {
     component.find('EditLink').simulate('click')
     expect(onEdit).toHaveBeenCalled()
+  })
+})
+
+describe('ParticipantShowView with nulls', () => {
+  let component
+  let onEdit
+  beforeEach(() => {
+    const participant = Immutable.fromJS({
+      id: 200,
+      first_name: 'Kevin',
+      last_name: null,
+      gender: 'male',
+      date_of_birth: '11/16/1990',
+      ssn: '111223333',
+    })
+    onEdit = jasmine.createSpy()
+    component = shallow(<ParticipantShowView participant={participant} onEdit={onEdit}/>)
+  })
+
+  it('renders the participant header corectly with null last name', () => {
+    expect(component.find('.card-header').text()).not.toContain('null')
+  })
+
+  it('renders the participant name show fields', () => {
+    expect(component.find('ShowField[label="Name"]').html()).not.toContain('null')
   })
 })
