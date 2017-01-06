@@ -73,7 +73,7 @@ describe('<Autcompleter />', () => {
 
   describe('#renderSuggestion', () => {
     let component
-    beforeEach(() => {
+    it('renders the PersonSuggestion view', () => {
       component = mount(<Autocompleter />)
       const result = [{
         first_name: 'Bart',
@@ -91,9 +91,7 @@ describe('<Autcompleter />', () => {
         }],
       }]
       stubSuggestions(result)
-    })
 
-    it('renders the PersonSuggestion view', () => {
       component.find('input').simulate('focus')
       component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
       expect(component.find('PersonSuggestion').props()).toEqual({
@@ -109,6 +107,30 @@ describe('<Autcompleter />', () => {
           zip: '11344',
           type: 'School',
         },
+      })
+    })
+
+    it('renders the PersonSuggestion view when no address', () => {
+      component = mount(<Autocompleter />)
+      const result = [{
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        gender: 'female',
+        date_of_birth: '1990-02-13',
+        ssn: '123-45-6789',
+        addresses: [],
+      }]
+      stubSuggestions(result)
+
+      component.find('input').simulate('focus')
+      component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
+      expect(component.find('PersonSuggestion').props()).toEqual({
+        firstName: 'Bart',
+        lastName: 'Simpson',
+        gender: 'female',
+        dateOfBirth: '1990-02-13',
+        ssn: '123-45-6789',
+        address: null,
       })
     })
   })

@@ -33,9 +33,11 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, ssn, addres
       {gender && <div>{Gender[gender]}</div>}
       {ssn && <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div>}
     </div>
-    <div className='col-md-6'>
-      <AddressInfo {...address} />
-    </div>
+    {address &&
+      <div className='col-md-6'>
+        <AddressInfo {...address} />
+      </div>
+    }
   </div>
 )
 

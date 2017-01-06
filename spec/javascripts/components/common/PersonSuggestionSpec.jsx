@@ -48,7 +48,7 @@ describe('PersonSuggestion', () => {
   })
 
   describe('address', () => {
-    it('gets rendered', () => {
+    it('renders when present', () => {
       const props = {
         address: {
           id: 1,
@@ -75,7 +75,14 @@ describe('PersonSuggestion', () => {
         },
       }
       const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.find('AddressInfo').length).toEqual(1)
       expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
+    })
+
+    it('does not render when not present', () => {
+      const props = {address: null}
+      const component = shallow(<PersonSuggestion{...props} />)
+      expect(component.find('AddressInfo').length).toEqual(0)
     })
   })
 })
