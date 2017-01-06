@@ -44,6 +44,7 @@ describe('PersonShowPage', () => {
           type: 'Home',
         }],
         languages: ['Turkish', 'Thai', 'Vietnamese'],
+        races: ['Asian', 'Black or African American'],
       })
       const props = {
         params: {id: 99},
@@ -102,6 +103,8 @@ describe('PersonShowPage', () => {
         .toContain('95823')
       expect(component.find('ShowField[label="Address Type"]').last().html())
         .toContain('Home')
+      expect(component.find('ShowField[label="Race"]').html())
+        .toContain('Asian, Black or African American')
     })
 
     it('renders the edit link', () => {
