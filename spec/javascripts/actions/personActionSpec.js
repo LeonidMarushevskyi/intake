@@ -84,6 +84,20 @@ describe('person actions', () => {
     })
   })
 
+  describe('Parse Blank PhoneNumbers', () => {
+    it('parse blank phonenumbers', () => {
+      const phoneNumber1 = {number: '2134517895', type: ''}
+      const phoneNumber2 = {number: '', type: 'HOME'}
+      const phoneNumber3 = {number: null, type: null}
+      const person = {first_name: 'Jane', phone_numbers: [phoneNumber1, phoneNumber2, phoneNumber3]}
+      const newPerson = {first_name: 'Jane', phone_numbers: [phoneNumber1]}
+
+      const store = mockStore()
+      store.dispatch(personActions.parseBlankPhoneNumber(person))
+      expect(person).toEqual(newPerson)
+    })
+  })
+
   describe('updatePerson', () => {
     it('dispatches updatePersonRequest and updatePersonSuccess', () => {
       const updatedPerson = {id: 1, first_name: 'Lisa', last_name: 'Simpson'}
