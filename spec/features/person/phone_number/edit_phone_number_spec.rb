@@ -39,6 +39,15 @@ feature 'Edit Phone Number' do
       end
     end
 
+    click_button 'Add new phone number'
+
+    within '#phone-numbers' do
+      within all('.list-item').last do
+        fill_in 'Phone Number', with: '879-456-7895'
+        select '', from: 'Phone Number Type'
+      end
+    end
+
     click_button 'Save'
 
     person.phone_numbers.first.number = '917-578-1234'
@@ -46,6 +55,10 @@ feature 'Edit Phone Number' do
     person.phone_numbers << PhoneNumber.new(
       number: '330-789-4587',
       type: 'Work'
+    )
+    person.phone_numbers << PhoneNumber.new(
+      number: '879-456-7895',
+      type: nil
     )
 
     expect(a_request(:put, api_person_path(person.id))
