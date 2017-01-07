@@ -9,7 +9,6 @@ services:
     environment:
       RAILS_ENV: development
       API_URL: "http://api:3000"
-      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
       NODE_ENV: development
     volumes:
       - .:/ca_intake
@@ -17,7 +16,6 @@ services:
       - ca_intake_node_modules:/ca_intake/node_modules
     links:
       - api
-      - elasticsearch
     tty: true
     stdin_open: true
   api:

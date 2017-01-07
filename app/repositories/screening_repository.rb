@@ -28,6 +28,14 @@ class ScreeningRepository
     Screening.new(response.body)
   end
 
+  def self.search(search_terms)
+    response = make_api_call("#{SCREENINGS_PATH}?#{search_terms.to_query}", :get)
+    raise 'Error searching screening' if response.status != 200
+    response.body.map do |result_attributes|
+      Screening.new(result_attributes)
+    end
+  end
+
   def self.make_api_call(url, method, attributes = nil)
     ::API.connection.send(method) do |req|
       req.url url

@@ -114,13 +114,11 @@ describe ScreeningsController do
   end
 
   describe '#index' do
-    context 'without query params' do
+    context 'without response_times or screening_decisions' do
       let(:screenings) { double(:screenings, as_json: [{ id: 1 }]) }
-      let(:search) { double(:search, results: screenings) }
       before do
-        allow(ScreeningsRepo).to receive(:search)
-          .with(query: { filtered: { filter: { bool: { must: [] } } } })
-          .and_return(search)
+        allow(ScreeningRepository).to receive(:search)
+          .and_return(screenings)
       end
 
       it 'renders screenings as json' do
@@ -134,33 +132,19 @@ describe ScreeningsController do
       end
     end
 
-    context 'with query params' do
-      let(:query) do
-        {
-          filtered: {
-            filter: {
-              bool: {
-                must: [{
-                  terms: { response_time: %w(immediate within_twenty_four_hours) }
-                }]
-              }
-            }
-          }
-        }
-      end
+    context 'with response_times and screening_decisions' do
       let(:screenings) { double(:screenings, as_json: []) }
-      let(:search) { double(:search, results: screenings) }
       let(:params) do
         { response_times: %w(immediate within_twenty_four_hours) }
       end
 
       before do
-        expect(ScreeningsRepo).to receive(:search)
-          .with(query: query)
-          .and_return(search)
+        expect(ScreeningRepository).to receive(:search)
+          .with('response_times' => %w(immediate within_twenty_four_hours))
+          .and_return(screenings)
       end
 
-      it 'renders screenings returned from filtered query' do
+      it 'renders screenings returned from screening repository' do
         process :index, method: :get, format: :json, params: params
         expect(JSON.parse(response.body)).to eq([])
       end
