@@ -4,10 +4,14 @@ import React from 'react'
 import ShowField from 'components/common/ShowField'
 import {Link} from 'react-router'
 
-const ParticipantShowView = ({participant, onEdit}) => (
+const ParticipantShowView = ({participant, onEdit}) => {
+  const name = [participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')
+  return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      <span>{`${[participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')}`}</span>
+      { name &&
+        <span>{name}</span>
+      }
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times' />
       </Link>
@@ -20,7 +24,7 @@ const ParticipantShowView = ({participant, onEdit}) => (
         </div>
         <div className='col-md-5'>
           <ShowField labelClassName='no-gap' label='Name'>
-            {`${[participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')}`}
+            {name}
           </ShowField>
           <ShowField label='Gender'>
             {GENDER[participant.get('gender')]}
@@ -37,7 +41,8 @@ const ParticipantShowView = ({participant, onEdit}) => (
       </div>
     </div>
   </div>
-)
+  )
+}
 
 ParticipantShowView.propTypes = {
   onEdit: React.PropTypes.func.isRequired,

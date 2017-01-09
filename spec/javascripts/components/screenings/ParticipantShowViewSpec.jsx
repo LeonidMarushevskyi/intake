@@ -58,9 +58,8 @@ describe('ParticipantShowView', () => {
   })
 })
 
-describe('ParticipantShowView with nulls', () => {
+describe('ParticipantShowView with partial name', () => {
   let component
-  let onEdit
   beforeEach(() => {
     const participant = Immutable.fromJS({
       id: 200,
@@ -70,8 +69,7 @@ describe('ParticipantShowView with nulls', () => {
       date_of_birth: '11/16/1990',
       ssn: '111223333',
     })
-    onEdit = jasmine.createSpy()
-    component = shallow(<ParticipantShowView participant={participant} onEdit={onEdit}/>)
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
   })
 
   it('renders the participant header corectly with null last name', () => {
@@ -80,5 +78,22 @@ describe('ParticipantShowView with nulls', () => {
 
   it('renders the participant name show fields', () => {
     expect(component.find('ShowField[label="Name"]').html()).not.toContain('null')
+  })
+})
+
+describe('ParticipantShowView with no name', () => {
+  let component
+  it('does not render when not present', () => {
+    const participant = Immutable.fromJS({
+      id: 200,
+      first_name: null,
+      last_name: null,
+      gender: 'male',
+      date_of_birth: '11/16/1990',
+      ssn: '111223333',
+    })
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
+
+    expect(component.find('.card-header')).not.toContain('<span></span>')
   })
 })
