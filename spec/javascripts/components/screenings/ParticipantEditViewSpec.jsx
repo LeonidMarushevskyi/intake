@@ -51,3 +51,33 @@ describe('ParticipantEditView', () => {
     expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
   })
 })
+
+describe('ParticipantEditView on null values', () => {
+  let component
+
+  it('renders the participant header corectly with null last name', () => {
+    const participant = Immutable.fromJS({
+      id: 199,
+      first_name: 'Lisa',
+      last_name: null,
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    })
+    component = shallow(<ParticipantEditView participant={participant} />)
+    expect(component.find('.card-header').text()).not.toContain('null')
+  })
+
+  it('renders the participant header corectly (no empty span) with no name', () => {
+    const participant = Immutable.fromJS({
+      id: 199,
+      first_name: null,
+      last_name: null,
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    })
+    component = shallow(<ParticipantEditView participant={participant} />)
+    expect(component.find('.card-header')).not.toContain('<span></span>')
+  })
+})
