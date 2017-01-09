@@ -16,4 +16,5 @@ class Person
   attribute :addresses, Array[Address]
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :languages, Array
+  attribute :races, Array
 end

@@ -32,7 +32,8 @@ describe PeopleController do
           { id: '', number: '111-111-1111', type: 'Cell' },
           { id: '', number: '222-222-2222', type: 'Home' }
         ],
-        languages: %w(English Farsi)
+        languages: %w(English Farsi),
+        races: %w(White Asian)
       }.with_indifferent_access
     end
     let(:created_person) do
@@ -103,7 +104,8 @@ describe PeopleController do
           created_at: '2016-08-11T18:24:22.157Z',
           updated_at: '2016-08-11T18:24:22.157Z'
         }],
-        languages: ['Armenian']
+        languages: ['Armenian'],
+        races: %w(White Asian)
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }
