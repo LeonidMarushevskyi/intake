@@ -31,7 +31,7 @@ describe('PhoneNumbersEditView', () => {
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
         {number: '111-111-1111', type: 'Cell'},
-        {number: '', type: ''},
+        {number: null, type: null},
       ])
     })
   })

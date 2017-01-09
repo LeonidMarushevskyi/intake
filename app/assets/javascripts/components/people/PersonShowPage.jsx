@@ -44,10 +44,10 @@ export class PersonShowPage extends React.Component {
               {NAME_SUFFIX[person.get('name_suffix')]}
             </ShowField>
           </div>
-          <div className='row gap-top'>
+          <div>
             {
               person.get('phone_numbers') && person.get('phone_numbers').map((phoneNumber) => (
-                <div key={phoneNumber.get('id')}>
+                <div key={phoneNumber.get('id')} className='row gap-top'>
                   <ShowField gridClassName='col-md-6' label='Phone Number'>
                     {phoneNumber.get('number')}
                   </ShowField>

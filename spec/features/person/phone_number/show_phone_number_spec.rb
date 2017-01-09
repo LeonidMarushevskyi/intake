@@ -5,13 +5,22 @@ feature 'Show Person' do
   scenario 'display phone numbers ' do
     person = FactoryGirl.create(
       :person,
-      phone_numbers: [{
-        id: 1,
-        number: '917-578-2010',
-        type: 'Work',
-        created_at: '2016-08-11T18:24:22.157Z',
-        updated_at: '2016-08-11T18:24:22.157Z'
-      }],
+      phone_numbers: [
+        {
+          id: 1,
+          number: '917-578-2010',
+          type: 'Work',
+          created_at: '2016-08-11T18:24:22.157Z',
+          updated_at: '2016-08-11T18:24:22.157Z'
+        },
+        {
+          id: 2,
+          number: '456-789-4566',
+          type: nil,
+          created_at: '2016-08-11T18:24:22.157Z',
+          updated_at: '2016-08-11T18:24:22.157Z'
+        }
+      ],
       addresses: FactoryGirl.create(:address, id: nil)
     )
     stub_request(:get, api_person_path(person.id))
@@ -23,5 +32,6 @@ feature 'Show Person' do
 
     expect(page).to have_content('917-578-2010')
     expect(page).to have_content('Work')
+    expect(page).to have_content('456-789-4566')
   end
 end

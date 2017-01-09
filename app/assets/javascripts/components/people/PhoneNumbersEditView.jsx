@@ -11,21 +11,19 @@ export class PhoneNumbersEditView extends React.Component {
   }
 
   addPhoneNumber() {
-    const NEW_PHONE_NUMBER = Immutable.Map({number: '', type: ''})
-    const newPhoneNumbers = this.props.phoneNumbers.push(NEW_PHONE_NUMBER)
-    this.props.onChange(newPhoneNumbers)
+    const newPhoneNumber = Immutable.Map({number: null, type: null})
+    const phoneNumbers = this.props.phoneNumbers.push(newPhoneNumber)
+    this.props.onChange(phoneNumbers)
   }
 
   editPhoneNumber(fieldSeq, value) {
-    const {phoneNumbers} = this.props
-    const newPhoneNumbers = phoneNumbers.setIn(fieldSeq, value)
-    this.props.onChange(newPhoneNumbers)
+    const phoneNumbers = this.props.phoneNumbers.setIn(fieldSeq, value)
+    this.props.onChange(phoneNumbers)
   }
 
   deletePhoneNumber(index) {
-    const {phoneNumbers} = this.props
-    const newPhoneNumbers = phoneNumbers.delete(index)
-    this.props.onChange(newPhoneNumbers)
+    const phoneNumbers = this.props.phoneNumbers.delete(index)
+    this.props.onChange(phoneNumbers)
   }
 
   render() {
@@ -38,8 +36,8 @@ export class PhoneNumbersEditView extends React.Component {
             return (
               <div key={index} className='row list-item'>
                 <PhoneNumberField
-                  Number={number}
-                  Type={type}
+                  Number={number || ''}
+                  Type={type || ''}
                   onChange={(field, value) => this.editPhoneNumber([index, field], value)}
                 />
                 <a className='list-item__a'

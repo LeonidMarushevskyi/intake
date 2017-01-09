@@ -2,26 +2,31 @@ import * as types from 'actions/actionTypes'
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 
-function isEmpty(valueToCheck) {
-  return (!valueToCheck || !(valueToCheck.trim()))
-}
-
 export function parseBlankAddresses(person) {
   const addresses = person.addresses
   if (addresses) {
-    const blankIndexes = []
-    const elementsToRemove = 1
-    addresses.map((address, index) => {
-      if (isEmpty(address.street_address) &&
-        isEmpty(address.city) &&
-        isEmpty(address.state) &&
-        isEmpty(address.zip)) {
-        blankIndexes.push(index)
+    const addressesToKeep = []
+    addresses.map((address) => {
+      const fieldsToConsider = [address.street_address, address.city, address.state, address.zip]
+      if (fieldsToConsider.join('').trim()) {
+        addressesToKeep.push(address)
       }
     })
-    blankIndexes.reverse().map((indexToDelete) => {
-      addresses.splice(indexToDelete, elementsToRemove)
+    person.addresses = addressesToKeep
+  }
+  return {person}
+}
+
+export function parseBlankPhoneNumber(person) {
+  const phoneNumbers = person.phone_numbers
+  if (phoneNumbers) {
+    const phoneNumbersToKeep = []
+    phoneNumbers.map((phoneNumber) => {
+      if (phoneNumber.number && phoneNumber.number.trim()) {
+        phoneNumbersToKeep.push(phoneNumber)
+      }
     })
+    person.phone_numbers = phoneNumbersToKeep
   }
   return {person}
 }
@@ -42,6 +47,7 @@ export function createPersonSuccess(person) {
 
 export function createPerson(person) {
   parseBlankAddresses(person)
+  parseBlankPhoneNumber(person)
   return (dispatch) =>
     Utils.request('POST', '/people.json', JSON.stringify({person: person}), {contentType: 'application/json'})
       .then((jsonResponse) => dispatch(createPersonSuccess(jsonResponse)))
@@ -53,6 +59,7 @@ export function updatePersonSuccess(person) {
 
 export function updatePerson(person) {
   parseBlankAddresses(person)
+  parseBlankPhoneNumber(person)
   return (dispatch) => {
     const {id: personId} = person
     return Utils.request('PUT', `/people/${personId}.json`, JSON.stringify({person: person}), {contentType: 'application/json'})
