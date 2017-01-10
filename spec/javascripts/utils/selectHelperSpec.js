@@ -1,4 +1,4 @@
-import {selectOptions} from 'utils/selectHelper'
+import selectOptions from 'utils/selectHelper'
 
 describe('selectOptions', () => {
   it('transforms a options array to a selectOptions hash', () => {

@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import AddressEditView from 'components/common/AddressEditView'
 
-export class AddressesEditView extends React.Component {
+export default class AddressesEditView extends React.Component {
   constructor() {
     super(...arguments)
     this.addAddress = this.addAddress.bind(this)
