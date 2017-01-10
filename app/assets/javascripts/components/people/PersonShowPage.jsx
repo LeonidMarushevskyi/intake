@@ -19,7 +19,7 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
-    const {languages} = person.toJS()
+    const {languages, races} = person.toJS()
 
     return (
       <div className='card double-gap-top'>
@@ -102,6 +102,11 @@ export class PersonShowPage extends React.Component {
                 </div>
                 ))
             }
+          </div>
+          <div className='row gap-top'>
+            <ShowField gridClassName='col-md-4' label='Race'>
+              {races && races.join(', ')}
+            </ShowField>
           </div>
         </div>
       </div>

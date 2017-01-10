@@ -28,6 +28,7 @@ describe('PersonEditPage', () => {
           date_of_birth: '11/16/1990',
           ssn: '111223333',
           languages: [],
+          races: [],
         }),
       })
     })
@@ -118,6 +119,20 @@ describe('PersonEditPage', () => {
         expect(instance.setField).toHaveBeenCalledWith(
           ['addresses'], Immutable.List()
         )
+      })
+    })
+
+    describe('races', () => {
+      it('renders the RacesEditView', () => {
+        expect(component.find('RacesEditView').length).toEqual(1)
+      })
+
+      it('change event calls setField with races', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('RacesEditView')
+          .simulate('change', Immutable.List(['White', 'Asian']))
+        expect(instance.setField).toHaveBeenCalledWith(['races'], Immutable.List(['White', 'Asian']))
       })
     })
 

@@ -5,6 +5,7 @@ import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGE from 'Language'
 import NAME_SUFFIX from 'NameSuffix'
+import RacesEditView from 'components/people/RacesEditView'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
@@ -27,6 +28,7 @@ export class PersonEditPage extends React.Component {
         date_of_birth: null,
         ssn: null,
         languages: [],
+        races: [],
       }),
     }
     this.setField = this.setField.bind(this)
@@ -155,6 +157,10 @@ export class PersonEditPage extends React.Component {
           <AddressesEditView
             addresses={this.state.person.get('addresses') || Immutable.List()}
             onChange={(addresses) => this.setField(['addresses'], addresses)}
+          />
+          <RacesEditView
+            races={this.state.person.get('races') || Immutable.List()}
+            onChange={(races) => this.setField(['races'], races)}
           />
           <div className='row'>
             <div className='centered'>

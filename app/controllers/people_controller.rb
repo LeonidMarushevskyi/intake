@@ -82,7 +82,8 @@ class PeopleController < ApplicationController
         :created_at,
         :updated_at
       ],
-      languages: []
+      languages: [],
+      races: []
     )
   end
 end
