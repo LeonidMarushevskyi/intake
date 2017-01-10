@@ -105,6 +105,20 @@ describe('PersonNewPage', () => {
       })
     })
 
+    describe('races', () => {
+      it('renders the RacesEditView', () => {
+        expect(component.find('RacesEditView').length).toEqual(1)
+      })
+
+      it('change event calls setField with races', () => {
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('RacesEditView')
+          .simulate('change', Immutable.List(['White', 'Asian']))
+        expect(instance.setField).toHaveBeenCalledWith(['races'], Immutable.List(['White', 'Asian']))
+      })
+    })
+
     it('renders the save button', () => {
       expect(component.find('button').length).toEqual(1)
     })
