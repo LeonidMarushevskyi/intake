@@ -1,6 +1,7 @@
+import CheckboxField from 'components/common/CheckboxField'
 import Immutable from 'immutable'
-import React from 'react'
 import RACES from 'Races'
+import React from 'react'
 
 export class RacesEditView extends React.Component {
   constructor() {
@@ -22,21 +23,6 @@ export class RacesEditView extends React.Component {
     }
   }
 
-  renderRace(race, isChecked, isDisabled) {
-    return (
-      <li key={race}>
-        <input type='checkbox'
-          id={race}
-          value={race}
-          checked={isChecked}
-          onChange={(event) => this.changeRace(race, event.target.checked)}
-          disabled={isDisabled}
-        />
-        <label htmlFor={race}>{race}</label>
-      </li>
-    )
-  }
-
   render() {
     const {races} = this.props
     const exclusiveRaceSelected = races.some((race) => RACES[race].exclusive)
@@ -49,7 +35,16 @@ export class RacesEditView extends React.Component {
               Object.keys(RACES).map((race) => {
                 const isSelected = races.includes(race)
                 const isDisabled = exclusiveRaceSelected && !isSelected
-                return this.renderRace(race, isSelected, isDisabled)
+                return (
+                  <CheckboxField
+                    key={race}
+                    id={race}
+                    value={race}
+                    checked={isSelected}
+                    disabled={isDisabled}
+                    onChange={(event) => this.changeRace(race, event.target.checked)}
+                  />
+                  )
               })
             }
           </ul>
