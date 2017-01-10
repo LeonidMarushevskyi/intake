@@ -8,12 +8,12 @@ import NAME_SUFFIX from 'NameSuffix'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
-import {AddressesEditView} from 'components/people/AddressesEditView'
+import AddressesEditView from 'components/people/AddressesEditView'
 import {Link, browserHistory} from 'react-router'
-import {PhoneNumbersEditView} from 'components/people/PhoneNumbersEditView'
+import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {selectOptions} from 'utils/selectHelper'
+import selectOptions from 'utils/selectHelper'
 
 export class PersonEditPage extends React.Component {
   constructor() {

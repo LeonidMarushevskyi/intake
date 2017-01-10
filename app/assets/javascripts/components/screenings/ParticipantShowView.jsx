@@ -9,9 +9,7 @@ const ParticipantShowView = ({participant, onEdit}) => {
   return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      { name &&
-        <span>{name}</span>
-      }
+      {name && <span>{name}</span>}
       <Link aria-label='Delete participant' className='pull-right' href='#'>
         <i className='fa fa-times' />
       </Link>
