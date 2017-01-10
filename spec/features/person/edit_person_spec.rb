@@ -12,7 +12,8 @@ feature 'Edit Person' do
       middle_name: 'Jay',
       name_suffix: 'esq',
       ssn: '123-23-1234',
-      languages: ['Armenian']
+      languages: ['Armenian'],
+      races: ['Asian', 'Black or African American']
     )
   end
 
@@ -39,6 +40,8 @@ feature 'Edit Person' do
       has_react_select_field('Language(s)', with: ['Armenian'])
       expect(page).to have_field('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Social security number', with: '123-23-1234')
+      expect(page.find('input[value="Asian"]')).to be_checked
+      expect(page.find('input[value="Black or African American"]')).to be_checked
     end
     expect(page).to have_link 'Cancel'
     expect(page).to have_button 'Save'
@@ -61,8 +64,10 @@ feature 'Edit Person' do
     visit edit_person_path(id: person.id)
 
     fill_in 'First Name', with: 'Lisa'
+    find('label', text: 'Unknown').click
 
     person.first_name = 'Lisa'
+    person.races = ['Unknown']
 
     stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)
