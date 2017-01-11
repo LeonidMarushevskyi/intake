@@ -65,15 +65,11 @@ describe Person do
         phone_numbers: [{
           id: '1',
           number: '111-111-1111',
-          type: 'Cell',
-          created_at: nil,
-          updated_at: nil
+          type: 'Cell'
         }, {
           id: '2',
           number: '222-222-2222',
-          type: 'Home',
-          created_at: nil,
-          updated_at: nil
+          type: 'Home'
         }],
         languages: %w(English Farsi),
         races: %w(White Asian)

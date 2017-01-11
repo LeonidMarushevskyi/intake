@@ -10,16 +10,12 @@ feature 'Create Phone Number' do
         {
           id: nil,
           number: '917-578-2010',
-          type: 'Work',
-          created_at: nil,
-          updated_at: nil
+          type: 'Work'
         },
         {
           id: nil,
           number: '568-387-8844',
-          type: nil,
-          created_at: nil,
-          updated_at: nil
+          type: nil
         }
       ],
       addresses: []

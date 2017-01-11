@@ -78,9 +78,7 @@ class PeopleController < ApplicationController
       phone_numbers: [
         :id,
         :number,
-        :type,
-        :created_at,
-        :updated_at
+        :type
       ],
       languages: [],
       races: []

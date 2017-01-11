@@ -100,9 +100,7 @@ describe PeopleController do
         phone_numbers: [{
           id: '2',
           number: '333-333-3333',
-          type: 'Home',
-          created_at: '2016-08-11T18:24:22.157Z',
-          updated_at: '2016-08-11T18:24:22.157Z'
+          type: 'Home'
         }],
         languages: ['Armenian'],
         races: %w(White Asian)
