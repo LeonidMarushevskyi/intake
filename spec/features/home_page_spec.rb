@@ -14,7 +14,7 @@ feature 'home page' do
         type: 'Home'
       )
       marge = Person.new(
-        id: 99,
+        id: '99',
         first_name: 'Marge',
         gender: 'female',
         last_name: 'Simpson',

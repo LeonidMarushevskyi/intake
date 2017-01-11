@@ -7,7 +7,7 @@ describe('ParticipantCardView', () => {
   describe('when mode is set to show', () => {
     let component
     beforeEach(() => {
-      const participant = Immutable.fromJS({id: 5, first_name: 'Tony', last_name: 'Hawk'})
+      const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk'})
       component = mount(<ParticipantCardView participant={participant} mode='show'/>)
     })
 
@@ -30,7 +30,7 @@ describe('ParticipantCardView', () => {
   describe('when mode is set to edit', () => {
     let component
     beforeEach(() => {
-      const participant = Immutable.fromJS({id: 5, first_name: 'Tony', last_name: 'Hawk'})
+      const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk'})
       component = mount(<ParticipantCardView participant={participant} mode='edit'/>)
     })
 

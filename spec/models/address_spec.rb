@@ -5,7 +5,7 @@ describe Address do
   describe 'as_json' do
     it 'returns the attributes of a address as a hash' do
       attributes = {
-        id: 1,
+        id: '1',
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',
@@ -15,7 +15,7 @@ describe Address do
       expect(
         described_class.new(attributes).as_json.with_indifferent_access
       ).to include({
-        id: 1,
+        id: '1',
         street_address: '123 Fake St',
         city: 'NY',
         state: 'NY',

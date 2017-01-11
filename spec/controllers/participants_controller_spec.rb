@@ -16,7 +16,7 @@ describe ParticipantsController do
       }.with_indifferent_access
     end
     let(:created_participant) do
-      double(:participant, as_json: participant_params.merge(id: 1))
+      double(:participant, as_json: participant_params.merge(id: '1'))
     end
 
     before do
@@ -29,7 +29,7 @@ describe ParticipantsController do
 
     it 'renders a participant as json' do
       process :create, method: :post,
-                       params: { screening_id: 1, participant: participant_params },
+                       params: { screening_id: '1', participant: participant_params },
                        format: :json
       expect(JSON.parse(response.body)).to eq(created_participant.as_json)
     end

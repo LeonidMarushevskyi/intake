@@ -12,14 +12,14 @@ describe('PersonEditPage', () => {
         fetchPerson: () => null,
       }
       const props = {
-        params: {id: 1},
+        params: {id: '1'},
         person: Immutable.Map(),
         actions: actionsSpy,
       }
       component = shallow(<PersonEditPage {...props} />)
       component.setState({
         person: Immutable.fromJS({
-          id: 1,
+          id: '1',
           first_name: 'Kevin',
           middle_name: 'Culkin',
           last_name: 'McCallister',
@@ -152,7 +152,7 @@ describe('PersonEditPage', () => {
         fetchPerson: jasmine.createSpy('fetchPerson'),
       }
       const props = {
-        params: {id: 1},
+        params: {id: '1'},
         person: Immutable.Map(),
         actions: actionsSpy,
       }
@@ -174,8 +174,8 @@ describe('PersonEditPage', () => {
       spyOn(browserHistory, 'push')
 
       const props = {
-        params: {id: 1},
-        person: Immutable.Map({id: 1, first_name: 'Bart'}),
+        params: {id: '1'},
+        person: Immutable.Map({id: '1', first_name: 'Bart'}),
         actions: actionsSpy,
       }
       component = shallow(<PersonEditPage {...props} />)

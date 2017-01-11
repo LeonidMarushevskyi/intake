@@ -5,9 +5,9 @@ feature 'Edit Phone Number' do
   scenario 'edit an existing persons phone number' do
     person = FactoryGirl.create(
       :person,
-      id: 1,
+      id: '1',
       phone_numbers: [{
-        id: 1,
+        id: '1',
         number: '917-578-2010',
         type: 'Work',
         created_at: '2016-08-11T18:24:22.157Z',
@@ -68,9 +68,9 @@ feature 'Edit Phone Number' do
   scenario 'delete an existing persons phone number' do
     person = FactoryGirl.create(
       :person,
-      id: 1,
+      id: '1',
       phone_numbers: [{
-        id: 1,
+        id: '1',
         number: '917-578-2010',
         type: 'Work',
         created_at: '2016-08-11T18:24:22.157Z',

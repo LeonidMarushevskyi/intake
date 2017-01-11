@@ -55,11 +55,11 @@ feature 'Create Phone Number' do
 
     stub_request(:post, api_people_path)
       .with(body: person.to_json)
-      .and_return(body: person.as_json.merge(id: 1).to_json,
+      .and_return(body: person.as_json.merge(id: '1').to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(1))
-      .and_return(body: person.as_json.merge(id: 1).to_json,
+    stub_request(:get, api_person_path('1'))
+      .and_return(body: person.as_json.merge(id: '1').to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
@@ -69,7 +69,7 @@ feature 'Create Phone Number' do
       .with(body: person.to_json))
       .to have_been_made
 
-    expect(page).to have_current_path(person_path(1))
+    expect(page).to have_current_path(person_path('1'))
   end
 
   scenario 'create a person with empty phonenumber' do
@@ -80,7 +80,7 @@ feature 'Create Phone Number' do
       addresses: [],
       languages: []
     )
-    created_person = FactoryGirl.create(:person, person.as_json.merge(id: 1))
+    created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
     stub_request(:post, api_people_path)
       .with(body: person.to_json)
       .and_return(body: created_person.to_json,

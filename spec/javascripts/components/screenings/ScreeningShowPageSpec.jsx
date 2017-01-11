@@ -8,7 +8,7 @@ describe('ScreeningShowPage', () => {
     it('renders the screening reference', () => {
       const props = {
         actions: {fetchScreening: () => null},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
       }
@@ -19,7 +19,7 @@ describe('ScreeningShowPage', () => {
     it('renders the home and edit link', () => {
       const props = {
         actions: {fetchScreening: () => null},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -33,7 +33,7 @@ describe('ScreeningShowPage', () => {
     it('render show views', () => {
       const props = {
         actions: {fetchScreening: () => null},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -45,12 +45,12 @@ describe('ScreeningShowPage', () => {
     describe('participants card', () => {
       it('renders the participants card for each participant', () => {
         const participants = Immutable.fromJS([
-          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
-          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+          {id: '1', first_name: 'Melissa', last_name: 'Powers'},
+          {id: '2', first_name: 'Marshall', last_name: 'Powers'},
         ])
         const props = {
           actions: {fetchScreening: () => null},
-          params: {id: 1},
+          params: {id: '1'},
           participants,
           screening: Immutable.Map(),
         }
@@ -67,7 +67,7 @@ describe('ScreeningShowPage', () => {
       beforeEach(() => {
         const props = {
           actions: {},
-          params: {id: 1},
+          params: {id: '1'},
           participants: Immutable.List(),
           screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
         }
@@ -90,7 +90,7 @@ describe('ScreeningShowPage', () => {
     beforeEach(() => {
       const props = {
         actions: {fetchScreening},
-        params: {id: 222},
+        params: {id: '222'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -99,7 +99,7 @@ describe('ScreeningShowPage', () => {
     })
 
     it('GETs the screening from the server', () => {
-      expect(fetchScreening).toHaveBeenCalledWith(222)
+      expect(fetchScreening).toHaveBeenCalledWith('222')
     })
   })
 
@@ -112,7 +112,7 @@ describe('ScreeningShowPage', () => {
         screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningShowPage {...props}/>)
-      const screening = Immutable.fromJS({id: 1, reference: 'My New Reference'})
+      const screening = Immutable.fromJS({id: '1', reference: 'My New Reference'})
       component.setProps({screening})
       expect(component.find('h1').text()).toContain('My New Reference')
     })
@@ -124,7 +124,7 @@ describe('ScreeningShowPage', () => {
     beforeEach(() => {
       const props = {
         actions: {saveScreening},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }

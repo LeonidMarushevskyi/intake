@@ -7,14 +7,14 @@ feature 'Show Person' do
       :person,
       phone_numbers: [
         {
-          id: 1,
+          id: '1',
           number: '917-578-2010',
           type: 'Work',
           created_at: '2016-08-11T18:24:22.157Z',
           updated_at: '2016-08-11T18:24:22.157Z'
         },
         {
-          id: 2,
+          id: '2',
           number: '456-789-4566',
           type: nil,
           created_at: '2016-08-11T18:24:22.157Z',

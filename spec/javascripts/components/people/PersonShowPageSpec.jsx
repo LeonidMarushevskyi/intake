@@ -47,7 +47,7 @@ describe('PersonShowPage', () => {
         races: ['Asian', 'Black or African American'],
       })
       const props = {
-        params: {id: 99},
+        params: {id: '99'},
         actions: {fetchPerson: () => null},
         person: person,
       }
@@ -119,7 +119,7 @@ describe('PersonShowPage', () => {
     beforeEach(() => {
       fetchPerson = jasmine.createSpy('fetchPerson')
       const props = {
-        params: {id: 99},
+        params: {id: '99'},
         actions: {fetchPerson: fetchPerson},
         person: Immutable.Map(),
       }

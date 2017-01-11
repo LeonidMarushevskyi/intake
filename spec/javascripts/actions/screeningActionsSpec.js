@@ -35,7 +35,7 @@ describe('screening actions', () => {
   })
 
   describe('fetchScreening', () => {
-    const screeningId = 1
+    const screeningId = '1'
     const store = mockStore()
     const screening = {id: '1', name: 'mock_screening'}
     beforeEach(() => {
@@ -88,7 +88,7 @@ describe('screening actions', () => {
   })
 
   describe('createParticipant', () => {
-    const participant = {screening_id: 1, person_id: 2, id: null}
+    const participant = {screening_id: '1', person_id: '2', id: null}
     const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])

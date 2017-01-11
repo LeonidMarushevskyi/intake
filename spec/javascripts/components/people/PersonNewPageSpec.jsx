@@ -148,7 +148,7 @@ describe('PersonNewPage', () => {
 
     it('redirects to show', () => {
       const props = {
-        person: Immutable.fromJS({id: 1}),
+        person: Immutable.fromJS({id: '1'}),
         actions: {createPerson: createPerson},
       }
       component = shallow(<PersonNewPage {...props} />)
