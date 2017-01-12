@@ -157,7 +157,7 @@ describe('PersonEditPage', () => {
         actions: actionsSpy,
       }
       component = mount(<PersonEditPage {...props} />)
-      expect(actionsSpy.fetchPerson).toHaveBeenCalledWith(1)
+      expect(actionsSpy.fetchPerson).toHaveBeenCalledWith('1')
     })
   })
 

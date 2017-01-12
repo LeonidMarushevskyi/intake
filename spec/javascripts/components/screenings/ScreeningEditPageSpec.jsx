@@ -139,7 +139,7 @@ describe('ScreeningEditPage', () => {
     })
 
     it('GETs the screening from the server', () => {
-      expect(fetchScreening).toHaveBeenCalledWith(222)
+      expect(fetchScreening).toHaveBeenCalledWith('222')
     })
   })
 

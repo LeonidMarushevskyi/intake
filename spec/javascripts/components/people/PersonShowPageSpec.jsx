@@ -127,7 +127,7 @@ describe('PersonShowPage', () => {
     })
 
     it('calls fetchPerson action', () => {
-      expect(fetchPerson).toHaveBeenCalledWith(99)
+      expect(fetchPerson).toHaveBeenCalledWith('99')
     })
   })
 })
