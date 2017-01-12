@@ -14,7 +14,7 @@ describe('ScreeningsTable', () => {
 
   it('renders screening attributes', () => {
     const screenings = [{
-      id: 1,
+      id: '1',
       name: 'My Screening Name',
       reference: 'ABCDEF',
       response_time: 'immediate',

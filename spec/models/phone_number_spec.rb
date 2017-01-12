@@ -5,7 +5,7 @@ describe PhoneNumber do
   describe 'as_json' do
     it 'returns the attributes of a phone number as a hash' do
       attributes = {
-        id: 1,
+        id: '1',
         number: '111-111-1111',
         type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',
@@ -14,7 +14,7 @@ describe PhoneNumber do
       expect(
         described_class.new(attributes).as_json.with_indifferent_access
       ).to include({
-        id: 1,
+        id: '1',
         number: '111-111-1111',
         type: 'Cell',
         created_at: '2016-11-28T21:51:44.354Z',

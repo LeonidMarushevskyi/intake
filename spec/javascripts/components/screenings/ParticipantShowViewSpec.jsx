@@ -8,7 +8,7 @@ describe('ParticipantShowView', () => {
   let onEdit
   beforeEach(() => {
     const participant = Immutable.fromJS({
-      id: 200,
+      id: '200',
       first_name: 'Kevin',
       last_name: 'McCallister',
       gender: 'male',
@@ -62,7 +62,7 @@ describe('ParticipantShowView with partial name', () => {
   let component
   beforeEach(() => {
     const participant = Immutable.fromJS({
-      id: 200,
+      id: '200',
       first_name: 'Kevin',
       last_name: null,
       gender: 'male',
@@ -85,7 +85,7 @@ describe('ParticipantShowView with no name', () => {
   let component
   it('does not render when not present', () => {
     const participant = Immutable.fromJS({
-      id: 200,
+      id: '200',
       first_name: null,
       last_name: null,
       gender: 'male',

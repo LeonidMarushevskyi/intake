@@ -37,7 +37,7 @@ describe PeopleController do
       }.with_indifferent_access
     end
     let(:created_person) do
-      double(:person, as_json: person_params.merge(id: 1))
+      double(:person, as_json: person_params.merge(id: '1'))
     end
 
     before do
@@ -56,24 +56,24 @@ describe PeopleController do
 
   describe '#edit' do
     it 'renders the show template' do
-      process :show, method: :get, params: { id: 1 }
+      process :show, method: :get, params: { id: '1' }
       expect(response).to render_template('show')
     end
   end
 
   describe '#show' do
-    let(:person) { double(:person, as_json: { 'id' => 1 }) }
+    let(:person) { double(:person, as_json: { 'id' => '1' }) }
     before do
       allow(PersonRepository).to receive(:find).with('1').and_return(person)
     end
 
     it 'renders the show template' do
-      process :show, method: :get, params: { id: 1 }
+      process :show, method: :get, params: { id: '1' }
       expect(response).to render_template('show')
     end
 
     it 'renders person as json' do
-      process :show, method: :get, params: { id: 1 }, format: :json
+      process :show, method: :get, params: { id: '1' }, format: :json
       expect(JSON.parse(response.body)).to eq(person.as_json)
     end
   end

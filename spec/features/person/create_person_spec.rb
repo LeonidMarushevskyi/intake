@@ -34,11 +34,11 @@ feature 'Create Person' do
 
     stub_request(:post, api_people_path)
       .with(body: person.to_json)
-      .and_return(body: person.as_json.merge(id: 1).to_json,
+      .and_return(body: person.as_json.merge(id: '1').to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(1))
-      .and_return(body: person.as_json.merge(id: 1).to_json,
+    stub_request(:get, api_person_path('1'))
+      .and_return(body: person.as_json.merge(id: '1').to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
@@ -46,7 +46,7 @@ feature 'Create Person' do
 
     expect(a_request(:post, api_people_path).with(body: person.to_json)).to have_been_made
 
-    expect(page).to have_current_path(person_path(1))
+    expect(page).to have_current_path(person_path('1'))
     within '.card-header' do
       expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end

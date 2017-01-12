@@ -10,7 +10,7 @@ describe('ScreeningEditPage', () => {
     it('renders the screening reference', () => {
       const props = {
         actions: {},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.fromJS({
           reference: 'The Rocky Horror Picture Show',
@@ -29,7 +29,7 @@ describe('ScreeningEditPage', () => {
       })
       const props = {
         actions: {},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening,
       }
@@ -42,12 +42,12 @@ describe('ScreeningEditPage', () => {
     describe('participants card', () => {
       beforeEach(() => {
         const participants = Immutable.fromJS([
-          {id: 1, first_name: 'Melissa', last_name: 'Powers'},
-          {id: 2, first_name: 'Marshall', last_name: 'Powers'},
+          {id: '1', first_name: 'Melissa', last_name: 'Powers'},
+          {id: '2', first_name: 'Marshall', last_name: 'Powers'},
         ])
         const props = {
           actions: {},
-          params: {id: 1},
+          params: {id: '1'},
           participants,
           screening: Immutable.Map(),
         }
@@ -82,7 +82,7 @@ describe('ScreeningEditPage', () => {
         const screening = Immutable.fromJS({report_narrative: 'this is a narrative report'})
         const props = {
           actions: {},
-          params: {id: 1},
+          params: {id: '1'},
           participants: Immutable.List(),
           screening,
         }
@@ -114,7 +114,7 @@ describe('ScreeningEditPage', () => {
       const screening = Immutable.fromJS({name: 'my screening'})
       const props = {
         actions: {},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening,
       }
@@ -130,7 +130,7 @@ describe('ScreeningEditPage', () => {
     beforeEach(() => {
       const props = {
         actions: {fetchScreening},
-        params: {id: 222},
+        params: {id: '222'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -151,7 +151,7 @@ describe('ScreeningEditPage', () => {
       fetchScreening.and.returnValue(Promise.resolve())
       const props = {
         actions: {fetchScreening},
-        params: {id: 222},
+        params: {id: '222'},
         participants: Immutable.List(),
         screening: Immutable.fromJS({report_narrative: 'my narrative'}),
       }
@@ -166,7 +166,7 @@ describe('ScreeningEditPage', () => {
     })
 
     it('updates state when screening prop changes', () => {
-      const screening = Immutable.fromJS({id: 1})
+      const screening = Immutable.fromJS({id: '1'})
       component.setProps({screening})
       const instance = component.instance()
       expect(instance.state.screening).not.toEqual(newScreeningState)
@@ -182,7 +182,7 @@ describe('ScreeningEditPage', () => {
       saveScreening.and.returnValue(promiseSpyObj)
       const props = {
         actions: {saveScreening},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map({name: 'mock screening'}),
       }
@@ -205,7 +205,7 @@ describe('ScreeningEditPage', () => {
     beforeEach(() => {
       const props = {
         actions: {saveScreening},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -219,7 +219,7 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('createParticipant', () => {
-    const person = {id: 3}
+    const person = {id: '3'}
     let createParticipant
     let participant
 
@@ -227,7 +227,7 @@ describe('ScreeningEditPage', () => {
       createParticipant = jasmine.createSpy('createParticipant')
       const props = {
         actions: {createParticipant},
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map(),
       }
@@ -255,7 +255,7 @@ describe('ScreeningEditPage', () => {
           fetchScreening: () => Promise.resolve(),
           saveScreening,
         },
-        params: {id: 1},
+        params: {id: '1'},
         participants: Immutable.List(),
         screening: Immutable.Map({name: 'my screening', report_narrative: null}),
       }

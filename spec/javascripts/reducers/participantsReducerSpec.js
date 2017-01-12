@@ -5,7 +5,7 @@ import Immutable from 'immutable'
 describe('participantsReducer', () => {
   describe('on CREATE_SCREENING_SUCCESS', () => {
     it('returns the participants from the action', () => {
-      const screening = {id: 1, name: 'mock_screening', participants: []}
+      const screening = {id: '1', name: 'mock_screening', participants: []}
       const action = screeningActions.createScreeningSuccess(screening)
       expect(participantsReducer(Immutable.Map(), action).toJS()).toEqual([])
     })
@@ -13,8 +13,8 @@ describe('participantsReducer', () => {
 
   describe('on FETCH_SCREENING_SUCCESS', () => {
     it('returns the participants from the action', () => {
-      const participant = {id: 2}
-      const screening = {id: 1, name: 'mock_screening', participants: [participant]}
+      const participant = {id: '2'}
+      const screening = {id: '1', name: 'mock_screening', participants: [participant]}
       const action = screeningActions.fetchScreeningSuccess(screening)
       expect(participantsReducer(Immutable.Map(), action).toJS()).toEqual([participant])
     })
@@ -22,8 +22,8 @@ describe('participantsReducer', () => {
 
   describe('on UPDATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const participant = {id: 2}
-      const screening = {id: 1, name: 'mock_screening', participants: [participant]}
+      const participant = {id: '2'}
+      const screening = {id: '1', name: 'mock_screening', participants: [participant]}
       const action = screeningActions.updateScreeningSuccess(screening)
       expect(participantsReducer(Immutable.Map(), action).toJS()).toEqual([participant])
     })
@@ -31,8 +31,8 @@ describe('participantsReducer', () => {
 
   describe('on CREATE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening with new participant from the action', () => {
-      const newParticipant = {id: 2, screening_id: 1, person_id: 3}
-      const oldParticipant = {id: 3, screening_id: 1, person_id: 4}
+      const newParticipant = {id: '2', screening_id: '1', person_id: '3'}
+      const oldParticipant = {id: '3', screening_id: '1', person_id: '4'}
       const participants = Immutable.fromJS([oldParticipant])
       const action = screeningActions.createParticipantSuccess(newParticipant)
       expect(participantsReducer(participants, action).toJS()).toEqual([

@@ -15,14 +15,14 @@ describe('Store', () => {
   it('handles fetch person', () => {
     expect(store.getState()).toEqual(initialState)
     const person = {
-      id: 1,
+      id: '1',
       first_name: 'Kevin',
       last_name: 'McCallister',
       gender: 'male',
       date_of_birth: '11/16/1990',
       ssn: '111223333',
       address: {
-        id: 3,
+        id: '3',
         street_address: '671 Lincoln Avenue',
         city: 'Winnetka',
         state: 'IL',
@@ -37,14 +37,14 @@ describe('Store', () => {
   it('handles create person', () => {
     expect(store.getState()).toEqual(initialState)
     const person = {
-      id: 1,
+      id: '1',
       first_name: 'Kevin',
       last_name: 'McCallister',
       gender: 'male',
       date_of_birth: '11/16/1990',
       ssn: '111223333',
       address: {
-        id: 3,
+        id: '3',
         street_address: '671 Lincoln Avenue',
         city: 'Winnetka',
         state: 'IL',
@@ -60,14 +60,14 @@ describe('Store', () => {
     initialState = {
       ...initialState,
       person: Immutable.fromJS({
-        id: 1,
+        id: '1',
         first_name: 'Kevin',
         last_name: 'McCallister',
         gender: 'female',
         date_of_birth: '11/16/1990',
         ssn: '111223333',
         address: {
-          id: 3,
+          id: '3',
           street_address: '671 Lincoln Avenue',
           city: 'Winnetka',
           state: 'IL',
@@ -85,9 +85,9 @@ describe('Store', () => {
 
   it('handles fetch screening', () => {
     expect(store.getState()).toEqual(initialState)
-    const participant = {id: 2, person_id: 3, screening_id: 1}
+    const participant = {id: '2', person_id: '3', screening_id: '1'}
     const screening = {
-      id: 1,
+      id: '1',
       name: 'Mock screening',
       participants: [participant],
     }
@@ -100,7 +100,7 @@ describe('Store', () => {
   it('handles create screening', () => {
     expect(store.getState()).toEqual(initialState)
     const screening = {
-      id: 1,
+      id: '1',
       name: 'Mock screening',
       participants: [],
     }
@@ -111,11 +111,11 @@ describe('Store', () => {
   })
 
   it('handles update screening', () => {
-    const participant = {id: 2, person_id: 3, screening_id: 1}
+    const participant = {id: '2', person_id: '3', screening_id: '1'}
     initialState = {
       ...initialState,
       screening: Immutable.fromJS({
-        id: 1,
+        id: '1',
         name: 'Mock screening',
         participants: [],
       }),
@@ -132,11 +132,11 @@ describe('Store', () => {
 
   it('handles create participant', () => {
     expect(store.getState()).toEqual(initialState)
-    const participant = {id: 2, person_id: 3, screening_id: 1}
+    const participant = {id: '2', person_id: '3', screening_id: '1'}
     initialState = {
       ...initialState,
       screening: Immutable.fromJS({
-        id: 1,
+        id: '1',
         name: 'Mock screening',
         participants: [],
       }),

@@ -51,7 +51,7 @@ describe('PersonSuggestion', () => {
     it('renders when present', () => {
       const props = {
         address: {
-          id: 1,
+          id: '1',
           streetAddress: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',
@@ -66,7 +66,7 @@ describe('PersonSuggestion', () => {
     it('gets rendered correctly when partial address is given', () => {
       const props = {
         address: {
-          id: 1,
+          id: '1',
           streetAddress: null,
           city: null,
           state: 'NM',

@@ -59,7 +59,7 @@ describe PersonRepository do
     it 'returns the person if the put to /people/:id is successful' do
       mock_response = double(:mock_response, status: 200, body: 'mock_body')
       mock_request = double(:mock_request)
-      created_person = double(:person, id: 1, as_json: 'created_person')
+      created_person = double(:person, id: '1', as_json: 'created_person')
       updated_person = double(:person)
       allow(API.connection).to receive(:put)
         .and_yield(mock_request)
@@ -73,7 +73,7 @@ describe PersonRepository do
     end
 
     it 'raise an error if the response code is not 201' do
-      created_person = double(:person, id: 1)
+      created_person = double(:person, id: '1')
       mock_response = double(:mock_response, status: 500)
       allow(API.connection).to receive(:put).and_return(mock_response)
 
@@ -101,13 +101,13 @@ describe PersonRepository do
     end
 
     it 'returns the people results when people search is successful' do
-      results = [{ id: 1 }, { id: 2 }].to_json
+      results = [{ id: '1' }, { id: '2' }].to_json
       stub_request(:get, %r{/api/v1/people_search\?search_term=FirstName})
         .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
 
       expect(described_class.search('FirstName').length).to eq(2)
-      expect(described_class.search('FirstName')[0].id).to eq(1)
-      expect(described_class.search('FirstName')[1].id).to eq(2)
+      expect(described_class.search('FirstName')[0].id).to eq('1')
+      expect(described_class.search('FirstName')[1].id).to eq('2')
     end
 
     it 'sends a GET request to api people search' do

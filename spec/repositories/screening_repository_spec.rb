@@ -59,7 +59,7 @@ describe ScreeningRepository do
     it 'returns the screening if the put to /screenings/:id is successful' do
       mock_response = double(:mock_response, status: 200, body: { id: 'mock_body' })
       mock_request = double(:mock_request)
-      created_screening = double(:screening, id: 1, as_json: 'created_screening')
+      created_screening = double(:screening, id: '1', as_json: 'created_screening')
       updated_screening = double(:screening)
       allow(API.connection).to receive(:put)
         .and_yield(mock_request)
@@ -73,7 +73,7 @@ describe ScreeningRepository do
     end
 
     it 'raise an error if the response code is not 201' do
-      created_screening = double(:screening, id: 1)
+      created_screening = double(:screening, id: '1')
       mock_response = double(:mock_response, status: 500)
       allow(API.connection).to receive(:put).and_return(mock_response)
 
@@ -101,13 +101,13 @@ describe ScreeningRepository do
     end
 
     it 'returns the screening results when screening search is successful' do
-      results = [{ id: 1 }, { id: 2 }].to_json
+      results = [{ id: '1' }, { id: '2' }].to_json
       search_terms = { response_times: %w(immediate within_twenty_four_hours) }
       stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
         .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
 
-      expect(described_class.search(search_terms)[0].id).to eq(1)
-      expect(described_class.search(search_terms)[1].id).to eq(2)
+      expect(described_class.search(search_terms)[0].id).to eq('1')
+      expect(described_class.search(search_terms)[1].id).to eq('2')
     end
 
     it 'sends a GET request to api screening search' do

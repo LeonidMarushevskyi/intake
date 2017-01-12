@@ -6,7 +6,7 @@ feature 'Show Person' do
     address1 = FactoryGirl.create(
       :address,
       city: 'Springfield',
-      id: 1,
+      id: '1',
       state: 'NY',
       street_address: '123 fake st',
       zip: '12345',
@@ -15,7 +15,7 @@ feature 'Show Person' do
     address2 = FactoryGirl.create(
       :address,
       city: 'Sacramento',
-      id: 2,
+      id: '2',
       state: 'CA',
       street_address: '123 capital Mall',
       zip: '12354',

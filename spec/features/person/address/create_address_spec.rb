@@ -28,10 +28,10 @@ feature 'Create Address' do
       addresses: [address1, address2],
       languages: []
     )
-    created_address1 = FactoryGirl.create(:address, address1.as_json.merge(id: 2))
-    created_address2 = FactoryGirl.create(:address, address2.as_json.merge(id: 3))
+    created_address1 = FactoryGirl.create(:address, address1.as_json.merge(id: '2'))
+    created_address2 = FactoryGirl.create(:address, address2.as_json.merge(id: '3'))
     created_person = FactoryGirl.create(:person,
-      person.as_json.merge(id: 1, addresses: [created_address1, created_address2]))
+      person.as_json.merge(id: '1', addresses: [created_address1, created_address2]))
 
     visit new_person_path
 
@@ -60,7 +60,7 @@ feature 'Create Address' do
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(1))
+    stub_request(:get, api_person_path('1'))
       .and_return(body: created_person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -82,7 +82,7 @@ feature 'Create Address' do
       addresses: [],
       languages: []
     )
-    created_person = FactoryGirl.create(:person, person.as_json.merge(id: 1))
+    created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
     stub_request(:post, api_people_path)
       .with(body: person.to_json)
       .and_return(body: created_person.to_json,

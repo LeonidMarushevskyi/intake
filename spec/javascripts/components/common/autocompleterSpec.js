@@ -45,7 +45,7 @@ describe('<Autcompleter />', () => {
     it('clears the search Text and adds the suggestion', () => {
       const onSelect = jasmine.createSpy('onSelectSpy')
       const component = shallow(<Autocompleter onSelect={onSelect} />)
-      const suggestion = {id: 1, first_name: 'Bart'}
+      const suggestion = {id: '1', first_name: 'Bart'}
       component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
       expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
       expect(component.state('value')).toEqual('')
@@ -82,7 +82,7 @@ describe('<Autcompleter />', () => {
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [{
-          id: 1,
+          id: '1',
           street_address: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',

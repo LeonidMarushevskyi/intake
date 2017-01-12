@@ -11,7 +11,7 @@ const mockStore = configureMockStore(middlewares)
 describe('person actions', () => {
   describe('fetchPerson', () => {
     it('dispatches fetchPersonRequest and fetchPersonSuccess', () => {
-      const person = {id: 1, first_name: 'Bart'}
+      const person = {id: '1', first_name: 'Bart'}
       const jsonResponse = person
       const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
@@ -31,7 +31,7 @@ describe('person actions', () => {
   describe('createPerson', () => {
     it('dispatches createPersonRequest and createPersonSuccess', () => {
       const person = {first_name: 'Bart'}
-      const jsonResponse = {id: 1, first_name: 'Bart'}
+      const jsonResponse = {id: '1', first_name: 'Bart'}
       const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
       promiseSpyObj.then.and.callFake((then) => then(jsonResponse))
@@ -100,7 +100,7 @@ describe('person actions', () => {
 
   describe('updatePerson', () => {
     it('dispatches updatePersonRequest and updatePersonSuccess', () => {
-      const updatedPerson = {id: 1, first_name: 'Lisa', last_name: 'Simpson'}
+      const updatedPerson = {id: '1', first_name: 'Lisa', last_name: 'Simpson'}
       const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       spyOn(Utils, 'request').and.returnValue(promiseSpyObj)
       promiseSpyObj.then.and.callFake((then) => then(updatedPerson))
@@ -111,7 +111,7 @@ describe('person actions', () => {
 
       const store = mockStore({
         person: Immutable.fromJS({
-          id: 1,
+          id: '1',
           first_name: 'Bart',
           last_name: 'Simpson',
         }),

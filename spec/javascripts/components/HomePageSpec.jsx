@@ -16,7 +16,7 @@ describe('HomePage', () => {
     spyOn(browserHistory, 'push')
     const props = {
       actions: {createScreening},
-      screening: Immutable.Map({id: 1}),
+      screening: Immutable.Map({id: '1'}),
     }
     component = shallow(<HomePage {...props} />)
   })

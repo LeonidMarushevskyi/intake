@@ -7,7 +7,7 @@ describe Screening do
       attributes = {
         communication_method: 'phone',
         ended_at: '2016-08-13T11:00:00.000Z',
-        id: 2,
+        id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
         location_type: nil,
@@ -20,14 +20,14 @@ describe Screening do
         created_at: '2016-08-13T10:00:00.000Z',
         updated_at: '2016-08-13T10:00:00.000Z',
         address: {
-          id: 1,
+          id: '1',
           street_address: '123 Fake St',
           city: 'NY',
           state: 'NY',
           zip: '11222'
         },
         participants: [
-          { id: 1, first_name: 'Homer', last_name: 'Simpson', person_id: 3, screening_id: 2 }
+          { id: '1', first_name: 'Homer', last_name: 'Simpson', person_id: '3', screening_id: '2' }
         ]
       }.with_indifferent_access
       expect(
@@ -35,7 +35,7 @@ describe Screening do
       ).to include({
         communication_method: 'phone',
         ended_at: '2016-08-13T11:00:00.000Z',
-        id: 2,
+        id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
         location_type: nil,
@@ -46,21 +46,21 @@ describe Screening do
         screening_decision: 'evaluate_out',
         started_at: '2016-08-13T10:00:00.000Z',
         address: include(
-          id: 1,
+          id: '1',
           street_address: '123 Fake St',
           city: 'NY',
           state: 'NY',
           zip: '11222'
         ),
         participants: include(
-          id: 1,
+          id: '1',
           date_of_birth: nil,
           first_name: 'Homer',
           gender: nil,
           last_name: 'Simpson',
           ssn: nil,
-          person_id: 3,
-          screening_id: 2
+          person_id: '3',
+          screening_id: '2'
         )
       }.with_indifferent_access)
     end
