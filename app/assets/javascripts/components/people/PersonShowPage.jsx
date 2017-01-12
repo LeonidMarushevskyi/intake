@@ -105,7 +105,7 @@ export class PersonShowPage extends React.Component {
           </div>
           <div className='row gap-top'>
             <ShowField gridClassName='col-md-4' label='Race'>
-              {races && races.join(', ')}
+              {races && races.map((item) => item.race).join(', ')}
             </ShowField>
           </div>
         </div>

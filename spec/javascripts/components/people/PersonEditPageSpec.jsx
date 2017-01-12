@@ -128,11 +128,12 @@ describe('PersonEditPage', () => {
       })
 
       it('change event calls setField with races', () => {
+        const races = Immutable.List([{race: 'White'}, {race: 'Asian'}])
         const instance = component.instance()
         spyOn(instance, 'setField')
         component.find('RacesEditView')
-          .simulate('change', Immutable.List(['White', 'Asian']))
-        expect(instance.setField).toHaveBeenCalledWith(['races'], Immutable.List(['White', 'Asian']))
+          .simulate('change', races)
+        expect(instance.setField).toHaveBeenCalledWith(['races'], races)
       })
     })
 

@@ -14,7 +14,10 @@ feature 'Create Person' do
       ssn: '123-23-1234',
       name_suffix: 'esq',
       languages: %w(English Farsi),
-      races: ['Asian', 'Black or African American']
+      races: [
+        { race: 'Asian' },
+        { race: 'Black or African American' }
+      ]
     )
 
     visit root_path

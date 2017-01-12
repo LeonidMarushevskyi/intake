@@ -13,7 +13,10 @@ feature 'Edit Person' do
       name_suffix: 'esq',
       ssn: '123-23-1234',
       languages: ['Armenian'],
-      races: ['Asian', 'Black or African American']
+      races: [
+        { race: 'Asian' },
+        { race: 'Black or African American' }
+      ]
     )
   end
 
@@ -67,7 +70,7 @@ feature 'Edit Person' do
     find('label', text: 'Unknown').click
 
     person.first_name = 'Lisa'
-    person.races = ['Unknown']
+    person.races = [{ race: 'Unknown' }]
 
     stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)

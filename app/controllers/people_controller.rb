@@ -81,7 +81,9 @@ class PeopleController < ApplicationController
         :type
       ],
       languages: [],
-      races: []
+      races: [
+        :race
+      ]
     )
   end
 end

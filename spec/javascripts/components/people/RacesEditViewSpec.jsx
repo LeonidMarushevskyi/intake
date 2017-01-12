@@ -9,7 +9,11 @@ describe('RacesEditView', () => {
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     const props = {
-      races: Immutable.List(['Asian', 'White']),
+      races:
+        Immutable.fromJS([
+          {race: 'Asian'},
+          {race: 'White'},
+        ]),
       onChange: onChange,
     }
     component = shallow(<RacesEditView {...props}/>)
@@ -43,9 +47,9 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: true}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'Asian',
-        'White',
-        'Black or African American',
+        {race: 'Asian'},
+        {race: 'White'},
+        {race: 'Black or African American'},
       ])
     })
   })
@@ -56,7 +60,7 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: false}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'White',
+        {race: 'White'},
       ])
     })
   })
@@ -67,13 +71,13 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: true}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'Unknown',
+        {race: 'Unknown'},
       ])
     })
 
     it('disables other checkboxes', () => {
       const props = {
-        races: Immutable.List(['Unknown']),
+        races: Immutable.fromJS([{race: 'Unknown'}]),
         onChange: onChange,
       }
       component = shallow(<RacesEditView {...props}/>)
@@ -85,7 +89,7 @@ describe('RacesEditView', () => {
   describe('when the race uncertain checkbox is unchecked', () => {
     it('clears all selected races and calls onChange with []', () => {
       const props = {
-        races: Immutable.List(['Unknown']),
+        races: Immutable.fromJS([{race: 'Unknown'}]),
         onChange: onChange,
       }
       component = shallow(<RacesEditView {...props}/>)

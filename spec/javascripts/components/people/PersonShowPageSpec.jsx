@@ -44,7 +44,10 @@ describe('PersonShowPage', () => {
           type: 'Home',
         }],
         languages: ['Turkish', 'Thai', 'Vietnamese'],
-        races: ['Asian', 'Black or African American'],
+        races: [
+          {race: 'Asian'},
+          {race: 'Black or African American'},
+        ],
       })
       const props = {
         params: {id: '99'},

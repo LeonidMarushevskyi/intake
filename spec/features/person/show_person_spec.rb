@@ -13,7 +13,10 @@ feature 'Show Person' do
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
       languages: %w(Turkish Thai Vietnamese),
-      races: ['Asian', 'Black or African American']
+      races: [
+        { race: 'Asian' },
+        { race: 'Black or African American' }
+      ]
     )
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,

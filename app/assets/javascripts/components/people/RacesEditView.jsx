@@ -13,19 +13,20 @@ export class RacesEditView extends React.Component {
     if (isChecked) {
       let newRaces
       if (RACES[race].exclusive) {
-        newRaces = Immutable.List([race])
+        newRaces = Immutable.List([{race: race}])
       } else {
-        newRaces = this.props.races.push(race)
+        newRaces = this.props.races.push(Immutable.Map({race: race}))
       }
       this.props.onChange(newRaces)
     } else {
-      this.props.onChange(races.filterNot((item) => item === race))
+      this.props.onChange(races.filterNot((item) => item.get('race') === race))
     }
   }
 
   render() {
     const {races} = this.props
-    const exclusiveRaceSelected = races.some((race) => RACES[race].exclusive)
+    const selectedRaces = races.toJS().map(({race}) => race)
+    const exclusiveRaceSelected = selectedRaces.some((race) => RACES[race].exclusive)
     return (
       <div className='gap-top'>
         <fieldset className='fieldset-inputs sans'>
@@ -33,7 +34,7 @@ export class RacesEditView extends React.Component {
           <ul className='unstyled-list css-column-count--two'>
             {
               Object.keys(RACES).map((race) => {
-                const isSelected = races.includes(race)
+                const isSelected = selectedRaces.includes(race)
                 const isDisabled = exclusiveRaceSelected && !isSelected
                 return (
                   <CheckboxField
