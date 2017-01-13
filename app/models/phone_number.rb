@@ -8,6 +8,4 @@ class PhoneNumber # :nodoc:
   attribute :id
   attribute :number
   attribute :type
-  attribute :created_at
-  attribute :updated_at
 end

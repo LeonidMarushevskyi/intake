@@ -10,7 +10,7 @@ module AutocompleterHelpers
   def fill_in_autocompleter(locator, options)
     value = options[:with]
     populate_autocompleter_with_options(locator, value)
-    click_autocompleter_result(value)
+    click_autocompleter_result(value, options[:result_should_contain])
   end
 
   def populate_autocompleter_with_options(locator, value)
@@ -27,8 +27,8 @@ module AutocompleterHelpers
     field.click unless field.base.click
   end
 
-  def click_autocompleter_result(value)
-    wait_for_result_to_appear(value)
+  def click_autocompleter_result(value, result_should_contain)
+    wait_for_result_to_appear(value, result_should_contain)
     press_key :down
   rescue Timeout::Error
     raise "Unable to find autocompleter result with text:\n#{value}"
@@ -41,12 +41,12 @@ module AutocompleterHelpers
     page.find(:xpath, '//body')
   end
 
-  def wait_for_result_to_appear(value)
+  def wait_for_result_to_appear(value, result_should_contain = nil)
     Timeout.timeout(2.0 * Capybara.default_max_wait_time) do
       sleep(0.1) until page.first(
         RESULTS_CONTAINER.to_s,
         visible: true,
-        text: value
+        text: result_should_contain || value
       )
     end
   end

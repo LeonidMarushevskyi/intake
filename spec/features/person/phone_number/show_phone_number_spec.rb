@@ -9,16 +9,12 @@ feature 'Show Person' do
         {
           id: '1',
           number: '917-578-2010',
-          type: 'Work',
-          created_at: '2016-08-11T18:24:22.157Z',
-          updated_at: '2016-08-11T18:24:22.157Z'
+          type: 'Work'
         },
         {
           id: '2',
           number: '456-789-4566',
-          type: nil,
-          created_at: '2016-08-11T18:24:22.157Z',
-          updated_at: '2016-08-11T18:24:22.157Z'
+          type: nil
         }
       ],
       addresses: FactoryGirl.create(:address, id: nil)
