@@ -14,7 +14,8 @@ feature 'Show Person' do
       ssn: '123-23-1234',
       languages: %w(Turkish Thai Vietnamese),
       races: [
-        { race: 'Asian' },
+        { race: 'White', race_detail: 'Romanian' },
+        { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }
       ]
     )
@@ -34,7 +35,7 @@ feature 'Show Person' do
     expect(page).to have_content('05/29/1990')
     expect(page).to have_content('123-23-1234')
     expect(page).to have_content('Race')
-    expect(page).to have_content('Asian, Black or African American')
+    expect(page).to have_content('White - Romanian, Asian - Chinese, Black or African American')
     expect(page).to_not have_content('Save')
     expect(page).to have_link('Edit Person', href: edit_person_path(id: person.id))
   end

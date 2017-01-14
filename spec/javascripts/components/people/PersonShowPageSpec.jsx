@@ -45,7 +45,8 @@ describe('PersonShowPage', () => {
         }],
         languages: ['Turkish', 'Thai', 'Vietnamese'],
         races: [
-          {race: 'Asian'},
+          {race: 'White', race_detail: 'Romanian'},
+          {race: 'Asian', race_detail: 'Chinese'},
           {race: 'Black or African American'},
         ],
       })
@@ -107,7 +108,7 @@ describe('PersonShowPage', () => {
       expect(component.find('ShowField[label="Address Type"]').last().html())
         .toContain('Home')
       expect(component.find('ShowField[label="Race"]').html())
-        .toContain('Asian, Black or African American')
+        .toContain('White - Romanian, Asian - Chinese, Black or African American')
     })
 
     it('renders the edit link', () => {
