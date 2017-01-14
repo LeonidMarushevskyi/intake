@@ -57,46 +57,51 @@ export class RacesEditView extends React.Component {
     return raceData
   }
 
+  renderRaceAndRaceDetails(raceData) {
+    return (
+      <div className='col-md-6'>
+        <ul className='unstyled-list'>
+          {raceData.map((item) => {
+            const {race, selected, raceDetails, selectedRaceDetail, disabled} = item
+            return (
+              <li key={race}>
+                <CheckboxField
+                  key={race}
+                  id={race}
+                  value={race}
+                  checked={selected}
+                  disabled={disabled}
+                  onChange={(event) => this.changeRace(race, event.target.checked)}
+                />
+                {selected && raceDetails &&
+                  <SelectField
+                    id={`${race}-race-detail`}
+                    label={''}
+                    value={selectedRaceDetail || ''}
+                    onChange={(event) => this.changeRaceDetail(race, event.target.value)}
+                  >
+                    <option key='' value='' />
+                    {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
+                  </SelectField>
+                }
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
   render() {
+    const raceData = this.raceData()
+    const startIndex = 0
+    const halfIndex = 4
     return (
       <div className='gap-top'>
         <fieldset className='fieldset-inputs sans'>
           <label>Race</label>
-          <ul className='unstyled-list css-column-count--two'>
-            {
-              this.raceData().map((item) => {
-                const {race, selected, raceDetails, selectedRaceDetail, disabled} = item
-                return (
-                  <li key={race}>
-                    <CheckboxField
-                      key={race}
-                      id={race}
-                      value={race}
-                      checked={selected}
-                      disabled={disabled}
-                      onChange={(event) => this.changeRace(race, event.target.checked)}
-                    />
-                    {
-                      selected && raceDetails &&
-                        <SelectField
-                          id={`${race}-race-detail`}
-                          label={''}
-                          value={selectedRaceDetail || ''}
-                          onChange={(event) => this.changeRaceDetail(race, event.target.value)}
-                        >
-                          <option key='' value='' />
-                          {
-                            raceDetails.map((raceDetail) => (
-                              <option key={raceDetail} value={raceDetail}>{raceDetail}</option>
-                              ))
-                          }
-                        </SelectField>
-                    }
-                  </li>
-                  )
-              })
-            }
-          </ul>
+          {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
+          {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
         </fieldset>
         <hr />
       </div>
