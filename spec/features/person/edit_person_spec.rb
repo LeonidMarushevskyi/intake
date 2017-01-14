@@ -14,7 +14,7 @@ feature 'Edit Person' do
       ssn: '123-23-1234',
       languages: ['Armenian'],
       races: [
-        { race: 'Asian' },
+        { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }
       ]
     )
@@ -44,6 +44,7 @@ feature 'Edit Person' do
       expect(page).to have_field('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Social security number', with: '123-23-1234')
       expect(page.find('input[value="Asian"]')).to be_checked
+      expect(page).to have_field('Asian-race-detail', text: 'Chinese')
       expect(page.find('input[value="Black or African American"]')).to be_checked
     end
     expect(page).to have_link 'Cancel'
@@ -91,7 +92,7 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'when a user modifies and existing persons languages' do
+  scenario 'when a user modifies an existing persons languages' do
     visit edit_person_path(id: person.id)
 
     fill_in_react_select 'Language(s)', with: 'English'
@@ -99,6 +100,38 @@ feature 'Edit Person' do
     remove_react_select_option('Language(s)', 'Armenian')
 
     person.languages = %w(English Farsi)
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json)
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, api_person_path(person.id))
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+
+    click_button 'Save'
+    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
+
+    expect(page).to have_current_path(person_path(id: person.id))
+    within '.card-header' do
+      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
+    end
+  end
+
+  scenario 'when a user modifies an existing persons race and race detail' do
+    visit edit_person_path(id: person.id)
+
+    select 'Japanese'
+    find('label', text: 'White').click
+    select 'Romanian'
+
+    person.races = [
+      { race: 'Asian', race_detail: 'Japanese' },
+      { race: 'Black or African American' },
+      { race: 'White', race_detail: 'Romanian' }
+    ]
+
     stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)
       .and_return(status: 200,

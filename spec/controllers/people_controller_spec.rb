@@ -34,7 +34,7 @@ describe PeopleController do
         ],
         languages: %w(English Farsi),
         races: [
-          { race: 'Asian' },
+          { race: 'Asian', race_detail: 'Chinese' },
           { race: 'Black or African American' }
         ]
       }.with_indifferent_access
@@ -107,7 +107,7 @@ describe PeopleController do
         }],
         languages: ['Armenian'],
         races: [
-          { race: 'Asian' },
+          { race: 'Asian', race_detail: 'Chinese' },
           { race: 'Black or African American' }
         ]
       }.with_indifferent_access
