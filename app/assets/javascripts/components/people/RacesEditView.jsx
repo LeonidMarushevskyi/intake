@@ -9,27 +9,27 @@ export class RacesEditView extends React.Component {
     super(...arguments)
   }
 
-  changeRace(race, isChecked) {
+  changeRace(selectedRace, isChecked) {
     const {races} = this.props
     if (isChecked) {
       let newRaces
-      if (RACES[race].exclusive) {
-        newRaces = Immutable.fromJS([{race: race}])
+      if (RACES[selectedRace].exclusive) {
+        newRaces = Immutable.fromJS([{race: selectedRace}])
       } else {
-        newRaces = this.props.races.push(Immutable.Map({race: race}))
+        newRaces = this.props.races.push(Immutable.Map({race: selectedRace}))
       }
       this.props.onChange(newRaces)
     } else {
-      this.props.onChange(races.filterNot((item) => item.get('race') === race))
+      this.props.onChange(races.filterNot((item) => item.get('race') === selectedRace))
     }
   }
 
-  changeRaceDetail(race, raceDetail) {
+  changeRaceDetail(race, selectedRaceDetail) {
     const {races} = this.props
     const index = races.toJS().findIndex((item) => item.race === race)
     let newRaces
-    if (raceDetail) {
-      newRaces = races.set(index, {race: race, race_detail: raceDetail})
+    if (selectedRaceDetail) {
+      newRaces = races.set(index, {race: race, race_detail: selectedRaceDetail})
     } else {
       newRaces = races.set(index, {race: race})
     }
