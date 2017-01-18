@@ -9,5 +9,4 @@ test:
 
 production:
   features:
-    release_one: false
-
+    release_one: <%= ENV.fetch('RELEASE_ONE', false) %>
