@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CheckboxField = ({id, value, checked, disabled, onChange}) => (
-  <li>
+  <div>
     <input type='checkbox'
       id={id}
       value={value}
@@ -10,7 +10,7 @@ const CheckboxField = ({id, value, checked, disabled, onChange}) => (
       onChange={onChange}
     />
     <label htmlFor={id}>{value}</label>
-  </li>
+  </div>
 )
 
 CheckboxField.propTypes = {

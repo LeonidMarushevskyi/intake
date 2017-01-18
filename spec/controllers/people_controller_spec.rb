@@ -33,7 +33,10 @@ describe PeopleController do
           { id: '', number: '222-222-2222', type: 'Home' }
         ],
         languages: %w(English Farsi),
-        races: %w(White Asian)
+        races: [
+          { race: 'Asian', race_detail: 'Chinese' },
+          { race: 'Black or African American' }
+        ]
       }.with_indifferent_access
     end
     let(:created_person) do
@@ -103,7 +106,10 @@ describe PeopleController do
           type: 'Home'
         }],
         languages: ['Armenian'],
-        races: %w(White Asian)
+        races: [
+          { race: 'Asian', race_detail: 'Chinese' },
+          { race: 'Black or African American' }
+        ]
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }

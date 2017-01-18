@@ -2,52 +2,106 @@ import CheckboxField from 'components/common/CheckboxField'
 import Immutable from 'immutable'
 import RACES from 'Races'
 import React from 'react'
+import SelectField from 'components/common/SelectField'
 
 export class RacesEditView extends React.Component {
   constructor() {
     super(...arguments)
   }
 
-  changeRace(race, isChecked) {
+  changeRace(selectedRace, isChecked) {
     const {races} = this.props
     if (isChecked) {
       let newRaces
-      if (RACES[race].exclusive) {
-        newRaces = Immutable.List([race])
+      if (RACES[selectedRace].exclusive) {
+        newRaces = Immutable.fromJS([{race: selectedRace}])
       } else {
-        newRaces = this.props.races.push(race)
+        newRaces = this.props.races.push(Immutable.Map({race: selectedRace}))
       }
       this.props.onChange(newRaces)
     } else {
-      this.props.onChange(races.filterNot((item) => item === race))
+      this.props.onChange(races.filterNot((item) => item.get('race') === selectedRace))
     }
   }
 
-  render() {
+  changeRaceDetail(race, selectedRaceDetail) {
     const {races} = this.props
-    const exclusiveRaceSelected = races.some((race) => RACES[race].exclusive)
+    const index = races.toJS().findIndex((item) => item.race === race)
+    let newRaces
+    if (selectedRaceDetail) {
+      newRaces = races.set(index, {race: race, race_detail: selectedRaceDetail})
+    } else {
+      newRaces = races.set(index, {race: race})
+    }
+    this.props.onChange(newRaces)
+  }
+
+  persistedRaceInfo(race) {
+    return this.props.races.toJS().find((item) => item.race === race)
+  }
+
+  raceData() {
+    const persistedRaces = this.props.races.toJS()
+    const exclusiveRaceSelected = persistedRaces.find(({race}) => RACES[race].exclusive)
+
+    const raceData = Object.keys(RACES).map((race) => {
+      const persistedRaceInfo = this.persistedRaceInfo(race)
+      return {
+        race: race,
+        selected: Boolean(persistedRaceInfo),
+        raceDetails: RACES[race].raceDetails,
+        selectedRaceDetail: persistedRaceInfo && persistedRaceInfo.race_detail,
+        disabled: exclusiveRaceSelected && !persistedRaceInfo,
+      }
+    })
+    return raceData
+  }
+
+  renderRaceAndRaceDetails(raceData) {
+    return (
+      <div className='col-md-6'>
+        <ul className='unstyled-list'>
+          {raceData.map((item) => {
+            const {race, selected, raceDetails, selectedRaceDetail, disabled} = item
+            return (
+              <li key={race}>
+                <CheckboxField
+                  key={race}
+                  id={race}
+                  value={race}
+                  checked={selected}
+                  disabled={disabled}
+                  onChange={(event) => this.changeRace(race, event.target.checked)}
+                />
+                {selected && raceDetails &&
+                  <SelectField
+                    id={`${race}-race-detail`}
+                    label={''}
+                    value={selectedRaceDetail || ''}
+                    onChange={(event) => this.changeRaceDetail(race, event.target.value)}
+                  >
+                    <option key='' value='' />
+                    {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
+                  </SelectField>
+                }
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
+  render() {
+    const raceData = this.raceData()
+    const startIndex = 0
+    const halfIndex = 4
     return (
       <div className='gap-top'>
         <fieldset className='fieldset-inputs sans'>
           <label>Race</label>
-          <ul className='unstyled-list css-column-count--two'>
-            {
-              Object.keys(RACES).map((race) => {
-                const isSelected = races.includes(race)
-                const isDisabled = exclusiveRaceSelected && !isSelected
-                return (
-                  <CheckboxField
-                    key={race}
-                    id={race}
-                    value={race}
-                    checked={isSelected}
-                    disabled={isDisabled}
-                    onChange={(event) => this.changeRace(race, event.target.checked)}
-                  />
-                  )
-              })
-            }
-          </ul>
+          {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
+          {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
         </fieldset>
         <hr />
       </div>

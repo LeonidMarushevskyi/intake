@@ -9,7 +9,11 @@ describe('RacesEditView', () => {
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     const props = {
-      races: Immutable.List(['Asian', 'White']),
+      races:
+        Immutable.fromJS([
+          {race: 'Asian', race_detail: 'Chinese'},
+          {race: 'White'},
+        ]),
       onChange: onChange,
     }
     component = shallow(<RacesEditView {...props}/>)
@@ -30,11 +34,15 @@ describe('RacesEditView', () => {
     ])
   })
 
-  it('preselected races passed true for checked from props', () => {
+  it('preselect races and race details passed to props', () => {
     expect(component.find('CheckboxField[value="White"]').props().checked).toEqual(true)
     expect(component.find('CheckboxField[value="Asian"]').props().checked).toEqual(true)
     expect(component.find('CheckboxField[value="Black or African American"]').props().checked).toEqual(false)
     expect(component.find('CheckboxField[value="Unknown"]').props().checked).toEqual(false)
+
+    expect(component.find('SelectField').length).toEqual(2)
+    expect(component.find('SelectField[id="White-race-detail"]').props().value).toEqual('')
+    expect(component.find('SelectField[id="Asian-race-detail"]').props().value).toEqual('Chinese')
   })
 
   describe('when checkboxes are checked', () => {
@@ -43,9 +51,9 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: true}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'Asian',
-        'White',
-        'Black or African American',
+        {race: 'Asian', race_detail: 'Chinese'},
+        {race: 'White'},
+        {race: 'Black or African American'},
       ])
     })
   })
@@ -56,7 +64,7 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: false}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'White',
+        {race: 'White'},
       ])
     })
   })
@@ -67,31 +75,64 @@ describe('RacesEditView', () => {
       input.simulate('change', {target: {checked: true}})
       expect(onChange).toHaveBeenCalled()
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        'Unknown',
+        {race: 'Unknown'},
       ])
     })
 
     it('disables other checkboxes', () => {
       const props = {
-        races: Immutable.List(['Unknown']),
+        races: Immutable.fromJS([{race: 'Unknown'}]),
         onChange: onChange,
       }
       component = shallow(<RacesEditView {...props}/>)
       expect(component.find('CheckboxField').length).toEqual(8)
       expect(component.find('CheckboxField[disabled=true]').length).toEqual(7)
     })
+
+    it('does not show the race detail dropdown', () => {
+      const props = {
+        races: Immutable.fromJS([{race: 'Unknown'}]),
+        onChange: onChange,
+      }
+      component = shallow(<RacesEditView {...props}/>)
+      expect(component.find('SelectField').length).toEqual(0)
+    })
   })
 
   describe('when the race uncertain checkbox is unchecked', () => {
     it('clears all selected races and calls onChange with []', () => {
       const props = {
-        races: Immutable.List(['Unknown']),
+        races: Immutable.fromJS([{race: 'Unknown'}]),
         onChange: onChange,
       }
       component = shallow(<RacesEditView {...props}/>)
       const input = component.find('CheckboxField[value="Unknown"]')
       input.simulate('change', {target: {checked: false}})
       expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([])
+    })
+  })
+
+  describe('when selecting new race detail', () => {
+    it('calls onChange with the new race detail', () => {
+      const dropdown = component.find('SelectField[id="Asian-race-detail"]')
+      dropdown.simulate('change', {target: {value: 'Filipino'}})
+      expect(onChange).toHaveBeenCalled()
+      expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
+        {race: 'Asian', race_detail: 'Filipino'},
+        {race: 'White'},
+      ])
+    })
+  })
+
+  describe('when removing race detail', () => {
+    it('calls onChange with the new race detail', () => {
+      const dropdown = component.find('SelectField[id="Asian-race-detail"]')
+      dropdown.simulate('change', {target: {value: ''}})
+      expect(onChange).toHaveBeenCalled()
+      expect(onChange.calls.argsFor(0)[0].toJS()).toEqual([
+        {race: 'Asian'},
+        {race: 'White'},
+      ])
     })
   })
 })

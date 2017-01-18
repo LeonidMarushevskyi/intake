@@ -14,7 +14,10 @@ feature 'Create Person' do
       ssn: '123-23-1234',
       name_suffix: 'esq',
       languages: %w(English Farsi),
-      races: ['Asian', 'Black or African American']
+      races: [
+        { race: 'Asian', race_detail: 'Chinese' },
+        { race: 'Black or African American' }
+      ]
     )
 
     visit root_path
@@ -30,6 +33,7 @@ feature 'Create Person' do
     fill_in 'Date of birth', with: '05/29/1990'
     fill_in 'Social security number', with: '123-23-1234'
     find('label', text: 'Asian').click
+    select 'Chinese'
     find('label', text: 'Black or African American').click
 
     stub_request(:post, api_people_path)

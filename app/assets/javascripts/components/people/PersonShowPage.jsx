@@ -104,8 +104,12 @@ export class PersonShowPage extends React.Component {
             }
           </div>
           <div className='row gap-top'>
-            <ShowField gridClassName='col-md-4' label='Race'>
-              {races && races.join(', ')}
+            <ShowField gridClassName='col-md-12' label='Race'>
+              {races &&
+                races.map(({race, race_detail}) => {
+                  const raceDetailText = (race_detail && ` - ${race_detail}`) || ''
+                  return `${race}${raceDetailText}`
+                }).join(', ')}
             </ShowField>
           </div>
         </div>
