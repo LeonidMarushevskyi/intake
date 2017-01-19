@@ -79,6 +79,10 @@ describe('<Autcompleter />', () => {
         first_name: 'Bart',
         last_name: 'Simpson',
         gender: 'female',
+        races: [
+          {race: 'White', race_detail: 'European'},
+          {race: 'American Indian or Alaska Native'},
+        ],
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [{
@@ -98,6 +102,10 @@ describe('<Autcompleter />', () => {
         firstName: 'Bart',
         lastName: 'Simpson',
         gender: 'female',
+        races: [
+          {race: 'White', race_detail: 'European'},
+          {race: 'American Indian or Alaska Native'},
+        ],
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',
         address: {
@@ -116,6 +124,7 @@ describe('<Autcompleter />', () => {
         first_name: 'Bart',
         last_name: 'Simpson',
         gender: 'female',
+        races: [],
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [],
@@ -128,6 +137,7 @@ describe('<Autcompleter />', () => {
         firstName: 'Bart',
         lastName: 'Simpson',
         gender: 'female',
+        races: [],
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',
         address: null,

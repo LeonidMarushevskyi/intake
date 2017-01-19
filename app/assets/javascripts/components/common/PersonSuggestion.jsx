@@ -6,7 +6,7 @@ const AgeInfo = ({dateOfBirth}) => {
   const dob = moment.utc(dateOfBirth, 'YYYY-MM-DD')
   const ageInYears = dob.isValid() && moment().diff(dob, 'years')
   return (
-    dob.isValid() && <div>{`${ageInYears} yrs old (${dob.format('M/D/YYYY')})`}</div>
+    dob.isValid() && <div>{`${ageInYears} yrs old (DOB: ${dob.format('M/D/YYYY')})`}</div>
   )
 }
 
@@ -22,15 +22,23 @@ const AddressInfo = (address) => {
   )
 }
 
-const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, ssn, address}) => (
+const GenderAndRace = ({gender, races}) => {
+  const racesText = races && races.map(({race}) => race)
+  const genderAndRace = [Gender[gender]].concat(racesText).filter(Boolean).join(', ')
+  return (
+    genderAndRace ? <div>{genderAndRace}</div> : null
+  )
+}
+
+const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, races, ssn, address}) => (
   <div className='row'>
     <div className='col-md-2'>
       <img src='/assets/default-profile.svg' />
     </div>
     <div className='col-md-4'>
       <strong>{[firstName, lastName].filter(Boolean).join(' ')}</strong>
+      <GenderAndRace gender={gender} races={races} />
       <AgeInfo dateOfBirth={dateOfBirth} />
-      {gender && <div>{Gender[gender]}</div>}
       {ssn && <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div>}
     </div>
     {address &&
@@ -40,6 +48,11 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, ssn, addres
     }
   </div>
 )
+
+GenderAndRace.propTypes = {
+  gender: React.PropTypes.string,
+  races: React.PropTypes.array,
+}
 
 PersonSuggestion.propTypes = {
   address: React.PropTypes.shape({
@@ -53,6 +66,8 @@ PersonSuggestion.propTypes = {
   firstName: React.PropTypes.string,
   gender: React.PropTypes.string,
   lastName: React.PropTypes.string,
+  races: React.PropTypes.array,
   ssn: React.PropTypes.string,
 }
+
 export default PersonSuggestion

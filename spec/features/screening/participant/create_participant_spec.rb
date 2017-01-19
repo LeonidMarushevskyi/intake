@@ -41,7 +41,11 @@ feature 'Edit Screening' do
       last_name: 'Simpson',
       ssn: '123-23-1234',
       addresses: [marge_address],
-      phone_numbers: [marge_phone_number]
+      phone_numbers: [marge_phone_number],
+      races: [
+        { race: 'White', race_detail: 'European' },
+        { race: 'American Indian or Alaska Native' }
+      ]
     )
   end
 
@@ -114,7 +118,7 @@ feature 'Edit Screening' do
       within 'li', text: 'Marge Simpson' do
         expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
-        expect(page).to have_content 'Female'
+        expect(page).to have_content 'Female, White, American Indian or Alaska Native'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '123-23-1234'
         expect(page).to have_content 'Home'
