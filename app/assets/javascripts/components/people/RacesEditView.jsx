@@ -29,9 +29,9 @@ export class RacesEditView extends React.Component {
     const index = races.toJS().findIndex((item) => item.race === race)
     let newRaces
     if (selectedRaceDetail) {
-      newRaces = races.set(index, {race: race, race_detail: selectedRaceDetail})
+      newRaces = races.set(index, Immutable.Map({race: race, race_detail: selectedRaceDetail}))
     } else {
-      newRaces = races.set(index, {race: race})
+      newRaces = races.set(index, Immutable.Map({race: race}))
     }
     this.props.onChange(newRaces)
   }
