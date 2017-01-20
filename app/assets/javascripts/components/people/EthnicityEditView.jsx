@@ -39,11 +39,13 @@ export class EthnicityEditView extends React.Component {
             ethnicityOptions.map((option) => {
               const hispanicLatinoOrigin = ethnicity.get('hispanic_latino_origin')
               const disabled = hispanicLatinoOrigin && hispanicLatinoOrigin !== option
+              const selected = hispanicLatinoOrigin === option
               return (
                 <li key={option}>
                   <CheckboxField
                     id={`ethnicity-${option.replace(/ /gi, '_')}`}
                     value={option}
+                    checked={selected}
                     disabled={Boolean(disabled)}
                     onChange={(event) => this.changeEthnicity(option, event.target.checked)}
                   />
@@ -51,6 +53,7 @@ export class EthnicityEditView extends React.Component {
                   <SelectField
                     id={'ethnicity-detail'}
                     label={''}
+                    value={ethnicity.get('ethnicity_detail')}
                     onChange={(event) => this.changeEthnicityDetail(event.target.value)}
                   >
                     <option key='' value='' />

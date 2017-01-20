@@ -16,7 +16,11 @@ feature 'Edit Person' do
       races: [
         { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }
-      ]
+      ],
+      ethnicity: {
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican'
+      }
     )
   end
 
@@ -46,6 +50,8 @@ feature 'Edit Person' do
       expect(page.find('input[value="Asian"]')).to be_checked
       expect(page).to have_field('Asian-race-detail', text: 'Chinese')
       expect(page.find('input[value="Black or African American"]')).to be_checked
+      expect(page.find('input[value="Yes"]')).to be_checked
+      expect(page).to have_field('ethnicity-detail', text: 'Mexican')
     end
     expect(page).to have_link 'Cancel'
     expect(page).to have_button 'Save'
@@ -68,10 +74,15 @@ feature 'Edit Person' do
     visit edit_person_path(id: person.id)
 
     fill_in 'First Name', with: 'Lisa'
-    find('label', text: 'Unknown').click
+    within('#race') { find('label', text: 'Unknown').click }
+    within('#ethnicity') do
+      find('label', text: 'Yes').click
+      find('label', text: 'Declined to answer').click
+    end
 
     person.first_name = 'Lisa'
     person.races = [{ race: 'Unknown' }]
+    person.ethnicity = { hispanic_latino_origin: 'Declined to answer' }
 
     stub_request(:put, api_person_path(person.id))
       .with(body: person.to_json)

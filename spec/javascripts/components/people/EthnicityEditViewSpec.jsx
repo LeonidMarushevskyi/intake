@@ -27,6 +27,19 @@ describe('EthnicityEditView', () => {
     ])
   })
 
+  it('prepopulates the values passed to props', () => {
+    const props = {
+      ethnicity: Immutable.Map({
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican',
+      }),
+      onChange: onChange,
+    }
+    component = shallow(<EthnicityEditView {...props}/>)
+    expect(component.find('CheckboxField[value="Yes"]').props().checked).toEqual(true)
+    expect(component.find('SelectField').props().value).toEqual('Mexican')
+  })
+
   describe('when checkbox is checked', () => {
     it('calls onChange with the new ethnicity', () => {
       const input = component.find('CheckboxField[value="Yes"]')
