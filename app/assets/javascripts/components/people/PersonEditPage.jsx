@@ -1,20 +1,21 @@
 import * as personActions from 'actions/personActions'
+import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
+import EthnicityEditView from 'components/people/EthnicityEditView'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGE from 'Language'
 import NAME_SUFFIX from 'NameSuffix'
+import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import RacesEditView from 'components/people/RacesEditView'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
-import AddressesEditView from 'components/people/AddressesEditView'
+import selectOptions from 'utils/selectHelper'
 import {Link, browserHistory} from 'react-router'
-import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import selectOptions from 'utils/selectHelper'
 
 export class PersonEditPage extends React.Component {
   constructor() {
@@ -161,6 +162,10 @@ export class PersonEditPage extends React.Component {
           <RacesEditView
             races={this.state.person.get('races') || Immutable.List()}
             onChange={(races) => this.setField(['races'], races)}
+          />
+          <EthnicityEditView
+            ethnicity={this.state.person.get('ethnicity') || Immutable.Map()}
+            onChange={(ethnicity) => this.setField(['ethnicity'], ethnicity)}
           />
           <div className='row'>
             <div className='centered'>

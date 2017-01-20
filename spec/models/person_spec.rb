@@ -36,7 +36,11 @@ describe Person do
           { id: '2', number: '222-222-2222', type: 'Home' }
         ],
         languages: %w(English Farsi),
-        races: %w(White Asian)
+        races: %w(White Asian),
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Mexican'
+        }
       }.with_indifferent_access
       expect(described_class.new(attributes).as_json).to eq({
         id: '1',
@@ -72,7 +76,11 @@ describe Person do
           type: 'Home'
         }],
         languages: %w(English Farsi),
-        races: %w(White Asian)
+        races: %w(White Asian),
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Mexican'
+        }
       }.with_indifferent_access)
     end
   end

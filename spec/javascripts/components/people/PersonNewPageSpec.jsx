@@ -120,6 +120,21 @@ describe('PersonNewPage', () => {
       })
     })
 
+    describe('ethnicity', () => {
+      it('renders the EthnicityEditView', () => {
+        expect(component.find('EthnicityEditView').length).toEqual(1)
+      })
+
+      it('change event calls setField with ethnicity', () => {
+        const ethnicity = Immutable.Map({hispanic_latino_origin: 'Yes'})
+        const instance = component.instance()
+        spyOn(instance, 'setField')
+        component.find('EthnicityEditView')
+          .simulate('change', ethnicity)
+        expect(instance.setField).toHaveBeenCalledWith(['ethnicity'], ethnicity)
+      })
+    })
+
     it('renders the save button', () => {
       expect(component.find('button').length).toEqual(1)
     })

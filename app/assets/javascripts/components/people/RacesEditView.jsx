@@ -63,11 +63,12 @@ export class RacesEditView extends React.Component {
         <ul className='unstyled-list'>
           {raceData.map((item) => {
             const {race, selected, raceDetails, selectedRaceDetail, disabled} = item
+            const raceId = race.replace(/ /gi, '_')
             return (
               <li key={race}>
                 <CheckboxField
                   key={race}
-                  id={race}
+                  id={`race-${raceId}`}
                   value={race}
                   checked={selected}
                   disabled={disabled}
@@ -75,7 +76,7 @@ export class RacesEditView extends React.Component {
                 />
                 {selected && raceDetails &&
                   <SelectField
-                    id={`${race}-race-detail`}
+                    id={`${raceId}-race-detail`}
                     label={''}
                     value={selectedRaceDetail || ''}
                     onChange={(event) => this.changeRaceDetail(race, event.target.value)}
@@ -97,8 +98,8 @@ export class RacesEditView extends React.Component {
     const startIndex = 0
     const halfIndex = 4
     return (
-      <div className='gap-top'>
-        <fieldset className='fieldset-inputs sans'>
+      <div className='gap-top' id='race'>
+        <fieldset className='fieldset-inputs'>
           <label>Race</label>
           {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
           {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}

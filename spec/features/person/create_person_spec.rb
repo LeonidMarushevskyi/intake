@@ -17,7 +17,11 @@ feature 'Create Person' do
       races: [
         { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }
-      ]
+      ],
+      ethnicity: {
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican'
+      }
     )
 
     visit root_path
@@ -35,6 +39,8 @@ feature 'Create Person' do
     find('label', text: 'Asian').click
     select 'Chinese'
     find('label', text: 'Black or African American').click
+    find('label', text: 'Yes').click
+    select 'Mexican'
 
     stub_request(:post, api_people_path)
       .with(body: person.to_json)

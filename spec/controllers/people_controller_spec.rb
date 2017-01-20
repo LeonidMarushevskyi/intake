@@ -36,7 +36,11 @@ describe PeopleController do
         races: [
           { race: 'Asian', race_detail: 'Chinese' },
           { race: 'Black or African American' }
-        ]
+        ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Mexican'
+        }
       }.with_indifferent_access
     end
     let(:created_person) do
@@ -109,7 +113,11 @@ describe PeopleController do
         races: [
           { race: 'Asian', race_detail: 'Chinese' },
           { race: 'Black or African American' }
-        ]
+        ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Mexican'
+        }
       }.with_indifferent_access
     end
     let(:updated_person) { double(:person, as_json: { 'id' => 'updated_person' }) }

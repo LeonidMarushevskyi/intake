@@ -84,6 +84,10 @@ class PeopleController < ApplicationController
       races: [
         :race,
         :race_detail
+      ],
+      ethnicity: [
+        :hispanic_latino_origin,
+        :ethnicity_detail
       ]
     )
   end
