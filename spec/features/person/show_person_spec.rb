@@ -17,7 +17,11 @@ feature 'Show Person' do
         { race: 'White', race_detail: 'Romanian' },
         { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }
-      ]
+      ],
+      ethnicity: {
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican'
+      }
     )
     stub_request(:get, api_person_path(person.id))
       .and_return(body: person.to_json,
@@ -36,6 +40,8 @@ feature 'Show Person' do
     expect(page).to have_content('123-23-1234')
     expect(page).to have_content('Race')
     expect(page).to have_content('White - Romanian, Asian - Chinese, Black or African American')
+    expect(page).to have_content('Hispanic/Latino Origin')
+    expect(page).to have_content('Yes - Mexican')
     expect(page).to_not have_content('Save')
     expect(page).to have_link('Edit Person', href: edit_person_path(id: person.id))
   end

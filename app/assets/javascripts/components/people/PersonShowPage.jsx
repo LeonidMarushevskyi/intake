@@ -19,7 +19,8 @@ export class PersonShowPage extends React.Component {
 
   render() {
     const {params, person} = this.props
-    const {languages, races} = person.toJS()
+    const {languages, races, ethnicity} = person.toJS()
+    const {hispanic_latino_origin, ethnicity_detail} = ethnicity || {}
 
     return (
       <div className='card double-gap-top'>
@@ -112,6 +113,13 @@ export class PersonShowPage extends React.Component {
                 }).join(', ')}
             </ShowField>
           </div>
+          <div className='row gap-top'>
+            <ShowField gridClassName='col-md-12' label='Hispanic/Latino Origin'>
+              {ethnicity &&
+                `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`
+              }
+              </ShowField>
+            </div>
         </div>
       </div>
     )

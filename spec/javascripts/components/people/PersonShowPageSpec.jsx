@@ -49,6 +49,10 @@ describe('PersonShowPage', () => {
           {race: 'Asian', race_detail: 'Chinese'},
           {race: 'Black or African American'},
         ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Mexican',
+        },
       })
       const props = {
         params: {id: '99'},
@@ -109,6 +113,8 @@ describe('PersonShowPage', () => {
         .toContain('Home')
       expect(component.find('ShowField[label="Race"]').html())
         .toContain('White - Romanian, Asian - Chinese, Black or African American')
+      expect(component.find('ShowField[label="Hispanic/Latino Origin"]').html())
+        .toContain('Yes - Mexican')
     })
 
     it('renders the edit link', () => {
