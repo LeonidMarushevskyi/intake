@@ -10,10 +10,39 @@ describe('PersonSuggestion', () => {
     expect(component.html()).toContain('<strong>Bart Simpson</strong>')
   })
 
-  it('renders gender', () => {
-    const props = {gender: 'female'}
-    const component = shallow(<PersonSuggestion {...props} />)
-    expect(component.html()).toContain('<div>Female</div>')
+  describe('gender and race', () => {
+    it('renders correctly when only gender is provided', () => {
+      const props = {gender: 'female', races: []}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain('<div>Female</div>')
+    })
+
+    it('renders correctly when only races is provided', () => {
+      const props = {
+        races: [
+          {race: 'White', race_detail: 'European'},
+          {race: 'American Indian or Alaska Native'},
+        ],
+      }
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain(
+        '<div>White, American Indian or Alaska Native</div>'
+      )
+    })
+
+    it('renders correctly when both gender and races are provided', () => {
+      const props = {
+        gender: 'female',
+        races: [
+          {race: 'White', race_detail: 'European'},
+          {race: 'American Indian or Alaska Native'},
+        ],
+      }
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain(
+        '<div>Female, White, American Indian or Alaska Native</div>'
+      )
+    })
   })
 
   describe('age', () => {
