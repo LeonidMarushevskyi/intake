@@ -26,7 +26,8 @@ feature 'Create Address' do
       id: nil,
       phone_numbers: [],
       addresses: [address1, address2],
-      languages: []
+      languages: [],
+      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     created_address1 = FactoryGirl.create(:address, address1.as_json.merge(id: '2'))
     created_address2 = FactoryGirl.create(:address, address2.as_json.merge(id: '3'))
@@ -80,7 +81,8 @@ feature 'Create Address' do
       id: nil,
       phone_numbers: [],
       addresses: [],
-      languages: []
+      languages: [],
+      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
     stub_request(:post, api_people_path)

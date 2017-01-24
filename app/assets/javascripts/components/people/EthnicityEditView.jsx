@@ -13,7 +13,7 @@ export class EthnicityEditView extends React.Component {
     if (checked) {
       this.props.onChange(Immutable.fromJS({hispanic_latino_origin: selectedEthnicity}))
     } else {
-      this.props.onChange(null)
+      this.props.onChange(Immutable.fromJS({hispanic_latino_origin: null, ethnicity_detail: null}))
     }
   }
 

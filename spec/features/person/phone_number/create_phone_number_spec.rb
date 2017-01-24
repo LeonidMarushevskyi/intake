@@ -18,7 +18,8 @@ feature 'Create Phone Number' do
           type: nil
         }
       ],
-      addresses: []
+      addresses: [],
+      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     visit new_person_path
 
@@ -74,7 +75,8 @@ feature 'Create Phone Number' do
       id: nil,
       phone_numbers: [],
       addresses: [],
-      languages: []
+      languages: [],
+      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
     stub_request(:post, api_people_path)

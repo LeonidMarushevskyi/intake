@@ -33,7 +33,10 @@ export class PersonNewPage extends React.Component {
         phone_numbers: [],
         languages: [],
         races: [],
-        ethnicity: null,
+        ethnicity: {
+          hispanic_latino_origin: null,
+          ethnicity_detail: null,
+        },
       }),
     }
     this.setField = this.setField.bind(this)
