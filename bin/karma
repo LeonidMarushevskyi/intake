@@ -2,7 +2,7 @@
 bin/gulp build-test-assets
 
 if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
-  exec ./node_modules/.bin/karma start karma.conf.js --reporters junit,dots $options "$@"
+  exec ./node_modules/.bin/karma start karma.conf.js --reporters junit,dots,coverage,karma-remap-istanbul $options "$@"
 else
   exec ./node_modules/.bin/karma start karma.conf.js --reporters dots $options "$@"
 fi

@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Thu Jun 30 2016 11:04:09 GMT-0400 (EDT)
-
+//
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -11,9 +11,23 @@ module.exports = function(config) {
     ],
     exclude: [ ],
     preprocessors: {
-      '**/*.js': ['sourcemap'],
+      'public/assets/application-test.js': ['coverage'],
     },
-    reporters: ['progress', 'junit'],
+    coverageReporter: {
+      type: 'in-memory',
+      dir: '/reports/coverage',
+    },
+    remapIstanbulReporter: {
+      remapOptions: {
+        exclude: /node_modules/,
+      },
+      reports: {
+        html: '/reports/coverage/js',
+      },
+      subdir: (browser) => {
+        return browser.toLowerCase().split(' ')[0]
+      },
+    },
     junitReporter: {
           outputDir: '/reports', // results will be saved as $outputDir/$browserName.xml
           outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile

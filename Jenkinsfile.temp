@@ -1,0 +1,36 @@
+node {
+    checkout scm
+
+    try {
+        stage('Test') {
+            sh 'make test'
+        }
+    } finally {
+        stage ('JUnit Report') {
+            step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
+        }
+
+        stage ('JS Coverage Report') {
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'reports/coverage/js',
+                reportFiles: 'index.html',
+                reportName: 'JS Code Coverage'
+                ])
+        }
+
+        stage ('Ruby Coverage Report') {
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'reports/coverage/ruby',
+                reportFiles: 'index.html',
+                reportName: 'Ruby Code Coverage'
+              ])
+        }
+
+    }
+}
