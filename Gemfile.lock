@@ -91,6 +91,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     easy_translate (0.5.0)
       json
       thread
@@ -292,6 +293,11 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0)
     sexp_processor (4.7.0)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (3.6.0)
     spring (1.7.1)
     sprockets (3.7.0)
@@ -373,6 +379,7 @@ DEPENDENCIES
   rubocop-junit-formatter
   scss_lint
   selenium-webdriver
+  simplecov
   spring
   timecop
   virtus

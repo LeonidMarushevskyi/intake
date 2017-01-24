@@ -67,6 +67,16 @@ node('Slave') {
                 reportFiles: 'index.html',
                 reportName: 'JS Code Coverage'
               ])
+
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'reports/coverage/ruby',
+                reportFiles: 'index.html',
+                reportName: 'Ruby Code Coverage'
+              ])
+
         }
 
         stage('Clean') {
