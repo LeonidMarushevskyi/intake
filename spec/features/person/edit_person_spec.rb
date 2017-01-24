@@ -161,4 +161,35 @@ feature 'Edit Person' do
       expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end
   end
+
+  scenario 'when a user modifies existing person ethnicity to null' do
+    visit edit_person_path(id: person.id)
+
+    fill_in 'First Name', with: 'Lisa'
+    within('#ethnicity') do
+      find('label', text: 'Yes').click
+    end
+
+    person.first_name = 'Lisa'
+    person.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
+
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json)
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, api_person_path(person.id))
+      .and_return(status: 200,
+                  body: person.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
+
+    click_button 'Save'
+    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
+
+    expect(page).to have_current_path(person_path(id: person.id))
+    within '.card-header' do
+      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
+    end
+    expect(page).to_not have_content('Yes')
+  end
 end

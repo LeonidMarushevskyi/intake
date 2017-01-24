@@ -115,7 +115,7 @@ export class PersonShowPage extends React.Component {
           </div>
           <div className='row gap-top'>
             <ShowField gridClassName='col-md-12' label='Hispanic/Latino Origin'>
-              {ethnicity &&
+              {hispanic_latino_origin &&
                 `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`
               }
               </ShowField>

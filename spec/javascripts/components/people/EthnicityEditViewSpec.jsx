@@ -112,7 +112,10 @@ describe('EthnicityEditView', () => {
       const input = component.find('CheckboxField[value="Yes"]')
       input.simulate('change', {target: {checked: false}})
       expect(onChange).toHaveBeenCalled()
-      expect(onChange.calls.argsFor(0)[0]).toEqual(null)
+      expect(onChange.calls.argsFor(0)[0].toJS()).toEqual({
+        hispanic_latino_origin: null,
+        ethnicity_detail: null,
+      })
     })
   })
 })
