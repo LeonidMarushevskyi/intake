@@ -16,7 +16,7 @@ class ParticipantRepository
   def self.make_api_call(url, method, attributes = nil)
     ::API.connection.send(method) do |req|
       req.url url
-      req.headers['Content-Type'] = CONTENT_TYPE
+      req.headers['Content-Type'] = CONTENT_TYPE unless method == :get
       req.body = attributes.to_json unless attributes.nil?
     end
   end
