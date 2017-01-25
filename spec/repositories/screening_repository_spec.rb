@@ -38,7 +38,7 @@ describe ScreeningRepository do
         .and_yield(mock_request)
         .and_return(mock_response)
       expect(mock_request).to receive(:url).with("#{ScreeningRepository::SCREENINGS_PATH}/1")
-      expect(mock_request).to receive(:headers).and_return({})
+      expect(mock_request).to_not receive(:headers)
       expect(mock_request).to_not receive(:body=)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(found_screening)
