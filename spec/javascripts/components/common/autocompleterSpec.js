@@ -83,6 +83,10 @@ describe('<Autcompleter />', () => {
           {race: 'White', race_detail: 'European'},
           {race: 'American Indian or Alaska Native'},
         ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Central American',
+        },
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [{
@@ -106,6 +110,10 @@ describe('<Autcompleter />', () => {
           {race: 'White', race_detail: 'European'},
           {race: 'American Indian or Alaska Native'},
         ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Central American',
+        },
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',
         address: {
@@ -125,6 +133,7 @@ describe('<Autcompleter />', () => {
         last_name: 'Simpson',
         gender: 'female',
         races: [],
+        ethnicity: {},
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [],
@@ -138,6 +147,7 @@ describe('<Autcompleter />', () => {
         lastName: 'Simpson',
         gender: 'female',
         races: [],
+        ethnicity: {},
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',
         address: null,

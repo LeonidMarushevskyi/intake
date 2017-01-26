@@ -45,7 +45,8 @@ feature 'Edit Screening' do
       races: [
         { race: 'White', race_detail: 'European' },
         { race: 'American Indian or Alaska Native' }
-      ]
+      ],
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
     )
   end
 
@@ -119,6 +120,7 @@ feature 'Edit Screening' do
         expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female, White, American Indian or Alaska Native'
+        expect(page).to have_content 'Hispanic/Latino'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '123-23-1234'
         expect(page).to have_content 'Home'
