@@ -58,7 +58,7 @@ describe('PersonSuggestion', () => {
       }
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).toContain(
-        '<div>Female, White, American Indian or Alaska Native, Unknown</div>'
+        '<div>Female, White, American Indian or Alaska Native</div>'
       )
     })
   })
