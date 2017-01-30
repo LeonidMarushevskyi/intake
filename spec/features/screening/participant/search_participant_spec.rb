@@ -50,8 +50,8 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#participants-card' do
-        fill_in_autocompleter 'Participants', with: 'Marge'
+      within '#search-card' do
+        fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
       expect(person_with_out_phone_numbers.key?('phone_numbers')).to be false
@@ -77,8 +77,9 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#participants-card' do
-        fill_in_autocompleter 'Participants', with: person.ssn, result_should_contain: 'Marge'
+      within '#search-card' do
+        fill_in_autocompleter 'Search for any person',
+          with: person.ssn, result_should_contain: 'Marge'
       end
 
       expect(person_with_out_addresses.key?('addresses')).to be false
@@ -102,8 +103,8 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#participants-card' do
-        fill_in_autocompleter 'Participants', with: person.first_name
+      within '#search-card' do
+        fill_in_autocompleter 'Search for any person', with: person.first_name
       end
 
       within 'li' do

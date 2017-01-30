@@ -77,14 +77,15 @@ export class ScreeningEditPage extends React.Component {
     const {participants} = this.props
     return (
       <div>
-        <div className='card edit double-gap-top' id='participants-card'>
+        <div className='card edit double-gap-top' id='search-card'>
           <div className='card-header'>
-            <span>Participants</span>
+            <span>Search</span>
           </div>
           <div className='card-body'>
             <div className='row'>
-              <div className='col-md-6'>
-                <label className='no-gap' htmlFor='screening_participants'>Participants</label>
+              <div className='col-md-12'>
+                <label className='no-gap pull-left' htmlFor='screening_participants'>Search for any person</label>
+                <i className='c-gray pull-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</i>
                 <Autocompleter id='screening_participants' onSelect={this.createParticipant}/>
               </div>
             </div>
