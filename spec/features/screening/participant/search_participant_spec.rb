@@ -50,7 +50,7 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#search-card' do
+      within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
@@ -77,7 +77,7 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#search-card' do
+      within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person',
           with: person.ssn, result_should_contain: 'Marge'
       end
@@ -103,7 +103,7 @@ feature 'searching a participant in autocompleter' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#search-card' do
+      within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: person.first_name
       end
 

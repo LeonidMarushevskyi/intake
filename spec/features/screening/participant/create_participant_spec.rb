@@ -81,7 +81,7 @@ feature 'Edit Screening' do
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
-    within '#search-card' do
+    within '#search-card', text: 'SEARCH' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
@@ -112,7 +112,7 @@ feature 'Edit Screening' do
 
   context 'searching for a person with the participant autocompleter' do
     scenario 'by first name' do
-      within '#search-card' do
+      within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
@@ -134,7 +134,7 @@ feature 'Edit Screening' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
 
-      within '#search-card' do
+      within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person',
           with: marge.phone_numbers.first.number,
           result_should_contain: 'Marge'
