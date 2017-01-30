@@ -42,9 +42,10 @@ group :test do
   gem 'capybara'
   gem 'capybara-accessible'
   gem 'capybara-screenshot'
-  gem 'ci_reporter_rspec'
   gem 'faker'
   gem 'rails-controller-testing'
+  gem 'rspec_junit_formatter', require: false
   gem 'selenium-webdriver'
+  gem 'simplecov', require: false
   gem 'webmock'
 end

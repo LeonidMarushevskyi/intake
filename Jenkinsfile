@@ -58,6 +58,25 @@ node('Slave') {
     finally {
         stage ('Reports') {
             step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
+
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'reports/coverage/js',
+                reportFiles: 'index.html',
+                reportName: 'JS Code Coverage'
+              ])
+
+            publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'reports/coverage/ruby',
+                reportFiles: 'index.html',
+                reportName: 'Ruby Code Coverage'
+              ])
+
         }
 
         stage('Clean') {
