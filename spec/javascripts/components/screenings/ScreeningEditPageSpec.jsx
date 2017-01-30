@@ -55,11 +55,12 @@ describe('ScreeningEditPage', () => {
       })
 
       it('renders the card header', () => {
-        expect(component.find('#participants-card .card-header').text()).toContain('Participants')
+        expect(component.find('#search-card .card-header').text()).toContain('Search')
       })
 
-      it('renders the participant label', () => {
-        expect(component.find('#participants-card label').text()).toEqual('Participants')
+      it('renders the search card', () => {
+        expect(component.find('#search-card label').text()).toEqual('Search for any person')
+        expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
       })
 
       it('renders the autocompleter', () => {
