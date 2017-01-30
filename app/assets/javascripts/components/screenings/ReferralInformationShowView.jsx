@@ -12,7 +12,7 @@ const ReferralInformationShowView = ({screening}) => {
   return (
     <div className='card double-gap-top' id='referral-information-card'>
       <div className='card-header'>
-        <span>Referral Information</span>
+        <span>Incident Information</span>
       </div>
       <div className='card-body'>
         <div className='row'>

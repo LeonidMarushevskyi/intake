@@ -6,7 +6,7 @@ import {shallow} from 'enzyme'
 describe('ReferralInformationShowView', () => {
   it('renders the card header', () => {
     const component = shallow(<ReferralInformationShowView screening={Immutable.fromJS({})} />)
-    expect(component.find('.card-header').text()).toEqual('Referral Information')
+    expect(component.find('.card-header').text()).toEqual('Incident Information')
   })
 
   it('render the show fields', () => {

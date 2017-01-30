@@ -11,7 +11,7 @@ import US_STATE from 'USState'
 const ReferralInformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='referral-information-card'>
     <div className='card-header'>
-      <span>Referral Information</span>
+      <span>Incident Information</span>
     </div>
     <div className='card-body'>
       <div className='row'>

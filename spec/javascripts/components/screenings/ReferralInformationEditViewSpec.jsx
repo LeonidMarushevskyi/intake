@@ -26,7 +26,7 @@ describe('ReferralInformationEditView', () => {
   })
 
   it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toEqual('Referral Information')
+    expect(component.find('.card-header').text()).toEqual('Incident Information')
   })
 
   it('renders the input fields', () => {
