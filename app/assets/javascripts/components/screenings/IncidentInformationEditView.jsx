@@ -8,8 +8,8 @@ import SCREENING_DECISION from 'ScreeningDecision'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
-const ReferralInformationEditView = ({screening, onChange}) => (
-  <div className='card edit double-gap-top' id='referral-information-card'>
+const IncidentInformationEditView = ({screening, onChange}) => (
+  <div className='card edit double-gap-top' id='incident-information-card'>
     <div className='card-header'>
       <span>Incident Information</span>
     </div>
@@ -122,8 +122,8 @@ const ReferralInformationEditView = ({screening, onChange}) => (
   </div>
 )
 
-ReferralInformationEditView.propTypes = {
+IncidentInformationEditView.propTypes = {
   onChange: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
-export default ReferralInformationEditView
+export default IncidentInformationEditView

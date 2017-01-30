@@ -40,7 +40,7 @@ feature 'Edit Screening' do
       expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
     end
 
-    within '#referral-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
       expect(page).to have_field('Incident Date', with: '2016-08-11')
       expect(page).to have_field('Incident County', with: 'sacramento')
       expect(page).to have_field('Response Time', with: 'immediate')
@@ -58,7 +58,7 @@ feature 'Edit Screening' do
       fill_in 'Report Narrative', with: 'Updated narrative'
     end
 
-    within '#referral-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
       fill_in 'Incident Date', with: '2016-08-11'
       select  'Mariposa', from: 'Incident County'
       within 'fieldset', text: 'Incident Address' do

@@ -6,11 +6,11 @@ import SCREENING_DECISION from 'ScreeningDecision'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
 
-const ReferralInformationShowView = ({screening}) => {
+const IncidentInformationShowView = ({screening}) => {
   const incidentDate = screening.get('incident_date') === null ?
     '' : moment(screening.get('incident_date')).format('MM/DD/YYYY')
   return (
-    <div className='card double-gap-top' id='referral-information-card'>
+    <div className='card double-gap-top' id='incident-information-card'>
       <div className='card-header'>
         <span>Incident Information</span>
       </div>
@@ -61,7 +61,7 @@ const ReferralInformationShowView = ({screening}) => {
   )
 }
 
-ReferralInformationShowView.propTypes = {
+IncidentInformationShowView.propTypes = {
   screening: React.PropTypes.object.isRequired,
 }
-export default ReferralInformationShowView
+export default IncidentInformationShowView

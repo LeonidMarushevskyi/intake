@@ -1,9 +1,9 @@
 import Immutable from 'immutable'
 import React from 'react'
-import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
+import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
 import {shallow} from 'enzyme'
 
-describe('ReferralInformationEditView', () => {
+describe('IncidentInformationEditView', () => {
   let component
   let onChange
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('ReferralInformationEditView', () => {
       response_time: 'within_twenty_four_hours',
       screening_decision: 'accept_for_investigation',
     })
-    component = shallow(<ReferralInformationEditView screening={screening} onChange={onChange} />)
+    component = shallow(<IncidentInformationEditView screening={screening} onChange={onChange} />)
   })
 
   it('renders the card header', () => {
