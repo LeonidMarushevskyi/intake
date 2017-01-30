@@ -22,7 +22,7 @@ describe('HomePage', () => {
   })
 
   it('renders the create screening link', () => {
-    const createScreeningLink = component.find('a[href="#"]')
+    const createScreeningLink = component.find('a')
     expect(createScreeningLink.text()).toEqual('Start Screening')
   })
 
@@ -37,7 +37,7 @@ describe('HomePage', () => {
   })
 
   it('sends a POST request to the server and redirects to edit', () => {
-    const createScreeningLink = component.find('a[href="#"]')
+    const createScreeningLink = component.find('a')
     createScreeningLink.simulate('click')
     expect(createScreening).toHaveBeenCalled()
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
