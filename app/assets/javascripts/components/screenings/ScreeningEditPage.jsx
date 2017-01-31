@@ -5,7 +5,7 @@ import Autocompleter from 'components/common/Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
-import ReferralInformationEditView from 'components/screenings/ReferralInformationEditView'
+import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -116,7 +116,7 @@ export class ScreeningEditPage extends React.Component {
               onSave={(value) => this.cardSave(['report_narrative'], value)}
             />
         }
-        <ReferralInformationEditView screening={screening} onChange={this.setField} />
+        <IncidentInformationEditView screening={screening} onChange={this.setField} />
         <div className='row'>
           <div className='centered'>
             <button className='btn btn-primary' onClick={this.saveAll}>Save</button>

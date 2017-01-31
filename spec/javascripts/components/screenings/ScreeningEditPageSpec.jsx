@@ -120,9 +120,9 @@ describe('ScreeningEditPage', () => {
         screening,
       }
       component = shallow(<ScreeningEditPage {...props} />)
-      expect(component.find('ReferralInformationEditView').length).toEqual(1)
-      expect(component.find('ReferralInformationEditView').props().screening).toEqual(screening)
-      expect(component.find('ReferralInformationEditView').props().onChange).toEqual(component.instance().setField)
+      expect(component.find('IncidentInformationEditView').length).toEqual(1)
+      expect(component.find('IncidentInformationEditView').props().screening).toEqual(screening)
+      expect(component.find('IncidentInformationEditView').props().onChange).toEqual(component.instance().setField)
     })
   })
 

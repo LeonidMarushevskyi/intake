@@ -1,12 +1,12 @@
 import Immutable from 'immutable'
 import React from 'react'
-import ReferralInformationShowView from 'components/screenings/ReferralInformationShowView'
+import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
 import {shallow} from 'enzyme'
 
-describe('ReferralInformationShowView', () => {
+describe('IncidentInformationShowView', () => {
   it('renders the card header', () => {
-    const component = shallow(<ReferralInformationShowView screening={Immutable.fromJS({})} />)
-    expect(component.find('.card-header').text()).toEqual('Referral Information')
+    const component = shallow(<IncidentInformationShowView screening={Immutable.fromJS({})} />)
+    expect(component.find('.card-header').text()).toEqual('Incident Information')
   })
 
   it('render the show fields', () => {
@@ -24,7 +24,7 @@ describe('ReferralInformationShowView', () => {
       screening_decision: 'accept_for_investigation',
     })
 
-    const component = shallow(<ReferralInformationShowView screening={screening} />)
+    const component = shallow(<IncidentInformationShowView screening={screening} />)
     expect(component.find('ShowField').length).toEqual(9)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('01/21/2006')
@@ -60,7 +60,7 @@ describe('ReferralInformationShowView', () => {
       response_time: null,
       screening_decision: null,
     })
-    const component = shallow(<ReferralInformationShowView screening={screening} />)
+    const component = shallow(<IncidentInformationShowView screening={screening} />)
     expect(component.find('ShowField').length).toEqual(9)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('<div class="c-gray"></div>')

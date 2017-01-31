@@ -47,7 +47,7 @@ feature 'Show Screening' do
       expect(page).to have_content 'some narrative'
     end
 
-    within '#referral-information-card' do
+    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
       expect(page).to have_content '8/11/2016'
       expect(page).to have_content 'Sacramento'
       expect(page).to have_content '123 fake st'
