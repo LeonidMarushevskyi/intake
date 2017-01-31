@@ -1,3 +1,4 @@
+/*eslint-env node*/
 // Karma configuration
 // Generated on Thu Jun 30 2016 11:04:09 GMT-0400 (EDT)
 //
@@ -15,28 +16,27 @@ module.exports = function(config) {
     },
     coverageReporter: {
       type: 'in-memory',
-      dir: '/reports/coverage',
     },
     remapIstanbulReporter: {
       remapOptions: {
         exclude: /node_modules/,
       },
       reports: {
-        html: '/reports/coverage/js',
+        html: `${process.env.CI_REPORTS}/coverage/js`,
       },
       subdir: (browser) => {
         return browser.toLowerCase().split(' ')[0]
       },
     },
     junitReporter: {
-          outputDir: '/reports', // results will be saved as $outputDir/$browserName.xml
-          outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
-          suite: '', // suite will become the package name attribute in xml testsuite element
-          useBrowserName: true, // add browser name to report and classes names
-          nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
-          classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
-          properties: {} // key value pair of properties to add to the <properties> section of the report
-     },
+      outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
+      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
+      suite: '', // suite will become the package name attribute in xml testsuite element
+      useBrowserName: true, // add browser name to report and classes names
+      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
+      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
+      properties: {}, // key value pair of properties to add to the <properties> section of the report
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

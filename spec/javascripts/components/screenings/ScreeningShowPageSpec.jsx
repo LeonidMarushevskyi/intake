@@ -39,7 +39,7 @@ describe('ScreeningShowPage', () => {
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('InformationShowView').length).toEqual(1)
-      expect(component.find('ReferralInformationShowView').length).toEqual(1)
+      expect(component.find('IncidentInformationShowView').length).toEqual(1)
     })
 
     describe('participants card', () => {
@@ -72,14 +72,25 @@ describe('ScreeningShowPage', () => {
           screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
         }
         component = shallow(<ScreeningShowPage {...props} />)
-        component.instance().setState({loaded: true})
       })
 
-      it('renders the narrative card', () => {
-        expect(component.find('NarrativeCardView').props().narrative).toEqual(
-          'this is a narrative report'
-        )
-        expect(component.find('NarrativeCardView').props().mode).toEqual('show')
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the narrative card', () => {
+          expect(component.find('NarrativeCardView').length).toEqual(0)
+        })
+      })
+
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+
+        it('renders the narrative card', () => {
+          expect(component.find('NarrativeCardView').props().narrative).toEqual(
+            'this is a narrative report'
+          )
+          expect(component.find('NarrativeCardView').props().mode).toEqual('show')
+        })
       })
     })
   })
