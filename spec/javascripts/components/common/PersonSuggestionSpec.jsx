@@ -1,6 +1,5 @@
 import PersonSuggestion from 'components/common/PersonSuggestion'
 import React from 'react'
-import moment from 'moment'
 import {shallow} from 'enzyme'
 
 describe('PersonSuggestion', () => {
@@ -8,21 +7,6 @@ describe('PersonSuggestion', () => {
     const props = {firstName: 'Bart', lastName: 'Simpson'}
     const component = shallow(<PersonSuggestion {...props} />)
     expect(component.html()).toContain('<strong>Bart Simpson</strong>')
-  })
-
-  describe('age', () => {
-    it('renders when DOB is present', () => {
-      const dob = moment().subtract(15, 'years').format('YYYY-MM-DD')
-      const props = {dateOfBirth: dob}
-      const component = shallow(<PersonSuggestion {...props} />)
-      expect(component.html()).toContain('15 yrs old')
-    })
-
-    it('does not render when DOB is not present', () => {
-      const props = {dateOfBirth: null}
-      const component = shallow(<PersonSuggestion {...props} />)
-      expect(component.html()).not.toContain('yrs old')
-    })
   })
 
   describe('ssn', () => {

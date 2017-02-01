@@ -1,15 +1,7 @@
 import React from 'react'
-import moment from 'moment'
 import Languages from 'components/common/LanguageInfo'
 import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
-
-const AgeInfo = ({dateOfBirth}) => {
-  const dob = moment.utc(dateOfBirth, 'YYYY-MM-DD')
-  const ageInYears = dob.isValid() && moment().diff(dob, 'years')
-  return (
-    dob.isValid() && <div>{`${ageInYears} yrs old (DOB: ${dob.format('M/D/YYYY')})`}</div>
-  )
-}
+import AgeInfo from 'components/common/AgeInfo'
 
 const AddressInfo = (address) => {
   const {type, streetAddress, city, state, zip} = address
