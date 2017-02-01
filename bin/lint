@@ -16,7 +16,7 @@ js_files() {
 js() {
   if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
     unblacken_cmd ./node_modules/.bin/eslint \
-      --format junit --output-file "$CI_REPORTS"/TESTS-Eslint.xml \
+      --format junit --output-file "$CI_REPORTS"/LINT-Eslint.xml \
       --color $(js_files)
   else
     unblacken_cmd ./node_modules/.bin/eslint --color $(js_files)
@@ -31,7 +31,7 @@ ruby() {
   if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
     bundle exec rubocop \
      -r $(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb \
-     --format progress --format RuboCop::Formatter::JUnitFormatter --out "$CI_REPORTS"/TESTS-Rubocop.xml
+     --format progress --format RuboCop::Formatter::JUnitFormatter --out "$CI_REPORTS"/LINT-Rubocop.xml
   else
     bundle exec rubocop
   fi

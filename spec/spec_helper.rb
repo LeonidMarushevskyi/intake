@@ -21,7 +21,7 @@ require 'webmock/rspec'
 
 if ENV['GENERATE_TEST_REPORTS'] == 'yes'
   require 'simplecov'
-  SimpleCov.coverage_dir('reports/coverage/ruby')
+  SimpleCov.coverage_dir("#{ENV['CI_REPORTS']}/coverage/ruby")
   SimpleCov.start 'rails' do
     add_filter 'ruby_gems/'
   end
