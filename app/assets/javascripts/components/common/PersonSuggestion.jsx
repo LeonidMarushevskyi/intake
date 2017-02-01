@@ -1,6 +1,7 @@
 import Gender from 'Gender'
 import React from 'react'
 import moment from 'moment'
+import Languages from 'components/common/LanguageInfo'
 
 const AgeInfo = ({dateOfBirth}) => {
   const dob = moment.utc(dateOfBirth, 'YYYY-MM-DD')
@@ -20,11 +21,6 @@ const AddressInfo = (address) => {
       <span>{[streetAddress, city, stateZip].filter(Boolean).join(', ')}</span>
     </div>
   )
-}
-
-const Languages = ({languages}) => {
-  const lan = languages && languages.filter(Boolean).join(', ')
-  return (lan ? <div><strong className='c-gray half-pad-right'>Language</strong><span>{lan}</span></div> : null)
 }
 
 const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
@@ -56,10 +52,6 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, languages, 
     }
   </div>
 )
-
-Languages.propTypes = {
-  languages: React.PropTypes.array,
-}
 
 GenderRaceAndEthnicity.propTypes = {
   ethnicity: React.PropTypes.object,
