@@ -1,7 +1,7 @@
-import Gender from 'Gender'
 import React from 'react'
 import moment from 'moment'
 import Languages from 'components/common/LanguageInfo'
+import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
 
 const AgeInfo = ({dateOfBirth}) => {
   const dob = moment.utc(dateOfBirth, 'YYYY-MM-DD')
@@ -20,16 +20,6 @@ const AddressInfo = (address) => {
       {type && <strong className='c-gray half-pad-right'>{type}</strong>}
       <span>{[streetAddress, city, stateZip].filter(Boolean).join(', ')}</span>
     </div>
-  )
-}
-
-const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
-  const racesText = races && races.map(({race}) => race)
-  const origin = ethnicity && ethnicity.hispanic_latino_origin
-  const ethnicityValue = (origin === 'Yes') ? 'Hispanic/Latino' : null
-  const genderRaceAndEthnicity = [Gender[gender]].concat(racesText, ethnicityValue).filter(Boolean).join(', ')
-  return (
-    genderRaceAndEthnicity ? <div>{genderRaceAndEthnicity}</div> : null
   )
 }
 
@@ -52,12 +42,6 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, languages, 
     }
   </div>
 )
-
-GenderRaceAndEthnicity.propTypes = {
-  ethnicity: React.PropTypes.object,
-  gender: React.PropTypes.string,
-  races: React.PropTypes.array,
-}
 
 PersonSuggestion.propTypes = {
   address: React.PropTypes.shape({
