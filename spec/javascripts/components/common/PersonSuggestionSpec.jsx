@@ -26,41 +26,31 @@ describe('PersonSuggestion', () => {
   })
 
   describe('address', () => {
-    it('renders when present', () => {
-      const props = {
-        address: {
-          id: '1',
-          streetAddress: '234 Fake Street',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11344',
-          type: 'School',
-        },
-      }
-      const component = shallow(<PersonSuggestion {...props} />)
-      expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><strong class="c-gray half-pad-right">School</strong><span>234 Fake Street, Flushing, NM 11344</span></div>')
-    })
-
-    it('gets rendered correctly when partial address is given', () => {
-      const props = {
-        address: {
-          id: '1',
-          streetAddress: null,
-          city: null,
-          state: 'NM',
-          zip: '11344',
-          type: null,
-        },
-      }
-      const component = shallow(<PersonSuggestion {...props} />)
-      expect(component.find('AddressInfo').length).toEqual(1)
-      expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
-    })
-
     it('does not render when not present', () => {
       const props = {address: null}
-      const component = shallow(<PersonSuggestion{...props} />)
+      const component = shallow(<PersonSuggestion {...props} />)
       expect(component.find('AddressInfo').length).toEqual(0)
+    })
+  })
+
+  describe('render components', () => {
+    let component
+    beforeEach(() => {
+      component = shallow(<PersonSuggestion />)
+    })
+
+    it('renders the GenderRaceAndEthnicity', () => {
+      expect(component.find('GenderRaceAndEthnicity').length).toEqual(1)
+    })
+
+    it('renders the AgeInfo', () => {
+      expect(component.find('AgeInfo').length).toEqual(1)
+    })
+
+    it('renders the AddressInfo', () => {
+      const props = {address: {}}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.find('AddressInfo').length).toEqual(1)
     })
   })
 })

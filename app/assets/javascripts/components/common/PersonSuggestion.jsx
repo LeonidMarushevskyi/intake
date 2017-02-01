@@ -1,19 +1,8 @@
-import React from 'react'
-import Languages from 'components/common/LanguageInfo'
-import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
+import AddressInfo from 'components/common/AddressInfo'
 import AgeInfo from 'components/common/AgeInfo'
-
-const AddressInfo = (address) => {
-  const {type, streetAddress, city, state, zip} = address
-  const stateZip = [state, zip].filter(Boolean).join(' ')
-  return (
-    <div>
-      <i className='fa fa-map-marker c-gray half-pad-right' />
-      {type && <strong className='c-gray half-pad-right'>{type}</strong>}
-      <span>{[streetAddress, city, stateZip].filter(Boolean).join(', ')}</span>
-    </div>
-  )
-}
+import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
+import Languages from 'components/common/LanguageInfo'
+import React from 'react'
 
 const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, languages, races, ethnicity, ssn, address}) => (
   <div className='row'>

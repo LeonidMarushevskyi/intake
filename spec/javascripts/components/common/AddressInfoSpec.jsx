@@ -1,19 +1,32 @@
-import AgeInfo from 'components/common/AgeInfo'
+import AddressInfo from 'components/common/AddressInfo'
 import React from 'react'
-import moment from 'moment'
 import {shallow} from 'enzyme'
 
-describe('age', () => {
-  it('renders when DOB is present', () => {
-    const dob = moment().subtract(15, 'years').format('YYYY-MM-DD')
-    const props = {dateOfBirth: dob}
-    const component = shallow(<AgeInfo {...props} />)
-    expect(component.html()).toContain('15 yrs old')
+describe('address', () => {
+  it('renders when present', () => {
+    const props = {
+      id: '1',
+      streetAddress: '234 Fake Street',
+      city: 'Flushing',
+      state: 'NM',
+      zip: '11344',
+      type: 'School',
+    }
+    const component = shallow(<AddressInfo {...props} />)
+    expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><strong class="c-gray half-pad-right">School</strong><span>234 Fake Street, Flushing, NM 11344</span></div>')
   })
 
-  it('does not render when DOB is not present', () => {
-    const props = {dateOfBirth: null}
-    const component = shallow(<AgeInfo {...props} />)
-    expect(component.html()).not.toContain('yrs old')
+  it('gets rendered correctly when partial address is given', () => {
+    const props = {
+      id: '1',
+      streetAddress: null,
+      city: null,
+      state: 'NM',
+      zip: '11344',
+      type: null,
+    }
+    const component = shallow(<AddressInfo {...props} />)
+    expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
   })
 })
+
