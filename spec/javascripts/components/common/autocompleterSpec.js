@@ -79,6 +79,7 @@ describe('<Autcompleter />', () => {
         first_name: 'Bart',
         last_name: 'Simpson',
         gender: 'female',
+        languages: ['French', 'Italian'],
         races: [
           {race: 'White', race_detail: 'European'},
           {race: 'American Indian or Alaska Native'},
@@ -106,6 +107,7 @@ describe('<Autcompleter />', () => {
         firstName: 'Bart',
         lastName: 'Simpson',
         gender: 'female',
+        languages: ['French', 'Italian'],
         races: [
           {race: 'White', race_detail: 'European'},
           {race: 'American Indian or Alaska Native'},
@@ -126,12 +128,13 @@ describe('<Autcompleter />', () => {
       })
     })
 
-    it('renders the PersonSuggestion view when no address', () => {
+    it('renders the PersonSuggestion view when some values are empty', () => {
       component = mount(<Autocompleter />)
       const result = [{
         first_name: 'Bart',
         last_name: 'Simpson',
         gender: 'female',
+        languages: [],
         races: [],
         ethnicity: {},
         date_of_birth: '1990-02-13',
@@ -147,6 +150,7 @@ describe('<Autcompleter />', () => {
         lastName: 'Simpson',
         gender: 'female',
         races: [],
+        languages: [],
         ethnicity: {},
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',

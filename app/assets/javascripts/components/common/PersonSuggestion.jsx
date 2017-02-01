@@ -22,6 +22,11 @@ const AddressInfo = (address) => {
   )
 }
 
+const Languages = ({languages}) => {
+  const lan = languages && languages.filter(Boolean).join(', ')
+  return (lan ? <div><strong className='c-gray half-pad-right'>Language</strong><span>{lan}</span></div> : null)
+}
+
 const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
   const racesText = races && races.map(({race}) => race)
   const origin = ethnicity && ethnicity.hispanic_latino_origin
@@ -32,7 +37,7 @@ const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
   )
 }
 
-const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, races, ethnicity, ssn, address}) => (
+const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, languages, races, ethnicity, ssn, address}) => (
   <div className='row'>
     <div className='col-md-2'>
       <img src='/assets/default-profile.svg' />
@@ -41,6 +46,7 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, races, ethn
       <strong>{[firstName, lastName].filter(Boolean).join(' ')}</strong>
       <GenderRaceAndEthnicity gender={gender} races={races} ethnicity={ethnicity} />
       <AgeInfo dateOfBirth={dateOfBirth} />
+      <Languages languages={languages} />
       {ssn && <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div>}
     </div>
     {address &&
@@ -50,6 +56,10 @@ const PersonSuggestion = ({firstName, lastName, dateOfBirth, gender, races, ethn
     }
   </div>
 )
+
+Languages.propTypes = {
+  languages: React.PropTypes.array,
+}
 
 GenderRaceAndEthnicity.propTypes = {
   ethnicity: React.PropTypes.object,
@@ -69,6 +79,7 @@ PersonSuggestion.propTypes = {
   ethnicity: React.PropTypes.object,
   firstName: React.PropTypes.string,
   gender: React.PropTypes.string,
+  languages: React.PropTypes.array,
   lastName: React.PropTypes.string,
   races: React.PropTypes.array,
   ssn: React.PropTypes.string,
