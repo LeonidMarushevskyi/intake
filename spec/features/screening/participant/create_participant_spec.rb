@@ -40,6 +40,7 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
+      languages: %w(French Italian),
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
@@ -121,6 +122,7 @@ feature 'Edit Screening' do
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female, White, American Indian or Alaska Native'
         expect(page).to have_content 'Hispanic/Latino'
+        expect(page).to have_content 'French, Italian'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '123-23-1234'
         expect(page).to have_content 'Home'
