@@ -47,6 +47,11 @@ describe WelcomeController do
           process :index, method: :get, params: { token: '123' }
           expect(response).to render_template('index')
         end
+
+        it 'store the security token in the user session' do
+          process :index, method: :get, params: { token: '123' }
+          expect(session[:security_token]).to eq '123'
+        end
       end
 
       context 'and an invalid security token is provided' do

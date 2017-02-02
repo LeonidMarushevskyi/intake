@@ -13,7 +13,11 @@ class WelcomeController < ApplicationController # :nodoc:
   def authenticate_user
     unless session[:security_token]
       if security_token.present?
-        redirect_to(authentication_url) unless valid_security_token?(security_token)
+        if valid_security_token?(security_token)
+          session[:security_token] = security_token
+        else
+          redirect_to(authentication_url)
+        end
       else
         redirect_to(authentication_url)
       end

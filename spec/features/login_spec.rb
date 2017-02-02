@@ -33,5 +33,13 @@ feature 'login' do
       expect(page.current_url).to have_content 'http://www.foo.com/authn/login'
     end
   end
-end
 
+  scenario 'user has previously provided a valid security token' do
+    Feature.run_with_activated(:release_one) do
+      login
+      visit root_path
+      expect(a_request(:get, %r{http://www.foo.com})).to_not have_been_made
+      expect(page).to have_current_path(root_path)
+    end
+  end
+end
