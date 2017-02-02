@@ -98,6 +98,11 @@ describe('<Autcompleter />', () => {
           zip: '11344',
           type: 'School',
         }],
+        phone_numbers: [{
+          id: '2',
+          number: '994-907-6774',
+          type: 'Home',
+        }],
       }]
       stubSuggestions(result)
 
@@ -125,6 +130,10 @@ describe('<Autcompleter />', () => {
           zip: '11344',
           type: 'School',
         },
+        phoneNumber: {
+          number: '994-907-6774',
+          type: 'Home',
+        },
       })
     })
 
@@ -140,6 +149,7 @@ describe('<Autcompleter />', () => {
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
         addresses: [],
+        phone_numbers: [],
       }]
       stubSuggestions(result)
 
@@ -151,6 +161,7 @@ describe('<Autcompleter />', () => {
         gender: 'female',
         races: [],
         languages: [],
+        phoneNumber: null,
         ethnicity: {},
         dateOfBirth: '1990-02-13',
         ssn: '123-45-6789',

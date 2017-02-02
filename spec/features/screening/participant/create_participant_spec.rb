@@ -31,7 +31,13 @@ feature 'Edit Screening' do
       type: 'Home'
     )
   end
-  let(:marge_phone_number) { FactoryGirl.create(:phone_number) }
+  let(:marge_phone_number) do
+    FactoryGirl.create(
+      :phone_number,
+      number: '971-287-6774',
+      type: 'Home'
+    )
+  end
   let(:marge) do
     Person.new(
       id: '99',
@@ -107,49 +113,6 @@ feature 'Edit Screening' do
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
-      end
-    end
-  end
-
-  context 'searching for a person with the participant autocompleter' do
-    scenario 'by first name' do
-      within '#search-card', text: 'SEARCH' do
-        fill_in_autocompleter 'Search for any person', with: 'Marge'
-      end
-
-      within 'li', text: 'Marge Simpson' do
-        expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
-        expect(page).to have_content '15 yrs old'
-        expect(page).to have_content 'Female, White, American Indian or Alaska Native'
-        expect(page).to have_content 'Hispanic/Latino'
-        expect(page).to have_content 'French, Italian'
-        expect(page).to have_content 'SSN'
-        expect(page).to have_content '123-23-1234'
-        expect(page).to have_content 'Home'
-        expect(page).to have_content '123 Fake St, Springfield, NY 12345'
-      end
-    end
-
-    scenario 'by phone number' do
-      stub_request(:get, api_people_search_path(search_term: marge.phone_numbers.first.number))
-        .and_return(body: [marge].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
-
-      within '#search-card', text: 'SEARCH' do
-        fill_in_autocompleter 'Search for any person',
-          with: marge.phone_numbers.first.number,
-          result_should_contain: 'Marge'
-      end
-
-      within 'li', text: 'Marge Simpson' do
-        expect(page).to have_content marge_date_of_birth.strftime('%-m/%-d/%Y')
-        expect(page).to have_content '15 yrs old'
-        expect(page).to have_content 'Female'
-        expect(page).to have_content 'SSN'
-        expect(page).to have_content '123-23-1234'
-        expect(page).to have_content 'Home'
-        expect(page).to have_content '123 Fake St, Springfield, NY 12345'
       end
     end
   end

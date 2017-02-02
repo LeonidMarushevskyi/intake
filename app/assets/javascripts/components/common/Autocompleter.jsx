@@ -48,7 +48,7 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestion(suggestion) {
-    const {first_name, last_name, gender, languages, races, ethnicity, date_of_birth, ssn, addresses} = suggestion
+    const {first_name, last_name, gender, languages, races, ethnicity, date_of_birth, ssn, addresses, phone_numbers} = suggestion
     const first = 0
     const address = addresses[first] || null
     const addressInfo = address && {
@@ -57,6 +57,11 @@ export default class Autocompleter extends React.Component {
       streetAddress: address.street_address,
       type: address.type,
       zip: address.zip,
+    }
+    const phoneNumber = phone_numbers[first] || null
+    const phoneNumberInfo = phoneNumber && {
+      number: phoneNumber.number,
+      type: phoneNumber.type,
     }
     return (
       <PersonSuggestion
@@ -69,6 +74,7 @@ export default class Autocompleter extends React.Component {
         dateOfBirth={date_of_birth}
         ssn={ssn}
         address={addressInfo}
+        phoneNumber={phoneNumberInfo}
       />
     )
   }

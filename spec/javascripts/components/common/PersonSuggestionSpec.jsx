@@ -33,6 +33,14 @@ describe('PersonSuggestion', () => {
     })
   })
 
+  describe('phonenumber', () => {
+    it('does not render when not present', () => {
+      const props = {phoneNumber: null}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.find('PhoneNumberInfo').length).toEqual(0)
+    })
+  })
+
   describe('render components', () => {
     let component
     beforeEach(() => {
@@ -51,6 +59,12 @@ describe('PersonSuggestion', () => {
       const props = {address: {}}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.find('AddressInfo').length).toEqual(1)
+    })
+
+    it('renders the PhoneNumberInfo', () => {
+      const props = {phoneNumber: {}}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.find('PhoneNumberInfo').length).toEqual(1)
     })
   })
 })
