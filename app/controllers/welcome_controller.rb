@@ -12,14 +12,10 @@ class WelcomeController < ApplicationController # :nodoc:
 
   def authenticate_user
     unless session[:security_token]
-      if security_token.present?
-        if valid_security_token?(security_token)
-          session[:security_token] = security_token
-        else
-          redirect_to(authentication_url)
-        end
+      if security_token.present? && valid_security_token?(security_token)
+        session[:security_token] = security_token
       else
-        redirect_to(authentication_url)
+        redirect_to(login_url(request.original_url))
       end
     end
   end
@@ -28,11 +24,15 @@ class WelcomeController < ApplicationController # :nodoc:
     params[:token]
   end
 
-  def authentication_url
-    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/login?callback=#{request.original_url}"
+  def valid_security_token?(token)
+    Faraday.get(token_validation_url(token)).status == 200
   end
 
-  def valid_security_token?(token)
-    Faraday.get("#{ENV.fetch('AUTHENTICATION_URL')}/authn/validate?token=#{token}").status == 200
+  def login_url(callback)
+    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/login?callback=#{callback}"
+  end
+
+  def token_validation_url(token)
+    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/validate?token=#{token}"
   end
 end
