@@ -10,6 +10,7 @@ services:
       RAILS_ENV: development
       API_URL: "http://api:3000"
       NODE_ENV: development
+      AUTHENTICATION_URL: "http://Authentication/"
     volumes:
       - .:/ca_intake
       - ca_intake_rubygems:/ruby_gems
