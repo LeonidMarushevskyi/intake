@@ -3,7 +3,7 @@
 # Welcome Controller is responsible for managing user
 # navigating the landing page.
 class WelcomeController < ApplicationController # :nodoc:
-  before_action :authenticate_user, if: ->() { Feature.active?(:release_one) }
+  before_action :authenticate_user, if: :authentication_enabled?
 
   def index
   end
@@ -34,5 +34,9 @@ class WelcomeController < ApplicationController # :nodoc:
 
   def token_validation_url(token)
     "#{ENV.fetch('AUTHENTICATION_URL')}/authn/validate?token=#{token}"
+  end
+
+  def authentication_enabled?
+    Feature.active?(:release_one) && Feature.active?(:authentication)
   end
 end

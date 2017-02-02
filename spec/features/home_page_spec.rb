@@ -10,7 +10,6 @@ feature 'home page' do
 
   scenario 'displays serach bar when release one is enabled' do
     Feature.run_with_activated(:release_one) do
-      login
       address = FactoryGirl.create(
         :address,
         street_address: '123 Fake St',

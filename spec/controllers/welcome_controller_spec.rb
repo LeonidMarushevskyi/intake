@@ -4,10 +4,12 @@ require 'feature/testing'
 
 describe WelcomeController do
   describe '#index' do
-    context 'when release one is enabled' do
+    context 'when release one and authentication is enabled' do
       before do
         allow(Feature).to receive(:active?)
           .with(:release_one).and_return(true)
+        allow(Feature).to receive(:active?)
+          .with(:authentication).and_return(true)
       end
 
       context 'when the user has a valid session' do
@@ -81,10 +83,27 @@ describe WelcomeController do
     end
   end
 
-  context 'when release one is disabled' do
+  context 'when release one is enabled and authentication is disabled' do
+    before do
+      allow(Feature).to receive(:active?)
+        .with(:release_one).and_return(true)
+      allow(Feature).to receive(:active?)
+        .with(:authentication).and_return(false)
+    end
+
+    it 'responds with success' do
+      process :index, method: :get
+      assert_response :success
+      expect(response).to render_template('index')
+    end
+  end
+
+  context 'when release one and authentication is disabled' do
     before do
       allow(Feature).to receive(:active?)
         .with(:release_one).and_return(false)
+      allow(Feature).to receive(:active?)
+        .with(:authentication).and_return(false)
     end
 
     it 'responds with success' do
