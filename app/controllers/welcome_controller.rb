@@ -3,7 +3,7 @@
 # Welcome Controller is responsible for managing user
 # navigating the landing page.
 class WelcomeController < ApplicationController # :nodoc:
-  before_action :authenticate_user
+  before_action :authenticate_user, if: ->() { Feature.active?(:release_one) }
 
   def index
   end

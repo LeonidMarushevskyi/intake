@@ -3,8 +3,14 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'home page' do
+  before do
+    allow(ENV).to receive(:fetch).with('AUTHENTICATION_URL')
+      .and_return('http://www.foo.com')
+  end
+
   scenario 'displays serach bar when release one is enabled' do
     Feature.run_with_activated(:release_one) do
+      login
       address = FactoryGirl.create(
         :address,
         street_address: '123 Fake St',

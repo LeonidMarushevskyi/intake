@@ -8,7 +8,7 @@ feature 'login' do
       .and_return('http://www.foo.com')
   end
 
-  scenario 'user does not have a session' do
+  scenario 'user has not logged in' do
     Feature.run_with_activated(:release_one) do
       visit root_path
       expect(page.current_url).to have_content 'http://www.foo.com/authn/login'
@@ -34,7 +34,7 @@ feature 'login' do
     end
   end
 
-  scenario 'user has previously provided a valid security token' do
+  scenario 'user has already logged in' do
     Feature.run_with_activated(:release_one) do
       login
       visit root_path
