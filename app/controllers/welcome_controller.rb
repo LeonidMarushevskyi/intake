@@ -11,12 +11,11 @@ class WelcomeController < ApplicationController # :nodoc:
   private
 
   def authenticate_user
-    unless session[:security_token]
-      if security_token.present? && valid_security_token?(security_token)
-        session[:security_token] = security_token
-      else
-        redirect_to(login_url(request.original_url))
-      end
+    return if session[:security_token]
+    if valid_security_token?(security_token)
+      session[:security_token] = security_token
+    else
+      redirect_to login_url(request.original_url)
     end
   end
 
@@ -25,7 +24,7 @@ class WelcomeController < ApplicationController # :nodoc:
   end
 
   def valid_security_token?(token)
-    Faraday.get(token_validation_url(token)).status == 200
+    security_token.present? && Faraday.get(token_validation_url(token)).status == 200
   end
 
   def login_url(callback)
