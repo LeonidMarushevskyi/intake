@@ -2,7 +2,7 @@
 require 'rails_helper'
 require 'feature/testing'
 
-describe WelcomeController do
+describe HomeController do
   describe '#index' do
     context 'when release one and authentication is enabled' do
       before do

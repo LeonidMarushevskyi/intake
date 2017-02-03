@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Welcome Controller is responsible for managing user
+# Home Controller is responsible for managing user
 # navigating the landing page.
-class WelcomeController < ApplicationController # :nodoc:
+class HomeController < ApplicationController # :nodoc:
   before_action :authenticate_user, if: :authentication_enabled?
 
   def index
