@@ -2,11 +2,14 @@
 development:
   features:
     release_one: false
+    authentication: false
 
 test:
   features:
     release_one: false
+    authentication: false
 
 production:
   features:
     release_one: <%= ENV.fetch('RELEASE_ONE', false) %>
+    authentication: <%= ENV.fetch('AUTHENTICATION', false) %>

@@ -2,7 +2,7 @@
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
 
 Rails.application.routes.draw do
-  root 'welcome#index'
+  root 'home#index'
   resources :style_guide,
     only: [:index, :show],
     constraints: Routes::InactiveReleaseOneConstraint
