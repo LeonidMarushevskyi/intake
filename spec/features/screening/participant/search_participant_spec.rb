@@ -29,8 +29,14 @@ feature 'searching a participant in autocompleter' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
+      languages: %w(French Italian),
       addresses: [address],
-      phone_numbers: [phone_number]
+      phone_numbers: [phone_number],
+      races: [
+        { race: 'White', race_detail: 'European' },
+        { race: 'American Indian or Alaska Native' }
+      ],
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
     )
   end
   before do
@@ -42,6 +48,31 @@ feature 'searching a participant in autocompleter' do
   end
 
   context 'searching for a person' do
+    scenario 'by first name' do
+      stub_request(:get, api_people_search_path(search_term: person.first_name))
+        .and_return(body: [person].to_json,
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+      within '#search-card', text: 'SEARCH' do
+        fill_in_autocompleter 'Search for any person', with: 'Marge'
+      end
+
+      within 'li', text: 'Marge Simpson' do
+        expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
+        expect(page).to have_content '15 yrs old'
+        expect(page).to have_content 'Female, White, American Indian or Alaska Native'
+        expect(page).to have_content 'Hispanic/Latino'
+        expect(page).to have_content 'Language'
+        expect(page).to have_content 'French, Italian'
+        expect(page).to have_content 'Home'
+        expect(page).to have_content '971-287-6774'
+        expect(page).to have_content 'SSN'
+        expect(page).to have_content '123-23-1234'
+        expect(page).to have_content 'Work'
+        expect(page).to have_content '123 Fake St, Springfield, NY 12345'
+      end
+    end
+
     scenario 'person without phone_numbers' do
       person_with_out_phone_numbers = person.as_json.except('phone_numbers')
 
@@ -54,13 +85,14 @@ feature 'searching a participant in autocompleter' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
-      expect(person_with_out_phone_numbers.key?('phone_numbers')).to be false
-
-      within 'li' do
+      within 'li', text: 'Marge Simpson' do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
-        expect(page).to have_content 'Female'
+        expect(page).to have_content 'Female, White, American Indian or Alaska Native'
         expect(page).to have_content 'SSN'
+        expect(page).to have_content 'Hispanic/Latino'
+        expect(page).to have_content 'Language'
+        expect(page).to have_content 'French, Italian'
         expect(page).to have_content '123-23-1234'
         expect(page).to have_content 'Work'
         expect(page).to have_content '123 Fake St, Springfield, NY 12345'
@@ -82,18 +114,18 @@ feature 'searching a participant in autocompleter' do
           with: person.ssn, result_should_contain: 'Marge'
       end
 
-      expect(person_with_out_addresses.key?('addresses')).to be false
-
-      within 'li' do
+      within 'li', text: 'Marge Simpson' do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '123-23-1234'
+        expect(page).to have_content 'Language'
+        expect(page).to have_content 'French, Italian'
+        expect(page).to have_content 'Home'
+        expect(page).to have_content '971-287-6774'
         expect(page).to_not have_content 'Work'
         expect(page).to_not have_content '123 Fake St, Springfield, NY 12345'
-        expect(page).to_not have_content '971-287-6774'
-        expect(page).to_not have_content 'Home'
       end
     end
     scenario 'person with name only' do
@@ -107,8 +139,7 @@ feature 'searching a participant in autocompleter' do
         fill_in_autocompleter 'Search for any person', with: person.first_name
       end
 
-      within 'li' do
-        expect(page).to have_content 'Marge Simpson'
+      within 'li', text: 'Marge Simpson' do
         expect(page).to_not have_content '15 yrs old'
         expect(page).to_not have_content '123-23-1234'
       end

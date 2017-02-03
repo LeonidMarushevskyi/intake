@@ -13,12 +13,10 @@ const AddressInfo = (address) => {
 }
 
 AddressInfo.propTypes = {
-  address: React.PropTypes.shape({
-    city: React.PropTypes.string,
-    state: React.PropTypes.string,
-    streetAddress: React.PropTypes.string,
-    type: React.PropTypes.string,
-    zip: React.PropTypes.string,
-  }),
+  city: React.PropTypes.string,
+  state: React.PropTypes.string,
+  streetAddress: React.PropTypes.string,
+  type: React.PropTypes.string,
+  zip: React.PropTypes.string,
 }
 export default AddressInfo
