@@ -5,34 +5,21 @@
 class HomeController < ApplicationController # :nodoc:
   before_action :authenticate_user, if: :authentication_enabled?
 
-  def index
-  end
+  def index; end
 
   private
 
   def authenticate_user
     return if session[:security_token]
-    if valid_security_token?(security_token)
+    if SecurityRepository.token_valid?(security_token)
       session[:security_token] = security_token
     else
-      redirect_to login_url(request.original_url)
+      redirect_to SecurityRepository.login_url(request.original_url)
     end
   end
 
   def security_token
     params[:token]
-  end
-
-  def valid_security_token?(token)
-    security_token.present? && Faraday.get(token_validation_url(token)).status == 200
-  end
-
-  def login_url(callback)
-    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/login?callback=#{callback}"
-  end
-
-  def token_validation_url(token)
-    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/validate?token=#{token}"
   end
 
   def authentication_enabled?
