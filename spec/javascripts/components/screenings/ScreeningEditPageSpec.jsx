@@ -124,6 +124,17 @@ describe('ScreeningEditPage', () => {
       expect(component.find('IncidentInformationEditView').props().screening).toEqual(screening)
       expect(component.find('IncidentInformationEditView').props().onChange).toEqual(component.instance().setField)
     })
+
+    it('renders the history card', () => {
+      const props = {
+        actions: {},
+        params: {id: '1'},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
+      component = shallow(<ScreeningEditPage {...props} />)
+      expect(component.find('HistoryCard').length).toEqual(1)
+    })
   })
 
   describe('componentDidMount', () => {

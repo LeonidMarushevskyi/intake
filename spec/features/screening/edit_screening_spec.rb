@@ -70,6 +70,13 @@ feature 'Edit Screening' do
       select "Child's Home", from: 'Location Type'
     end
 
+    within '#screening-history-card', text: 'HISTORY' do
+      expect(page).to have_css('th', text: 'Date')
+      expect(page).to have_css('th', text: 'Type/Status')
+      expect(page).to have_css('th', text: 'County/Office')
+      expect(page).to have_css('th', text: 'People and Roles')
+    end
+
     existing_screening.assign_attributes(
       communication_method: 'mail',
       ended_at: '2016-08-22T11:00.000Z',
