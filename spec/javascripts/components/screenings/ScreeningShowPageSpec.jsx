@@ -40,6 +40,7 @@ describe('ScreeningShowPage', () => {
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('InformationShowView').length).toEqual(1)
       expect(component.find('IncidentInformationShowView').length).toEqual(1)
+      expect(component.find('HistoryCard').length).toEqual(1)
     })
 
     describe('participants card', () => {

@@ -1,6 +1,7 @@
 import {browserHistory} from 'react-router'
 import * as screeningActions from 'actions/screeningActions'
 import React from 'react'
+import HistoryCard from 'components/screenings/HistoryCard'
 import Autocompleter from 'components/common/Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import InformationEditView from 'components/screenings/InformationEditView'
@@ -117,6 +118,7 @@ export class ScreeningEditPage extends React.Component {
             />
         }
         <IncidentInformationEditView screening={screening} onChange={this.setField} />
+        <HistoryCard />
         <div className='row'>
           <div className='centered'>
             <button className='btn btn-primary' onClick={this.saveAll}>Save</button>
