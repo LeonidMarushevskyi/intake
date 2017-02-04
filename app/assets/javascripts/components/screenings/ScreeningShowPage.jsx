@@ -1,4 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
+import HistoryCard from 'components/screenings/HistoryCard'
 import InformationShowView from 'components/screenings/InformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
@@ -55,6 +56,7 @@ export class ScreeningShowPage extends React.Component {
             />
         }
         <IncidentInformationShowView screening={screening}/>
+        <HistoryCard />
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
       </div>

@@ -59,6 +59,13 @@ feature 'Show Screening' do
       expect(page).to have_content 'Evaluate Out'
     end
 
+    within '#screening-history-card', text: 'HISTORY' do
+      expect(page). to have_content 'Date'
+      expect(page).to have_css('th', text: 'Type/Status')
+      expect(page).to have_css('th', text: 'County/Office')
+      expect(page).to have_css('th', text: 'People and Roles')
+    end
+
     expect(page).to have_link('Home', href: root_path)
     expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
