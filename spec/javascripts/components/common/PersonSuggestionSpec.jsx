@@ -3,10 +3,10 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('PersonSuggestion', () => {
-  it('renders first and last name', () => {
-    const props = {firstName: 'Bart', lastName: 'Simpson'}
+  it('renders first, last name, middle name and suffix', () => {
+    const props = {firstName: 'Bart', lastName: 'Simpson', middleName: 'Jacqueline', nameSuffix: 'md'}
     const component = shallow(<PersonSuggestion {...props} />)
-    expect(component.html()).toContain('<strong>Bart Simpson</strong>')
+    expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
   })
 
   describe('ssn', () => {
