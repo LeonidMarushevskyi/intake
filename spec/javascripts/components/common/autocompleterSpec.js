@@ -78,6 +78,8 @@ describe('<Autcompleter />', () => {
       const result = [{
         first_name: 'Bart',
         last_name: 'Simpson',
+        middle_name: 'Jacqueline',
+        name_suffix: 'md',
         gender: 'female',
         languages: ['French', 'Italian'],
         races: [
@@ -111,6 +113,8 @@ describe('<Autcompleter />', () => {
       expect(component.find('PersonSuggestion').props()).toEqual({
         firstName: 'Bart',
         lastName: 'Simpson',
+        middleName: 'Jacqueline',
+        nameSuffix: 'md',
         gender: 'female',
         languages: ['French', 'Italian'],
         races: [
@@ -142,6 +146,8 @@ describe('<Autcompleter />', () => {
       const result = [{
         first_name: 'Bart',
         last_name: 'Simpson',
+        middle_name: null,
+        name_suffix: 'md',
         gender: 'female',
         languages: [],
         races: [],
@@ -158,6 +164,8 @@ describe('<Autcompleter />', () => {
       expect(component.find('PersonSuggestion').props()).toEqual({
         firstName: 'Bart',
         lastName: 'Simpson',
+        middleName: null,
+        nameSuffix: 'md',
         gender: 'female',
         races: [],
         languages: [],

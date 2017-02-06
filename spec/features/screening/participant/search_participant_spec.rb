@@ -26,6 +26,8 @@ feature 'searching a participant in autocompleter' do
       id: '99',
       date_of_birth: date_of_birth.to_s(:db),
       first_name: 'Marge',
+      middle_name: 'Jacqueline',
+      name_suffix: 'md',
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
@@ -57,7 +59,7 @@ feature 'searching a participant in autocompleter' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
-      within 'li', text: 'Marge Simpson' do
+      within 'li', text: 'Marge Jacqueline Simpson MD' do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female, White, American Indian or Alaska Native'
@@ -85,7 +87,7 @@ feature 'searching a participant in autocompleter' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
-      within 'li', text: 'Marge Simpson' do
+      within 'li', text: 'Marge Jacqueline Simpson MD' do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female, White, American Indian or Alaska Native'
@@ -114,7 +116,7 @@ feature 'searching a participant in autocompleter' do
           with: person.ssn, result_should_contain: 'Marge'
       end
 
-      within 'li', text: 'Marge Simpson' do
+      within 'li', text: 'Marge Jacqueline Simpson MD' do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female'
