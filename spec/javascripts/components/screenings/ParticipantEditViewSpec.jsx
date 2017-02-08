@@ -27,6 +27,32 @@ describe('ParticipantEditView', () => {
     expect(component.find('.card-header').text()).toContain('Lisa Simpson')
   })
 
+  it('renders the participant header with first name when last name is null', () => {
+    const participant = Immutable.fromJS({
+      id: '199',
+      first_name: 'Lisa',
+      last_name: null,
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    })
+    component = shallow(<ParticipantEditView participant={participant} />)
+    expect(component.find('.card-header span').text()).toEqual('Lisa')
+  })
+
+  it('renders the participant header with no name when first and last name is null', () => {
+    const participant = Immutable.fromJS({
+      id: '199',
+      first_name: null,
+      last_name: null,
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    })
+    component = shallow(<ParticipantEditView participant={participant} />)
+    expect(component.find('.card-header')).not.toContain('<span></span>')
+  })
+
   it('renders the delete link', () => {
     expect(component.find('.fa-times').length).toEqual(1)
   })
@@ -63,35 +89,5 @@ describe('addresses ', () => {
   const component = shallow(<ParticipantEditView participant={Immutable.fromJS({})} />)
   it('renders a address edit view', () => {
     expect(component.find('AddressesEditView').length).toEqual(1)
-  })
-})
-
-describe('ParticipantEditView on null values', () => {
-  let component
-
-  it('renders the participant header corectly with null last name', () => {
-    const participant = Immutable.fromJS({
-      id: '199',
-      first_name: 'Lisa',
-      last_name: null,
-      date_of_birth: '2016-12-31',
-      gender: 'female',
-      ssn: 'ssn-1',
-    })
-    component = shallow(<ParticipantEditView participant={participant} />)
-    expect(component.find('.card-header').text()).not.toContain('null')
-  })
-
-  it('renders the participant header corectly (no empty span) with no name', () => {
-    const participant = Immutable.fromJS({
-      id: '199',
-      first_name: null,
-      last_name: null,
-      date_of_birth: '2016-12-31',
-      gender: 'female',
-      ssn: 'ssn-1',
-    })
-    component = shallow(<ParticipantEditView participant={participant} />)
-    expect(component.find('.card-header')).not.toContain('<span></span>')
   })
 })
