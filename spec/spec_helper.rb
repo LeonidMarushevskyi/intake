@@ -28,6 +28,18 @@ if ENV['GENERATE_TEST_REPORTS'] == 'yes'
 end
 
 RSpec.configure do |config|
+  config.before :suite do
+    if ENV['USE_XVFB'] == 'true'
+      require 'headless'
+      @headless_manager = Headless.new
+      @headless_manager.start
+    end
+  end
+
+  config.after :suite do
+    @headless.destroy if ENV['USE_XVFB'] == 'true'
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
