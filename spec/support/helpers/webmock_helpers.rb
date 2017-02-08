@@ -28,6 +28,10 @@ module WebmockHelpers
   def api_participants_path
     %r{.*/api/v1/participants}
   end
+
+  def api_participant_path(id)
+    %r{.*/api/v1/participants/#{id}}
+  end
 end
 
 RSpec.configure do |config|
