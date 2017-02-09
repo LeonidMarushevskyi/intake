@@ -11,12 +11,15 @@ services:
       API_URL: "http://api:3000"
       NODE_ENV: development
       AUTHENTICATION_URL: "http://Authentication/"
+      REDIS_HOST: 'redis'
+      REDIS_PORT: 6379
     volumes:
       - .:/ca_intake
       - ca_intake_rubygems:/ruby_gems
       - ca_intake_node_modules:/ca_intake/node_modules
     links:
       - api
+      - redis
     tty: true
     stdin_open: true
   api:
@@ -38,6 +41,10 @@ services:
       service: db
   elasticsearch:
     image: 'elasticsearch:2.4'
+  redis:
+    image: 'redis:3.0'
+    ports:
+      - "6379:6379"
 volumes:
   ca_intake_rubygems:
   ca_intake_node_modules:

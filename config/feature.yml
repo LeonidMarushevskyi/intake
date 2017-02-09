@@ -3,13 +3,13 @@ development:
   features:
     release_one: false
     authentication: false
-    centralized_sessions: false
+    centralized_sessions: true
 
 test:
   features:
     release_one: false
     authentication: false
-    centralized_sessions: false
+    centralized_sessions: true
 
 production:
   features:
