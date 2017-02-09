@@ -7,7 +7,7 @@ Feature.with(:centralized_sessions) do
     port: ENV.fetch('REDIS_PORT'),
     db: 0,
     namespace: 'session'
-  }, expires_in: 6.hours
+  }, expires_in: 4.hours
 end
 
 Feature.without(:centralized_sessions) do
