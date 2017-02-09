@@ -20,5 +20,7 @@ module CaIntake # :nodoc:
   # CA Intake configurations are set here.
   class Application < Rails::Application # :nodoc:
     config.autoload_paths << Rails.root.join('lib')
+    config.logger = Logger.new(STDOUT)
+    config.log_level = :debug
   end
 end
