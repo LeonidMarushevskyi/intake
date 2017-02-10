@@ -10,6 +10,10 @@ services:
       RAILS_ENV: test
       CI_REPORTS: /reports
       GENERATE_TEST_REPORTS: 'yes'
+      REDIS_HOST: 'redis'
+      REDIS_PORT: 6379
+    links:
+      - redis
   lint:
     build:
       context: ../../
@@ -34,5 +38,13 @@ services:
       dockerfile: docker/test/Dockerfile
     environment:
       APP_VERSION: ${APP_VERSION}
+      REDIS_HOST: 'redis'
+      REDIS_PORT: 6379
     command:
       - build.sh
+    links:
+      - redis
+  redis:
+    image: 'redis:3.0'
+    ports:
+      - '6379:6379'

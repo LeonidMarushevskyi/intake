@@ -8,6 +8,7 @@ gem 'haml-rails'
 gem 'puma'
 gem 'pundit'
 gem 'rails', '~> 5.0.0'
+gem 'redis-rails'
 gem 'virtus'
 gem 'feature'
 

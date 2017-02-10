@@ -3,13 +3,16 @@ development:
   features:
     release_one: false
     authentication: false
+    centralized_sessions: true
 
 test:
   features:
     release_one: false
     authentication: false
+    centralized_sessions: true
 
 production:
   features:
     release_one: <%= ENV.fetch('RELEASE_ONE', false) %>
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
+    centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
