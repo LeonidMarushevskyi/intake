@@ -47,7 +47,7 @@ export function createParticipant(participant) {
   return (dispatch) => (
     Utils.request(
       'POST',
-      `/screenings/${participant.screening_id}/participants.json`,
+      '/api/v1/participants',
       JSON.stringify({participant: participant}),
       {contentType: 'application/json'}
     )

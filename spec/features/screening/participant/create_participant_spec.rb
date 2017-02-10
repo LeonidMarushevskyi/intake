@@ -79,7 +79,6 @@ feature 'Edit Screening' do
       :participant,
       participant_marge.as_json.merge(id: 23)
     )
-
     stub_request(:post, api_participants_path)
       .with(body: participant_marge.to_json)
       .and_return(body: created_participant_marge.to_json,
