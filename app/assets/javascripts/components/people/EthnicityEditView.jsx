@@ -76,8 +76,10 @@ export class EthnicityEditView extends React.Component {
       <div className='gap-top' id='ethnicity'>
         <fieldset className='fieldset-inputs'>
           <label>Hispanic/Latino Origin</label>
-          {this.renderEthnicityAndDetails(HISPANIC_LATINO_ORIGIN.slice(startIndex, halfIndex))}
-          {this.renderEthnicityAndDetails(HISPANIC_LATINO_ORIGIN.slice(halfIndex))}
+          <div className='row'>
+            {this.renderEthnicityAndDetails(HISPANIC_LATINO_ORIGIN.slice(startIndex, halfIndex))}
+            {this.renderEthnicityAndDetails(HISPANIC_LATINO_ORIGIN.slice(halfIndex))}
+          </div>
         </fieldset>
       </div>
     )
