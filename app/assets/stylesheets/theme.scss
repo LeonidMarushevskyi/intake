@@ -200,7 +200,7 @@ ol {
   background-size: 2.5rem;
 }
 
-.input-type-autocompleter {
+.input-type-autocompleter, .react-autosuggest__input{
   background-image: url('search.svg');
   background-position: 99%;
   background-repeat: no-repeat;
