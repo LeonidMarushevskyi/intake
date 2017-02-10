@@ -8,8 +8,40 @@
   padding: 0;
 }
 
+.no-pad-top {
+  padding-top: 0;
+}
+
+.no-pad-bottom {
+  padding-bottom: 0;
+}
+
+.no-pad-left {
+  padding-left: 0;
+}
+
+.no-pad-right {
+  padding-right: 0;
+}
+
 .no-gap {
   margin-top: 0;
+}
+
+.no-gap-top {
+  margin-top: 0;
+}
+
+.no-gap-bottom {
+  margin-bottom: 0;
+}
+
+.no-gap-left {
+  margin-left: 0;
+}
+
+.no-gap-right {
+  margin-right: 0;
 }
 
 @media screen and (min-width: 767px) {
