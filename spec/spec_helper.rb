@@ -37,7 +37,7 @@ RSpec.configure do |config|
   end
 
   config.after :suite do
-    @headless.destroy if ENV['USE_XVFB'] == 'true'
+    @headless_manager.destroy if ENV['USE_XVFB'] == 'true'
   end
 
   # rspec-expectations config goes here. You can use an alternate
