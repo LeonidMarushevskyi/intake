@@ -100,7 +100,7 @@ describe('screening actions', () => {
       store.dispatch(screeningActions.createParticipant(participant))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
-        '/screenings/1/participants.json',
+        '/api/v1/participants',
         JSON.stringify({participant: participant}),
         {contentType: 'application/json'}
       )

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ParticipantsController do
+describe Api::V1::ParticipantsController do
   describe '#create' do
     let(:participant_params) do
       {
