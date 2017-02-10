@@ -1,5 +1,2 @@
 #!/bin/bash
-
-Xvfb :99 -ac +extension RANDR -screen 0 2500x2500x16 &
-
-DISPLAY=:99 RAILS_ENV=test bundle exec rake spec
+RAILS_ENV=test USE_XVFB=true bundle exec rake spec

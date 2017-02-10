@@ -44,6 +44,7 @@ group :test do
   gem 'capybara-accessible'
   gem 'capybara-screenshot'
   gem 'faker'
+  gem 'headless', '2.3.1', require: false
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter', require: false
   gem 'selenium-webdriver'
