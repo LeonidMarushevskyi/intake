@@ -101,8 +101,10 @@ export class RacesEditView extends React.Component {
       <div className='gap-top' id='race'>
         <fieldset className='fieldset-inputs'>
           <label>Race</label>
-          {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
-          {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
+          <div className='row'>
+            {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
+            {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
+          </div>
         </fieldset>
         <hr />
       </div>
