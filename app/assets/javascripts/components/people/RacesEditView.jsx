@@ -106,7 +106,6 @@ export class RacesEditView extends React.Component {
             {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
           </div>
         </fieldset>
-        <hr />
       </div>
     )
   }
