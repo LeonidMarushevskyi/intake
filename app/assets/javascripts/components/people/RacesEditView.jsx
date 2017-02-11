@@ -85,6 +85,7 @@ export class RacesEditView extends React.Component {
                     {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
                   </SelectField>
                 }
+                <div className='half-gap-bottom'></div>
               </li>
             )
           })}
