@@ -37,7 +37,7 @@ export function fetchPersonSuccess(person) {
 
 export function fetchPerson(personId) {
   return (dispatch) =>
-    Utils.request('GET', `/people/${personId}.json`)
+    Utils.request('GET', `/api/v1/people/${personId}`)
       .then((jsonResponse) => dispatch(fetchPersonSuccess(jsonResponse)))
 }
 
@@ -49,7 +49,7 @@ export function createPerson(person) {
   parseBlankAddresses(person)
   parseBlankPhoneNumber(person)
   return (dispatch) =>
-    Utils.request('POST', '/people.json', JSON.stringify({person: person}), {contentType: 'application/json'})
+    Utils.request('POST', '/api/v1/people', JSON.stringify({person: person}), {contentType: 'application/json'})
       .then((jsonResponse) => dispatch(createPersonSuccess(jsonResponse)))
 }
 
@@ -62,7 +62,7 @@ export function updatePerson(person) {
   parseBlankPhoneNumber(person)
   return (dispatch) => {
     const {id: personId} = person
-    return Utils.request('PUT', `/people/${personId}.json`, JSON.stringify({person: person}), {contentType: 'application/json'})
+    return Utils.request('PUT', `/api/v1/people/${personId}`, JSON.stringify({person: person}), {contentType: 'application/json'})
       .then((jsonResponse) => dispatch(updatePersonSuccess(jsonResponse)))
   }
 }

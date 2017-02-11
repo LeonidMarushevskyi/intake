@@ -15,16 +15,20 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :participants, only: [:create]
-    end
-  end
 
-  resource :people, only: [:search] do
-    collection do
-      get 'search'
+      resource :people, only: [:search] do
+        collection do
+          get 'search'
+        end
+      end
+
+      resources :people,
+        only: [:create, :update, :show],
+        constraints: Routes::InactiveReleaseOneConstraint
     end
   end
 
   resources :people,
-    only: [:new, :edit, :create, :show, :update],
+    only: [:new, :edit, :show],
     constraints: Routes::InactiveReleaseOneConstraint
 end
