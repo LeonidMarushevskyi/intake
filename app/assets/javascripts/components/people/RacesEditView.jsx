@@ -66,26 +66,27 @@ export class RacesEditView extends React.Component {
             const raceId = race.replace(/ /gi, '_')
             return (
               <li key={race}>
-                <CheckboxField
-                  key={race}
-                  id={`race-${raceId}`}
-                  value={race}
-                  checked={selected}
-                  disabled={disabled}
-                  onChange={(event) => this.changeRace(race, event.target.checked)}
-                />
-                {selected && raceDetails &&
-                  <SelectField
-                    id={`${raceId}-race-detail`}
-                    label={''}
-                    value={selectedRaceDetail || ''}
-                    onChange={(event) => this.changeRaceDetail(race, event.target.value)}
-                  >
-                    <option key='' value='' />
-                    {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
-                  </SelectField>
-                }
-                <div className='half-gap-bottom'></div>
+                <div className='half-gap-bottom'>
+                  <CheckboxField
+                    key={race}
+                    id={`race-${raceId}`}
+                    value={race}
+                    checked={selected}
+                    disabled={disabled}
+                    onChange={(event) => this.changeRace(race, event.target.checked)}
+                  />
+                  {selected && raceDetails &&
+                    <SelectField
+                      id={`${raceId}-race-detail`}
+                      label={''}
+                      value={selectedRaceDetail || ''}
+                      onChange={(event) => this.changeRaceDetail(race, event.target.value)}
+                    >
+                      <option key='' value='' />
+                      {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
+                    </SelectField>
+                  }
+                </div>
               </li>
             )
           })}

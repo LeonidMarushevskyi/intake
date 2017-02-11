@@ -42,25 +42,26 @@ export class EthnicityEditView extends React.Component {
               const selected = hispanicLatinoOrigin === option
               return (
                 <li key={option}>
-                  <CheckboxField
-                    id={`ethnicity-${option.replace(/ /gi, '_')}`}
-                    value={option}
-                    checked={selected}
-                    disabled={Boolean(disabled)}
-                    onChange={(event) => this.changeEthnicity(option, event.target.checked)}
-                  />
-                  {option === 'Yes' && hispanicLatinoOrigin === 'Yes' &&
-                  <SelectField
-                    id={'ethnicity-detail'}
-                    label={''}
-                    value={ethnicity.get('ethnicity_detail')}
-                    onChange={(event) => this.changeEthnicityDetail(event.target.value)}
-                  >
-                    <option key='' value='' />
-                    {ETHNICITY_DETAILS.map((detail) => <option key={detail} value={detail}>{detail}</option>)}
-                  </SelectField>
-                  }
-                  <div className='half-gap-bottom'></div>
+                  <div className='half-gap-bottom'>
+                    <CheckboxField
+                      id={`ethnicity-${option.replace(/ /gi, '_')}`}
+                      value={option}
+                      checked={selected}
+                      disabled={Boolean(disabled)}
+                      onChange={(event) => this.changeEthnicity(option, event.target.checked)}
+                    />
+                    {option === 'Yes' && hispanicLatinoOrigin === 'Yes' &&
+                    <SelectField
+                      id={'ethnicity-detail'}
+                      label={''}
+                      value={ethnicity.get('ethnicity_detail')}
+                      onChange={(event) => this.changeEthnicityDetail(event.target.value)}
+                    >
+                      <option key='' value='' />
+                      {ETHNICITY_DETAILS.map((detail) => <option key={detail} value={detail}>{detail}</option>)}
+                    </SelectField>
+                    }
+                  </div>
                 </li>
                 )
             })
