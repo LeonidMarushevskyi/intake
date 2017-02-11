@@ -60,6 +60,7 @@ export class EthnicityEditView extends React.Component {
                     {ETHNICITY_DETAILS.map((detail) => <option key={detail} value={detail}>{detail}</option>)}
                   </SelectField>
                   }
+                  <div className='half-gap-bottom'></div>
                 </li>
                 )
             })
