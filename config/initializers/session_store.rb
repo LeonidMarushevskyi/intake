@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 # Be sure to restart your server when you modify this file.
-
 Feature.with(:centralized_sessions) do
   Rails.application.config.session_store :redis_store, servers: {
     host: ENV.fetch('REDIS_HOST'),
@@ -11,5 +10,5 @@ Feature.with(:centralized_sessions) do
 end
 
 Feature.without(:centralized_sessions) do
-  Rails.application.config.session_store :cookie_store, key: '_rails_template_session'
+  Rails.application.config.session_store :cookie_store, key: '_ca_intake_session'
 end
