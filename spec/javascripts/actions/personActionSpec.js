@@ -23,7 +23,7 @@ describe('person actions', () => {
       const store = mockStore()
 
       store.dispatch(personActions.fetchPerson(person.id))
-      expect(Utils.request).toHaveBeenCalledWith('GET', '/people/1.json')
+      expect(Utils.request).toHaveBeenCalledWith('GET', '/api/v1/people/1')
       expect(store.getActions()).toEqual(expectedActions)
     })
   })
@@ -44,7 +44,7 @@ describe('person actions', () => {
       store.dispatch(personActions.createPerson(person))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
-        '/people.json',
+        '/api/v1/people',
         JSON.stringify({person: person}),
         {contentType: 'application/json'}
       )
@@ -119,7 +119,7 @@ describe('person actions', () => {
       store.dispatch(personActions.updatePerson(updatedPerson))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
-        '/people/1.json',
+        '/api/v1/people/1',
         JSON.stringify({person: updatedPerson}),
         {contentType: 'application/json'}
       )
