@@ -41,15 +41,9 @@ module Api
         render json: updated_screening
       end
 
-      def edit
-        @screening = ScreeningRepository.find(params[:id])
-        @participants = @screening.participants.to_a
-      end
-
       def show
-        @screening = ScreeningRepository.find(params[:id])
-
-        render json: @screening
+        screening = ScreeningRepository.find(params[:id])
+        render json: screening
       end
 
       def index
