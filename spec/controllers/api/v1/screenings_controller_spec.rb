@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ScreeningsController do
+describe Api::V1::ScreeningsController do
   describe '#create' do
     let(:created_screening) { double(:screening, id: '1') }
     before do
@@ -21,53 +21,11 @@ describe ScreeningsController do
     end
   end
 
-  describe '#edit' do
-    let(:screening) { double(:screening) }
-    let(:participants) { [double(:participant1), double(:participant2)] }
-
-    before do
-      expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
-      expect(screening).to receive(:participants).and_return(participants)
-    end
-
-    it 'assigns screening' do
-      process :edit, method: :get, params: { id: '1' }
-      expect(assigns(:screening)).to eq(screening)
-    end
-
-    it 'assigns participants' do
-      process :edit, method: :get, params: { id: '1' }
-      expect(assigns(:participants)).to eq(participants)
-    end
-
-    it 'renders the edit template' do
-      process :edit, method: :get, params: { id: '1' }
-      expect(response).to render_template('edit')
-    end
-  end
-
   describe '#show' do
     let(:screening) { double(:screening) }
-    let(:participants) { [double(:participant1), double(:participant2)] }
 
     before do
       expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
-      expect(screening).to receive(:participants).and_return(participants)
-    end
-
-    it 'assigns screening' do
-      process :show, method: :get, params: { id: '1' }
-      expect(assigns(:screening)).to eq(screening)
-    end
-
-    it 'assigns participants' do
-      process :show, method: :get, params: { id: '1' }
-      expect(assigns(:participants)).to eq(participants)
-    end
-
-    it 'renders the show template' do
-      process :show, method: :get, params: { id: '1' }
-      expect(response).to render_template('show')
     end
 
     it 'renders screening as json' do
@@ -124,11 +82,6 @@ describe ScreeningsController do
       it 'renders screenings as json' do
         process :index, method: :get, format: :json
         expect(JSON.parse(response.body)).to eq([{ 'id' => '1' }])
-      end
-
-      it 'renders the index template' do
-        process :index, method: :get
-        expect(response).to render_template('index')
       end
     end
 
