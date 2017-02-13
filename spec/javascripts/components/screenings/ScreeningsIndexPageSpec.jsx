@@ -28,7 +28,7 @@ describe('ScreeningsIndexPage', () => {
     it('makes an ajax call to the pathname', () => {
       const location = {pathname: 'my-api', search: '?my-search'}
       mount(<ScreeningsIndexPage location={location} />)
-      expect(Utils.request).toHaveBeenCalledWith('GET', 'my-api.json?my-search')
+      expect(Utils.request).toHaveBeenCalledWith('GET', '/api/v1/my-api?my-search')
     })
   })
 })

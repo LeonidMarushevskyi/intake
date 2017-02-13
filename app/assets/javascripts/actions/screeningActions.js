@@ -8,7 +8,7 @@ export function createScreeningSuccess(screening) {
 
 export function createScreening() {
   return (dispatch) => (
-    Utils.request('POST', '/screenings', null, {contentType: 'application/json'})
+    Utils.request('POST', '/api/v1/screenings', null, {contentType: 'application/json'})
     .then((jsonResponse) => dispatch(createScreeningSuccess(jsonResponse)))
   )
 }
@@ -19,7 +19,7 @@ export function fetchScreeningSuccess(screening) {
 
 export function fetchScreening(screeningId) {
   return (dispatch) => (
-    Utils.request('GET', `/screenings/${screeningId}.json`, null, {contentType: 'application/json'})
+    Utils.request('GET', `/api/v1/screenings/${screeningId}`, null, {contentType: 'application/json'})
     .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
   )
 }
@@ -32,7 +32,7 @@ export function saveScreening(screening) {
   return (dispatch) => (
     Utils.request(
       'PUT',
-      `/screenings/${screening.id}.json`,
+      `/api/v1/screenings/${screening.id}`,
       JSON.stringify({screening: screening}),
       {contentType: 'application/json'}
     ).then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))

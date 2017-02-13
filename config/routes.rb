@@ -8,12 +8,17 @@ Rails.application.routes.draw do
     constraints: Routes::InactiveReleaseOneConstraint
 
   resources :screenings,
-    only: [:create, :edit, :show, :update, :index],
+    only: [:show, :edit, :index],
     constraints: Routes::InactiveReleaseOneConstraint do
   end
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      resources :screenings,
+        only: [:show, :create, :update, :index],
+        constraints: Routes::InactiveReleaseOneConstraint do
+      end
+
       resources :participants, only: [:create]
 
       resource :people, only: [:search] do

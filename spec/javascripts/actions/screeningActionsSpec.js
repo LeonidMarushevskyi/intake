@@ -21,7 +21,7 @@ describe('screening actions', () => {
       store.dispatch(screeningActions.createScreening())
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
-        '/screenings',
+        '/api/v1/screenings',
         null,
         {contentType: 'application/json'}
       )
@@ -48,7 +48,7 @@ describe('screening actions', () => {
       store.dispatch(screeningActions.fetchScreening(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'GET',
-        `/screenings/${screeningId}.json`,
+        `/api/v1/screenings/${screeningId}`,
         null,
         {contentType: 'application/json'}
       )
@@ -74,7 +74,7 @@ describe('screening actions', () => {
       store.dispatch(screeningActions.saveScreening(screening))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
-        `/screenings/${screening.id}.json`,
+        `/api/v1/screenings/${screening.id}`,
         JSON.stringify({screening: screening}),
         {contentType: 'application/json'}
       )
