@@ -21,6 +21,7 @@ describe HomeController do
           process :index, method: :get
           assert_response :success
           expect(response).to render_template('index')
+          expect(::API.connection.headers['Authorization']).to eq 'My Test Token'
         end
       end
 
