@@ -93,7 +93,6 @@ export default class Autocompleter extends React.Component {
   render() {
     const {value, suggestions} = this.state
     const inputProps = {
-      placeholder: 'Search people...',
       id: this.props.id,
       value,
       onChange: this.onChange.bind(this),
