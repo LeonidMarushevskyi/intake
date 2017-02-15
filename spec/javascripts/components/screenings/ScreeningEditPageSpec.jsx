@@ -59,7 +59,7 @@ describe('ScreeningEditPage', () => {
       })
 
       it('renders the search card', () => {
-        expect(component.find('#search-card label').text()).toEqual('Search for any person')
+        expect(component.find('#search-card label').text()).toContain('Search for any person')
         expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
       })
 
