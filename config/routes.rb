@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneConstraint do
       end
 
-      resources :participants, only: [:create]
+      resources :participants, only: [:create, :destroy]
 
       resource :people, only: [:search] do
         collection do

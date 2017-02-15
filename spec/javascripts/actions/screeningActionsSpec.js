@@ -112,4 +112,29 @@ describe('screening actions', () => {
       expect(store.getActions()[0].participant.toJS()).toEqual(participant)
     })
   })
+
+  describe('deleteParticipant', () => {
+    const participant = {screening_id: '1', person_id: '2', id: '1'}
+    const store = mockStore()
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('deletes the participant on the server', () => {
+      store.dispatch(screeningActions.deleteParticipant(participant.id))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'DELETE',
+        `/api/v1/participants/${participant.id}`,
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a deleteParticipantSuccess', () => {
+      store.dispatch(screeningActions.deleteParticipant(participant.id))
+      expect(store.getActions()[0].type).toEqual(types.DELETE_PARTICIPANT_SUCCESS)
+    })
+  })
 })

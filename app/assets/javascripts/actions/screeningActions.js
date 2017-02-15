@@ -54,3 +54,19 @@ export function createParticipant(participant) {
     .then((jsonResponse) => dispatch(createParticipantSuccess(jsonResponse)))
   )
 }
+
+export function deleteParticipantSuccess() {
+  return {type: types.DELETE_PARTICIPANT_SUCCESS}
+}
+
+export function deleteParticipant(id) {
+  return (dispatch) => (
+    Utils.request(
+      'DELETE',
+        `/api/v1/participants/${id}`,
+        null,
+        {contentType: 'application/json'}
+    )
+    .then(() => dispatch(deleteParticipantSuccess()))
+  )
+}

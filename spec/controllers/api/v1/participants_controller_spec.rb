@@ -42,4 +42,18 @@ describe Api::V1::ParticipantsController do
       expect(JSON.parse(response.body)).to eq(created_participant.as_json)
     end
   end
+
+  describe '#destroy' do
+    before do
+      expect(ParticipantRepository).to receive(:destroy).with('1')
+        .and_return('')
+    end
+
+    it 'deletes an existing participant' do
+      process :destroy, method: :delete,
+                        params: { id: '1' },
+                        format: :json
+      expect(response.body).to_be_empty
+    end
+  end
 end

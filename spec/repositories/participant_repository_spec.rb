@@ -19,6 +19,13 @@ describe ParticipantRepository do
       expect(ParticipantRepository.create(new_participant)).to eq(created_participant)
     end
 
+    it 'deletes the participant if the delete to /participants/id is successful' do
+      stub_request(:delete, %r{/api/v1/participants/\d})
+        .and_return(status: 204, headers: { 'Content-Type': 'application/json' })
+      described_class.delete('1')
+      expect(a_request(:delete, %r{/api/v1/participants/1})).to have_been_made
+    end
+
     it 'raise an error if the response code is not 201' do
       mock_response = double(:mock_response, status: 500)
       allow(API.connection).to receive(:post).and_return(mock_response)
