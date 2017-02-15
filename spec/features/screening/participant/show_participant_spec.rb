@@ -10,7 +10,16 @@ feature 'Show Screening' do
     last_name: 'Simpson',
     gender: 'male',
     ssn: '123-23-1234',
-    date_of_birth: '1990-09-05'
+    date_of_birth: '1990-09-05',
+    addresses: [
+      {
+        street_address: '123 Fake St',
+        city: 'Springfield',
+        state: 'NY',
+        zip: '12345',
+        type: 'Home'
+      }
+    ]
   )
   existing_screening = FactoryGirl.create(
     :screening,
@@ -40,6 +49,11 @@ feature 'Show Screening' do
         expect(page).to have_content('Male')
         expect(page).to have_content('1990-09-05')
         expect(page).to have_content('123-23-1234')
+        expect(page).to have_content('123 Fake St')
+        expect(page).to have_content('Springfield')
+        expect(page).to have_content('New York')
+        expect(page).to have_content('12345')
+        expect(page).to have_content('Home')
       end
     end
   end

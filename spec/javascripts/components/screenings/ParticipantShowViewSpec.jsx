@@ -97,3 +97,33 @@ describe('ParticipantShowView with no name', () => {
     expect(component.find('.card-header')).not.toContain('<span></span>')
   })
 })
+
+describe('ParticipantShowView with addresses', () => {
+  let component
+  beforeEach(() => {
+    const participant = Immutable.fromJS({
+      id: '5',
+      addresses: [{
+        id: '1',
+        street_address: '671 Lincoln Avenue',
+        city: 'Winnetka',
+        state: 'IL',
+        zip: '60093',
+        type: 'Placement',
+      }],
+    })
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
+  })
+  it('renders participant with address', () => {
+    expect(component.find('ShowField[label="Address"]').html())
+      .toContain('671 Lincoln Avenue')
+    expect(component.find('ShowField[label="City"]').html())
+      .toContain('Winnetka')
+    expect(component.find('ShowField[label="State"]').html())
+      .toContain('Illinois')
+    expect(component.find('ShowField[label="Zip"]').html())
+      .toContain('60093')
+    expect(component.find('ShowField[label="Address Type"]').html())
+      .toContain('Placement')
+  })
+})

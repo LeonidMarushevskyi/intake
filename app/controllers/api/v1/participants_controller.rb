@@ -21,7 +21,15 @@ module Api
           :last_name,
           :person_id,
           :screening_id,
-          :ssn
+          :ssn,
+          addresses: [
+            :id,
+            :street_address,
+            :city,
+            :state,
+            :zip,
+            :type
+          ]
         )
       end
     end

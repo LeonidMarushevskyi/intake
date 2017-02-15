@@ -37,5 +37,11 @@ describe('ParticipantCardView', () => {
     it('renders the participants edit view for each participant', () => {
       expect(component.find('ParticipantEditView').length).toEqual(1)
     })
+
+    it("on edit when user hits 'Cancel' renders show view ", () => {
+      const cancelButton = component.find('#participant-cancel')
+      cancelButton.simulate('click')
+      expect(component.find('ParticipantShowView').length).toEqual(1)
+    })
   })
 })

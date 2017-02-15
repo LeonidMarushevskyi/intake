@@ -1,6 +1,7 @@
 import EditLink from 'components/common/EditLink'
 import GENDER from 'Gender'
 import React from 'react'
+import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
 import {Link} from 'react-router'
 
@@ -36,6 +37,33 @@ const ParticipantShowView = ({participant, onEdit}) => {
             {participant.get('ssn')}
           </ShowField>
         </div>
+      </div>
+      <div>
+        {
+          participant.get('addresses') && participant.get('addresses').map((address) => (
+            <div key={address.get('id')}>
+              <div className='row gap-top'>
+                <ShowField gridClassName='col-md-6' label='Address'>
+                  {address.get('street_address')}
+                </ShowField>
+                <ShowField gridClassName='col-md-6' label='City'>
+                  {address.get('city')}
+                </ShowField>
+              </div>
+              <div className='row'>
+                <ShowField gridClassName='col-md-4' label='State'>
+                  {US_STATE[address.get('state')]}
+                </ShowField>
+                <ShowField gridClassName='col-md-2' label='Zip'>
+                  {address.get('zip')}
+                </ShowField>
+                <ShowField gridClassName='col-md-6' label='Address Type'>
+                  {address.get('type')}
+                </ShowField>
+              </div>
+            </div>
+            ))
+        }
       </div>
     </div>
   </div>

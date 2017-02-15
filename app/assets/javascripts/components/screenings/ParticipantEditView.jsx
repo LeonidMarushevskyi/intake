@@ -1,11 +1,13 @@
+import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
 import Gender from 'Gender'
+import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
 import {Link} from 'react-router'
 
-const ParticipantEditView = ({participant}) => {
+const ParticipantEditView = ({participant, onCancel}) => {
   const name = [participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')
   return (
   <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
@@ -81,6 +83,7 @@ const ParticipantEditView = ({participant}) => {
 }
 
 ParticipantEditView.propTypes = {
+  onCancel: React.PropTypes.func,
   participant: React.PropTypes.object.isRequired,
 }
 export default ParticipantEditView

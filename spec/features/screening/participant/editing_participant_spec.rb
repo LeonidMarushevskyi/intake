@@ -36,14 +36,16 @@ feature 'Edit Screening' do
     )
   end
 
-  scenario 'editing a screening with a participant' do
+  before do
     stub_request(:get, api_screening_path(screening.id))
       .and_return(
         body: screening.to_json,
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
+  end
 
+  scenario 'editing a screening with a participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(participant.id) do
       within '.card-header' do
@@ -66,5 +68,16 @@ feature 'Edit Screening' do
         expect(page).to have_button 'Save'
       end
     end
+  end
+
+  scenario 'when a user clicks cancel on edit page' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(participant.id) do
+      click_button 'Cancel'
+    end
+
+    expect(page).to have_content 'MARGE SIMPSON'
+    expect(page).to have_link 'Edit participant'
   end
 end
