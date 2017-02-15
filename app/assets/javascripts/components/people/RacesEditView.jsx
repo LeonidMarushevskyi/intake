@@ -66,25 +66,27 @@ export class RacesEditView extends React.Component {
             const raceId = race.replace(/ /gi, '_')
             return (
               <li key={race}>
-                <CheckboxField
-                  key={race}
-                  id={`race-${raceId}`}
-                  value={race}
-                  checked={selected}
-                  disabled={disabled}
-                  onChange={(event) => this.changeRace(race, event.target.checked)}
-                />
-                {selected && raceDetails &&
-                  <SelectField
-                    id={`${raceId}-race-detail`}
-                    label={''}
-                    value={selectedRaceDetail || ''}
-                    onChange={(event) => this.changeRaceDetail(race, event.target.value)}
-                  >
-                    <option key='' value='' />
-                    {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
-                  </SelectField>
-                }
+                <div className='half-gap-bottom'>
+                  <CheckboxField
+                    key={race}
+                    id={`race-${raceId}`}
+                    value={race}
+                    checked={selected}
+                    disabled={disabled}
+                    onChange={(event) => this.changeRace(race, event.target.checked)}
+                  />
+                  {selected && raceDetails &&
+                    <SelectField
+                      id={`${raceId}-race-detail`}
+                      label={''}
+                      value={selectedRaceDetail || ''}
+                      onChange={(event) => this.changeRaceDetail(race, event.target.value)}
+                    >
+                      <option key='' value='' />
+                      {raceDetails.map((raceDetail) => <option key={raceDetail} value={raceDetail}>{raceDetail}</option>)}
+                    </SelectField>
+                  }
+                </div>
               </li>
             )
           })}
@@ -101,10 +103,11 @@ export class RacesEditView extends React.Component {
       <div className='gap-top' id='race'>
         <fieldset className='fieldset-inputs'>
           <label>Race</label>
-          {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
-          {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
+          <div className='row'>
+            {this.renderRaceAndRaceDetails(raceData.slice(startIndex, halfIndex))}
+            {this.renderRaceAndRaceDetails(raceData.slice(halfIndex))}
+          </div>
         </fieldset>
-        <hr />
       </div>
     )
   }
