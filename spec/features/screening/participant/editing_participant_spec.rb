@@ -10,7 +10,16 @@ feature 'Edit Screening' do
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
-      ssn: '123-23-1234'
+      ssn: '123-23-1234',
+      addresses: [
+        {
+          street_address: '123 Fake St',
+          city: 'Springfield',
+          state: 'NY',
+          zip: '12345',
+          type: 'Home'
+        }
+      ]
     }
   end
   let(:person) { Person.new(person_attributes) }
@@ -48,6 +57,11 @@ feature 'Edit Screening' do
         expect(page).to have_field('Gender', with: person.gender)
         expect(page).to have_field('Date of birth', with: person.date_of_birth)
         expect(page).to have_field('Social security number', with: person.ssn)
+        expect(page).to have_field('Address', with: person.addresses.first.street_address)
+        expect(page).to have_field('City', with: person.addresses.first.city)
+        expect(page).to have_field('State', with: person.addresses.first.state)
+        expect(page).to have_field('Zip', with: person.addresses.first.zip)
+        expect(page).to have_field('Address Type', with: person.addresses.first.type)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
       end

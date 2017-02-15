@@ -11,6 +11,16 @@ describe Participant do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
+        addresses: [
+          {
+            id: '5',
+            street_address: '2nd street',
+            city: 'Bangalore',
+            state: 'CA',
+            zip: '51500',
+            type: 'Placement'
+          }
+        ],
         person_id: '1',
         screening_id: '2'
       }.with_indifferent_access
@@ -23,6 +33,14 @@ describe Participant do
         gender: 'male',
         date_of_birth: '05/29/1990',
         ssn: '123-23-1234',
+        addresses: [{
+          id: '5',
+          street_address: '2nd street',
+          city: 'Bangalore',
+          state: 'CA',
+          zip: '51500',
+          type: 'Placement'
+        }],
         person_id: '1',
         screening_id: '2'
       }.with_indifferent_access)

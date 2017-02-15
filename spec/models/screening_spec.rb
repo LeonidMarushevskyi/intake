@@ -27,7 +27,23 @@ describe Screening do
           zip: '11222'
         },
         participants: [
-          { id: '1', first_name: 'Homer', last_name: 'Simpson', person_id: '3', screening_id: '2' }
+          {
+            id: '1',
+            first_name: 'Homer',
+            last_name: 'Simpson',
+            person_id: '3',
+            screening_id: '2',
+            addresses: [
+              {
+                id: '1',
+                street_address: '123 Fake St',
+                city: 'NY',
+                state: 'NY',
+                zip: '11222',
+                type: 'Work'
+              }
+            ]
+          }
         ]
       }.with_indifferent_access
       expect(
@@ -60,7 +76,15 @@ describe Screening do
           last_name: 'Simpson',
           ssn: nil,
           person_id: '3',
-          screening_id: '2'
+          screening_id: '2',
+          addresses: include(
+            id: '1',
+            street_address: '123 Fake St',
+            city: 'NY',
+            state: 'NY',
+            zip: '11222',
+            type: 'Work'
+          )
         )
       }.with_indifferent_access)
     end

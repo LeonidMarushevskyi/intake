@@ -51,6 +51,12 @@ describe('ParticipantEditView', () => {
     expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
   })
 })
+describe('addresses ', () => {
+  const component = shallow(<ParticipantEditView participant={Immutable.fromJS({})} />)
+  it('renders a address edit view', () => {
+    expect(component.find('AddressesEditView').length).toEqual(1)
+  })
+})
 
 describe('ParticipantEditView on null values', () => {
   let component

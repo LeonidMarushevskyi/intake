@@ -65,10 +65,14 @@ const ParticipantEditView = ({participant}) => {
           onChange={() => null}
         />
       </div>
+      <AddressesEditView
+        addresses={participant.get('addresses') || Immutable.List()}
+        onChange={() => null}
+      />
       <div className='row'>
         <div className='centered'>
           <button className='btn btn-primary'>Save</button>
-          <button className='btn btn-default'>Cancel</button>
+          <button className='btn btn-default' id='participant-cancel' onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>
