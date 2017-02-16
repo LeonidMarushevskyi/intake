@@ -8,7 +8,7 @@ class PersonRepository
   CONTENT_TYPE = 'application/json'
 
   def self.create(person)
-    response = make_api_call(PEOPLE_PATH, :post, person)
+    response = make_api_call(PEOPLE_PATH, :post, person.as_json(except: :id))
     raise 'Error creating person' if response.status != 201
     Rails.logger.info response.body.inspect
     Person.new(response.body)

@@ -5,7 +5,7 @@ describe PersonRepository do
   describe '.create' do
     it 'returns the person if the post to /people is successful' do
       new_person = FactoryGirl.build(:person, first_name: 'Homer')
-      new_person_attributes = new_person.to_json
+      new_person_attributes = new_person.to_json(except: :id)
       stub_request(:post, %r{/api/v1/people})
         .with(body: new_person_attributes)
         .and_return(
