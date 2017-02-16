@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
+
 gem 'devise', '4.1.1'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'feature'
 gem 'haml-rails'
 gem 'puma'
 gem 'pundit'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.0.1'
 gem 'redis-rails'
 gem 'virtus'
-gem 'feature'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
@@ -32,12 +33,9 @@ group :development, :test do
 end
 
 group :development do
-  # Spring speeds up development by keeping your application
-  # running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
   gem 'license_finder'
+  gem 'spring'
+  gem 'web-console', '~> 2.0'
 end
 
 group :test do
