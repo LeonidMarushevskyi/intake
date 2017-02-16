@@ -70,7 +70,7 @@ feature 'Edit Address' do
     person.addresses.first.type = 'Home'
 
     stub_request(:put, api_person_path(person.id))
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(status: 200,
                   body: person.to_json,
                   headers: { 'Content-Type' => 'application/json' })
@@ -80,7 +80,7 @@ feature 'Edit Address' do
                   headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
-    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
+    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json(except: :id))).to have_been_made
     expect(page).to have_current_path(person_path(id: person.id))
   end
 
@@ -90,7 +90,7 @@ feature 'Edit Address' do
     click_button 'Add new address'
 
     stub_request(:put, api_person_path(person.id))
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(status: 200,
                   body: person.to_json,
                   headers: { 'Content-Type' => 'application/json' })
@@ -110,7 +110,7 @@ feature 'Edit Address' do
     end
 
     click_button 'Save'
-    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json)).to have_been_made
+    expect(a_request(:put, api_person_path(person.id)).with(body: person.to_json(except: :id))).to have_been_made
     expect(page).to have_current_path(person_path(id: person.id))
   end
 end
