@@ -4,25 +4,21 @@ require 'rails_helper'
 describe PersonRepository do
   describe '.create' do
     it 'returns the person if the post to /people is successful' do
-      mock_response = double(:mock_response, status: 201, body: 'mock_body')
-      mock_request = double(:mock_request)
-      new_person = double(:person, to_json: 'new_person')
-      created_person = double(:person)
-      allow(API.connection).to receive(:post)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url).with(PersonRepository::PEOPLE_PATH)
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(new_person.to_json)
-      expect(Person).to receive(:new).with(mock_response.body)
-        .and_return(created_person)
-      expect(described_class.create(new_person)).to eq(created_person)
+      new_person = FactoryGirl.build(:person, first_name: 'Homer')
+      new_person_attributes = new_person.to_json
+      stub_request(:post, %r{/api/v1/people})
+        .with(body: new_person_attributes)
+        .and_return(
+          status: 201,
+          headers: { 'Content-Type': 'application/json' },
+          body: new_person.to_json
+        )
+      expect(described_class.create(new_person).id).to eq(new_person.id)
+      expect(a_request(:post, %r{/api/v1/people}).with(body: new_person_attributes)).to have_been_made
     end
 
     it 'raise an error if the response code is not 201' do
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:post).and_return(mock_response)
-
+      stub_request(:post, %r{/api/v1/people}).and_return(status: 500)
       expect do
         described_class.create(nil)
       end.to raise_error('Error creating person')
@@ -57,19 +53,17 @@ describe PersonRepository do
 
   describe '.update' do
     it 'returns the person if the put to /people/:id is successful' do
-      mock_response = double(:mock_response, status: 200, body: 'mock_body')
-      mock_request = double(:mock_request)
-      created_person = double(:person, id: '1', as_json: 'created_person')
-      updated_person = double(:person)
-      allow(API.connection).to receive(:put)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url).with("#{PersonRepository::PEOPLE_PATH}/1")
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(created_person.to_json)
-      expect(Person).to receive(:new).with(mock_response.body)
-        .and_return(updated_person)
-      expect(described_class.update(created_person)).to eq(updated_person)
+      existing_person = FactoryGirl.build(:person, first_name: 'Homer')
+      existing_person_attributes = existing_person.to_json
+      stub_request(:put, %r{/api/v1/people/#{existing_person.id}})
+        .with(body: existing_person_attributes)
+        .and_return(
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: existing_person.to_json
+        )
+      expect(described_class.update(existing_person).id).to eq(existing_person.id)
+      expect(a_request(:put, %r{/api/v1/people}).with(body: existing_person_attributes)).to have_been_made
     end
 
     it 'raise an error if the response code is not 201' do
