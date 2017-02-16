@@ -13,6 +13,10 @@ module Api
         render json: created_participant
       end
 
+      def destroy
+        ParticipantRepository.delete(params[:id])
+      end
+
       def addresses_params
         [
           :id,

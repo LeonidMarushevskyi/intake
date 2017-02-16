@@ -45,7 +45,7 @@ describe Api::V1::ParticipantsController do
 
   describe '#destroy' do
     before do
-      expect(ParticipantRepository).to receive(:destroy).with('1')
+      expect(ParticipantRepository).to receive(:delete).with('1')
         .and_return('')
     end
 
@@ -53,7 +53,7 @@ describe Api::V1::ParticipantsController do
       process :destroy, method: :delete,
                         params: { id: '1' },
                         format: :json
-      expect(response.body).to_be_empty
+      expect(response.body).to be_empty
     end
   end
 end
