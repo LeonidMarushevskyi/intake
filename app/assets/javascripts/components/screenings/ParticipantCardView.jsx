@@ -1,6 +1,6 @@
-import React from 'react'
-import ParticipantShowView from 'components/screenings/ParticipantShowView'
 import ParticipantEditView from 'components/screenings/ParticipantEditView'
+import ParticipantShowView from 'components/screenings/ParticipantShowView'
+import React from 'react'
 
 export default class ParticipantCardView extends React.Component {
   constructor() {
@@ -9,10 +9,15 @@ export default class ParticipantCardView extends React.Component {
       mode: this.props.mode,
     }
     this.onEdit = this.onEdit.bind(this)
+    this.onCancel = this.onCancel.bind(this)
   }
 
   onEdit() {
     this.setState({mode: 'edit'})
+  }
+
+  onCancel() {
+    this.setState({mode: 'show'})
   }
 
   render() {
@@ -25,7 +30,7 @@ export default class ParticipantCardView extends React.Component {
       View = ParticipantShowView
     }
     return (
-      <View participant={participant} onEdit={this.onEdit} />
+      <View participant={participant} onEdit={this.onEdit} onCancel={this.onCancel} />
     )
   }
 }

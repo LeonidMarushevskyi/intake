@@ -5,6 +5,7 @@ import {shallow} from 'enzyme'
 
 describe('ParticipantEditView', () => {
   let component
+  const onCancel = jasmine.createSpy('onCancel')
   beforeEach(() => {
     const participant = Immutable.fromJS({
       id: '199',
@@ -14,7 +15,7 @@ describe('ParticipantEditView', () => {
       gender: 'female',
       ssn: 'ssn-1',
     })
-    component = shallow(<ParticipantEditView participant={participant} />)
+    component = shallow(<ParticipantEditView participant={participant} onCancel={onCancel}/>)
   })
 
   it('renders a participant edit view card', () => {
@@ -49,6 +50,19 @@ describe('ParticipantEditView', () => {
 
   it('renders the cancel link', () => {
     expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
+  })
+
+  it('when user hits cancel', () => {
+    const cancelButton = component.find('button[children="Cancel"]')
+    cancelButton.simulate('click')
+    expect(onCancel).toHaveBeenCalled()
+  })
+})
+
+describe('addresses ', () => {
+  const component = shallow(<ParticipantEditView participant={Immutable.fromJS({})} />)
+  it('renders a address edit view', () => {
+    expect(component.find('AddressesEditView').length).toEqual(1)
   })
 })
 

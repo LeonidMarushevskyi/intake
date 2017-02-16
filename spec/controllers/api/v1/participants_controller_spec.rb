@@ -10,6 +10,14 @@ describe Api::V1::ParticipantsController do
         first_name: 'Homer',
         gender: 'male',
         last_name: 'Simpson',
+        addresses: [{
+          id: '',
+          street_address: '123 fake st',
+          city: 'Springfield',
+          state: 'NY',
+          zip: '12345',
+          type: 'placement'
+        }],
         person_id: '2',
         screening_id: '1',
         ssn: '123-23-1234'

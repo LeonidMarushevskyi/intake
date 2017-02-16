@@ -14,7 +14,8 @@ def build_participant_from_person_and_screening(person, screening)
   ).merge(
     id: nil,
     person_id: person.id,
-    screening_id: screening.id.to_s
+    screening_id: screening.id.to_s,
+    addresses: person.addresses
   )
 end
 
@@ -110,6 +111,11 @@ feature 'Edit Screening' do
         expect(page).to have_field('Gender', with: marge.gender)
         expect(page).to have_field('Date of birth', with: marge.date_of_birth)
         expect(page).to have_field('Social security number', with: marge.ssn)
+        expect(page).to have_field('Address', with: marge.addresses.first.street_address)
+        expect(page).to have_field('City', with: marge.addresses.first.city)
+        expect(page).to have_field('State', with: marge.addresses.first.state)
+        expect(page).to have_field('Zip', with: marge.addresses.first.zip)
+        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
       end
