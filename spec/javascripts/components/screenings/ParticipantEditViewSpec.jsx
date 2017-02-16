@@ -53,7 +53,7 @@ describe('ParticipantEditView', () => {
   })
 
   it('when user hits cancel', () => {
-    const cancelButton = component.find('.btn.btn-default')
+    const cancelButton = component.find('button[children="Cancel"]')
     cancelButton.simulate('click')
     expect(onCancel).toHaveBeenCalled()
   })

@@ -4,6 +4,14 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Edit Screening' do
+  address = FactoryGirl.create(
+    :address,
+    street_address: '123 Fake St',
+    city: 'Springfield',
+    state: 'NY',
+    zip: '12345',
+    type: 'Home'
+  )
   let(:person_attributes) do
     {
       date_of_birth: 15.years.ago.to_date.to_s(:db),
@@ -11,15 +19,7 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
-      addresses: [
-        {
-          street_address: '123 Fake St',
-          city: 'Springfield',
-          state: 'NY',
-          zip: '12345',
-          type: 'Home'
-        }
-      ]
+      addresses: [address]
     }
   end
   let(:person) { Person.new(person_attributes) }

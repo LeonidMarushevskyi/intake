@@ -4,6 +4,14 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Show Screening' do
+  address = FactoryGirl.create(
+    :address,
+    street_address: '123 Fake St',
+    city: 'Springfield',
+    state: 'NY',
+    zip: '12345',
+    type: 'Home'
+  )
   existing_participant = FactoryGirl.create(
     :participant,
     first_name: 'Homer',
@@ -11,15 +19,7 @@ feature 'Show Screening' do
     gender: 'male',
     ssn: '123-23-1234',
     date_of_birth: '1990-09-05',
-    addresses: [
-      {
-        street_address: '123 Fake St',
-        city: 'Springfield',
-        state: 'NY',
-        zip: '12345',
-        type: 'Home'
-      }
-    ]
+    addresses: [address]
   )
   existing_screening = FactoryGirl.create(
     :screening,
