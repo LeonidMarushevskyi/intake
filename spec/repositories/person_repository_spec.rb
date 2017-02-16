@@ -54,7 +54,7 @@ describe PersonRepository do
   describe '.update' do
     it 'returns the person if the put to /people/:id is successful' do
       existing_person = FactoryGirl.build(:person, first_name: 'Homer')
-      existing_person_attributes = existing_person.to_json
+      existing_person_attributes = existing_person.to_json(except: :id)
       stub_request(:put, %r{/api/v1/people/#{existing_person.id}})
         .with(body: existing_person_attributes)
         .and_return(

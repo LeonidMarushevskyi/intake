@@ -23,7 +23,7 @@ class PersonRepository
 
   def self.update(person)
     raise 'Error updating person: id is required' unless person.id
-    response = make_api_call("#{PEOPLE_PATH}/#{person.id}", :put, person)
+    response = make_api_call("#{PEOPLE_PATH}/#{person.id}", :put, person.as_json(except: :id))
     raise 'Error updating person' if response.status != 200
     Rails.logger.info response.body.inspect
     Person.new(response.body)
