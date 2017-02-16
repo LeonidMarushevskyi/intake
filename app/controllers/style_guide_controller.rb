@@ -16,8 +16,7 @@ class StyleGuideController < ApplicationController # :nodoc:
     cards
   ).freeze
 
-  def index
-  end
+  def index; end
 
   def show
     render "/style_guide/show/#{sanitize_page_name(params[:id])}"
