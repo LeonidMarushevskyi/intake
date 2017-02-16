@@ -310,7 +310,7 @@ GEM
     scss_lint (0.52.0)
       rake (>= 0.9, < 13)
       sass (~> 3.4.20)
-    selenium-webdriver (3.1.0)
+    selenium-webdriver (2.53.1)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
@@ -406,7 +406,7 @@ DEPENDENCIES
   rubocop
   rubocop-junit-formatter
   scss_lint
-  selenium-webdriver
+  selenium-webdriver (= 2.53.1)
   simplecov
   spring
   timecop

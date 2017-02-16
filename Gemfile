@@ -46,7 +46,7 @@ group :test do
   gem 'headless', '2.3.1', require: false
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter', require: false
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '2.53.1'
   gem 'simplecov', require: false
   gem 'webmock'
 end
