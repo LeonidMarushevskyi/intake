@@ -4,6 +4,8 @@ node('Slave') {
     def curStage = 'Start'
     def emailList = 'thomas.ramirez@osi.ca.gov'
     def pipelineStatus = 'SUCCESS'
+    def successColor = '11AB1B'
+    def failureColor = '#FF0000'
 
     try {
         emailList = EMAIL_NOTIFICATION_LIST
@@ -91,11 +93,11 @@ node('Slave') {
                 <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
             )
 
-            slackAlertColor = '#11AB1B'
+            slackAlertColor = successColor
             slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
 
             if(pipelineStatus == 'FAILED') {
-              slackAlertColor = '#FF0000'
+              slackAlertColor = failureColor
               slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
             }
 
