@@ -28,7 +28,7 @@ export default class ScreeningsTable extends React.Component {
                     <td><Link to={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</Link></td>
                     <td>{RESPONSE_TIME[screening.response_time]}</td>
                     <td>{SCREENING_DECISION[screening.screening_decision]}</td>
-                    <td>{moment(screening.created_at).format('MM/DD/YYYY')}</td>
+                    <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
                   </tr>
                 )
               )
