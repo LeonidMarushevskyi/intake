@@ -85,7 +85,7 @@ feature 'Edit Screening' do
       participant_marge.as_json.merge(id: 23)
     )
     stub_request(:post, api_participants_path)
-      .with(body: participant_marge.to_json)
+      .with(body: participant_marge.to_json(except: :id))
       .and_return(body: created_participant_marge.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -98,7 +98,8 @@ feature 'Edit Screening' do
     end
 
     expect(a_request(:post, api_participants_path)
-      .with(body: participant_marge.to_json)).to have_been_made
+      .with(body: participant_marge.to_json(except: :id)))
+      .to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
