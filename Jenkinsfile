@@ -4,6 +4,8 @@ node('Slave') {
     def curStage = 'Start'
     def emailList = 'thomas.ramirez@osi.ca.gov'
     def pipelineStatus = 'SUCCESS'
+    def successColor = '11AB1B'
+    def failureColor = '#FF0000'
 
     try {
         emailList = EMAIL_NOTIFICATION_LIST
@@ -55,35 +57,53 @@ node('Slave') {
         throw e
     }
     finally {
-        stage ('Reports') {
-            step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
+        try {
+            stage ('Reports') {
+                step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
 
-            publishHTML (target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'reports/coverage/js',
-                reportFiles: 'index.html',
-                reportName: 'JS Code Coverage'
-            ])
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'reports/coverage/js',
+                    reportFiles: 'index.html',
+                    reportName: 'JS Code Coverage'
+                ])
 
-            publishHTML (target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: 'reports/coverage/ruby',
-                reportFiles: 'index.html',
-                reportName: 'Ruby Code Coverage'
-            ])
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'reports/coverage/ruby',
+                    reportFiles: 'index.html',
+                    reportName: 'Ruby Code Coverage'
+                ])
+            }
+        } 
+        catch(e) {
+            pipelineStatus = 'FAILED'
+            currentBuild.result = 'FAILURE'
         }
 
-        emailext (
-            to: emailList,
-            subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
-            body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
-            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-        )
-        slackSend (color: '#FF0000', message: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})")
+        try {
+            emailext (
+                to: emailList,
+                subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
+                body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
+                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+            )
+
+            slackAlertColor = successColor
+            slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
+
+            if(pipelineStatus == 'FAILED') {
+              slackAlertColor = failureColor
+              slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
+            }
+
+            slackSend (color: slackAlertColor, message: slackMessage)
+        } 
+        catch(e) { /* Nothing to do */ }
 
         stage('Clean') {
             retry(2) {
