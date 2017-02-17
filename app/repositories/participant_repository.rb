@@ -7,7 +7,7 @@ class ParticipantRepository
   CONTENT_TYPE = 'application/json'
 
   def self.create(participant)
-    response = make_api_call(PARTICIPANTS_PATH, :post, participant)
+    response = make_api_call(PARTICIPANTS_PATH, :post, participant.as_json(except: :id))
     raise 'Error creating participant' if response.status != 201
     Rails.logger.info response.body.inspect
     Participant.new(response.body)
