@@ -30,12 +30,12 @@ feature 'Delete Participant' do
         headers: { 'Content-Type' => 'application/json' }
       )
     stub_request(:delete, api_participant_path(participant.id))
-      .and_return(status: 200, headers: { 'Content-Type' => 'application/json' })
+      .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(participant.id) do
       within '.card-header' do
-        click_link 'Delete participant'
+        click_button 'Delete participant'
       end
     end
     expect(a_request(:delete, api_participant_path(participant.id))).to have_been_made

@@ -55,8 +55,8 @@ export function createParticipant(participant) {
   )
 }
 
-export function deleteParticipantSuccess() {
-  return {type: types.DELETE_PARTICIPANT_SUCCESS}
+export function deleteParticipantSuccess(id) {
+  return {type: types.DELETE_PARTICIPANT_SUCCESS, id: id}
 }
 
 export function deleteParticipant(id) {
@@ -67,6 +67,6 @@ export function deleteParticipant(id) {
         null,
         {contentType: 'application/json'}
     )
-    .then(() => dispatch(deleteParticipantSuccess()))
+    .then(() => dispatch(deleteParticipantSuccess(id)))
   )
 }

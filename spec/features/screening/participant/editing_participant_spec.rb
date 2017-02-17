@@ -50,7 +50,7 @@ feature 'Edit Screening' do
     within edit_participant_card_selector(participant.id) do
       within '.card-header' do
         expect(page).to have_content 'MARGE SIMPSON'
-        expect(page).to have_link 'Delete participant'
+        expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do
