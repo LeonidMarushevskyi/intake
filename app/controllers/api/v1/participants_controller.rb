@@ -13,6 +13,17 @@ module Api
         render json: created_participant
       end
 
+      def addresses_params
+        [
+          :id,
+          :street_address,
+          :city,
+          :state,
+          :zip,
+          :type
+        ]
+      end
+
       def participant_params
         params.require(:participant).permit(
           :date_of_birth,
@@ -22,14 +33,7 @@ module Api
           :person_id,
           :screening_id,
           :ssn,
-          addresses: [
-            :id,
-            :street_address,
-            :city,
-            :state,
-            :zip,
-            :type
-          ]
+          addresses: addresses_params
         )
       end
     end

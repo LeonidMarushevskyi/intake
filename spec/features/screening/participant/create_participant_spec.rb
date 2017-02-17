@@ -2,15 +2,19 @@
 require 'rails_helper'
 require 'spec_helper'
 
+def filtered_participant_attributes
+  [
+    :date_of_birth,
+    :first_name,
+    :gender,
+    :last_name,
+    :ssn
+  ]
+end
+
 def build_participant_from_person_and_screening(person, screening)
   person.as_json(
-    only: [
-      :date_of_birth,
-      :first_name,
-      :gender,
-      :last_name,
-      :ssn
-    ]
+    only: filtered_participant_attributes
   ).merge(
     id: nil,
     person_id: person.id,

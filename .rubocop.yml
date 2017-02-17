@@ -1,6 +1,8 @@
 inherit_from: .rubocop_todo.yml
-Metrics/BlockLength:
-  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
 AllCops:
   Exclude:
     - 'db/schema.rb'
@@ -8,3 +10,11 @@ AllCops:
     - 'vendor/**/*'
     - 'tmp/**/*'
     - 'ruby_gems/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'config/routes.rb'
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
