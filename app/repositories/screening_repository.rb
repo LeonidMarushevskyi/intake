@@ -7,7 +7,7 @@ class ScreeningRepository
   CONTENT_TYPE = 'application/json'
 
   def self.create(screening)
-    response = make_api_call(SCREENINGS_PATH, :post, screening)
+    response = make_api_call(SCREENINGS_PATH, :post, screening.as_json(except: :id))
     raise 'Error creating screening' if response.status != 201
     Rails.logger.info response.body.inspect
     Screening.new(response.body)
