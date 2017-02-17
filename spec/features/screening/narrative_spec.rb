@@ -74,14 +74,14 @@ feature 'screening narrative card' do
 
     existing_screening.report_narrative = 'Trying to fill in with changes'
     stub_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
       .and_return(json_body(existing_screening.to_json))
 
     click_button 'Save'
 
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
     ).to have_been_made
 
     within '#narrative-card.show' do
@@ -106,7 +106,7 @@ feature 'screening narrative card' do
 
     existing_screening.report_narrative = 'Trying to fill in with changes'
     stub_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#narrative-card.edit' do
@@ -115,7 +115,7 @@ feature 'screening narrative card' do
 
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
     ).to have_been_made
 
     within '#narrative-card.show' do
