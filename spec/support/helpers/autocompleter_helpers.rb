@@ -14,7 +14,7 @@ module AutocompleterHelpers
   end
 
   def populate_autocompleter_with_options(locator, value)
-    unless Capybara.current_driver.to_s =~ /selenium|accessible/
+    unless /selenium|accessible/.match?(Capybara.current_driver.to_s)
       raise 'You need to tag your test with @javascript to use this step'
     end
 
