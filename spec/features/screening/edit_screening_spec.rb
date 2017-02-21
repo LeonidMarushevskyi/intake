@@ -16,9 +16,7 @@ feature 'Edit Screening' do
       reference: 'My Bad!',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
-      started_at: '2016-08-13T10:00:00.000Z',
-      updated_at: '2016-10-21T16:11:59.484Z',
-      created_at: '2016-10-21T16:11:59.484Z'
+      started_at: '2016-08-13T10:00:00.000Z'
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
