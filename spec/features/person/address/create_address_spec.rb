@@ -23,7 +23,6 @@ feature 'Create Address' do
     )
     person = FactoryGirl.create(
       :person,
-      id: nil,
       phone_numbers: [],
       addresses: [address1, address2],
       languages: [],
@@ -57,7 +56,7 @@ feature 'Create Address' do
     end
 
     stub_request(:post, api_people_path)
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -69,7 +68,7 @@ feature 'Create Address' do
     click_button 'Save'
 
     expect(a_request(:post, api_people_path)
-      .with(body: person.to_json))
+      .with(body: person.to_json(except: :id)))
       .to have_been_made
 
     expect(page).to have_current_path(person_path(1))
@@ -86,7 +85,7 @@ feature 'Create Address' do
     )
     created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
     stub_request(:post, api_people_path)
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -97,7 +96,7 @@ feature 'Create Address' do
     click_button 'Save'
 
     expect(a_request(:post, api_people_path)
-      .with(body: person.to_json))
+      .with(body: person.to_json(except: :id)))
       .to have_been_made
   end
 end

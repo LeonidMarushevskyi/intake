@@ -7,7 +7,7 @@ class ScreeningRepository
   CONTENT_TYPE = 'application/json'
 
   def self.create(screening)
-    response = make_api_call(SCREENINGS_PATH, :post, screening)
+    response = make_api_call(SCREENINGS_PATH, :post, screening.as_json(except: :id))
     raise 'Error creating screening' if response.status != 201
     Rails.logger.info response.body.inspect
     Screening.new(response.body)
@@ -22,7 +22,11 @@ class ScreeningRepository
 
   def self.update(screening)
     raise 'Error updating screening: id is required' unless screening.id
-    response = make_api_call("#{SCREENINGS_PATH}/#{screening.id}", :put, screening)
+    response = make_api_call(
+      "#{SCREENINGS_PATH}/#{screening.id}",
+      :put,
+      screening.as_json(except: :id)
+    )
     raise 'Error updating screening' if response.status != 200
     Rails.logger.info response.body.inspect
     Screening.new(response.body)

@@ -3,9 +3,8 @@ require 'rails_helper'
 
 feature 'Create Phone Number' do
   scenario 'add and remove phone numbers on a new person' do
-    person = FactoryGirl.create(
+    person = FactoryGirl.build(
       :person,
-      id: nil,
       phone_numbers: [
         {
           id: nil,
@@ -17,9 +16,7 @@ feature 'Create Phone Number' do
           number: '568-387-8844',
           type: nil
         }
-      ],
-      addresses: [],
-      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
+      ]
     )
     visit new_person_path
 
@@ -51,7 +48,7 @@ feature 'Create Phone Number' do
     end
 
     stub_request(:post, api_people_path)
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(body: person.as_json.merge(id: '1').to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -63,24 +60,19 @@ feature 'Create Phone Number' do
     click_button 'Save'
 
     expect(a_request(:post, api_people_path)
-      .with(body: person.to_json))
+      .with(body: person.to_json(except: :id)))
       .to have_been_made
 
     expect(page).to have_current_path(person_path('1'))
   end
 
   scenario 'create a person with empty phonenumber' do
-    person = FactoryGirl.create(
-      :person,
-      id: nil,
-      phone_numbers: [],
-      addresses: [],
-      languages: [],
-      ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
-    )
-    created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
+    person = FactoryGirl.build(:person)
+    created_person = FactoryGirl.create(:person, person.as_json)
+
+    # the following stub allows the user to transistion to the person show page
     stub_request(:post, api_people_path)
-      .with(body: person.to_json)
+      .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -91,7 +83,9 @@ feature 'Create Phone Number' do
     click_button 'Save'
 
     expect(a_request(:post, api_people_path)
-      .with(body: person.to_json))
+      .with(body: person.to_json(except: :id)))
       .to have_been_made
+
+    expect(page).to have_current_path(person_path(person.id))
   end
 end

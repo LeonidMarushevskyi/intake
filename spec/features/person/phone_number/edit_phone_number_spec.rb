@@ -5,7 +5,6 @@ feature 'Edit Phone Number' do
   scenario 'edit an existing persons phone number' do
     person = FactoryGirl.create(
       :person,
-      id: '1',
       phone_numbers: [{
         id: '1',
         number: '917-578-2010',
@@ -60,7 +59,7 @@ feature 'Edit Phone Number' do
     )
 
     expect(a_request(:put, api_person_path(person.id))
-      .with(body: person.to_json)).to have_been_made
+      .with(body: person.to_json(except: :id))).to have_been_made
   end
 
   scenario 'delete an existing persons phone number' do
@@ -97,6 +96,6 @@ feature 'Edit Phone Number' do
     person.phone_numbers = []
 
     expect(a_request(:put, api_person_path(person.id))
-      .with(body: person.to_json)).to have_been_made
+      .with(body: person.to_json(except: :id))).to have_been_made
   end
 end

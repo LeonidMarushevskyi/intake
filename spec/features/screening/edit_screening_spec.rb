@@ -98,7 +98,7 @@ feature 'Edit Screening' do
     )
 
     stub_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
       .and_return(json_body(existing_screening.to_json))
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -109,7 +109,7 @@ feature 'Edit Screening' do
 
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json))
+      .with(json_body(existing_screening.to_json(except: :id)))
     ).to have_been_made.twice
 
     expect(page).to_not have_content 'Edit Screening'

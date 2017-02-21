@@ -8,7 +8,6 @@ feature 'Create Person' do
       date_of_birth: '05/29/1990',
       first_name: 'Homer',
       gender: 'male',
-      id: nil,
       last_name: 'Simpson',
       middle_name: 'Jay',
       ssn: '123-23-1234',
@@ -21,7 +20,8 @@ feature 'Create Person' do
       ethnicity: {
         hispanic_latino_origin: 'Yes',
         ethnicity_detail: 'Mexican'
-      }
+      },
+      phone_numbers: []
     )
 
     visit root_path
@@ -43,20 +43,21 @@ feature 'Create Person' do
     select 'Mexican'
 
     stub_request(:post, api_people_path)
-      .with(body: person.to_json)
-      .and_return(body: person.as_json.merge(id: '1').to_json,
+      .with(body: person.to_json(except: :id))
+      .and_return(body: person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path('1'))
-      .and_return(body: person.as_json.merge(id: '1').to_json,
+    stub_request(:get, api_person_path(person.id))
+      .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
 
-    expect(a_request(:post, api_people_path).with(body: person.to_json)).to have_been_made
+    expect(a_request(:post, api_people_path).with(body: person.to_json(except: :id)))
+      .to have_been_made
 
-    expect(page).to have_current_path(person_path('1'))
+    expect(page).to have_current_path(person_path(person.id))
     within '.card-header' do
       expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
     end
