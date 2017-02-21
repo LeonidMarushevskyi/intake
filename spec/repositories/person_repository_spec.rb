@@ -14,7 +14,8 @@ describe PersonRepository do
           body: new_person.to_json
         )
       expect(described_class.create(new_person).id).to eq(new_person.id)
-      expect(a_request(:post, %r{/api/v1/people}).with(body: new_person_attributes)).to have_been_made
+      expect(a_request(:post, %r{/api/v1/people})
+        .with(body: new_person_attributes)).to have_been_made
     end
 
     it 'raise an error if the response code is not 201' do
@@ -63,7 +64,8 @@ describe PersonRepository do
           body: existing_person.to_json
         )
       expect(described_class.update(existing_person).id).to eq(existing_person.id)
-      expect(a_request(:put, %r{/api/v1/people}).with(body: existing_person_attributes)).to have_been_made
+      expect(a_request(:put, %r{/api/v1/people}).with(body: existing_person_attributes))
+        .to have_been_made
     end
 
     it 'raise an error if the response code is not 201' do
