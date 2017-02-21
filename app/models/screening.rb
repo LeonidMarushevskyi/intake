@@ -6,7 +6,6 @@ class Screening # :nodoc:
   include ActiveModel::Model
 
   attribute :communication_method
-  attribute :created_at
   attribute :ended_at
   attribute :id
   attribute :incident_county
@@ -18,7 +17,6 @@ class Screening # :nodoc:
   attribute :response_time
   attribute :screening_decision
   attribute :started_at
-  attribute :updated_at
 
   attribute :address, Address
   attribute :participants, Array[Participant]

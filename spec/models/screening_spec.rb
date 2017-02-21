@@ -17,8 +17,6 @@ describe Screening do
         response_time: 'immediate',
         screening_decision: 'evaluate_out',
         started_at: '2016-08-13T10:00:00.000Z',
-        created_at: '2016-08-13T10:00:00.000Z',
-        updated_at: '2016-08-13T10:00:00.000Z',
         address: {
           id: '1',
           street_address: '123 Fake St',
