@@ -38,12 +38,10 @@ describe Api::V1::ScreeningsController do
     let(:screening_params) do
       {
         id: '1',
-        created_at: '2016-10-21T16:11:59.484Z',
         incident_county: 'sacramento',
         name: '123 Report',
         response_time: 'immediate',
         screening_decision: 'evaluate_out',
-        updated_at: '2016-10-21T16:11:59.484Z',
         address: {
           id: '2',
           city: 'LA',

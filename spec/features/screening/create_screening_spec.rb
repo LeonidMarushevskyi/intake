@@ -6,9 +6,7 @@ feature 'Create Screening' do
     allow(LUID).to receive(:generate).and_return(['DQJIYK'])
     new_screening = FactoryGirl.build(
       :screening,
-      created_at: nil,
       reference: 'DQJIYK',
-      updated_at: nil,
       address: nil
     )
     stub_request(:post, api_screenings_path)

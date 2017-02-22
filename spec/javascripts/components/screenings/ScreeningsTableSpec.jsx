@@ -19,7 +19,7 @@ describe('ScreeningsTable', () => {
       reference: 'ABCDEF',
       response_time: 'immediate',
       screening_decision: 'accept_for_investigation',
-      created_at: '2016-09-21T14:26:58.042Z',
+      started_at: '2016-09-21T14:26:58.042Z',
     }]
     const view = TestUtils.renderIntoDocument(<ScreeningsTable screenings={screenings}/>)
     const tbody = TestUtils.findRenderedDOMComponentWithTag(view, 'tbody')
