@@ -13,6 +13,11 @@ class ParticipantRepository
     Participant.new(response.body)
   end
 
+  def self.delete(id)
+    response = make_api_call("#{PARTICIPANTS_PATH}/#{id}", :delete)
+    raise 'Error deleting participant' if response.status != 204
+  end
+
   def self.make_api_call(url, method, attributes = nil)
     ::API.connection.send(method) do |req|
       req.url url

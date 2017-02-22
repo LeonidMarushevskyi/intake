@@ -130,6 +130,30 @@ describe('ScreeningShowPage', () => {
     })
   })
 
+  describe('deleteParticipant', () => {
+    let deleteParticipant
+    let component
+
+    beforeEach(() => {
+      deleteParticipant = jasmine.createSpy('deleteParticipant')
+      const props = {
+        actions: {deleteParticipant},
+        params: {id: '1'},
+        participants: Immutable.List([
+          Immutable.Map({id: '1', screening_id: '1'}),
+          Immutable.Map({id: '2', screening_id: '1'}),
+        ]),
+        screening: Immutable.Map(),
+      }
+      component = shallow(<ScreeningShowPage {...props} />)
+    })
+
+    it('calls the deleteParticipant action', () => {
+      component.instance().deleteParticipant('1')
+      expect(deleteParticipant).toHaveBeenCalledWith('1')
+    })
+  })
+
   describe('cardSave', () => {
     let component
     const saveScreening = jasmine.createSpy('saveScreening')
