@@ -3,17 +3,20 @@ import GENDER from 'Gender'
 import React from 'react'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
-import {Link} from 'react-router'
 
-const ParticipantShowView = ({participant, onEdit}) => {
+const ParticipantShowView = ({participant, onDelete, onEdit}) => {
   const name = [participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')
   return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
       {name && <span>{name}</span>}
-      <Link aria-label='Delete participant' className='pull-right' href='#'>
+      <button aria-label='Delete participant'
+        className='pull-right delete-button'
+        onClick={() => onDelete(participant.get('id'))}
+      >
         <i className='fa fa-times' />
-      </Link>
+      </button>
+
       <EditLink ariaLabel='Edit participant' onClick={onEdit} />
     </div>
     <div className='card-body'>
@@ -71,6 +74,7 @@ const ParticipantShowView = ({participant, onEdit}) => {
 }
 
 ParticipantShowView.propTypes = {
+  onDelete: React.PropTypes.func,
   onEdit: React.PropTypes.func.isRequired,
   participant: React.PropTypes.object.isRequired,
 }

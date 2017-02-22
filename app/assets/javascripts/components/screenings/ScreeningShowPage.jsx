@@ -14,6 +14,7 @@ export class ScreeningShowPage extends React.Component {
     super(props, context)
     this.state = {loaded: false}
     this.cardSave = this.cardSave.bind(this)
+    this.deleteParticipant = this.deleteParticipant.bind(this)
   }
 
   componentDidMount() {
@@ -26,13 +27,18 @@ export class ScreeningShowPage extends React.Component {
     return this.props.actions.saveScreening(screening.toJS())
   }
 
+  deleteParticipant(id) {
+    this.props.actions.deleteParticipant(id)
+  }
+
   renderParticipantsCard() {
     const {participants} = this.props
+
     return (
       <div>
         {
           participants.map((participant) =>
-            <ParticipantCardView key={participant.get('id')} participant={participant} mode='show'/>
+            <ParticipantCardView key={participant.get('id')} participant={participant} onDelete={this.deleteParticipant} mode='show'/>
           )
         }
       </div>

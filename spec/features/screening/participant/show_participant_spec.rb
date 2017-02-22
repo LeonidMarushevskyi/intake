@@ -40,7 +40,7 @@ feature 'Show Screening' do
       within '.card-header' do
         expect(page).to have_content 'HOMER SIMPSON'
         expect(page).to have_link 'Edit participant'
-        expect(page).to have_link 'Delete participant'
+        expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do

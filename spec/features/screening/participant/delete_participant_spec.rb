@@ -22,7 +22,7 @@ feature 'Delete Participant' do
     )
   end
 
-  scenario 'removing a participant from an existing screening' do
+  scenario 'removing a participant from an existing screening in edit mode' do
     stub_request(:get, api_screening_path(screening.id))
       .and_return(
         body: screening.to_json,
@@ -40,5 +40,25 @@ feature 'Delete Participant' do
     end
     expect(a_request(:delete, api_participant_path(participant.id))).to have_been_made
     expect(page).to_not have_css(edit_participant_card_selector(participant.id))
+  end
+
+  scenario 'removing a participant from an existing screening in show mode' do
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(
+        body: screening.to_json,
+        status: 200,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    stub_request(:delete, api_participant_path(participant.id))
+      .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+
+    visit screening_path(id: screening.id)
+    within show_participant_card_selector(participant.id) do
+      within '.card-header' do
+        click_button 'Delete participant'
+      end
+    end
+    expect(a_request(:delete, api_participant_path(participant.id))).to have_been_made
+    expect(page).to_not have_css(show_participant_card_selector(participant.id))
   end
 end

@@ -56,6 +56,27 @@ describe('ParticipantShowView', () => {
     component.find('EditLink').simulate('click')
     expect(onEdit).toHaveBeenCalled()
   })
+
+  it('calls the onDelete function when delete link is clicked', () => {
+    const participant = Immutable.fromJS({
+      id: '199',
+      first_name: 'Lisa',
+      last_name: 'Simpson',
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    })
+
+    const ScreeningViewMethods = {
+      deleteParticipant: () => {},
+    }
+
+    spyOn(ScreeningViewMethods, 'deleteParticipant')
+
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}} onDelete={ScreeningViewMethods.deleteParticipant}/>)
+    component.find('.delete-button').simulate('click')
+    expect(ScreeningViewMethods.deleteParticipant).toHaveBeenCalled()
+  })
 })
 
 describe('ParticipantShowView with partial name', () => {
