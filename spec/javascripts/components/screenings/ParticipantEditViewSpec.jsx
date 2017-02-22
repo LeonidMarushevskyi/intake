@@ -84,11 +84,6 @@ describe('ParticipantEditView', () => {
     expect(onCancel).toHaveBeenCalled()
   })
 
-  it('calls the onEdit function when edit link is clicked', () => {
-    component.find('EditLink').simulate('click')
-    expect(onEdit).toHaveBeenCalled()
-  })
-
   it('calls the onDelete function when delete link is clicked', () => {
     const participant = Immutable.fromJS({
       id: '199',
