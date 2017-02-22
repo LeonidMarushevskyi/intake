@@ -94,15 +94,11 @@ describe('ParticipantEditView', () => {
       ssn: 'ssn-1',
     })
 
-    const ScreeningViewMethods = {
-      deleteParticipant: () => {},
-    }
+    const onDelete = jasmine.createSpy('onDelete')
 
-    spyOn(ScreeningViewMethods, 'deleteParticipant')
-
-    component = shallow(<ParticipantEditView participant={participant} onDelete={ScreeningViewMethods.deleteParticipant}/>)
+    component = shallow(<ParticipantEditView participant={participant} onDelete={onDelete}/>)
     component.find('.delete-button').simulate('click')
-    expect(ScreeningViewMethods.deleteParticipant).toHaveBeenCalled()
+    expect(onDelete).toHaveBeenCalled()
   })
 })
 

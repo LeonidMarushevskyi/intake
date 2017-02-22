@@ -1,16 +1,14 @@
 import rootReducer from 'reducers'
 import thunk from 'redux-thunk'
-import {createStore, applyMiddleware, compose} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
+import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly'
 
 export default function configureStore(initialState) {
-  /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   return createStore(
     rootReducer, /* preloadedState, */
     initialState,
-    composeEnhancers(
+    composeWithDevTools(
       applyMiddleware(thunk)
     )
   )
-  /* eslint-enable */
 }
