@@ -24,7 +24,6 @@ export class ScreeningEditPage extends React.Component {
       'createParticipant',
       'deleteParticipant',
       'cardSave',
-      'saveAll',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -70,13 +69,6 @@ export class ScreeningEditPage extends React.Component {
 
   deleteParticipant(id) {
     this.props.actions.deleteParticipant(id)
-  }
-
-  saveAll() {
-    if (this.state.loaded) {
-      const narrativeCardSave = this.refs.narrativeCard.onSave()
-      narrativeCardSave.then(() => this.update())
-    }
   }
 
   renderParticipantsCard() {
@@ -126,7 +118,7 @@ export class ScreeningEditPage extends React.Component {
         <HistoryCard />
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' onClick={this.saveAll}>Save</button>
+            <button className='btn btn-primary'>Submit</button>
           </div>
         </div>
       </div>

@@ -275,49 +275,4 @@ describe('ScreeningEditPage', () => {
       expect(deleteParticipant).toHaveBeenCalledWith('1')
     })
   })
-
-  describe('saveAll', () => {
-    let component
-    let saveButton
-    const saveScreening = jasmine.createSpy('saveScreening')
-    beforeEach(() => {
-      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-      saveScreening.and.returnValue(promiseSpyObj)
-      promiseSpyObj.then.and.returnValue(promiseSpyObj)
-      // the above line is needed for the return from narrative card save
-      const props = {
-        actions: {
-          fetchScreening: () => Promise.resolve(),
-          saveScreening,
-        },
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map({name: 'my screening', report_narrative: null}),
-      }
-      component = mount(<ScreeningEditPage {...props} />)
-      component.setState({loaded: true})
-      saveButton = component.find('button.btn.btn-primary').last()
-    })
-
-    it('calls save action with current screening', () => {
-      saveButton.simulate('click')
-      expect(saveScreening).toHaveBeenCalledWith(
-        {name: 'my screening', report_narrative: null}
-      )
-    })
-
-    describe('with narrative changes', () => {
-      beforeEach(() => {
-        const narrative = component.find('#report_narrative')
-        narrative.simulate('change', {target: {value: 'Changed narrative'}})
-      })
-
-      it('calls save action with updated narrative', () => {
-        saveButton.simulate('click')
-        expect(saveScreening).toHaveBeenCalledWith(
-          {name: 'my screening', report_narrative: 'Changed narrative'}
-        )
-      })
-    })
-  })
 })
