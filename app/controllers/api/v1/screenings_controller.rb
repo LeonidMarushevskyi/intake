@@ -4,7 +4,7 @@
 # the creation and modification of screening objects.
 module Api
   module V1
-    class ScreeningsController < ApplicationController # :nodoc:
+    class ScreeningsController < ApiController # :nodoc:
       PERMITTED_PARAMS = [
         :assignee,
         :communication_method,

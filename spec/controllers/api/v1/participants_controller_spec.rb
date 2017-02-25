@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'rails_helper'
 
 describe Api::V1::ParticipantsController do
@@ -27,19 +26,73 @@ describe Api::V1::ParticipantsController do
       double(:participant, as_json: participant_params.merge(id: '1'))
     end
 
-    before do
-      participant = double(:participant)
-      expect(Participant).to receive(:new)
-        .with(participant_params).and_return(participant)
-      expect(ParticipantRepository).to receive(:create).with(participant)
-        .and_return(created_participant)
+    describe 'unsuccessful due to API timeout' do
+      it 'renders a JSON error if there\'s there is a problem creating the participant' do
+        stub_request(:post, api_participants_path)
+          .with(body: {})
+          .to_timeout
+
+        process :create, method: :post,
+                         params: { participant: participant_params },
+                         format: :json
+
+        expected_exception = {
+          'error': 'api_error',
+          'status': 'N/A',
+          'message': 'execution expired',
+          'api_response_body': 'N/A',
+          'method': 'post',
+          'url': '/api/v1/participants'
+        }
+
+        body_as_hash = JSON.parse(response.body)
+        expect(body_as_hash['sent_attributes']).to be_present
+        expect(body_as_hash.except('sent_attributes')).to eq(expected_exception.as_json)
+      end
     end
 
-    it 'renders a participant as json' do
-      process :create, method: :post,
-                       params: { screening_id: '1', participant: participant_params },
-                       format: :json
-      expect(JSON.parse(response.body)).to eq(created_participant.as_json)
+    describe 'unsuccessful due to an API error' do
+      it 'renders a JSON error if there\'s an error on the api, appends extra api info' do
+        stub_request(:post, api_participants_path)
+          .with(body: {})
+          .and_return(body: 'this is not json',
+                      status: 500,
+                      headers: { 'Content-Type' => 'application/json' })
+
+        process :create, method: :post,
+                         params: { participant: participant_params },
+                         format: :json
+
+        expected_exception = {
+          'error': 'api_error',
+          'status': 500,
+          'message': "784: unexpected token at 'this is not json'",
+          'api_response_body': 'this is not json',
+          'method': 'post',
+          'url': '/api/v1/participants'
+        }
+
+        body_as_hash = JSON.parse(response.body)
+        expect(body_as_hash['sent_attributes']).to be_present
+        expect(body_as_hash.except('sent_attributes')).to eq(expected_exception.as_json)
+      end
+    end
+
+    describe 'successful' do
+      before do
+        participant = double(:participant)
+        expect(Participant).to receive(:new)
+          .with(participant_params).and_return(participant)
+        expect(ParticipantRepository).to receive(:create).with(participant)
+          .and_return(created_participant)
+      end
+
+      it 'renders a participant as json' do
+        process :create, method: :post,
+                         params: { screening_id: '1', participant: participant_params },
+                         format: :json
+        expect(JSON.parse(response.body)).to eq(created_participant.as_json)
+      end
     end
   end
 
