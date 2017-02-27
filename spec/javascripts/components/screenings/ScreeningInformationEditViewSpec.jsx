@@ -1,9 +1,9 @@
 import Immutable from 'immutable'
-import InformationEditView from 'components/screenings/InformationEditView'
+import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-describe('InformationEditView', () => {
+describe('ScreeningInformationEditView', () => {
   let component
   describe('render', () => {
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe('InformationEditView', () => {
         communication_method: 'mail',
         participants: [],
       })
-      component = shallow(<InformationEditView screening={screening} onChange={onChange} />)
+      component = shallow(<ScreeningInformationEditView screening={screening} onChange={onChange} />)
     })
 
     it('renders the card header', () => {
@@ -39,7 +39,7 @@ describe('InformationEditView', () => {
     beforeEach(() => {
       onChange = jasmine.createSpy('onChange')
       const screening = Immutable.Map()
-      component = mount(<InformationEditView screening={screening} onChange={onChange} />)
+      component = mount(<ScreeningInformationEditView screening={screening} onChange={onChange} />)
     })
 
     it('fires the call the onChange function when a field changes', () => {

@@ -4,7 +4,7 @@ import React from 'react'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Autocompleter from 'components/common/Autocompleter'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
-import InformationEditView from 'components/screenings/InformationEditView'
+import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
 import {bindActionCreators} from 'redux'
@@ -103,7 +103,7 @@ export class ScreeningEditPage extends React.Component {
     return (
       <div>
         <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
-        <InformationEditView screening={screening} onChange={this.setField} />
+        <ScreeningInformationEditView screening={screening} onChange={this.setField} />
         {this.renderParticipantsCard()}
         {
           loaded &&

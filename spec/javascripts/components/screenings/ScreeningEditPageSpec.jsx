@@ -34,9 +34,9 @@ describe('ScreeningEditPage', () => {
         screening,
       }
       component = shallow(<ScreeningEditPage {...props} />)
-      expect(component.find('InformationEditView').length).toEqual(1)
-      expect(component.find('InformationEditView').props().screening).toEqual(screening)
-      expect(component.find('InformationEditView').props().onChange).toEqual(component.instance().setField)
+      expect(component.find('ScreeningInformationEditView').length).toEqual(1)
+      expect(component.find('ScreeningInformationEditView').props().screening).toEqual(screening)
+      expect(component.find('ScreeningInformationEditView').props().onChange).toEqual(component.instance().setField)
     })
 
     describe('participants card', () => {

@@ -4,7 +4,7 @@ import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import SelectField from 'components/common/SelectField'
 
-const InformationEditView = ({screening, onChange}) => (
+const ScreeningInformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -53,8 +53,8 @@ const InformationEditView = ({screening, onChange}) => (
   </div>
 )
 
-InformationEditView.propTypes = {
+ScreeningInformationEditView.propTypes = {
   onChange: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
-export default InformationEditView
+export default ScreeningInformationEditView

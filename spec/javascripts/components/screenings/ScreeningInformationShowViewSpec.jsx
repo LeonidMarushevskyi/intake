@@ -1,12 +1,12 @@
 import React from 'react'
 import Immutable from 'immutable'
-import InformationShowView from 'components/screenings/InformationShowView'
+import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
 import {shallow} from 'enzyme'
 
-describe('InformationShowView', () => {
+describe('ScreeningInformationShowView', () => {
   let component
   beforeEach(() => {
-    component = shallow(<InformationShowView screening={Immutable.Map({})} />)
+    component = shallow(<ScreeningInformationShowView screening={Immutable.Map({})} />)
   })
 
   it('render the card headers', () => {
@@ -20,7 +20,7 @@ describe('InformationShowView', () => {
       ended_at: '2016-08-22T11:00:00.000Z',
       communication_method: 'mail',
     })
-    component = shallow(<InformationShowView screening={screening} />)
+    component = shallow(<ScreeningInformationShowView screening={screening} />)
     expect(component.find('ShowField').length).toEqual(4)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('The Rocky Horror Picture Show')
@@ -40,7 +40,7 @@ describe('InformationShowView', () => {
       communication_method: null,
     })
 
-    component = shallow(<InformationShowView screening={screening} />)
+    component = shallow(<ScreeningInformationShowView screening={screening} />)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Screening Start Date/Time"]').html())

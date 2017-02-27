@@ -1,6 +1,6 @@
 import * as screeningActions from 'actions/screeningActions'
 import HistoryCard from 'components/screenings/HistoryCard'
-import InformationShowView from 'components/screenings/InformationShowView'
+import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
@@ -51,7 +51,7 @@ export class ScreeningShowPage extends React.Component {
     return (
       <div>
         <h1>{`Screening #${screening.get('reference')}`}</h1>
-        <InformationShowView screening={screening}/>
+        <ScreeningInformationShowView screening={screening}/>
         {this.renderParticipantsCard()}
         {
           loaded &&
