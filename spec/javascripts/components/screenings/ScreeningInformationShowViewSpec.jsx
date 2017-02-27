@@ -15,15 +15,18 @@ describe('ScreeningInformationShowView', () => {
 
   it('renders the screening show fields', () => {
     const screening = Immutable.fromJS({
+      assignee: 'Michael Bluth',
       name: 'The Rocky Horror Picture Show',
       started_at: '2016-08-13T10:00:00.000Z',
       ended_at: '2016-08-22T11:00:00.000Z',
       communication_method: 'mail',
     })
     component = shallow(<ScreeningInformationShowView screening={screening} />)
-    expect(component.find('ShowField').length).toEqual(4)
+    expect(component.find('ShowField').length).toEqual(5)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('The Rocky Horror Picture Show')
+    expect(component.find('ShowField[label="Assigned Social Worker"]').html())
+      .toContain('Michael Bluth')
     expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
       .toContain('08/13/2016 10:00 AM')
     expect(component.find('ShowField[label="Screening End Date/Time"]').html())
@@ -34,6 +37,7 @@ describe('ScreeningInformationShowView', () => {
 
   it('renders the screening show field when the field values are null', () => {
     const screening = Immutable.fromJS({
+      assignee: null,
       name: null,
       started_at: null,
       ended_at: null,
@@ -42,6 +46,8 @@ describe('ScreeningInformationShowView', () => {
 
     component = shallow(<ScreeningInformationShowView screening={screening} />)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
+      .toContain('<div class="c-gray"></div>')
+    expect(component.find('ShowField[label="Assigned Social Worker"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
       .toContain('<div class="c-gray"></div>')

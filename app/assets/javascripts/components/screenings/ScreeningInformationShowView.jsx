@@ -17,6 +17,9 @@ const ScreeningInformationShowView = ({screening}) => (
         <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Assigned Social Worker'>
+          {screening.get('assignee')}
+        </ShowField>
       </div>
       <div className='row double-gap-top'>
         <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Screening Start Date/Time'>
