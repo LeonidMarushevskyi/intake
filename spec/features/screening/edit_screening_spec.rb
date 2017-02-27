@@ -7,13 +7,14 @@ feature 'Edit Screening' do
   scenario 'edit an existing screening' do
     existing_screening = FactoryGirl.create(
       :screening,
+      assignee: 'Bob Loblaw',
+      communication_method: 'phone',
       ended_at: '2016-08-13T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
-      communication_method: 'phone',
       name: 'Little Shop Of Horrors',
-      report_narrative: 'Narrative 123 test',
       reference: 'My Bad!',
+      report_narrative: 'Narrative 123 test',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
       started_at: '2016-08-13T10:00:00.000Z'
@@ -29,6 +30,7 @@ feature 'Edit Screening' do
 
     within '#screening-information-card' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
+      expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
       expect(page).to have_field('Screening End Date/Time', with: '2016-08-13T11:00:00.000Z')
       expect(page).to have_field('Communication Method', with: 'phone')
