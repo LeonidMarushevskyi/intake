@@ -20,6 +20,15 @@ const ScreeningInformationEditView = ({screening, onChange}) => (
           value={screening.get('name') || ''}
           onChange={(event) => onChange(['name'], event.target.value)}
         />
+        <InputField
+          gridClassName='col-md-6'
+          labelClassName='no-gap-top-desktop'
+          id='assignee'
+          label='Assigned Social Worker'
+          placeholder='Enter the name of the worker screening report'
+          value={screening.get('assignee') || ''}
+          onChange={(event) => onChange(['assignee'], event.target.value)}
+        />
       </div>
       <div className='row'>
         <DateField

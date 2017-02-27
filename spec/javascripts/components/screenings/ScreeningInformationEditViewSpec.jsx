@@ -10,6 +10,7 @@ describe('ScreeningInformationEditView', () => {
       const onChange = () => null
       const screening = Immutable.fromJS({
         name: 'The Rocky Horror Picture Show',
+        assignee: 'Michael Bluth',
         started_at: '2016-08-13T10:00:00.000Z',
         ended_at: '2016-08-22T11:00:00.000Z',
         communication_method: 'mail',
@@ -25,6 +26,8 @@ describe('ScreeningInformationEditView', () => {
     it('renders the input fields', () => {
       expect(component.find('InputField[label="Title/Name of Screening"]').props().value)
         .toEqual('The Rocky Horror Picture Show')
+      expect(component.find('InputField[label="Assigned Social Worker"]').props().value)
+        .toEqual('Michael Bluth')
       expect(component.find('DateField[label="Screening Start Date/Time"]').props().value)
         .toEqual('2016-08-13T10:00:00.000Z')
       expect(component.find('DateField[label="Screening End Date/Time"]').props().value)
