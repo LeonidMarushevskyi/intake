@@ -12,7 +12,7 @@ module.exports = function(config) {
     ],
     exclude: [ ],
     preprocessors: {
-      'public/assets/application-test.js': ['coverage'],
+      'public/assets/application-test.js': ['coverage', 'sourcemap'],
     },
     coverageReporter: {
       type: 'in-memory',
