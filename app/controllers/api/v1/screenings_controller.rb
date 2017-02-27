@@ -6,6 +6,7 @@ module Api
   module V1
     class ScreeningsController < ApplicationController # :nodoc:
       PERMITTED_PARAMS = [
+        :assignee,
         :communication_method,
         :ended_at,
         :id,

@@ -38,6 +38,7 @@ describe Api::V1::ScreeningsController do
     let(:screening_params) do
       {
         id: '1',
+        assignee: 'Robert Smith',
         incident_county: 'sacramento',
         name: '123 Report',
         response_time: 'immediate',
