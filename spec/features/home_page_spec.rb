@@ -26,10 +26,13 @@ feature 'home page' do
         ssn: '123-23-1234',
         addresses: [address]
       )
-      stub_request(:get, api_people_search_path(search_term: marge.first_name))
-        .and_return(body: [marge].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+
+      %w(M Ma Mar Marg Marge).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [marge].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
 
       visit root_path
 
@@ -38,6 +41,10 @@ feature 'home page' do
       expect(page).to_not have_link 'Screenings'
 
       fill_in_autocompleter 'People', with: 'Marge'
+
+      %w(M Ma Mar Marg Marge).each do |search_text|
+        expect(a_request(:get, api_people_search_path(search_term: search_text))).to have_been_made
+      end
     end
   end
 
