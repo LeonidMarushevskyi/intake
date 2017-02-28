@@ -8,7 +8,7 @@ feature 'home page' do
       .and_return('http://www.foo.com')
   end
 
-  scenario 'displays serach bar when release one is enabled' do
+  scenario 'displays search bar when release one is enabled' do
     Feature.run_with_activated(:release_one) do
       address = FactoryGirl.create(
         :address,
