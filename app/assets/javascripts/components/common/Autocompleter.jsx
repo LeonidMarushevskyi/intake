@@ -2,6 +2,7 @@ import * as Utils from 'utils/http'
 import PersonSuggestion from 'components/common/PersonSuggestion'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
+const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {
   constructor(props) {
@@ -45,6 +46,10 @@ export default class Autocompleter extends React.Component {
 
   getSuggestionValue(suggestion) {
     return `${suggestion.first_name} ${suggestion.last_name}`
+  }
+
+  shouldRenderSuggestions(value) {
+    return value.trimLeft().length >= MIN_SEARCHABLE_CHARS
   }
 
   renderSuggestion(suggestion) {
@@ -102,6 +107,7 @@ export default class Autocompleter extends React.Component {
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
+        shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionSelected={this.onSuggestionSelected.bind(this)}
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion.bind(this)}
