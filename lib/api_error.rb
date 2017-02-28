@@ -9,8 +9,8 @@ class ApiError < StandardError
 
     unless exception_info[:response].nil?
       api_response = exception_info[:response]
-      @api_error[:response_body] = api_response.body if api_response.body.present?
-      @api_error[:http_code] = api_response.status if api_response.status.present?
+      @api_error[:response_body] = api_response.body
+      @api_error[:http_code] = api_response.status
     end
 
     super(exception_info[:message])

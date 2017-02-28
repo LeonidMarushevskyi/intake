@@ -27,7 +27,7 @@ describe Api::V1::ParticipantsController do
     end
 
     describe 'unsuccessful due to API timeout' do
-      it 'renders a JSON error if there\'s there is a problem creating the participant' do
+      it 'renders a JSON error if there\'s a timeout' do
         stub_request(:post, api_participants_path)
           .with(body: {})
           .to_timeout
@@ -66,13 +66,14 @@ describe Api::V1::ParticipantsController do
         expected_exception = {
           'error': 'api_error',
           'status': 500,
-          'message': "784: unexpected token at 'this is not json'",
+          'message': 'Error while calling /api/v1/participants',
           'api_response_body': 'this is not json',
           'method': 'post',
           'url': '/api/v1/participants'
         }
 
         body_as_hash = JSON.parse(response.body)
+
         expect(body_as_hash['sent_attributes']).to be_present
         expect(body_as_hash.except('sent_attributes')).to eq(expected_exception.as_json)
       end
