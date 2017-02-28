@@ -51,10 +51,13 @@ feature 'searching a participant in autocompleter' do
 
   context 'searching for a person' do
     scenario 'by first name' do
-      stub_request(:get, api_people_search_path(search_term: person.first_name))
-        .and_return(body: [person].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+      %w(M Ma Mar Marg Marge).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [person].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
+
       within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
@@ -78,10 +81,12 @@ feature 'searching a participant in autocompleter' do
     scenario 'person without phone_numbers' do
       person_with_out_phone_numbers = person.as_json.except('phone_numbers')
 
-      stub_request(:get, api_people_search_path(search_term: person.first_name))
-        .and_return(body: [person_with_out_phone_numbers].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+      %w(M Ma Mar Marg Marge).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [person_with_out_phone_numbers].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
 
       within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
@@ -106,10 +111,13 @@ feature 'searching a participant in autocompleter' do
     scenario 'person without addresses' do
       person_with_out_addresses = person.as_json.except('addresses')
 
-      stub_request(:get, api_people_search_path(search_term: person.ssn))
-        .and_return(body: [person_with_out_addresses].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+      ['1', '12', '123', '123-', '123-2', '123-23', '123-23-',
+       '123-23-1', '123-23-12', '123-23-123', '123-23-1234'].each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [person_with_out_addresses].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
 
       within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person',
@@ -130,12 +138,15 @@ feature 'searching a participant in autocompleter' do
         expect(page).to_not have_content '123 Fake St, Springfield, NY 12345'
       end
     end
+
     scenario 'person with name only' do
       person_with_name_only = person.as_json.extract!('first_name', 'last_name')
-      stub_request(:get, api_people_search_path(search_term: person.first_name))
-        .and_return(body: [person_with_name_only].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+      %w(M Ma Mar Marg Marge).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [person_with_name_only].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
 
       within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person', with: person.first_name
