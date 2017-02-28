@@ -77,6 +77,5 @@ describe('IncidentInformationEditView', () => {
     component = mount(<IncidentInformationEditView {...props} />)
     component.find('.btn.btn-default').simulate('click')
     expect(props.onCancel).toHaveBeenCalled()
-    // Test mode change too?
   })
 })

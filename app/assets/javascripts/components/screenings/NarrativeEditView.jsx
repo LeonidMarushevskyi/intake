@@ -1,38 +1,30 @@
 import React from 'react'
 
-const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => {
-  const onSubmit = (event) => {
-    event.preventDefault()
-    onSave()
-  }
-  return (
-    <div className='card edit double-gap-top' id='narrative-card'>
-      <div className='card-header'>
-        <span>Narrative</span>
+const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => (
+  <div className='card edit double-gap-top' id='narrative-card'>
+    <div className='card-header'>
+      <span>Narrative</span>
+    </div>
+    <div className='card-body'>
+      <div className='row'>
+        <div className='col-md-12'>
+          <label className='no-gap' htmlFor='report_narrative'>Report Narrative</label>
+          <textarea
+            id='report_narrative'
+            onChange={(event) => onChange(['report_narrative'], event.target.value || null)}
+            value={narrative || ''}
+          />
+        </div>
       </div>
-      <div className='card-body'>
-        <form onSubmit={onSubmit}>
-          <div className='row'>
-            <div className='col-md-12'>
-              <label className='no-gap' htmlFor='report_narrative'>Report Narrative</label>
-              <textarea
-                id='report_narrative'
-                onChange={(event) => onChange(event.target.value)}
-                value={narrative || ''}
-              />
-            </div>
-          </div>
-          <div className='row'>
-            <div className='centered'>
-              <button type='submit' className='btn btn-primary'>Save</button>
-              <button className='btn btn-default' onClick={onCancel}>Cancel</button>
-            </div>
-          </div>
-        </form>
+      <div className='row'>
+        <div className='centered'>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
+          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+        </div>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 NarrativeEditView.propTypes = {
   narrative: React.PropTypes.string,

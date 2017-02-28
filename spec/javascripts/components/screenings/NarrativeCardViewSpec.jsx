@@ -8,6 +8,9 @@ describe('NarrativeCardView', () => {
   const props = {
     narrative: 'This is my narrative',
     onSave: onSave,
+    onCancel: jasmine.createSpy('onCancel'),
+    onEdit: jasmine.createSpy('onEdit'),
+    onChange: jasmine.createSpy('onChange'),
   }
   const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
 
@@ -33,6 +36,10 @@ describe('NarrativeCardView', () => {
         it('the narrative show view is rendered', () => {
           expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
         })
+
+        it('the edit view does not retain canceled changes', () => {
+          expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
+        })
       })
 
       describe('when the narrative is edited', () => {
@@ -55,12 +62,12 @@ describe('NarrativeCardView', () => {
 
         describe("and 'Save' is clicked", () => {
           beforeEach(() => {
-            const form = component.find('form')
-            form.simulate('submit')
+            const saveButton = component.find('button[children="Save"]')
+            saveButton.simulate('click')
           })
 
           it('calls the props onSave', () => {
-            expect(onSave).toHaveBeenCalledWith('this is my new text')
+            expect(onSave).toHaveBeenCalledWith(['report_narrative'])
           })
 
           it('the narrative show view is rendered', () => {

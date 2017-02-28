@@ -76,7 +76,7 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => {
       <div className='row'>
         <div className='centered'>
           <button className='btn btn-primary'>Save</button>
-          <button className='btn btn-default' id='participant-cancel' onClick={onCancel}>Cancel</button>
+          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>

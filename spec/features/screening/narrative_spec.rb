@@ -47,9 +47,8 @@ feature 'screening narrative card' do
     within '#narrative-card.edit' do
       expect(page).to have_field('Report Narrative', with: 'This is my report narrative')
       fill_in 'Report Narrative', with: 'Trying to fill in'
+      click_button 'Cancel'
     end
-
-    click_button 'Cancel'
 
     within '#narrative-card.show' do
       expect(page).to have_content 'This is my report narrative'

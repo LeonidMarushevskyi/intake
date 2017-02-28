@@ -7,12 +7,11 @@ export default class NarrativeCardView extends React.Component {
     super(props, context)
     this.state = {
       mode: this.props.mode,
-      narrative: this.props.narrative,
     }
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-    this.onChange = this.onChange.bind(this)
+    this.fields = ['report_narrative']
   }
 
   onEdit(event) {
@@ -20,32 +19,29 @@ export default class NarrativeCardView extends React.Component {
     this.setState({mode: 'edit'})
   }
 
-  onCancel(event) {
-    event.preventDefault()
-    this.setState({mode: 'show', narrative: this.props.narrative})
+  onCancel() {
+    this.setState({mode: 'show'})
+    this.props.onCancel(this.fields)
   }
 
   onSave() {
-    return this.props.onSave(this.state.narrative).then(() => {
+    return this.props.onSave(this.fields).then(() => {
       this.setState({mode: 'show'})
     })
-  }
-
-  onChange(value) {
-    this.setState({narrative: value})
   }
 
   render() {
     const {mode} = this.state
     const allProps = {
       edit: {
+        narrative: this.props.narrative,
         onCancel: this.onCancel,
-        onChange: this.onChange,
+        onChange: this.props.onChange,
         onSave: this.onSave,
-        narrative: this.state.narrative,
       },
       show: {
-        narrative: this.props.narrative, onEdit: this.onEdit,
+        narrative: this.props.narrative,
+        onEdit: this.onEdit,
       },
     }
     const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowView
@@ -57,5 +53,7 @@ export default class NarrativeCardView extends React.Component {
 NarrativeCardView.propTypes = {
   mode: React.PropTypes.oneOf(['edit', 'show']),
   narrative: React.PropTypes.string,
+  onCancel: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
 }
