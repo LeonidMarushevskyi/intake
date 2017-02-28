@@ -111,18 +111,34 @@ describe('ScreeningEditPage', () => {
       })
     })
 
-    it('renders the referral edit view', () => {
-      const screening = Immutable.fromJS({name: 'my screening'})
-      const props = {
-        actions: {},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening,
-      }
-      component = shallow(<ScreeningEditPage {...props} />)
-      expect(component.find('IncidentInformationEditView').length).toEqual(1)
-      expect(component.find('IncidentInformationEditView').props().screening).toEqual(screening)
-      expect(component.find('IncidentInformationEditView').props().onChange).toEqual(component.instance().setField)
+    describe('renders the Incident Information edit view', () => {
+      beforeEach(() => {
+        const screening = Immutable.fromJS({name: 'my screening'})
+        const props = {
+          actions: {},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening,
+        }
+        component = shallow(<ScreeningEditPage {...props} />)
+      })
+
+      describe('before the component is loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the incident information card', () => {
+          expect(component.find('IncidentInformationCardView').length).toEqual(0)
+        })
+      })
+
+      describe('after the component is loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+
+        it('renders the incident information card', () => {
+          expect(component.find('IncidentInformationCardView').length).toEqual(1)
+          expect(component.find('IncidentInformationCardView').props().mode).toEqual('edit')
+        })
+      })
     })
 
     it('renders the history card', () => {
@@ -222,11 +238,14 @@ describe('ScreeningEditPage', () => {
         screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningEditPage {...props} />)
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      component.instance().setField(['report_narrative'], 'This is my new narrative')
+      component.instance().setField(['address', 'city'], 'Sacramento')
+      component.instance().cardSave(['report_narrative'])
     })
 
     it('calls screening save', () => {
       expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
+      expect(saveScreening).not.toHaveBeenCalledWith({city: 'Sacramento'})
     })
   })
 

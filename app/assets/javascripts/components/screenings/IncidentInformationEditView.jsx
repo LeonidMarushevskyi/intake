@@ -8,7 +8,7 @@ import SCREENING_DECISION from 'ScreeningDecision'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
-const IncidentInformationEditView = ({screening, onChange}) => (
+const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) => (
   <div className='card edit double-gap-top' id='incident-information-card'>
     <div className='card-header'>
       <span>Incident Information</span>
@@ -118,12 +118,20 @@ const IncidentInformationEditView = ({screening, onChange}) => (
           {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
         </SelectField>
       </div>
+      <div className='row'>
+        <div className='centered'>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
+          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 )
 
 IncidentInformationEditView.propTypes = {
+  onCancel: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
+  onSave: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 export default IncidentInformationEditView

@@ -5,14 +5,16 @@ import RESPONSE_TIME from 'ResponseTime'
 import SCREENING_DECISION from 'ScreeningDecision'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
+import EditLink from 'components/common/EditLink'
 
-const IncidentInformationShowView = ({screening}) => {
+const IncidentInformationShowView = ({screening, onEdit}) => {
   const incidentDate = screening.get('incident_date') === null ?
     '' : moment(screening.get('incident_date')).format('MM/DD/YYYY')
   return (
-    <div className='card double-gap-top' id='incident-information-card'>
+    <div className='card show double-gap-top' id='incident-information-card'>
       <div className='card-header'>
         <span>Incident Information</span>
+        <EditLink ariaLabel='Edit incident information' onClick={onEdit} />
       </div>
       <div className='card-body'>
         <div className='row'>
@@ -62,6 +64,7 @@ const IncidentInformationShowView = ({screening}) => {
 }
 
 IncidentInformationShowView.propTypes = {
+  onEdit: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 export default IncidentInformationShowView

@@ -1,28 +1,32 @@
 import Immutable from 'immutable'
 import React from 'react'
 import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('IncidentInformationEditView', () => {
   let component
-  let onChange
+  let props
   beforeEach(() => {
-    onChange = jasmine.createSpy()
-    const screening = Immutable.fromJS({
-      incident_date: '2006-01-21',
-      incident_county: 'alpine',
-      address: Immutable.fromJS({
-        id: '2',
-        street_address: '1500 7th St',
-        city: 'Sacramento',
-        state: 'CA',
-        zip: '95814',
+    props = {
+      onChange: jasmine.createSpy(),
+      onCancel: jasmine.createSpy(),
+      onSave: jasmine.createSpy(),
+      screening: Immutable.fromJS({
+        incident_date: '2006-01-21',
+        incident_county: 'alpine',
+        address: {
+          id: '2',
+          street_address: '1500 7th St',
+          city: 'Sacramento',
+          state: 'CA',
+          zip: '95814',
+        },
+        location_type: 'Juvenile Detention',
+        response_time: 'within_twenty_four_hours',
+        screening_decision: 'accept_for_investigation',
       }),
-      location_type: 'Juvenile Detention',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation',
-    })
-    component = shallow(<IncidentInformationEditView screening={screening} onChange={onChange} />)
+    }
+    component = shallow(<IncidentInformationEditView {...props} />)
   })
 
   it('renders the card header', () => {
@@ -50,8 +54,29 @@ describe('IncidentInformationEditView', () => {
       .toEqual('accept_for_investigation')
   })
 
+  it('renders the save button', () => {
+    expect(component.find('.btn.btn-primary').text()).toEqual('Save')
+  })
+
+  it('renders the cancel link', () => {
+    expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
+  })
+
   it('fires the onChange call when a field changes', () => {
     component.find('#incident_date').simulate('change', {target: {value: '01/21/2006'}})
-    expect(onChange).toHaveBeenCalledWith(['incident_date'], '01/21/2006')
+    expect(props.onChange).toHaveBeenCalledWith(['incident_date'], '01/21/2006')
+  })
+
+  it('calls onSave', () => {
+    component = mount(<IncidentInformationEditView {...props} />)
+    component.find('.btn.btn-primary').simulate('click')
+    expect(props.onSave).toHaveBeenCalled()
+  })
+
+  it('calls onCancel', () => {
+    component = mount(<IncidentInformationEditView {...props} />)
+    component.find('.btn.btn-default').simulate('click')
+    expect(props.onCancel).toHaveBeenCalled()
+    // Test mode change too?
   })
 })
