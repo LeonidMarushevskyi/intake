@@ -7,7 +7,7 @@ function parseDateTime(dateTime) {
   return (dateTime === null ? '' : moment.utc(dateTime).format('MM/DD/YYYY hh:mm A'))
 }
 
-const InformationShowView = ({screening}) => (
+const ScreeningInformationShowView = ({screening}) => (
   <div className='card double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -16,6 +16,9 @@ const InformationShowView = ({screening}) => (
       <div className='row'>
         <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Title/Name of Screening'>
           {screening.get('name')}
+        </ShowField>
+        <ShowField gridClassName='col-md-6' labelClassName='no-gap' label='Assigned Social Worker'>
+          {screening.get('assignee')}
         </ShowField>
       </div>
       <div className='row double-gap-top'>
@@ -35,8 +38,8 @@ const InformationShowView = ({screening}) => (
   </div>
 )
 
-InformationShowView.propTypes = {
+ScreeningInformationShowView.propTypes = {
   screening: React.PropTypes.object.isRequired,
 }
 
-export default InformationShowView
+export default ScreeningInformationShowView

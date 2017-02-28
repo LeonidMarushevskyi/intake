@@ -15,6 +15,8 @@ feature 'Show Screening' do
     )
     existing_screening = FactoryGirl.create(
       :screening,
+      address: address,
+      assignee: 'Bob Loblaw',
       communication_method: 'mail',
       ended_at: '2016-08-22T11:00:00.000Z',
       incident_county: 'sacramento',
@@ -25,8 +27,7 @@ feature 'Show Screening' do
       report_narrative: 'some narrative',
       response_time: 'within_twenty_four_hours',
       screening_decision: 'evaluate_out',
-      started_at: '2016-08-13T10:00:00.000Z',
-      address: address
+      started_at: '2016-08-13T10:00:00.000Z'
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -37,10 +38,11 @@ feature 'Show Screening' do
     expect(page).to have_content 'Screening #My Bad!'
 
     within '#screening-information-card' do
-      expect(page).to have_content 'Mail'
       expect(page).to have_content 'The Rocky Horror Picture Show'
+      expect(page).to have_content 'Bob Loblaw'
       expect(page).to have_content '8/13/2016 10:00 AM'
       expect(page).to have_content '8/22/2016 11:00 AM'
+      expect(page).to have_content 'Mail'
     end
 
     within '#narrative-card.show' do

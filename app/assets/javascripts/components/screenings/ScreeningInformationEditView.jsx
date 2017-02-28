@@ -4,7 +4,7 @@ import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import SelectField from 'components/common/SelectField'
 
-const InformationEditView = ({screening, onChange}) => (
+const ScreeningInformationEditView = ({screening, onChange}) => (
   <div className='card edit double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -19,6 +19,15 @@ const InformationEditView = ({screening, onChange}) => (
           placeholder='Enter name of the screening'
           value={screening.get('name') || ''}
           onChange={(event) => onChange(['name'], event.target.value)}
+        />
+        <InputField
+          gridClassName='col-md-6'
+          labelClassName='no-gap-top-desktop'
+          id='assignee'
+          label='Assigned Social Worker'
+          placeholder='Enter the name of the worker screening report'
+          value={screening.get('assignee') || ''}
+          onChange={(event) => onChange(['assignee'], event.target.value)}
         />
       </div>
       <div className='row'>
@@ -53,8 +62,8 @@ const InformationEditView = ({screening, onChange}) => (
   </div>
 )
 
-InformationEditView.propTypes = {
+ScreeningInformationEditView.propTypes = {
   onChange: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
-export default InformationEditView
+export default ScreeningInformationEditView

@@ -45,8 +45,6 @@ feature 'Edit Phone Number' do
       end
     end
 
-    click_button 'Save'
-
     person.phone_numbers.first.number = '917-578-1234'
     person.phone_numbers.first.type = 'Home'
     person.phone_numbers << PhoneNumber.new(
@@ -57,6 +55,14 @@ feature 'Edit Phone Number' do
       number: '879-456-7895',
       type: nil
     )
+
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json(except: :id))
+      .and_return(body: person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+
+    click_button 'Save'
 
     expect(a_request(:put, api_person_path(person.id))
       .with(body: person.to_json(except: :id))).to have_been_made
@@ -91,10 +97,14 @@ feature 'Edit Phone Number' do
       expect(page).to_not have_field('Phone Number Type', with: 'Work')
     end
 
-    click_button 'Save'
-
     person.phone_numbers = []
+    stub_request(:put, api_person_path(person.id))
+      .with(body: person.to_json(except: :id))
+      .and_return(body: person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
+    click_button 'Save'
     expect(a_request(:put, api_person_path(person.id))
       .with(body: person.to_json(except: :id))).to have_been_made
   end

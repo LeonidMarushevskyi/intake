@@ -66,7 +66,7 @@ feature 'Create Phone Number' do
     expect(page).to have_current_path(person_path('1'))
   end
 
-  scenario 'create a person with empty phonenumber' do
+  scenario 'create a person with empty phone number' do
     person = FactoryGirl.build(:person)
     created_person = FactoryGirl.create(:person, person.as_json)
 
@@ -76,9 +76,13 @@ feature 'Create Phone Number' do
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-
     visit new_person_path
     click_button 'Add new phone number'
+
+    stub_request(:get, api_person_path(created_person.id))
+      .and_return(body: created_person.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
 

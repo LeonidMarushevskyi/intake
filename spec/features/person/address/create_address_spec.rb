@@ -60,7 +60,7 @@ feature 'Create Address' do
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path('1'))
+    stub_request(:get, api_person_path(created_person.id))
       .and_return(body: created_person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -88,6 +88,10 @@ feature 'Create Address' do
       .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
+                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, api_person_path(created_person.id))
+      .and_return(body: created_person.to_json,
+                  status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
     visit new_person_path

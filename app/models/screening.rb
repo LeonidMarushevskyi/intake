@@ -19,5 +19,6 @@ class Screening # :nodoc:
   attribute :started_at
 
   attribute :address, Address
+  attribute :assignee, String
   attribute :participants, Array[Participant]
 end
