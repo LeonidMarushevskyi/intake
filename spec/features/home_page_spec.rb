@@ -27,7 +27,7 @@ feature 'home page' do
         addresses: [address]
       )
 
-      %w(M Ma Mar Marg Marge).each do |search_text|
+      %w(Ma Mar Marg Marge).each do |search_text|
         stub_request(:get, api_people_search_path(search_term: search_text))
           .and_return(body: [marge].to_json,
                       status: 200,
@@ -42,7 +42,8 @@ feature 'home page' do
 
       fill_in_autocompleter 'People', with: 'Marge'
 
-      %w(M Ma Mar Marg Marge).each do |search_text|
+      expect(a_request(:get, api_people_search_path(search_term: 'M'))).to_not have_been_made
+      %w(Ma Mar Marg Marge).each do |search_text|
         expect(a_request(:get, api_people_search_path(search_term: search_text))).to have_been_made
       end
     end
