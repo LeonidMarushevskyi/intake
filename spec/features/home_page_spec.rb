@@ -18,8 +18,8 @@ feature 'home page' do
         zip: '12345',
         type: 'Home'
       )
-      marge = Person.new(
-        id: '99',
+      marge = FactoryGirl.create(
+        :person,
         first_name: 'Marge',
         gender: 'female',
         last_name: 'Simpson',
