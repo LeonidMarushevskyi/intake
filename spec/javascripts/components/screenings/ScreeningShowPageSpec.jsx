@@ -30,17 +30,45 @@ describe('ScreeningShowPage', () => {
       expect(editLink.html()).toContain('Edit')
     })
 
-    it('render show views', () => {
-      const props = {
-        actions: {fetchScreening: () => null},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
-      }
-      const component = shallow(<ScreeningShowPage {...props} />)
-      expect(component.find('ScreeningInformationShowView').length).toEqual(1)
-      expect(component.find('IncidentInformationShowView').length).toEqual(1)
-      expect(component.find('HistoryCard').length).toEqual(1)
+    describe('incident information show card', () => {
+      let component
+      beforeEach(() => {
+        const props = {
+          actions: {fetchScreening: () => null},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening: Immutable.Map(),
+        }
+        component = shallow(<ScreeningShowPage {...props} />)
+      })
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the incident information card', () => {
+          expect(component.find('IncidentInformationCardView').length).toEqual(0)
+        })
+      })
+
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+
+        it('renders the incident information show card', () => {
+          expect(component.find('IncidentInformationCardView').props().mode).toEqual('show')
+        })
+      })
+    })
+
+    describe('history card', () => {
+      it('renders the history card', () => {
+        const props = {
+          actions: {},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening: Immutable.Map(),
+        }
+        const component = shallow(<ScreeningShowPage {...props} />)
+        expect(component.find('HistoryCard').length).toEqual(1)
+      })
     })
 
     describe('participants card', () => {
@@ -165,10 +193,11 @@ describe('ScreeningShowPage', () => {
         screening: Immutable.Map(),
       }
       component = shallow(<ScreeningShowPage {...props} />)
+      component.instance().setField(['report_narrative'], 'This is my new narrative')
     })
 
     it('calls screening save', () => {
-      component.instance().cardSave(['report_narrative'], 'This is my new narrative')
+      component.instance().cardSave(['report_narrative'])
       expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
     })
   })

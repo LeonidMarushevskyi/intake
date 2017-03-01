@@ -35,15 +35,15 @@ describe('NarrativeEditView', () => {
   })
 
   it('calls onSave when the form is submitted', () => {
-    const form = component.find('form')
-    form.simulate('submit')
+    const saveButton = component.find('button[children="Save"]')
+    saveButton.simulate('click')
     expect(onSave).toHaveBeenCalled()
   })
 
   it('calls onChange when the report narrative is changed', () => {
     const narrative = component.find('#report_narrative')
     narrative.simulate('change', {target: {value: 'My new narrative'}})
-    expect(onChange).toHaveBeenCalledWith('My new narrative')
+    expect(onChange).toHaveBeenCalledWith(['report_narrative'], 'My new narrative')
   })
 
   it('renders the cancel link', () => {

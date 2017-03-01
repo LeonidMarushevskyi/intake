@@ -4,9 +4,29 @@ import IncidentInformationShowView from 'components/screenings/IncidentInformati
 import {shallow} from 'enzyme'
 
 describe('IncidentInformationShowView', () => {
+  let component
+  let onEdit
+
+  beforeEach(() => {
+    onEdit = jasmine.createSpy()
+    component = shallow(<IncidentInformationShowView screening={Immutable.fromJS({})} onEdit={onEdit} />)
+  })
+
   it('renders the card header', () => {
-    const component = shallow(<IncidentInformationShowView screening={Immutable.fromJS({})} />)
-    expect(component.find('.card-header').text()).toEqual('Incident Information')
+    expect(component.find('.card-header').text()).toContain('Incident Information')
+  })
+
+  it('renders the edit link', () => {
+    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit incident information')
+  })
+
+  describe('clicking the edit link', () => {
+    beforeEach(() => {
+      component.find('EditLink').simulate('click')
+    })
+    it('switches to edit mode when edit icon is clicked', () => {
+      expect(onEdit).toHaveBeenCalled()
+    })
   })
 
   it('render the show fields', () => {
@@ -24,7 +44,7 @@ describe('IncidentInformationShowView', () => {
       screening_decision: 'accept_for_investigation',
     })
 
-    const component = shallow(<IncidentInformationShowView screening={screening} />)
+    const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
     expect(component.find('ShowField').length).toEqual(9)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('01/21/2006')
@@ -60,7 +80,7 @@ describe('IncidentInformationShowView', () => {
       response_time: null,
       screening_decision: null,
     })
-    const component = shallow(<IncidentInformationShowView screening={screening} />)
+    const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
     expect(component.find('ShowField').length).toEqual(9)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('<div class="c-gray"></div>')

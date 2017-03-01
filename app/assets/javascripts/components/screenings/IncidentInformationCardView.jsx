@@ -1,8 +1,8 @@
 import React from 'react'
-import NarrativeShowView from 'components/screenings/NarrativeShowView'
-import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
+import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
 
-export default class NarrativeCardView extends React.Component {
+export default class IncidentInformationCardView extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -11,7 +11,15 @@ export default class NarrativeCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-    this.fields = ['report_narrative']
+
+    this.fields = [
+      'address',
+      'incident_county',
+      'incident_date',
+      'location_type',
+      'response_time',
+      'screening_decision',
+    ]
   }
 
   onEdit(event) {
@@ -34,26 +42,26 @@ export default class NarrativeCardView extends React.Component {
     const {mode} = this.state
     const allProps = {
       edit: {
-        narrative: this.props.narrative,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
+        screening: this.props.screening,
       },
       show: {
-        narrative: this.props.narrative,
         onEdit: this.onEdit,
+        screening: this.props.screening,
       },
     }
-    const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowView
+    const IncidentInformationView = (mode === 'edit') ? IncidentInformationEditView : IncidentInformationShowView
     const props = allProps[mode]
-    return <NarrativeView {...props} />
+    return <IncidentInformationView {...props} />
   }
 }
 
-NarrativeCardView.propTypes = {
+IncidentInformationCardView.propTypes = {
   mode: React.PropTypes.oneOf(['edit', 'show']),
-  narrative: React.PropTypes.string,
   onCancel: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }

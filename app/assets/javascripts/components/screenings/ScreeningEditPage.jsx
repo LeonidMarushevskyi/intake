@@ -1,29 +1,32 @@
-import {browserHistory} from 'react-router'
 import * as screeningActions from 'actions/screeningActions'
-import React from 'react'
-import HistoryCard from 'components/screenings/HistoryCard'
 import Autocompleter from 'components/common/Autocompleter'
-import ParticipantCardView from 'components/screenings/ParticipantCardView'
-import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
+import HistoryCard from 'components/screenings/HistoryCard'
+import Immutable from 'immutable'
+import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
-import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
+import ParticipantCardView from 'components/screenings/ParticipantCardView'
+import React from 'react'
+import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import {bindActionCreators} from 'redux'
+import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 export class ScreeningEditPage extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      screening: props.screening,
       loaded: false,
+      screening: props.screening,
+      screeningEdits: Immutable.fromJS({}),
     }
 
     const methods = [
-      'setField',
-      'update',
+      'cancelEdit',
+      'cardSave',
       'createParticipant',
       'deleteParticipant',
-      'cardSave',
+      'setField',
+      'update',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -52,13 +55,21 @@ export class ScreeningEditPage extends React.Component {
   }
 
   setField(fieldSeq, value) {
-    const screening = this.state.screening.setIn(fieldSeq, value)
-    this.setState({screening: screening})
+    const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
+    this.setState({screeningEdits: screeningEdits})
   }
 
-  cardSave(fieldSeq, value) {
-    const screening = this.state.screening.setIn(fieldSeq, value)
+  cardSave(fieldList) {
+    const changes = this.state.screeningEdits.filter((value, key) =>
+      fieldList.includes(key) && value !== undefined
+    )
+    const screening = this.state.screening.mergeDeep(changes)
     return this.props.actions.saveScreening(screening.toJS())
+  }
+
+  cancelEdit(fieldList) {
+    const updatedEdits = this.state.screeningEdits.filterNot((value, key) => fieldList.includes(key))
+    this.setState({screeningEdits: updatedEdits})
   }
 
   createParticipant(person) {
@@ -92,7 +103,7 @@ export class ScreeningEditPage extends React.Component {
         {
           participants.map((participant) =>
             <ParticipantCardView key={participant.get('id')} onDelete={this.deleteParticipant} participant={participant} mode='edit'/>
-          )
+            )
         }
       </div>
     )
@@ -100,28 +111,41 @@ export class ScreeningEditPage extends React.Component {
 
   render() {
     const {screening, loaded} = this.state
+    const mergedScreening = screening.mergeDeep(this.state.screeningEdits)
     return (
       <div>
-        <h1>{`Edit Screening #${screening.get('reference')}`}</h1>
-        <ScreeningInformationEditView screening={screening} onChange={this.setField} />
+        <h1>{`Edit Screening #${mergedScreening.get('reference')}`}</h1>
+        <ScreeningInformationEditView screening={mergedScreening} onChange={this.setField} />
         {this.renderParticipantsCard()}
         {
           loaded &&
             <NarrativeCardView
-              ref='narrativeCard'
-              narrative={screening.get('report_narrative')}
               mode='edit'
-              onSave={(value) => this.cardSave(['report_narrative'], value)}
+              narrative={mergedScreening.get('report_narrative')}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              ref='narrativeCard'
             />
-        }
-        <IncidentInformationEditView screening={screening} onChange={this.setField} />
-        <HistoryCard />
-        <div className='row'>
-          <div className='centered'>
-            <button className='btn btn-primary'>Submit</button>
-          </div>
-        </div>
-      </div>
+            }
+            {
+              loaded &&
+                <IncidentInformationCardView
+                  mode='edit'
+                  onCancel={this.cancelEdit}
+                  onChange={this.setField}
+                  onSave={this.cardSave}
+                  ref='incidentInformationCard'
+                  screening={mergedScreening}
+                />
+                }
+                <HistoryCard />
+                <div className='row'>
+                  <div className='centered'>
+                    <button className='btn btn-primary'>Submit</button>
+                  </div>
+                </div>
+              </div>
     )
   }
 }
