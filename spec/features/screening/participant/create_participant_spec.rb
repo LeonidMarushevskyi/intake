@@ -68,7 +68,7 @@ feature 'Edit Screening' do
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
-    %w(M Ma Mar Marg Marge).each do |search_text|
+    %w(Ma Mar Marg Marge).each do |search_text|
       stub_request(:get, api_people_search_path(search_term: search_text))
         .and_return(body: [marge].to_json,
                     status: 200,
