@@ -26,7 +26,9 @@ describe Api::V1::ParticipantsController do
       double(:participant, as_json: participant_params.merge(id: '1'))
     end
 
-    describe 'unsuccessful due to API timeout' do
+    # This test is really for api_controller but cannot be tested directly
+    # without a specific controller.
+    describe 'unsuccessful due to an environmental error' do
       it 'renders a JSON error if there\'s a timeout' do
         stub_request(:post, api_participants_path)
           .with(body: {})

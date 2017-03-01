@@ -8,7 +8,7 @@ class ParticipantRepository
 
   def self.create(participant)
     participant_data = participant.as_json(except: :id)
-    make_api_call(PARTICIPANTS_PATH, :post, participant_data)
+    response = make_api_call(PARTICIPANTS_PATH, :post, participant_data)
     Participant.new(response.body)
   end
 

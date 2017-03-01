@@ -25,14 +25,5 @@ describe ParticipantRepository do
       described_class.delete('1')
       expect(a_request(:delete, %r{/api/v1/participants/1})).to have_been_made
     end
-
-    it 'raise an error if the response code is not 201' do
-      mock_response = double(:mock_response, status: 500, body: '')
-      allow(API.connection).to receive(:post).and_return(mock_response)
-
-      expect do
-        ParticipantRepository.create(nil)
-      end.to raise_error(ApiError)
-    end
   end
 end

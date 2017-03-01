@@ -22,7 +22,7 @@ describe PersonRepository do
       stub_request(:post, %r{/api/v1/people}).and_return(status: 500)
       expect do
         described_class.create(nil)
-      end.to raise_error('Error creating person')
+      end.to raise_error(ApiError)
     end
   end
 
@@ -93,7 +93,7 @@ describe PersonRepository do
 
       expect do
         described_class.search('')
-      end.to raise_error('Error searching people')
+      end.to raise_error(ApiError)
     end
 
     it 'returns the people results when people search is successful' do

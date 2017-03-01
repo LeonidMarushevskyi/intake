@@ -98,7 +98,7 @@ describe ScreeningRepository do
 
       expect do
         described_class.search({})
-      end.to raise_error('Error searching screening')
+      end.to raise_error(ApiError)
     end
 
     it 'returns the screening results when screening search is successful' do
