@@ -48,7 +48,7 @@ describe ErrorHandler do
                                   status: 'N/A',
                                   message: 'ApiError',
                                   api_response_body: 'N/A',
-                                  url: nil,
+                                  url: '/var/foo',
                                   method: 'post',
                                   sent_attributes: { 'foo': 'bar' } }.as_json
 

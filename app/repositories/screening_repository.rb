@@ -46,7 +46,7 @@ class ScreeningRepository
     raise ApiError,
       message: e.message,
       sent_attributes: attributes.to_json,
-      api_url: url, method: method
+      url: url, method: method
   end
   private_class_method :make_api_call
 end

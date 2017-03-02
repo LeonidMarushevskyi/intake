@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'faraday'
-require 'pry'
 require 'api_error'
 
 module IntakeFaradayMiddleware
@@ -40,7 +39,7 @@ module IntakeFaradayMiddleware
         message: "Error while calling #{env[:url].path}",
         response: response,
         sent_attributes: env[:body],
-        api_url: env[:url].path,
+        url: env[:url].path,
         method: env[:method]
     end
   end

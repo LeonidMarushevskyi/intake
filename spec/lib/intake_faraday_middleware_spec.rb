@@ -80,7 +80,7 @@ describe IntakeFaradayMiddleware::RaiseHttpException do
 
       expect do
         middleware.call(env)
-      end.to raise_error(ApiError)
+      end.to raise_error(ApiError, 'Error while calling /api/v1/participants')
     end
   end
 end

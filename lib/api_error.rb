@@ -19,10 +19,7 @@ class ApiError < StandardError
   def generate_base_message(exception_info)
     {
       response_body: 'N/A',
-      url: exception_info[:api_url],
-      method: exception_info[:method],
-      sent_attributes: exception_info[:sent_attributes],
       http_code: 'N/A'
-    }
+    }.merge! exception_info.extract!(:url, :method, :sent_attributes)
   end
 end

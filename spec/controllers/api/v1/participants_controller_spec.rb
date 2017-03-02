@@ -38,18 +38,14 @@ describe Api::V1::ParticipantsController do
                          params: { participant: participant_params },
                          format: :json
 
-        expected_exception = {
-          'error': 'api_error',
-          'status': 'N/A',
-          'message': 'execution expired',
-          'api_response_body': 'N/A',
-          'method': 'post',
-          'url': '/api/v1/participants'
-        }
-
-        body_as_hash = JSON.parse(response.body)
-        expect(body_as_hash['sent_attributes']).to be_present
-        expect(body_as_hash.except('sent_attributes')).to eq(expected_exception.as_json)
+        expect(JSON.parse response.body).to match a_hash_including(
+          'error' => 'api_error',
+          'status' => 'N/A',
+          'message' => 'execution expired',
+          'api_response_body' => 'N/A',
+          'method' => 'post',
+          'url' => '/api/v1/participants'
+        )
       end
     end
 
@@ -58,26 +54,22 @@ describe Api::V1::ParticipantsController do
         stub_request(:post, api_participants_path)
           .with(body: {})
           .and_return(body: 'this is not json',
-                      status: 500,
-                      headers: { 'Content-Type' => 'application/json' })
+        status: 500,
+        headers: { 'Content-Type' => 'application/json' })
 
         process :create, method: :post,
-                         params: { participant: participant_params },
-                         format: :json
+          params: { participant: participant_params },
+          format: :json
 
-        expected_exception = {
-          'error': 'api_error',
-          'status': 500,
-          'message': 'Error while calling /api/v1/participants',
-          'api_response_body': 'this is not json',
-          'method': 'post',
-          'url': '/api/v1/participants'
-        }
+        expect(JSON.parse response.body).to match a_hash_including(
+          'error' => 'api_error',
+          'status' => 500,
+          'message' => 'Error while calling /api/v1/participants',
+          'api_response_body' => 'this is not json',
+          'method' => 'post',
+          'url' => '/api/v1/participants'
+        )
 
-        body_as_hash = JSON.parse(response.body)
-
-        expect(body_as_hash['sent_attributes']).to be_present
-        expect(body_as_hash.except('sent_attributes')).to eq(expected_exception.as_json)
       end
     end
 
@@ -92,8 +84,8 @@ describe Api::V1::ParticipantsController do
 
       it 'renders a participant as json' do
         process :create, method: :post,
-                         params: { screening_id: '1', participant: participant_params },
-                         format: :json
+          params: { screening_id: '1', participant: participant_params },
+          format: :json
         expect(JSON.parse(response.body)).to eq(created_participant.as_json)
       end
     end
@@ -107,8 +99,8 @@ describe Api::V1::ParticipantsController do
 
     it 'deletes an existing participant' do
       process :destroy, method: :delete,
-                        params: { id: '1' },
-                        format: :json
+        params: { id: '1' },
+        format: :json
       expect(response.body).to be_empty
     end
   end
