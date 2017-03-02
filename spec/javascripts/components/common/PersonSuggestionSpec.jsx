@@ -9,12 +9,26 @@ describe('PersonSuggestion', () => {
     expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
   })
 
+  it('renders html sanitized first, last name, middle name and suffix', () => {
+    const props = {firstName: '<h3>Bart</h3>', lastName: '<strong>Simpson</strong>', middleName: 'Jacqueline', nameSuffix: 'md'}
+    const component = shallow(<PersonSuggestion {...props} />)
+    expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
+  })
+
   describe('ssn', () => {
     it('renders when present', () => {
       const props = {ssn: '123-456-7890'}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).toContain(
         '<div><strong class="c-gray half-pad-right">SSN</strong><span>123-456-7890</span></div>'
+      )
+    })
+
+    it('renders sanitized ssn', () => {
+      const props = {ssn: '<em><h3>123-456-7890</h3></em>'}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain(
+        '<div><strong class="c-gray half-pad-right">SSN</strong><span><em>123-456-7890</em></span></div>'
       )
     })
 

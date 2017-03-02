@@ -232,6 +232,26 @@ describe('<Autocompleter />', () => {
       expect(attributes.address).toEqual(null)
       expect(attributes.phoneNumber).toEqual(null)
     })
+
+    it('maps person search hightlight fields', () => {
+      const suggestion = {
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        date_of_birth: '1990-02-13',
+        ssn: '123-45-6789',
+        addresses: [],
+        phone_numbers: [],
+        highlight: {
+          first_name: '<em>Bar</em>t',
+          last_name: 'Sim<em>pson</em>',
+          ssn: '<em>123-45-</em>6789',
+        },
+      }
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.firstName).toEqual('<em>Bar</em>t')
+      expect(attributes.lastName).toEqual('Sim<em>pson</em>')
+      expect(attributes.ssn).toEqual('<em>123-45-</em>6789')
+    })
   })
 
   describe('#renderSuggestion', () => {
@@ -301,42 +321,6 @@ describe('<Autocompleter />', () => {
           number: '994-907-6774',
           type: 'Home',
         },
-      })
-    })
-
-    it('renders the PersonSuggestion view when some values are empty', () => {
-      component = mount(<Autocompleter />)
-      const result = [{
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        middle_name: null,
-        name_suffix: 'md',
-        gender: 'female',
-        languages: [],
-        races: [],
-        ethnicity: {},
-        date_of_birth: '1990-02-13',
-        ssn: '123-45-6789',
-        addresses: [],
-        phone_numbers: [],
-      }]
-      stubSuggestions(result)
-
-      component.find('input').simulate('focus')
-      component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
-      expect(component.find('PersonSuggestion').props()).toEqual({
-        firstName: 'Bart',
-        lastName: 'Simpson',
-        middleName: null,
-        nameSuffix: 'md',
-        gender: 'female',
-        races: [],
-        languages: [],
-        phoneNumber: null,
-        ethnicity: {},
-        dateOfBirth: '1990-02-13',
-        ssn: '123-45-6789',
-        address: null,
       })
     })
   })

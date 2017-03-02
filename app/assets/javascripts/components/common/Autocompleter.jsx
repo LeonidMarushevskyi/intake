@@ -63,17 +63,23 @@ export default class Autocompleter extends React.Component {
 
   mapPersonSearchAttributes(suggestion) {
     const {
-      first_name, last_name, middle_name, name_suffix,
+      middle_name, name_suffix, date_of_birth,
       gender, languages, races, ethnicity,
-      date_of_birth, ssn, addresses, phone_numbers,
+      addresses, phone_numbers, highlight,
     } = suggestion
-
     const first = 0
     const address = addresses[first] || null
     const phoneNumber = phone_numbers[first] || null
+    var highlightedText = (fieldName, suggestion, highlight) => {
+      if (highlight && highlight[fieldName]) {
+        return highlight[fieldName]
+      } else {
+        return suggestion[fieldName]
+      }
+    }
     return {
-      firstName: first_name,
-      lastName: last_name,
+      firstName: highlightedText('first_name', suggestion, highlight),
+      lastName: highlightedText('last_name', suggestion, highlight),
       middleName: middle_name,
       nameSuffix: name_suffix,
       gender: gender,
@@ -81,7 +87,7 @@ export default class Autocompleter extends React.Component {
       races: races,
       ethnicity: ethnicity,
       dateOfBirth: date_of_birth,
-      ssn: ssn,
+      ssn: highlightedText('ssn', suggestion, highlight),
       address: address && {
         city: address.city,
         state: address.state,
