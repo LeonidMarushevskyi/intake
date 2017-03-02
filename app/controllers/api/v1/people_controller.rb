@@ -20,7 +20,7 @@ module Api
       end
 
       def search
-        people_results = PersonRepository.search(params[:search_term])
+        people_results = PersonSearchRepository.search(params[:search_term])
         render json: people_results
       end
 
