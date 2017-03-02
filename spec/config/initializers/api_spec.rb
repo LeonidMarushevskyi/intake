@@ -25,7 +25,7 @@ describe API do
         a_request(:post, %r{/api/v1/screening})
           .with(
             body: { name: 'my new screening' },
-            headers: { 'Content-Type' => 'application/json' }
+            headers: { 'Content-Type' => 'application/json'}
           )
       ).to have_been_made
     end
@@ -37,7 +37,7 @@ describe API do
         a_request(:put, %r{/api/v1/screening/1})
           .with(
             body: { name: 'my new screening' },
-            headers: { 'Content-Type' => 'application/json' }
+            headers: { 'Content-Type' => 'application/json'}
           )
       ).to have_been_made
     end
