@@ -12,13 +12,14 @@ describe PersonSearchRepository do
       end.to raise_error(ApiError)
     end
 
-    it 'returns the people results when people search is successful' do
-      results = [{ id: '1' }, { id: '2' }].to_json
+    it 'returns the people search results when people search is successful' do
+      results = [{ id: '1', highlight: { first_name: 'Robert' } }, { id: '2' }].to_json
       stub_request(:get, %r{/api/v1/people_search\?search_term=FirstName})
         .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
 
       expect(described_class.search('FirstName').length).to eq(2)
       expect(described_class.search('FirstName')[0].id).to eq('1')
+      expect(described_class.search('FirstName')[0].highlight['first_name']).to eq('Robert')
       expect(described_class.search('FirstName')[1].id).to eq('2')
     end
 

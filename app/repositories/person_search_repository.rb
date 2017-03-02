@@ -8,7 +8,7 @@ class PersonSearchRepository
   def self.search(search_term)
     response = API.make_api_call("#{PEOPLE_SEARCH_PATH}?search_term=#{search_term}", :get)
     response.body.map do |result_attributes|
-      Person.new(result_attributes)
+      PersonSearch.new(result_attributes)
     end
   end
 end
