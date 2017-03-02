@@ -39,6 +39,12 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+
+  em {
+    background-color: $gold-light;
+    font-style: normal;
+    font-weight: bold;
+  }
 }
 
 .react-autosuggest__suggestion {
