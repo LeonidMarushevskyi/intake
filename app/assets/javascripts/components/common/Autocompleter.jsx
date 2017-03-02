@@ -61,36 +61,45 @@ export default class Autocompleter extends React.Component {
     return value.trimLeft().length >= MIN_SEARCHABLE_CHARS
   }
 
-  renderSuggestion(suggestion) {
-    const {first_name, last_name, middle_name, name_suffix, gender, languages, races, ethnicity, date_of_birth, ssn, addresses, phone_numbers} = suggestion
+  mapPersonSearchAttributes(suggestion) {
+    const {
+      first_name, last_name, middle_name, name_suffix,
+      gender, languages, races, ethnicity,
+      date_of_birth, ssn, addresses, phone_numbers,
+    } = suggestion
+
     const first = 0
     const address = addresses[first] || null
-    const addressInfo = address && {
-      city: address.city,
-      state: address.state,
-      streetAddress: address.street_address,
-      type: address.type,
-      zip: address.zip,
-    }
     const phoneNumber = phone_numbers[first] || null
-    const phoneNumberInfo = phoneNumber && {
-      number: phoneNumber.number,
-      type: phoneNumber.type,
+    return {
+      firstName: first_name,
+      lastName: last_name,
+      middleName: middle_name,
+      nameSuffix: name_suffix,
+      gender: gender,
+      languages: languages,
+      races: races,
+      ethnicity: ethnicity,
+      dateOfBirth: date_of_birth,
+      ssn: ssn,
+      address: address && {
+        city: address.city,
+        state: address.state,
+        streetAddress: address.street_address,
+        type: address.type,
+        zip: address.zip,
+      },
+      phoneNumber: phoneNumber && {
+        number: phoneNumber.number,
+        type: phoneNumber.type,
+      },
     }
+  }
+
+  renderSuggestion(suggestion) {
     return (
       <PersonSuggestion
-        firstName={first_name}
-        lastName={last_name}
-        middleName={middle_name}
-        nameSuffix={name_suffix}
-        gender={gender}
-        languages={languages}
-        races={races}
-        ethnicity={ethnicity}
-        dateOfBirth={date_of_birth}
-        ssn={ssn}
-        address={addressInfo}
-        phoneNumber={phoneNumberInfo}
+        {...this.mapPersonSearchAttributes(suggestion)}
       />
     )
   }
