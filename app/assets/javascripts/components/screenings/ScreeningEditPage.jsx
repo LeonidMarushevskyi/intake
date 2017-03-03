@@ -1,4 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
+import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
@@ -148,6 +149,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
+        <AllegationsCardView />
         <HistoryCard />
         <div className='row'>
           <div className='centered'>

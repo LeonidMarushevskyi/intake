@@ -66,7 +66,13 @@ feature 'Edit Screening' do
       expect(page).to have_content('Cancel')
     end
 
-    within '#screening-history-card', text: 'HISTORY' do
+    within '#allegations-card', text: 'ALLEGATIONS' do
+      expect(page).to have_css('th', text: 'Alleged Victim/Children')
+      expect(page).to have_css('th', text: 'Alleged Perpetrator')
+      expect(page).to have_css('th', text: 'Allegation(s)')
+    end
+
+    within '#history-card', text: 'HISTORY' do
       expect(page).to have_css('th', text: 'Date')
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
