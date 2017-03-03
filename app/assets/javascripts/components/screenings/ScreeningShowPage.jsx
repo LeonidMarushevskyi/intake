@@ -5,7 +5,7 @@ import IncidentInformationCardView from 'components/screenings/IncidentInformati
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
-import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
+import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -78,7 +78,15 @@ export class ScreeningShowPage extends React.Component {
     return (
       <div>
         <h1>{`Screening #${mergedScreening.get('reference')}`}</h1>
-        <ScreeningInformationShowView screening={mergedScreening}/>
+        { loaded &&
+          <ScreeningInformationCardView
+            mode='show'
+            screening={mergedScreening}
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+          />
+        }
         {this.renderParticipantsCard()}
         {
           loaded &&
