@@ -19,9 +19,8 @@ feature 'screening narrative card' do
     within '#narrative-card.edit' do
       expect(page).to have_field('Report Narrative', with: 'This is my report narrative')
       fill_in 'Report Narrative', with: 'Trying to fill in'
+      click_button 'Cancel'
     end
-
-    click_button 'Cancel'
 
     within '#narrative-card.show' do
       expect(page).to have_content 'This is my report narrative'
@@ -76,7 +75,9 @@ feature 'screening narrative card' do
       .with(json_body(existing_screening.to_json(except: :id)))
       .and_return(json_body(existing_screening.to_json))
 
-    click_button 'Save'
+    within '#narrative-card.edit' do
+      click_button 'Save'
+    end
 
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
