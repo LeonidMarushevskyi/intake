@@ -45,6 +45,8 @@ feature 'Edit Screening' do
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
       expect(page).to have_field('Screening End Date/Time', with: '2016-08-13T11:00:00.000Z')
       expect(page).to have_field('Communication Method', with: 'phone')
+      expect(page).to have_content('Save')
+      expect(page).to have_content('Cancel')
     end
 
     within '#narrative-card' do

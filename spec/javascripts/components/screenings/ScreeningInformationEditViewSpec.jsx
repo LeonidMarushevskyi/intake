@@ -7,16 +7,21 @@ describe('ScreeningInformationEditView', () => {
   let component
   describe('render', () => {
     beforeEach(() => {
-      const onChange = () => null
-      const screening = Immutable.fromJS({
-        name: 'The Rocky Horror Picture Show',
-        assignee: 'Michael Bluth',
-        started_at: '2016-08-13T10:00:00.000Z',
-        ended_at: '2016-08-22T11:00:00.000Z',
-        communication_method: 'mail',
-        participants: [],
-      })
-      component = shallow(<ScreeningInformationEditView screening={screening} onChange={onChange} />)
+      const props = {
+        onChange: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onEdit: jasmine.createSpy(),
+        screening: Immutable.fromJS({
+          name: 'The Rocky Horror Picture Show',
+          assignee: 'Michael Bluth',
+          started_at: '2016-08-13T10:00:00.000Z',
+          ended_at: '2016-08-22T11:00:00.000Z',
+          communication_method: 'mail',
+          participants: [],
+        }),
+      }
+      component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
     it('renders the card header', () => {
@@ -35,20 +40,63 @@ describe('ScreeningInformationEditView', () => {
       expect(component.find('SelectField[label="Communication Method"]').props().value)
         .toEqual('mail')
     })
+
+    it('renders the save and cancel button', () => {
+      expect(component.find('.btn.btn-primary').text()).toEqual('Save')
+      expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
+    })
   })
 
   describe('onChange', () => {
-    let onChange
+    let props
     beforeEach(() => {
-      onChange = jasmine.createSpy('onChange')
-      const screening = Immutable.Map()
-      component = mount(<ScreeningInformationEditView screening={screening} onChange={onChange} />)
+      props = {
+        onChange: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onEdit: jasmine.createSpy(),
+        screening: Immutable.fromJS({
+          name: 'The Rocky Horror Picture Show',
+          assignee: 'Michael Bluth',
+          started_at: '2016-08-13T10:00:00.000Z',
+          ended_at: '2016-08-22T11:00:00.000Z',
+          communication_method: 'mail',
+          participants: [],
+        }),
+      }
+      component = mount(<ScreeningInformationEditView {...props} />)
     })
 
     it('fires the call the onChange function when a field changes', () => {
       const comMethodSelect = component.find('#screening-information-card select')
       comMethodSelect.simulate('change', {target: {value: 'fax'}})
-      expect(onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
+      expect(props.onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
+    })
+  })
+
+  describe('onSave', () => {
+    let props
+    beforeEach(() => {
+      props = {
+        onChange: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onEdit: jasmine.createSpy(),
+        screening: Immutable.fromJS({
+          name: 'The Rocky Horror Picture Show',
+          assignee: 'Michael Bluth',
+          started_at: '2016-08-13T10:00:00.000Z',
+          ended_at: '2016-08-22T11:00:00.000Z',
+          communication_method: 'mail',
+          participants: [],
+        }),
+      }
+      component = mount(<ScreeningInformationEditView {...props} />)
+    })
+
+    it('fires the onSave function when save clicks', () => {
+      component.find('.btn.btn-primary').simulate('click')
+      expect(props.onSave).toHaveBeenCalled()
     })
   })
 })

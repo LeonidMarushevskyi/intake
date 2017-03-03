@@ -30,6 +30,34 @@ describe('ScreeningShowPage', () => {
       expect(editLink.html()).toContain('Edit')
     })
 
+    describe('screening information show card', () => {
+      let component
+      beforeEach(() => {
+        const props = {
+          actions: {fetchScreening: () => null},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening: Immutable.Map(),
+        }
+        component = shallow(<ScreeningShowPage {...props} />)
+      })
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the screening information card', () => {
+          expect(component.find('ScreeningInformationCardView').length).toEqual(0)
+        })
+      })
+
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+
+        it('renders the screening information show card', () => {
+          expect(component.find('ScreeningInformationCardView').props().mode).toEqual('show')
+        })
+      })
+    })
+
     describe('incident information show card', () => {
       let component
       beforeEach(() => {

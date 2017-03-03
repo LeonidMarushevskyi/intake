@@ -5,23 +5,32 @@ import {shallow} from 'enzyme'
 
 describe('ScreeningInformationShowView', () => {
   let component
+  let props
   beforeEach(() => {
-    component = shallow(<ScreeningInformationShowView screening={Immutable.Map({})} />)
+    props = {
+      onEdit: jasmine.createSpy(),
+      screening: Immutable.fromJS({}),
+    }
+    component = shallow(<ScreeningInformationShowView {...props} />)
   })
 
   it('render the card headers', () => {
-    expect(component.find('.card-header').text()).toEqual('Screening Information')
+    expect(component.find('.card-header').text()).toContain('Screening Information')
   })
 
   it('renders the screening show fields', () => {
-    const screening = Immutable.fromJS({
-      assignee: 'Michael Bluth',
-      name: 'The Rocky Horror Picture Show',
-      started_at: '2016-08-13T10:00:00.000Z',
-      ended_at: '2016-08-22T11:00:00.000Z',
-      communication_method: 'mail',
-    })
-    component = shallow(<ScreeningInformationShowView screening={screening} />)
+    const props = {
+      onEdit: jasmine.createSpy(),
+      screening: Immutable.fromJS({
+        name: 'The Rocky Horror Picture Show',
+        assignee: 'Michael Bluth',
+        started_at: '2016-08-13T10:00:00.000Z',
+        ended_at: '2016-08-22T11:00:00.000Z',
+        communication_method: 'mail',
+        participants: [],
+      }),
+    }
+    component = shallow(<ScreeningInformationShowView {...props} />)
     expect(component.find('ShowField').length).toEqual(5)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('The Rocky Horror Picture Show')
@@ -35,6 +44,15 @@ describe('ScreeningInformationShowView', () => {
       .toContain('Mail')
   })
 
+  it('renders the edit link', () => {
+    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit screening information')
+  })
+
+  it('calls the onEdit function when edit link is clicked', () => {
+    component.find('EditLink').simulate('click')
+    expect(props.onEdit).toHaveBeenCalled()
+  })
+
   it('renders the screening show field when the field values are null', () => {
     const screening = Immutable.fromJS({
       assignee: null,
@@ -43,8 +61,11 @@ describe('ScreeningInformationShowView', () => {
       ended_at: null,
       communication_method: null,
     })
-
-    component = shallow(<ScreeningInformationShowView screening={screening} />)
+    const props = {
+      onEdit: jasmine.createSpy(),
+      screening: screening,
+    }
+    component = shallow(<ScreeningInformationShowView {...props} />)
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Assigned Social Worker"]').html())

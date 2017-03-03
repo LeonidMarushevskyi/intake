@@ -6,7 +6,7 @@ import IncidentInformationCardView from 'components/screenings/IncidentInformati
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
-import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
+import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
@@ -115,37 +115,46 @@ export class ScreeningEditPage extends React.Component {
     return (
       <div>
         <h1>{`Edit Screening #${mergedScreening.get('reference')}`}</h1>
-        <ScreeningInformationEditView screening={mergedScreening} onChange={this.setField} />
+        {
+          loaded &&
+          <ScreeningInformationCardView
+            mode='edit'
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+            screening={mergedScreening}
+          />
+        }
         {this.renderParticipantsCard()}
         {
           loaded &&
-            <NarrativeCardView
-              mode='edit'
-              narrative={mergedScreening.get('report_narrative')}
-              onCancel={this.cancelEdit}
-              onChange={this.setField}
-              onSave={this.cardSave}
-              ref='narrativeCard'
-            />
-            }
-            {
-              loaded &&
-                <IncidentInformationCardView
-                  mode='edit'
-                  onCancel={this.cancelEdit}
-                  onChange={this.setField}
-                  onSave={this.cardSave}
-                  ref='incidentInformationCard'
-                  screening={mergedScreening}
-                />
-                }
-                <HistoryCard />
-                <div className='row'>
-                  <div className='centered'>
-                    <button className='btn btn-primary'>Submit</button>
-                  </div>
-                </div>
-              </div>
+          <NarrativeCardView
+            mode='edit'
+            narrative={mergedScreening.get('report_narrative')}
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+            ref='narrativeCard'
+          />
+        }
+        {
+          loaded &&
+          <IncidentInformationCardView
+            mode='edit'
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+            ref='incidentInformationCard'
+            screening={mergedScreening}
+          />
+        }
+        <HistoryCard />
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary'>Submit</button>
+          </div>
+        </div>
+      </div>
     )
   }
 }

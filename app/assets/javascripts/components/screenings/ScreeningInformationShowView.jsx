@@ -1,5 +1,6 @@
 import React from 'react'
 import COMMUNICATION_METHOD from 'CommunicationMethod'
+import EditLink from 'components/common/EditLink'
 import moment from 'moment'
 import ShowField from 'components/common/ShowField'
 
@@ -7,10 +8,11 @@ function parseDateTime(dateTime) {
   return (dateTime === null ? '' : moment.utc(dateTime).format('MM/DD/YYYY hh:mm A'))
 }
 
-const ScreeningInformationShowView = ({screening}) => (
-  <div className='card double-gap-top' id='screening-information-card'>
+const ScreeningInformationShowView = ({screening, onEdit}) => (
+  <div className='card show double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
+      <EditLink ariaLabel='Edit screening information' onClick={onEdit} />
     </div>
     <div className='card-body'>
       <div className='row'>
@@ -39,6 +41,7 @@ const ScreeningInformationShowView = ({screening}) => (
 )
 
 ScreeningInformationShowView.propTypes = {
+  onEdit: React.PropTypes.func.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 
