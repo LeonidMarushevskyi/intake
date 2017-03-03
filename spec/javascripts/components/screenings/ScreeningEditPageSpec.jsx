@@ -152,6 +152,17 @@ describe('ScreeningEditPage', () => {
       component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)
     })
+
+    it('renders the allegations card', () => {
+      const props = {
+        actions: {},
+        params: {id: '1'},
+        participants: Immutable.List(),
+        screening: Immutable.Map(),
+      }
+      component = shallow(<ScreeningEditPage {...props} />)
+      expect(component.find('AllegationsCardView').length).toEqual(1)
+    })
   })
 
   describe('componentDidMount', () => {

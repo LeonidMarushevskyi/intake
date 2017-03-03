@@ -1,4 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
+import AllegationsShowView from 'components/screenings/AllegationsShowView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
@@ -108,6 +109,7 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
+        <AllegationsShowView />
         <HistoryCard />
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>

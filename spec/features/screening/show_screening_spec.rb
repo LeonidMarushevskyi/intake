@@ -61,8 +61,14 @@ feature 'Show Screening' do
       expect(page).to have_content 'Evaluate Out'
     end
 
-    within '#screening-history-card', text: 'HISTORY' do
-      expect(page). to have_content 'Date'
+    within '#allegations-card', text: 'ALLEGATIONS' do
+      expect(page).to have_css('th', text: 'Alleged Victim/Children')
+      expect(page).to have_css('th', text: 'Alleged Perpetrator')
+      expect(page).to have_css('th', text: 'Allegation(s)')
+    end
+
+    within '#history-card', text: 'HISTORY' do
+      expect(page).to have_content 'Date'
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
       expect(page).to have_css('th', text: 'People and Roles')

@@ -1,14 +1,15 @@
 import React from 'react'
 
-export default class HistoryCard extends React.Component {
+export default class AllegationsCardView extends React.Component {
   constructor() {
     super(...arguments)
   }
+
   render() {
     return (
-      <div className='card show double-gap-top' id='history-card'>
+      <div className='card edit double-gap-top' id='allegations-card'>
         <div className='card-header'>
-          <span>History</span>
+          <span>Allegations</span>
         </div>
         <div className='card-body no-pad-top'>
           <div className='row'>
@@ -16,10 +17,9 @@ export default class HistoryCard extends React.Component {
               <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <th scope='col'>Date</th>
-                    <th scope='col'>Type/Status</th>
-                    <th scope='col'>County/Office</th>
-                    <th scope='col'>People and Roles</th>
+                    <th scope='col'>Alleged Victim/Children</th>
+                    <th scope='col'>Alleged Perpetrator</th>
+                    <th scope='col'>Allegation(s)</th>
                   </tr>
                 </thead>
               </table>
@@ -30,4 +30,3 @@ export default class HistoryCard extends React.Component {
     )
   }
 }
-
