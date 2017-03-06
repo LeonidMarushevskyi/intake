@@ -245,12 +245,14 @@ describe('<Autocompleter />', () => {
           first_name: '<em>Bar</em>t',
           last_name: 'Sim<em>pson</em>',
           ssn: '<em>123-45-</em>6789',
+          date_of_birth: '<em>1990</em>-02-13',
         },
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
       expect(attributes.firstName).toEqual('<em>Bar</em>t')
       expect(attributes.lastName).toEqual('Sim<em>pson</em>')
       expect(attributes.ssn).toEqual('<em>123-45-</em>6789')
+      expect(attributes.dateOfBirth).toEqual('<em>1990</em>-02-13')
     })
   })
 

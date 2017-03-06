@@ -86,7 +86,7 @@ export default class Autocompleter extends React.Component {
       languages: languages,
       races: races,
       ethnicity: ethnicity,
-      dateOfBirth: date_of_birth,
+      dateOfBirth: highlightedText('date_of_birth', suggestion, highlight),
       ssn: highlightedText('ssn', suggestion, highlight),
       address: address && {
         city: address.city,
