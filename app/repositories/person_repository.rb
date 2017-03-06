@@ -9,20 +9,17 @@ class PersonRepository
 
   def self.create(person)
     response = make_api_call(PEOPLE_PATH, :post, person.as_json(except: :id))
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 
   def self.find(id)
     response = make_api_call("#{PEOPLE_PATH}/#{id}", :get)
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 
   def self.update(person)
     raise 'Error updating person: id is required' unless person.id
     response = make_api_call("#{PEOPLE_PATH}/#{person.id}", :put, person.as_json(except: :id))
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 

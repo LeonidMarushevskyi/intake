@@ -38,7 +38,7 @@ describe Api::V1::ParticipantsController do
                          params: { participant: participant_params },
                          format: :json
 
-        expect(JSON.parse response.body).to match a_hash_including(
+        expect(JSON.parse(response.body)).to match a_hash_including(
           'error' => 'api_error',
           'status' => 'N/A',
           'message' => 'execution expired',
@@ -54,14 +54,15 @@ describe Api::V1::ParticipantsController do
         stub_request(:post, api_participants_path)
           .with(body: {})
           .and_return(body: 'this is not json',
-        status: 500,
-        headers: { 'Content-Type' => 'application/json' })
+                      status: 500,
+                      headers: { 'Content-Type' => 'application/json' })
 
-        process :create, method: :post,
+        process :create,
+          method: :post,
           params: { participant: participant_params },
           format: :json
 
-        expect(JSON.parse response.body).to match a_hash_including(
+        expect(JSON.parse(response.body)).to match a_hash_including(
           'error' => 'api_error',
           'status' => 500,
           'message' => 'Error while calling /api/v1/participants',
@@ -69,7 +70,6 @@ describe Api::V1::ParticipantsController do
           'method' => 'post',
           'url' => '/api/v1/participants'
         )
-
       end
     end
 
@@ -83,7 +83,8 @@ describe Api::V1::ParticipantsController do
       end
 
       it 'renders a participant as json' do
-        process :create, method: :post,
+        process :create,
+          method: :post,
           params: { screening_id: '1', participant: participant_params },
           format: :json
         expect(JSON.parse(response.body)).to eq(created_participant.as_json)
@@ -98,7 +99,8 @@ describe Api::V1::ParticipantsController do
     end
 
     it 'deletes an existing participant' do
-      process :destroy, method: :delete,
+      process :destroy,
+        method: :delete,
         params: { id: '1' },
         format: :json
       expect(response.body).to be_empty

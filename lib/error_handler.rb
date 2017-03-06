@@ -11,8 +11,10 @@ module ErrorHandler
   def handle_exception(exception)
     case exception
     when ApiError
+      log_error(exception, 'API_ERROR')
       render json: generate_api_error(exception)
     when StandardError
+      log_error(exception, 'STANDARD_ERROR')
       render json: generate_standard_error(exception)
     end
   end
@@ -35,5 +37,18 @@ module ErrorHandler
       status: 500,
       message: exception.to_s
     }.as_json
+  end
+
+  def log_error(exception, type)
+    if type == 'API_ERROR'
+      Rails.logger.error "[#{type}] found processing an api call:
+      - message: #{exception.message}
+      - URL    : #{exception.api_error[:url]}
+      - status : #{exception.api_error[:http_code]}
+      - method : #{exception.api_error[:method]}"
+    else
+      Rails.logger.error " [#{type}] found processing an api call:
+      - message: #{exception.message}\n      - backtrace: #{exception.backtrace}"
+    end
   end
 end

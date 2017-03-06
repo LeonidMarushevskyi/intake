@@ -8,13 +8,11 @@ class ScreeningRepository
 
   def self.create(screening)
     response = make_api_call(SCREENINGS_PATH, :post, screening.as_json(except: :id))
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
   def self.find(id)
     response = make_api_call("#{SCREENINGS_PATH}/#{id}", :get)
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
@@ -25,7 +23,6 @@ class ScreeningRepository
       :put,
       screening.as_json(except: :id)
     )
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
