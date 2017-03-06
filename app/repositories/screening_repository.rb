@@ -8,15 +8,11 @@ class ScreeningRepository
 
   def self.create(screening)
     response = make_api_call(SCREENINGS_PATH, :post, screening.as_json(except: :id))
-    raise 'Error creating screening' if response.status != 201
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
   def self.find(id)
     response = make_api_call("#{SCREENINGS_PATH}/#{id}", :get)
-    raise 'Error finding screening' if response.status != 200
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
@@ -27,14 +23,11 @@ class ScreeningRepository
       :put,
       screening.as_json(except: :id)
     )
-    raise 'Error updating screening' if response.status != 200
-    Rails.logger.info response.body.inspect
     Screening.new(response.body)
   end
 
   def self.search(search_terms)
     response = make_api_call("#{SCREENINGS_PATH}?#{search_terms.to_query}", :get)
-    raise 'Error searching screening' if response.status != 200
     response.body.map do |result_attributes|
       Screening.new(result_attributes)
     end
@@ -46,6 +39,11 @@ class ScreeningRepository
       req.headers['Content-Type'] = CONTENT_TYPE unless method == :get
       req.body = attributes.to_json unless attributes.nil?
     end
+  rescue Faraday::Error => e
+    raise ApiError,
+      message: e.message,
+      sent_attributes: attributes.to_json,
+      url: url, method: method
   end
   private_class_method :make_api_call
 end

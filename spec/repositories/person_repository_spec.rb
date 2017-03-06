@@ -22,7 +22,7 @@ describe PersonRepository do
       stub_request(:post, %r{/api/v1/people}).and_return(status: 500)
       expect do
         described_class.create(nil)
-      end.to raise_error('Error creating person')
+      end.to raise_error(ApiError)
     end
   end
 
@@ -43,12 +43,10 @@ describe PersonRepository do
     end
 
     it 'raise an error if the response code is not 200' do
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:get).and_return(mock_response)
-
+      stub_request(:get, %r{/api/v1/people/\d}).and_return(status: 500)
       expect do
         described_class.find(1)
-      end.to raise_error('Error finding person')
+      end.to raise_error(ApiError)
     end
   end
 
@@ -69,13 +67,16 @@ describe PersonRepository do
     end
 
     it 'raise an error if the response code is not 201' do
-      created_person = double(:person, id: '1')
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:put).and_return(mock_response)
+      existing_person = FactoryGirl.build(:person, first_name: 'Homer')
+      existing_person_attributes = existing_person.to_json(except: :id)
+
+      stub_request(:put, %r{/api/v1/people/#{existing_person.id}})
+        .with(body: existing_person_attributes)
+        .and_return(status: 500)
 
       expect do
-        described_class.update(created_person)
-      end.to raise_error('Error updating person')
+        described_class.update(existing_person)
+      end.to raise_error(ApiError)
     end
 
     it 'raises an error if person id is not present' do
@@ -93,7 +94,7 @@ describe PersonRepository do
 
       expect do
         described_class.search('')
-      end.to raise_error('Error searching people')
+      end.to raise_error(ApiError)
     end
 
     it 'returns the people results when people search is successful' do

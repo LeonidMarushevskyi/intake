@@ -35,5 +35,5 @@ module WebmockHelpers
 end
 
 RSpec.configure do |config|
-  config.include WebmockHelpers, type: :feature
+  config.include WebmockHelpers
 end

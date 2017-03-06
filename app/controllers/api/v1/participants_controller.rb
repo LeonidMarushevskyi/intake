@@ -4,7 +4,7 @@
 # the creation and modification of screening participant objects.
 module Api
   module V1
-    class ParticipantsController < ApplicationController # :nodoc:
+    class ParticipantsController < ApiController # :nodoc:
       respond_to :json
 
       def create

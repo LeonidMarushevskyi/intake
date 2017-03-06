@@ -7,15 +7,13 @@ class ParticipantRepository
   CONTENT_TYPE = 'application/json'
 
   def self.create(participant)
-    response = make_api_call(PARTICIPANTS_PATH, :post, participant.as_json(except: :id))
-    raise 'Error creating participant' if response.status != 201
-    Rails.logger.info response.body.inspect
+    participant_data = participant.as_json(except: :id)
+    response = make_api_call(PARTICIPANTS_PATH, :post, participant_data)
     Participant.new(response.body)
   end
 
   def self.delete(id)
-    response = make_api_call("#{PARTICIPANTS_PATH}/#{id}", :delete)
-    raise 'Error deleting participant' if response.status != 204
+    make_api_call("#{PARTICIPANTS_PATH}/#{id}", :delete)
   end
 
   def self.make_api_call(url, method, attributes = nil)
@@ -24,6 +22,12 @@ class ParticipantRepository
       req.headers['Content-Type'] = CONTENT_TYPE unless method == :get
       req.body = attributes.to_json unless attributes.nil?
     end
+  rescue Faraday::Error => e
+    raise ApiError,
+      message: e.message,
+      sent_attributes: attributes.to_json,
+      url: url, method: method
   end
+
   private_class_method :make_api_call
 end

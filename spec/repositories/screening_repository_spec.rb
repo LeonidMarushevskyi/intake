@@ -20,12 +20,12 @@ describe ScreeningRepository do
     end
 
     it 'raise an error if the response code is not 201' do
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:post).and_return(mock_response)
+      stub_request(:post, %r{/api/v1/screenings})
+        .and_return(status: 500)
 
       expect do
         described_class.create(nil)
-      end.to raise_error('Error creating screening')
+      end.to raise_error(ApiError)
     end
   end
 
@@ -46,12 +46,12 @@ describe ScreeningRepository do
     end
 
     it 'raise an error if the response code is not 200' do
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:get).and_return(mock_response)
+      stub_request(:get, %r{/api/v1/screenings/\d})
+        .and_return(status: 500)
 
       expect do
         described_class.find(1)
-      end.to raise_error('Error finding screening')
+      end.to raise_error(ApiError)
     end
   end
 
@@ -75,12 +75,13 @@ describe ScreeningRepository do
 
     it 'raise an error if the response code is not 201' do
       created_screening = double(:screening, id: '1')
-      mock_response = double(:mock_response, status: 500)
-      allow(API.connection).to receive(:put).and_return(mock_response)
+
+      stub_request(:put, %r{/api/v1/screenings})
+        .and_return(status: 500)
 
       expect do
         described_class.update(created_screening)
-      end.to raise_error('Error updating screening')
+      end.to raise_error(ApiError)
     end
 
     it 'raises an error if screening id is not present' do
@@ -98,7 +99,7 @@ describe ScreeningRepository do
 
       expect do
         described_class.search({})
-      end.to raise_error('Error searching screening')
+      end.to raise_error(ApiError)
     end
 
     it 'returns the screening results when screening search is successful' do

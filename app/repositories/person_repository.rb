@@ -9,29 +9,22 @@ class PersonRepository
 
   def self.create(person)
     response = make_api_call(PEOPLE_PATH, :post, person.as_json(except: :id))
-    raise 'Error creating person' if response.status != 201
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 
   def self.find(id)
     response = make_api_call("#{PEOPLE_PATH}/#{id}", :get)
-    raise 'Error finding person' if response.status != 200
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 
   def self.update(person)
     raise 'Error updating person: id is required' unless person.id
     response = make_api_call("#{PEOPLE_PATH}/#{person.id}", :put, person.as_json(except: :id))
-    raise 'Error updating person' if response.status != 200
-    Rails.logger.info response.body.inspect
     Person.new(response.body)
   end
 
   def self.search(search_term)
     response = make_api_call("#{PEOPLE_SEARCH_PATH}?search_term=#{search_term}", :get)
-    raise 'Error searching people' if response.status != 200
     response.body.map do |result_attributes|
       Person.new(result_attributes)
     end
@@ -43,6 +36,11 @@ class PersonRepository
       req.headers['Content-Type'] = CONTENT_TYPE unless method == :get
       req.body = attributes.to_json unless attributes.nil?
     end
+  rescue Faraday::Error => e
+    raise ApiError,
+      message: e.message,
+      sent_attributes: attributes.to_json,
+      url: url, method: method
   end
   private_class_method :make_api_call
 end
