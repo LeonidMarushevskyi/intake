@@ -14,6 +14,7 @@ gem 'virtus'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
+  gem 'ffaker'
   gem 'fpm'
   gem 'haml-lint'
   gem 'i18n-tasks'
