@@ -1,6 +1,7 @@
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
+import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
@@ -147,6 +148,17 @@ export class ScreeningEditPage extends React.Component {
             onChange={this.setField}
             onSave={this.cardSave}
             ref='incidentInformationCard'
+            screening={mergedScreening}
+          />
+        }
+        {
+          loaded &&
+          <DecisionCardView
+            mode='edit'
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+            ref='decisionInformationCard'
             screening={mergedScreening}
           />
         }

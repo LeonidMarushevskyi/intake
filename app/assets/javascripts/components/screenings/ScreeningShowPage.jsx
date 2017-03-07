@@ -1,5 +1,6 @@
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsShowView from 'components/screenings/AllegationsShowView'
+import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
@@ -109,6 +110,16 @@ export class ScreeningShowPage extends React.Component {
               onSave={this.cardSave}
               screening={mergedScreening}
             />
+        }
+        {
+          loaded &&
+          <DecisionCardView
+            mode='show'
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+            screening={mergedScreening}
+          />
         }
         <AllegationsShowView />
         <WorkerSafetyShowView />

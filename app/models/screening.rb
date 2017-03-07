@@ -6,6 +6,7 @@ class Screening # :nodoc:
   include ActiveModel::Model
 
   attribute :communication_method
+  attribute :decision_rationale
   attribute :ended_at
   attribute :id
   attribute :incident_county

@@ -28,7 +28,8 @@ feature 'Edit Screening' do
       report_narrative: 'Narrative 123 test',
       response_time: 'immediate',
       screening_decision: 'evaluate_out',
-      started_at: '2016-08-13T10:00:00.000Z'
+      started_at: '2016-08-13T10:00:00.000Z',
+      decision_rationale: 'This is why I decided what I did'
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -77,6 +78,12 @@ feature 'Edit Screening' do
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
       expect(page).to have_css('th', text: 'People and Roles')
+    end
+
+    within '#decision-card', text: 'DECISION ' do
+      expect(page).to have_field('Response Time', with: 'immediate')
+      expect(page).to have_field('Screening Decision', with: 'evaluate_out')
+      expect(page).to have_field('Decision Rationale', with: 'This is why I decided what I did')
     end
   end
 end
