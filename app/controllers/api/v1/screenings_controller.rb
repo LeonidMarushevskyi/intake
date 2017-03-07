@@ -8,6 +8,7 @@ module Api
       PERMITTED_PARAMS = [
         :assignee,
         :communication_method,
+        :decision_rationale,
         :ended_at,
         :id,
         :incident_county,

@@ -2,9 +2,7 @@ import COUNTY from 'County'
 import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import LOCATION_TYPE from 'LocationType'
-import RESPONSE_TIME from 'ResponseTime'
 import React from 'react'
-import SCREENING_DECISION from 'ScreeningDecision'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
@@ -92,30 +90,6 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
             </optgroup>
             )
           )}
-        </SelectField>
-      </div>
-      <div className='row'>
-        <SelectField
-          gridClassName='col-md-6'
-          id='response_time'
-          label='Response Time'
-          value={screening.get('response_time') || ''}
-          onChange={(event) => onChange(['response_time'], event.target.value || null)}
-        >
-          <option key='' />
-          {Object.keys(RESPONSE_TIME).map((item) => <option key={item} value={item}>{RESPONSE_TIME[item]}</option>)}
-        </SelectField>
-      </div>
-      <div className='row'>
-        <SelectField
-          gridClassName='col-md-6'
-          id='screening_decision'
-          label= 'Screening Decision'
-          value={screening.get('screening_decision') || ''}
-          onChange={(event) => onChange(['screening_decision'], event.target.value || null)}
-        >
-          <option key='' />
-          {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
         </SelectField>
       </div>
       <div className='row'>

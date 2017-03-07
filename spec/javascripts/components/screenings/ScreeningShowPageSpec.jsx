@@ -86,6 +86,34 @@ describe('ScreeningShowPage', () => {
       })
     })
 
+    describe('decision show card', () => {
+      let component
+      beforeEach(() => {
+        const props = {
+          actions: {fetchScreening: () => null},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening: Immutable.Map(),
+        }
+        component = shallow(<ScreeningShowPage {...props} />)
+      })
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+
+        it('does not render the decision card', () => {
+          expect(component.find('DecsionCardView').length).toEqual(0)
+        })
+      })
+
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+
+        it('renders the decision show card', () => {
+          expect(component.find('DecisionCardView').props().mode).toEqual('show')
+        })
+      })
+    })
+
     describe('history card', () => {
       it('renders the history card', () => {
         const props = {

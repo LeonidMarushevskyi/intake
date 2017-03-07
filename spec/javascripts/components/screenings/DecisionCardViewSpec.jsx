@@ -1,9 +1,9 @@
 import React from 'react'
 import Immutable from 'immutable'
-import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import DecisionCardView from 'components/screenings/DecisionCardView'
 import {mount} from 'enzyme'
 
-describe('ScreeningInformationCardView', () => {
+describe('DecisionCardView', () => {
   let component
   let props
   beforeEach(() => {
@@ -12,20 +12,18 @@ describe('ScreeningInformationCardView', () => {
       onChange: jasmine.createSpy('onChange'),
       onSave: jasmine.createSpy().and.returnValue(Promise.resolve()),
       screening: Immutable.fromJS({
-        name: 'Johnson',
-        assignee: 'Michael Bluth',
-        started_at: '2016-08-13T10:00:00.000Z',
-        ended_at: '2016-08-22T11:00:00.000Z',
-        communication_method: 'mail',
+        response_time: 'within_twenty_four_hours',
+        screening_decision: 'accept_for_investigation',
+        decision_rationale: 'the decision is taken',
       }),
     }
   })
   describe('in edit mode', () => {
     beforeEach(() => {
-      component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
+      component = mount(<DecisionCardView {...props} mode='edit' />)
     })
     it('renders the edit card', () => {
-      expect(component.find('ScreeningInformationEditView').length).toEqual(1)
+      expect(component.find('DecisionEditView').length).toEqual(1)
     })
     it('renders the save and cancel button', () => {
       expect(component.find('.btn.btn-primary').text()).toEqual('Save')
@@ -37,48 +35,44 @@ describe('ScreeningInformationCardView', () => {
       })
       it('saves the correct fields', () => {
         expect(props.onSave).toHaveBeenCalledWith(Immutable.fromJS([
-          'assignee',
-          'communication_method',
-          'ended_at',
-          'name',
-          'started_at',
+          'response_time',
+          'screening_decision',
+          'decision_rationale',
         ]))
       })
     })
     describe('cancel button', () => {
       beforeEach(() => {
-        component.find('#name').simulate(
-          'change', {target: {value: 'Cancel this change!'}}
+        component.find('#decision_rationale').simulate(
+          'change', {target: {value: 'the decision is changed'}}
         )
         component.find('.btn.btn-default').simulate('click')
       })
       it('cancels the correct fields', () => {
         expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
-          'assignee',
-          'communication_method',
-          'ended_at',
-          'name',
-          'started_at',
+          'response_time',
+          'screening_decision',
+          'decision_rationale',
         ]))
       })
       it('discards changes on cancel', () => {
         component.setState({mode: 'edit'})
-        expect(component.find('ScreeningInformationEditView').props().screening.name)
-          .not.toEqual('Cancel this change!')
+        expect(component.find('DecisionEditView').props().screening.name)
+          .not.toEqual('the decision is changed!')
       })
     })
   })
 
   describe('in show mode', () => {
     beforeEach(() => {
-      component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+      component = mount(<DecisionCardView {...props} mode='show' />)
     })
     it('renders the show card', () => {
-      expect(component.find('ScreeningInformationShowView').length).toEqual(1)
+      expect(component.find('DecisionShowView').length).toEqual(1)
     })
     it('displays edit card when edit link is clicked', () => {
-      component.find('a[aria-label="Edit screening information"]').simulate('click')
-      expect(component.find('ScreeningInformationEditView').length).toEqual(1)
+      component.find('a[aria-label="Edit decision card"]').simulate('click')
+      expect(component.find('DecisionEditView').length).toEqual(1)
     })
   })
 })

@@ -40,12 +40,10 @@ describe('IncidentInformationShowView', () => {
         zip: '95814',
       },
       location_type: 'Juvenile Detention',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation',
     })
 
     const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
-    expect(component.find('ShowField').length).toEqual(9)
+    expect(component.find('ShowField').length).toEqual(7)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('01/21/2006')
     expect(component.find('ShowField[label="Incident County"]').html())
@@ -60,10 +58,6 @@ describe('IncidentInformationShowView', () => {
       .toContain('95814')
     expect(component.find('ShowField[label="Location Type"]').html())
       .toContain('Juvenile Detention')
-    expect(component.find('ShowField[label="Response Time"]').html())
-      .toContain('Within 24 hours')
-    expect(component.find('ShowField[label="Screening Decision"]').html())
-      .toContain('Accept for Investigation')
   })
 
   it('renders show fields correctly when values are not set', () => {
@@ -77,11 +71,9 @@ describe('IncidentInformationShowView', () => {
         zip: null,
       },
       location_type: null,
-      response_time: null,
-      screening_decision: null,
     })
     const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
-    expect(component.find('ShowField').length).toEqual(9)
+    expect(component.find('ShowField').length).toEqual(7)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Incident County"]').html())
@@ -95,10 +87,6 @@ describe('IncidentInformationShowView', () => {
     expect(component.find('ShowField[label="Zip"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Location Type"]').html())
-      .toContain('<div class="c-gray"></div>')
-    expect(component.find('ShowField[label="Response Time"]').html())
-      .toContain('<div class="c-gray"></div>')
-    expect(component.find('ShowField[label="Screening Decision"]').html())
       .toContain('<div class="c-gray"></div>')
   })
 })

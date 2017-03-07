@@ -1,11 +1,11 @@
 import Immutable from 'immutable'
-import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
-import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
 import React from 'react'
+import DecisionEditView from 'components/screenings/DecisionEditView'
+import DecisionShowView from 'components/screenings/DecisionShowView'
 
-export default class IncidentInformationCardView extends React.Component {
-  constructor(props, context) {
-    super(props, context)
+export default class DecisionCardView extends React.Component {
+  constructor(props) {
+    super(props)
     this.state = {
       mode: this.props.mode,
     }
@@ -13,16 +13,10 @@ export default class IncidentInformationCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
 
-    this.fields = Immutable.fromJS([
-      'address',
-      'incident_county',
-      'incident_date',
-      'location_type',
-    ])
+    this.fields = Immutable.fromJS(['response_time', 'screening_decision', 'decision_rationale'])
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -51,14 +45,14 @@ export default class IncidentInformationCardView extends React.Component {
         screening: this.props.screening,
       },
     }
-    const IncidentInformationView = (mode === 'edit') ? IncidentInformationEditView : IncidentInformationShowView
+    const DecisionView = (mode === 'edit') ? DecisionEditView : DecisionShowView
     const props = allProps[mode]
-    return <IncidentInformationView {...props} />
+    return <DecisionView {...props} />
   }
 }
 
-IncidentInformationCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['edit', 'show']),
+DecisionCardView.propTypes = {
+  mode: React.PropTypes.string,
   onCancel: React.PropTypes.func.isRequired,
   onChange: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,

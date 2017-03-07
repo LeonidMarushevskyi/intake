@@ -1,6 +1,7 @@
-import React from 'react'
-import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import Immutable from 'immutable'
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import React from 'react'
 
 export default class NarrativeCardView extends React.Component {
   constructor(props, context) {
@@ -11,7 +12,7 @@ export default class NarrativeCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-    this.fields = ['report_narrative']
+    this.fields = Immutable.fromJS(['report_narrative'])
   }
 
   onEdit(event) {

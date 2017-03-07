@@ -1,8 +1,6 @@
 import COUNTY from 'County'
 import moment from 'moment'
 import React from 'react'
-import RESPONSE_TIME from 'ResponseTime'
-import SCREENING_DECISION from 'ScreeningDecision'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
 import EditLink from 'components/common/EditLink'
@@ -46,16 +44,6 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
         <div className='row'>
           <ShowField gridClassName='col-md-6' label='Location Type'>
             {screening.get('location_type')}
-          </ShowField>
-        </div>
-        <div className='row'>
-          <ShowField gridClassName='col-md-6' label='Response Time'>
-            {RESPONSE_TIME[screening.get('response_time')]}
-          </ShowField>
-        </div>
-        <div className='row'>
-          <ShowField gridClassName='col-md-6' label='Screening Decision'>
-            {SCREENING_DECISION[screening.get('screening_decision')]}
           </ShowField>
         </div>
       </div>

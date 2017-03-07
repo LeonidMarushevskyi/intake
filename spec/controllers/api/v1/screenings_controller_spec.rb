@@ -39,6 +39,7 @@ describe Api::V1::ScreeningsController do
       {
         id: '1',
         assignee: 'Robert Smith',
+        decision_rationale: 'the new decision is updated',
         incident_county: 'sacramento',
         name: '123 Report',
         response_time: 'immediate',

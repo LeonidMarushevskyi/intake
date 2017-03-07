@@ -112,6 +112,31 @@ describe('ScreeningEditPage', () => {
       })
     })
 
+    describe('decision card', () => {
+      beforeEach(() => {
+        const screening = Immutable.fromJS({})
+        const props = {
+          actions: {},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening,
+        }
+        component = shallow(<ScreeningEditPage {...props} />)
+      })
+      describe('before the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: false}))
+        it('does not render the decision card', () => {
+          expect(component.find('DecisionCardView').length).toEqual(0)
+        })
+      })
+      describe('after the component has been loaded', () => {
+        beforeEach(() => component.setState({loaded: true}))
+        it('renders the decision card', () => {
+          expect(component.find('DecisionCardView').length).toEqual(1)
+        })
+      })
+    })
+
     describe('renders the Incident Information edit view', () => {
       beforeEach(() => {
         const screening = Immutable.fromJS({name: 'my screening'})

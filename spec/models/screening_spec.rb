@@ -6,6 +6,7 @@ describe Screening do
     it 'returns the attributes of a screening as a hash' do
       attributes = {
         communication_method: 'phone',
+        decision_rationale: 'this is why',
         ended_at: '2016-08-13T11:00:00.000Z',
         id: '2',
         incident_county: 'sacramento',
@@ -48,6 +49,7 @@ describe Screening do
         described_class.new(attributes).as_json.with_indifferent_access
       ).to include({
         communication_method: 'phone',
+        decision_rationale: 'this is why',
         ended_at: '2016-08-13T11:00:00.000Z',
         id: '2',
         incident_county: 'sacramento',

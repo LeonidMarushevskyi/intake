@@ -18,6 +18,7 @@ feature 'Show Screening' do
       address: address,
       assignee: 'Bob Loblaw',
       communication_method: 'mail',
+      decision_rationale: 'The reasoning for this decision',
       ended_at: '2016-08-22T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
@@ -57,8 +58,12 @@ feature 'Show Screening' do
       expect(page).to have_content 'New York'
       expect(page).to have_content '12345'
       expect(page).to have_content "Child's Home"
+    end
+
+    within '#decision-card.show' do
       expect(page).to have_content 'Within 24 hours'
       expect(page).to have_content 'Evaluate Out'
+      expect(page).to have_content 'The reasoning for this decision'
     end
 
     within '#allegations-card', text: 'ALLEGATIONS' do
