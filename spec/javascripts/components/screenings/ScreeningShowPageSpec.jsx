@@ -112,6 +112,19 @@ describe('ScreeningShowPage', () => {
       })
     })
 
+    describe('worker safety card', () => {
+      it('renders the worker safety card', () => {
+        const props = {
+          actions: {},
+          params: {id: '1'},
+          participants: Immutable.List(),
+          screening: Immutable.Map(),
+        }
+        const component = shallow(<ScreeningShowPage {...props} />)
+        expect(component.find('WorkerSafetyShowView').length).toEqual(1)
+      })
+    })
+
     describe('participants card', () => {
       it('renders the participants card for each participant', () => {
         const participants = Immutable.fromJS([

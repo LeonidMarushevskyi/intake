@@ -7,6 +7,7 @@ import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -110,6 +111,7 @@ export class ScreeningShowPage extends React.Component {
             />
         }
         <AllegationsShowView />
+        <WorkerSafetyShowView />
         <HistoryCard />
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
