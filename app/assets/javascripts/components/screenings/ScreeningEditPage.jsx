@@ -8,6 +8,7 @@ import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
@@ -150,6 +151,7 @@ export class ScreeningEditPage extends React.Component {
           />
         }
         <AllegationsCardView />
+        <WorkerSafetyCardView />
         <HistoryCard />
         <div className='row'>
           <div className='centered'>
