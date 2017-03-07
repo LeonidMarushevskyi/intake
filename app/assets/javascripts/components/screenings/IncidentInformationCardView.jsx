@@ -1,6 +1,7 @@
-import React from 'react'
-import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
+import Immutable from 'immutable'
 import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
+import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
+import React from 'react'
 
 export default class IncidentInformationCardView extends React.Component {
   constructor(props, context) {
@@ -12,12 +13,12 @@ export default class IncidentInformationCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
 
-    this.fields = [
+    this.fields = Immutable.fromJS([
       'address',
       'incident_county',
       'incident_date',
       'location_type',
-    ]
+    ])
   }
 
   onEdit(event) {

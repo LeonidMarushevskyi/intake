@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React from 'react'
 import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
@@ -11,13 +12,13 @@ export default class ScreeningInformationCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onCancel = this.onCancel.bind(this)
-    this.fields = [
+    this.fields = Immutable.fromJS([
       'assignee',
       'communication_method',
       'ended_at',
       'name',
       'started_at',
-    ]
+    ])
   }
 
   onEdit() {

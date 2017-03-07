@@ -34,11 +34,11 @@ describe('DecisionCardView', () => {
         component.find('.btn.btn-primary').simulate('click')
       })
       it('saves the correct fields', () => {
-        expect(props.onSave).toHaveBeenCalledWith([
+        expect(props.onSave).toHaveBeenCalledWith(Immutable.fromJS([
           'response_time',
           'screening_decision',
           'decision_rationale',
-        ])
+        ]))
       })
     })
     describe('cancel button', () => {
@@ -49,11 +49,11 @@ describe('DecisionCardView', () => {
         component.find('.btn.btn-default').simulate('click')
       })
       it('cancels the correct fields', () => {
-        expect(props.onCancel).toHaveBeenCalledWith([
+        expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
           'response_time',
           'screening_decision',
           'decision_rationale',
-        ])
+        ]))
       })
       it('discards changes on cancel', () => {
         component.setState({mode: 'edit'})

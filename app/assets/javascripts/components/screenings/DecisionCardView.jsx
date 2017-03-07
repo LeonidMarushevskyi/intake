@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React from 'react'
 import DecisionEditView from 'components/screenings/DecisionEditView'
 import DecisionShowView from 'components/screenings/DecisionShowView'
@@ -12,7 +13,7 @@ export default class DecisionCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
 
-    this.fields = ['response_time', 'screening_decision', 'decision_rationale']
+    this.fields = Immutable.fromJS(['response_time', 'screening_decision', 'decision_rationale'])
   }
 
   onEdit() {

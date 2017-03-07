@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import React from 'react'
 import {mount} from 'enzyme'
@@ -67,7 +68,7 @@ describe('NarrativeCardView', () => {
           })
 
           it('calls the props onSave', () => {
-            expect(onSave).toHaveBeenCalledWith(['report_narrative'])
+            expect(onSave).toHaveBeenCalledWith(Immutable.fromJS(['report_narrative']))
           })
 
           it('the narrative show view is rendered', () => {
