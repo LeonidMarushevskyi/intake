@@ -48,10 +48,6 @@ describe('IncidentInformationEditView', () => {
       .toEqual('CA')
     expect(component.find('SelectField[label="Location Type"]').props().value)
       .toEqual('Juvenile Detention')
-    expect(component.find('SelectField[label="Response Time"]').props().value)
-      .toEqual('within_twenty_four_hours')
-    expect(component.find('SelectField[label="Screening Decision"]').props().value)
-      .toEqual('accept_for_investigation')
   })
 
   it('renders the save button', () => {

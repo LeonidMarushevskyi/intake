@@ -17,9 +17,7 @@ feature 'screening incident information card' do
         street_address: '123 fake st',
         zip: '12345'
       ),
-      response_time: 'immediate',
       location_type: "Child's Home",
-      screening_decision: 'evaluate_out',
       report_narrative: 'Some kind of narrative'
     )
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -31,8 +29,6 @@ feature 'screening incident information card' do
       expect(page).to have_field('Incident Date', with: '2016-08-11')
       expect(page).to have_field('Incident County', with: 'colusa')
       expect(page).to have_field('Location Type', with: "Child's Home")
-      expect(page).to have_field('Response Time', with: 'immediate')
-      expect(page).to have_field('Screening Decision', with: 'evaluate_out')
       expect(page).to have_field('Address', with: '123 fake st')
       expect(page).to have_field('City', with: 'Springfield')
       expect(page).to have_field('State', with: 'NY')
@@ -63,8 +59,6 @@ feature 'screening incident information card' do
       expect(page).to have_content('Colusa')
       expect(page).to have_content('Springfield')
       expect(page).to have_content("Child's Home")
-      expect(page).to have_content('Immediate')
-      expect(page).to have_content('Evaluate Out')
       expect(page).to have_content('123 fake st')
       expect(page).to have_content('Springfield')
       expect(page).to have_content('New York')

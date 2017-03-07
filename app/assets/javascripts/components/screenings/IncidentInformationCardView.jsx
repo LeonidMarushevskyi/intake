@@ -17,8 +17,6 @@ export default class IncidentInformationCardView extends React.Component {
       'incident_county',
       'incident_date',
       'location_type',
-      'response_time',
-      'screening_decision',
     ]
   }
 
