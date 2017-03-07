@@ -67,6 +67,8 @@ feature 'Show Screening' do
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
+    expect(page).to have_content 'WORKER SAFETY'
+
     within '#history-card', text: 'HISTORY' do
       expect(page).to have_content 'Date'
       expect(page).to have_css('th', text: 'Type/Status')
