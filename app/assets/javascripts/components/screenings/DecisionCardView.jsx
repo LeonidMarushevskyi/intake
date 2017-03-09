@@ -16,7 +16,8 @@ export default class DecisionCardView extends React.Component {
     this.fields = Immutable.fromJS(['response_time', 'screening_decision', 'decision_rationale'])
   }
 
-  onEdit() {
+  onEdit(event) {
+    event.preventDefault()
     this.setState({mode: 'edit'})
   }
 
