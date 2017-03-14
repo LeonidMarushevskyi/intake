@@ -5,16 +5,12 @@ import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
+import nameFormatter from 'utils/nameFormatter'
 
-const ParticipantEditView = ({participant, onCancel, onDelete}) => {
-  const name = [participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')
-  return (
+const ParticipantEditView = ({participant, onCancel, onDelete}) => (
   <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      {
-        name &&
-        <span>{name}</span>
-      }
+      <span>{nameFormatter(participant)}</span>
       <button aria-label='Delete participant'
         className='pull-right delete-button'
         onClick={() => onDelete(participant.get('id'))}
@@ -81,8 +77,7 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => {
       </div>
     </div>
   </div>
-  )
-}
+)
 
 ParticipantEditView.propTypes = {
   onCancel: React.PropTypes.func,
