@@ -10,7 +10,7 @@ module AutocompleterHelpers
   def fill_in_autocompleter(locator, options)
     value = options[:with]
     populate_autocompleter_with_options(locator, value)
-    click_autocompleter_result(value, options[:result_should_contain])
+    click_autocompleter_result(value, options[:result_should_contain]) unless options[:skip_select]
   end
 
   def populate_autocompleter_with_options(locator, value)
