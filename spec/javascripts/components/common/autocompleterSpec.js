@@ -71,6 +71,28 @@ describe('<Autcompleter />', () => {
     })
   })
 
+  describe('#shouldRenderSuggestions', () => {
+    it('returns true when search value contains two non whitespace characters', () => {
+      const instance = shallow(<Autocompleter />).instance()
+      expect(instance.shouldRenderSuggestions('aa')).toEqual(true)
+    })
+
+    it('returns true when search value contains a character then a whitespace', () => {
+      const instance = shallow(<Autocompleter />).instance()
+      expect(instance.shouldRenderSuggestions('a ')).toEqual(true)
+    })
+
+    it('returns false when search value contains two whitespace characters', () => {
+      const instance = shallow(<Autocompleter />).instance()
+      expect(instance.shouldRenderSuggestions('  ')).toEqual(false)
+    })
+
+    it('returns false when search value contains a whitespace then a character', () => {
+      const instance = shallow(<Autocompleter />).instance()
+      expect(instance.shouldRenderSuggestions(' a')).toEqual(false)
+    })
+  })
+
   describe('#renderSuggestion', () => {
     let component
     it('renders the PersonSuggestion view', () => {

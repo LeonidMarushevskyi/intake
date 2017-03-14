@@ -8,7 +8,7 @@ feature 'home page' do
       .and_return('http://www.foo.com')
   end
 
-  scenario 'displays serach bar when release one is enabled' do
+  scenario 'displays search bar when release one is enabled' do
     Feature.run_with_activated(:release_one) do
       address = FactoryGirl.create(
         :address,
@@ -18,18 +18,21 @@ feature 'home page' do
         zip: '12345',
         type: 'Home'
       )
-      marge = Person.new(
-        id: '99',
+      marge = FactoryGirl.create(
+        :person,
         first_name: 'Marge',
         gender: 'female',
         last_name: 'Simpson',
         ssn: '123-23-1234',
         addresses: [address]
       )
-      stub_request(:get, api_people_search_path(search_term: marge.first_name))
-        .and_return(body: [marge].to_json,
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+
+      %w(Ma Mar Marg Marge).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [marge].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
 
       visit root_path
 
@@ -38,6 +41,11 @@ feature 'home page' do
       expect(page).to_not have_link 'Screenings'
 
       fill_in_autocompleter 'People', with: 'Marge'
+
+      expect(a_request(:get, api_people_search_path(search_term: 'M'))).to_not have_been_made
+      %w(Ma Mar Marg Marge).each do |search_text|
+        expect(a_request(:get, api_people_search_path(search_term: search_text))).to have_been_made
+      end
     end
   end
 

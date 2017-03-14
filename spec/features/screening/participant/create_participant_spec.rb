@@ -44,8 +44,8 @@ feature 'Edit Screening' do
     )
   end
   let(:marge) do
-    Person.new(
-      id: '99',
+    FactoryGirl.create(
+      :person,
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
@@ -68,10 +68,12 @@ feature 'Edit Screening' do
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_people_search_path(search_term: marge.first_name))
-      .and_return(body: [marge].to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+    %w(Ma Mar Marg Marge).each do |search_text|
+      stub_request(:get, api_people_search_path(search_term: search_text))
+        .and_return(body: [marge].to_json,
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
     visit edit_screening_path(id: existing_screening.id)
   end
 
