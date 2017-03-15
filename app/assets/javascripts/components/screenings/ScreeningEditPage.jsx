@@ -22,15 +22,19 @@ export class ScreeningEditPage extends React.Component {
       loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.fromJS({}),
+      participantsEdits: Immutable.fromJS([]),
       autocompleterFocus: false,
     }
 
     const methods = [
       'cancelEdit',
       'cardSave',
+      'cancelParticipantEdit',
       'createParticipant',
       'deleteParticipant',
       'setField',
+      'setParticipantField',
+      'saveParticipant',
       'update',
     ]
     methods.forEach((method) => {
@@ -64,6 +68,11 @@ export class ScreeningEditPage extends React.Component {
     this.setState({screeningEdits: screeningEdits})
   }
 
+  setParticipantField(index, value) {
+    const participantsEdits = this.state.participantsEdits.setIn([index], value)
+    this.setState({participantsEdits: participantsEdits})
+  }
+
   cardSave(fieldList) {
     const changes = this.state.screeningEdits.filter((value, key) =>
       fieldList.includes(key) && value !== undefined
@@ -77,6 +86,11 @@ export class ScreeningEditPage extends React.Component {
     this.setState({screeningEdits: updatedEdits})
   }
 
+  cancelParticipantEdit(index) {
+    const updatedParticipantsEdits = this.state.participantsEdits.setIn([index], Immutable.fromJS({}))
+    this.setState({participantsEdits: updatedParticipantsEdits})
+  }
+
   createParticipant(person) {
     const {params} = this.props
     const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
@@ -87,8 +101,22 @@ export class ScreeningEditPage extends React.Component {
     this.props.actions.deleteParticipant(id)
   }
 
+  saveParticipant(index) {
+    const participantChanges = this.state.participantsEdits.get(index)
+    const participant = this.props.participants.get(index).mergeDeep(participantChanges)
+    return this.props.actions.saveParticipant(participant.toJS())
+  }
+
+  participants() {
+    const participantsProps = this.props.participants
+    // Make sure our edits list never contains undefined items, which will stomp on present items in mergeDeep
+    const participantsEdits = this.state.participantsEdits.map((edits) => (edits || Immutable.fromJS({})))
+    return participantsProps.mergeDeep(participantsEdits)
+  }
+
   renderParticipantsCard() {
-    const {participants} = this.props
+    const participants = this.participants()
+
     return (
       <div>
         <div className='card edit double-gap-top' id='search-card'>
@@ -109,9 +137,19 @@ export class ScreeningEditPage extends React.Component {
           </div>
         </div>
         {
-          participants.map((participant) =>
-            <ParticipantCardView key={participant.get('id')} onDelete={this.deleteParticipant} participant={participant} mode='edit'/>
+          participants.map((participant, index) =>
+            <ParticipantCardView
+              index={index}
+              key={participant.get('id')}
+              onCancel={this.cancelParticipantEdit}
+              onDelete={this.deleteParticipant}
+              onChange={this.setParticipantField}
+              onSave={this.saveParticipant}
+              participant={participant}
+              mode='edit'
+            />
             )
+
         }
       </div>
     )

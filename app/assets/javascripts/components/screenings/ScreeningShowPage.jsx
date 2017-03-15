@@ -21,11 +21,15 @@ export class ScreeningShowPage extends React.Component {
       loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.fromJS({}),
+      participantsEdits: Immutable.fromJS([]),
     }
     this.cancelEdit = this.cancelEdit.bind(this)
     this.cardSave = this.cardSave.bind(this)
     this.deleteParticipant = this.deleteParticipant.bind(this)
     this.setField = this.setField.bind(this)
+    this.saveParticipant = this.saveParticipant.bind(this)
+    this.setParticipantField = this.setParticipantField.bind(this)
+    this.cancelParticipantEdit = this.cancelParticipantEdit.bind(this)
   }
 
   componentDidMount() {
@@ -61,14 +65,46 @@ export class ScreeningShowPage extends React.Component {
     this.props.actions.deleteParticipant(id)
   }
 
+  setParticipantField(index, value) {
+    const participantsEdits = this.state.participantsEdits.setIn([index], value)
+    this.setState({participantsEdits: participantsEdits})
+  }
+
+  cancelParticipantEdit(index) {
+    const updatedParticipantsEdits = this.state.participantsEdits.setIn([index], Immutable.fromJS({}))
+    this.setState({participantsEdits: updatedParticipantsEdits})
+  }
+
+  saveParticipant(index) {
+    const participantChanges = this.state.participantsEdits.get(index)
+    const participant = this.props.participants.get(index).mergeDeep(participantChanges)
+    return this.props.actions.saveParticipant(participant.toJS())
+  }
+
+  participants() {
+    const participantsProps = this.props.participants
+    // Make sure our edits list never contains undefined items, which will stomp on present items in mergeDeep
+    const participantsEdits = this.state.participantsEdits.map((edits) => (edits || Immutable.fromJS({})))
+    return participantsProps.mergeDeep(participantsEdits)
+  }
+
   renderParticipantsCard() {
-    const {participants} = this.props
+    const participants = this.participants()
 
     return (
       <div>
         {
-          participants.map((participant) =>
-            <ParticipantCardView key={participant.get('id')} participant={participant} onDelete={this.deleteParticipant} mode='show'/>
+          participants.map((participant, index) =>
+            <ParticipantCardView
+              index={index}
+              key={participant.get('id')}
+              onCancel={this.cancelParticipantEdit}
+              onDelete={this.deleteParticipant}
+              onChange={this.setParticipantField}
+              onSave={this.saveParticipant}
+              participant={participant}
+              mode='show'
+            />
           )
         }
       </div>

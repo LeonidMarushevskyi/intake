@@ -239,51 +239,118 @@ describe('ScreeningEditPage', () => {
     })
   })
 
-  describe('createParticipant', () => {
-    const person = {id: '3'}
-    let createParticipant
-    let participant
+  describe('participants-related functions', () => {
+    const saveParticipant = jasmine.createSpy('saveParticipant')
+    const deleteParticipant = jasmine.createSpy('deleteParticipant')
+    const createParticipant = jasmine.createSpy('createParticipant')
+
+    const participant1 = Immutable.Map({
+      id: '3',
+      first_name: 'Bart',
+      last_name: 'Simpson',
+      gender: 'male',
+      ssn: '987654321',
+      date_of_birth: null,
+      person_id: '1',
+      screening_id: '3',
+    })
+
+    const participant2 = Immutable.Map({
+      id: '4',
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      gender: 'female',
+      ssn: '123456789',
+      date_of_birth: null,
+      person_id: '2',
+      screening_id: '3',
+    })
+
+    const props = {
+      actions: {createParticipant, saveParticipant, deleteParticipant},
+      params: {id: '3'},
+      participants: Immutable.List([participant1, participant2]),
+      screening: Immutable.Map(),
+    }
+
     let component
 
     beforeEach(() => {
-      createParticipant = jasmine.createSpy('createParticipant')
-      const props = {
-        actions: {createParticipant},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
-      }
-      participant = {id: null, screening_id: props.params.id, person_id: person.id}
       component = shallow(<ScreeningEditPage {...props} />)
     })
 
-    it('calls the createParticipant action', () => {
-      component.instance().createParticipant(person)
-      expect(createParticipant).toHaveBeenCalledWith(participant)
-    })
-  })
+    describe('createParticipant', () => {
+      const person = {id: '3'}
+      const participant = {id: null, screening_id: props.params.id, person_id: person.id}
 
-  describe('deleteParticipant', () => {
-    let deleteParticipant
-    let component
-
-    beforeEach(() => {
-      deleteParticipant = jasmine.createSpy('deleteParticipant')
-      const props = {
-        actions: {deleteParticipant},
-        params: {id: '1'},
-        participants: Immutable.List([
-          Immutable.Map({id: '1', screening_id: '1'}),
-          Immutable.Map({id: '2', screening_id: '1'}),
-        ]),
-        screening: Immutable.Map(),
-      }
-      component = shallow(<ScreeningEditPage {...props} />)
+      it('calls the createParticipant action', () => {
+        component.instance().createParticipant(person)
+        expect(createParticipant).toHaveBeenCalledWith(participant)
+      })
     })
 
-    it('calls the deleteParticipant action', () => {
-      component.instance().deleteParticipant('1')
-      expect(deleteParticipant).toHaveBeenCalledWith('1')
+    describe('deleteParticipant', () => {
+      it('calls the deleteParticipant action', () => {
+        component.instance().deleteParticipant('1')
+        expect(deleteParticipant).toHaveBeenCalledWith('1')
+      })
+    })
+
+    describe('cancelParticipantEdit', () => {
+      it('removes all edits for only the specified participant', () => {
+        const updatedParticipant1 = participant1.setIn(['first_name'], 'shere khan')
+        const updatedParticipant2 = participant1.setIn(['last_name'], 'Simpsoooooon')
+
+        component.instance().setParticipantField(0, updatedParticipant1)
+        component.instance().setParticipantField(1, updatedParticipant2)
+
+        expect(component.instance().state.participantsEdits.get(0)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(1)).toEqual(updatedParticipant2)
+
+        component.instance().cancelParticipantEdit(1)
+
+        expect(component.instance().state.participantsEdits.get(0)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(1)).toEqual(Immutable.fromJS({}))
+      })
+    })
+
+    describe('setParticipantField', () => {
+      it('sets edits for only the specified participant', () => {
+        const updatedParticipant = participant2.setIn(['last_name'], 'Simpsoooooon')
+        component.instance().setParticipantField(1, updatedParticipant)
+        expect(component.instance().state.participantsEdits.get(0)).toEqual(undefined)
+        expect(component.instance().state.participantsEdits.get(1)).toEqual(updatedParticipant)
+      })
+    })
+
+    describe('saveParticipant', () => {
+      it('uses the appropriate data and makes an API request', () => {
+        const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
+        component.instance().setParticipantField(0, updatedParticipant)
+        component.instance().saveParticipant(0)
+        expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
+      })
+    })
+
+    describe('participants', () => {
+      it('uses the data stored at the server when there are no current edits', () => {
+        const participants = Immutable.List([participant1, participant2])
+        expect(component.instance().participants()).toEqual(participants)
+      })
+
+      it('uses edits made by the user when they are available', () => {
+        const editedParticipant = participant1.setIn(['first_name'], 'Homer')
+        component.instance().setParticipantField(0, editedParticipant)
+        const participants = Immutable.List([editedParticipant, participant2])
+        expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
+      })
+
+      it('does not break when there are edits to one item in the list, but not others', () => {
+        const editedParticipant = participant2.setIn(['first_name'], 'Lisa')
+        component.instance().setParticipantField(1, editedParticipant)
+        const participants = Immutable.List([participant1, editedParticipant])
+        expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
+      })
     })
   })
 })
