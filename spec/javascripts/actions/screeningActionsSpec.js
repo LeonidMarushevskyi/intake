@@ -87,6 +87,41 @@ describe('screening actions', () => {
     })
   })
 
+  describe('saveParticipant', () => {
+    const participant = {
+      screening_id: '1',
+      person_id: '2',
+      id: '199',
+      first_name: 'Lisa',
+      last_name: 'Simpson',
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+    }
+    const store = mockStore()
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('puts the participants to the server', () => {
+      store.dispatch(screeningActions.saveParticipant(participant))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'PUT',
+        `/api/v1/participants/${participant.id}`,
+        JSON.stringify({participant: participant}),
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a updateParticipantSuceess', () => {
+      store.dispatch(screeningActions.saveParticipant(participant))
+      expect(store.getActions()[0].type).toEqual(types.UPDATE_PARTICIPANT_SUCCESS)
+      expect(store.getActions()[0].participant.toJS()).toEqual(participant)
+    })
+  })
+
   describe('createParticipant', () => {
     const participant = {screening_id: '1', person_id: '2', id: null}
     const store = mockStore()

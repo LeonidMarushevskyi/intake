@@ -72,3 +72,19 @@ export function deleteParticipant(id) {
     .then(() => dispatch(deleteParticipantSuccess(id)))
   )
 }
+
+export function updateParticipantSuccess(participant) {
+  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+}
+
+export function saveParticipant(participant) {
+  return (dispatch) => (
+    Utils.request(
+      'PUT',
+        `/api/v1/participants/${participant.id}`,
+        JSON.stringify({participant: participant}),
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+  )
+}

@@ -12,6 +12,10 @@ export default function participantsReducer(state = Immutable.List(), action) {
     case types.DELETE_PARTICIPANT_SUCCESS: {
       return state.filterNot((x) => x.get('id') === action.id)
     }
+    case types.UPDATE_PARTICIPANT_SUCCESS: {
+      const participantIndex = state.findIndex((x) => x.get('id') === action.participant.get('id'))
+      return state.setIn([participantIndex], action.participant)
+    }
     default:
       return state
   }
