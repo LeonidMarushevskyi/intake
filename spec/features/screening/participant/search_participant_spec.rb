@@ -121,7 +121,7 @@ feature 'searching a participant in autocompleter' do
 
       within '#search-card', text: 'SEARCH' do
         fill_in_autocompleter 'Search for any person',
-          with: person.ssn, result_should_contain: 'Marge'
+          with: person.ssn, select_option_with: 'Marge'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do

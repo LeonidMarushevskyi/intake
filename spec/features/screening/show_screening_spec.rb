@@ -38,7 +38,7 @@ feature 'Show Screening' do
 
     expect(page).to have_content 'Screening #My Bad!'
 
-    within '#screening-information-card' do
+    within '#screening-information-card.show', text: 'SCREENING INFORMATION' do
       expect(page).to have_content 'The Rocky Horror Picture Show'
       expect(page).to have_content 'Bob Loblaw'
       expect(page).to have_content '8/13/2016 10:00 AM'
@@ -46,11 +46,11 @@ feature 'Show Screening' do
       expect(page).to have_content 'Mail'
     end
 
-    within '#narrative-card.show' do
+    within '#narrative-card.show', text: 'NARRATIVE' do
       expect(page).to have_content 'some narrative'
     end
 
-    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card.show', text: 'INCIDENT INFORMATION' do
       expect(page).to have_content '8/11/2016'
       expect(page).to have_content 'Sacramento'
       expect(page).to have_content '123 fake st'
@@ -60,21 +60,23 @@ feature 'Show Screening' do
       expect(page).to have_content "Child's Home"
     end
 
-    within '#decision-card.show' do
+    within '#decision-card.show', text: 'DECISION' do
       expect(page).to have_content 'Within 24 hours'
       expect(page).to have_content 'Evaluate Out'
       expect(page).to have_content 'The reasoning for this decision'
     end
 
-    within '#allegations-card', text: 'ALLEGATIONS' do
+    expect(page).to have_css('#cross-report-card.show', text: 'CROSS REPORT')
+
+    within '#allegations-card.show', text: 'ALLEGATIONS' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    expect(page).to have_content 'WORKER SAFETY'
+    expect(page).to have_css('#worker-safety-card.show', text: 'WORKER SAFETY')
 
-    within '#history-card', text: 'HISTORY' do
+    within '#history-card.show', text: 'HISTORY' do
       expect(page).to have_content 'Date'
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')

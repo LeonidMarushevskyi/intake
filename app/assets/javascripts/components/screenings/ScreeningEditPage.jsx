@@ -1,6 +1,7 @@
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
+import CrossReportEditView from 'components/screenings/CrossReportEditView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
@@ -21,6 +22,7 @@ export class ScreeningEditPage extends React.Component {
       loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.fromJS({}),
+      autocompleterFocus: false,
     }
 
     const methods = [
@@ -98,7 +100,10 @@ export class ScreeningEditPage extends React.Component {
               <div className='col-md-12'>
                 <label className='no-gap pull-left' htmlFor='screening_participants'>Search for any person</label>
                 <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
-                <Autocompleter id='screening_participants' onSelect={this.createParticipant}/>
+                <Autocompleter id='screening_participants'
+                  onSelect={this.createParticipant}
+                  enableFooter={true}
+                />
               </div>
             </div>
           </div>
@@ -162,6 +167,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
+        <CrossReportEditView />
         <AllegationsCardView />
         <WorkerSafetyCardView />
         <HistoryCard />

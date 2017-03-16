@@ -51,7 +51,9 @@ export function createParticipant(participant) {
       JSON.stringify({participant: participant}),
       {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(createParticipantSuccess(jsonResponse)))
+    .then((jsonResponse) => {
+      dispatch(createParticipantSuccess(jsonResponse))
+    })
   )
 }
 

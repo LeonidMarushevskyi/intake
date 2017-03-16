@@ -5,11 +5,16 @@ import {shallow, mount} from 'enzyme'
 
 describe('ScreeningShowPage', () => {
   describe('render', () => {
+    const requiredProps = {
+      actions: {fetchScreening: () => null},
+      params: {id: '1'},
+      participants: Immutable.List(),
+      screening: Immutable.Map(),
+    }
+
     it('renders the screening reference', () => {
       const props = {
-        actions: {fetchScreening: () => null},
-        params: {id: '1'},
-        participants: Immutable.List(),
+        ...requiredProps,
         screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
@@ -17,140 +22,64 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the home and edit link', () => {
-      const props = {
-        actions: {fetchScreening: () => null},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
-      }
-      const component = shallow(<ScreeningShowPage {...props} />)
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
       const homeLink = component.find({to: '/'})
       const editLink = component.find({to: '/screenings/1/edit'})
       expect(homeLink.html()).toContain('Home')
       expect(editLink.html()).toContain('Edit')
     })
 
-    describe('screening information show card', () => {
-      let component
-      beforeEach(() => {
-        const props = {
-          actions: {fetchScreening: () => null},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        component = shallow(<ScreeningShowPage {...props} />)
-      })
-      describe('before the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: false}))
-
-        it('does not render the screening information card', () => {
-          expect(component.find('ScreeningInformationCardView').length).toEqual(0)
-        })
-      })
-
-      describe('after the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: true}))
-
-        it('renders the screening information show card', () => {
-          expect(component.find('ScreeningInformationCardView').props().mode).toEqual('show')
-        })
-      })
+    it('renders the screening information show card after screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('ScreeningInformationCardView').props().mode).toEqual('show')
     })
 
-    describe('incident information show card', () => {
-      let component
-      beforeEach(() => {
-        const props = {
-          actions: {fetchScreening: () => null},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        component = shallow(<ScreeningShowPage {...props} />)
-      })
-      describe('before the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: false}))
-
-        it('does not render the incident information card', () => {
-          expect(component.find('IncidentInformationCardView').length).toEqual(0)
-        })
-      })
-
-      describe('after the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: true}))
-
-        it('renders the incident information show card', () => {
-          expect(component.find('IncidentInformationCardView').props().mode).toEqual('show')
-        })
-      })
+    it('does not render the screening information show card before screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('ScreeningInformationCardView').length).toEqual(0)
     })
 
-    describe('decision show card', () => {
-      let component
-      beforeEach(() => {
-        const props = {
-          actions: {fetchScreening: () => null},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        component = shallow(<ScreeningShowPage {...props} />)
-      })
-      describe('before the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: false}))
-
-        it('does not render the decision card', () => {
-          expect(component.find('DecsionCardView').length).toEqual(0)
-        })
-      })
-
-      describe('after the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: true}))
-
-        it('renders the decision show card', () => {
-          expect(component.find('DecisionCardView').props().mode).toEqual('show')
-        })
-      })
+    it('renders the incident information show card after screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('IncidentInformationCardView').props().mode).toEqual('show')
     })
 
-    describe('history card', () => {
-      it('renders the history card', () => {
-        const props = {
-          actions: {},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        const component = shallow(<ScreeningShowPage {...props} />)
-        expect(component.find('HistoryCard').length).toEqual(1)
-      })
+    it('does not render the incident information show card before screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('IncidentInformationCardView').length).toEqual(0)
     })
 
-    describe('allegations card', () => {
-      it('renders the allegations card', () => {
-        const props = {
-          actions: {},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        const component = shallow(<ScreeningShowPage {...props} />)
-        expect(component.find('AllegationsShowView').length).toEqual(1)
-      })
+    it('renders the decision show card after screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('DecisionCardView').props().mode).toEqual('show')
     })
 
-    describe('worker safety card', () => {
-      it('renders the worker safety card', () => {
-        const props = {
-          actions: {},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.Map(),
-        }
-        const component = shallow(<ScreeningShowPage {...props} />)
-        expect(component.find('WorkerSafetyShowView').length).toEqual(1)
-      })
+    it('does not render the decision show card before screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('DecisionCardView').length).toEqual(0)
+    })
+
+    it('renders the cross report show card', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('CrossReportShowView').length).toEqual(1)
+    })
+
+    it('renders the history card', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('HistoryCard').length).toEqual(1)
+    })
+
+    it('renders the allegations card', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('AllegationsShowView').length).toEqual(1)
+    })
+
+    it('renders the worker safety card', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('WorkerSafetyShowView').length).toEqual(1)
     })
 
     describe('participants card', () => {
@@ -173,36 +102,22 @@ describe('ScreeningShowPage', () => {
       })
     })
 
-    describe('narrative card', () => {
-      let component
-      beforeEach(() => {
-        const props = {
-          actions: {},
-          params: {id: '1'},
-          participants: Immutable.List(),
-          screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
-        }
-        component = shallow(<ScreeningShowPage {...props} />)
-      })
+    it('renders the narrative card after screening is loaded', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      expect(component.find('NarrativeCardView').props().narrative).toEqual(
+        'this is a narrative report'
+      )
+      expect(component.find('NarrativeCardView').props().mode).toEqual('show')
+    })
 
-      describe('before the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: false}))
-
-        it('does not render the narrative card', () => {
-          expect(component.find('NarrativeCardView').length).toEqual(0)
-        })
-      })
-
-      describe('after the component has been loaded', () => {
-        beforeEach(() => component.setState({loaded: true}))
-
-        it('renders the narrative card', () => {
-          expect(component.find('NarrativeCardView').props().narrative).toEqual(
-            'this is a narrative report'
-          )
-          expect(component.find('NarrativeCardView').props().mode).toEqual('show')
-        })
-      })
+    it('does not render the narrative card before screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('NarrativeCardView').length).toEqual(0)
     })
   })
 

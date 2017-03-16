@@ -77,23 +77,33 @@ describe('ParticipantShowView', () => {
 
 describe('ParticipantShowView with partial name', () => {
   let component
-  beforeEach(() => {
+  it('renders the participant header correctly with null last name', () => {
     const participant = Immutable.fromJS({
       id: '200',
       first_name: 'Kevin',
       last_name: null,
-      gender: 'male',
-      date_of_birth: '11/16/1990',
-      ssn: '111223333',
     })
     component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
+    expect(component.find('.card-header').text()).toContain('Kevin (Unknown last name)')
   })
 
-  it('renders the participant header corectly with null last name', () => {
-    expect(component.find('.card-header').text()).not.toContain('null')
+  it('renders the participant header correctly with null first name', () => {
+    const participant = Immutable.fromJS({
+      id: '200',
+      first_name: null,
+      last_name: 'McAllister',
+    })
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
+    expect(component.find('.card-header').text()).toContain('(Unknown first name) McAllister')
   })
 
   it('renders the participant name show fields', () => {
+    const participant = Immutable.fromJS({
+      id: '200',
+      first_name: 'Kevin',
+      last_name: null,
+    })
+    component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
     expect(component.find('ShowField[label="Name"]').html()).not.toContain('null')
   })
 })
@@ -110,8 +120,7 @@ describe('ParticipantShowView with no name', () => {
       ssn: '111223333',
     })
     component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
-
-    expect(component.find('.card-header')).not.toContain('<span></span>')
+    expect(component.find('.card-header').html()).toContain('Unknown person')
   })
 })
 

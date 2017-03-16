@@ -3,13 +3,12 @@ import GENDER from 'Gender'
 import React from 'react'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
+import nameFormatter from 'utils/nameFormatter'
 
-const ParticipantShowView = ({participant, onDelete, onEdit}) => {
-  const name = [participant.get('first_name'), participant.get('last_name')].filter(Boolean).join(' ')
-  return (
+const ParticipantShowView = ({participant, onDelete, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
-      {name && <span>{name}</span>}
+      <span>{nameFormatter(participant)}</span>
       <button aria-label='Delete participant'
         className='pull-right delete-button'
         onClick={() => onDelete(participant.get('id'))}
@@ -26,7 +25,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
         </div>
         <div className='col-md-5'>
           <ShowField labelClassName='no-gap' label='Name'>
-            {name}
+            {nameFormatter(participant)}
           </ShowField>
           <ShowField label='Gender'>
             {GENDER[participant.get('gender')]}
@@ -70,8 +69,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
       </div>
     </div>
   </div>
-  )
-}
+)
 
 ParticipantShowView.propTypes = {
   onDelete: React.PropTypes.func,
