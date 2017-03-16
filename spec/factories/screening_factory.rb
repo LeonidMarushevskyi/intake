@@ -5,7 +5,6 @@ FactoryGirl.define do
 
     id { SecureRandom.random_number(1_000_000_000).to_s }
 
-    sequence(:name) { |n| "Name #{n} of Screening" }
     association :address, factory: :address
     participants { [] }
   end
