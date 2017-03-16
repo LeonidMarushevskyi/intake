@@ -62,6 +62,11 @@ describe('ScreeningShowPage', () => {
       expect(component.find('DecisionCardView').length).toEqual(0)
     })
 
+    it('renders the cross report show card', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('CrossReportShowView').length).toEqual(1)
+    })
+
     it('renders the history card', () => {
       const component = shallow(<ScreeningShowPage {...requiredProps} />)
       expect(component.find('HistoryCard').length).toEqual(1)

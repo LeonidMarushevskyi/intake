@@ -66,6 +66,8 @@ feature 'Show Screening' do
       expect(page).to have_content 'The reasoning for this decision'
     end
 
+    expect(page).to have_css('#cross-report-card.show', text: 'CROSS REPORT')
+
     within '#allegations-card.show', text: 'ALLEGATIONS' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
