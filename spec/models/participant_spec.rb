@@ -22,7 +22,8 @@ describe Participant do
           }
         ],
         person_id: '1',
-        screening_id: '2'
+        screening_id: '2',
+        roles: ['Victim']
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json
@@ -42,7 +43,8 @@ describe Participant do
           type: 'Placement'
         }],
         person_id: '1',
-        screening_id: '2'
+        screening_id: '2',
+        roles: ['Victim']
       }.with_indifferent_access)
     end
   end

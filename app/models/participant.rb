@@ -13,4 +13,5 @@ class Participant
   attribute :addresses, Array[Address]
   attribute :person_id
   attribute :screening_id
+  attribute :roles, Array[String]
 end
