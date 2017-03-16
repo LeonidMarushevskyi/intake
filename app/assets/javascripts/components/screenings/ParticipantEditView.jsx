@@ -4,6 +4,7 @@ import Gender from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import React from 'react'
+import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import nameFormatter from 'utils/nameFormatter'
 
@@ -35,6 +36,21 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           label='Last Name'
           value={participant.get('last_name') || ''}
           onChange={(event) => onChange(['last_name'], event.target.value || null)}
+        />
+      </div>
+      <div className='row'>
+        <label htmlFor={`roles_${participant.get('id')}`}>Role</label>
+        <Select
+          multi
+          inputProps={{id: `roles_${participant.get('id')}`}}
+          value={participant.get('roles').toJS()}
+          options={[
+            {label: 'Victim', value: 'Victim'},
+            {label: 'Perpetrator', value: 'Perpetrator'},
+            {label: 'Mandated Reporter', value: 'Mandated Reporter'},
+            {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter'},
+            {label: 'Anonymous Reporter', value: 'Anonymous Reporter'},
+          ]}
         />
       </div>
       <div className='row'>

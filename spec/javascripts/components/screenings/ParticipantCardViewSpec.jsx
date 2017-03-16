@@ -8,7 +8,7 @@ describe('ParticipantCardView', () => {
     let component
 
     beforeEach(() => {
-      const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk'})
+      const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk', roles: []})
       component = mount(<ParticipantCardView participant={participant} mode='show'/>)
     })
 
@@ -39,7 +39,7 @@ describe('ParticipantCardView', () => {
     const onChange = jasmine.createSpy('onCancel')
     const onSave = jasmine.createSpy('onCancel')
     const participantId = '5'
-    const participant = Immutable.fromJS({id: participantId, first_name: 'Tony', last_name: 'Hawk', ssn: 'ssn-1'})
+    const participant = Immutable.fromJS({id: participantId, first_name: 'Tony', last_name: 'Hawk', ssn: 'ssn-1', roles: []})
 
     beforeEach(() => {
       component = mount(

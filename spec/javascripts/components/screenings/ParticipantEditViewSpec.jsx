@@ -24,6 +24,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
       component = shallow(
         <ParticipantEditView
@@ -45,6 +46,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: 'Simpson',
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('(Unknown first name) Simpson')
@@ -55,6 +57,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: 'Lisa',
         last_name: null,
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Lisa (Unknown last name)')
@@ -65,6 +68,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: null,
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Unknown person')
@@ -82,6 +86,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header')).not.toContain('<span></span>')
@@ -89,6 +94,23 @@ describe('ParticipantEditView', () => {
 
     it('renders the delete link', () => {
       expect(component.find('.fa-times').length).toEqual(1)
+    })
+
+    it('renders the role field', () => {
+      const participant = Immutable.fromJS({id: 223, roles: []})
+      component = shallow(<ParticipantEditView participant={participant} />)
+      expect(component.find('label[htmlFor="roles_223"]').length).toEqual(1)
+      expect(component.find('label[htmlFor="roles_223"]').text()).toEqual('Role')
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual('roles_223')
+      expect(component.find('Select[multi]').props().value).toEqual([])
+      expect(component.find('Select[multi]').props().options).toEqual([
+        {label: 'Victim', value: 'Victim'},
+        {label: 'Perpetrator', value: 'Perpetrator'},
+        {label: 'Mandated Reporter', value: 'Mandated Reporter'},
+        {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter'},
+        {label: 'Anonymous Reporter', value: 'Anonymous Reporter'},
+      ])
     })
 
     it('renders the input fields', () => {
@@ -146,6 +168,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
 
       const onDelete = jasmine.createSpy('onDelete')
@@ -166,6 +189,7 @@ describe('ParticipantEditView', () => {
         gender: 'female',
         ssn: 'ssn-1',
         addresses: [{}],
+        roles: [],
       })
       component = mount(
         <ParticipantEditView
