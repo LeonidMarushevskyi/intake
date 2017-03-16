@@ -20,8 +20,14 @@ class ParticipantRepository
     response = API.make_api_call(
       "#{PARTICIPANTS_PATH}/#{participant.id}",
       :put,
-      participant.as_json(except: :id)
+      participant_json_without_root_id(participant)
     )
     Participant.new(response.body)
+  end
+
+  def self.participant_json_without_root_id(participant)
+    participant_hash = participant.to_h
+    participant_hash.tap { |hash| hash.delete(:id) }
+    participant_hash.as_json
   end
 end

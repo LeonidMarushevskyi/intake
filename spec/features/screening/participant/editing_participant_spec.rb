@@ -7,38 +7,62 @@ feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
 
-  address = FactoryGirl.create(
-    :address,
-    street_address: '123 Fake St',
-    city: 'Springfield',
-    state: 'NY',
-    zip: '12345',
-    type: 'Home'
-  )
-  let(:person_attributes) do
+  let(:address1) do
+    FactoryGirl.create(
+      :address,
+      street_address: '123 Fake St',
+      city: 'Springfield',
+      state: 'NY',
+      zip: '12345',
+      type: 'Home'
+    )
+  end
+  let(:person1_attributes) do
     {
       date_of_birth: 15.years.ago.to_date.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
       ssn: old_ssn,
-      addresses: [address]
+      addresses: [address1]
     }
   end
-  let(:person1) { Person.new(person_attributes) }
+  let(:person1) { Person.new(person1_attributes) }
   let(:participant1) do
     FactoryGirl.build(
       :participant,
-      person_attributes.merge(person_id: person1.id)
+      person1_attributes.merge(person_id: person1.id)
     )
   end
-  let(:person2) { Person.new(person_attributes) }
+
+  let(:address2) do
+    FactoryGirl.create(
+      :address,
+      street_address: '1234 Nowhere Ln',
+      city: 'Springfield',
+      state: 'IL',
+      zip: '98675',
+      type: 'Work'
+    )
+  end
+  let(:person2_attributes) do
+    {
+      date_of_birth: 25.years.ago.to_date.to_s(:db),
+      first_name: 'Homer',
+      gender: 'male',
+      last_name: 'Simpson',
+      ssn: '999-99-9999',
+      addresses: [address2]
+    }
+  end
+  let(:person2) { Person.new(person1_attributes) }
   let(:participant2) do
     FactoryGirl.build(
       :participant,
-      person_attributes.merge(person_id: person2.id)
+      person2_attributes.merge(person_id: person2.id)
     )
   end
+
   let(:screening) do
     FactoryGirl.build(
       :screening,
@@ -65,6 +89,7 @@ feature 'Edit Screening' do
       end
 
       within '.card-body' do
+        expect(page).to have_selector("#address-#{address1.id}")
         expect(page).to have_field('First Name', with: person1.first_name)
         expect(page).to have_field('Last Name', with: person1.last_name)
         expect(page).to have_field('Gender', with: person1.gender)
@@ -78,12 +103,14 @@ feature 'Edit Screening' do
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
         fill_in 'Social security number', with: new_ssn
+        fill_in 'City', with: 'New City'
       end
 
       participant1.ssn = new_ssn
+      participant1.addresses.first.city = 'New City'
 
       stub_request(:put, api_participant_path(participant1.id))
-        .with(body: participant1.to_json(except: :id))
+        .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
         .and_return(status: 200,
                     body: participant1.to_json,
                     headers: { 'Content-Type' => 'application/json' })
@@ -101,7 +128,7 @@ feature 'Edit Screening' do
       end
       expect(
         a_request(:put, api_participant_path(participant1.id))
-        .with(json_body(participant1.to_json(except: :id)))
+        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
       ).to have_been_made
     end
 
@@ -109,6 +136,9 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
+        expect(page).to have_selector("#address-#{address1.id}")
+        expect(page).to have_content('New City')
+        expect(page).to_not have_content('Springfield')
       end
     end
 
