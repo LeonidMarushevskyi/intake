@@ -21,6 +21,7 @@ export class ScreeningEditPage extends React.Component {
       loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.fromJS({}),
+      autocompleterFocus: false,
     }
 
     const methods = [
@@ -98,7 +99,10 @@ export class ScreeningEditPage extends React.Component {
               <div className='col-md-12'>
                 <label className='no-gap pull-left' htmlFor='screening_participants'>Search for any person</label>
                 <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
-                <Autocompleter id='screening_participants' onSelect={this.createParticipant}/>
+                <Autocompleter id='screening_participants'
+                  onSelect={this.createParticipant}
+                  enableFooter={true}
+                />
               </div>
             </div>
           </div>

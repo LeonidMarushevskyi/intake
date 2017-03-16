@@ -5,7 +5,7 @@ import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
 import {shallow, mount} from 'enzyme'
 
-describe('<Autcompleter />', () => {
+describe('<Autocompleter />', () => {
   function stubSuggestions(suggestions) {
     const promise = jasmine.createSpyObj('promise', ['then'])
     promise.then.and.callFake((thenFunc) => thenFunc(suggestions))
@@ -68,6 +68,36 @@ describe('<Autcompleter />', () => {
       const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
       const value = component.instance().getSuggestionValue(suggestion)
       expect(value).toBe('Bart Simpson')
+    })
+  })
+
+  describe('with footer', () => {
+    const component = mount(<Autocompleter enableFooter={true} />)
+    describe('is closed', () => {
+      it('has aria-expanded of false', () => {
+        expect(component.find('input').props()['aria-expanded']).toBe(false)
+      })
+      it('does not have the force-open class', () => {
+        expect(component.find('.force-open').length).toBe(0)
+      })
+      it('its state is closed', () => {
+        expect(component.state('isAutocompleterFocused')).toBe(false)
+      })
+    })
+    describe('is open', () => {
+      beforeEach(() => {
+        component.find('input').simulate('focus')
+        component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
+      })
+      it('has aria-expanded of false', () => {
+        expect(component.find('input').props()['aria-expanded']).toBe(true)
+      })
+      it('does not have the force-open class', () => {
+        expect(component.find('.force-open').length).toBe(1)
+      })
+      it('its state is closed', () => {
+        expect(component.state('isAutocompleterFocused')).toBe(true)
+      })
     })
   })
 

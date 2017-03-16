@@ -27,30 +27,34 @@ describe('ParticipantEditView', () => {
     expect(component.find('.card-header').text()).toContain('Lisa Simpson')
   })
 
-  it('renders the participant header with first name when last name is null', () => {
+  it('renders the participant header correctly when first name is null', () => {
+    const participant = Immutable.fromJS({
+      id: '199',
+      first_name: null,
+      last_name: 'Simpson',
+    })
+    component = shallow(<ParticipantEditView participant={participant} />)
+    expect(component.find('.card-header span').text()).toEqual('(Unknown first name) Simpson')
+  })
+
+  it('renders the participant header correctly when last name is null', () => {
     const participant = Immutable.fromJS({
       id: '199',
       first_name: 'Lisa',
       last_name: null,
-      date_of_birth: '2016-12-31',
-      gender: 'female',
-      ssn: 'ssn-1',
     })
     component = shallow(<ParticipantEditView participant={participant} />)
-    expect(component.find('.card-header span').text()).toEqual('Lisa')
+    expect(component.find('.card-header span').text()).toEqual('Lisa (Unknown last name)')
   })
 
-  it('renders the participant header with no name when first and last name is null', () => {
+  it('renders the participant header correctly when first and last names are null', () => {
     const participant = Immutable.fromJS({
       id: '199',
       first_name: null,
       last_name: null,
-      date_of_birth: '2016-12-31',
-      gender: 'female',
-      ssn: 'ssn-1',
     })
     component = shallow(<ParticipantEditView participant={participant} />)
-    expect(component.find('.card-header')).not.toContain('<span></span>')
+    expect(component.find('.card-header span').text()).toEqual('Unknown person')
   })
 
   it('renders the delete link', () => {

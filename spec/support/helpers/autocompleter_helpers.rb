@@ -7,10 +7,10 @@ module AutocompleterHelpers
   include KeyboardHelper
   RESULTS_CONTAINER = '.react-autosuggest__suggestions-container ul'
 
-  def fill_in_autocompleter(locator, options)
-    value = options[:with]
-    populate_autocompleter_with_options(locator, value)
-    click_autocompleter_result(value, options[:result_should_contain])
+  def fill_in_autocompleter(locator, with:, select_option_with: nil, skip_select: false)
+    select_option_with ||= with
+    populate_autocompleter_with_options(locator, with)
+    click_autocompleter_result(with, select_option_with) unless skip_select
   end
 
   def populate_autocompleter_with_options(locator, value)
