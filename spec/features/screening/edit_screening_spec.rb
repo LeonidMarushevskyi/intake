@@ -85,6 +85,8 @@ feature 'Edit Screening' do
       expect(page).to have_field('Screening Decision', with: 'evaluate_out')
       expect(page).to have_field('Decision Rationale', with: 'This is why I decided what I did')
     end
+
+    expect(page).to have_css('#cross-report-card.edit', text: 'CROSS REPORT')
   end
 end
 

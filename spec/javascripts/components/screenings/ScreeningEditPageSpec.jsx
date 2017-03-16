@@ -110,6 +110,11 @@ describe('ScreeningEditPage', () => {
       expect(component.find('DecisionCardView').length).toEqual(0)
     })
 
+    it('renders the cross report edit view', () => {
+      const component = shallow(<ScreeningEditPage {...requiredProps} />)
+      expect(component.find('CrossReportEditView').length).toEqual(1)
+    })
+
     it('renders the incident information card after the screening is loaded', () => {
       const component = shallow(<ScreeningEditPage {...requiredProps} />)
       component.setState({loaded: true})

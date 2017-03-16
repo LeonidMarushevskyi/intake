@@ -1,6 +1,7 @@
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
+import CrossReportEditView from 'components/screenings/CrossReportEditView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
@@ -166,6 +167,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
+        <CrossReportEditView />
         <AllegationsCardView />
         <WorkerSafetyCardView />
         <HistoryCard />
