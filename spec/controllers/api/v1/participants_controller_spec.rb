@@ -92,17 +92,6 @@ describe Api::V1::ParticipantsController do
     end
   end
 
-  describe '#show' do
-    let(:participant) { double(:participant) }
-
-    it 'renders participant as json' do
-      expect(ParticipantRepository).to receive(:find).with('1').and_return(participant)
-      process :show, method: :get, params: { id: '1' }, format: :json
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)).to eq(participant.as_json)
-    end
-  end
-
   describe '#update' do
     let(:participant_params) do
       {

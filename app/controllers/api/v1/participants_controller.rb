@@ -38,11 +38,6 @@ module Api
         render json: updated_participant
       end
 
-      def show
-        participant = ParticipantRepository.find(params[:id])
-        render json: participant
-      end
-
       def destroy
         ParticipantRepository.delete(params[:id])
       end
