@@ -17,6 +17,7 @@ feature 'Edit Screening' do
       type: 'Home'
     )
   end
+  let(:marge_roles) { %w(Victim Perpetrator) }
   let(:marge) do
     FactoryGirl.create(
       :participant,
@@ -26,7 +27,8 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: old_ssn,
-      addresses: [marge_address]
+      addresses: [marge_address],
+      roles: marge_roles
     )
   end
 
@@ -49,7 +51,8 @@ feature 'Edit Screening' do
       gender: 'male',
       last_name: 'Simpson',
       ssn: old_ssn,
-      addresses: [homer_address]
+      addresses: [homer_address],
+      roles: ['Reporter']
     )
   end
 
@@ -63,10 +66,10 @@ feature 'Edit Screening' do
   before do
     stub_request(:get, api_screening_path(screening.id))
       .and_return(
-    body: screening.to_json,
-    status: 200,
-    headers: { 'Content-Type' => 'application/json' }
-    )
+        body: screening.to_json,
+        status: 200,
+        headers: { 'Content-Type' => 'application/json' }
+      )
   end
 
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do
@@ -247,5 +250,32 @@ feature 'Edit Screening' do
     expect(page).to have_content 'MARGE SIMPSON'
     expect(page).to have_link 'Edit participant'
     expect(page).to have_content old_ssn
+  end
+
+  scenario 'when a user edits a participants role in a screening' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      has_react_select_field('Role', with: %w(Victim Perpetrator))
+
+      remove_react_select_option('Role', 'Perpetrator')
+      expect(page).to have_no_content('Perpetrator')
+
+      marge.roles = ['Victim']
+      stub_request(:put, api_participant_path(marge.id))
+        .with(body: marge.to_h.tap { |h| h.delete(:id) }.as_json)
+        .and_return(json_body(marge.to_json, {status: 200}))
+
+      within '.card-body' do
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, api_participant_path(marge.id))
+        .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
+      ).to have_been_made
+    end
+
+    expect(page).to have_selector(show_participant_card_selector(marge.id))
   end
 end
