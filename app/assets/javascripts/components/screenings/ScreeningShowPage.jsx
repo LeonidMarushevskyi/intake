@@ -20,8 +20,8 @@ export class ScreeningShowPage extends React.Component {
     this.state = {
       loaded: false,
       screening: props.screening,
-      screeningEdits: Immutable.fromJS({}),
-      participantsEdits: Immutable.fromJS([]),
+      screeningEdits: Immutable.Map(),
+      participantsEdits: Immutable.List(),
     }
     this.cancelEdit = this.cancelEdit.bind(this)
     this.cardSave = this.cardSave.bind(this)
@@ -71,7 +71,7 @@ export class ScreeningShowPage extends React.Component {
   }
 
   cancelParticipantEdit(index) {
-    const updatedParticipantsEdits = this.state.participantsEdits.setIn([index], Immutable.fromJS({}))
+    const updatedParticipantsEdits = this.state.participantsEdits.setIn([index], Immutable.Map())
     this.setState({participantsEdits: updatedParticipantsEdits})
   }
 
@@ -84,7 +84,7 @@ export class ScreeningShowPage extends React.Component {
   participants() {
     const participantsProps = this.props.participants
     // Make sure our edits list never contains undefined items, which will stomp on present items in mergeDeep
-    const participantsEdits = this.state.participantsEdits.map((edits) => (edits || Immutable.fromJS({})))
+    const participantsEdits = this.state.participantsEdits.map((edits) => (edits || Immutable.Map()))
     return participantsProps.mergeDeep(participantsEdits)
   }
 
