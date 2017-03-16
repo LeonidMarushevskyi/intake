@@ -167,6 +167,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        addresses: [{}],
       })
       component = mount(
         <ParticipantEditView
@@ -184,9 +185,9 @@ describe('ParticipantEditView', () => {
     })
 
     it('calls onChange when an address is updated', () => {
-      component.find('AddressesEditView').nodes[0].editAddress([0, 'street_address'], '1234 Nowhere Lane')
+      component.find('#street_address').simulate('change', {target: {value:'1234 Nowhere Lane'}})
       expect(onChange).toHaveBeenCalled()
-      const address = Immutable.fromJS([Immutable.fromJS({street_address: '1234 Nowhere Lane'})])
+      const address = Immutable.List([Immutable.Map({street_address: '1234 Nowhere Lane'})])
       const callParams = onChange.calls.argsFor(0)
       const fieldSeq = callParams[0]
       const value = callParams[1]
