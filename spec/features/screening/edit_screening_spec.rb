@@ -40,7 +40,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: existing_screening.id)
     expect(page).to have_content 'Edit Screening #My Bad!'
 
-    within '#screening-information-card' do
+    within '#screening-information-card.edit', text: 'SCREENING INFORMATION' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
       expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
@@ -50,11 +50,11 @@ feature 'Edit Screening' do
       expect(page).to have_content('Cancel')
     end
 
-    within '#narrative-card' do
+    within '#narrative-card.edit', text: 'NARRATIVE' do
       expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
     end
 
-    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card.edit', text: 'INCIDENT INFORMATION' do
       expect(page).to have_field('Incident Date', with: '2016-08-11')
       expect(page).to have_field('Incident County', with: 'sacramento')
       expect(page).to have_field('Address', with: '123 Fake St')
@@ -65,13 +65,13 @@ feature 'Edit Screening' do
       expect(page).to have_content('Cancel')
     end
 
-    within '#allegations-card', text: 'ALLEGATIONS' do
+    within '#allegations-card.edit', text: 'ALLEGATIONS' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    expect(page).to have_content 'WORKER SAFETY'
+    expect(page).to have_css('#worker-safety-card.edit', text: 'WORKER SAFETY')
 
     within '#history-card', text: 'HISTORY' do
       expect(page).to have_css('th', text: 'Date')
@@ -80,7 +80,7 @@ feature 'Edit Screening' do
       expect(page).to have_css('th', text: 'People and Roles')
     end
 
-    within '#decision-card', text: 'DECISION ' do
+    within '#decision-card.edit', text: 'DECISION ' do
       expect(page).to have_field('Response Time', with: 'immediate')
       expect(page).to have_field('Screening Decision', with: 'evaluate_out')
       expect(page).to have_field('Decision Rationale', with: 'This is why I decided what I did')
