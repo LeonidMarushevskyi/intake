@@ -14,6 +14,14 @@ export default class Autocompleter extends React.Component {
       isLoading: false,
       isAutocompleterFocused: false,
     }
+    this.onAutocompleterFocus = this.onAutocompleterFocus.bind(this)
+    this.onAutocompleterBlur = this.onAutocompleterBlur.bind(this)
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
+    this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
+    this.renderSuggestion = this.renderSuggestion.bind(this)
+    this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
   loadSuggestions(value) {
@@ -89,8 +97,7 @@ export default class Autocompleter extends React.Component {
 
   showWithoutSuggestions(state) {
     const minimumCharsForSearch = 2
-    const ltrimString = '/^\s+/,""'
-    return state.value.replace(ltrimString).length >= minimumCharsForSearch && (state.isAutocompleterFocused)
+    return state.value.trimLeft().length >= minimumCharsForSearch && (state.isAutocompleterFocused)
   }
 
   renderSuggestionsContainer(properties) {
@@ -114,7 +121,10 @@ export default class Autocompleter extends React.Component {
   }
 
   onAutocompleterBlur(e) {
-    if (!(e.relatedTarget && e.relatedTarget.attributes['data-autosuggest'])) {
+    const focusLeavingAutocompleter = !(
+      e.relatedTarget && e.relatedTarget.attributes['data-autosuggest']
+    )
+    if (focusLeavingAutocompleter) {
       this.setState({isAutocompleterFocused: false})
     }
   }
@@ -124,24 +134,24 @@ export default class Autocompleter extends React.Component {
     const inputProps = {
       id: this.props.id,
       value,
-      onChange: this.onChange.bind(this),
-      'aria-expanded': true,
+      onChange: this.onChange,
+      'aria-expanded': this.showWithoutSuggestions(this.state),
     }
     return (
       <div
-        onFocus={this.onAutocompleterFocus.bind(this)}
-        onBlur={this.onAutocompleterBlur.bind(this)}
+        onFocus={this.onAutocompleterFocus}
+        onBlur={this.onAutocompleterBlur}
       >
       <ReactAutosuggest
         suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
-        onSuggestionSelected={this.onSuggestionSelected.bind(this)}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        onSuggestionSelected={this.onSuggestionSelected}
         getSuggestionValue={this.getSuggestionValue}
-        renderSuggestion={this.renderSuggestion.bind(this)}
+        renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
-        renderSuggestionsContainer={this.renderSuggestionsContainer.bind(this)}
+        renderSuggestionsContainer={this.renderSuggestionsContainer}
       />
     </div>
     )

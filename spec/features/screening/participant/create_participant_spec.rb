@@ -90,7 +90,7 @@ feature 'Edit Screening' do
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
     within '#search-card', text: 'SEARCH' do
-      fill_in_autocompleter 'Search for any person', with: 'Marge', skip_select: true
+      fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('.btn', text: /Create a new person/).click
       expect(page).not_to have_content('Create a new person')
     end

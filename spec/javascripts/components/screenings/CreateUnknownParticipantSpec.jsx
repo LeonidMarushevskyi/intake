@@ -9,7 +9,7 @@ describe('CreateUnknownParticipant', () => {
   beforeEach(() => {
     saveCallback = jasmine.createSpy()
     component = shallow(
-      < CreateUnknownParticipant
+      <CreateUnknownParticipant
         saveCallback={saveCallback}
       />
     )
