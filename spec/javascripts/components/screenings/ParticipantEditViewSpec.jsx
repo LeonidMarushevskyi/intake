@@ -8,7 +8,6 @@ describe('ParticipantEditView', () => {
   let onChange
   let onCancel
   let onSave
-  const participantIndex = 2
 
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
@@ -32,7 +31,6 @@ describe('ParticipantEditView', () => {
           onChange={onChange}
           onCancel={onCancel}
           onSave={onSave}
-          index={participantIndex}
         />
       )
     })
@@ -175,7 +173,6 @@ describe('ParticipantEditView', () => {
           onChange={onChange}
           onCancel={onCancel}
           onSave={onSave}
-          index={participantIndex}
         />
       )
     })

@@ -6,6 +6,7 @@ import {mount} from 'enzyme'
 describe('ParticipantCardView', () => {
   describe('when mode is set to show', () => {
     let component
+
     beforeEach(() => {
       const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk'})
       component = mount(<ParticipantCardView participant={participant} mode='show'/>)
@@ -16,7 +17,7 @@ describe('ParticipantCardView', () => {
     })
 
     it('changes the mode when onEdit is called', () => {
-      component.instance().onEdit()
+      component.find('a[aria-label="Edit participant"]').simulate('click')
       expect(component.instance().state.mode).toEqual('edit')
     })
 
@@ -34,7 +35,6 @@ describe('ParticipantCardView', () => {
 
   describe('when mode is set to edit', () => {
     let component
-    const participantIndex = 2
     const onCancel = jasmine.createSpy('onCancel')
     const onChange = jasmine.createSpy('onCancel')
     const onSave = jasmine.createSpy('onCancel')
@@ -49,7 +49,6 @@ describe('ParticipantCardView', () => {
           onCancel={onCancel}
           onChange={onChange}
           onSave={onSave}
-          index={participantIndex}
         />
       )
     })

@@ -98,9 +98,8 @@ export class ScreeningShowPage extends React.Component {
     return (
       <div>
         {
-          participants.map((participant, index) =>
+          participants.map((participant) =>
             <ParticipantCardView
-              index={index}
               key={participant.get('id')}
               onCancel={this.cancelParticipantEdit}
               onDelete={this.deleteParticipant}

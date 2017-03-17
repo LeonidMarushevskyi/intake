@@ -15,7 +15,8 @@ export default class ParticipantCardView extends React.Component {
     this.onSave = this.onSave.bind(this)
   }
 
-  onEdit() {
+  onEdit(event) {
+    event.preventDefault()
     this.setState({mode: 'edit'})
   }
 
@@ -60,7 +61,6 @@ export default class ParticipantCardView extends React.Component {
 }
 
 ParticipantCardView.propTypes = {
-  index: React.PropTypes.number,
   mode: React.PropTypes.oneOf(['edit', 'show']),
   onCancel: React.PropTypes.func,
   onChange: React.PropTypes.func,
