@@ -38,5 +38,11 @@ describe API do
       API.make_api_call('/api/v1/screening/1', :delete)
       expect(a_request(:delete, %r{/api/v1/screening/1})).to have_been_made
     end
+
+    it 'makes a request to TPT API url for people search' do
+      stub_request(:get, 'http://tpt_url/api/v1/people_search?search_term=Bob').and_return(status: 200)
+      API.make_api_call('/api/v1/people_search?search_term=Bob', :get)
+      expect(a_request(:get, 'http://tpt_url/api/v1/people_search?search_term=Bob')).to have_been_made
+    end
   end
 end
