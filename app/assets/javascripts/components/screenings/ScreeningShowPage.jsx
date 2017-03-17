@@ -20,12 +20,16 @@ export class ScreeningShowPage extends React.Component {
     this.state = {
       loaded: false,
       screening: props.screening,
-      screeningEdits: Immutable.fromJS({}),
+      screeningEdits: Immutable.Map(),
+      participantsEdits: Immutable.Map(),
     }
     this.cancelEdit = this.cancelEdit.bind(this)
     this.cardSave = this.cardSave.bind(this)
     this.deleteParticipant = this.deleteParticipant.bind(this)
     this.setField = this.setField.bind(this)
+    this.saveParticipant = this.saveParticipant.bind(this)
+    this.setParticipantField = this.setParticipantField.bind(this)
+    this.cancelParticipantEdit = this.cancelParticipantEdit.bind(this)
   }
 
   componentDidMount() {
@@ -61,14 +65,49 @@ export class ScreeningShowPage extends React.Component {
     this.props.actions.deleteParticipant(id)
   }
 
+  setParticipantField(id, value) {
+    const participantsEdits = this.state.participantsEdits.set(id, value)
+    this.setState({participantsEdits: participantsEdits})
+  }
+
+  cancelParticipantEdit(id) {
+    const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
+    this.setState({participantsEdits: updatedParticipantsEdits})
+  }
+
+  saveParticipant(participant) {
+    return this.props.actions.saveParticipant(participant.toJS())
+  }
+
+  participants() {
+    // We want to merge the keys of each participant, but we don't want deep merge
+    // to combine the address lists for us. So, we do a custom merge at one level deep.
+    const mergedParticipants = this.props.participants.map((participant) => {
+      const participantId = participant.get('id')
+      const relevantEdits = this.state.participantsEdits.get(participantId)
+      const participantEdits = (relevantEdits || Immutable.Map())
+      return participant.merge(participantEdits)
+    })
+
+    return mergedParticipants
+  }
+
   renderParticipantsCard() {
-    const {participants} = this.props
+    const participants = this.participants()
 
     return (
       <div>
         {
           participants.map((participant) =>
-            <ParticipantCardView key={participant.get('id')} participant={participant} onDelete={this.deleteParticipant} mode='show'/>
+            <ParticipantCardView
+              key={participant.get('id')}
+              onCancel={this.cancelParticipantEdit}
+              onDelete={this.deleteParticipant}
+              onChange={this.setParticipantField}
+              onSave={this.saveParticipant}
+              participant={participant}
+              mode='show'
+            />
           )
         }
       </div>

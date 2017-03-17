@@ -42,6 +42,16 @@ describe('participantsReducer', () => {
     })
   })
 
+  describe('on UPDATE_PARTICIPANT_SUCCESS', () => {
+    it('returns the screening with updated participants from the action', () => {
+      const oldParticipant = {id: '2', screening_id: '3', person_id: '10', ssn: '12345'}
+      const newParticipant = {id: '2', screening_id: '3', person_id: '10', ssn: '78456'}
+      const participants = Immutable.fromJS([oldParticipant])
+      const action = screeningActions.updateParticipantSuccess(newParticipant)
+      expect(participantsReducer(participants, action).toJS()).toEqual([newParticipant])
+    })
+  })
+
   describe('on DELETE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening without the deleted participant from the action', () => {
       const firstParticipant = {id: '2', screening_id: '1', person_id: '3'}

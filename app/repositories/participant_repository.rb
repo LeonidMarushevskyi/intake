@@ -14,4 +14,20 @@ class ParticipantRepository
   def self.delete(id)
     API.make_api_call("#{PARTICIPANTS_PATH}/#{id}", :delete)
   end
+
+  def self.update(participant)
+    raise 'Error updating participant: id is required' unless participant.id
+    response = API.make_api_call(
+      "#{PARTICIPANTS_PATH}/#{participant.id}",
+      :put,
+      participant_json_without_root_id(participant)
+    )
+    Participant.new(response.body)
+  end
+
+  def self.participant_json_without_root_id(participant)
+    participant_hash = participant.to_h
+    participant_hash.tap { |hash| hash.delete(:id) }
+    participant_hash.as_json
+  end
 end

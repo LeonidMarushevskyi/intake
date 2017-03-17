@@ -38,9 +38,9 @@ export default class AddressesEditView extends React.Component {
       <div id='addresses'>
         {
           addresses.map((area, index) => {
-            const {street_address, city, state, zip, type} = area.toJS()
+            const {id, street_address, city, state, zip, type} = area.toJS()
             return (
-              <div key={index} className='row list-item'>
+              <div key={index} className='row list-item' id={`address-${id}`}>
                 <AddressEditView
                   streetAddress={street_address || ''}
                   city={city || ''}

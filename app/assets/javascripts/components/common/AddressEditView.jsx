@@ -5,7 +5,7 @@ import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
 const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
-    <div className='item'>
+    <div className='item' >
       <InputField
         gridClassName='col-md-6'
         id='street_address'

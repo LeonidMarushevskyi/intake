@@ -44,7 +44,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
         {
           participant.get('addresses') && participant.get('addresses').map((address) => (
             <div key={address.get('id')}>
-              <div className='row gap-top'>
+              <div className='row gap-top' id={`address-${address.get('id')}`}>
                 <ShowField gridClassName='col-md-6' label='Address'>
                   {address.get('street_address')}
                 </ShowField>

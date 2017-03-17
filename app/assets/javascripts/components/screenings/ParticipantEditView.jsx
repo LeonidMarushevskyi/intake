@@ -7,7 +7,7 @@ import React from 'react'
 import SelectField from 'components/common/SelectField'
 import nameFormatter from 'utils/nameFormatter'
 
-const ParticipantEditView = ({participant, onCancel, onDelete}) => (
+const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}) => (
   <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
       <span>{nameFormatter(participant)}</span>
@@ -26,7 +26,7 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => (
           id='first_name'
           label='First Name'
           value={participant.get('first_name') || ''}
-          onChange={() => null}
+          onChange={(event) => onChange(['first_name'], event.target.value || null)}
         />
         <InputField
           gridClassName='col-md-6'
@@ -34,7 +34,7 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => (
           id='last_name'
           label='Last Name'
           value={participant.get('last_name') || ''}
-          onChange={() => null}
+          onChange={(event) => onChange(['last_name'], event.target.value || null)}
         />
       </div>
       <div className='row'>
@@ -43,14 +43,14 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => (
           id='date_of_birth'
           label='Date of birth'
           value={participant.get('date_of_birth') || ''}
-          onChange={() => null}
+          onChange={(event) => onChange(['date_of_birth'], event.target.value || null)}
         />
         <SelectField
           gridClassName='col-md-6'
           id='gender'
           label='Gender'
           value={participant.get('gender') || ''}
-          onChange={() => null}
+          onChange={(event) => onChange(['gender'], event.target.value || null)}
         >
           <option key='' value='' />
           {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
@@ -62,16 +62,16 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => (
           id='ssn'
           label='Social security number'
           value={participant.get('ssn') || ''}
-          onChange={() => null}
+          onChange={(event) => onChange(['ssn'], event.target.value || null)}
         />
       </div>
       <AddressesEditView
         addresses={participant.get('addresses') || Immutable.List()}
-        onChange={() => null}
+        onChange={(addresses) => onChange(['addresses'], addresses || [])}
       />
       <div className='row'>
         <div className='centered'>
-          <button className='btn btn-primary'>Save</button>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
           <button className='btn btn-default' onClick={onCancel}>Cancel</button>
         </div>
       </div>
@@ -81,7 +81,9 @@ const ParticipantEditView = ({participant, onCancel, onDelete}) => (
 
 ParticipantEditView.propTypes = {
   onCancel: React.PropTypes.func,
+  onChange: React.PropTypes.func,
   onDelete: React.PropTypes.func,
+  onSave: React.PropTypes.func,
   participant: React.PropTypes.object.isRequired,
 }
 export default ParticipantEditView
