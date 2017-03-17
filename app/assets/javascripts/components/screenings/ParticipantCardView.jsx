@@ -21,17 +21,17 @@ export default class ParticipantCardView extends React.Component {
 
   onCancel() {
     this.setState({mode: 'show'})
-    this.props.onCancel(this.props.index)
+    this.props.onCancel(this.props.participant.get('id'))
   }
 
   onSave() {
-    this.props.onSave(this.props.index)
+    this.props.onSave(this.props.participant.get('id'), this.props.participant)
     this.setState({mode: 'show'})
   }
 
   onChange(fieldSeq, value) {
     const participant = this.props.participant.setIn(fieldSeq, value)
-    this.props.onChange(this.props.index, participant)
+    this.props.onChange(this.props.participant.get('id'), participant)
   }
 
   render() {

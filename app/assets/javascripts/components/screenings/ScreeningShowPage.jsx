@@ -21,7 +21,7 @@ export class ScreeningShowPage extends React.Component {
       loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.Map(),
-      participantsEdits: Immutable.List(),
+      participantsEdits: Immutable.Map(),
     }
     this.cancelEdit = this.cancelEdit.bind(this)
     this.cardSave = this.cardSave.bind(this)
@@ -65,26 +65,29 @@ export class ScreeningShowPage extends React.Component {
     this.props.actions.deleteParticipant(id)
   }
 
-  setParticipantField(index, value) {
-    const participantsEdits = this.state.participantsEdits.setIn([index], value)
+  setParticipantField(id, value) {
+    const participantsEdits = this.state.participantsEdits.set(id, value)
     this.setState({participantsEdits: participantsEdits})
   }
 
-  cancelParticipantEdit(index) {
-    const updatedParticipantsEdits = this.state.participantsEdits.setIn([index], Immutable.Map())
+  cancelParticipantEdit(id) {
+    const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
     this.setState({participantsEdits: updatedParticipantsEdits})
   }
 
-  saveParticipant(index) {
-    const participantChanges = this.state.participantsEdits.get(index)
-    const participant = this.props.participants.get(index).mergeDeep(participantChanges)
-    return this.props.actions.saveParticipant(participant.toJS())
+  saveParticipant(id, participant) {
+    const participantChanges = this.state.participantsEdits.get(id)
+    const editedParticipant = participant.mergeDeep(participantChanges)
+    return this.props.actions.saveParticipant(editedParticipant.toJS())
   }
 
   participants() {
     const participantsProps = this.props.participants
-    // Make sure our edits list never contains undefined items, which will stomp on present items in mergeDeep
-    const participantsEdits = this.state.participantsEdits.map((edits) => (edits || Immutable.Map()))
+    const participantsEdits = this.props.participants.map((participant) => {
+      const participantId = participant.get('id')
+      const relevantEdits = this.state.participantsEdits.get(participantId)
+      return (relevantEdits || Immutable.Map())
+    })
     return participantsProps.mergeDeep(participantsEdits)
   }
 

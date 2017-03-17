@@ -38,7 +38,8 @@ describe('ParticipantCardView', () => {
     const onCancel = jasmine.createSpy('onCancel')
     const onChange = jasmine.createSpy('onCancel')
     const onSave = jasmine.createSpy('onCancel')
-    const participant = Immutable.fromJS({id: '5', first_name: 'Tony', last_name: 'Hawk', ssn: 'ssn-1'})
+    const participantId = '5'
+    const participant = Immutable.fromJS({id: participantId, first_name: 'Tony', last_name: 'Hawk', ssn: 'ssn-1'})
 
     beforeEach(() => {
       component = mount(
@@ -60,7 +61,7 @@ describe('ParticipantCardView', () => {
     it("on edit when user hits 'Cancel' renders show view ", () => {
       const cancelButton = component.find('button[children="Cancel"]')
       cancelButton.simulate('click')
-      expect(onCancel).toHaveBeenCalledWith(participantIndex)
+      expect(onCancel).toHaveBeenCalledWith(participantId)
       expect(component.find('ParticipantShowView').length).toEqual(1)
     })
 
@@ -79,7 +80,7 @@ describe('ParticipantCardView', () => {
     it('calls onChange from props with the appropriately changed values when onChange is called', () => {
       const updatedParticipant = participant.setIn(['first_name'], 'Bart')
       component.instance().onChange(['first_name'], 'Bart')
-      expect(onChange).toHaveBeenCalledWith(participantIndex, updatedParticipant)
+      expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
     })
   })
 })

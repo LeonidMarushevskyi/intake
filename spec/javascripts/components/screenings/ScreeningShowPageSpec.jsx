@@ -179,8 +179,9 @@ describe('ScreeningShowPage', () => {
     const saveParticipant = jasmine.createSpy('saveParticipant')
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
 
+    const id1 = '3'
     const participant1 = Immutable.Map({
-      id: '3',
+      id: id1,
       first_name: 'Bart',
       last_name: 'Simpson',
       gender: 'male',
@@ -190,8 +191,9 @@ describe('ScreeningShowPage', () => {
       screening_id: '3',
     })
 
+    const id2 = '4'
     const participant2 = Immutable.Map({
-      id: '4',
+      id: id2,
       first_name: 'Marge',
       last_name: 'Simpson',
       gender: 'female',
@@ -226,33 +228,33 @@ describe('ScreeningShowPage', () => {
         const updatedParticipant1 = participant1.setIn(['first_name'], 'shere khan')
         const updatedParticipant2 = participant1.setIn(['last_name'], 'Simpsoooooon')
 
-        component.instance().setParticipantField(0, updatedParticipant1)
-        component.instance().setParticipantField(1, updatedParticipant2)
+        component.instance().setParticipantField(id1, updatedParticipant1)
+        component.instance().setParticipantField(id2, updatedParticipant2)
 
-        expect(component.instance().state.participantsEdits.get(0)).toEqual(updatedParticipant1)
-        expect(component.instance().state.participantsEdits.get(1)).toEqual(updatedParticipant2)
+        expect(component.instance().state.participantsEdits.get(id1)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(id2)).toEqual(updatedParticipant2)
 
-        component.instance().cancelParticipantEdit(1)
+        component.instance().cancelParticipantEdit(id2)
 
-        expect(component.instance().state.participantsEdits.get(0)).toEqual(updatedParticipant1)
-        expect(component.instance().state.participantsEdits.get(1)).toEqual(Immutable.fromJS({}))
+        expect(component.instance().state.participantsEdits.get(id1)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(id2)).toEqual(undefined)
       })
     })
 
     describe('setParticipantField', () => {
       it('sets edits for only the specified participant', () => {
         const updatedParticipant = participant2.setIn(['last_name'], 'Simpsoooooon')
-        component.instance().setParticipantField(1, updatedParticipant)
-        expect(component.instance().state.participantsEdits.get(0)).toEqual(undefined)
-        expect(component.instance().state.participantsEdits.get(1)).toEqual(updatedParticipant)
+        component.instance().setParticipantField(id2, updatedParticipant)
+        expect(component.instance().state.participantsEdits.get(id1)).toEqual(undefined)
+        expect(component.instance().state.participantsEdits.get(id2)).toEqual(updatedParticipant)
       })
     })
 
     describe('saveParticipant', () => {
       it('uses the appropriate data and makes an API request', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
-        component.instance().setParticipantField(0, updatedParticipant)
-        component.instance().saveParticipant(0)
+        component.instance().setParticipantField(id1, updatedParticipant)
+        component.instance().saveParticipant(id1, participant1)
         expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
       })
     })
@@ -265,14 +267,14 @@ describe('ScreeningShowPage', () => {
 
       it('uses edits made by the user when they are available', () => {
         const editedParticipant = participant1.setIn(['first_name'], 'Homer')
-        component.instance().setParticipantField(0, editedParticipant)
+        component.instance().setParticipantField(id1, editedParticipant)
         const participants = Immutable.List([editedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
 
       it('does not break when there are edits to one item in the list, but not others', () => {
         const editedParticipant = participant2.setIn(['first_name'], 'Lisa')
-        component.instance().setParticipantField(1, editedParticipant)
+        component.instance().setParticipantField(id2, editedParticipant)
         const participants = Immutable.List([participant1, editedParticipant])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
