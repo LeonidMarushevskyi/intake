@@ -253,8 +253,7 @@ describe('ScreeningShowPage', () => {
     describe('saveParticipant', () => {
       it('uses the appropriate data and makes an API request', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
-        component.instance().setParticipantField(id1, updatedParticipant)
-        component.instance().saveParticipant(id1, participant1)
+        component.instance().saveParticipant(updatedParticipant)
         expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
       })
     })

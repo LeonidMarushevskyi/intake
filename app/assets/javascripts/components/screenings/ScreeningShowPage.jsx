@@ -75,10 +75,8 @@ export class ScreeningShowPage extends React.Component {
     this.setState({participantsEdits: updatedParticipantsEdits})
   }
 
-  saveParticipant(id, participant) {
-    const participantChanges = this.state.participantsEdits.get(id)
-    const editedParticipant = participant.mergeDeep(participantChanges)
-    return this.props.actions.saveParticipant(editedParticipant.toJS())
+  saveParticipant(participant) {
+    return this.props.actions.saveParticipant(participant.toJS())
   }
 
   participants() {

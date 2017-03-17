@@ -101,10 +101,8 @@ export class ScreeningEditPage extends React.Component {
     this.props.actions.deleteParticipant(id)
   }
 
-  saveParticipant(id, participant) {
-    const participantChanges = this.state.participantsEdits.get(id) || Immutable.Map()
-    const editedParticipant = participant.mergeDeep(participantChanges)
-    return this.props.actions.saveParticipant(editedParticipant.toJS())
+  saveParticipant(participant) {
+    return this.props.actions.saveParticipant(participant.toJS())
   }
 
   participants() {

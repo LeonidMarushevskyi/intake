@@ -25,7 +25,7 @@ export default class ParticipantCardView extends React.Component {
   }
 
   onSave() {
-    this.props.onSave(this.props.participant.get('id'), this.props.participant)
+    this.props.onSave(this.props.participant)
     this.setState({mode: 'show'})
   }
 
