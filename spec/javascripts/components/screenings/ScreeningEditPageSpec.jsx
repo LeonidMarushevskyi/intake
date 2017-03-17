@@ -244,6 +244,23 @@ describe('ScreeningEditPage', () => {
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
     const createParticipant = jasmine.createSpy('createParticipant')
 
+    const address1 =  Immutable.Map({
+      city: 'Sacramento',
+      id: '12',
+      state: 'California',
+      street_address: '123 Camino ave',
+      type: 'Home',
+      zip: '94533'
+    })
+    const address2 =  Immutable.Map({
+      city: 'Sac',
+      id: '13',
+      state: 'California',
+      street_address: '123 Fake ave',
+      type: 'Home',
+      zip: '94532'
+    })
+
     const id1 = '3'
     const participant1 = Immutable.Map({
       id: id1,
@@ -254,6 +271,7 @@ describe('ScreeningEditPage', () => {
       date_of_birth: null,
       person_id: '1',
       screening_id: '3',
+      addresses: Immutable.List([address1, address2])
     })
 
     const id2 = '4'
@@ -266,6 +284,7 @@ describe('ScreeningEditPage', () => {
       date_of_birth: null,
       person_id: '2',
       screening_id: '3',
+      addresses: Immutable.List(),
     })
 
     const props = {
@@ -350,6 +369,21 @@ describe('ScreeningEditPage', () => {
         const editedParticipant = participant2.set('first_name', 'Lisa')
         component.instance().setParticipantField(id2, editedParticipant)
         const participants = Immutable.List([participant1, editedParticipant])
+        expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
+      })
+
+      it('reflects edits made to a participant address', () => {
+        const updatedAddress = address1.set('street_address', '555 real st')
+        const updatedParticipant = participant1.set('addresses', Immutable.List([updatedAddress, address2]))
+        component.instance().setParticipantField(id1, updatedParticipant)
+        const participants = Immutable.List([updatedParticipant, participant2])
+        expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
+      })
+
+      it('reflects when a participant address is deleted', () => {
+        const updatedParticipant = participant1.set('addresses', Immutable.List([address2]))
+        component.instance().setParticipantField(id1, updatedParticipant)
+        const participants = Immutable.List([updatedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
     })

@@ -149,6 +149,83 @@ feature 'Edit Screening' do
     end
   end
 
+  scenario 'editing and then removing an address from a participant' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(participant1.id) do
+
+      within '.card-body' do
+        expect(page).to have_selector("#address-#{address1.id}")
+        expect(page).to have_field('Address', with: person1.addresses.first.street_address)
+        expect(page).to have_field('City', with: person1.addresses.first.city)
+        expect(page).to have_field('State', with: person1.addresses.first.state)
+        expect(page).to have_field('Zip', with: person1.addresses.first.zip)
+        expect(page).to have_field('Address Type', with: person1.addresses.first.type)
+        expect(page).to have_button 'Cancel'
+        expect(page).to have_button 'Save'
+        fill_in 'City', with: 'New City'
+      end
+
+      participant1.addresses.first.city = 'New City'
+
+      stub_request(:put, api_participant_path(participant1.id))
+        .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
+        .and_return(status: 200,
+                    body: participant1.to_json,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
+
+    within edit_participant_card_selector(participant1.id) do
+      within '.card-body' do
+        click_button 'Save'
+      end
+      expect(
+        a_request(:put, api_participant_path(participant1.id))
+        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
+      ).to have_been_made
+    end
+
+    within show_participant_card_selector(participant1.id) do
+      within '.card-body' do
+        expect(page).to have_selector("#address-#{address1.id}")
+        expect(page).to have_content('New City')
+        expect(page).to_not have_content('Springfield')
+      end
+
+      within '.card-header' do
+        click_link 'Edit participant'
+      end
+    end
+
+    within edit_participant_card_selector(participant1.id) do
+      within '.card-body' do
+        within "#address-#{address1.id}" do
+          click_link 'Delete address'
+        end
+
+        expect(page).to_not have_selector("#address-#{address1.id}")
+      end
+    end
+
+    participant1.addresses = []
+
+    stub_request(:put, api_participant_path(participant1.id))
+      .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
+      .and_return(status: 200,
+    body: participant1.to_json,
+    headers: { 'Content-Type' => 'application/json' })
+
+    within edit_participant_card_selector(participant1.id) do
+      within '.card-body' do
+        click_button 'Save'
+      end
+      expect(
+        a_request(:put, api_participant_path(participant1.id))
+        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
+      ).to have_been_made
+    end
+  end
+
   scenario 'canceling edits for a screening participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(participant1.id) do

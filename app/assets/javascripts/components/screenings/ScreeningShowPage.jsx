@@ -81,12 +81,17 @@ export class ScreeningShowPage extends React.Component {
 
   participants() {
     const participantsProps = this.props.participants
-    const participantsEdits = this.props.participants.map((participant) => {
+
+    // We want to merge the keys of each participant, but we don't want deep merge
+    // to combine the address lists for us. So, we do a custom merge at one level deep.
+    const mergedParticipants = this.props.participants.map((participant) => {
       const participantId = participant.get('id')
       const relevantEdits = this.state.participantsEdits.get(participantId)
-      return (relevantEdits || Immutable.Map())
+      const participantEdits = (relevantEdits || Immutable.Map())
+      return participant.merge(participantEdits)
     })
-    return participantsProps.mergeDeep(participantsEdits)
+
+    return mergedParticipants
   }
 
   renderParticipantsCard() {

@@ -185,7 +185,7 @@ describe('ParticipantEditView', () => {
     })
 
     it('calls onChange when an address is updated', () => {
-      component.find('#street_address').simulate('change', {target: {value:'1234 Nowhere Lane'}})
+      component.find('#street_address').simulate('change', {target: {value: '1234 Nowhere Lane'}})
       expect(onChange).toHaveBeenCalled()
       const address = Immutable.List([Immutable.Map({street_address: '1234 Nowhere Lane'})])
       const callParams = onChange.calls.argsFor(0)
