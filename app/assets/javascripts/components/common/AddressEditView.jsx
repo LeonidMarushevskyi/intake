@@ -5,7 +5,7 @@ import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
 const AddressEditView = ({id, streetAddress, city, state, zip, type, onChange}) => (
-    <div className='item' id={`address-${id}`}>
+    <div className='item' >
       <InputField
         gridClassName='col-md-6'
         id='street_address'
@@ -53,7 +53,6 @@ const AddressEditView = ({id, streetAddress, city, state, zip, type, onChange}) 
 )
 AddressEditView.propTypes = {
   city: React.PropTypes.string,
-  id: React.PropTypes.string,
   onChange: React.PropTypes.func,
   state: React.PropTypes.string,
   streetAddress: React.PropTypes.string,
