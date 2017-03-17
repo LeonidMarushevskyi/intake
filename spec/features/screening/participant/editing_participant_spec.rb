@@ -153,7 +153,6 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(participant1.id) do
-
       within '.card-body' do
         expect(page).to have_selector("#address-#{address1.id}")
         expect(page).to have_field('Address', with: person1.addresses.first.street_address)
@@ -212,8 +211,8 @@ feature 'Edit Screening' do
     stub_request(:put, api_participant_path(participant1.id))
       .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
       .and_return(status: 200,
-    body: participant1.to_json,
-    headers: { 'Content-Type' => 'application/json' })
+                  body: participant1.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
 
     within edit_participant_card_selector(participant1.id) do
       within '.card-body' do

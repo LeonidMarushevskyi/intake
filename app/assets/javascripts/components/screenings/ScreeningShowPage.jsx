@@ -80,8 +80,6 @@ export class ScreeningShowPage extends React.Component {
   }
 
   participants() {
-    const participantsProps = this.props.participants
-
     // We want to merge the keys of each participant, but we don't want deep merge
     // to combine the address lists for us. So, we do a custom merge at one level deep.
     const mergedParticipants = this.props.participants.map((participant) => {

@@ -244,21 +244,21 @@ describe('ScreeningEditPage', () => {
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
     const createParticipant = jasmine.createSpy('createParticipant')
 
-    const address1 =  Immutable.Map({
+    const address1 = Immutable.Map({
       city: 'Sacramento',
       id: '12',
       state: 'California',
       street_address: '123 Camino ave',
       type: 'Home',
-      zip: '94533'
+      zip: '94533',
     })
-    const address2 =  Immutable.Map({
+    const address2 = Immutable.Map({
       city: 'Sac',
       id: '13',
       state: 'California',
       street_address: '123 Fake ave',
       type: 'Home',
-      zip: '94532'
+      zip: '94532',
     })
 
     const id1 = '3'
@@ -271,7 +271,7 @@ describe('ScreeningEditPage', () => {
       date_of_birth: null,
       person_id: '1',
       screening_id: '3',
-      addresses: Immutable.List([address1, address2])
+      addresses: Immutable.List([address1, address2]),
     })
 
     const id2 = '4'
