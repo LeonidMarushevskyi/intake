@@ -112,6 +112,7 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
+        <CrossReportShowView />
         {
           loaded &&
           <DecisionCardView
@@ -122,7 +123,6 @@ export class ScreeningShowPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <CrossReportShowView />
         <AllegationsShowView />
         <WorkerSafetyShowView />
         <HistoryCard />

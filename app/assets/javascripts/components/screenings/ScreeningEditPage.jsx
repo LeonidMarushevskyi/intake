@@ -156,6 +156,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
+        <CrossReportEditView />
         {
           loaded &&
           <DecisionCardView
@@ -167,7 +168,6 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <CrossReportEditView />
         <AllegationsCardView />
         <WorkerSafetyCardView />
         <HistoryCard />
