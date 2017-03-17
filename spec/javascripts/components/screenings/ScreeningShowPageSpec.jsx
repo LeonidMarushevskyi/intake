@@ -196,9 +196,9 @@ describe('ScreeningShowPage', () => {
       zip: '94532',
     })
 
-    const id1 = '3'
+    const participantId1 = '3'
     const participant1 = Immutable.Map({
-      id: id1,
+      id: participantId1,
       first_name: 'Bart',
       last_name: 'Simpson',
       gender: 'male',
@@ -209,9 +209,9 @@ describe('ScreeningShowPage', () => {
       addresses: Immutable.List([address1, address2]),
     })
 
-    const id2 = '4'
+    const participantId2 = '4'
     const participant2 = Immutable.Map({
-      id: id2,
+      id: participantId2,
       first_name: 'Marge',
       last_name: 'Simpson',
       gender: 'female',
@@ -247,25 +247,25 @@ describe('ScreeningShowPage', () => {
         const updatedParticipant1 = participant1.setIn(['first_name'], 'shere khan')
         const updatedParticipant2 = participant1.setIn(['last_name'], 'Simpsoooooon')
 
-        component.instance().setParticipantField(id1, updatedParticipant1)
-        component.instance().setParticipantField(id2, updatedParticipant2)
+        component.instance().setParticipantField(participantId1, updatedParticipant1)
+        component.instance().setParticipantField(participantId2, updatedParticipant2)
 
-        expect(component.instance().state.participantsEdits.get(id1)).toEqual(updatedParticipant1)
-        expect(component.instance().state.participantsEdits.get(id2)).toEqual(updatedParticipant2)
+        expect(component.instance().state.participantsEdits.get(participantId1)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(participantId2)).toEqual(updatedParticipant2)
 
-        component.instance().cancelParticipantEdit(id2)
+        component.instance().cancelParticipantEdit(participantId2)
 
-        expect(component.instance().state.participantsEdits.get(id1)).toEqual(updatedParticipant1)
-        expect(component.instance().state.participantsEdits.get(id2)).toEqual(undefined)
+        expect(component.instance().state.participantsEdits.get(participantId1)).toEqual(updatedParticipant1)
+        expect(component.instance().state.participantsEdits.get(participantId2)).toEqual(undefined)
       })
     })
 
     describe('setParticipantField', () => {
       it('sets edits for only the specified participant', () => {
         const updatedParticipant = participant2.setIn(['last_name'], 'Simpsoooooon')
-        component.instance().setParticipantField(id2, updatedParticipant)
-        expect(component.instance().state.participantsEdits.get(id1)).toEqual(undefined)
-        expect(component.instance().state.participantsEdits.get(id2)).toEqual(updatedParticipant)
+        component.instance().setParticipantField(participantId2, updatedParticipant)
+        expect(component.instance().state.participantsEdits.get(participantId1)).toEqual(undefined)
+        expect(component.instance().state.participantsEdits.get(participantId2)).toEqual(updatedParticipant)
       })
     })
 
@@ -285,14 +285,14 @@ describe('ScreeningShowPage', () => {
 
       it('uses edits made by the user when they are available', () => {
         const editedParticipant = participant1.setIn(['first_name'], 'Homer')
-        component.instance().setParticipantField(id1, editedParticipant)
+        component.instance().setParticipantField(participantId1, editedParticipant)
         const participants = Immutable.List([editedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
 
       it('does not break when there are edits to one item in the list, but not others', () => {
         const editedParticipant = participant2.setIn(['first_name'], 'Lisa')
-        component.instance().setParticipantField(id2, editedParticipant)
+        component.instance().setParticipantField(participantId2, editedParticipant)
         const participants = Immutable.List([participant1, editedParticipant])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
@@ -300,14 +300,14 @@ describe('ScreeningShowPage', () => {
       it('reflects edits made to a participant address', () => {
         const updatedAddress = address1.set('street_address', '555 real st')
         const updatedParticipant = participant1.set('addresses', Immutable.List([updatedAddress, address2]))
-        component.instance().setParticipantField(id1, updatedParticipant)
+        component.instance().setParticipantField(participantId1, updatedParticipant)
         const participants = Immutable.List([updatedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
 
       it('reflects when a participant address is deleted', () => {
         const updatedParticipant = participant1.set('addresses', Immutable.List([address2]))
-        component.instance().setParticipantField(id1, updatedParticipant)
+        component.instance().setParticipantField(participantId1, updatedParticipant)
         const participants = Immutable.List([updatedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
