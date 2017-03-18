@@ -3,14 +3,12 @@ require 'rails_helper'
 
 describe API do
   before do
-    @cached_env_tpt_api_url = ENV['TPT_API_URL']
-    @cached_env_api_url = ENV['API_URL']
-    ENV['TPT_API_URL'] = 'http://tpt_api_url'
-    ENV['API_URL'] = 'http://api'
-  end
-  after do
-    ENV['TPT_API_URL'] = @cached_env_tpt_api_url
-    ENV['API_URL'] = @cached_env_api_url
+    allow(ENV).to receive(:fetch).with('TPT_API_URL', false)
+      .and_return('http://tpt_api_url')
+    allow(ENV).to receive(:fetch).with('TPT_API_URL')
+      .and_return('http://tpt_api_url')
+    allow(ENV).to receive(:fetch).with('API_URL')
+      .and_return('http://api')
   end
 
   describe '.make_api_call' do
@@ -51,19 +49,19 @@ describe API do
     end
 
     it 'makes a request to TPT API url for people search when TPT_API env var is set' do
-      stub_request(:get, 'http://tpt_api_url/api/v1/people_search?search_term=Bob').and_return(status: 200)
+      tpt_api_url = 'http://tpt_api_url/api/v1/people_search?search_term=Bob'
+      stub_request(:get, tpt_api_url).and_return(status: 200)
       API.make_api_call('/api/v1/people_search?search_term=Bob', :get)
-      expect(a_request(:get, 'http://tpt_api_url/api/v1/people_search?search_term=Bob')).to have_been_made
+      expect(a_request(:get, tpt_api_url)).to have_been_made
     end
 
     it 'makes a request to default intake api if TPT_API env var is not present' do
-      cached_tpt_api = ENV['TPT_API_URL']
-      ENV['TPT_API_URL'] = nil
+      allow(ENV).to receive(:fetch).with('TPT_API_URL', false)
+        .and_return(false)
+
       stub_request(:get, 'http://api/api/v1/people_search?search_term=Bob').and_return(status: 200)
       API.make_api_call('/api/v1/people_search?search_term=Bob', :get)
       expect(a_request(:get, 'http://api/api/v1/people_search?search_term=Bob')).to have_been_made
-      ENV['TPT_API_URL'] = cached_tpt_api
     end
-
   end
 end

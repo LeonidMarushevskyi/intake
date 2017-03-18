@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 require 'feature/testing'
-
 feature 'home page' do
-  before do
-    allow(ENV).to receive(:fetch).with('AUTHENTICATION_URL')
-      .and_return('http://www.foo.com')
-  end
-
   scenario 'displays search bar when release one is enabled' do
     Feature.run_with_activated(:release_one) do
       address = FactoryGirl.create(
