@@ -264,18 +264,35 @@ feature 'Edit Screening' do
       marge.roles = ['Victim']
       stub_request(:put, api_participant_path(marge.id))
         .with(body: marge.to_h.tap { |h| h.delete(:id) }.as_json)
-        .and_return(json_body(marge.to_json, {status: 200}))
+        .and_return(json_body(marge.to_json, status: 200))
 
       within '.card-body' do
         click_button 'Save'
       end
-
-      expect(
-        a_request(:put, api_participant_path(marge.id))
-        .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
-      ).to have_been_made
     end
 
+    expect(
+      a_request(:put, api_participant_path(marge.id))
+      .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
+    ).to have_been_made
+
     expect(page).to have_selector(show_participant_card_selector(marge.id))
+  end
+
+  context 'A participant has an existing reporter role' do
+    let(:marge_roles) { ['Mandated Reporter'] }
+
+    scenario 'the other reporter roles are unavailable' do
+      visit edit_screening_path(id: screening.id)
+
+      within edit_participant_card_selector(marge.id) do
+        fill_in_react_select('Role', with: 'Non-mandated Reporter')
+        has_react_select_field('Role', with: ['Mandated Reporter'])
+
+        remove_react_select_option('Role', 'Mandated Reporter')
+        fill_in_react_select('Role', with: 'Non-mandated Reporter')
+        has_react_select_field('Role', with: ['Non-mandated Reporter'])
+      end
+    end
   end
 end

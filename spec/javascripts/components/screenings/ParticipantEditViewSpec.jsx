@@ -98,29 +98,6 @@ describe('ParticipantEditView', () => {
       expect(component.find('.fa-times').length).toEqual(1)
     })
 
-    it('renders the role field', () => {
-      expect(component.find(`label[htmlFor="roles_${participantId}"]`).length).toEqual(1)
-      expect(component.find(`label[htmlFor="roles_${participantId}"]`).text()).toEqual('Role')
-      expect(component.find('Select[multi]').length).toEqual(1)
-      expect(component.find('Select[multi]').props().inputProps.id).toEqual(`roles_${participantId}`)
-      expect(component.find('Select[multi]').props().value).toEqual([])
-      expect(component.find('Select[multi]').props().options).toEqual([
-        {label: 'Victim', value: 'Victim'},
-        {label: 'Perpetrator', value: 'Perpetrator'},
-        {label: 'Mandated Reporter', value: 'Mandated Reporter'},
-        {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter'},
-        {label: 'Anonymous Reporter', value: 'Anonymous Reporter'},
-      ])
-    })
-
-    it('allows a user to select a role', () => {
-      const newSelectedRoles = [
-        {label: 'Perpetrator', value: 'Perpetrator'},
-      ]
-      component.find('Select[multi]').simulate('Change', newSelectedRoles)
-      expect(onChange).toHaveBeenCalledWith(['roles'], Immutable.List(['Perpetrator']))
-    })
-
     it('renders the input fields', () => {
       expect(component.find('InputField[label="First Name"]').props().value)
         .toEqual('Lisa')
@@ -187,7 +164,81 @@ describe('ParticipantEditView', () => {
     })
   })
 
-  describe('addresses ', () => {
+  describe('roles', () => {
+    let participantId
+    let component
+    let onChange
+
+    beforeEach(() => {
+      onChange = jasmine.createSpy('onChange')
+
+      participantId = '199'
+      const participant = Immutable.fromJS({
+        id: participantId,
+        roles: [],
+      })
+      component = shallow(
+        <ParticipantEditView
+          participant={participant}
+          onChange={onChange}
+        />
+      )
+    })
+
+    it('renders the role field', () => {
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).length).toEqual(1)
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).text()).toEqual('Role')
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual(`roles_${participantId}`)
+      expect(component.find('Select[multi]').props().value).toEqual([])
+      expect(component.find('Select[multi]').props().options).toEqual([
+        {label: 'Victim', value: 'Victim'},
+        {label: 'Perpetrator', value: 'Perpetrator'},
+        {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: false},
+        {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: false},
+        {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: false},
+      ])
+    })
+
+    it('allows a user to select a role', () => {
+      const newSelectedRoles = [
+        {label: 'Perpetrator', value: 'Perpetrator'},
+      ]
+      component.find('Select[multi]').simulate('Change', newSelectedRoles)
+      expect(onChange).toHaveBeenCalledWith(['roles'], Immutable.List(['Perpetrator']))
+    })
+
+    describe('when a participant has an existing role', () => {
+      beforeEach(() => {
+        onChange = jasmine.createSpy('onChange')
+
+        participantId = '199'
+        const participant = Immutable.fromJS({
+          id: participantId,
+          roles: ['Mandated Reporter'],
+        })
+        component = shallow(
+          <ParticipantEditView
+            participant={participant}
+            onChange={onChange}
+          />
+        )
+      })
+
+      it('disables other reporter roles when one reporter role is selected', () => {
+        const expectedOptions = [
+          {label: 'Victim', value: 'Victim'},
+          {label: 'Perpetrator', value: 'Perpetrator'},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: true},
+          {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
+          {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
+        ]
+        expect(component.find('Select[multi]').props().options).toEqual(expectedOptions)
+      })
+    })
+  })
+
+  describe('addresses', () => {
     beforeEach(() => {
       const participant = Immutable.fromJS({
         id: '199',
@@ -209,7 +260,7 @@ describe('ParticipantEditView', () => {
       )
     })
 
-    it('renders a address edit view', () => {
+    it('renders an address edit view', () => {
       expect(component.find('AddressesEditView').length).toEqual(1)
     })
 
