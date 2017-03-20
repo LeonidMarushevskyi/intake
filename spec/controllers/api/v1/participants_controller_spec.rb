@@ -97,17 +97,23 @@ describe Api::V1::ParticipantsController do
       {
         id: '1',
         first_name: 'Marge',
-        last_name: 'Simpson'
+        last_name: 'Simpson',
+        roles: ['Victim']
       }
     end
+    let(:params) do
+      {
+        id: participant_params[:id],
+        participant: participant_params
+      }
+    end
+    let(:participant) { double(:participant) }
     let(:updated_participant) { double(:participant, as_json: { 'id' => 'updated_participant' }) }
 
     it 'updates and renders participant as json' do
-      participant = double(:participant)
       expect(Participant).to receive(:new).with(participant_params).and_return(participant)
       expect(ParticipantRepository).to receive(:update)
         .with(participant).and_return(updated_participant)
-      params = { id: participant_params[:id], participant: participant_params }
       process :update, method: :put, params: params, format: :json
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(updated_participant.as_json)
