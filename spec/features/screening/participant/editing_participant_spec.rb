@@ -7,7 +7,7 @@ feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
 
-  let(:address1) do
+  let(:marge_address) do
     FactoryGirl.create(
       :address,
       street_address: '123 Fake St',
@@ -17,7 +17,7 @@ feature 'Edit Screening' do
       type: 'Home'
     )
   end
-  let(:participant1) do
+  let(:marge) do
     FactoryGirl.create(
       :participant,
       person_id: 1,
@@ -26,11 +26,11 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: old_ssn,
-      addresses: [address1]
+      addresses: [marge_address]
     )
   end
 
-  let(:address2) do
+  let(:homer_address) do
     FactoryGirl.create(
       :address,
       street_address: '1234 Nowhere Ln',
@@ -40,7 +40,7 @@ feature 'Edit Screening' do
       type: 'Work'
     )
   end
-  let(:participant2) do
+  let(:homer) do
     FactoryGirl.create(
       :participant,
       person_id: 2,
@@ -49,14 +49,14 @@ feature 'Edit Screening' do
       gender: 'male',
       last_name: 'Simpson',
       ssn: old_ssn,
-      addresses: [address2]
+      addresses: [homer_address]
     )
   end
 
   let(:screening) do
     FactoryGirl.build(
       :screening,
-      participants: [participant1, participant2]
+      participants: [marge, homer]
     )
   end
 
@@ -72,67 +72,67 @@ feature 'Edit Screening' do
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do
     visit edit_screening_path(id: screening.id)
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-header' do
         expect(page).to have_content 'MARGE SIMPSON'
         expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do
-        expect(page).to have_selector("#address-#{address1.id}")
-        expect(page).to have_field('First Name', with: participant1.first_name)
-        expect(page).to have_field('Last Name', with: participant1.last_name)
-        expect(page).to have_field('Gender', with: participant1.gender)
-        expect(page).to have_field('Date of birth', with: participant1.date_of_birth)
-        expect(page).to have_field('Social security number', with: participant1.ssn)
-        expect(page).to have_field('Address', with: participant1.addresses.first.street_address)
-        expect(page).to have_field('City', with: participant1.addresses.first.city)
-        expect(page).to have_field('State', with: participant1.addresses.first.state)
-        expect(page).to have_field('Zip', with: participant1.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: participant1.addresses.first.type)
+        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_field('First Name', with: marge.first_name)
+        expect(page).to have_field('Last Name', with: marge.last_name)
+        expect(page).to have_field('Gender', with: marge.gender)
+        expect(page).to have_field('Date of birth', with: marge.date_of_birth)
+        expect(page).to have_field('Social security number', with: marge.ssn)
+        expect(page).to have_field('Address', with: marge.addresses.first.street_address)
+        expect(page).to have_field('City', with: marge.addresses.first.city)
+        expect(page).to have_field('State', with: marge.addresses.first.state)
+        expect(page).to have_field('Zip', with: marge.addresses.first.zip)
+        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
         fill_in 'Social security number', with: new_ssn
         fill_in 'City', with: 'New City'
       end
 
-      participant1.ssn = new_ssn
-      participant1.addresses.first.city = 'New City'
+      marge.ssn = new_ssn
+      marge.addresses.first.city = 'New City'
 
-      stub_request(:put, api_participant_path(participant1.id))
-        .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
+      stub_request(:put, api_participant_path(marge.id))
+        .with(body: marge.to_h.tap { |h| h.delete(:id) }.as_json)
         .and_return(status: 200,
-      body: participant1.to_json,
-      headers: { 'Content-Type' => 'application/json' })
+                    body: marge.to_json,
+                    headers: { 'Content-Type' => 'application/json' })
     end
 
-    within edit_participant_card_selector(participant2.id) do
+    within edit_participant_card_selector(homer.id) do
       within '.card-body' do
         fill_in 'First Name', with: 'My new first name'
       end
     end
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, api_participant_path(participant1.id))
-        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
+        a_request(:put, api_participant_path(marge.id))
+        .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
       ).to have_been_made
     end
 
-    within show_participant_card_selector(participant1.id) do
+    within show_participant_card_selector(marge.id) do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
-        expect(page).to have_selector("#address-#{address1.id}")
+        expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
     end
 
-    within edit_participant_card_selector(participant2.id) do
+    within edit_participant_card_selector(homer.id) do
       within '.card-body' do
         expect(page).to have_field('First Name', with: 'My new first name')
       end
@@ -142,41 +142,41 @@ feature 'Edit Screening' do
   scenario 'editing and then removing an address from a participant' do
     visit edit_screening_path(id: screening.id)
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{address1.id}")
-        expect(page).to have_field('Address', with: participant1.addresses.first.street_address)
-        expect(page).to have_field('City', with: participant1.addresses.first.city)
-        expect(page).to have_field('State', with: participant1.addresses.first.state)
-        expect(page).to have_field('Zip', with: participant1.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: participant1.addresses.first.type)
+        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_field('Address', with: marge.addresses.first.street_address)
+        expect(page).to have_field('City', with: marge.addresses.first.city)
+        expect(page).to have_field('State', with: marge.addresses.first.state)
+        expect(page).to have_field('Zip', with: marge.addresses.first.zip)
+        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
         fill_in 'City', with: 'New City'
       end
 
-      participant1.addresses.first.city = 'New City'
+      marge.addresses.first.city = 'New City'
 
-      stub_request(:put, api_participant_path(participant1.id))
-        .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
+      stub_request(:put, api_participant_path(marge.id))
+        .with(body: marge.to_h.tap { |h| h.delete(:id) }.as_json)
         .and_return(status: 200,
-      body: participant1.to_json,
-      headers: { 'Content-Type' => 'application/json' })
+                    body: marge.to_json,
+                    headers: { 'Content-Type' => 'application/json' })
     end
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, api_participant_path(participant1.id))
-        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
+        a_request(:put, api_participant_path(marge.id))
+        .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
       ).to have_been_made
     end
 
-    within show_participant_card_selector(participant1.id) do
+    within show_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{address1.id}")
+        expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
@@ -186,38 +186,38 @@ feature 'Edit Screening' do
       end
     end
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        within "#address-#{address1.id}" do
+        within "#address-#{marge_address.id}" do
           click_link 'Delete address'
         end
 
-        expect(page).to_not have_selector("#address-#{address1.id}")
+        expect(page).to_not have_selector("#address-#{marge_address.id}")
       end
     end
 
-    participant1.addresses = []
+    marge.addresses = []
 
-    stub_request(:put, api_participant_path(participant1.id))
-      .with(body: participant1.to_h.tap { |h| h.delete(:id) }.as_json)
+    stub_request(:put, api_participant_path(marge.id))
+      .with(body: marge.to_h.tap { |h| h.delete(:id) }.as_json)
       .and_return(status: 200,
-    body: participant1.to_json,
-    headers: { 'Content-Type' => 'application/json' })
+                  body: marge.to_json,
+                  headers: { 'Content-Type' => 'application/json' })
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, api_participant_path(participant1.id))
-        .with(json_body(participant1.to_h.tap { |h| h.delete(:id) }.as_json))
+        a_request(:put, api_participant_path(marge.id))
+        .with(json_body(marge.to_h.tap { |h| h.delete(:id) }.as_json))
       ).to have_been_made
     end
   end
 
   scenario 'canceling edits for a screening participant' do
     visit edit_screening_path(id: screening.id)
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       within '.card-body' do
         expect(page).to have_field('Social security number', with: old_ssn)
         fill_in 'Social security number', with: new_ssn
@@ -226,9 +226,9 @@ feature 'Edit Screening' do
       end
     end
 
-    expect(a_request(:put, api_participant_path(participant1.id))).to_not have_been_made
+    expect(a_request(:put, api_participant_path(marge.id))).to_not have_been_made
 
-    within show_participant_card_selector(participant1.id) do
+    within show_participant_card_selector(marge.id) do
       within '.card-body' do
         expect(page).to have_content(old_ssn)
         expect(page).to_not have_content(new_ssn)
@@ -239,7 +239,7 @@ feature 'Edit Screening' do
   scenario 'when a user clicks cancel on edit page' do
     visit edit_screening_path(id: screening.id)
 
-    within edit_participant_card_selector(participant1.id) do
+    within edit_participant_card_selector(marge.id) do
       fill_in 'Social security number', with: new_ssn
       click_button 'Cancel'
     end
@@ -249,5 +249,3 @@ feature 'Edit Screening' do
     expect(page).to have_content old_ssn
   end
 end
-
-
