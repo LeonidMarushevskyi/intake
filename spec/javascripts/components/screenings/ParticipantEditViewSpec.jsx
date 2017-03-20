@@ -4,6 +4,7 @@ import React from 'react'
 import {mount, shallow} from 'enzyme'
 
 describe('ParticipantEditView', () => {
+  let participantId
   let component
   let onChange
   let onCancel
@@ -17,8 +18,9 @@ describe('ParticipantEditView', () => {
 
   describe('rendering edit view', () => {
     beforeEach(() => {
+      participantId = '199'
       const participant = Immutable.fromJS({
-        id: '199',
+        id: participantId,
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
@@ -97,12 +99,10 @@ describe('ParticipantEditView', () => {
     })
 
     it('renders the role field', () => {
-      const participant = Immutable.fromJS({id: 223, roles: []})
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('label[htmlFor="roles_223"]').length).toEqual(1)
-      expect(component.find('label[htmlFor="roles_223"]').text()).toEqual('Role')
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).length).toEqual(1)
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).text()).toEqual('Role')
       expect(component.find('Select[multi]').length).toEqual(1)
-      expect(component.find('Select[multi]').props().inputProps.id).toEqual('roles_223')
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual(`roles_${participantId}`)
       expect(component.find('Select[multi]').props().value).toEqual([])
       expect(component.find('Select[multi]').props().options).toEqual([
         {label: 'Victim', value: 'Victim'},
@@ -111,6 +111,14 @@ describe('ParticipantEditView', () => {
         {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter'},
         {label: 'Anonymous Reporter', value: 'Anonymous Reporter'},
       ])
+    })
+
+    it('allows a user to select a role', () => {
+      const newSelectedRoles = [
+        {label: 'Perpetrator', value: 'Perpetrator'},
+      ]
+      component.find('Select[multi]').simulate('Change', newSelectedRoles)
+      expect(onChange).toHaveBeenCalledWith(['roles'], Immutable.List(['Perpetrator']))
     })
 
     it('renders the input fields', () => {

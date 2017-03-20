@@ -44,6 +44,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           multi
           inputProps={{id: `roles_${participant.get('id')}`}}
           value={participant.get('roles').toJS()}
+          onChange={(roles) => onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])}
           options={[
             {label: 'Victim', value: 'Victim'},
             {label: 'Perpetrator', value: 'Perpetrator'},
