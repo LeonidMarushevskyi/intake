@@ -11,7 +11,7 @@ describe ParticipantRepository do
     let(:created_participant) { double(:participant) }
 
     before :each do
-      allow(API.connection).to receive(:post)
+      allow(API.intake_api_connection).to receive(:post)
         .and_yield(mock_request)
         .and_return(mock_response)
     end
@@ -51,7 +51,7 @@ describe ParticipantRepository do
     end
 
     before :each do
-      allow(API.connection).to receive(:put)
+      allow(API.intake_api_connection).to receive(:put)
         .and_yield(mock_request)
         .and_return(mock_response)
     end

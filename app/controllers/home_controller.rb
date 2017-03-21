@@ -20,7 +20,7 @@ class HomeController < ApplicationController # :nodoc:
   end
 
   def set_api_header
-    ::API.connection.headers['Authorization'] = session[:security_token]
+    ::API.intake_api_connection.headers['Authorization'] = session[:security_token]
   end
 
   def security_token

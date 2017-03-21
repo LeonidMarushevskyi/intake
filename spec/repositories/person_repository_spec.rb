@@ -31,7 +31,7 @@ describe PersonRepository do
       mock_response = double(:mock_response, status: 200, body: 'mock_body')
       mock_request = double(:mock_request)
       found_person = double(:person)
-      allow(API.connection).to receive(:get)
+      allow(API.intake_api_connection).to receive(:get)
         .and_yield(mock_request)
         .and_return(mock_response)
       expect(mock_request).to receive(:url).with("#{PersonRepository::PEOPLE_PATH}/1")
