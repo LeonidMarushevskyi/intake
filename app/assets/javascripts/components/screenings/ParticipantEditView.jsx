@@ -56,14 +56,18 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           />
         </div>
         <div className='row'>
-          <label htmlFor={`roles_${participant.get('id')}`}>Role</label>
-          <Select
-            multi
-            inputProps={{id: `roles_${participant.get('id')}`}}
-            value={participant.get('roles').toJS()}
-            onChange={(roles) => onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])}
-            options={roleOptions(participant.get('roles'))}
-          />
+          <div className='col-md-6'>
+            <label htmlFor={`roles_${participant.get('id')}`}>Role</label>
+            <Select
+              multi
+              inputProps={{id: `roles_${participant.get('id')}`}}
+              value={participant.get('roles').toJS()}
+              onChange={(roles) => onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])}
+              options={roleOptions(participant.get('roles'))}
+              clearable={false}
+              placeholder=''
+            />
+          </div>
         </div>
         <div className='row'>
           <DateField
