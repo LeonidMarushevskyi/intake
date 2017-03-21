@@ -18,4 +18,6 @@ linters:
     width: 2
   SelectorFormat:
     convention: hyphenated_BEM
+    exclude:
+      - 'app/assets/stylesheets/multi-select.scss' # Overriding react-select styling, so we have to use those classes
 

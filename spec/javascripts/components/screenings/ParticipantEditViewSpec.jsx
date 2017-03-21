@@ -4,6 +4,7 @@ import React from 'react'
 import {mount, shallow} from 'enzyme'
 
 describe('ParticipantEditView', () => {
+  let participantId
   let component
   let onChange
   let onCancel
@@ -17,13 +18,15 @@ describe('ParticipantEditView', () => {
 
   describe('rendering edit view', () => {
     beforeEach(() => {
+      participantId = '199'
       const participant = Immutable.fromJS({
-        id: '199',
+        id: participantId,
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
       component = shallow(
         <ParticipantEditView
@@ -45,6 +48,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: 'Simpson',
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('(Unknown first name) Simpson')
@@ -55,6 +59,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: 'Lisa',
         last_name: null,
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Lisa (Unknown last name)')
@@ -65,6 +70,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: null,
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Unknown person')
@@ -82,6 +88,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header')).not.toContain('<span></span>')
@@ -146,6 +153,7 @@ describe('ParticipantEditView', () => {
         date_of_birth: '2016-12-31',
         gender: 'female',
         ssn: 'ssn-1',
+        roles: [],
       })
 
       const onDelete = jasmine.createSpy('onDelete')
@@ -156,7 +164,81 @@ describe('ParticipantEditView', () => {
     })
   })
 
-  describe('addresses ', () => {
+  describe('roles', () => {
+    let participantId
+    let component
+    let onChange
+
+    beforeEach(() => {
+      onChange = jasmine.createSpy('onChange')
+
+      participantId = '199'
+      const participant = Immutable.fromJS({
+        id: participantId,
+        roles: [],
+      })
+      component = shallow(
+        <ParticipantEditView
+          participant={participant}
+          onChange={onChange}
+        />
+      )
+    })
+
+    it('renders the role field', () => {
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).length).toEqual(1)
+      expect(component.find(`label[htmlFor="roles_${participantId}"]`).text()).toEqual('Role')
+      expect(component.find('Select[multi]').length).toEqual(1)
+      expect(component.find('Select[multi]').props().inputProps.id).toEqual(`roles_${participantId}`)
+      expect(component.find('Select[multi]').props().value).toEqual([])
+      expect(component.find('Select[multi]').props().options).toEqual([
+        {label: 'Victim', value: 'Victim'},
+        {label: 'Perpetrator', value: 'Perpetrator'},
+        {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: false},
+        {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: false},
+        {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: false},
+      ])
+    })
+
+    it('allows a user to select a role', () => {
+      const newSelectedRoles = [
+        {label: 'Perpetrator', value: 'Perpetrator'},
+      ]
+      component.find('Select[multi]').simulate('Change', newSelectedRoles)
+      expect(onChange).toHaveBeenCalledWith(['roles'], Immutable.List(['Perpetrator']))
+    })
+
+    describe('when a participant has an existing role', () => {
+      beforeEach(() => {
+        onChange = jasmine.createSpy('onChange')
+
+        participantId = '199'
+        const participant = Immutable.fromJS({
+          id: participantId,
+          roles: ['Mandated Reporter'],
+        })
+        component = shallow(
+          <ParticipantEditView
+            participant={participant}
+            onChange={onChange}
+          />
+        )
+      })
+
+      it('disables other reporter roles when one reporter role is selected', () => {
+        const expectedOptions = [
+          {label: 'Victim', value: 'Victim'},
+          {label: 'Perpetrator', value: 'Perpetrator'},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: true},
+          {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
+          {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
+        ]
+        expect(component.find('Select[multi]').props().options).toEqual(expectedOptions)
+      })
+    })
+  })
+
+  describe('addresses', () => {
     beforeEach(() => {
       const participant = Immutable.fromJS({
         id: '199',
@@ -166,6 +248,7 @@ describe('ParticipantEditView', () => {
         gender: 'female',
         ssn: 'ssn-1',
         addresses: [{}],
+        roles: [],
       })
       component = mount(
         <ParticipantEditView
@@ -177,7 +260,7 @@ describe('ParticipantEditView', () => {
       )
     })
 
-    it('renders a address edit view', () => {
+    it('renders an address edit view', () => {
       expect(component.find('AddressesEditView').length).toEqual(1)
     })
 

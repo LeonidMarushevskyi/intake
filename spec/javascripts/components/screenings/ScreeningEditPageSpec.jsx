@@ -46,8 +46,8 @@ describe('ScreeningEditPage', () => {
       let component
       beforeEach(() => {
         const participants = Immutable.fromJS([
-          {id: '1', first_name: 'Melissa', last_name: 'Powers'},
-          {id: '2', first_name: 'Marshall', last_name: 'Powers'},
+          {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
+          {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
         ])
         const props = {
           ...requiredProps,

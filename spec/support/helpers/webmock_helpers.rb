@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module WebmockHelpers
-  def json_body(json)
-    { body: json, headers: { 'Content-Type' => 'application/json' } }
+  def json_body(json, options = {})
+    { body: json, headers: { 'Content-Type' => 'application/json' } }.merge(options)
   end
 
   def api_person_path(id)

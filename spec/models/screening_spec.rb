@@ -31,6 +31,7 @@ describe Screening do
             first_name: 'Homer',
             last_name: 'Simpson',
             person_id: '3',
+            roles: ['Victim'],
             screening_id: '2',
             addresses: [
               {
@@ -76,6 +77,7 @@ describe Screening do
           last_name: 'Simpson',
           ssn: nil,
           person_id: '3',
+          roles: ['Victim'],
           screening_id: '2',
           addresses: include(
             id: '1',

@@ -23,7 +23,8 @@ module Api
           :state,
           :zip,
           :type
-        ]
+        ],
+        roles: []
       ].freeze
 
       def create
