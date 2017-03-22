@@ -1,8 +1,29 @@
 import React from 'react'
+import nameFormatter from 'utils/nameFormatter'
 
 export default class AllegationsCardView extends React.Component {
-  constructor() {
-    super(...arguments)
+  constructor(props, context) {
+    super(props, context)
+  }
+
+  renderAllegations(allegations) {
+    return this.groupedAllegations(allegations)
+      .map((allegations) => this.renderAllegation(allegations))
+  }
+
+  groupedAllegations(allegations) {
+    return allegations.groupBy((allegation) => allegation.get('victim'))
+  }
+
+  renderAllegation(allegations) {
+    const firstIndex = 0
+    return allegations.map((allegation, index) => (
+      <tr key={index}>
+        <td>{index === firstIndex ? nameFormatter(allegation.get('victim')) : ''}</td>
+        <td>{nameFormatter(allegation.get('perpetrator'))}</td>
+        <td />
+      </tr>
+    ))
   }
 
   render() {
@@ -22,6 +43,9 @@ export default class AllegationsCardView extends React.Component {
                     <th scope='col'>Allegation(s)</th>
                   </tr>
                 </thead>
+                <tbody>
+                  {this.renderAllegations(this.props.allegations)}
+                </tbody>
               </table>
             </div>
           </div>
@@ -29,4 +53,8 @@ export default class AllegationsCardView extends React.Component {
       </div>
     )
   }
+}
+
+AllegationsCardView.propTypes = {
+  allegations: React.PropTypes.object.isRequired,
 }
