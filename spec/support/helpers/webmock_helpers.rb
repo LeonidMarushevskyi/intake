@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module WebmockHelpers
+  def remove_root_id(hash)
+    hash.except('id')
+  end
+
   def json_body(json, options = {})
     { body: json, headers: { 'Content-Type' => 'application/json' } }.merge(options)
   end

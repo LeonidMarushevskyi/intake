@@ -26,8 +26,6 @@ class ParticipantRepository
   end
 
   def self.participant_json_without_root_id(participant)
-    participant_hash = participant.to_h
-    participant_hash.tap { |hash| hash.delete(:id) }
-    participant_hash.as_json
+    participant.as_json.except('id')
   end
 end
