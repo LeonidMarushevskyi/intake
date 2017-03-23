@@ -5,14 +5,14 @@ import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
-  describe('render', () => {
-    const requiredProps = {
-      actions: {},
-      params: {id: '1'},
-      participants: Immutable.List(),
-      screening: Immutable.Map(),
-    }
+  const requiredProps = {
+    actions: {},
+    params: {id: '1'},
+    participants: Immutable.List(),
+    screening: Immutable.Map(),
+  }
 
+  describe('render', () => {
     it('renders the screening reference', () => {
       const props = {
         ...requiredProps,
@@ -157,10 +157,9 @@ describe('ScreeningEditPage', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {fetchScreening},
         params: {id: '222'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(Promise.resolve())
       mount(<ScreeningEditPage {...props} />)
@@ -178,9 +177,9 @@ describe('ScreeningEditPage', () => {
       const fetchScreening = jasmine.createSpy('fetchScreening')
       fetchScreening.and.returnValue(Promise.resolve())
       const props = {
+        ...requiredProps,
         actions: {fetchScreening},
         params: {id: '222'},
-        participants: Immutable.List(),
         screening: Immutable.fromJS({report_narrative: 'my narrative'}),
       }
       component = mount(<ScreeningEditPage {...props} />)
@@ -209,9 +208,9 @@ describe('ScreeningEditPage', () => {
       promiseSpyObj.then.and.callFake((then) => then({}))
       saveScreening.and.returnValue(promiseSpyObj)
       const props = {
+        ...requiredProps,
         actions: {saveScreening},
         params: {id: '1'},
-        participants: Immutable.List(),
         screening: Immutable.Map({name: 'mock screening'}),
       }
       spyOn(browserHistory, 'push')
@@ -232,10 +231,8 @@ describe('ScreeningEditPage', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {saveScreening},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       const component = shallow(<ScreeningEditPage {...props} />)
       component.instance().setField(['report_narrative'], 'This is my new narrative')
@@ -298,10 +295,10 @@ describe('ScreeningEditPage', () => {
     })
 
     const props = {
+      ...requiredProps,
       actions: {createParticipant, saveParticipant, deleteParticipant},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
-      screening: Immutable.Map(),
     }
 
     let component
