@@ -11,6 +11,7 @@ import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
+import {addNewAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
@@ -197,7 +198,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsCardView />
+        <AllegationsCardView allegations={this.props.allegations}/>
         <WorkerSafetyCardView />
         <HistoryCard />
         {
@@ -234,6 +235,7 @@ export class ScreeningEditPage extends React.Component {
 
 ScreeningEditPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  allegations: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
@@ -241,6 +243,7 @@ ScreeningEditPage.propTypes = {
 
 function mapStateToProps(state, _ownProps) {
   return {
+    allegations: addNewAllegations(state.participants),
     participants: state.participants,
     screening: state.screening,
   }

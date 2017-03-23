@@ -10,6 +10,7 @@ describe('ScreeningEditPage', () => {
     params: {id: '1'},
     participants: Immutable.List(),
     screening: Immutable.Map(),
+    allegations: Immutable.List(),
   }
 
   describe('render', () => {
@@ -143,8 +144,13 @@ describe('ScreeningEditPage', () => {
     })
 
     it('renders the allegations card', () => {
-      const component = shallow(<ScreeningEditPage {...requiredProps} />)
+      const props = {
+        ...requiredProps,
+        allegations: Immutable.List(),
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('AllegationsCardView').length).toEqual(1)
+      expect(component.find('AllegationsCardView').props().allegations).toEqual(Immutable.List())
     })
 
     it('renders the worker safety card', () => {
