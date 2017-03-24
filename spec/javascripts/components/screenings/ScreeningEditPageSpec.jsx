@@ -147,10 +147,12 @@ describe('ScreeningEditPage', () => {
       const props = {
         ...requiredProps,
         allegations: Immutable.List(),
+        mode: 'edit',
       }
       const component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('AllegationsCardView').length).toEqual(1)
       expect(component.find('AllegationsCardView').props().allegations).toEqual(Immutable.List())
+      expect(component.find('AllegationsCardView').props().mode).toEqual('edit')
     })
 
     it('renders the worker safety card', () => {

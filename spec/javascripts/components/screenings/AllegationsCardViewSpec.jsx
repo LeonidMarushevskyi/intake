@@ -6,62 +6,34 @@ import {shallow} from 'enzyme'
 describe('AllegationsCardView', () => {
   const requiredProps = {
     allegations: Immutable.List(),
+    mode: 'edit',
   }
-  it('renders allegations card view headings', () => {
-    const component = shallow(<AllegationsCardView {...requiredProps} />)
-    expect(component.find('tr').text()).toContain('Alleged Victim/Children')
-    expect(component.find('tr').text()).toContain('Alleged Perpetrator')
-    expect(component.find('tr').text()).toContain('Allegation(s)')
+
+  it('renders the edit view in edit mode', () => {
+    const component = shallow(<AllegationsCardView {...requiredProps} mode='edit'/>)
+    expect(component.find('AllegationsEditView').length).toEqual(1)
   })
 
-  it('renders alleged vicitms/perpetrators', () => {
-    const bart = {
-      id: 1,
-      first_name: 'Bart',
-      last_name: 'Simpson',
-    }
-    const homer = {
-      id: 2,
-      first_name: 'Homer',
-      last_name: 'Simpson',
-    }
-    const marge = {
-      id: 3,
-      first_name: 'Marge',
-      last_name: 'Simpson',
-    }
-    const lisa = {
-      id: 4,
-      first_name: 'Lisa',
-      last_name: 'Simpson',
-    }
-    const allegations = Immutable.fromJS([
-      {id: null, victim: bart, perpetrator: homer},
-      {id: null, victim: bart, perpetrator: marge},
-      {id: null, victim: lisa, perpetrator: homer},
-      {id: null, victim: lisa, perpetrator: marge},
-    ])
+  it('renders the show view in show mode', () => {
+    const component = shallow(<AllegationsCardView {...requiredProps} mode='show'/>)
+    expect(component.find('AllegationsShowView').length).toEqual(1)
+  })
 
-    const props = {allegations}
-    const component = shallow(<AllegationsCardView {...props} />)
+  describe('#onSave', () => {
+    it('toggles the mode to show', () => {
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
+      const instance = component.instance()
+      instance.onSave()
+      expect(instance.state.mode).toEqual('show')
+    })
+  })
 
-    const allegationRow = component.find('AllegationRow')
-    expect(allegationRow.length).toEqual(4)
-
-    expect(allegationRow.get(0).props.victim).toEqual(Immutable.Map(bart))
-    expect(allegationRow.get(0).props.perpetrator).toEqual(Immutable.Map(homer))
-    expect(allegationRow.get(0).props.displayVictim).toEqual(true)
-
-    expect(allegationRow.get(1).props.victim).toEqual(Immutable.Map(bart))
-    expect(allegationRow.get(1).props.perpetrator).toEqual(Immutable.Map(marge))
-    expect(allegationRow.get(1).props.displayVictim).toEqual(false)
-
-    expect(allegationRow.get(2).props.victim).toEqual(Immutable.Map(lisa))
-    expect(allegationRow.get(2).props.perpetrator).toEqual(Immutable.Map(homer))
-    expect(allegationRow.get(2).props.displayVictim).toEqual(true)
-
-    expect(allegationRow.get(3).props.victim).toEqual(Immutable.Map(lisa))
-    expect(allegationRow.get(3).props.perpetrator).toEqual(Immutable.Map(marge))
-    expect(allegationRow.get(3).props.displayVictim).toEqual(false)
+  describe('#onCancel', () => {
+    it('toggles the mode to show', () => {
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
+      const instance = component.instance()
+      instance.onCancel()
+      expect(instance.state.mode).toEqual('show')
+    })
   })
 })

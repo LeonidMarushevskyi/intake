@@ -198,7 +198,7 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsCardView allegations={this.props.allegations}/>
+        <AllegationsCardView allegations={this.props.allegations} mode='edit'/>
         <WorkerSafetyCardView />
         <HistoryCard />
         {

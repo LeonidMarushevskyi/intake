@@ -1,64 +1,38 @@
 import React from 'react'
-import AllegationRow from 'components/screenings/AllegationRow'
+import AllegationsEditView from 'components/screenings/AllegationsEditView'
+import AllegationsShowView from 'components/screenings/AllegationsShowView'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {
     super(props, context)
+
+    this.state = {
+      mode: props.mode,
+    }
   }
 
-  renderAllegations(allegations) {
-    return this.groupedAllegations(allegations)
-      .map((allegations) => this.renderAllegation(allegations))
+  onCancel() {
+    this.setState({mode: 'show'})
   }
 
-  groupedAllegations(allegations) {
-    return allegations.groupBy((allegation) => allegation.get('victim'))
-  }
-
-  renderAllegation(allegations) {
-    const firstIndex = 0
-    return allegations.map((allegation, index) => {
-      const displayVictim = (index === firstIndex)
-      return (
-        <AllegationRow
-          displayVictim={displayVictim}
-          key={index}
-          victim={allegation.get('victim')}
-          perpetrator={allegation.get('perpetrator')}
-        />
-      )
-    })
+  onSave() {
+    this.setState({mode: 'show'})
   }
 
   render() {
-    return (
-      <div className='card edit double-gap-top' id='allegations-card'>
-        <div className='card-header'>
-          <span>Allegations</span>
-        </div>
-        <div className='card-body no-pad-top'>
-          <div className='row'>
-            <div className='table-responsive'>
-              <table className='table table-hover'>
-                <thead>
-                  <tr>
-                    <th scope='col'>Alleged Victim/Children</th>
-                    <th scope='col'>Alleged Perpetrator</th>
-                    <th scope='col'>Allegation(s)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.renderAllegations(this.props.allegations)}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    const {mode} = this.state
+    const props = {
+      allegations: this.props.allegations,
+      onSave: () => {},
+      onCancel: () => {},
+    }
+
+    const AllegationsView = (mode === 'show') ? AllegationsShowView : AllegationsEditView
+    return <AllegationsView {...props} />
   }
 }
 
 AllegationsCardView.propTypes = {
   allegations: React.PropTypes.object.isRequired,
+  mode: React.PropTypes.string.isRequired,
 }
