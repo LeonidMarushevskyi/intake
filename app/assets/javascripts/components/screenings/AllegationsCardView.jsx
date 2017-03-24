@@ -11,11 +11,16 @@ export default class AllegationsCardView extends React.Component {
     }
 
     this.onCancel = this.onCancel.bind(this)
+    this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
   }
 
   onCancel() {
     this.setState({mode: 'show'})
+  }
+
+  onEdit() {
+    this.setState({mode: 'edit'})
   }
 
   onSave() {
@@ -27,6 +32,7 @@ export default class AllegationsCardView extends React.Component {
     const props = {
       allegations: this.props.allegations,
       onCancel: this.onCancel,
+      onEdit: this.onEdit,
       onSave: this.onSave,
     }
 

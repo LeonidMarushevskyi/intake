@@ -19,20 +19,29 @@ describe('AllegationsCardView', () => {
     expect(component.find('AllegationsShowView').length).toEqual(1)
   })
 
-  describe('#onSave', () => {
-    it('toggles the mode to show', () => {
-      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
-      const instance = component.instance()
-      instance.onSave()
-      expect(instance.state.mode).toEqual('show')
-    })
-  })
-
   describe('#onCancel', () => {
     it('toggles the mode to show', () => {
       const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
       const instance = component.instance()
       instance.onCancel()
+      expect(instance.state.mode).toEqual('show')
+    })
+  })
+
+  describe('#onEdit', () => {
+    it('toggles the mode to edit', () => {
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'show'}/>)
+      const instance = component.instance()
+      instance.onEdit()
+      expect(instance.state.mode).toEqual('edit')
+    })
+  })
+
+  describe('#onSave', () => {
+    it('toggles the mode to show', () => {
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
+      const instance = component.instance()
+      instance.onSave()
       expect(instance.state.mode).toEqual('show')
     })
   })
