@@ -1,5 +1,5 @@
 import React from 'react'
-import nameFormatter from 'utils/nameFormatter'
+import AllegationRow from 'components/screenings/AllegationRow'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {
@@ -17,13 +17,17 @@ export default class AllegationsCardView extends React.Component {
 
   renderAllegation(allegations) {
     const firstIndex = 0
-    return allegations.map((allegation, index) => (
-      <tr key={index}>
-        <td>{index === firstIndex ? nameFormatter(allegation.get('victim')) : ''}</td>
-        <td>{nameFormatter(allegation.get('perpetrator'))}</td>
-        <td />
-      </tr>
-    ))
+    return allegations.map((allegation, index) => {
+      const displayVictim = (index === firstIndex)
+      return (
+        <AllegationRow
+          displayVictim={displayVictim}
+          key={index}
+          victim={allegation.get('victim')}
+          perpetrator={allegation.get('perpetrator')}
+        />
+      )
+    })
   }
 
   render() {

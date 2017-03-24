@@ -45,23 +45,23 @@ describe('AllegationsCardView', () => {
     const props = {allegations}
     const component = shallow(<AllegationsCardView {...props} />)
 
-    const table = component.find('tbody')
-    expect(table.find('tr').length).toEqual(4)
+    const allegationRow = component.find('AllegationRow')
+    expect(allegationRow.length).toEqual(4)
 
-    const firstRow = table.childAt(0)
-    expect(firstRow.childAt(0).text()).toEqual('Bart Simpson')
-    expect(firstRow.childAt(1).text()).toEqual('Homer Simpson')
+    expect(allegationRow.get(0).props.victim).toEqual(Immutable.Map(bart))
+    expect(allegationRow.get(0).props.perpetrator).toEqual(Immutable.Map(homer))
+    expect(allegationRow.get(0).props.displayVictim).toEqual(true)
 
-    const secondRow = table.childAt(1)
-    expect(secondRow.childAt(0).text()).toEqual('')
-    expect(secondRow.childAt(1).text()).toEqual('Marge Simpson')
+    expect(allegationRow.get(1).props.victim).toEqual(Immutable.Map(bart))
+    expect(allegationRow.get(1).props.perpetrator).toEqual(Immutable.Map(marge))
+    expect(allegationRow.get(1).props.displayVictim).toEqual(false)
 
-    const thirdRow = table.childAt(2)
-    expect(thirdRow.childAt(0).text()).toEqual('Lisa Simpson')
-    expect(thirdRow.childAt(1).text()).toEqual('Homer Simpson')
+    expect(allegationRow.get(2).props.victim).toEqual(Immutable.Map(lisa))
+    expect(allegationRow.get(2).props.perpetrator).toEqual(Immutable.Map(homer))
+    expect(allegationRow.get(2).props.displayVictim).toEqual(true)
 
-    const fourthRow = table.childAt(3)
-    expect(fourthRow.childAt(0).text()).toEqual('')
-    expect(fourthRow.childAt(1).text()).toEqual('Marge Simpson')
+    expect(allegationRow.get(3).props.victim).toEqual(Immutable.Map(lisa))
+    expect(allegationRow.get(3).props.perpetrator).toEqual(Immutable.Map(marge))
+    expect(allegationRow.get(3).props.displayVictim).toEqual(false)
   })
 })
