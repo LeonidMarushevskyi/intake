@@ -128,4 +128,74 @@ feature 'Allegations' do
       end
     end
   end
+
+  scenario 'saving allegations' do
+    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+
+    within '#allegations-card.card.edit' do
+      click_button 'Save'
+    end
+
+    screening.allegations << FactoryGirl.build(
+      :allegation,
+      victim_id: lisa.id,
+      perpetrator_id: marge.id,
+      screening_id: screening.id
+    )
+
+    expect(
+      a_request(:put, api_screening_path(screening.id))
+      .with(body: remove_root_id(screening.as_json).merge('participants' => []))
+    ).to have_been_made
+
+    within '#allegations-card.card.show' do
+      within('table') do
+        expect(page).to have_content('Lisa')
+        expect(page).to have_content('Marge')
+      end
+    end
+  end
+
+  scenario 'cancel editing allegations' do
+    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+
+    within '#allegations-card.card.edit' do
+      click_button 'Cancel'
+    end
+
+    within '#allegations-card.card.show' do
+      within('table') do
+        expect(page).to have_no_content('Lisa')
+        expect(page).to have_no_content('Marge')
+      end
+    end
+  end
+
+  scenario 'editing existing allegations' do
+    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit screening_path(id: screening.id)
+
+    within '#allegations-card.card.show' do
+      click_link 'Edit allegations'
+    end
+
+    expect(page).to have_selector('#allegations-card.card.edit')
+  end
 end
