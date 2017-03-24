@@ -1,5 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
-import AllegationsShowView from 'components/screenings/AllegationsShowView'
+import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
@@ -151,7 +151,7 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
-        <AllegationsShowView />
+        <AllegationsCardView mode='show' allegations={Immutable.List()}/>
         <WorkerSafetyShowView />
         <HistoryCard />
         {

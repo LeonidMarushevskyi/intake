@@ -79,8 +79,11 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the allegations card', () => {
-      const component = shallow(<ScreeningShowPage {...requiredProps} />)
-      expect(component.find('AllegationsShowView').length).toEqual(1)
+      const component = shallow(<ScreeningShowPage {...requiredProps}/>)
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.length).toEqual(1)
+      expect(allegationsCard.props().allegations).toEqual(Immutable.List())
+      expect(allegationsCard.props().mode).toEqual('show')
     })
 
     it('renders the worker safety card', () => {
