@@ -77,7 +77,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: existing_screening.id)
   end
 
-  scenario 'adding an unknown participant' do
+  scenario 'adding an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
       :participant,
       screening_id: existing_screening.id
@@ -91,6 +91,38 @@ feature 'Edit Screening' do
                   headers: { 'Content-Type' => 'application/json' })
     within '#search-card', text: 'SEARCH' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
+      find('.btn', text: /Create a new person/).click
+      expect(page).not_to have_content('Create a new person')
+    end
+
+    expect(a_request(:post, api_participants_path)
+      .with(body: hash_including(new_participant_request)))
+      .to have_been_made
+
+    within edit_participant_card_selector(created_participant_unknown.id) do
+      within '.card-header' do
+        expect(page).to have_content 'UNKNOWN PERSON'
+      end
+    end
+  end
+
+  scenario 'adding an unknown participant when no search results' do
+    created_participant_unknown = FactoryGirl.create(
+      :participant,
+      screening_id: existing_screening.id
+    )
+    new_participant_request = { screening_id: existing_screening.id, person_id: nil }
+
+    stub_request(:post, api_participants_path)
+      .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
+      .and_return(body: created_participant_unknown.to_json,
+                  status: 201,
+                  headers: { 'Content-Type' => 'application/json' })
+    within '#search-card', text: 'SEARCH' do
+      fill_in_autocompleter 'Search for any person', with: '~J~o~e~', skip_select: true
+      find_field('Search for any person').send_keys(:tab)
+      expect(page).to have_content('Create a new person')
+
       find('.btn', text: /Create a new person/).click
       expect(page).not_to have_content('Create a new person')
     end
