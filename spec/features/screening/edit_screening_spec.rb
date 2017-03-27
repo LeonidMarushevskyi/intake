@@ -17,6 +17,7 @@ feature 'Edit Screening' do
   scenario 'edit an existing screening' do
     existing_screening = FactoryGirl.create(
       :screening,
+      additional_information: 'This is why I decided what I did',
       address: address,
       assignee: 'Bob Loblaw',
       communication_method: 'phone',
@@ -26,10 +27,9 @@ feature 'Edit Screening' do
       name: 'Little Shop Of Horrors',
       reference: 'My Bad!',
       report_narrative: 'Narrative 123 test',
-      response_time: 'immediate',
-      screening_decision: 'evaluate_out',
-      started_at: '2016-08-13T10:00:00.000Z',
-      decision_rationale: 'This is why I decided what I did'
+      screening_decision: 'screen_out',
+      screening_decision_detail: 'information_request',
+      started_at: '2016-08-13T10:00:00.000Z'
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -81,9 +81,9 @@ feature 'Edit Screening' do
     end
 
     within '#decision-card.edit', text: 'DECISION ' do
-      expect(page).to have_field('Response Time', with: 'immediate')
-      expect(page).to have_field('Screening Decision', with: 'evaluate_out')
-      expect(page).to have_field('Decision Rationale', with: 'This is why I decided what I did')
+      expect(page).to have_field('Screening Decision', with: 'screen_out')
+      expect(page).to have_select('Category', selected: 'Information request')
+      expect(page).to have_field('Additional information', with: 'This is why I decided what I did')
     end
 
     expect(page).to have_css('#cross-report-card.edit', text: 'CROSS REPORT')
@@ -113,8 +113,8 @@ feature 'individual card save' do
       name: 'Little Shop Of Horrors',
       reference: 'My Bad!',
       report_narrative: 'Narrative 123 test',
-      response_time: 'immediate',
-      screening_decision: 'evaluate_out',
+      screening_decision: 'differential_response',
+      screening_decision_detail: 'Text value',
       started_at: '2016-08-13T10:00:00.000Z'
     )
   end

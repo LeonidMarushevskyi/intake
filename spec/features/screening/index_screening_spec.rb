@@ -10,24 +10,21 @@ feature 'Screenings Index' do
       reference: 'ABCDEF',
       started_at: '2016-08-11T18:24:22.157Z',
       name: 'Little Shop Of Horrors',
-      response_time: 'immediate',
-      screening_decision: 'evaluate_out'
+      screening_decision: 'screen_out'
     )
     screening_two = FactoryGirl.create(
       :screening,
       reference: 'HIJKLM',
       started_at: '2016-07-07T11:21:22.007Z',
       name: 'The Shining',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation'
+      screening_decision: 'promote_to_referral'
     )
     screening_three = FactoryGirl.create(
       :screening,
       reference: 'NOPQRS',
       started_at: '2016-08-10T09:11:22.112Z',
       name: 'It Follows',
-      response_time: 'more_than_twenty_four_hours',
-      screening_decision: 'referral_to_other_agency'
+      screening_decision: 'differential_response'
     )
     screenings = [screening_one, screening_two, screening_three]
 
@@ -40,7 +37,6 @@ feature 'Screenings Index' do
 
     within 'thead' do
       expect(page).to have_css('th', text: 'Name & ID')
-      expect(page).to have_css('th', text: 'Response Time')
       expect(page).to have_css('th', text: 'Decision')
       expect(page).to have_css('th', text: 'Report Date')
     end
@@ -51,92 +47,20 @@ feature 'Screenings Index' do
 
       within rows[0] do
         expect(page).to have_link('Little Shop Of Horrors - ABCDEF')
-        expect(page).to have_content('Immediate')
-        expect(page).to have_content('Evaluate Out')
+        expect(page).to have_content('Screen out')
         expect(page).to have_content('08/11/2016')
       end
 
       within rows[1] do
         expect(page).to have_link('The Shining - HIJKLM')
-        expect(page).to have_content('Within 24 hours')
-        expect(page).to have_content('Accept for Investigation')
+        expect(page).to have_content('Promote to referral')
         expect(page).to have_content('07/07/2016')
       end
 
       within rows[2] do
         expect(page).to have_link('It Follows - NOPQRS')
-        expect(page).to have_content('More than 24 hours')
-        expect(page).to have_content('Referral to Other Agency')
+        expect(page).to have_content('Differential response')
         expect(page).to have_content('08/10/2016')
-      end
-    end
-  end
-
-  scenario 'filter screenings by response time' do
-    screening_one = FactoryGirl.create(
-      :screening,
-      reference: 'ABCDEF',
-      started_at: '2016-08-11T18:24:22.157Z',
-      name: 'Little Shop Of Horrors',
-      response_time: 'immediate',
-      screening_decision: 'evaluate_out'
-    )
-    screening_two = FactoryGirl.create(
-      :screening,
-      reference: 'HIJKLM',
-      started_at: '2016-07-07T11:21:22.007Z',
-      name: 'The Shining',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation'
-    )
-    screening_three = FactoryGirl.create(
-      :screening,
-      reference: 'NOPQRS',
-      started_at: '2016-08-10T09:11:22.112Z',
-      name: 'It Follows',
-      response_time: 'more_than_twenty_four_hours',
-      screening_decision: 'referral_to_other_agency'
-    )
-    screenings = [screening_one, screening_two, screening_three]
-
-    stub_request(:get, api_screenings_path)
-      .and_return(body: screenings.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
-
-    immediate_screenings = [screening_one]
-    stub_request(:get, %r{/api/v1/screenings\?response_times%5B%5D=immediate})
-      .and_return(body: immediate_screenings.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
-    immediate_and_24hrs_screenings = [screening_one, screening_two]
-    search_terms = { response_times: %w(immediate within_twenty_four_hours) }
-    stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
-      .and_return(body: immediate_and_24hrs_screenings.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
-
-    visit screenings_path
-
-    find('label', text: 'Immediate').click
-    find('label', text: 'Within 24 hours').click
-
-    within 'tbody' do
-      expect(page).to have_css('tr', count: 2)
-      rows = all('tr')
-
-      within rows[0] do
-        expect(page).to have_link('Little Shop Of Horrors - ABCDEF')
-        expect(page).to have_content('Immediate')
-        expect(page).to have_content('Evaluate Out')
-        expect(page).to have_content('08/11/2016')
-      end
-
-      within rows[1] do
-        expect(page).to have_link('The Shining - HIJKLM')
-        expect(page).to have_content('Within 24 hours')
-        expect(page).to have_content('Accept for Investigation')
-        expect(page).to have_content('07/07/2016')
       end
     end
   end

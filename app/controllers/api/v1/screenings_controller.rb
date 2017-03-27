@@ -6,9 +6,9 @@ module Api
   module V1
     class ScreeningsController < ApiController # :nodoc:
       PERMITTED_PARAMS = [
+        :additional_information,
         :assignee,
         :communication_method,
-        :decision_rationale,
         :ended_at,
         :id,
         :incident_county,
@@ -17,8 +17,8 @@ module Api
         :name,
         :reference,
         :report_narrative,
-        :response_time,
         :screening_decision,
+        :screening_decision_detail,
         :started_at,
         address: [
           :id,
@@ -54,7 +54,7 @@ module Api
       private
 
       def screening_index_params
-        params.permit(response_times: [], screening_decisions: [])
+        params.permit(screening_decisions: [])
       end
 
       def screening_params

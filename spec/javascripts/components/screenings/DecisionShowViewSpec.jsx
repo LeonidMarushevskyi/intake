@@ -31,34 +31,32 @@ describe('DecisionShowView', () => {
 
   it('render the show fields', () => {
     const screening = Immutable.fromJS({
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation',
-      decision_rationale: 'the decision is decided',
+      additional_information: 'the decision is decided',
+      screening_decision: 'screen_out',
+      screening_decision_detail: 'consultation',
     })
-
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
     expect(component.find('ShowField').length).toEqual(3)
-    expect(component.find('ShowField[label="Response Time"]').html())
-      .toContain('Within 24 hours')
-    expect(component.find('ShowField[label="Screening Decision"]').html())
-      .toContain('Accept for Investigation')
-    expect(component.find('ShowField[label="Decision Rationale"]').html())
+    expect(component.find('ShowField[label="Screening Decision"]').props().children)
+      .toEqual('Screen out')
+    expect(component.find('ShowField[label="Category"]').html())
+      .toContain('Consultation')
+    expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('the decision is decided')
   })
 
   it('renders show fields correctly when values are not set', () => {
     const screening = Immutable.fromJS({
-      response_time: null,
+      screening_decision_detail: null,
       screening_decision: null,
-      decision_rationale: null,
+      additional_information: null,
     })
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
     expect(component.find('ShowField').length).toEqual(3)
-    expect(component.find('ShowField[label="Response Time"]').html())
-      .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Screening Decision"]').html())
       .toContain('<div class="c-gray"></div>')
-    expect(component.find('ShowField[label="Decision Rationale"]').html())
+    expect(component.find('ShowField[label="Category"]').length).toEqual(0)
+    expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('<div class="c-gray"></div>')
   })
 })

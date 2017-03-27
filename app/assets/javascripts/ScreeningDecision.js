@@ -1,7 +1,8 @@
 const SCREENING_DECISION = Object.freeze({
-  evaluate_out: 'Evaluate Out',
-  accept_for_investigation: 'Accept for Investigation',
-  referral_to_other_agency: 'Referral to Other Agency',
+  differential_response: 'Differential response',
+  information_to_child_welfare_services: 'Information to child welfare services',
+  promote_to_referral: 'Promote to referral',
+  screen_out: 'Screen out',
 })
 
 export default SCREENING_DECISION

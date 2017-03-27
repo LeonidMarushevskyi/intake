@@ -104,7 +104,7 @@ describe ScreeningRepository do
 
     it 'returns the screening results when screening search is successful' do
       results = [{ id: '1' }, { id: '2' }].to_json
-      search_terms = { response_times: %w(immediate within_twenty_four_hours) }
+      search_terms = { screening_decisions: %w(promote_to_referral screen_out) }
       stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
         .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
 
@@ -113,7 +113,7 @@ describe ScreeningRepository do
     end
 
     it 'sends a GET request to api screening search' do
-      search_terms = { response_times: %w(immediate within_twenty_four_hours) }
+      search_terms = { screening_decisions: %w(promote_to_referral screen_out) }
       stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
         .and_return(body: [].to_json, status: 200, headers: { 'Content-Type': 'application/json' })
 

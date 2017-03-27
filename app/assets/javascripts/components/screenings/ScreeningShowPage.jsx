@@ -43,9 +43,9 @@ export class ScreeningShowPage extends React.Component {
     }
   }
 
-  setField(fieldSeq, value) {
+  setField(fieldSeq, value, callback) {
     const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits})
+    this.setState({screeningEdits: screeningEdits}, callback)
   }
 
   cardSave(fieldList) {

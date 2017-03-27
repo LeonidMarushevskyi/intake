@@ -15,10 +15,10 @@ feature 'Show Screening' do
     )
     existing_screening = FactoryGirl.create(
       :screening,
+      additional_information: 'The reasoning for this decision',
       address: address,
       assignee: 'Bob Loblaw',
       communication_method: 'mail',
-      decision_rationale: 'The reasoning for this decision',
       ended_at: '2016-08-22T11:00:00.000Z',
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
@@ -26,8 +26,8 @@ feature 'Show Screening' do
       name: 'The Rocky Horror Picture Show',
       reference: 'My Bad!',
       report_narrative: 'some narrative',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'evaluate_out',
+      screening_decision: 'screen_out',
+      screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z'
     )
 
@@ -61,8 +61,9 @@ feature 'Show Screening' do
     end
 
     within '#decision-card.show', text: 'DECISION' do
-      expect(page).to have_content 'Within 24 hours'
-      expect(page).to have_content 'Evaluate Out'
+      expect(page).to have_content 'Screen out'
+      expect(page).to have_content 'Category'
+      expect(page).to have_content 'Consultation'
       expect(page).to have_content 'The reasoning for this decision'
     end
 

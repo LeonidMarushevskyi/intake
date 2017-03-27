@@ -5,8 +5,8 @@ class Screening # :nodoc:
   include Virtus.model
   include ActiveModel::Model
 
+  attribute :additional_information
   attribute :communication_method
-  attribute :decision_rationale
   attribute :ended_at
   attribute :id
   attribute :incident_county
@@ -15,8 +15,8 @@ class Screening # :nodoc:
   attribute :name
   attribute :reference
   attribute :report_narrative
-  attribute :response_time
   attribute :screening_decision
+  attribute :screening_decision_detail
   attribute :started_at
 
   attribute :address, Address

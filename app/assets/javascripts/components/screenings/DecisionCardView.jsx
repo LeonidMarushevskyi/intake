@@ -13,7 +13,7 @@ export default class DecisionCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
 
-    this.fields = Immutable.fromJS(['response_time', 'screening_decision', 'decision_rationale'])
+    this.fields = Immutable.fromJS(['screening_decision_detail', 'screening_decision', 'additional_information'])
   }
 
   onEdit(event) {

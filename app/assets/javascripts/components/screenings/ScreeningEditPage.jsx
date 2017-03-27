@@ -63,9 +63,9 @@ export class ScreeningEditPage extends React.Component {
     this.props.actions.saveScreening(screening.toJS()).then(() => this.show())
   }
 
-  setField(fieldSeq, value) {
+  setField(fieldSeq, value, callback) {
     const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits})
+    this.setState({screeningEdits: screeningEdits}, callback)
   }
 
   setParticipantField(id, value) {
