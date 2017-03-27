@@ -42,7 +42,7 @@ feature 'screening incident information card' do
 
     existing_screening.assign_attributes(incident_date: '2015-10-05')
     stub_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json(except: :id)))
+      .with(json_body(remove_root_id(existing_screening.as_json)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#incident-information-card.edit' do
@@ -51,7 +51,7 @@ feature 'screening incident information card' do
 
     expect(
       a_request(:put, api_screening_path(existing_screening.id))
-      .with(json_body(existing_screening.to_json(except: :id)))
+      .with(json_body(remove_root_id(existing_screening.as_json)))
     ).to have_been_made
 
     within '#incident-information-card.show' do

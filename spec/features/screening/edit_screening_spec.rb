@@ -149,22 +149,24 @@ feature 'individual card save' do
 
   scenario 'unchanged attributes are not blanked' do
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
-      updated_screening = existing_screening.as_json(except: :id).merge(incident_date: '1996-02-12')
+      updated_screening = remove_root_id(
+        existing_screening.as_json
+      ).merge(incident_date: '1996-02-12')
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(remove_root_id(updated_screening.as_json)))
         .and_return(json_body(updated_screening.to_json))
       fill_in 'Incident Date', with: updated_screening[:incident_date]
       click_button 'Save'
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(remove_root_id(updated_screening.as_json)))
       ).to have_been_made
     end
   end
 
   scenario 'narrative saves and cancels in isolation' do
     within '#narrative-card' do
-      updated_screening = existing_screening.as_json(except: :id).merge(
+      updated_screening = remove_root_id(existing_screening.as_json).merge(
         report_narrative: 'This is the updated narrative'
       ).to_json
       stub_request(:put, api_screening_path(existing_screening.id))
@@ -238,30 +240,30 @@ feature 'individual card save' do
   end
 
   scenario 'Incident information saves and cancels in isolation' do
-    change_address = FactoryGirl.create(
-      :address,
-      street_address: '33 Whatever Rd',
-      city: 'Modesto',
-      state: 'TX',
-      zip: '57575',
-      type: nil
-    )
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
-      updated_screening = existing_screening.as_json(except: :id).merge(address: change_address,
-                                                                        incident_date: '1996-02-12')
+      existing_screening.address.assign_attributes(
+        street_address: '33 Whatever Rd',
+        city: 'Modesto',
+        state: 'TX',
+        zip: '57575',
+        type: nil
+      )
+      existing_screening.incident_date = '1996-02-12'
+
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
-        .and_return(json_body(updated_screening.to_json))
-      fill_in 'Incident Date', with: updated_screening[:incident_date]
-      fill_in 'Address', with: change_address.street_address
-      fill_in 'City', with: change_address.city
+        .with(json_body(remove_root_id(existing_screening.as_json)))
+        .and_return(json_body(existing_screening.to_json))
+
+      fill_in 'Incident Date', with: '1996-02-12'
+      fill_in 'Address', with: '33 Whatever Rd'
+      fill_in 'City', with: 'Modesto'
       select 'Texas', from: 'State'
-      fill_in 'Zip', with: change_address.zip
+      fill_in 'Zip', with: '57575'
       click_button 'Save'
 
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(remove_root_id(existing_screening.as_json)))
       ).to have_been_made
     end
   end

@@ -70,7 +70,7 @@ feature 'decision card' do
     )
 
     stub_request(:put, api_screening_path(screening.id))
-      .with(json_body(screening.to_json(except: :id)))
+      .with(json_body(remove_root_id(screening.as_json)))
       .and_return(json_body(screening.to_json))
 
     within '#decision-card.edit' do
@@ -92,7 +92,7 @@ feature 'decision card' do
     expect(page).to have_content('I changed my decision rationale')
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(json_body(screening.to_json(except: :id)))
+      .with(json_body(remove_root_id(screening.as_json)))
     ).to have_been_made
   end
 
