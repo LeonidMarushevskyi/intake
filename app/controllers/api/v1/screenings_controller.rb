@@ -31,6 +31,12 @@ module Api
           :state,
           :street_address,
           :zip
+        ],
+        allegations: [
+          :id,
+          :screening_id,
+          :perpetrator_id,
+          :victim_id
         ]
       ].freeze
 

@@ -138,24 +138,35 @@ feature 'Allegations' do
 
     visit edit_screening_path(id: screening.id)
 
+    allegation_attributes = {
+      victim_id: lisa.id,
+      perpetrator_id: marge.id,
+      screening_id: screening.id
+    }
+
+    screening_with_new_allegation = screening.dup.tap do |obj|
+      obj.assign_attributes(
+        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+      )
+    end
+
+    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    screening.assign_attributes(allegations: [persisted_allegation])
+
+    stub_request(:put, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within '#allegations-card.card.edit' do
       click_button 'Save'
     end
 
-    screening.allegations << FactoryGirl.build(
-      :allegation,
-      victim_id: lisa.id,
-      perpetrator_id: marge.id,
-      screening_id: screening.id
-    )
-
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(body: remove_root_id(screening.as_json).merge('participants' => []))
+      .with(body: remove_root_id(screening_with_new_allegation.as_json).merge('participants' => []))
     ).to have_been_made
 
     within '#allegations-card.card.show' do
-      within('table') do
+      within 'table tbody tr' do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Marge')
       end
