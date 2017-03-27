@@ -198,6 +198,9 @@ export class ScreeningEditPage extends React.Component {
           />
         }
         <CrossReportEditView />
+        <AllegationsCardView />
+        <WorkerSafetyCardView />
+        <HistoryCard />
         {
           loaded &&
           <DecisionCardView
@@ -209,9 +212,6 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsCardView />
-        <WorkerSafetyCardView />
-        <HistoryCard />
         <div className='row'>
           <div className='centered'>
             <button className='btn btn-primary'>Submit</button>
