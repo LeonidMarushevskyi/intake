@@ -24,6 +24,7 @@ export default class AllegationsCardView extends React.Component {
   }
 
   onSave() {
+    this.props.onSave(['allegations'], this.props.allegations)
     this.setState({mode: 'show'})
   }
 
@@ -44,4 +45,5 @@ export default class AllegationsCardView extends React.Component {
 AllegationsCardView.propTypes = {
   allegations: React.PropTypes.object.isRequired,
   mode: React.PropTypes.string.isRequired,
+  onSave: React.PropTypes.func.isRequired,
 }

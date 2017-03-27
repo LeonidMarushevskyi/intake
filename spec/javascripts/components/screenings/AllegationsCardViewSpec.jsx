@@ -4,9 +4,11 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('AllegationsCardView', () => {
+  const allegations = Immutable.List()
   const requiredProps = {
-    allegations: Immutable.List(),
+    allegations: allegations,
     mode: 'edit',
+    onSave: () => null,
   }
 
   it('renders the edit view in edit mode', () => {
@@ -43,6 +45,14 @@ describe('AllegationsCardView', () => {
       const instance = component.instance()
       instance.onSave()
       expect(instance.state.mode).toEqual('show')
+    })
+
+    it('calls onSave from props with the appropriate values', () => {
+      const onSave = jasmine.createSpy()
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'} onSave={onSave} />)
+      const instance = component.instance()
+      instance.onSave()
+      expect(onSave).toHaveBeenCalledWith(['allegations'], allegations)
     })
   })
 })

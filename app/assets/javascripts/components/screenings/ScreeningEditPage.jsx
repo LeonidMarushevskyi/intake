@@ -198,7 +198,11 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsCardView allegations={this.props.allegations} mode='edit'/>
+        <AllegationsCardView
+          allegations={this.props.screening.get('allegations')}
+          mode='edit'
+          onSave={this.cardSave}
+        />
         <WorkerSafetyCardView />
         <HistoryCard />
         {
@@ -235,17 +239,15 @@ export class ScreeningEditPage extends React.Component {
 
 ScreeningEditPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
-  allegations: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, _ownProps) {
+export function mapStateToProps(state, _ownProps) {
   return {
-    allegations: addNewAllegations(state.participants),
     participants: state.participants,
-    screening: state.screening,
+    screening: state.screening.set('allegations', addNewAllegations(state.screening.get('id'), state.participants)),
   }
 }
 
