@@ -56,6 +56,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
                 label={decisionLabel}
                 value={screening.getIn(['screening_decision_detail']) || ''}
                 onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                maxLength='64'
               />
               }
         </div>

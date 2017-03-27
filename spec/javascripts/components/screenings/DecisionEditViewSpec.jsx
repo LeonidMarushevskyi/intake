@@ -25,6 +25,7 @@ describe('conditional decision options', () => {
       screening_decision_detail: 'Service name text',
     })})
     expect(component.find('#decisionDetail').props().value).toEqual('Service name text')
+    expect(component.find('#decisionDetail').props().maxLength).toEqual('64')
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
   it('renders input for Information to child welfare services', () => {
@@ -33,6 +34,7 @@ describe('conditional decision options', () => {
       screening_decision_detail: 'Staff name text',
     })})
     expect(component.find('#decisionDetail').props().value).toEqual('Staff name text')
+    expect(component.find('#decisionDetail').props().maxLength).toEqual('64')
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Staff name')
   })
   it('renders options for Promote to referral', () => {
