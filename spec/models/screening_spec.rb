@@ -42,6 +42,14 @@ describe Screening do
             agency_name: nil
           }
         ],
+        allegations: [
+          {
+            id: '1',
+            screening_id: '2',
+            victim_id: '1',
+            perpetrator_id: '4'
+          }
+        ],
         participants: [
           {
             id: '1',
@@ -95,6 +103,9 @@ describe Screening do
           city: 'NY',
           state: 'NY',
           zip: '11222'
+        ),
+        allegations: array_including(
+          a_hash_including(id: '1', screening_id: '2', victim_id: '1', perpetrator_id: '4')
         ),
         participants: array_including(
           a_hash_including(
