@@ -20,8 +20,6 @@ describe('IncidentInformationCardView', () => {
         zip: '95814',
       },
       location_type: 'Juvenile Detention',
-      response_time: 'within_twenty_four_hours',
-      screening_decision: 'accept_for_investigation',
     }),
   }
   const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])

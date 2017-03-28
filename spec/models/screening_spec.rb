@@ -5,8 +5,8 @@ describe Screening do
   describe 'as_json' do
     it 'returns the attributes of a screening as a hash' do
       attributes = {
+        additional_information: 'this is why',
         communication_method: 'phone',
-        decision_rationale: 'this is why',
         ended_at: '2016-08-13T11:00:00.000Z',
         id: '2',
         incident_county: 'sacramento',
@@ -15,8 +15,8 @@ describe Screening do
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
         report_narrative: 'Narrative 123 test',
-        response_time: 'immediate',
-        screening_decision: 'evaluate_out',
+        screening_decision: 'promote_to_referral',
+        screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',
         address: {
           id: '1',
@@ -50,7 +50,7 @@ describe Screening do
         described_class.new(attributes).as_json.with_indifferent_access
       ).to include({
         communication_method: 'phone',
-        decision_rationale: 'this is why',
+        additional_information: 'this is why',
         ended_at: '2016-08-13T11:00:00.000Z',
         id: '2',
         incident_county: 'sacramento',
@@ -59,8 +59,8 @@ describe Screening do
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
         report_narrative: 'Narrative 123 test',
-        response_time: 'immediate',
-        screening_decision: 'evaluate_out',
+        screening_decision: 'promote_to_referral',
+        screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',
         address: include(
           id: '1',

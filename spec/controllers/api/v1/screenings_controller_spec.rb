@@ -39,10 +39,9 @@ describe Api::V1::ScreeningsController do
       {
         id: '1',
         assignee: 'Robert Smith',
-        decision_rationale: 'the new decision is updated',
+        additional_information: 'the new decision is updated',
         incident_county: 'sacramento',
         name: '123 Report',
-        response_time: 'immediate',
         screening_decision: 'evaluate_out',
         address: {
           id: '2',
@@ -72,7 +71,7 @@ describe Api::V1::ScreeningsController do
   end
 
   describe '#index' do
-    context 'without response_times or screening_decisions' do
+    context 'without screening_decisions' do
       let(:screenings) { double(:screenings, as_json: [{ id: '1' }]) }
       before do
         allow(ScreeningRepository).to receive(:search)
@@ -85,15 +84,15 @@ describe Api::V1::ScreeningsController do
       end
     end
 
-    context 'with response_times and screening_decisions' do
+    context 'with screening_decisions' do
       let(:screenings) { double(:screenings, as_json: []) }
       let(:params) do
-        { response_times: %w(immediate within_twenty_four_hours) }
+        { screening_decisions: %w(screen_out promote_to_referral) }
       end
 
       before do
         expect(ScreeningRepository).to receive(:search)
-          .with('response_times' => %w(immediate within_twenty_four_hours))
+          .with('screening_decisions' => %w(screen_out promote_to_referral))
           .and_return(screenings)
       end
 

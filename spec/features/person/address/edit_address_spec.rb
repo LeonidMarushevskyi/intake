@@ -41,7 +41,7 @@ feature 'Edit Address' do
     end
   end
 
-  scenario 'when a user cancels after editing and existing address' do
+  scenario 'when a user cancels after editing an existing address' do
     visit edit_person_path(id: person.id)
     within '#addresses' do
       within all('.list-item').first do

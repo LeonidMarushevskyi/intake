@@ -63,9 +63,9 @@ export class ScreeningEditPage extends React.Component {
     this.props.actions.saveScreening(screening.toJS()).then(() => this.show())
   }
 
-  setField(fieldSeq, value) {
+  setField(fieldSeq, value, callback) {
     const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits})
+    this.setState({screeningEdits: screeningEdits}, callback)
   }
 
   setParticipantField(id, value) {
@@ -198,6 +198,9 @@ export class ScreeningEditPage extends React.Component {
           />
         }
         <CrossReportEditView />
+        <AllegationsCardView />
+        <WorkerSafetyCardView />
+        <HistoryCard />
         {
           loaded &&
           <DecisionCardView
@@ -209,9 +212,6 @@ export class ScreeningEditPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsCardView />
-        <WorkerSafetyCardView />
-        <HistoryCard />
         <div className='row'>
           <div className='centered'>
             <button className='btn btn-primary'>Submit</button>

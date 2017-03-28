@@ -17,15 +17,13 @@ describe('ScreeningsTable', () => {
       id: '1',
       name: 'My Screening Name',
       reference: 'ABCDEF',
-      response_time: 'immediate',
-      screening_decision: 'accept_for_investigation',
+      screening_decision: 'screen_out',
       started_at: '2016-09-21T14:26:58.042Z',
     }]
     const view = TestUtils.renderIntoDocument(<ScreeningsTable screenings={screenings}/>)
     const tbody = TestUtils.findRenderedDOMComponentWithTag(view, 'tbody')
     expect(tbody.textContent).toContain('My Screening Name - ABCDEF')
-    expect(tbody.textContent).toContain('Immediate')
-    expect(tbody.textContent).toContain('Accept for Investigation')
+    expect(tbody.textContent).toContain('Screen out')
     expect(tbody.textContent).toContain('09/21/2016')
   })
 })

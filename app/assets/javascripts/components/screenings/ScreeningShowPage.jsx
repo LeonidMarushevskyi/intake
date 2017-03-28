@@ -43,9 +43,9 @@ export class ScreeningShowPage extends React.Component {
     }
   }
 
-  setField(fieldSeq, value) {
+  setField(fieldSeq, value, callback) {
     const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits})
+    this.setState({screeningEdits: screeningEdits}, callback)
   }
 
   cardSave(fieldList) {
@@ -152,6 +152,9 @@ export class ScreeningShowPage extends React.Component {
             />
         }
         <CrossReportShowView />
+        <AllegationsShowView />
+        <WorkerSafetyShowView />
+        <HistoryCard />
         {
           loaded &&
           <DecisionCardView
@@ -162,9 +165,6 @@ export class ScreeningShowPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <AllegationsShowView />
-        <WorkerSafetyShowView />
-        <HistoryCard />
         <IndexLink to='/' className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${params.id}/edit`}>Edit</Link>
       </div>

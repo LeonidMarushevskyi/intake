@@ -12,9 +12,9 @@ describe('DecisionCardView', () => {
       onChange: jasmine.createSpy('onChange'),
       onSave: jasmine.createSpy().and.returnValue(Promise.resolve()),
       screening: Immutable.fromJS({
-        response_time: 'within_twenty_four_hours',
-        screening_decision: 'accept_for_investigation',
-        decision_rationale: 'the decision is taken',
+        screening_decision_detail: 'The service',
+        screening_decision: 'differential_response',
+        additional_information: 'the decision is taken',
       }),
     }
   })
@@ -22,6 +22,23 @@ describe('DecisionCardView', () => {
     beforeEach(() => {
       component = mount(<DecisionCardView {...props} mode='edit' />)
     })
+
+    it('blanks decision details when decision type is changed', () => {
+      component.find('#decisionDetail').simulate(
+          'change', {target: {value: 'The service in question'}}
+      )
+      expect(props.onChange).toHaveBeenCalledWith(['screening_decision_detail'], 'The service in question')
+      component.find('#screening_decision').simulate(
+          'change', {target: {value: 'screen_out'}}
+      )
+      expect(props.onChange.calls.argsFor(1)).toContain(['screening_decision'], 'screen_out')
+
+      // We need to call the callback passed to the spy in order to trigger the second call
+      // to onChange
+      props.onChange.calls.mostRecent().args[2]()
+      expect(props.onChange).toHaveBeenCalledWith(['screening_decision_detail'], '')
+    })
+
     it('renders the edit card', () => {
       expect(component.find('DecisionEditView').length).toEqual(1)
     })
@@ -35,24 +52,24 @@ describe('DecisionCardView', () => {
       })
       it('saves the correct fields', () => {
         expect(props.onSave).toHaveBeenCalledWith(Immutable.fromJS([
-          'response_time',
+          'screening_decision_detail',
           'screening_decision',
-          'decision_rationale',
+          'additional_information',
         ]))
       })
     })
     describe('cancel button', () => {
       beforeEach(() => {
-        component.find('#decision_rationale').simulate(
+        component.find('#additional_information').simulate(
           'change', {target: {value: 'the decision is changed'}}
         )
         component.find('.btn.btn-default').simulate('click')
       })
       it('cancels the correct fields', () => {
         expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
-          'response_time',
+          'screening_decision_detail',
           'screening_decision',
-          'decision_rationale',
+          'additional_information',
         ]))
       })
       it('discards changes on cancel', () => {
