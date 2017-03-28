@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Allegations' do
+feature 'edit allegations' do
   scenario 'loading screening with participants generates possible allegations' do
     marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
     homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
@@ -192,21 +192,5 @@ feature 'Allegations' do
         expect(page).to have_no_content('Marge')
       end
     end
-  end
-
-  scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, api_screening_path(screening.id))
-      .and_return(json_body(screening.to_json, status: 200))
-
-    visit screening_path(id: screening.id)
-
-    within '#allegations-card.card.show' do
-      click_link 'Edit allegations'
-    end
-
-    expect(page).to have_selector('#allegations-card.card.edit')
   end
 end
