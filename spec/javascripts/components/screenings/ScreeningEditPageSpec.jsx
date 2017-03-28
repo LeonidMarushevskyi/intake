@@ -1,7 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningEditPage, mapStateToProps} from 'components/screenings/ScreeningEditPage'
-import {browserHistory} from 'react-router'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
@@ -213,32 +212,6 @@ describe('ScreeningEditPage', () => {
       const instance = component.instance()
       expect(instance.state.screening).not.toEqual(newScreeningState)
       expect(instance.state.screening).toEqual(screening)
-    })
-  })
-
-  describe('update', () => {
-    const saveScreening = jasmine.createSpy('saveScreening')
-    beforeEach(() => {
-      const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-      promiseSpyObj.then.and.callFake((then) => then({}))
-      saveScreening.and.returnValue(promiseSpyObj)
-      const props = {
-        ...requiredProps,
-        actions: {saveScreening},
-        params: {id: '1'},
-        screening: Immutable.Map({name: 'mock screening'}),
-      }
-      spyOn(browserHistory, 'push')
-      const component = shallow(<ScreeningEditPage {...props} />)
-      component.instance().update()
-    })
-
-    it('calls screening save', () => {
-      expect(saveScreening).toHaveBeenCalledWith({name: 'mock screening'})
-    })
-
-    it('pushes show page to browser history', () => {
-      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1'})
     })
   })
 

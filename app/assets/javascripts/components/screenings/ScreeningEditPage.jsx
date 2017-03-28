@@ -13,7 +13,6 @@ import ScreeningInformationCardView from 'components/screenings/ScreeningInforma
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {addNewAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
-import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 export class ScreeningEditPage extends React.Component {
@@ -36,7 +35,6 @@ export class ScreeningEditPage extends React.Component {
       'setField',
       'setParticipantField',
       'saveParticipant',
-      'update',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -52,16 +50,6 @@ export class ScreeningEditPage extends React.Component {
     if (!this.props.screening.equals(nextProps.screening)) {
       this.setState({screening: nextProps.screening})
     }
-  }
-
-  show() {
-    const {params} = this.props
-    browserHistory.push({pathname: `/screenings/${params.id}`})
-  }
-
-  update() {
-    const {screening} = this.state
-    this.props.actions.saveScreening(screening.toJS()).then(() => this.show())
   }
 
   setField(fieldSeq, value, callback) {
