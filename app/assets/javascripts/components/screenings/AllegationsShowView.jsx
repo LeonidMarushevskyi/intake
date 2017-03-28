@@ -1,7 +1,8 @@
 import React from 'react'
 import EditLink from 'components/common/EditLink'
+import AllegationRow from 'components/screenings/AllegationRow'
 
-const AllegationsShowView = ({onEdit}) => (
+const AllegationsShowView = ({allegations, onEdit}) => (
   <div className='card show double-gap-top' id='allegations-card'>
     <div className='card-header'>
       <span>Allegations</span>
@@ -24,6 +25,17 @@ const AllegationsShowView = ({onEdit}) => (
                 <th scope='col'>Allegation(s)</th>
               </tr>
             </thead>
+            <tbody>
+              {
+                allegations.map((allegation) => (
+                  <AllegationRow
+                    victim={allegation.get('victim')}
+                    perpetrator={allegation.get('perpetrator')}
+                    displayVictim={true}
+                  />
+                ))
+              }
+            </tbody>
           </table>
         </div>
       </div>
@@ -32,6 +44,7 @@ const AllegationsShowView = ({onEdit}) => (
 )
 
 AllegationsShowView.propTypes = {
+  allegations: React.PropTypes.object.isRequired,
   onEdit: React.PropTypes.func.isRequired,
 }
 
