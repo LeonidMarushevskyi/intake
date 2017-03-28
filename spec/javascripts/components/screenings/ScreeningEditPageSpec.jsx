@@ -486,12 +486,12 @@ describe('ScreeningEditPage', () => {
       last_name: 'Simpson',
       roles: ['Perpetrator'],
     }
-    const participants = Immutable.fromJS([victim, perpetrator])
-    const screening = Immutable.fromJS({id: '3', allegations: []})
-    const state = {participants, screening}
 
-    it('generates new allegations for the participants', () => {
-      const screening = mapStateToProps(state, null).screening
+    it('generates new allegations for the participants when there are no persisted allegations', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const screening = Immutable.fromJS({id: '3', allegations: []})
+      const state = {participants, screening}
+      const mappedState = mapStateToProps(state, null)
       const expectedScreening = {
         id: '3',
         allegations: [{
@@ -503,8 +503,67 @@ describe('ScreeningEditPage', () => {
           victim_id: victim.id,
         }],
       }
-      expect(screening.toJS()).toEqual(expectedScreening)
-      expect(Immutable.is(screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
+      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+    })
+
+    it('replaces generated allegations with persisted allegations', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const state = {participants, screening}
+      const mappedState = mapStateToProps(state, null)
+      const expectedScreening = {
+        id: '3',
+        allegations: [{
+          id: '9',
+          screening_id: '3',
+          perpetrator,
+          perpetrator_id: perpetrator.id,
+          victim,
+          victim_id: victim.id,
+        }],
+      }
+      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
+      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+    })
+
+    it('interleaves generated allegations with persisted allegations', () => {
+      const anotherPerpetrator = {
+        id: '3',
+        first_name: 'Marge',
+        last_name: 'Simpson',
+        roles: ['Perpetrator'],
+      }
+      const participants = Immutable.fromJS([victim, perpetrator, anotherPerpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const state = {participants, screening}
+      const mappedState = mapStateToProps(state, null)
+      const expectedScreening = {
+        id: '3',
+        allegations: [{
+          id: '9',
+          screening_id: '3',
+          perpetrator,
+          perpetrator_id: perpetrator.id,
+          victim,
+          victim_id: victim.id,
+        }, {
+          id: null,
+          screening_id: '3',
+          perpetrator: anotherPerpetrator,
+          perpetrator_id: anotherPerpetrator.id,
+          victim,
+          victim_id: victim.id,
+        }],
+      }
+      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
+      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
     })
   })
 })

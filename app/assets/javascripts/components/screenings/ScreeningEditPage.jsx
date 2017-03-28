@@ -247,7 +247,14 @@ ScreeningEditPage.propTypes = {
 export function mapStateToProps(state, _ownProps) {
   return {
     participants: state.participants,
-    screening: state.screening.set('allegations', addNewAllegations(state.screening.get('id'), state.participants)),
+    screening: state.screening.set(
+      'allegations',
+      addNewAllegations(
+        state.screening.get('id'),
+        state.participants,
+        state.screening.get('allegations')
+      )
+    ),
   }
 }
 
