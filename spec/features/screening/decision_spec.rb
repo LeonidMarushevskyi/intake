@@ -84,7 +84,12 @@ feature 'decision card' do
       fill_in 'Service name', with: 'An arbitrary string'
       click_button 'Save'
     end
-
+    expect(page).to have_content('Screening Decision')
+    expect(page).to have_content('Differential response')
+    expect(page).to have_content('Service name')
+    expect(page).to have_content('An arbitrary string')
+    expect(page).to have_content('Additional information')
+    expect(page).to have_content('I changed my decision rationale')
     expect(
       a_request(:put, api_screening_path(screening.id))
       .with(json_body(screening.to_json(except: :id)))

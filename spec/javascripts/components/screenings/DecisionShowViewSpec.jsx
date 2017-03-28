@@ -29,7 +29,23 @@ describe('DecisionShowView', () => {
     })
   })
 
-  it('render the show fields', () => {
+  it('renders the show fields with text input decision_detail', () => {
+    const screening = Immutable.fromJS({
+      additional_information: 'the decision is decided',
+      screening_decision: 'differential_response',
+      screening_decision_detail: 'Some character string',
+    })
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    expect(component.find('ShowField').length).toEqual(3)
+    expect(component.find('ShowField[label="Screening Decision"]').props().children)
+      .toEqual('Differential response')
+    expect(component.find('ShowField[label="Service name"]').html())
+      .toContain('Some character string')
+    expect(component.find('ShowField[label="Additional information"]').html())
+      .toContain('the decision is decided')
+  })
+
+  it('renders the show fields with selectable decision_detail', () => {
     const screening = Immutable.fromJS({
       additional_information: 'the decision is decided',
       screening_decision: 'screen_out',

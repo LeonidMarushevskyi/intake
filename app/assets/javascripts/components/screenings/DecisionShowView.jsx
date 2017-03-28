@@ -12,8 +12,12 @@ const DecisionShowView = ({screening, onEdit}) => {
 
   const decisionDetailText = (() => {
     const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
-    const machineValue = screening.get('screening_decision_detail')
-    return (decisionOptions.values && decisionOptions.values[machineValue]) || ''
+    if (decisionOptions.type === 'text') {
+      return screening.get('screening_decision_detail')
+    } else {
+      const machineValue = screening.get('screening_decision_detail')
+      return (decisionOptions.values && decisionOptions.values[machineValue]) || ''
+    }
   })()
 
   return (
