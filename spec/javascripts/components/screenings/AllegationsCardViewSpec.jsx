@@ -11,16 +11,6 @@ describe('AllegationsCardView', () => {
     onSave: () => null,
   }
 
-  it('renders the edit view in edit mode', () => {
-    const component = shallow(<AllegationsCardView {...requiredProps} mode='edit'/>)
-    expect(component.find('AllegationsEditView').length).toEqual(1)
-  })
-
-  it('renders the show view in show mode', () => {
-    const component = shallow(<AllegationsCardView {...requiredProps} mode='show'/>)
-    expect(component.find('AllegationsShowView').length).toEqual(1)
-  })
-
   describe('#onCancel', () => {
     it('toggles the mode to show', () => {
       const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
@@ -53,6 +43,57 @@ describe('AllegationsCardView', () => {
       const instance = component.instance()
       instance.onSave()
       expect(onSave).toHaveBeenCalledWith(['allegations'], allegations)
+    })
+  })
+
+  describe('show mode', () => {
+    const props = {
+      ...requiredProps,
+      mode: 'show',
+    }
+
+    it('renders the allegations show view', () => {
+      const component = shallow(<AllegationsCardView {...props} />)
+      expect(component.find('AllegationsShowView').length).toEqual(1)
+    })
+
+    it("renders only allegations with persisted id's", () => {
+      const allegations = Immutable.fromJS([
+        {id: null},
+        {id: '1'},
+        {id: null},
+        {id: '2'},
+      ])
+      const expectedAllegations = [{id: '1'}, {id: '2'}]
+      const component = shallow(<AllegationsCardView {...props} allegations={allegations} />)
+      const renderedAllegations = component.find('AllegationsShowView').props().allegations
+
+      expect(renderedAllegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(renderedAllegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+    })
+  })
+
+  describe('edit mode', () => {
+    const props = {
+      ...requiredProps,
+      mode: 'edit',
+    }
+    it('renders the allegations edit view', () => {
+      const component = shallow(<AllegationsCardView {...props} />)
+      expect(component.find('AllegationsEditView').length).toEqual(1)
+    })
+
+    it("renders all allegations, with or without id's", () => {
+      const allegations = Immutable.fromJS([
+        {id: null},
+        {id: '1'},
+        {id: null},
+        {id: '2'},
+      ])
+      const component = shallow(<AllegationsCardView {...props} allegations={allegations} />)
+      const renderedAllegations = component.find('AllegationsEditView').props().allegations
+
+      expect(renderedAllegations).toEqual(allegations)
     })
   })
 })

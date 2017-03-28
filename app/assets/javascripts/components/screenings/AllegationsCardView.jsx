@@ -30,8 +30,14 @@ export default class AllegationsCardView extends React.Component {
 
   render() {
     const {mode} = this.state
+    let allegations
+    if (mode === 'edit') {
+      allegations = this.props.allegations
+    } else {
+      allegations = this.props.allegations.filter((allegation) => allegation.get('id'))
+    }
     const props = {
-      allegations: this.props.allegations,
+      allegations: allegations,
       onCancel: this.onCancel,
       onEdit: this.onEdit,
       onSave: this.onSave,
