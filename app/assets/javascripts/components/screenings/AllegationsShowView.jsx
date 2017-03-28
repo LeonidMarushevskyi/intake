@@ -29,6 +29,7 @@ const AllegationsShowView = ({allegations, onEdit}) => (
               {
                 allegations.map((allegation) => (
                   <AllegationRow
+                    key={allegation.get('id')}
                     victim={allegation.get('victim')}
                     perpetrator={allegation.get('perpetrator')}
                     displayVictim={true}

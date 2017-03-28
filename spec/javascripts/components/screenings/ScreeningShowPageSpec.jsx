@@ -4,18 +4,26 @@ import {ScreeningShowPage} from 'components/screenings/ScreeningShowPage'
 import {shallow, mount} from 'enzyme'
 
 describe('ScreeningShowPage', () => {
-  describe('render', () => {
-    const requiredProps = {
-      actions: {fetchScreening: () => null},
-      params: {id: '1'},
-      participants: Immutable.List(),
-      screening: Immutable.Map(),
-    }
+  const requiredScreeningAttributes = {
+    allegations: [],
+  }
+  const requiredProps = {
+    actions: {fetchScreening: () => null},
+    params: {id: '1'},
+    participants: Immutable.List(),
+    screening: Immutable.fromJS({
+      ...requiredScreeningAttributes,
+    }),
+  }
 
+  describe('render', () => {
     it('renders the screening reference', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          reference: 'The Rocky Horror Picture Show',
+        }),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
@@ -80,6 +88,7 @@ describe('ScreeningShowPage', () => {
 
     it('renders the allegations card', () => {
       const component = shallow(<ScreeningShowPage {...requiredProps}/>)
+      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.length).toEqual(1)
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
@@ -101,7 +110,7 @@ describe('ScreeningShowPage', () => {
           actions: {fetchScreening: () => null},
           params: {id: '1'},
           participants,
-          screening: Immutable.Map(),
+          screening: Immutable.fromJS({...requiredScreeningAttributes}),
         }
         const component = shallow(<ScreeningShowPage {...props} />)
         expect(component.find('ParticipantCardView').length).toEqual(2)
@@ -114,7 +123,10 @@ describe('ScreeningShowPage', () => {
     it('renders the narrative card after screening is loaded', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          report_narrative: 'this is a narrative report',
+        }),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       component.setState({loaded: true})
@@ -135,10 +147,9 @@ describe('ScreeningShowPage', () => {
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {fetchScreening},
         params: {id: '222'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(promiseSpyObj)
       mount(<ScreeningShowPage {...props} />)
@@ -152,10 +163,7 @@ describe('ScreeningShowPage', () => {
   describe('componentWillReceiveProps', () => {
     it('updates the component when screening is loaded', () => {
       const props = {
-        actions: {},
-        params: {},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
+        ...requiredProps,
       }
       const component = shallow(<ScreeningShowPage {...props}/>)
       const screening = Immutable.fromJS({id: '1', reference: 'My New Reference'})
@@ -169,10 +177,8 @@ describe('ScreeningShowPage', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {saveScreening},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       component = shallow(<ScreeningShowPage {...props} />)
       component.instance().setField(['report_narrative'], 'This is my new narrative')
@@ -180,7 +186,10 @@ describe('ScreeningShowPage', () => {
 
     it('calls screening save', () => {
       component.instance().cardSave(['report_narrative'])
-      expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
+      expect(saveScreening).toHaveBeenCalledWith({
+        ...requiredScreeningAttributes,
+        report_narrative: 'This is my new narrative',
+      })
     })
   })
 
@@ -232,10 +241,10 @@ describe('ScreeningShowPage', () => {
     })
 
     const props = {
+      ...requiredProps,
       actions: {saveParticipant, deleteParticipant},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
-      screening: Immutable.Map(),
     }
 
     let component
@@ -320,6 +329,51 @@ describe('ScreeningShowPage', () => {
         const participants = Immutable.List([updatedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
+    })
+  })
+
+  describe('allegations', () => {
+    const victim = {
+      id: '1',
+      first_name: 'Bart',
+      last_name: 'Simpson',
+      roles: ['Victim'],
+    }
+    const perpetrator = {
+      id: '2',
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      roles: ['Perpetrator'],
+    }
+
+    const saveScreening = jasmine.createSpy('saveScreening')
+    const props = {
+      ...requiredProps,
+      actions: {
+        fetchScreening: () => Promise.resolve(),
+        saveScreening,
+      },
+      screening: Immutable.fromJS({
+        id: '3',
+        cross_reports: [],
+        participants: [victim, perpetrator],
+        allegations: [{
+          id: '1',
+          perpetrator,
+          perpetrator_id: perpetrator.id,
+          screening_id: '3',
+          victim,
+          victim_id: victim.id,
+        }],
+      }),
+    }
+
+    it('renders persisted allegations', () => {
+      const component = mount(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const allegationsCard = component.find('AllegationsShowView')
+      expect(allegationsCard.text()).toContain('Homer Simpson')
+      expect(allegationsCard.text()).toContain('Bart Simpson')
     })
   })
 })

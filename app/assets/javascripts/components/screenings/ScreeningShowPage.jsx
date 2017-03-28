@@ -13,6 +13,7 @@ import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {mapStateToProps} from 'components/screenings/ScreeningEditPage'
 
 export class ScreeningShowPage extends React.Component {
   constructor(props, context) {
@@ -151,7 +152,14 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
-        <AllegationsCardView mode='show' allegations={Immutable.List()}/>
+        {
+          loaded &&
+            <AllegationsCardView
+              mode='show'
+              allegations={this.props.screening.get('allegations')}
+              onSave={this.cardSave}
+            />
+        }
         <WorkerSafetyShowView />
         <HistoryCard />
         {
@@ -186,13 +194,6 @@ ScreeningShowPage.propTypes = {
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
-}
-
-function mapStateToProps(state, _ownProps) {
-  return {
-    participants: state.participants,
-    screening: state.screening,
-  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {

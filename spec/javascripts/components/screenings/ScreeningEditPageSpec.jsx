@@ -4,12 +4,15 @@ import {ScreeningEditPage, mapStateToProps} from 'components/screenings/Screenin
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
+  const requiredScreeningAttributes = {
+    allegations: [],
+  }
   const requiredProps = {
     actions: {},
     params: {id: '1'},
     participants: Immutable.List(),
     screening: Immutable.fromJS({
-      allegations: [],
+      ...requiredScreeningAttributes,
     }),
   }
 
@@ -18,6 +21,7 @@ describe('ScreeningEditPage', () => {
       const props = {
         ...requiredProps,
         screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
           reference: 'The Rocky Horror Picture Show',
         }),
       }
@@ -27,6 +31,7 @@ describe('ScreeningEditPage', () => {
 
     it('renders the screening information edit view', () => {
       const screening = Immutable.fromJS({
+        ...requiredScreeningAttributes,
         name: 'The Rocky Horror Picture Show',
         started_at: '2016-08-13T10:00:00.000Z',
         ended_at: '2016-08-22T11:00:00.000Z',
@@ -84,7 +89,10 @@ describe('ScreeningEditPage', () => {
     it('renders the narrative card after screening is loaded', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          report_narrative: 'this is a narrative report',
+        }),
       }
       const component = shallow(<ScreeningEditPage {...props} />)
       component.setState({loaded: true})
@@ -229,13 +237,12 @@ describe('ScreeningEditPage', () => {
     })
 
     it('calls screening save', () => {
-      const existingScreeningAttributes = requiredProps.screening.toJS()
       expect(saveScreening).toHaveBeenCalledWith({
-        ...existingScreeningAttributes,
+        ...requiredScreeningAttributes,
         report_narrative: 'This is my new narrative',
       })
       expect(saveScreening).not.toHaveBeenCalledWith({
-        ...existingScreeningAttributes,
+        ...requiredScreeningAttributes,
         city: 'Sacramento',
       })
     })
