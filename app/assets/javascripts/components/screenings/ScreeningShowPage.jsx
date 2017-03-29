@@ -14,6 +14,7 @@ import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapStateToProps} from 'components/screenings/ScreeningEditPage'
+import {addNewAllegations} from 'utils/allegationsHelper'
 
 export class ScreeningShowPage extends React.Component {
   constructor(props, context) {
@@ -156,8 +157,13 @@ export class ScreeningShowPage extends React.Component {
           loaded &&
             <AllegationsCardView
               mode='show'
-              allegations={this.props.screening.get('allegations')}
+              allegations={addNewAllegations(
+                screening.get('id'),
+                this.props.participants,
+                screening.get('allegations')
+              )}
               onSave={this.cardSave}
+              setField={this.setField}
             />
         }
         <WorkerSafetyShowView />
