@@ -193,4 +193,28 @@ feature 'edit allegations' do
       end
     end
   end
+
+  scenario 'saving another card will not persists changes to allegations' do
+    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+
+    screening.name = 'Hello'
+    stub_request(:put, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within '#screening-information-card.card.edit' do
+      fill_in 'Title/Name of Screening', with: 'Hello'
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(:put, api_screening_path(screening.id))
+      .with(json_body(remove_root_id(screening.as_json).merge('participants' => [])))
+    ).to have_been_made
+  end
 end

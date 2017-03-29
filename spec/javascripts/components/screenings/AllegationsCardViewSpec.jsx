@@ -9,6 +9,7 @@ describe('AllegationsCardView', () => {
     allegations: allegations,
     mode: 'edit',
     onSave: () => null,
+    setField: () => null,
   }
 
   describe('#onCancel', () => {
@@ -30,19 +31,37 @@ describe('AllegationsCardView', () => {
   })
 
   describe('#onSave', () => {
-    it('toggles the mode to show', () => {
-      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'}/>)
-      const instance = component.instance()
+    let component
+    let onSave
+    let setField
+    let instance
+
+    beforeEach(() => {
+      onSave = jasmine.createSpy('onSave')
+      setField = jasmine.createSpy('setField')
+        .and.callFake((_fieldToSet, _valuesToSet, callback) => callback())
+      component = shallow(
+        <AllegationsCardView
+          {...requiredProps}
+          mode={'edit'}
+          onSave={onSave}
+          setField={setField}
+        />
+      )
+      instance = component.instance()
       instance.onSave()
+    })
+
+    it('toggles the mode to show', () => {
       expect(instance.state.mode).toEqual('show')
     })
 
     it('calls onSave from props with the appropriate values', () => {
-      const onSave = jasmine.createSpy()
-      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'} onSave={onSave} />)
-      const instance = component.instance()
-      instance.onSave()
-      expect(onSave).toHaveBeenCalledWith(['allegations'], allegations)
+      expect(onSave).toHaveBeenCalledWith(['allegations'])
+    })
+
+    it('calls setField with the appropriate values', () => {
+      expect(setField).toHaveBeenCalledWith(['allegations'], allegations, jasmine.any(Function))
     })
   })
 

@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
-import {ScreeningEditPage, mapStateToProps} from 'components/screenings/ScreeningEditPage'
+import {ScreeningEditPage} from 'components/screenings/ScreeningEditPage'
 import {mount, shallow} from 'enzyme'
 
 describe('ScreeningEditPage', () => {
@@ -158,6 +158,7 @@ describe('ScreeningEditPage', () => {
         mode: 'edit',
       }
       const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.length).toEqual(1)
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
@@ -411,36 +412,31 @@ describe('ScreeningEditPage', () => {
       last_name: 'Simpson',
       roles: ['Perpetrator'],
     }
-    const saveScreening = jasmine.createSpy('saveScreening')
-    const props = {
-      ...requiredProps,
-      actions: {
-        fetchScreening: () => Promise.resolve(),
-        saveScreening,
-      },
-      screening: Immutable.fromJS({
-        id: '3',
-        participants: [victim, perpetrator],
-        allegations: [{
-          id: null,
-          perpetrator,
-          perpetrator_id: perpetrator.id,
-          screening_id: '3',
-          victim,
-          victim_id: victim.id,
-        }],
-      }),
-    }
 
     it('builds and saves allegations after clicking save', () => {
+      const saveScreening = jasmine.createSpy('saveScreening')
+      const props = {
+        ...requiredProps,
+        actions: {
+          fetchScreening: () => Promise.resolve(),
+          saveScreening,
+        },
+        participants: Immutable.fromJS([victim, perpetrator]),
+        screening: Immutable.fromJS({
+          id: '3',
+          allegations: [],
+          cross_reports: [],
+        }),
+      }
       const component = mount(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsEditView')
+      expect(allegationsCard.length).toEqual(1)
       const saveButton = allegationsCard.find('button[children="Save"]')
       expect(saveButton.length).toEqual(1)
       saveButton.simulate('click')
       expect(saveScreening).toHaveBeenCalledWith({
         id: '3',
-        participants: [victim, perpetrator],
         allegations: [{
           id: null,
           perpetrator,
@@ -449,42 +445,31 @@ describe('ScreeningEditPage', () => {
           victim,
           victim_id: victim.id,
         }],
+        cross_reports: [],
       })
     })
-  })
-
-  describe('.mapStateToProps', () => {
-    const victim = {
-      id: '1',
-      first_name: 'Bart',
-      last_name: 'Simpson',
-      roles: ['Victim'],
-    }
-    const perpetrator = {
-      id: '2',
-      first_name: 'Homer',
-      last_name: 'Simpson',
-      roles: ['Perpetrator'],
-    }
 
     it('generates new allegations for the participants when there are no persisted allegations', () => {
       const participants = Immutable.fromJS([victim, perpetrator])
       const screening = Immutable.fromJS({id: '3', allegations: []})
-      const state = {participants, screening}
-      const mappedState = mapStateToProps(state, null)
-      const expectedScreening = {
-        id: '3',
-        allegations: [{
-          id: null,
-          screening_id: '3',
-          perpetrator,
-          perpetrator_id: perpetrator.id,
-          victim,
-          victim_id: victim.id,
-        }],
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
       }
-      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
-      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: null,
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
     })
 
     it('replaces generated allegations with persisted allegations', () => {
@@ -493,21 +478,24 @@ describe('ScreeningEditPage', () => {
         {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
       ]
       const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
-      const state = {participants, screening}
-      const mappedState = mapStateToProps(state, null)
-      const expectedScreening = {
-        id: '3',
-        allegations: [{
-          id: '9',
-          screening_id: '3',
-          perpetrator,
-          perpetrator_id: perpetrator.id,
-          victim,
-          victim_id: victim.id,
-        }],
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
       }
-      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
-      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
     })
 
     it('interleaves generated allegations with persisted allegations', () => {
@@ -522,28 +510,31 @@ describe('ScreeningEditPage', () => {
         {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
       ]
       const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
-      const state = {participants, screening}
-      const mappedState = mapStateToProps(state, null)
-      const expectedScreening = {
-        id: '3',
-        allegations: [{
-          id: '9',
-          screening_id: '3',
-          perpetrator,
-          perpetrator_id: perpetrator.id,
-          victim,
-          victim_id: victim.id,
-        }, {
-          id: null,
-          screening_id: '3',
-          perpetrator: anotherPerpetrator,
-          perpetrator_id: anotherPerpetrator.id,
-          victim,
-          victim_id: victim.id,
-        }],
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
       }
-      expect(mappedState.screening.toJS()).toEqual(expectedScreening)
-      expect(Immutable.is(mappedState.screening, Immutable.fromJS(expectedScreening))).toEqual(true)
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }, {
+        id: null,
+        screening_id: '3',
+        perpetrator: anotherPerpetrator,
+        perpetrator_id: anotherPerpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
     })
   })
 })
