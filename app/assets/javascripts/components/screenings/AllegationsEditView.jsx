@@ -6,24 +6,20 @@ const AllegationsEditView = ({allegations, onSave, onCancel}) => {
     allegations.groupBy((allegation) => allegation.get('victim'))
   )
 
-  const renderAllegation = (allegations) => {
+  const setRenderFlags = (allegations) => {
     const firstIndex = 0
     return allegations.map((allegation, index) => {
       const displayVictim = (index === firstIndex)
-      return (
-        <AllegationRow
-          displayVictim={displayVictim}
-          key={index}
-          victim={allegation.get('victim')}
-          perpetrator={allegation.get('perpetrator')}
-        />
-      )
+      return allegation.set('display_victim', displayVictim)
     })
   }
 
-  const renderAllegations = (allegations) => (
-    groupedAllegations(allegations).map((allegations) => renderAllegation(allegations))
-  )
+  const allegationsWithViewFlag = (allegations) => {
+    const flattenDepth = 1
+    const groupedMap = groupedAllegations(allegations)
+      .map((allegations, _victim) => setRenderFlags(allegations))
+    return groupedMap.toList().flatten(flattenDepth)
+  }
 
   return (
     <div className='card edit double-gap-top' id='allegations-card'>
@@ -42,7 +38,14 @@ const AllegationsEditView = ({allegations, onSave, onCancel}) => {
                 </tr>
               </thead>
               <tbody>
-                {renderAllegations(allegations)}
+                {allegationsWithViewFlag(allegations).map((allegation, index) =>
+                  <AllegationRow
+                    displayVictim={allegation.get('display_victim')}
+                    key={index}
+                    victim={allegation.get('victim')}
+                    perpetrator={allegation.get('perpetrator')}
+                  />
+                )}
               </tbody>
             </table>
           </div>
