@@ -53,4 +53,26 @@ feature 'home page' do
       expect(page).to have_link 'Screenings'
     end
   end
+
+  scenario 'includes a list of saved screenings' do
+    screening1 = FactoryGirl.create(
+      :screening,
+      reference: 'H9S83',
+      started_at: '2016-08-11T18:24:22.157Z'
+    )
+    screening2 = FactoryGirl.create(
+      :screening,
+      reference: 'DF90W5',
+      started_at: '2016-08-12T18:24:22.157Z'
+    )
+    stub_request(:get, api_screenings_path)
+      .and_return(body: [screening1, screening2].to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+    visit root_path
+    expect(page).to have_content('H9S83')
+    expect(page).to have_content('08/11/2016')
+    expect(page).to have_content('DF90W5')
+    expect(page).to have_content('08/12/2016')
+  end
 end

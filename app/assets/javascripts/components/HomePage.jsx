@@ -1,5 +1,7 @@
 import * as screeningActions from 'actions/screeningActions'
+import * as Utils from 'utils/http'
 import React from 'react'
+import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -9,6 +11,12 @@ export class HomePage extends React.Component {
   constructor() {
     super(...arguments)
     this.createScreening = this.createScreening.bind(this)
+    this.getScreenings = this.getScreenings.bind(this)
+    this.state = {screenings: []}
+  }
+
+  componentDidMount() {
+    this.getScreenings()
   }
 
   createScreening() {
@@ -20,13 +28,23 @@ export class HomePage extends React.Component {
     })
   }
 
+  getScreenings() {
+    Utils.request('GET', '/api/v1/screenings')
+      .then((jsonResponse) => this.setState({screenings: jsonResponse}))
+  }
+
   render() {
     return (
       <div>
-        <h1>Home</h1>
-        <a href='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</a>
-        <Link to='/people/new' className='row'>Create Person</Link>
-        <Link to='/screenings' className='row'>Screenings</Link>
+        <div className='col-md-3'>
+          <h1>Home</h1>
+          <a href='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</a>
+          <Link to='/people/new' className='row'>Create Person</Link>
+          <Link to='/screenings' className='row'>Screenings</Link>
+        </div>
+        <div className='col-md-6'>
+          <ScreeningsTable screenings={this.state.screenings} />
+        </div>
       </div>
     )
   }
