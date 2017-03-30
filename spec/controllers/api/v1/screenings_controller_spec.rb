@@ -43,6 +43,16 @@ describe Api::V1::ScreeningsController do
         incident_county: 'sacramento',
         name: '123 Report',
         screening_decision: 'evaluate_out',
+        cross_reports: [
+          {
+            agency_type: 'Department of justice',
+            agency_name: 'SCD office'
+          },
+          {
+            agency_type: 'Licensing',
+            agency_name: 'SCD office'
+          }
+        ],
         address: {
           id: '2',
           city: 'LA',

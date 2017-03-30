@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#Model for storing Intake screening cross report information.
+# Model for storing Intake screening cross report information.
 class CrossReport
   include Virtus.model
 

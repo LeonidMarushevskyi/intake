@@ -2,9 +2,7 @@
 require 'rails_helper'
 
 describe Screening do
-
   describe 'new screening object' do
-
     let(:screening) { described_class.new }
     it ' does not have default cross report values' do
       expect(screening.cross_reports).to be_empty
