@@ -66,7 +66,7 @@ feature 'show allegations' do
     ).to have_been_made
   end
 
-  scenario 'deleting a participant removes related allegations' do
+  scenario 'deleting a participant from a screening removes related allegations' do
     marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
     lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
     homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
@@ -94,6 +94,9 @@ feature 'show allegations' do
       end
     end
 
+    stub_request(:delete, api_participant_path(marge.id))
+      .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+
     within show_participant_card_selector(marge.id) do
       click_button 'Delete participant'
     end
@@ -112,6 +115,97 @@ feature 'show allegations' do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Homer')
         expect(page).to_not have_content('Marge')
+      end
+    end
+  end
+
+  scenario 'removing participant role, re-adding it does not show deleted allegations' do
+    marge = FactoryGirl.create(
+      :participant,
+      first_name: 'Marge',
+      roles: ['Perpetrator', 'Anonymous Reporter']
+    )
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(
+      :screening,
+      participants: [marge, lisa]
+    )
+    allegation = FactoryGirl.create(
+      :allegation,
+      victim_id: lisa.id,
+      perpetrator_id: marge.id,
+      screening_id: screening.id
+    )
+    screening.allegations << allegation
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit screening_path(id: screening.id)
+
+    within '#allegations-card.card.show' do
+      within 'tbody tr' do
+        expect(page).to have_content('Marge')
+        expect(page).to have_content('Lisa')
+      end
+    end
+
+    within show_participant_card_selector(marge.id) do
+      click_link 'Edit participant'
+    end
+
+    marge.roles = ['Anonymous Reporter']
+    stub_request(:put, api_participant_path(marge.id))
+      .with(json_body(remove_root_id(marge.as_json)))
+      .and_return(json_body(marge.to_json, status: 200))
+
+    screening.allegations = []
+    screening.participants = [lisa, marge]
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(marge.id) do
+      remove_react_select_option('Role', 'Perpetrator')
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.show' do
+      within 'tbody', visible: false do
+        expect(page).to_not have_content('Marge')
+        expect(page).to_not have_content('Lisa')
+      end
+    end
+
+    within show_participant_card_selector(marge.id) do
+      click_link 'Edit participant'
+    end
+
+    marge.roles = ['Anonymous Reporter', 'Perpetrator']
+    stub_request(:put, api_participant_path(marge.id))
+      .with(json_body(remove_root_id(marge.as_json)))
+      .and_return(json_body(marge.to_json, status: 200))
+
+    screening.participants = [lisa, marge]
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(marge.id) do
+      fill_in_react_select('Role', with: 'Perpetrator')
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.show' do
+      within 'tbody', visible: false do
+        expect(page).to_not have_content('Marge')
+        expect(page).to_not have_content('Lisa')
+      end
+
+      click_link 'Edit allegations'
+    end
+
+    within '#allegations-card.card.edit' do
+      within 'tbody tr' do
+        expect(page).to have_content('Marge')
+        expect(page).to have_content('Lisa')
       end
     end
   end

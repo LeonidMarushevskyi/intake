@@ -250,9 +250,13 @@ describe('ScreeningEditPage', () => {
   })
 
   describe('participants-related functions', () => {
-    const saveParticipant = jasmine.createSpy('saveParticipant')
+    const promiseObj = jasmine.createSpyObj('promise', ['then'])
+    promiseObj.then.and.callFake((thenFunction) => thenFunction())
+
+    const saveParticipant = jasmine.createSpy('saveParticipant').and.returnValue(promiseObj)
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
     const createParticipant = jasmine.createSpy('createParticipant')
+    const fetchScreening = jasmine.createSpy('fetchScreening')
 
     const address1 = Immutable.Map({
       city: 'Sacramento',
@@ -271,7 +275,7 @@ describe('ScreeningEditPage', () => {
       zip: '94532',
     })
 
-    const participantId1 = '3'
+    const participantId1 = '123'
     const participant1 = Immutable.Map({
       id: participantId1,
       first_name: 'Bart',
@@ -284,7 +288,7 @@ describe('ScreeningEditPage', () => {
       addresses: Immutable.List([address1, address2]),
     })
 
-    const participantId2 = '4'
+    const participantId2 = '456'
     const participant2 = Immutable.Map({
       id: participantId2,
       first_name: 'Marge',
@@ -299,7 +303,7 @@ describe('ScreeningEditPage', () => {
 
     const props = {
       ...requiredProps,
-      actions: {createParticipant, saveParticipant, deleteParticipant},
+      actions: {createParticipant, saveParticipant, deleteParticipant, fetchScreening},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
     }
@@ -359,6 +363,7 @@ describe('ScreeningEditPage', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
         component.instance().saveParticipant(updatedParticipant)
         expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
+        expect(fetchScreening).toHaveBeenCalledWith(participant1.get('screening_id'))
       })
     })
 

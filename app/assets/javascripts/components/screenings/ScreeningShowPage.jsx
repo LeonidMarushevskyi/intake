@@ -79,6 +79,9 @@ export class ScreeningShowPage extends React.Component {
 
   saveParticipant(participant) {
     return this.props.actions.saveParticipant(participant.toJS())
+      .then(() => {
+        this.props.actions.fetchScreening(this.props.params.id)
+      })
   }
 
   participants() {
