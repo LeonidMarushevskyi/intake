@@ -29,7 +29,16 @@ feature 'Edit Screening' do
       report_narrative: 'Narrative 123 test',
       screening_decision: 'screen_out',
       screening_decision_detail: 'information_request',
-      started_at: '2016-08-13T10:00:00.000Z'
+      started_at: '2016-08-13T10:00:00.000Z',
+      cross_reports: [
+        {
+          agency_type: 'District attorney',
+          agency_name: 'SCDA Office'
+        },
+        {
+          agency_type: 'Law enforcement'
+        }
+      ]
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -84,6 +93,16 @@ feature 'Edit Screening' do
       expect(page).to have_field('Screening Decision', with: 'screen_out')
       expect(page).to have_select('Category', selected: 'Information request')
       expect(page).to have_field('Additional information', with: 'This is why I decided what I did')
+    end
+
+    within '#cross-report-card.edit', text: 'CROSS REPORT' do
+      expect(page).to have_content('Cross reported to')
+      expect(page.find('input[value="District attorney"]')).to be_checked
+      expect(page).to have_field('District_attorney-agency-name', with: 'SCDA Office')
+      expect(page.find('input[value="Law enforcement"]')).to be_checked
+      expect(page).to have_field('Law_enforcement-agency-name', text: '')
+      expect(page).to have_button 'Save'
+      expect(page).to have_button 'Cancel'
     end
 
     expect(page).to have_css('#cross-report-card.edit', text: 'CROSS REPORT')
@@ -159,6 +178,37 @@ feature 'individual card save' do
         a_request(:put, api_screening_path(existing_screening.id))
         .with(json_body(updated_screening))
       ).to have_been_made
+    end
+  end
+
+  scenario 'cross report save and edits' do
+    within '#cross-report-card' do
+      updated_screening = existing_screening.as_json(except: :id).merge(
+        cross_reports: [
+          {
+            agency_type: 'Department of justice',
+            agency_name: 'Sac Office'
+          }
+        ])
+      stub_request(:put, api_screening_path(existing_screening.id))
+        .with(json_body(updated_screening.to_json(except: :id)))
+        .and_return(json_body(updated_screening.to_json))
+
+      find('label', text: 'Department of justice').click
+      fill_in 'Department_of_justice-agency-name', with: 'Sac Office'
+      click_button 'Save'
+      expect(
+        a_request(:put, api_screening_path(existing_screening.id))
+        .with(json_body(updated_screening.to_json(except: :id)))
+      )
+      click_link 'Edit cross report'
+      expect(page).to have_field('Department_of_justice-agency-name', with: 'Sac Office')
+
+      doj_input = find_field('Department_of_justice-agency-name')
+      10.times do
+        doj_input.send_keys [:backspace]
+      end
+      expect(page).to have_field('Department_of_justice-agency-name', with: '')
     end
   end
 

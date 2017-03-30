@@ -21,5 +21,6 @@ class Screening # :nodoc:
 
   attribute :address, Address
   attribute :assignee, String
+  attribute :cross_reports, Array[CrossReport]
   attribute :participants, Array[Participant]
 end
