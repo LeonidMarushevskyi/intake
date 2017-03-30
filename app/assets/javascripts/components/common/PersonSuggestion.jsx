@@ -5,25 +5,39 @@ import Languages from 'components/common/LanguageInfo'
 import NAME_SUFFIX from 'NameSuffix'
 import React from 'react'
 import PhoneNumberInfo from 'components/common/PhoneNumberInfo'
+import sanitizeHtml from 'sanitize-html'
 
-const PersonSuggestion = ({firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races, ethnicity, ssn, address, phoneNumber}) => (
-  <div className='row'>
-    <div className='col-md-2'>
-      <img src='/assets/default-profile.svg' />
-    </div>
-    <div className='col-md-4'>
-      <strong>{[firstName, middleName, lastName, NAME_SUFFIX[nameSuffix]].filter(Boolean).join(' ')}</strong>
-      <GenderRaceAndEthnicity gender={gender} races={races} ethnicity={ethnicity} />
-      <AgeInfo dateOfBirth={dateOfBirth} />
-      <Languages languages={languages} />
-      {ssn && <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div>}
-    </div>
-    <div className='col-md-6'>
-      {address && <AddressInfo {...address} /> }
-      {phoneNumber && <PhoneNumberInfo {...phoneNumber} />}
-    </div>
-  </div>
-)
+const PersonSuggestion = ({firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races, ethnicity, ssn, address, phoneNumber}) => {
+  const fullName = [firstName, middleName, lastName, NAME_SUFFIX[nameSuffix]].filter(Boolean).join(' ')
+  const sanitizedField = (field) => ({
+    dangerouslySetInnerHTML: {
+      __html: sanitizeHtml(field, {allowedTags: ['em']}),
+    },
+  })
+  return (
+    <div className='row'>
+      <div className='col-md-2'>
+        <img src='/assets/default-profile.svg' />
+      </div>
+      <div className='col-md-4'>
+        <strong {...sanitizedField(fullName)} />
+          <GenderRaceAndEthnicity gender={gender} races={races} ethnicity={ethnicity} />
+          <AgeInfo dateOfBirth={dateOfBirth} />
+          <Languages languages={languages} />
+          {
+            ssn && <div>
+              <strong className='c-gray half-pad-right'>SSN</strong>
+              <span {...sanitizedField(ssn)} />
+            </div>
+          }
+        </div>
+        <div className='col-md-6'>
+          {address && <AddressInfo {...address} /> }
+          {phoneNumber && <PhoneNumberInfo {...phoneNumber} />}
+        </div>
+      </div>
+  )
+}
 
 PersonSuggestion.propTypes = {
   address: React.PropTypes.object,

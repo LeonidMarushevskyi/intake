@@ -78,6 +78,29 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
+    scenario 'search matches on first name are highlighted in search results' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        highlight: { first_name: '<em>Marg</em>e' }
+      )
+      %w(M Ma Mar Marg).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [marge].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
+
+      within '#search-card', text: 'SEARCH' do
+        fill_in_autocompleter 'Search for any person', with: 'Marg'
+      end
+
+      within '.react-autosuggest__suggestions-list em' do
+        expect(page).to have_content 'Marg'
+        expect(page).to_not have_content 'e'
+      end
+    end
+
     scenario 'person without phone_numbers' do
       person_with_out_phone_numbers = person.as_json.except('phone_numbers')
 
@@ -155,6 +178,53 @@ feature 'searching a participant in autocompleter' do
       within 'li', text: 'Marge Simpson' do
         expect(page).to_not have_content '15 yrs old'
         expect(page).to_not have_content '123-23-1234'
+      end
+    end
+
+    scenario 'search matches on date of birth are highlighted in search results' do
+      # matches (yyyy-mm-dd or mm/dd/yyyy) or search with 4 characters of year
+      marge = FactoryGirl.create(
+        :person_search,
+        date_of_birth: '2011-09-30',
+        highlight: { date_of_birth: '<em>2011</em>-09-30' }
+      )
+      %w(2 20 201 2011).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [marge].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
+
+      within '#search-card', text: 'SEARCH' do
+        fill_in_autocompleter 'Search for any person', with: '2011'
+      end
+
+      within '.react-autosuggest__suggestions-list em' do
+        expect(page).to have_content '2011'
+        expect(page).to_not have_content '9/30/'
+      end
+    end
+
+    scenario 'search matches on SSN are highlighted in search results' do
+      marge = FactoryGirl.create(
+        :person_search,
+        ssn: '566-23-8765',
+        highlight: { first_name: '<em>566</em>-23-8765' }
+      )
+      %w(5 56 566).each do |search_text|
+        stub_request(:get, api_people_search_path(search_term: search_text))
+          .and_return(body: [marge].to_json,
+                      status: 200,
+                      headers: { 'Content-Type' => 'application/json' })
+      end
+
+      within '#search-card', text: 'SEARCH' do
+        fill_in_autocompleter 'Search for any person', with: '566'
+      end
+
+      within '.react-autosuggest__suggestions-list em' do
+        expect(page).to have_content '566'
+        expect(page).to_not have_content '-23-8765'
       end
     end
   end

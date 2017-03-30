@@ -16,4 +16,16 @@ describe('age', () => {
     const component = shallow(<AgeInfo {...props} />)
     expect(component.html()).not.toContain('yrs old')
   })
+
+  it('renders highlighting for matching year', () => {
+    const props = {dateOfBirth: '<em>2011</em>-11-11'}
+    const component = shallow(<AgeInfo {...props} />)
+    expect(component.html()).toContain('<span>11/11/<em>2011</em></span>')
+  })
+
+  it('renders highlighting for full match', () => {
+    const props = {dateOfBirth: '<em>2007-01-11</em>'}
+    const component = shallow(<AgeInfo {...props} />)
+    expect(component.html()).toContain('<em>1/11/2007</em>')
+  })
 })

@@ -123,6 +123,139 @@ describe('<Autocompleter />', () => {
     })
   })
 
+  describe('mapPersonSearchAttributes', () => {
+    let component
+    beforeEach(() => {
+      component = shallow(<Autocompleter />)
+    })
+
+    it('maps person search attributes to suggestion attributes', () => {
+      const suggestion = {
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        middle_name: 'Jacqueline',
+        name_suffix: 'md',
+        gender: 'female',
+        languages: ['French', 'Italian'],
+        races: [
+          {race: 'White', race_detail: 'European'},
+          {race: 'American Indian or Alaska Native'},
+        ],
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: 'Central American',
+        },
+        date_of_birth: '1990-02-13',
+        ssn: '123-45-6789',
+        addresses: [{
+          id: '1',
+          street_address: '234 Fake Street',
+          city: 'Flushing',
+          state: 'NM',
+          zip: '11344',
+          type: 'School',
+        }],
+        phone_numbers: [{
+          id: '2',
+          number: '994-907-6774',
+          type: 'Home',
+        }],
+      }
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.firstName).toEqual('Bart')
+      expect(attributes.lastName).toEqual('Simpson')
+      expect(attributes.middleName).toEqual('Jacqueline')
+      expect(attributes.nameSuffix).toEqual('md')
+      expect(attributes.gender).toEqual('female')
+      expect(attributes.languages).toEqual(['French', 'Italian'])
+      expect(attributes.races).toEqual([
+        {race: 'White', race_detail: 'European'},
+        {race: 'American Indian or Alaska Native'},
+      ])
+      expect(attributes.ethnicity).toEqual({
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Central American',
+      })
+      expect(attributes.dateOfBirth).toEqual('1990-02-13')
+      expect(attributes.ssn).toEqual('123-45-6789')
+      expect(attributes.address).toEqual({
+        streetAddress: '234 Fake Street',
+        city: 'Flushing',
+        state: 'NM',
+        zip: '11344',
+        type: 'School',
+      })
+      expect(attributes.phoneNumber).toEqual({
+        number: '994-907-6774',
+        type: 'Home',
+      })
+    })
+
+    it('maps the first address and phone number result to addressi and phone number', () => {
+      const suggestion = {
+        addresses: [{
+          id: '1',
+          street_address: '234 Fake Street',
+          city: 'Flushing',
+          state: 'NM',
+          zip: '11344',
+          type: 'School',
+        }, {
+          id: '2',
+          street_address: '2 Camden Crt',
+          city: 'Flushing',
+          state: 'NM',
+          zip: '11222',
+          type: 'Home',
+        }],
+        phone_numbers: [{
+          number: '994-907-6774',
+          type: 'Home',
+        }, {
+          number: '111-222-6774',
+          type: 'Work',
+        }],
+      }
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.address).toEqual({
+        streetAddress: '234 Fake Street',
+        city: 'Flushing',
+        state: 'NM',
+        zip: '11344',
+        type: 'School',
+      })
+    })
+
+    it('maps person search attributes when phone numbers and addresses are empty', () => {
+      const suggestion = {phone_numbers: [], addresses: []}
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.address).toEqual(null)
+      expect(attributes.phoneNumber).toEqual(null)
+    })
+
+    it('maps person search hightlight fields', () => {
+      const suggestion = {
+        first_name: 'Bart',
+        last_name: 'Simpson',
+        date_of_birth: '1990-02-13',
+        ssn: '123-45-6789',
+        addresses: [],
+        phone_numbers: [],
+        highlight: {
+          first_name: '<em>Bar</em>t',
+          last_name: 'Sim<em>pson</em>',
+          ssn: '<em>123-45-</em>6789',
+          date_of_birth: '<em>1990</em>-02-13',
+        },
+      }
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.firstName).toEqual('<em>Bar</em>t')
+      expect(attributes.lastName).toEqual('Sim<em>pson</em>')
+      expect(attributes.ssn).toEqual('<em>123-45-</em>6789')
+      expect(attributes.dateOfBirth).toEqual('<em>1990</em>-02-13')
+    })
+  })
+
   describe('#renderSuggestion', () => {
     let component
     it('renders the PersonSuggestion view', () => {
@@ -190,42 +323,6 @@ describe('<Autocompleter />', () => {
           number: '994-907-6774',
           type: 'Home',
         },
-      })
-    })
-
-    it('renders the PersonSuggestion view when some values are empty', () => {
-      component = mount(<Autocompleter />)
-      const result = [{
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        middle_name: null,
-        name_suffix: 'md',
-        gender: 'female',
-        languages: [],
-        races: [],
-        ethnicity: {},
-        date_of_birth: '1990-02-13',
-        ssn: '123-45-6789',
-        addresses: [],
-        phone_numbers: [],
-      }]
-      stubSuggestions(result)
-
-      component.find('input').simulate('focus')
-      component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
-      expect(component.find('PersonSuggestion').props()).toEqual({
-        firstName: 'Bart',
-        lastName: 'Simpson',
-        middleName: null,
-        nameSuffix: 'md',
-        gender: 'female',
-        races: [],
-        languages: [],
-        phoneNumber: null,
-        ethnicity: {},
-        dateOfBirth: '1990-02-13',
-        ssn: '123-45-6789',
-        address: null,
       })
     })
   })

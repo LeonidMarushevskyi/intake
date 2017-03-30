@@ -114,7 +114,7 @@ describe Api::V1::PeopleController do
         Person.new(first_name: 'Bart', last_name: 'Simpson'),
         Person.new(first_name: 'John', last_name: 'Smith')
       ]
-      allow(PersonRepository).to receive(:search)
+      allow(PersonSearchRepository).to receive(:search)
         .with('foobarbaz')
         .and_return(people)
 
