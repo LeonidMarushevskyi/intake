@@ -11,6 +11,7 @@ ShowField.propTypes = {
   children: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
+    React.PropTypes.element,
   ]),
   gridClassName: React.PropTypes.string,
   label: React.PropTypes.string.isRequired,
