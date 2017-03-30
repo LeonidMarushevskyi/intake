@@ -67,11 +67,12 @@ export default class CrossReportEditView extends React.Component {
                       {
                         selected &&
                           <InputField
-                            label={''}
                             id={`${typeId}-agency-name`}
+                            label={''}
+                            maxLength='128'
+                            onChange={(event) => this.changeAgencyName(agencyType, event.target.value)}
                             placeholder='Agency Name'
                             value={agencyName || ''}
-                            onChange={(event) => this.changeAgencyName(agencyType, event.target.value)}
                           />
                           }
                         </div>

@@ -35,6 +35,20 @@ describe('CrossReportEditView', () => {
     ])
   })
 
+  it('restricts text inputs to 128 characters', () => {
+    component.setProps({
+      crossReport: Immutable.fromJS([
+        {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+        {agency_type: 'Department of justice'},
+        {agency_type: 'Licensing'},
+        {agency_type: 'Law enforcement'},
+      ]),
+    }).update()
+    component.find('InputField').map((field) => {
+      expect(field.props().maxLength).toEqual('128')
+    })
+  })
+
   it('renders the save and cancel buttons', () => {
     expect(component.find('.btn.btn-primary').text()).toEqual('Save')
     expect(component.find('.btn.btn-default').text()).toEqual('Cancel')

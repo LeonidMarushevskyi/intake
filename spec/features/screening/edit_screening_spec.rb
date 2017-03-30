@@ -189,10 +189,11 @@ feature 'individual card save' do
             agency_type: 'Department of justice',
             agency_name: 'Sac Office'
           }
-        ])
+        ]
+      )
       stub_request(:put, api_screening_path(existing_screening.id))
         .with(json_body(updated_screening.to_json(except: :id)))
-        .and_return(json_body(updated_screening.to_json))
+        .and_return(json_body(updated_screening.merge(id: existing_screening.id).to_json))
 
       find('label', text: 'Department of justice').click
       fill_in 'Department_of_justice-agency-name', with: 'Sac Office'
@@ -200,7 +201,7 @@ feature 'individual card save' do
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
         .with(json_body(updated_screening.to_json(except: :id)))
-      )
+      ).to have_been_made
       click_link 'Edit cross report'
       expect(page).to have_field('Department_of_justice-agency-name', with: 'Sac Office')
 
@@ -209,6 +210,23 @@ feature 'individual card save' do
         doj_input.send_keys [:backspace]
       end
       expect(page).to have_field('Department_of_justice-agency-name', with: '')
+      edited_screening = existing_screening.as_json(except: :id).merge(
+        cross_reports: [
+          {
+            agency_type: 'Department of justice',
+            agency_name: nil
+          }
+        ]
+      )
+      stub_request(:put, api_screening_path(existing_screening.id))
+        .with(json_body(existing_screening.to_json(except: :id)))
+        .and_return(json_body(existing_screening.to_json))
+
+      click_button 'Save'
+      expect(
+        a_request(:put, api_screening_path(existing_screening.id))
+        .with(json_body(edited_screening.to_json(except: :id)))
+      ).to have_been_made
     end
   end
 
