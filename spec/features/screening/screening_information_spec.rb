@@ -49,12 +49,12 @@ feature 'screening information card' do
     )
 
     stub_request(:put, api_screening_path(screening.id))
-      .with(json_body(remove_root_id(screening.as_json)))
+      .with(json_body(as_json_without_root_id(screening)))
       .and_return(json_body(screening.to_json))
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(json_body(remove_root_id(screening.as_json)))
+      .with(json_body(as_json_without_root_id(screening)))
     ).to have_been_made
   end
 

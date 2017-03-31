@@ -62,7 +62,7 @@ feature 'show allegations' do
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(json_body(remove_root_id(screening.as_json).merge('participants' => [])))
+      .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
 
@@ -155,7 +155,7 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, api_participant_path(marge.id))
-      .with(json_body(remove_root_id(marge.as_json)))
+      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -181,7 +181,7 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, api_participant_path(marge.id))
-      .with(json_body(remove_root_id(marge.as_json)))
+      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
@@ -238,7 +238,7 @@ feature 'show allegations' do
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(json_body(remove_root_id(screening.as_json).merge('participants' => [])))
+      .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
 end

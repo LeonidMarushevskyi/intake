@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module WebmockHelpers
-  def remove_root_id(hash)
-    hash.except('id')
+  def as_json_without_root_id(model)
+    model.as_json.except('id')
   end
 
   def json_body(json, options = {})

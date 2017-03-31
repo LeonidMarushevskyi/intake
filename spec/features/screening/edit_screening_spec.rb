@@ -149,24 +149,24 @@ feature 'individual card save' do
 
   scenario 'unchanged attributes are not blanked' do
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
-      updated_screening = remove_root_id(
-        existing_screening.as_json
+      updated_screening = as_json_without_root_id(
+        existing_screening
       ).merge(incident_date: '1996-02-12')
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(remove_root_id(updated_screening.as_json)))
+        .with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
       fill_in 'Incident Date', with: updated_screening[:incident_date]
       click_button 'Save'
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(remove_root_id(updated_screening.as_json)))
+        .with(json_body(as_json_without_root_id(updated_screening)))
       ).to have_been_made
     end
   end
 
   scenario 'narrative saves and cancels in isolation' do
     within '#narrative-card' do
-      updated_screening = remove_root_id(existing_screening.as_json).merge(
+      updated_screening = as_json_without_root_id(existing_screening).merge(
         report_narrative: 'This is the updated narrative'
       ).to_json
       stub_request(:put, api_screening_path(existing_screening.id))
@@ -251,7 +251,7 @@ feature 'individual card save' do
       existing_screening.incident_date = '1996-02-12'
 
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(remove_root_id(existing_screening.as_json)))
+        .with(json_body(as_json_without_root_id(existing_screening)))
         .and_return(json_body(existing_screening.to_json))
 
       fill_in 'Incident Date', with: '1996-02-12'
@@ -263,7 +263,7 @@ feature 'individual card save' do
 
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(remove_root_id(existing_screening.as_json)))
+        .with(json_body(as_json_without_root_id(existing_screening)))
       ).to have_been_made
     end
   end

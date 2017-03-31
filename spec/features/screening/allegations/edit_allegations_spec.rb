@@ -81,7 +81,7 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, api_participant_path(marge.id))
-      .with(json_body(remove_root_id(marge.as_json)))
+      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -107,7 +107,7 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, api_participant_path(marge.id))
-      .with(json_body(remove_root_id(marge.as_json)))
+      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
@@ -159,7 +159,7 @@ feature 'edit allegations' do
       fill_in_react_select('Role', with: 'Perpetrator')
       marge.roles = ['Perpetrator']
       stub_request(:put, api_participant_path(marge.id))
-        .with(body: remove_root_id(marge.as_json))
+        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
       click_button 'Save'
     end
@@ -168,9 +168,9 @@ feature 'edit allegations' do
       expect(page).to have_no_selector('td')
     end
 
-      lisa.roles = ['Victim']
+    lisa.roles = ['Victim']
     stub_request(:put, api_participant_path(lisa.id))
-      .with(body: remove_root_id(lisa.as_json))
+      .with(body: as_json_without_root_id(lisa))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.participants = [marge, lisa]
@@ -254,7 +254,7 @@ feature 'edit allegations' do
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(body: remove_root_id(screening_with_new_allegation.as_json).merge('participants' => []))
+      .with(body: as_json_without_root_id(screening_with_new_allegation).merge('participants' => []))
     ).to have_been_made
 
     within '#allegations-card.card.show' do
@@ -306,7 +306,7 @@ feature 'edit allegations' do
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(json_body(remove_root_id(screening.as_json).merge('participants' => [])))
+      .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
 end

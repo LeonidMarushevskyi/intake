@@ -44,7 +44,7 @@ describe ParticipantRepository do
     end
     let(:updated_participant) { double(:participant) }
     let(:expected_url) { "#{ParticipantRepository::PARTICIPANTS_PATH}/#{participant.id}" }
-    let(:expected_body) { remove_root_id(participant.as_json).to_json }
+    let(:expected_body) { as_json_without_root_id(participant).to_json }
 
     before :each do
       allow(API.intake_api_connection).to receive(:put)

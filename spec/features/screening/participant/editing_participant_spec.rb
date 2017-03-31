@@ -103,7 +103,7 @@ feature 'Edit Screening' do
       marge.addresses.first.city = 'New City'
 
       stub_request(:put, api_participant_path(marge.id))
-        .with(body: remove_root_id(marge.as_json))
+        .with(body: as_json_without_root_id(marge))
         .and_return(status: 200,
                     body: marge.to_json,
                     headers: { 'Content-Type' => 'application/json' })
@@ -121,7 +121,7 @@ feature 'Edit Screening' do
       end
       expect(
         a_request(:put, api_participant_path(marge.id))
-        .with(json_body(remove_root_id(marge.as_json)))
+        .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
 
@@ -161,7 +161,7 @@ feature 'Edit Screening' do
       marge.addresses.first.city = 'New City'
 
       stub_request(:put, api_participant_path(marge.id))
-        .with(body: remove_root_id(marge.as_json))
+        .with(body: as_json_without_root_id(marge))
         .and_return(status: 200,
                     body: marge.to_json,
                     headers: { 'Content-Type' => 'application/json' })
@@ -173,7 +173,7 @@ feature 'Edit Screening' do
       end
       expect(
         a_request(:put, api_participant_path(marge.id))
-        .with(json_body(remove_root_id(marge.as_json)))
+        .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
 
@@ -202,7 +202,7 @@ feature 'Edit Screening' do
     marge.addresses = []
 
     stub_request(:put, api_participant_path(marge.id))
-      .with(body: remove_root_id(marge.as_json))
+      .with(body: as_json_without_root_id(marge))
       .and_return(status: 200,
                   body: marge.to_json,
                   headers: { 'Content-Type' => 'application/json' })
@@ -213,7 +213,7 @@ feature 'Edit Screening' do
       end
       expect(
         a_request(:put, api_participant_path(marge.id))
-        .with(json_body(remove_root_id(marge.as_json)))
+        .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
   end
@@ -263,7 +263,7 @@ feature 'Edit Screening' do
 
       marge.roles = ['Victim']
       stub_request(:put, api_participant_path(marge.id))
-        .with(body: remove_root_id(marge.as_json))
+        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
 
       within '.card-body' do
@@ -273,7 +273,7 @@ feature 'Edit Screening' do
 
     expect(
       a_request(:put, api_participant_path(marge.id))
-      .with(json_body(remove_root_id(marge.as_json)))
+      .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
 
     expect(page).to have_selector(show_participant_card_selector(marge.id))
