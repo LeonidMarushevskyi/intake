@@ -104,8 +104,6 @@ feature 'Edit Screening' do
       expect(page).to have_button 'Save'
       expect(page).to have_button 'Cancel'
     end
-
-    expect(page).to have_css('#cross-report-card.edit', text: 'CROSS REPORT')
   end
 end
 
@@ -227,6 +225,15 @@ feature 'individual card save' do
         a_request(:put, api_screening_path(existing_screening.id))
         .with(json_body(edited_screening.to_json(except: :id)))
       ).to have_been_made
+    end
+    page.driver.browser.navigate.refresh
+    within '#cross-report-card' do
+      find('label', text: 'Department of justice').click
+      doj_input = find_field('Department_of_justice-agency-name')
+      130.times do
+        doj_input.send_keys ['a']
+      end
+      expect(doj_input.value.length).to equal(128)
     end
   end
 
