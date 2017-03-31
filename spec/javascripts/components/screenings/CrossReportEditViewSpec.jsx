@@ -19,8 +19,10 @@ describe('CrossReportEditView', () => {
     component = shallow(<CrossReportEditView {...props}/>)
   })
 
-  it('renders blank cross report edit view', () => {
+  it('renders the card title', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
+  })
+  it('renders the display label', () => {
     expect(component.find('.card-body').text()).toContain('Cross reported to')
   })
 
