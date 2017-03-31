@@ -254,7 +254,9 @@ feature 'edit allegations' do
 
     expect(
       a_request(:put, api_screening_path(screening.id))
-      .with(body: as_json_without_root_id(screening_with_new_allegation).merge('participants' => []))
+      .with(body: as_json_without_root_id(
+        screening_with_new_allegation
+      ).merge('participants' => []))
     ).to have_been_made
 
     within '#allegations-card.card.show' do
