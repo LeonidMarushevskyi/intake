@@ -20,6 +20,11 @@ module Api
         :screening_decision,
         :screening_decision_detail,
         :started_at,
+        cross_reports: [
+          :id,
+          :agency_type,
+          :agency_name
+        ],
         address: [
           :id,
           :city,

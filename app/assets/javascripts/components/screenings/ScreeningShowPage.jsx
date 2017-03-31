@@ -1,6 +1,6 @@
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsShowView from 'components/screenings/AllegationsShowView'
-import CrossReportShowView from 'components/screenings/CrossReportShowView'
+import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
 import Immutable from 'immutable'
@@ -52,7 +52,7 @@ export class ScreeningShowPage extends React.Component {
     const changes = this.state.screeningEdits.filter((value, key) =>
       fieldList.includes(key) && value !== undefined
     )
-    const screening = this.state.screening.mergeDeep(changes)
+    const screening = this.state.screening.merge(changes)
     return this.props.actions.saveScreening(screening.toJS())
   }
 
@@ -117,7 +117,7 @@ export class ScreeningShowPage extends React.Component {
   render() {
     const {params} = this.props
     const {loaded, screening} = this.state
-    const mergedScreening = screening.mergeDeep(this.state.screeningEdits)
+    const mergedScreening = screening.merge(this.state.screeningEdits)
     return (
       <div>
         <h1>{`Screening #${mergedScreening.get('reference')}`}</h1>
@@ -151,10 +151,19 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
-        <CrossReportShowView />
         <AllegationsShowView />
         <WorkerSafetyShowView />
         <HistoryCard />
+        {
+          loaded &&
+            <CrossReportCardView
+              crossReport={mergedScreening.get('cross_reports')}
+              mode='show'
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+            />
+        }
         {
           loaded &&
           <DecisionCardView

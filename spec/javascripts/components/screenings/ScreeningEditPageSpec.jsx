@@ -110,9 +110,19 @@ describe('ScreeningEditPage', () => {
       expect(component.find('DecisionCardView').length).toEqual(0)
     })
 
-    it('renders the cross report edit view', () => {
+    it('does not render the cross report card view', () => {
       const component = shallow(<ScreeningEditPage {...requiredProps} />)
-      expect(component.find('CrossReportEditView').length).toEqual(1)
+      expect(component.find('CrossReportCardView').length).toEqual(0)
+    })
+
+    it('renders the cross report card view', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({cross_reports: []}),
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      expect(component.find('CrossReportCardView').length).toEqual(1)
     })
 
     it('renders the incident information card after the screening is loaded', () => {

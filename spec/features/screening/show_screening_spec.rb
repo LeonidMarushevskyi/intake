@@ -28,7 +28,11 @@ feature 'Show Screening' do
       report_narrative: 'some narrative',
       screening_decision: 'screen_out',
       screening_decision_detail: 'consultation',
-      started_at: '2016-08-13T10:00:00.000Z'
+      started_at: '2016-08-13T10:00:00.000Z',
+      cross_reports: [
+        { agency_type: 'District attorney', agency_name: 'SCDA' },
+        { agency_type: 'Licensing' }
+      ]
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
@@ -67,8 +71,6 @@ feature 'Show Screening' do
       expect(page).to have_content 'The reasoning for this decision'
     end
 
-    expect(page).to have_css('#cross-report-card.show', text: 'CROSS REPORT')
-
     within '#allegations-card.show', text: 'ALLEGATIONS' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
@@ -82,6 +84,20 @@ feature 'Show Screening' do
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
       expect(page).to have_css('th', text: 'People and Roles')
+    end
+
+    within '#cross-report-card', text: 'CROSS REPORT' do
+      expect(page).to have_content 'District attorney'
+      expect(page).to have_content 'SCDA'
+      expect(page).to have_content 'Licensing'
+      click_link 'Edit cross report'
+      expect(page).to have_field('District_attorney-agency-name', with: 'SCDA')
+
+      da_input = find_field('District_attorney-agency-name')
+      10.times do
+        da_input.send_keys [:backspace]
+      end
+      expect(page).to have_field('District_attorney-agency-name', with: '')
     end
 
     expect(page).to have_link('Home', href: root_path)

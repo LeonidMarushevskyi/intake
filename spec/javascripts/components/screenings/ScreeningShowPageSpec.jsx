@@ -62,9 +62,15 @@ describe('ScreeningShowPage', () => {
       expect(component.find('DecisionCardView').length).toEqual(0)
     })
 
-    it('renders the cross report show card', () => {
+    it('renders the cross report show card after screening is loaded', () => {
       const component = shallow(<ScreeningShowPage {...requiredProps} />)
-      expect(component.find('CrossReportShowView').length).toEqual(1)
+      component.setState({loaded: true})
+      expect(component.find('CrossReportCardView').props().mode).toEqual('show')
+    })
+
+    it('does not renders the cross report show card before screening is loaded', () => {
+      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      expect(component.find('CrossReportCardView').length).toEqual(0)
     })
 
     it('renders the history card', () => {

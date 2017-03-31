@@ -2,6 +2,13 @@
 require 'rails_helper'
 
 describe Screening do
+  describe 'new screening object' do
+    let(:screening) { described_class.new }
+    it ' does not have default cross report values' do
+      expect(screening.cross_reports).to be_empty
+    end
+  end
+
   describe 'as_json' do
     it 'returns the attributes of a screening as a hash' do
       attributes = {
@@ -25,6 +32,16 @@ describe Screening do
           state: 'NY',
           zip: '11222'
         },
+        cross_reports: [
+          {
+            agency_type: 'District attorney',
+            agency_name: 'SCDA Office'
+          },
+          {
+            agency_type: 'Law enforcement',
+            agency_name: nil
+          }
+        ],
         participants: [
           {
             id: '1',
@@ -62,6 +79,16 @@ describe Screening do
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',
+        cross_reports: [
+          {
+            agency_type: 'District attorney',
+            agency_name: 'SCDA Office'
+          },
+          {
+            agency_type: 'Law enforcement',
+            agency_name: nil
+          }
+        ],
         address: include(
           id: '1',
           street_address: '123 Fake St',
