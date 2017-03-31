@@ -10,7 +10,7 @@ feature 'Create Screening' do
       address: nil
     )
     stub_request(:post, api_screenings_path)
-      .with(body: new_screening.to_json(except: :id))
+      .with(body: as_json_without_root_id(new_screening))
       .and_return(body: new_screening.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
@@ -24,7 +24,7 @@ feature 'Create Screening' do
     click_link 'Start Screening'
 
     expect(
-      a_request(:post, api_screenings_path).with(body: new_screening.to_json(except: :id))
+      a_request(:post, api_screenings_path).with(body: as_json_without_root_id(new_screening))
     ).to have_been_made
     expect(page).to have_content('Edit Screening #DQJIYK')
   end

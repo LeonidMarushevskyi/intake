@@ -42,6 +42,14 @@ describe Screening do
             agency_name: nil
           }
         ],
+        allegations: [
+          {
+            id: '1',
+            screening_id: '2',
+            victim_id: '1',
+            perpetrator_id: '4'
+          }
+        ],
         participants: [
           {
             id: '1',
@@ -65,7 +73,7 @@ describe Screening do
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json.with_indifferent_access
-      ).to include({
+      ).to match a_hash_including(
         communication_method: 'phone',
         additional_information: 'this is why',
         ended_at: '2016-08-13T11:00:00.000Z',
@@ -79,43 +87,50 @@ describe Screening do
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',
-        cross_reports: [
-          {
+        cross_reports: array_including(
+          a_hash_including(
             agency_type: 'District attorney',
             agency_name: 'SCDA Office'
-          },
-          {
+          ),
+          a_hash_including(
             agency_type: 'Law enforcement',
             agency_name: nil
-          }
-        ],
-        address: include(
+          )
+        ),
+        address: a_hash_including(
           id: '1',
           street_address: '123 Fake St',
           city: 'NY',
           state: 'NY',
           zip: '11222'
         ),
-        participants: include(
-          id: '1',
-          date_of_birth: nil,
-          first_name: 'Homer',
-          gender: nil,
-          last_name: 'Simpson',
-          ssn: nil,
-          person_id: '3',
-          roles: ['Victim'],
-          screening_id: '2',
-          addresses: include(
+        allegations: array_including(
+          a_hash_including(id: '1', screening_id: '2', victim_id: '1', perpetrator_id: '4')
+        ),
+        participants: array_including(
+          a_hash_including(
             id: '1',
-            street_address: '123 Fake St',
-            city: 'NY',
-            state: 'NY',
-            zip: '11222',
-            type: 'Work'
+            date_of_birth: nil,
+            first_name: 'Homer',
+            gender: nil,
+            last_name: 'Simpson',
+            ssn: nil,
+            person_id: '3',
+            roles: ['Victim'],
+            screening_id: '2',
+            addresses: array_including(
+              a_hash_including(
+                id: '1',
+                street_address: '123 Fake St',
+                city: 'NY',
+                state: 'NY',
+                zip: '11222',
+                type: 'Work'
+              )
+            )
           )
         )
-      }.with_indifferent_access)
+      )
     end
   end
 end

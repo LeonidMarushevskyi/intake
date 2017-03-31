@@ -1,5 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
-import AllegationsShowView from 'components/screenings/AllegationsShowView'
+import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
@@ -13,6 +13,8 @@ import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {mapStateToProps} from 'components/screenings/ScreeningEditPage'
+import {addNewAllegations} from 'utils/allegationsHelper'
 
 export class ScreeningShowPage extends React.Component {
   constructor(props, context) {
@@ -77,6 +79,9 @@ export class ScreeningShowPage extends React.Component {
 
   saveParticipant(participant) {
     return this.props.actions.saveParticipant(participant.toJS())
+      .then(() => {
+        this.props.actions.fetchScreening(this.props.params.id)
+      })
   }
 
   participants() {
@@ -151,7 +156,19 @@ export class ScreeningShowPage extends React.Component {
               screening={mergedScreening}
             />
         }
-        <AllegationsShowView />
+        {
+          loaded &&
+            <AllegationsCardView
+              mode='show'
+              allegations={addNewAllegations(
+                screening.get('id'),
+                this.props.participants,
+                screening.get('allegations')
+              )}
+              onSave={this.cardSave}
+              setField={this.setField}
+            />
+        }
         <WorkerSafetyShowView />
         <HistoryCard />
         {
@@ -186,13 +203,6 @@ ScreeningShowPage.propTypes = {
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
-}
-
-function mapStateToProps(state, _ownProps) {
-  return {
-    participants: state.participants,
-    screening: state.screening,
-  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {

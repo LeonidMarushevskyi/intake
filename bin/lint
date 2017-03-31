@@ -19,7 +19,7 @@ js() {
       --format junit --output-file "$CI_REPORTS"/LINT-Eslint.xml \
       --color $(js_files)
   else
-    unblacken_cmd ./node_modules/.bin/eslint --color $(js_files)
+    unblacken_cmd ./node_modules/.bin/eslint --color $(js_files) $1
   fi
 }
 
@@ -33,7 +33,7 @@ ruby() {
      -r $(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb \
      --format progress --format RuboCop::Formatter::JUnitFormatter --out "$CI_REPORTS"/LINT-Rubocop.xml
   else
-    bundle exec rubocop
+    bundle exec rubocop $1
   fi
 }
 

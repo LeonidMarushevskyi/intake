@@ -3,17 +3,18 @@ require 'rails_helper'
 
 describe ScreeningRepository do
   describe '.create' do
+    let(:mock_response) { double(:mock_response, status: 201, body: 'mock_body') }
+    let(:mock_request) { double(:mock_request) }
+    let(:new_screening) { FactoryGirl.build(:screening) }
+    let(:created_screening) { double(:screening) }
+
     it 'returns the screening if the post to /screenings is successful' do
-      mock_response = double(:mock_response, status: 201, body: 'mock_body')
-      mock_request = double(:mock_request)
-      new_screening = FactoryGirl.build(:screening)
-      created_screening = double(:screening)
       allow(API.intake_api_connection).to receive(:post)
         .and_yield(mock_request)
         .and_return(mock_response)
       expect(mock_request).to receive(:url).with(ScreeningRepository::SCREENINGS_PATH)
       expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(new_screening.to_json(except: :id))
+      expect(mock_request).to receive(:body=).with(new_screening.as_json.except('id').to_json)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(created_screening)
       expect(described_class.create(new_screening)).to eq(created_screening)
@@ -22,9 +23,8 @@ describe ScreeningRepository do
     it 'raise an error if the response code is not 201' do
       stub_request(:post, %r{/api/v1/screenings})
         .and_return(status: 500)
-
       expect do
-        described_class.create(nil)
+        described_class.create(new_screening)
       end.to raise_error(ApiError)
     end
   end
@@ -67,7 +67,7 @@ describe ScreeningRepository do
       expect(mock_request).to receive(:url)
         .with("#{ScreeningRepository::SCREENINGS_PATH}/#{created_screening.id}")
       expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(created_screening.to_json(except: :id))
+      expect(mock_request).to receive(:body=).with(created_screening.as_json.except('id').to_json)
       expect(Screening).to receive(:new).with(mock_response.body)
         .and_return(updated_screening)
       expect(described_class.update(created_screening)).to eq(updated_screening)

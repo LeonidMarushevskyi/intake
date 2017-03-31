@@ -149,22 +149,24 @@ feature 'individual card save' do
 
   scenario 'unchanged attributes are not blanked' do
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
-      updated_screening = existing_screening.as_json(except: :id).merge(incident_date: '1996-02-12')
+      updated_screening = as_json_without_root_id(
+        existing_screening
+      ).merge(incident_date: '1996-02-12')
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
       fill_in 'Incident Date', with: updated_screening[:incident_date]
       click_button 'Save'
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(as_json_without_root_id(updated_screening)))
       ).to have_been_made
     end
   end
 
   scenario 'narrative saves and cancels in isolation' do
     within '#narrative-card' do
-      updated_screening = existing_screening.as_json(except: :id).merge(
+      updated_screening = as_json_without_root_id(existing_screening).merge(
         report_narrative: 'This is the updated narrative'
       ).to_json
       stub_request(:put, api_screening_path(existing_screening.id))
@@ -180,26 +182,29 @@ feature 'individual card save' do
   end
 
   scenario 'cross report save and edits' do
-    within '#cross-report-card' do
-      updated_screening = existing_screening.as_json(except: :id).merge(
-        cross_reports: [
-          {
-            agency_type: 'Department of justice',
-            agency_name: 'Sac Office'
-          }
-        ]
-      )
-      stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
-        .and_return(json_body(updated_screening.merge(id: existing_screening.id).to_json))
+    existing_screening.cross_reports = [
+      {
+        agency_type: 'Department of justice',
+        agency_name: 'Sac Office'
+      }
+    ]
 
+    stub_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+      .and_return(json_body(existing_screening.to_json))
+
+    within '#cross-report-card' do
       find('label', text: 'Department of justice').click
       fill_in 'Department_of_justice-agency-name', with: 'Sac Office'
       click_button 'Save'
-      expect(
-        a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
-      ).to have_been_made
+    end
+
+    expect(
+      a_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+    ).to have_been_made
+
+    within '#cross-report-card' do
       click_link 'Edit cross report'
       expect(page).to have_field('Department_of_justice-agency-name', with: 'Sac Office')
 
@@ -208,60 +213,56 @@ feature 'individual card save' do
         doj_input.send_keys [:backspace]
       end
       expect(page).to have_field('Department_of_justice-agency-name', with: '')
-      edited_screening = existing_screening.as_json(except: :id).merge(
-        cross_reports: [
-          {
-            agency_type: 'Department of justice',
-            agency_name: nil
-          }
-        ]
-      )
-      stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(existing_screening.to_json(except: :id)))
-        .and_return(json_body(existing_screening.to_json))
-
-      click_button 'Save'
-      expect(
-        a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(edited_screening.to_json(except: :id)))
-      ).to have_been_made
     end
+
+    existing_screening.cross_reports = [
+      {
+        agency_type: 'Department of justice',
+        agency_name: nil
+      }
+    ]
+
+    stub_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+      .and_return(json_body(existing_screening.to_json))
+
+    within '#cross-report-card' do
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(:put, api_screening_path(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+    ).to have_been_made
+
     page.driver.browser.navigate.refresh
+
     within '#cross-report-card' do
       find('label', text: 'Department of justice').click
       doj_input = find_field('Department_of_justice-agency-name')
+
       130.times do
         doj_input.send_keys ['a']
       end
+
       expect(doj_input.value.length).to equal(128)
     end
   end
 
   scenario 'Incident information saves and cancels in isolation' do
-    change_address = FactoryGirl.create(
-      :address,
-      street_address: '33 Whatever Rd',
-      city: 'Modesto',
-      state: 'TX',
-      zip: '57575',
-      type: nil
-    )
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
-      updated_screening = existing_screening.as_json(except: :id).merge(address: change_address,
-                                                                        incident_date: '1996-02-12')
+      existing_screening.incident_date = '1996-02-12'
+
       stub_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
-        .and_return(json_body(updated_screening.to_json))
-      fill_in 'Incident Date', with: updated_screening[:incident_date]
-      fill_in 'Address', with: change_address.street_address
-      fill_in 'City', with: change_address.city
-      select 'Texas', from: 'State'
-      fill_in 'Zip', with: change_address.zip
+        .with(json_body(as_json_without_root_id(existing_screening)))
+        .and_return(json_body(existing_screening.to_json))
+
+      fill_in 'Incident Date', with: '1996-02-12'
       click_button 'Save'
 
       expect(
         a_request(:put, api_screening_path(existing_screening.id))
-        .with(json_body(updated_screening.to_json(except: :id)))
+        .with(json_body(as_json_without_root_id(existing_screening)))
       ).to have_been_made
     end
   end

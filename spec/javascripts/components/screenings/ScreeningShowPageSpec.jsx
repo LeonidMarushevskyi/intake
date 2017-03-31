@@ -4,18 +4,26 @@ import {ScreeningShowPage} from 'components/screenings/ScreeningShowPage'
 import {shallow, mount} from 'enzyme'
 
 describe('ScreeningShowPage', () => {
-  describe('render', () => {
-    const requiredProps = {
-      actions: {fetchScreening: () => null},
-      params: {id: '1'},
-      participants: Immutable.List(),
-      screening: Immutable.Map(),
-    }
+  const requiredScreeningAttributes = {
+    allegations: [],
+  }
+  const requiredProps = {
+    actions: {fetchScreening: () => null},
+    params: {id: '1'},
+    participants: Immutable.List(),
+    screening: Immutable.fromJS({
+      ...requiredScreeningAttributes,
+    }),
+  }
 
+  describe('render', () => {
     it('renders the screening reference', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({reference: 'The Rocky Horror Picture Show'}),
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          reference: 'The Rocky Horror Picture Show',
+        }),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
@@ -79,8 +87,12 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the allegations card', () => {
-      const component = shallow(<ScreeningShowPage {...requiredProps} />)
-      expect(component.find('AllegationsShowView').length).toEqual(1)
+      const component = shallow(<ScreeningShowPage {...requiredProps}/>)
+      component.setState({loaded: true})
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.length).toEqual(1)
+      expect(allegationsCard.props().allegations).toEqual(Immutable.List())
+      expect(allegationsCard.props().mode).toEqual('show')
     })
 
     it('renders the worker safety card', () => {
@@ -98,7 +110,7 @@ describe('ScreeningShowPage', () => {
           actions: {fetchScreening: () => null},
           params: {id: '1'},
           participants,
-          screening: Immutable.Map(),
+          screening: Immutable.fromJS({...requiredScreeningAttributes}),
         }
         const component = shallow(<ScreeningShowPage {...props} />)
         expect(component.find('ParticipantCardView').length).toEqual(2)
@@ -111,7 +123,10 @@ describe('ScreeningShowPage', () => {
     it('renders the narrative card after screening is loaded', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({report_narrative: 'this is a narrative report'}),
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          report_narrative: 'this is a narrative report',
+        }),
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       component.setState({loaded: true})
@@ -132,10 +147,9 @@ describe('ScreeningShowPage', () => {
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {fetchScreening},
         params: {id: '222'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       fetchScreening.and.returnValue(promiseSpyObj)
       mount(<ScreeningShowPage {...props} />)
@@ -149,10 +163,7 @@ describe('ScreeningShowPage', () => {
   describe('componentWillReceiveProps', () => {
     it('updates the component when screening is loaded', () => {
       const props = {
-        actions: {},
-        params: {},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
+        ...requiredProps,
       }
       const component = shallow(<ScreeningShowPage {...props}/>)
       const screening = Immutable.fromJS({id: '1', reference: 'My New Reference'})
@@ -166,10 +177,8 @@ describe('ScreeningShowPage', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
     beforeEach(() => {
       const props = {
+        ...requiredProps,
         actions: {saveScreening},
-        params: {id: '1'},
-        participants: Immutable.List(),
-        screening: Immutable.Map(),
       }
       component = shallow(<ScreeningShowPage {...props} />)
       component.instance().setField(['report_narrative'], 'This is my new narrative')
@@ -177,13 +186,20 @@ describe('ScreeningShowPage', () => {
 
     it('calls screening save', () => {
       component.instance().cardSave(['report_narrative'])
-      expect(saveScreening).toHaveBeenCalledWith({report_narrative: 'This is my new narrative'})
+      expect(saveScreening).toHaveBeenCalledWith({
+        ...requiredScreeningAttributes,
+        report_narrative: 'This is my new narrative',
+      })
     })
   })
 
   describe('participants-related functions', () => {
-    const saveParticipant = jasmine.createSpy('saveParticipant')
+    const promiseObj = jasmine.createSpyObj('promise', ['then'])
+    promiseObj.then.and.callFake((thenFunction) => thenFunction())
+
+    const saveParticipant = jasmine.createSpy('saveParticipant').and.returnValue(promiseObj)
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
+    const fetchScreening = jasmine.createSpy('fetchScreening')
 
     const address1 = Immutable.Map({
       city: 'Sacramento',
@@ -202,7 +218,7 @@ describe('ScreeningShowPage', () => {
       zip: '94532',
     })
 
-    const participantId1 = '3'
+    const participantId1 = '123'
     const participant1 = Immutable.Map({
       id: participantId1,
       first_name: 'Bart',
@@ -215,7 +231,7 @@ describe('ScreeningShowPage', () => {
       addresses: Immutable.List([address1, address2]),
     })
 
-    const participantId2 = '4'
+    const participantId2 = '456'
     const participant2 = Immutable.Map({
       id: participantId2,
       first_name: 'Marge',
@@ -229,10 +245,10 @@ describe('ScreeningShowPage', () => {
     })
 
     const props = {
-      actions: {saveParticipant, deleteParticipant},
+      ...requiredProps,
+      actions: {saveParticipant, deleteParticipant, fetchScreening},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
-      screening: Immutable.Map(),
     }
 
     let component
@@ -280,6 +296,7 @@ describe('ScreeningShowPage', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
         component.instance().saveParticipant(updatedParticipant)
         expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
+        expect(fetchScreening).toHaveBeenCalledWith(participant1.get('screening_id'))
       })
     })
 
@@ -317,6 +334,181 @@ describe('ScreeningShowPage', () => {
         const participants = Immutable.List([updatedParticipant, participant2])
         expect(Immutable.is(component.instance().participants(), participants)).toEqual(true)
       })
+    })
+  })
+
+  describe('allegations', () => {
+    const victim = {
+      id: '1',
+      first_name: 'Bart',
+      last_name: 'Simpson',
+      roles: ['Victim'],
+    }
+    const perpetrator = {
+      id: '2',
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      roles: ['Perpetrator'],
+    }
+
+    const props = {
+      ...requiredProps,
+      actions: {
+        fetchScreening: () => Promise.resolve(),
+      },
+      participants: Immutable.fromJS([victim, perpetrator]),
+      screening: Immutable.fromJS({
+        id: '3',
+        cross_reports: [],
+        participants: [victim, perpetrator],
+        allegations: [{
+          id: '1',
+          perpetrator_id: perpetrator.id,
+          screening_id: '3',
+          victim_id: victim.id,
+        }],
+      }),
+    }
+
+    it('renders persisted allegations', () => {
+      const component = mount(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const allegationsCard = component.find('AllegationsShowView')
+      expect(allegationsCard.text()).toContain('Homer Simpson')
+      expect(allegationsCard.text()).toContain('Bart Simpson')
+    })
+
+    it('builds and saves allegations after clicking save', () => {
+      const saveScreening = jasmine.createSpy('saveScreening')
+      const props = {
+        ...requiredProps,
+        actions: {
+          fetchScreening: () => Promise.resolve(),
+          saveScreening,
+        },
+        participants: Immutable.fromJS([victim, perpetrator]),
+        screening: Immutable.fromJS({
+          id: '3',
+          allegations: [],
+          cross_reports: [],
+        }),
+      }
+      const component = mount(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+
+      // go to edit view
+      const allegationsCard = component.find('AllegationsCardView')
+      const editLink = allegationsCard.find('EditLink')
+      expect(editLink.length).toEqual(1)
+      editLink.simulate('click')
+
+      // click save
+      const allegationsEditView = component.find('AllegationsEditView')
+      expect(allegationsEditView.length).toEqual(1)
+      const saveButton = allegationsEditView.find('button[children="Save"]')
+      expect(saveButton.length).toEqual(1)
+      saveButton.simulate('click')
+
+      expect(saveScreening).toHaveBeenCalledWith({
+        id: '3',
+        allegations: [{
+          id: null,
+          perpetrator,
+          perpetrator_id: perpetrator.id,
+          screening_id: '3',
+          victim,
+          victim_id: victim.id,
+        }],
+        cross_reports: [],
+      })
+    })
+
+    it('generates new allegations for the participants when there are no persisted allegations', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const screening = Immutable.fromJS({id: '3', allegations: []})
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: null,
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+    })
+
+    it('replaces generated allegations with persisted allegations', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+    })
+
+    it('interleaves generated allegations with persisted allegations', () => {
+      const anotherPerpetrator = {
+        id: '3',
+        first_name: 'Marge',
+        last_name: 'Simpson',
+        roles: ['Perpetrator'],
+      }
+      const participants = Immutable.fromJS([victim, perpetrator, anotherPerpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3'},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }, {
+        id: null,
+        screening_id: '3',
+        perpetrator: anotherPerpetrator,
+        perpetrator_id: anotherPerpetrator.id,
+        victim,
+        victim_id: victim.id,
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
     })
   })
 })

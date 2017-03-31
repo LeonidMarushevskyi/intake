@@ -6,7 +6,7 @@ class ScreeningRepository
   SCREENINGS_PATH = '/api/v1/screenings'
 
   def self.create(screening)
-    response = API.make_api_call(SCREENINGS_PATH, :post, screening.as_json(except: :id))
+    response = API.make_api_call(SCREENINGS_PATH, :post, screening.as_json.except('id'))
     Screening.new(response.body)
   end
 
@@ -20,7 +20,7 @@ class ScreeningRepository
     response = API.make_api_call(
       "#{SCREENINGS_PATH}/#{screening.id}",
       :put,
-      screening.as_json(except: :id)
+      screening.as_json.except('id')
     )
     Screening.new(response.body)
   end

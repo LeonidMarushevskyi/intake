@@ -1,32 +1,58 @@
 import React from 'react'
+import AllegationsEditView from 'components/screenings/AllegationsEditView'
+import AllegationsShowView from 'components/screenings/AllegationsShowView'
 
 export default class AllegationsCardView extends React.Component {
-  constructor() {
-    super(...arguments)
+  constructor(props, context) {
+    super(props, context)
+
+    this.state = {
+      mode: props.mode,
+    }
+
+    this.onCancel = this.onCancel.bind(this)
+    this.onEdit = this.onEdit.bind(this)
+    this.onSave = this.onSave.bind(this)
+  }
+
+  onCancel() {
+    this.setState({mode: 'show'})
+  }
+
+  onEdit() {
+    this.setState({mode: 'edit'})
+  }
+
+  onSave() {
+    this.props.setField(['allegations'], this.props.allegations, () => {
+      this.props.onSave(['allegations'])
+      this.setState({mode: 'show'})
+    })
   }
 
   render() {
-    return (
-      <div className='card edit double-gap-top' id='allegations-card'>
-        <div className='card-header'>
-          <span>Allegations</span>
-        </div>
-        <div className='card-body no-pad-top'>
-          <div className='row'>
-            <div className='table-responsive'>
-              <table className='table table-hover'>
-                <thead>
-                  <tr>
-                    <th scope='col'>Alleged Victim/Children</th>
-                    <th scope='col'>Alleged Perpetrator</th>
-                    <th scope='col'>Allegation(s)</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    const {mode} = this.state
+    let allegations
+    if (mode === 'edit') {
+      allegations = this.props.allegations
+    } else {
+      allegations = this.props.allegations.filter((allegation) => allegation.get('id'))
+    }
+    const props = {
+      allegations: allegations,
+      onCancel: this.onCancel,
+      onEdit: this.onEdit,
+      onSave: this.onSave,
+    }
+
+    const AllegationsView = (mode === 'show') ? AllegationsShowView : AllegationsEditView
+    return <AllegationsView {...props} />
   }
+}
+
+AllegationsCardView.propTypes = {
+  allegations: React.PropTypes.object.isRequired,
+  mode: React.PropTypes.string.isRequired,
+  onSave: React.PropTypes.func.isRequired,
+  setField: React.PropTypes.func.isRequired,
 }

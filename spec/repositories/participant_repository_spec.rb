@@ -44,11 +44,7 @@ describe ParticipantRepository do
     end
     let(:updated_participant) { double(:participant) }
     let(:expected_url) { "#{ParticipantRepository::PARTICIPANTS_PATH}/#{participant.id}" }
-    let(:expected_body) do
-      participant_hash = participant.to_h
-      participant_without_id = participant_hash.tap { |participant| participant.delete(:id) }
-      participant_without_id.to_json
-    end
+    let(:expected_body) { as_json_without_root_id(participant).to_json }
 
     before :each do
       allow(API.intake_api_connection).to receive(:put)
