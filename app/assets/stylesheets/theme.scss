@@ -306,8 +306,10 @@ select:focus {
 }
 
 label {
+  color: $dark-blue;
   display: block;
-  font-weight: $semibold-weight;
+  font-size: $small-font;
+  font-weight: $normal-weight;
   margin-top: 2rem;
   max-width: 46rem;
 }
