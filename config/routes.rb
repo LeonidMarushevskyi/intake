@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     constraints: Routes::InactiveReleaseOneConstraint
 
   resources :screenings,
-    only: [:show, :edit, :index],
+    only: [:show, :edit],
     constraints: Routes::InactiveReleaseOneConstraint do
   end
 

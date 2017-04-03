@@ -56,11 +56,6 @@ describe('HomePage', () => {
     expect(createPersonLink.html()).toContain('Create Person')
   })
 
-  it('renders the screening index link', () => {
-    const screeningIndexLink = component.find('Link[to="/screenings"]')
-    expect(screeningIndexLink.html()).toContain('Screenings')
-  })
-
   it('sends a POST request to the server and redirects to edit', () => {
     const createScreeningLink = component.find('a')
     createScreeningLink.simulate('click')
@@ -68,7 +63,7 @@ describe('HomePage', () => {
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
   })
 
-  it('renders the screening index page', () => {
+  it('renders the screening index table', () => {
     expect(component.find('ScreeningsTable').length).toEqual(1)
   })
 })
