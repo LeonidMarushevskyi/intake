@@ -580,6 +580,17 @@ tbody tr th {
 
 /////////////////////////////////////////
 
+.top-navigation {
+  background-color: $dark-blue;
+  color: $white;
+  font-size: 2.4rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+}
+
 .sidenav-list {
   display: block;
   list-style-type: none;
