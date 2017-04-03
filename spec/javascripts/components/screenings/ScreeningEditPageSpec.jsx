@@ -48,6 +48,83 @@ describe('ScreeningEditPage', () => {
       expect(component.find('ScreeningInformationCardView').props().onChange).toEqual(component.instance().setField)
     })
 
+    describe('setField', () => {
+      it('sets the screeningEdits correctly', () => {
+        const props = {
+          ...requiredProps,
+          screening: Immutable.fromJS({
+            ...requiredScreeningAttributes,
+          }),
+        }
+        const instance = shallow(<ScreeningEditPage {...props}/>).instance()
+        instance.setField(['field', 'sequence'], 'the value')
+        expect(instance.state.screeningEdits.getIn(['field', 'sequence'])).toEqual('the value')
+      })
+    })
+
+    describe('mergeScreeningWithEdits', () => {
+      let instance
+      beforeEach(() => {
+        const screening = Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          assignee: 'The assignee',
+          name: 'A name',
+          report_narrative: 'This is what happened',
+          additional_information: 'Some more relevant information',
+          cross_reports: [
+            {agency_type: 'District attorney', agency_name: 'SAC DA'},
+            {agency_type: 'Licensing', agency_name: ''},
+          ],
+          address: {
+            street_address: '123 Fake St.',
+            city: 'Sacramento',
+            state: 'CA',
+            zip: '55555',
+          },
+        })
+        const props = {
+          ...requiredProps,
+          screening,
+        }
+        instance = shallow(<ScreeningEditPage {...props}/>).instance()
+      })
+      it('cross_reports edits override the entire screeningEdits.cross_reports array', () => {
+        const changeJS = {
+          cross_reports: [
+            {agency_type: 'Gibberish', agency_name: 'Irrelevant'},
+          ],
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS))
+        expect(updated_screening.toJS().cross_reports).toEqual(changeJS.cross_reports)
+      })
+      it('address field edits merge into previous value', () => {
+        const changeJS = {
+          address: {
+            street_address: '321 Countdown Pl',
+            city: 'Davis',
+          },
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS))
+        expect(updated_screening.toJS().address).toEqual({
+          city: 'Davis',
+          street_address: '321 Countdown Pl',
+          state: 'CA',
+          zip: '55555',
+        })
+      })
+      it('merges other fields appropriately', () => {
+        const changeJS = {
+          assignee: 'A new assignee',
+          name: 'changing the name as well',
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS)).toJS()
+        expect(updated_screening.assignee).toEqual('A new assignee')
+        expect(updated_screening.name).toEqual('changing the name as well')
+        expect(updated_screening.report_narrative).toEqual('This is what happened')
+        expect(updated_screening.additional_information).toEqual('Some more relevant information')
+      })
+    })
+
     describe('participants card', () => {
       let component
       beforeEach(() => {
@@ -226,25 +303,84 @@ describe('ScreeningEditPage', () => {
 
   describe('cardSave', () => {
     const saveScreening = jasmine.createSpy('saveScreening')
+    let instance
     beforeEach(() => {
       const props = {
         ...requiredProps,
         actions: {saveScreening},
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          name: 'The old name',
+          reference: 'old reference',
+          cross_reports: [
+            {agency_name: 'a name', agency_type: 'Licensing'},
+            {agency_name: '', agency_type: 'District attorney'},
+          ],
+          address: {city: 'Davis', county: 'Yolo'},
+          report_narrative: 'I have things to say',
+        }),
       }
-      const component = shallow(<ScreeningEditPage {...props} />)
-      component.instance().setField(['report_narrative'], 'This is my new narrative')
-      component.instance().setField(['address', 'city'], 'Sacramento')
-      component.instance().cardSave(['report_narrative'])
+      instance = shallow(<ScreeningEditPage {...props} />).instance()
+      instance.setField(['report_narrative'], 'This is my new narrative')
+      instance.setField(['name'], 'A name')
+      instance.setField(['reference'], 'ABC123')
+      instance.setField(['cross_reports'], [{agency_name: 'new name', agency_type: 'District attorney'}])
+      instance.setField(['address', 'city'], 'Sacramento')
     })
-
-    it('calls screening save', () => {
+    it('overrides cross_reports instead of merging', () => {
+      instance.cardSave(['cross_reports'])
       expect(saveScreening).toHaveBeenCalledWith({
         ...requiredScreeningAttributes,
-        report_narrative: 'This is my new narrative',
+        name: 'The old name',
+        reference: 'old reference',
+        cross_reports: [
+          {agency_name: 'new name', agency_type: 'District attorney'},
+        ],
+        address: {city: 'Davis', county: 'Yolo'},
+        report_narrative: 'I have things to say',
       })
-      expect(saveScreening).not.toHaveBeenCalledWith({
+    })
+
+    it('saves multiple fields', () => {
+      instance.cardSave(['address', 'reference'])
+      expect(saveScreening).toHaveBeenCalledWith({
         ...requiredScreeningAttributes,
-        city: 'Sacramento',
+        name: 'The old name',
+        reference: 'ABC123',
+        cross_reports: [
+          {agency_name: 'a name', agency_type: 'Licensing'},
+          {agency_name: '', agency_type: 'District attorney'},
+        ],
+        address: {city: 'Sacramento', county: 'Yolo'},
+        report_narrative: 'I have things to say',
+      })
+    })
+    it('saves with correctly merged children', () => {
+      instance.cardSave(['address'])
+      expect(saveScreening).toHaveBeenCalledWith({
+        ...requiredScreeningAttributes,
+        name: 'The old name',
+        reference: 'old reference',
+        cross_reports: [
+          {agency_name: 'a name', agency_type: 'Licensing'},
+          {agency_name: '', agency_type: 'District attorney'},
+        ],
+        address: {city: 'Sacramento', county: 'Yolo'},
+        report_narrative: 'I have things to say',
+      })
+    })
+    it('saves with correctly merged first level field', () => {
+      instance.cardSave(['report_narrative'])
+      expect(saveScreening).toHaveBeenCalledWith({
+        ...requiredScreeningAttributes,
+        name: 'The old name',
+        reference: 'old reference',
+        cross_reports: [
+          {agency_name: 'a name', agency_type: 'Licensing'},
+          {agency_name: '', agency_type: 'District attorney'},
+        ],
+        address: {city: 'Davis', county: 'Yolo'},
+        report_narrative: 'This is my new narrative',
       })
     })
   })

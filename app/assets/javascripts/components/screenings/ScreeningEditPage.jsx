@@ -35,6 +35,7 @@ export class ScreeningEditPage extends React.Component {
       'setField',
       'setParticipantField',
       'saveParticipant',
+      'mergeScreeningWithEdits',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -66,7 +67,7 @@ export class ScreeningEditPage extends React.Component {
     const changes = this.state.screeningEdits.filter((value, key) =>
       fieldList.includes(key) && value !== undefined
     )
-    const screening = this.state.screening.merge(changes)
+    const screening = this.mergeScreeningWithEdits(changes)
     return this.props.actions.saveScreening(screening.toJS())
   }
 
@@ -95,6 +96,15 @@ export class ScreeningEditPage extends React.Component {
       .then(() => {
         this.props.actions.fetchScreening(this.props.params.id)
       })
+  }
+
+  mergeScreeningWithEdits(changes) {
+    const crossReportEdits = changes.get('cross_reports')
+    if (crossReportEdits) {
+      return this.state.screening.set('cross_reports', crossReportEdits).mergeDeep(changes)
+    } else {
+      return this.state.screening.mergeDeep(changes)
+    }
   }
 
   participants() {
@@ -152,7 +162,7 @@ export class ScreeningEditPage extends React.Component {
 
   render() {
     const {screening, loaded} = this.state
-    const mergedScreening = screening.merge(this.state.screeningEdits)
+    const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     return (
       <div>
         <h1>{`Edit Screening #${mergedScreening.get('reference')}`}</h1>

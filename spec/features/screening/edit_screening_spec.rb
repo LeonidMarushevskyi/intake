@@ -251,6 +251,13 @@ feature 'individual card save' do
 
   scenario 'Incident information saves and cancels in isolation' do
     within '#incident-information-card', text: 'INCIDENT INFORMATION' do
+      existing_screening.address.assign_attributes(
+        street_address: '33 Whatever Rd',
+        city: 'Modesto',
+        state: 'TX',
+        zip: '57575',
+        type: nil
+      )
       existing_screening.incident_date = '1996-02-12'
 
       stub_request(:put, api_screening_path(existing_screening.id))
@@ -258,6 +265,10 @@ feature 'individual card save' do
         .and_return(json_body(existing_screening.to_json))
 
       fill_in 'Incident Date', with: '1996-02-12'
+      fill_in 'Address', with: '33 Whatever Rd'
+      fill_in 'City', with: 'Modesto'
+      select 'Texas', from: 'State'
+      fill_in 'Zip', with: '57575'
       click_button 'Save'
 
       expect(
