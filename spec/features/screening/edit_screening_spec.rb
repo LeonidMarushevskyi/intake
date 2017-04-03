@@ -266,4 +266,25 @@ feature 'individual card save' do
       ).to have_been_made
     end
   end
+
+  scenario 'The user submits and clicks proceed' do
+    click_button 'Submit'
+
+    within '#submitModal' do
+      expect(page).to have_content 'You have completed the process to submit a screening.'
+      click_button 'Proceed'
+      expect(page).to have_current_path('/screenings')
+    end
+  end
+
+  scenario 'The user submits the screening and clicks cancel' do
+    click_button 'Submit'
+
+    within '#submitModal' do
+      within '.modal-footer' do
+        click_button 'Close'
+      end
+      expect(page).to have_current_path(edit_screening_path(id: existing_screening.id))
+    end
+  end
 end
