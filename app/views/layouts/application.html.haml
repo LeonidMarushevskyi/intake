@@ -3,7 +3,9 @@
   %head
     = render 'layouts/head'
   %body
-    .container
+    .top-navigation
+      .container CWDS-NS
+    .container.main-content
       - Feature.with(:release_one) do
         #app-release-one= yield
       - Feature.without(:release_one) do
