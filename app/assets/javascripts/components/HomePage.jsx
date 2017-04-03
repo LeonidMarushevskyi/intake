@@ -35,7 +35,7 @@ export class HomePage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='row'>
         <div className='col-md-3'>
           <h1>Home</h1>
           <a href='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</a>
