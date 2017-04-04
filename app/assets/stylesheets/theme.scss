@@ -752,7 +752,6 @@ tbody tr th {
 
 .card {
   .card-header {
-    background-color: $gray-lightest;
     display: block;
     font-size: $large-font;
     overflow: hidden;
@@ -771,12 +770,6 @@ tbody tr th {
       text-decoration: none;
     }
 
-    .material-icons {
-      font-size: $large-font;
-      position: relative;
-      top: $base-spacing * .2;
-    }
-
     button {
       background: none;
       border: none;
@@ -784,7 +777,6 @@ tbody tr th {
   }
 
   .card-body {
-    border: $regular-border solid $gray-lightest;
     border-top: 0;
     padding: $base-spacing;
 
@@ -804,22 +796,18 @@ tbody tr th {
         margin-top: $base-spacing;
       }
     }
-
-
   }
 
   &.edit {
+    background-color: $dark-sand;
+    border-left: .5rem solid $dark-blue;
+  }
+
+  &.show {
+    border-left: .5rem solid $light-grey;
+
     .card-header {
-      background-color: $cool-blue-light;
-      color: $white;
-
-      a {
-        color: $white;
-      }
-    }
-
-    .card-body {
-      border-color: $cool-blue-lighter;
+      border-bottom: .2rem solid $dark-sand;
     }
   }
 }
