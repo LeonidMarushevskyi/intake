@@ -284,7 +284,7 @@ feature 'individual card save' do
     within '#submitModal' do
       expect(page).to have_content 'You have completed the process to submit a screening.'
       click_button 'Proceed'
-      expect(page).to have_current_path('/screenings')
+      expect(page).to have_current_path('/')
     end
   end
 

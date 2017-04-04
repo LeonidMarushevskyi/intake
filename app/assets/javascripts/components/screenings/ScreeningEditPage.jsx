@@ -256,8 +256,8 @@ export class ScreeningEditPage extends React.Component {
               <div className='modal-footer'>
                 <div className='row'>
                   <div className='centered'>
-                    <a href='/screenings' >
-                      <button className='btn btn-primary' href='/screenings' type='button'>Proceed</button>
+                    <a href='/' >
+                      <button className='btn btn-primary' href='/' type='button'>Proceed</button>
                     </a>
                     <button aria-label='Close' className='btn btn-default' data-dismiss='modal' type='button'>Cancel</button>
                   </div>

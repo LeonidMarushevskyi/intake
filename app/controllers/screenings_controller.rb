@@ -14,8 +14,4 @@ class ScreeningsController < ApplicationController # :nodoc:
   def show
     render :show
   end
-
-  def index
-    render :show
-  end
 end
