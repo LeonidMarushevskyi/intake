@@ -761,7 +761,7 @@ tbody tr th {
     display: block;
     font-size: $large-font;
     overflow: hidden;
-    padding: $base-spacing / 1.5  $base-spacing;
+    padding: $base-spacing / 1.5  $double-spacing;
 
     span {
       float: left;
@@ -784,7 +784,7 @@ tbody tr th {
 
   .card-body {
     border-top: 0;
-    padding: $base-spacing;
+    padding: $base-spacing $double-spacing;
 
     .btn {
       margin-bottom: $base-spacing;
