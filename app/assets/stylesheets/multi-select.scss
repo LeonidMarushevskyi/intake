@@ -1,7 +1,8 @@
 @import 'colors';
 
 .Select--multi .Select-control {
-  border: 1px solid $gray;
+  border: none;
+  border-bottom: .2rem solid $medium-grey;
   border-radius: 0;
   height: auto;
   padding: .6rem .7em;
