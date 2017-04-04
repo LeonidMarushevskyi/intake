@@ -366,6 +366,7 @@ describe('ScreeningShowPage', () => {
           perpetrator_id: perpetrator.id,
           screening_id: '3',
           victim_id: victim.id,
+          allegation_types: ['General neglect'],
         }],
       }),
     }
@@ -376,6 +377,7 @@ describe('ScreeningShowPage', () => {
       const allegationsCard = component.find('AllegationsShowView')
       expect(allegationsCard.text()).toContain('Homer Simpson')
       expect(allegationsCard.text()).toContain('Bart Simpson')
+      expect(allegationsCard.text()).toContain('General neglect')
     })
 
     it('builds and saves allegations after clicking save', () => {
@@ -402,9 +404,16 @@ describe('ScreeningShowPage', () => {
       expect(editLink.length).toEqual(1)
       editLink.simulate('click')
 
-      // click save
       const allegationsEditView = component.find('AllegationsEditView')
       expect(allegationsEditView.length).toEqual(1)
+
+      // React-Select doesn't fire an onChange when you simulate change on the component directly
+      // When in mount mode, simulate change on the input and then simulate tabbing out of the field
+      const allegationTypesSelector = allegationsEditView.find('Select').find('input')
+      allegationTypesSelector.simulate('change', {target: {value: 'General neglect'}})
+      allegationTypesSelector.simulate('keyDown', {keyCode: 9, key: 'Tab'})
+
+      // click save
       const saveButton = allegationsEditView.find('button[children="Save"]')
       expect(saveButton.length).toEqual(1)
       saveButton.simulate('click')
@@ -418,6 +427,7 @@ describe('ScreeningShowPage', () => {
           screening_id: '3',
           victim,
           victim_id: victim.id,
+          allegation_types: ['General neglect'],
         }],
         cross_reports: [],
       })
@@ -440,6 +450,7 @@ describe('ScreeningShowPage', () => {
         perpetrator_id: perpetrator.id,
         victim,
         victim_id: victim.id,
+        allegation_types: [],
       }]
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
@@ -466,6 +477,7 @@ describe('ScreeningShowPage', () => {
         perpetrator_id: perpetrator.id,
         victim,
         victim_id: victim.id,
+        allegation_types: [],
       }]
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
@@ -498,6 +510,7 @@ describe('ScreeningShowPage', () => {
         perpetrator_id: perpetrator.id,
         victim,
         victim_id: victim.id,
+        allegation_types: [],
       }, {
         id: null,
         screening_id: '3',
@@ -505,6 +518,65 @@ describe('ScreeningShowPage', () => {
         perpetrator_id: anotherPerpetrator.id,
         victim,
         victim_id: victim.id,
+        allegation_types: [],
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+    })
+
+    it('uses persisted allegation types when there are no edits', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3', allegation_types: ['General neglect']},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+      component.setState({loaded: true})
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+        allegation_types: ['General neglect'],
+      }]
+      const allegationsCard = component.find('AllegationsCardView')
+      expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)
+      expect(Immutable.is(allegationsCard.props().allegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+    })
+
+    it('replaces allegation types with edited allegation types', () => {
+      const participants = Immutable.fromJS([victim, perpetrator])
+      const persisted_allegations = [
+        {id: '9', victim_id: '1', perpetrator_id: '2', screening_id: '3', allegation_types: ['General neglect']},
+      ]
+      const screening = Immutable.fromJS({id: '3', allegations: persisted_allegations})
+      const props = {
+        ...requiredProps,
+        screening,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
+
+      component.setState({loaded: true})
+      const screeningEdits = Immutable.fromJS({allegations: {1: {2: ['New allegation type']}}})
+      component.setState({screeningEdits})
+
+      const expectedAllegations = [{
+        id: '9',
+        screening_id: '3',
+        perpetrator,
+        perpetrator_id: perpetrator.id,
+        victim,
+        victim_id: victim.id,
+        allegation_types: ['New allegation type'],
       }]
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.props().allegations.toJS()).toEqual(expectedAllegations)

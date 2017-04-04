@@ -1,6 +1,5 @@
 import React from 'react'
 import EditLink from 'components/common/EditLink'
-import AllegationRow from 'components/screenings/AllegationRow'
 import nameFormatter from 'utils/nameFormatter'
 
 const AllegationsShowView = ({allegations, onEdit}) => (
