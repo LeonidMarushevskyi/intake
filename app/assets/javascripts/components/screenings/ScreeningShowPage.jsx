@@ -187,6 +187,7 @@ export class ScreeningShowPage extends React.Component {
                 screening.get('allegations'),
                 this.state.screeningEdits.get('allegations')
               )}
+              onCancel={this.cancelEdit}
               onSave={this.cardSave}
               setField={this.setField}
             />

@@ -241,6 +241,7 @@ describe('ScreeningEditPage', () => {
       expect(allegationsCard.length).toEqual(1)
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
       expect(allegationsCard.props().mode).toEqual('edit')
+      expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
 
     it('renders the worker safety card', () => {

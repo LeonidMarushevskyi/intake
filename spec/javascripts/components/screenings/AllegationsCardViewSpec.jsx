@@ -11,6 +11,7 @@ describe('AllegationsCardView', () => {
     onSave: () => null,
     setField: () => null,
     onChange: () => null,
+    onCancel: () => null,
   }
 
   describe('#onCancel', () => {
@@ -19,6 +20,14 @@ describe('AllegationsCardView', () => {
       const instance = component.instance()
       instance.onCancel()
       expect(instance.state.mode).toEqual('show')
+    })
+
+    it('clears edits for the allegations card', () => {
+      const onCancel = jasmine.createSpy('onCancel')
+      const component = shallow(<AllegationsCardView {...requiredProps} mode={'edit'} onCancel={onCancel}/>)
+      const instance = component.instance()
+      instance.onCancel()
+      expect(onCancel).toHaveBeenCalledWith(['allegations'])
     })
   })
 

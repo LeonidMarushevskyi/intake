@@ -17,6 +17,7 @@ export default class AllegationsCardView extends React.Component {
   }
 
   onCancel() {
+    this.props.onCancel(['allegations'])
     this.setState({mode: 'show'})
   }
 
@@ -57,6 +58,7 @@ export default class AllegationsCardView extends React.Component {
 AllegationsCardView.propTypes = {
   allegations: React.PropTypes.object.isRequired,
   mode: React.PropTypes.string.isRequired,
+  onCancel: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
   setField: React.PropTypes.func.isRequired,
 }

@@ -220,6 +220,7 @@ export class ScreeningEditPage extends React.Component {
                 this.state.screeningEdits.get('allegations')
               )}
               mode='edit'
+              onCancel={this.cancelEdit}
               onSave={this.cardSave}
               setField={this.setField}
             />
