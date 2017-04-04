@@ -234,7 +234,9 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid $gray;
+  background-color: transparent;
+  border: none;
+  border-bottom: .2rem solid $light-grey;
   border-radius: 0;
   box-sizing: border-box;
   color: $primary-base;
@@ -322,7 +324,6 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-color: $white;
   background-image: url('arrow-down.png');
   background-image: url('arrow-down.svg');
   background-position: right 1.3rem center;
