@@ -134,13 +134,13 @@ ol {
   text-decoration: none;
 
   &.btn-default {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $dark-grey;
     color: $dark-grey;
   }
 
   &.btn-default:hover {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $coal;
     color: $coal;
   }
@@ -151,19 +151,19 @@ ol {
   }
 
   &.btn-default:active {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $coal;
     color: $coal;
   }
 
   &.btn-primary {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $dark-blue;
     color: $dark-blue;
   }
 
   &.btn-primary:hover {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $coal;
     color: $coal;
   }
@@ -174,7 +174,7 @@ ol {
   }
 
   &.btn-primary:active {
-    background-color: $light-sand;
+    background-color: transparent;
     box-shadow: inset 0 0 0 2px $coal;
     color: $coal;
   }
