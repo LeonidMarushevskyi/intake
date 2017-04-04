@@ -20,9 +20,8 @@ export default class AllegationsCardView extends React.Component {
     this.setState({mode: 'show'})
   }
 
-  onChange(fieldSeq, allegation) {
-    const allegations = this.props.allegations.setIn(fieldSeq, allegation)
-    this.props.setField(['allegations'], allegations)
+  onChange(victimId, perpetratorId, allegationTypes) {
+    this.props.setField(['allegations', victimId, perpetratorId], allegationTypes)
   }
 
   onEdit() {

@@ -205,7 +205,8 @@ export class ScreeningEditPage extends React.Component {
               allegations={addNewAllegations(
                 screening.get('id'),
                 this.props.participants,
-                screening.get('allegations')
+                screening.get('allegations'),
+                this.state.screeningEdits.get('allegations')
               )}
               mode='edit'
               onSave={this.cardSave}

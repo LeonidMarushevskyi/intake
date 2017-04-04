@@ -82,7 +82,7 @@ describe('AllegationsEditView', () => {
     expect(onCancel).toHaveBeenCalled()
   })
 
-  it('passes its onChange function to child rows', () => {
+  it('Allegation row props', () => {
     const onChange = () => null
     const bart = {
       id: 1,
@@ -94,7 +94,7 @@ describe('AllegationsEditView', () => {
       first_name: 'Homer',
       last_name: 'Simpson',
     }
-    const allegations = Immutable.fromJS([{id: null, victim: bart, perpetrator: homer}])
+    const allegations = Immutable.fromJS([{id: null, victim: bart, perpetrator: homer, allegation_types: []}])
 
     const props = {...requiredProps, allegations, onChange}
     const component = shallow(<AllegationsEditView {...props} />)

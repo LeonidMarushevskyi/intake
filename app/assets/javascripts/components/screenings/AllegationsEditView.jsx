@@ -45,6 +45,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
                     victim={allegation.get('victim')}
                     perpetrator={allegation.get('perpetrator')}
                     onChange={onChange}
+                    allegationTypes={allegation.get('allegation_types')}
                   />
                 )}
               </tbody>

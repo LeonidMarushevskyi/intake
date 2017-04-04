@@ -12,8 +12,8 @@ const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegation
         aria-label={`allegations ${nameFormatter(victim)} ${nameFormatter(perpetrator)}`}
         multi
         inputProps={{id: `allegations_${victim.get('id')}_${perpetrator.get('id')}`}}
-        value={allegationTypes}
-        onChange={(allegationTypes) => onChange([0, 'allegation_types'], Immutable.List(allegationTypes.map((type) => type.value)) || [])}
+        value={allegationTypes.toJS()}
+        onChange={(allegationTypes) => onChange(victim.get('id'), perpetrator.get('id'), Immutable.List(allegationTypes.map((type) => type.value)) || [])}
         options={[
           {label: 'General neglect', value: 'General neglect'},
           {label: 'Severe neglect', value: 'Severe neglect'},

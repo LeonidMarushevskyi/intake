@@ -573,6 +573,11 @@ describe('ScreeningEditPage', () => {
       component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsEditView')
       expect(allegationsCard.length).toEqual(1)
+      const newSelectedAllegationTypes = [
+        {label: 'General neglect', value: 'General neglect'},
+      ]
+      allegationsCard.find('Select').simulate('change', newSelectedAllegationTypes)
+
       const saveButton = allegationsCard.find('button[children="Save"]')
       expect(saveButton.length).toEqual(1)
       saveButton.simulate('click')
@@ -585,6 +590,7 @@ describe('ScreeningEditPage', () => {
           screening_id: '3',
           victim,
           victim_id: victim.id,
+          allegation_types: ['General neglect'],
         }],
         cross_reports: [],
       })

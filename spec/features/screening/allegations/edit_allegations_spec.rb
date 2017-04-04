@@ -374,6 +374,48 @@ feature 'edit allegations' do
     end
   end
 
+  scenario 'I remove a participant for whom I have added allegation types' do
+    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
+    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+
+
+    within '#allegations-card.card.edit' do
+      within 'tbody' do
+        table_rows = page.all('tr')
+
+        within(table_rows[0]) do
+          fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
+          has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
+        end
+
+        within(table_rows[1]) do
+          has_react_select_field "allegations_#{lisa.id}_#{homer.id}", with: []
+        end
+      end
+    end
+
+    within edit_participant_card_selector(marge.id) do
+      stub_request(:delete, api_participant_path(marge.id))
+        .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+
+      click_button 'Delete participant'
+    end
+
+    within '#allegations-card.card.edit' do
+      expect(page).to have_content('Lisa')
+      expect(page).to have_content('Homer')
+      expect(page).to_not have_content('Marge')
+      expect(page).to_not have_content('General neglect')
+    end
+
+  end
+
   scenario 'saving another card will not persists changes to allegations' do
     marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
     lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])

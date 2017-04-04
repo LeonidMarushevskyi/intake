@@ -12,6 +12,7 @@ describe('AllegationRow', () => {
     perpetrator: homer,
     onChange: () => null,
     displayVictim: true,
+    allegationTypes: Immutable.List(),
   }
 
   it('renders victim and perpetrator', () => {
@@ -29,7 +30,7 @@ describe('AllegationRow', () => {
   it('sets allegation types value', () => {
     const allegationTypes = Immutable.List(['General neglect'])
     const component = shallow(<AllegationRow {...requiredProps} allegationTypes={allegationTypes} />)
-    expect(component.find('Select').props().value).toEqual(allegationTypes)
+    expect(component.find('Select').props().value).toEqual(allegationTypes.toJS())
   })
 
   it('displays allegation types', () => {
@@ -50,12 +51,11 @@ describe('AllegationRow', () => {
 
   it('allows a user to select an allegation type', () => {
     const onChange = jasmine.createSpy('onChange')
-    const allegationIndex = 0
     const component = shallow(<AllegationRow {...requiredProps} onChange={onChange}/>)
     const newSelectedAllegationTypes = [
       {label: 'General neglect', value: 'General neglect'},
     ]
     component.find('Select').simulate('change', newSelectedAllegationTypes)
-    expect(onChange).toHaveBeenCalledWith([allegationIndex, 'allegation_types'], Immutable.List(['General neglect']))
+    expect(onChange).toHaveBeenCalledWith(bart.get('id'), homer.get('id'), Immutable.List(['General neglect']))
   })
 })
