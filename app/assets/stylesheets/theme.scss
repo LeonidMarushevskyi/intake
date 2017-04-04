@@ -573,12 +573,24 @@ table {
   border-spacing: 0;
   width: 100%;
 
-  thead {
-    font-weight: $semibold-weight;
-  }
-
   td {
     padding: $base-spacing;
+  }
+
+  tr:nth-child(odd) {
+    background-color: $white;
+  }
+
+  tr:nth-child(even) {
+    background-color: $dark-sand;
+  }
+
+  thead {
+    font-weight: $semibold-weight;
+
+    tr:nth-child(odd) {
+      background-color: $light-sand;
+    }
   }
 }
 
@@ -589,7 +601,8 @@ tbody tr th {
 @media screen and (max-width: 767px) {
   .table-responsive {
     border: 0;
-  }}
+  }
+}
 
 /////////////////////////////////////////
 
