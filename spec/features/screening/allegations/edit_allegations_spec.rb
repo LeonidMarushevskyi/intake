@@ -384,7 +384,6 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-
     within '#allegations-card.card.edit' do
       within 'tbody' do
         table_rows = page.all('tr')
@@ -413,7 +412,6 @@ feature 'edit allegations' do
       expect(page).to_not have_content('Marge')
       expect(page).to_not have_content('General neglect')
     end
-
   end
 
   scenario 'saving another card will not persists changes to allegations' do

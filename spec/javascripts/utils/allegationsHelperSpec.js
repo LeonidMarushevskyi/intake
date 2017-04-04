@@ -59,10 +59,10 @@ describe('addNewAllegations', () => {
     const result = addNewAllegations(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
-      {id: null,  screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
       {id: '456', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: '789', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: malory.id, perpetrator: malory},
-      {id: null,  screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: lana.id, perpetrator: lana},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: lana.id, perpetrator: lana},
     ])
     expect(result.toJS()).toEqual(expectedResult.toJS())
     expect(result.size).toEqual(5)
@@ -83,8 +83,22 @@ describe('addNewAllegations', () => {
     expect(Immutable.is(result, expectedResult)).toEqual(true)
   })
 
+  it('uses the persisted allegation types when there are no edits', () => {
+    const allegationsEdits = Immutable.List()
+    const participants = Immutable.fromJS([archer, malory])
+    const allegations = Immutable.fromJS([
+      {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2', allegation_types: ['General neglect']},
+    ])
+    const result = addNewAllegations(screeningId, participants, allegations, allegationsEdits)
+    const expectedResult = Immutable.fromJS([
+      {id: '123', screening_id: screeningId, allegation_types: ['General neglect'], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
   it('merges the allegationsEdits into the returned allegations', () => {
-    const allegationsEdits = Immutable.fromJS({'1': {'2': ['General neglect']}})
+    const allegationsEdits = Immutable.fromJS({1: {2: ['General neglect']}})
     const participants = Immutable.fromJS([archer, malory])
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2'},

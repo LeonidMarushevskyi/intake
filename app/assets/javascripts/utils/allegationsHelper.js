@@ -21,7 +21,7 @@ export function addNewAllegations(screeningId, participants, allegations, allega
 
     let victimAllegationsEdits
     if (allegationsEdits) {
-     victimAllegationsEdits = allegationsEdits.get(victimId)
+      victimAllegationsEdits = allegationsEdits.get(victimId)
     }
 
     return perpetrators.map((perpetrator) => {
@@ -37,6 +37,7 @@ export function addNewAllegations(screeningId, participants, allegations, allega
       } else {
         const persistedAllegation = findAllegation(allegations, victimId, perpetratorId)
         const allegationId = persistedAllegation ? persistedAllegation.get('id') : null
+        const allegationTypes = persistedAllegation ? persistedAllegation.get('allegation_types') : null
 
         return Immutable.fromJS({
           id: allegationId,
@@ -45,8 +46,8 @@ export function addNewAllegations(screeningId, participants, allegations, allega
           screening_id: screeningId,
           victim,
           victim_id: victimId,
-          allegation_types: (victimPerpetratorAllegationsEdits || Immutable.List()),
+          allegation_types: (victimPerpetratorAllegationsEdits || allegationTypes || Immutable.List()),
         })
       }
     })
-  }).flatten(flattenDepth).filterNot((allegation) => allegation === null)}
+  }).flatten(flattenDepth).filterNot((allegation) => allegation === null) }
