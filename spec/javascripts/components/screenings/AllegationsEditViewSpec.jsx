@@ -8,6 +8,7 @@ describe('AllegationsEditView', () => {
     allegations: Immutable.List(),
     onCancel: () => {},
     onSave: () => {},
+    onChange: () => {},
   }
 
   it('renders allegations card view headings', () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import AllegationRow from 'components/screenings/AllegationRow'
 import Immutable from 'immutable'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('AllegationRow', () => {
   const bart = Immutable.fromJS({id: '123', first_name: 'Bart', last_name: 'Simpson'})
@@ -34,7 +34,7 @@ describe('AllegationRow', () => {
   })
 
   it('displays allegation types', () => {
-    const component = mount(<AllegationRow {...requiredProps} />)
+    const component = shallow(<AllegationRow {...requiredProps} />)
     expect(component.find('Select').length).toEqual(1)
     expect(component.find('Select').props()['aria-label']).toEqual('allegations Bart Simpson Homer Simpson')
     expect(component.find('Select').props().options).toEqual([
