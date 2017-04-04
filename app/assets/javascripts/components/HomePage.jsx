@@ -40,7 +40,7 @@ export class HomePage extends React.Component {
           <h1>Home</h1>
           <Link to='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</Link>
         </div>
-        <div className='col-md-9'>
+        <div className='col-md-9 gap-top'>
           <ScreeningsTable screenings={this.state.screenings} />
         </div>
       </div>
