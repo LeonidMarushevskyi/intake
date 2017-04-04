@@ -135,19 +135,19 @@ ol {
 
   &.btn-default {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $dark-grey;
+    box-shadow: inset 0 0 0 2px $medium-grey;
     color: $dark-grey;
   }
 
   &.btn-default:hover {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $coal;
-    color: $coal;
+    box-shadow: inset 0 0 0 2px $dark-grey;
+    color: $dark-grey;
   }
 
   &.btn-default:focus {
     box-shadow: inset 0 0 0 2px $primary-darkest-blue, 0 0 3px $focus-color, 0 0 7px $focus-color;
-    color: $coal;
+    color: $dark-grey;
   }
 
   &.btn-default:active {
@@ -158,25 +158,25 @@ ol {
 
   &.btn-primary {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $dark-blue;
+    box-shadow: inset 0 0 0 2px $light-blue;
     color: $dark-blue;
   }
 
   &.btn-primary:hover {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $coal;
-    color: $coal;
+    box-shadow: inset 0 0 0 2px $dark-blue;
+    color: $dark-blue;
   }
 
   &.btn-primary:focus {
     box-shadow: inset 0 0 0 2px $primary-darkest-blue, 0 0 3px $focus-color, 0 0 7px $focus-color;
-    color: $coal;
+    color: $dark-blue;
   }
 
   &.btn-primary:active {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $coal;
-    color: $coal;
+    box-shadow: inset 0 0 0 2px $dark-blue;
+    color: $dark-blue;
   }
 }
 
@@ -236,7 +236,7 @@ select {
   appearance: none;
   background-color: transparent;
   border: none;
-  border-bottom: .2rem solid $light-grey;
+  border-bottom: .2rem solid $medium-grey;
   border-radius: 0;
   box-sizing: border-box;
   color: $primary-base;
@@ -810,7 +810,7 @@ tbody tr th {
   }
 
   &.show {
-    border-left: .5rem solid $light-grey;
+    border-left: .5rem solid $medium-grey;
 
     .card-header {
       border-bottom: .2rem solid $dark-sand;
@@ -819,7 +819,7 @@ tbody tr th {
 }
 
 .list-item {
-  background-color: $light-sand;
+  background-color: $light-grey;
   margin-top: $double-spacing;
   padding: $base-spacing 0;
   position: relative;
