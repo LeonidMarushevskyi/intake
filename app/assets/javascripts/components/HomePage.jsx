@@ -41,7 +41,7 @@ export class HomePage extends React.Component {
           <a href='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</a>
           <Link to='/people/new' className='row'>Create Person</Link>
         </div>
-        <div className='col-md-6'>
+        <div className='col-md-9'>
           <ScreeningsTable screenings={this.state.screenings} />
         </div>
       </div>
