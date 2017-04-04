@@ -752,6 +752,11 @@ tbody tr th {
 /////////////////////////////////////////
 
 .card {
+
+  .c-gray {
+    color: $coal;
+  }
+
   .card-header {
     display: block;
     font-size: $large-font;
