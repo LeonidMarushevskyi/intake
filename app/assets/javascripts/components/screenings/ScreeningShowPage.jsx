@@ -59,7 +59,8 @@ export class ScreeningShowPage extends React.Component {
         this.props.participants,
         this.props.screening.get('allegations'),
         this.state.screeningEdits.get('allegations')
-      )
+      ).filterNot((allegation) => allegation.get('allegation_types').isEmpty())
+
       screening = this.state.screening.set('allegations', allegations)
     } else {
       const changes = this.state.screeningEdits.filter((value, key) =>

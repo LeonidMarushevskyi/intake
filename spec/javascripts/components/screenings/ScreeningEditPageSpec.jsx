@@ -308,7 +308,8 @@ describe('ScreeningEditPage', () => {
     let instance
     const lisa = {id: '123', first_name: 'Lisa', roles: ['Victim']}
     const marge = {id: '456', first_name: 'Marge', roles: ['Perpetrator']}
-    const participants = Immutable.fromJS([lisa, marge])
+    const homer = {id: '789', first_name: 'Homer', roles: ['Perpetrator']}
+    const participants = Immutable.fromJS([lisa, marge, homer])
 
     beforeEach(() => {
       saveScreening = jasmine.createSpy('saveScreening')
@@ -397,7 +398,7 @@ describe('ScreeningEditPage', () => {
       })
     })
 
-    it('builds allegations when allegations is part of the fieldList', () => {
+    it('builds allegations that have allegation types when allegations is part of the fieldList', () => {
       instance.cardSave(['allegations'])
       expect(saveScreening).toHaveBeenCalledWith({
         ...requiredScreeningAttributes,

@@ -6,6 +6,7 @@ import {shallow, mount} from 'enzyme'
 describe('ScreeningShowPage', () => {
   const requiredScreeningAttributes = {
     allegations: [],
+    id: '123456',
   }
   const requiredProps = {
     actions: {fetchScreening: () => null},
@@ -175,13 +176,22 @@ describe('ScreeningShowPage', () => {
 
   describe('cardSave', () => {
     let component
-    const saveScreening = jasmine.createSpy('saveScreening')
+    let saveScreening
+    const lisa = {id: '123', first_name: 'Lisa', roles: ['Victim']}
+    const marge = {id: '456', first_name: 'Marge', roles: ['Perpetrator']}
+    const homer = {id: '789', first_name: 'Homer', roles: ['Perpetrator']}
+    const participants = Immutable.fromJS([lisa, marge, homer])
+
     beforeEach(() => {
+      saveScreening = jasmine.createSpy('saveScreening')
       const props = {
         ...requiredProps,
+        participants,
         actions: {saveScreening},
       }
       component = shallow(<ScreeningShowPage {...props} />)
+      const allegationEdit = Immutable.fromJS({123: {456: ['General neglect']}})
+      component.instance().setField(['allegations'], allegationEdit)
       component.instance().setField(['report_narrative'], 'This is my new narrative')
     })
 
@@ -190,6 +200,22 @@ describe('ScreeningShowPage', () => {
       expect(saveScreening).toHaveBeenCalledWith({
         ...requiredScreeningAttributes,
         report_narrative: 'This is my new narrative',
+      })
+    })
+
+    it('builds allegations that have allegation types when allegations is part of the fieldList', () => {
+      component.instance().cardSave(['allegations'])
+      expect(saveScreening).toHaveBeenCalledWith({
+        ...requiredScreeningAttributes,
+        allegations: [{
+          id: null,
+          screening_id: '123456',
+          victim: lisa,
+          victim_id: lisa.id,
+          perpetrator: marge,
+          perpetrator_id: marge.id,
+          allegation_types: ['General neglect'],
+        }],
       })
     })
   })
