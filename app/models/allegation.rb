@@ -8,4 +8,5 @@ class Allegation # :nodoc:
   attribute :victim_id, String
   attribute :perpetrator_id, String
   attribute :screening_id, String
+  attribute :allegation_types, Array
 end
