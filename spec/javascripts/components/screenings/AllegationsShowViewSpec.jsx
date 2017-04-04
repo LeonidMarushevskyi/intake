@@ -16,7 +16,7 @@ describe('AllegationsShowView', () => {
     expect(component.text()).toContain('Allegation(s)')
   })
 
-  it('renders alleged vicitms/perpetrators', () => {
+  it('renders rows for allegations', () => {
     const bart = {
       id: '1',
       first_name: 'Bart',
@@ -33,22 +33,27 @@ describe('AllegationsShowView', () => {
       last_name: 'Simpson',
     }
     const allegations = Immutable.fromJS([
-      {id: '10', victim: bart, perpetrator: homer},
-      {id: '11', victim: bart, perpetrator: marge},
+      {id: '10', victim: bart, perpetrator: homer, allegation_types: ['Exploitation']},
+      {id: '11', victim: bart, perpetrator: marge, allegation_types: ['General neglect', 'Severe neglect']},
     ])
     const props = {...requiredProps, allegations}
     const component = shallow(<AllegationsShowView {...props} />)
 
-    const allegationRow = component.find('AllegationRow')
-    expect(allegationRow.length).toEqual(2)
+    const allegationRows = component.find('tbody').find('tr')
+    expect(allegationRows.length).toEqual(3)
 
-    expect(allegationRow.get(0).props.victim).toEqual(Immutable.Map(bart))
-    expect(allegationRow.get(0).props.perpetrator).toEqual(Immutable.Map(homer))
-    expect(allegationRow.get(0).props.displayVictim).toEqual(true)
+    const allegationCells = allegationRows.find('td')
+    expect(allegationCells.at(0).text()).toEqual('Bart Simpson')
+    expect(allegationCells.at(1).text()).toEqual('Homer Simpson')
+    expect(allegationCells.at(2).text()).toEqual('Exploitation')
 
-    expect(allegationRow.get(1).props.victim).toEqual(Immutable.Map(bart))
-    expect(allegationRow.get(1).props.perpetrator).toEqual(Immutable.Map(marge))
-    expect(allegationRow.get(1).props.displayVictim).toEqual(true)
+    expect(allegationCells.at(3).text()).toEqual('Bart Simpson')
+    expect(allegationCells.at(4).text()).toEqual('Marge Simpson')
+    expect(allegationCells.at(5).text()).toEqual('General neglect')
+
+    expect(allegationCells.at(6).text()).toEqual('Bart Simpson')
+    expect(allegationCells.at(7).text()).toEqual('Marge Simpson')
+    expect(allegationCells.at(8).text()).toEqual('Severe neglect')
   })
 
   it('calls the onEdit function when edit link is clicked', () => {

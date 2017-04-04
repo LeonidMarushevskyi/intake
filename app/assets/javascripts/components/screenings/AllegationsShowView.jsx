@@ -1,6 +1,7 @@
 import React from 'react'
 import EditLink from 'components/common/EditLink'
 import AllegationRow from 'components/screenings/AllegationRow'
+import nameFormatter from 'utils/nameFormatter'
 
 const AllegationsShowView = ({allegations, onEdit}) => (
   <div className='card show double-gap-top' id='allegations-card'>
@@ -26,16 +27,15 @@ const AllegationsShowView = ({allegations, onEdit}) => (
               </tr>
             </thead>
             <tbody>
-              {
-                allegations.map((allegation) => (
-                  <AllegationRow
-                    key={allegation.get('id')}
-                    victim={allegation.get('victim')}
-                    perpetrator={allegation.get('perpetrator')}
-                    displayVictim={true}
-                  />
-                ))
-              }
+              {allegations.map((allegation) =>
+                allegation.get('allegation_types').map((allegationType) =>
+                  <tr>
+                    <td><strong>{nameFormatter(allegation.get('victim'))}</strong></td>
+                    <td>{nameFormatter(allegation.get('perpetrator'))}</td>
+                    <td>{allegationType}</td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
