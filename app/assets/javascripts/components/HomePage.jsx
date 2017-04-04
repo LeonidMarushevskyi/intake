@@ -35,12 +35,15 @@ export class HomePage extends React.Component {
 
   render() {
     return (
-      <div className='row'>
+      <div className='row gap-top'>
         <div className='col-md-3'>
-          <h1>Home</h1>
-          <Link to='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</Link>
+          <ul className='unstyled-list'>
+            <li className='half-pad-top'>
+              <Link to='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</Link>
+            </li>
+          </ul>
         </div>
-        <div className='col-md-9 gap-top'>
+        <div className='col-md-9'>
           <ScreeningsTable screenings={this.state.screenings} />
         </div>
       </div>
