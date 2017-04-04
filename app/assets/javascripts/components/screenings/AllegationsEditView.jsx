@@ -1,7 +1,7 @@
 import React from 'react'
 import AllegationRow from 'components/screenings/AllegationRow'
 
-const AllegationsEditView = ({allegations, onSave, onCancel}) => {
+const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
   const groupedAllegations = (allegations) => (
     allegations.groupBy((allegation) => allegation.get('victim'))
   )
@@ -44,6 +44,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel}) => {
                     key={index}
                     victim={allegation.get('victim')}
                     perpetrator={allegation.get('perpetrator')}
+                    onChange={onChange}
                   />
                 )}
               </tbody>
@@ -64,6 +65,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel}) => {
 AllegationsEditView.propTypes = {
   allegations: React.PropTypes.object.isRequired,
   onCancel: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
 }
 

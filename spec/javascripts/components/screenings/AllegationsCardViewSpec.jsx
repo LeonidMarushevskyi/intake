@@ -10,6 +10,7 @@ describe('AllegationsCardView', () => {
     mode: 'edit',
     onSave: () => null,
     setField: () => null,
+    onChange: () => null,
   }
 
   describe('#onCancel', () => {
@@ -33,19 +34,15 @@ describe('AllegationsCardView', () => {
   describe('#onSave', () => {
     let component
     let onSave
-    let setField
     let instance
 
     beforeEach(() => {
       onSave = jasmine.createSpy('onSave')
-      setField = jasmine.createSpy('setField')
-        .and.callFake((_fieldToSet, _valuesToSet, callback) => callback())
       component = shallow(
         <AllegationsCardView
           {...requiredProps}
           mode={'edit'}
           onSave={onSave}
-          setField={setField}
         />
       )
       instance = component.instance()
@@ -59,9 +56,21 @@ describe('AllegationsCardView', () => {
     it('calls onSave from props with the appropriate values', () => {
       expect(onSave).toHaveBeenCalledWith(['allegations'])
     })
+  })
 
-    it('calls setField with the appropriate values', () => {
-      expect(setField).toHaveBeenCalledWith(['allegations'], allegations, jasmine.any(Function))
+  describe('#onChange', () => {
+    it('calls onChange from props with the appropriate values', () => {
+      const allegationTypes = Immutable.List(['General Neglect'])
+      const setField = jasmine.createSpy('setField')
+      const component = shallow(<AllegationsCardView {...requiredProps} setField={setField} />)
+      component.instance().onChange('123', '456', allegationTypes)
+
+      const callParams = setField.calls.argsFor(0)
+      const fieldSeq = callParams[0]
+      const actualAllegationTypes = callParams[1]
+      expect(fieldSeq).toEqual(['allegations', '123', '456'])
+      expect(actualAllegationTypes.toJS()).toEqual(allegationTypes.toJS())
+      expect(Immutable.is(actualAllegationTypes, allegationTypes)).toEqual(true)
     })
   })
 
@@ -113,6 +122,11 @@ describe('AllegationsCardView', () => {
       const renderedAllegations = component.find('AllegationsEditView').props().allegations
 
       expect(renderedAllegations).toEqual(allegations)
+    })
+
+    it('passes onChange to the edit card', () => {
+      const component = shallow(<AllegationsCardView {...props} />)
+      expect(component.find('AllegationsEditView').props().onChange).toEqual(component.instance().onChange)
     })
   })
 })

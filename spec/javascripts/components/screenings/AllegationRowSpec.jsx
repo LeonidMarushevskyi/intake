@@ -10,6 +10,8 @@ describe('AllegationRow', () => {
   const requiredProps = {
     victim: bart,
     perpetrator: homer,
+    onChange: () => null,
+    displayVictim: true,
   }
 
   it('renders victim and perpetrator', () => {
@@ -24,8 +26,14 @@ describe('AllegationRow', () => {
     expect(component.childAt(1).text()).toEqual('Homer Simpson')
   })
 
+  it('sets allegation types value', () => {
+    const allegationTypes = Immutable.List(['General neglect'])
+    const component = shallow(<AllegationRow {...requiredProps} allegationTypes={allegationTypes} />)
+    expect(component.find('Select').props().value).toEqual(allegationTypes)
+  })
+
   it('displays allegation types', () => {
-    const component = mount(<AllegationRow {...requiredProps} displayVictim={true} />)
+    const component = mount(<AllegationRow {...requiredProps} />)
     expect(component.find('Select').length).toEqual(1)
     expect(component.find('Select').props()['aria-label']).toEqual('allegations Bart Simpson Homer Simpson')
     expect(component.find('Select').props().options).toEqual([
@@ -38,5 +46,16 @@ describe('AllegationRow', () => {
       {label: 'Exploitation', value: 'Exploitation'},
       {label: 'Sibling at risk', value: 'Sibling at risk'},
     ])
+  })
+
+  it('allows a user to select an allegation type', () => {
+    const onChange = jasmine.createSpy('onChange')
+    const allegationIndex = 0
+    const component = shallow(<AllegationRow {...requiredProps} onChange={onChange}/>)
+    const newSelectedAllegationTypes = [
+      {label: 'General neglect', value: 'General neglect'},
+    ]
+    component.find('Select').simulate('change', newSelectedAllegationTypes)
+    expect(onChange).toHaveBeenCalledWith([allegationIndex, 'allegation_types'], Immutable.List(['General neglect']))
   })
 })
