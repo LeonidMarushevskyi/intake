@@ -48,7 +48,6 @@ feature 'home page' do
 
       expect(page).to have_title 'Intake'
       expect(page).to have_link 'Start Screening'
-      expect(page).to have_link 'Create Person'
     end
   end
 

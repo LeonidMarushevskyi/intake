@@ -24,9 +24,8 @@ feature 'Create Person' do
       phone_numbers: []
     )
 
-    visit root_path
+    visit new_person_path
 
-    click_link 'Create Person'
     fill_in 'First Name', with: 'Homer'
     fill_in 'Middle Name', with: 'Jay'
     fill_in 'Last Name', with: 'Simpson'
