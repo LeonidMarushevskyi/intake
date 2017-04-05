@@ -327,7 +327,7 @@ describe('ScreeningEditPage', () => {
           address: {city: 'Davis', county: 'Yolo'},
           report_narrative: 'I have things to say',
         }),
-        participants
+        participants,
       }
       instance = shallow(<ScreeningEditPage {...props} />).instance()
       const allegationEdit = Immutable.fromJS({123: {456: ['General neglect']}})
