@@ -47,17 +47,12 @@ describe('HomePage', () => {
   })
 
   it('renders the create screening link', () => {
-    const createScreeningLink = component.find('a')
-    expect(createScreeningLink.text()).toEqual('Start Screening')
-  })
-
-  it('renders the create person link', () => {
-    const createPersonLink = component.find('Link[to="/people/new"]')
-    expect(createPersonLink.html()).toContain('Create Person')
+    const createScreeningLink = component.find('Link')
+    expect(createScreeningLink.props().children).toEqual('Start Screening')
   })
 
   it('sends a POST request to the server and redirects to edit', () => {
-    const createScreeningLink = component.find('a')
+    const createScreeningLink = component.find('Link')
     createScreeningLink.simulate('click')
     expect(createScreening).toHaveBeenCalled()
     expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
