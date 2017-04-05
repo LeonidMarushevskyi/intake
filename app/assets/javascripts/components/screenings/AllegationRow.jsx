@@ -22,7 +22,7 @@ const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegation
           {label: 'Emotional abuse', value: 'Emotional abuse'},
           {label: 'Caretaker absent/incapacity', value: 'Caretaker absent/incapacity'},
           {label: 'Exploitation', value: 'Exploitation'},
-          {label: 'Sibling at risk', value: 'Sibling at risk'},
+          {label: 'At risk, sibling abused', value: 'At risk, sibling abused'},
         ]}
         clearable={false}
         placeholder=''
