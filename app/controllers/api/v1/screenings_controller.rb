@@ -36,7 +36,8 @@ module Api
           :id,
           :screening_id,
           :perpetrator_id,
-          :victim_id
+          :victim_id,
+          allegation_types: []
         ]
       ].freeze
 

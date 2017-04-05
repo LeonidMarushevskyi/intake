@@ -66,7 +66,8 @@ describe Api::V1::ScreeningsController do
           perpetrator_id: '4',
           perpetrator: { first_name: 'name' },
           victim_id: '5',
-          victim: { first_name: 'name' }
+          victim: { first_name: 'name' },
+          allegation_types: ['General neglect']
         }]
       }.with_indifferent_access
     end

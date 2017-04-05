@@ -8,6 +8,7 @@ describe('AllegationsEditView', () => {
     allegations: Immutable.List(),
     onCancel: () => {},
     onSave: () => {},
+    onChange: () => {},
   }
 
   it('renders allegations card view headings', () => {
@@ -80,5 +81,26 @@ describe('AllegationsEditView', () => {
     const component = shallow(<AllegationsEditView {...requiredProps} onCancel={onCancel} />)
     component.find('button[children="Cancel"]').simulate('click')
     expect(onCancel).toHaveBeenCalled()
+  })
+
+  it('Allegation row props', () => {
+    const onChange = () => null
+    const bart = {
+      id: 1,
+      first_name: 'Bart',
+      last_name: 'Simpson',
+    }
+    const homer = {
+      id: 2,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+    }
+    const allegations = Immutable.fromJS([{id: null, victim: bart, perpetrator: homer, allegation_types: []}])
+
+    const props = {...requiredProps, allegations, onChange}
+    const component = shallow(<AllegationsEditView {...props} />)
+    const allegationRowProps = component.find('AllegationRow').props()
+    expect(allegationRowProps.onChange).toEqual(onChange)
+    expect(allegationRowProps.allegationTypes).toEqual(Immutable.List())
   })
 })

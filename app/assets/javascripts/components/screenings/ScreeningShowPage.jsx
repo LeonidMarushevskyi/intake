@@ -52,10 +52,22 @@ export class ScreeningShowPage extends React.Component {
   }
 
   cardSave(fieldList) {
-    const changes = this.state.screeningEdits.filter((value, key) =>
-      fieldList.includes(key) && value !== undefined
-    )
-    const screening = this.mergeScreeningWithEdits(changes)
+    let screening
+    if (fieldList.includes('allegations')) {
+      const allegations = addNewAllegations(
+        this.props.screening.get('id'),
+        this.props.participants,
+        this.props.screening.get('allegations'),
+        this.state.screeningEdits.get('allegations')
+      ).filterNot((allegation) => allegation.get('allegation_types').isEmpty())
+
+      screening = this.state.screening.set('allegations', allegations)
+    } else {
+      const changes = this.state.screeningEdits.filter((value, key) =>
+        fieldList.includes(key) && value !== undefined
+      )
+      screening = this.mergeScreeningWithEdits(changes)
+    }
     return this.props.actions.saveScreening(screening.toJS())
   }
 
@@ -173,8 +185,10 @@ export class ScreeningShowPage extends React.Component {
               allegations={addNewAllegations(
                 screening.get('id'),
                 this.props.participants,
-                screening.get('allegations')
+                screening.get('allegations'),
+                this.state.screeningEdits.get('allegations')
               )}
+              onCancel={this.cancelEdit}
               onSave={this.cardSave}
               setField={this.setField}
             />

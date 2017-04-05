@@ -13,10 +13,16 @@ export default class AllegationsCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
   onCancel() {
+    this.props.onCancel(['allegations'])
     this.setState({mode: 'show'})
+  }
+
+  onChange(victimId, perpetratorId, allegationTypes) {
+    this.props.setField(['allegations', victimId, perpetratorId], allegationTypes)
   }
 
   onEdit() {
@@ -24,10 +30,8 @@ export default class AllegationsCardView extends React.Component {
   }
 
   onSave() {
-    this.props.setField(['allegations'], this.props.allegations, () => {
-      this.props.onSave(['allegations'])
-      this.setState({mode: 'show'})
-    })
+    this.props.onSave(['allegations'])
+    this.setState({mode: 'show'})
   }
 
   render() {
@@ -43,6 +47,7 @@ export default class AllegationsCardView extends React.Component {
       onCancel: this.onCancel,
       onEdit: this.onEdit,
       onSave: this.onSave,
+      onChange: this.onChange,
     }
 
     const AllegationsView = (mode === 'show') ? AllegationsShowView : AllegationsEditView
@@ -53,6 +58,7 @@ export default class AllegationsCardView extends React.Component {
 AllegationsCardView.propTypes = {
   allegations: React.PropTypes.object.isRequired,
   mode: React.PropTypes.string.isRequired,
+  onCancel: React.PropTypes.func.isRequired,
   onSave: React.PropTypes.func.isRequired,
   setField: React.PropTypes.func.isRequired,
 }
