@@ -144,6 +144,8 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
+        expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
+        expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
         expect(page).to have_field('Date of birth', with: marge.date_of_birth)
         expect(page).to have_field('Social security number', with: marge.ssn)
