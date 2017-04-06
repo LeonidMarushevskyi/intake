@@ -8,6 +8,7 @@ REPO_NAME ?= intake
 # DOCKER_LOGIN_EXPRESSION := eval $$(aws ecr get-login --registry-ids $(AWS_ACCOUNT_ID))
 
 export HTTP_PORT ?= 81
+export APP_VERSION ?= 1.$(GIT_HASH)
 
 include Makefile.settings
 
@@ -73,7 +74,7 @@ tag:
 	${INFO} "Tagging complete"
 
 tag%default:
-	@ make tag latest $(APP_VERSION) $(GIT_TAG) $(GIT_HASH)
+	@ make tag latest $(APP_VERSION) $(GIT_TAG)
 
 login:
 	${INFO} "Logging in to Docker registry $$DOCKER_REGISTRY..."
