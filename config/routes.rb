@@ -35,4 +35,6 @@ Rails.application.routes.draw do
   resources :people,
     only: [:new, :edit, :show],
     constraints: Routes::InactiveReleaseOneConstraint
+
+  resources :version, only: :index
 end
