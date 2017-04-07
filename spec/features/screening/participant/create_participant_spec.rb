@@ -19,7 +19,8 @@ def build_participant_from_person_and_screening(person, screening)
     id: nil,
     person_id: person.id,
     screening_id: screening.id.to_s,
-    addresses: person.addresses
+    addresses: person.addresses,
+    phone_numbers: person.phone_numbers
   )
 end
 
