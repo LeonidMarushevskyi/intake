@@ -13,7 +13,7 @@ import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import selectOptions from 'utils/selectHelper'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -52,7 +52,7 @@ export class PersonEditPage extends React.Component {
 
   show() {
     const {params} = this.props
-    browserHistory.push({
+    this.props.router.push({
       pathname: `/people/${params.id}`,
     })
   }
@@ -183,10 +183,14 @@ PersonEditPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   person: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, _ownProps) {
-  return {person: state.person}
+function mapStateToProps(state, ownProps) {
+  return {
+    person: state.person,
+    router: ownProps.router,
+  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
