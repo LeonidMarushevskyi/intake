@@ -2,7 +2,6 @@ import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
 import {HomePage} from 'components/HomePage'
-import {browserHistory} from 'react-router'
 import {shallow} from 'enzyme'
 
 const stubRequest = (mockData) => {
@@ -16,17 +15,18 @@ describe('HomePage', () => {
   let component
   let createScreening
   const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
+  let routerSpy
   let props
   beforeEach(() => {
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     promiseSpyObj.then.and.callFake((then) => then())
     createScreening = jasmine.createSpy('createScreening')
     createScreening.and.returnValue(promiseSpyObj)
-
-    spyOn(browserHistory, 'push')
+    routerSpy = jasmine.createSpyObj('routerSpy', ['push'])
     props = {
       actions: {createScreening},
       screening: Immutable.Map({id: '1'}),
+      router: routerSpy,
     }
     component = shallow(<HomePage {...props} />)
   })
@@ -55,7 +55,7 @@ describe('HomePage', () => {
     const createScreeningLink = component.find('Link')
     createScreeningLink.simulate('click')
     expect(createScreening).toHaveBeenCalled()
-    expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
+    expect(routerSpy.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
   })
 
   it('renders the screening index table', () => {
