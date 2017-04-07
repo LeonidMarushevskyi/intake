@@ -42,6 +42,20 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
       </div>
       <div>
         {
+          participant.get('phone_numbers') && participant.get('phone_numbers').map((phoneNumber) => (
+            <div key={phoneNumber.get('id')} className='row gap-top' id={`phone-number-${phoneNumber.get('id')}`}>
+              <ShowField gridClassName='col-md-6' label='Phone Number'>
+                {phoneNumber.get('number')}
+              </ShowField>
+              <ShowField gridClassName='col-md-6' label='Phone Number Type'>
+                {phoneNumber.get('type')}
+              </ShowField>
+            </div>
+          ))
+        }
+      </div>
+      <div>
+        {
           participant.get('addresses') && participant.get('addresses').map((address) => (
             <div key={address.get('id')}>
               <div className='row gap-top' id={`address-${address.get('id')}`}>

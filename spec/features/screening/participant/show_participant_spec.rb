@@ -12,6 +12,10 @@ feature 'Show Screening' do
     zip: '12345',
     type: 'Home'
   )
+  phone_number = FactoryGirl.create(
+    :phone_number
+  )
+
   existing_participant = FactoryGirl.create(
     :participant,
     first_name: 'Homer',
@@ -19,7 +23,8 @@ feature 'Show Screening' do
     gender: 'male',
     ssn: '123-23-1234',
     date_of_birth: '1990-09-05',
-    addresses: [address]
+    addresses: [address],
+    phone_numbers: [phone_number]
   )
   existing_screening = FactoryGirl.create(
     :screening,
@@ -46,6 +51,8 @@ feature 'Show Screening' do
       within '.card-body' do
         expect(page).to have_content('Homer')
         expect(page).to have_content('Simpson')
+        expect(page).to have_content(phone_number.number)
+        expect(page).to have_content(phone_number.type)
         expect(page).to have_content('Male')
         expect(page).to have_content('1990-09-05')
         expect(page).to have_content('123-23-1234')

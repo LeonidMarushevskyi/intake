@@ -20,7 +20,7 @@ feature 'Edit Screening' do
   let(:marge_roles) { %w(Victim Perpetrator) }
   let(:marge_phone_number) do
     FactoryGirl.create(
-      :phone_number,
+      :phone_number
     )
   end
   let(:marge) do
@@ -152,7 +152,7 @@ feature 'Edit Screening' do
 
   scenario 'editing and then removing a phone number from a participant' do
     visit edit_screening_path(id: screening.id)
-    old_phone = marge.phone_numbers.first
+    old_phone = marge.phone_numbers.first.number
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
@@ -187,7 +187,7 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_selector("#phone-number-#{marge.phone_numbers.first.id}")
         expect(page).to have_content('789-456-1245')
-        expect(page).to_not have_content(old_phone.number)
+        expect(page).to_not have_content(old_phone)
       end
 
       within '.card-header' do
@@ -197,11 +197,11 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        within "#phone_numbers" do
+        within '#phone-numbers' do
           click_link 'Delete phone number'
         end
 
-        expect(page).to_not have_selector('#phone-numbers')
+        expect(page).to_not have_content('789-456-1245')
       end
     end
 
