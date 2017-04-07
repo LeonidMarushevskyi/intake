@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom'
 import configureStore from 'store/configureStore'
 import routes from 'routes'
 import {Provider} from 'react-redux'
-import {Router, browserHistory} from 'react-router'
 
 import Autocompleter from 'components/common/Autocompleter'
 
@@ -16,7 +15,7 @@ const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(
     <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+    {routes}
     </Provider>,
     document.getElementById('app')
   )
