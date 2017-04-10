@@ -66,16 +66,22 @@ function getCSRFToken() {
   return $('meta[name="csrf-token"]').attr('content')
 }
 
+function basepath() {
+  const basepath = window.org.intake.config.base_path
+  return basepath.replace(/\/$/, '')
+}
+
 // Convenience method for performing a request with a simplified, more practical
 // API compared with jQuery.ajax.
 //
 // Always passes just the jqXHR object to all callbacks in the returned promise
 // for a consistent API, unlike jQuery.ajax's inconsistent one.
 export function request(method, url, data, options) {
+  const urlWithBasepath = basepath() + url
   return new Promise((resolve, reject) => {
     $.ajax(Object.assign({
       type: method,
-      url: url,
+      url: urlWithBasepath,
       data: data,
       headers: {'X-CSRF-Token': getCSRFToken()},
     }, options || {}))
