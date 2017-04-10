@@ -23,15 +23,12 @@ feature 'home page' do
 
       %w(Ma Mar Marg Marge).each do |search_text|
         stub_request(:get, api_people_search_path(search_term: search_text))
-          .and_return(body: [marge].to_json,
-                      status: 200,
-                      headers: { 'Content-Type' => 'application/json' })
+          .and_return(json_body([marge].to_json, status: 200))
       end
 
       visit root_path
 
       expect(page).to_not have_link 'Start Screening'
-      expect(page).to_not have_link 'Create Person'
 
       fill_in_autocompleter 'People', with: 'Marge'
 
@@ -74,9 +71,8 @@ feature 'home page' do
       screening_decision: 'differential_response'
     )
     stub_request(:get, api_screenings_path)
-      .and_return(body: [screening1, screening2, screening3].to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body([screening1, screening2, screening3].to_json, status: 200))
+
     visit root_path
     within 'thead' do
       expect(page).to have_css('th', text: 'Name & ID')
