@@ -12,7 +12,7 @@ module ErrorHandler
     case exception
     when ApiError
       log_error(exception, 'API_ERROR')
-      render json: generate_api_error(exception)
+      render json: generate_api_error(exception), status: exception.api_error[:http_code]
     when StandardError
       log_error(exception, 'STANDARD_ERROR')
       render json: generate_standard_error(exception)
