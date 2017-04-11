@@ -168,9 +168,7 @@ feature 'Edit Screening' do
 
       stub_request(:put, api_participant_path(marge.id))
         .with(body: as_json_without_root_id(marge))
-        .and_return(status: 200,
-                    body: marge.to_json,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(marge.to_json, status: 200))
     end
 
     within edit_participant_card_selector(marge.id) do
@@ -209,9 +207,7 @@ feature 'Edit Screening' do
 
     stub_request(:put, api_participant_path(marge.id))
       .with(body: as_json_without_root_id(marge))
-      .and_return(status: 200,
-                  body: marge.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
