@@ -32,9 +32,9 @@ export default class PhoneNumbersEditView extends React.Component {
       <div id='phone-numbers'>
         {
           phoneNumbers.map((numbers, index) => {
-            const {number, type} = numbers.toJS()
+            const {id, number, type} = numbers.toJS()
             return (
-              <div key={index} className='row list-item'>
+              <div key={index} className='row list-item' id={`number-${id}`}>
                 <PhoneNumberField
                   Number={number || ''}
                   Type={type || ''}
