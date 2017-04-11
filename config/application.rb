@@ -22,5 +22,8 @@ module CaIntake # :nodoc:
     config.autoload_paths << Rails.root.join('lib')
     config.logger = Logger.new(STDOUT)
     config.log_level = :debug
+    config.intake = {
+      'base_path': ENV.fetch('BASE_PATH', '/')
+    }
   end
 end

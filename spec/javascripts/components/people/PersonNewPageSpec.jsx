@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 import React from 'react'
 import {PersonNewPage} from 'components/people/PersonNewPage'
 import {shallow} from 'enzyme'
-import {browserHistory} from 'react-router'
 
 describe('PersonNewPage', () => {
   let component
@@ -12,6 +11,7 @@ describe('PersonNewPage', () => {
       const props = {
         person: Immutable.Map(),
         actions: {},
+        router: {},
       }
       component = shallow(<PersonNewPage {...props} />)
     })
@@ -148,13 +148,14 @@ describe('PersonNewPage', () => {
       const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       promiseSpyObj.then.and.callFake((then) => then())
       createPerson.and.returnValue(promiseSpyObj)
-      spyOn(browserHistory, 'push')
     })
 
     it('dispatches createPerson', () => {
+      const router = jasmine.createSpyObj('routerSpy', ['push'])
       const props = {
         person: Immutable.Map(),
         actions: {createPerson: createPerson},
+        router,
       }
       component = shallow(<PersonNewPage {...props} />)
       component.find('InputField[label="First Name"]').simulate('change', {target: {value: 'Bart'}})
@@ -163,13 +164,15 @@ describe('PersonNewPage', () => {
     })
 
     it('redirects to show', () => {
+      const router = jasmine.createSpyObj('routerSpy', ['push'])
       const props = {
         person: Immutable.fromJS({id: '1'}),
         actions: {createPerson: createPerson},
+        router,
       }
       component = shallow(<PersonNewPage {...props} />)
       component.find('button.btn-primary').simulate('click')
-      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
+      expect(router.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
   })
 })

@@ -1,5 +1,6 @@
 import React from 'react'
-import {Route, IndexRoute} from 'react-router'
+import {createHistory} from 'history'
+import {Router, Route, IndexRoute, useRouterHistory} from 'react-router'
 import App from 'components/App'
 import HomePage from 'components/HomePage'
 import PersonNewPage from 'components/people/PersonNewPage'
@@ -8,13 +9,19 @@ import PersonEditPage from 'components/people/PersonEditPage'
 import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
 import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 
+const historyIntake = useRouterHistory(createHistory)({
+  basename: window.org.intake.config.base_path,
+})
+
 export default (
-  <Route path='/' component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path='/people/new' component={PersonNewPage} />
-    <Route path='/people/:id' component={PersonShowPage} />
-    <Route path='/people/:id/edit' component={PersonEditPage} />
-    <Route path='/screenings/:id' component={ScreeningShowPage} />
-    <Route path='/screenings/:id/edit' component={ScreeningEditPage} />
-  </Route>
+  <Router history={historyIntake} >
+    <Route path='/' component={App}>
+      <IndexRoute component={HomePage} />
+      <Route path='people/new' component={PersonNewPage} />
+      <Route path='people/:id' component={PersonShowPage} />
+      <Route path='people/:id/edit' component={PersonEditPage} />
+      <Route path='screenings/:id' component={ScreeningShowPage} />
+      <Route path='screenings/:id/edit' component={ScreeningEditPage} />
+    </Route>
+  </Router>
 )

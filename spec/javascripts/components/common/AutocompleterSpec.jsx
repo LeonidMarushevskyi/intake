@@ -72,6 +72,10 @@ describe('<Autocompleter />', () => {
   })
 
   describe('with footer', () => {
+    beforeEach(() => {
+      stubSuggestions([])
+    })
+
     const component = mount(<Autocompleter enableFooter={true} />)
     describe('is closed', () => {
       it('has aria-expanded of false', () => {

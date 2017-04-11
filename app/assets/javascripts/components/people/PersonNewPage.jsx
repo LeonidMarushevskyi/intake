@@ -14,7 +14,6 @@ import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import selectOptions from 'utils/selectHelper'
 import {bindActionCreators} from 'redux'
-import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 export class PersonNewPage extends React.Component {
@@ -50,7 +49,7 @@ export class PersonNewPage extends React.Component {
 
   show() {
     const {person} = this.props
-    browserHistory.push({
+    this.props.router.push({
       pathname: `/people/${person.get('id')}`,
     })
   }
@@ -171,10 +170,14 @@ export class PersonNewPage extends React.Component {
 PersonNewPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
   person: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, _ownProps) {
-  return {person: state.person}
+function mapStateToProps(state, ownProps) {
+  return {
+    person: state.person,
+    router: ownProps.router,
+  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {

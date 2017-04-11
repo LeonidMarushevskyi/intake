@@ -1,7 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
 import {PersonEditPage} from 'components/people/PersonEditPage'
-import {browserHistory} from 'react-router'
 import {shallow, mount} from 'enzyme'
 
 describe('PersonEditPage', () => {
@@ -179,6 +178,7 @@ describe('PersonEditPage', () => {
 
   describe('update', () => {
     let actionsSpy
+    let router
     beforeEach(() => {
       actionsSpy = {
         fetchPerson: jasmine.createSpy('fetchPerson'),
@@ -187,12 +187,12 @@ describe('PersonEditPage', () => {
       const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
       promiseSpyObj.then.and.callFake((then) => then())
       actionsSpy.updatePerson.and.returnValue(promiseSpyObj)
-      spyOn(browserHistory, 'push')
-
+      router = jasmine.createSpyObj('routerSpy', ['push'])
       const props = {
         params: {id: '1'},
         person: Immutable.Map({id: '1', first_name: 'Bart'}),
         actions: actionsSpy,
+        router,
       }
       component = shallow(<PersonEditPage {...props} />)
     })
@@ -206,7 +206,7 @@ describe('PersonEditPage', () => {
 
     it('redirects to show', () => {
       component.find('button.btn-primary').simulate('click')
-      expect(browserHistory.push).toHaveBeenCalledWith({pathname: '/people/1'})
+      expect(router.push).toHaveBeenCalledWith({pathname: '/people/1'})
     })
   })
 })

@@ -4,7 +4,6 @@ import React from 'react'
 import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
-import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 export class HomePage extends React.Component {
@@ -22,7 +21,7 @@ export class HomePage extends React.Component {
   createScreening() {
     this.props.actions.createScreening().then(() => {
       const {screening} = this.props
-      browserHistory.push({
+      this.props.router.push({
         pathname: `/screenings/${screening.get('id')}/edit`,
       })
     })
@@ -53,11 +52,15 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state, _ownProps) {
-  return {screening: state.screening}
+function mapStateToProps(state, ownProps) {
+  return {
+    screening: state.screening,
+    router: ownProps.router,
+  }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
