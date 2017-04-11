@@ -28,6 +28,6 @@ class HomeController < ApplicationController # :nodoc:
   end
 
   def authentication_enabled?
-    Feature.active?(:release_one) && Feature.active?(:authentication)
+    Feature.active?(:authentication)
   end
 end
