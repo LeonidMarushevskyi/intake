@@ -10,7 +10,7 @@ import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
 import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 
 const historyIntake = useRouterHistory(createHistory)({
-  basename: '/',
+  basename: window.org.intake.config.base_path,
 })
 
 export default (
