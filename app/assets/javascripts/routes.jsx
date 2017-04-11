@@ -1,6 +1,6 @@
 import React from 'react'
-import {createHistory, useBasename} from 'history'
-import {Router, Route, IndexRoute} from 'react-router'
+import {createHistory} from 'history'
+import {Router, Route, IndexRoute, useRouterHistory} from 'react-router'
 import App from 'components/App'
 import HomePage from 'components/HomePage'
 import PersonNewPage from 'components/people/PersonNewPage'
@@ -9,7 +9,7 @@ import PersonEditPage from 'components/people/PersonEditPage'
 import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
 import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
 
-const historyIntake = useBasename(createHistory)({
+const historyIntake = useRouterHistory(createHistory)({
   basename: '/',
 })
 
