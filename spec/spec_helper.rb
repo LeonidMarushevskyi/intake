@@ -68,4 +68,10 @@ RSpec.configure do |config|
     example.run
     WebMock.allow_net_connect!
   end
+
+  config.around(:example, accessibility: false) do |example|
+    Capybara.default_driver = :selenium
+    example.run
+    Capybara.default_driver = :accessible_selenium
+  end
 end

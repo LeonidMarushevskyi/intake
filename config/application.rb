@@ -23,7 +23,8 @@ module CaIntake # :nodoc:
     config.logger = Logger.new(STDOUT)
     config.log_level = :debug
     config.intake = {
-      'base_path': ENV.fetch('BASE_PATH', '/')
+      'base_path': ENV.fetch('BASE_PATH', '/'),
+      'authentication_url': ENV.fetch('AUTHENTICATION_URL', '')
     }
   end
 end

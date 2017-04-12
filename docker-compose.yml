@@ -10,7 +10,7 @@ services:
       RAILS_ENV: development
       API_URL: "http://api:3000"
       NODE_ENV: development
-      AUTHENTICATION_URL: "http://Authentication/"
+      AUTHENTICATION_URL: "http://www.example.com/"
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
       USE_XVFB: 'true'
@@ -34,6 +34,8 @@ services:
       - "3001:3000"
     environment:
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+      AUTHENTICATION_URL: "http://www.example.com/"
+      AUTHENTICATION: 'false'
     tty: true
     stdin_open: true
   db:
