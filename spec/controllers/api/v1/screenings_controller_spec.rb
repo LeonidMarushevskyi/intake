@@ -4,20 +4,45 @@ require 'rails_helper'
 
 describe Api::V1::ScreeningsController do
   describe '#create' do
-    let(:created_screening) { double(:screening, id: '1') }
-    before do
-      allow(LUID).to receive(:generate).and_return(['123ABC'])
-      screening = double(:screening)
-      expect(Screening).to receive(:new)
-        .with(reference: '123ABC').and_return(screening)
-      expect(ScreeningRepository).to receive(:create).with(screening)
-        .and_return(created_screening)
+    context 'when authentication is enabled' do
+      before do
+        allow(Feature).to receive(:active?)
+          .with(:authentication).and_return(true)
+      end
+
+      let(:created_screening) { double(:screening, id: '1') }
+      before do
+        allow(LUID).to receive(:generate).and_return(['123ABC'])
+        screening = double(:screening)
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC').and_return(screening)
+        expect(ScreeningRepository).to receive(:create).with(screening)
+          .and_return(created_screening)
+      end
+
+      it 'creates and renders screening as json' do
+        process :create, method: :post, format: :json
+        expect(response).to be_successful
+        expect(JSON.parse(response.body)).to eq(created_screening.as_json)
+      end
     end
 
-    it 'creates and renders screening as json' do
-      process :create, method: :post, format: :json
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)).to eq(created_screening.as_json)
+    context 'when authentication is disabled' do
+      let(:created_screening) { double(:screening, id: '1') }
+      before do
+        allow(LUID).to receive(:generate).and_return(['123ABC'])
+        screening = double(:screening)
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC').and_return(screening)
+        expect(ScreeningRepository).to receive(:create).with(screening)
+          .and_return(created_screening)
+      end
+
+      it 'creates and renders screening as json' do
+        process :create, method: :post, format: :json
+        expect(response).to be_successful
+        expect(JSON.parse(response.body)).to eq(created_screening.as_json)
+      end
     end
   end
 
