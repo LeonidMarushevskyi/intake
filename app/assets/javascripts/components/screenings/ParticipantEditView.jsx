@@ -3,6 +3,7 @@ import DateField from 'components/common/DateField'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
+import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
@@ -69,6 +70,10 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             />
           </div>
         </div>
+        <PhoneNumbersEditView
+          phoneNumbers={participant.get('phone_numbers') || Immutable.List()}
+          onChange={(phone_numbers) => onChange(['phone_numbers'], phone_numbers || [])}
+        />
         <div className='row'>
           <DateField
             gridClassName='col-md-6'

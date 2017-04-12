@@ -21,6 +21,13 @@ describe Participant do
             type: 'Placement'
           }
         ],
+        phone_numbers: [
+          {
+            id: '6',
+            number: '330-789-4567',
+            type: 'Home'
+          }
+        ],
         person_id: '1',
         screening_id: '2',
         roles: ['Victim']
@@ -42,6 +49,13 @@ describe Participant do
           zip: '51500',
           type: 'Placement'
         }],
+        phone_numbers: [
+          {
+            id: '6',
+            number: '330-789-4567',
+            type: 'Home'
+          }
+        ],
         person_id: '1',
         screening_id: '2',
         roles: ['Victim']

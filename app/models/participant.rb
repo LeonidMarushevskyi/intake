@@ -10,6 +10,7 @@ class Participant
   attribute :gender
   attribute :last_name
   attribute :ssn
+  attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]
   attribute :person_id
   attribute :screening_id

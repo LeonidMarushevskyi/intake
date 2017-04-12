@@ -153,3 +153,21 @@ describe('ParticipantShowView with addresses', () => {
       .toContain('Placement')
   })
 })
+
+describe('ParticipantShowView with phone numbers', () => {
+  const participant = Immutable.fromJS({
+    id: '7',
+    phone_numbers: [{
+      id: '3',
+      number: '789-456-1235',
+      type: 'Work',
+    }],
+  })
+  const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}} />)
+  it('renders the participant with phone numbers', () => {
+    expect(component.find('ShowField[label="Phone Number"]').html())
+      .toContain('789-456-1235')
+    expect(component.find('ShowField[label="Phone Number Type"]').html())
+      .toContain('Work')
+  })
+})

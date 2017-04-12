@@ -17,6 +17,13 @@ describe Api::V1::ParticipantsController do
           zip: '12345',
           type: 'placement'
         }],
+        phone_numbers: [
+          {
+            id: '',
+            number: '123-456-7899',
+            type: 'Work'
+          }
+        ],
         person_id: '2',
         screening_id: '1',
         ssn: '123-23-1234'

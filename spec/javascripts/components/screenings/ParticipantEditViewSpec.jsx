@@ -275,4 +275,23 @@ describe('ParticipantEditView', () => {
       expect(Immutable.is(value, address)).toEqual(true)
     })
   })
+
+  describe('phone numbers', () => {
+    it('renders a phone number in edit view', () => {
+      const participant = Immutable.fromJS({
+        id: '199',
+        first_name: 'Lisa',
+        last_name: 'Simpson',
+        date_of_birth: '2016-12-31',
+        gender: 'female',
+        ssn: 'ssn-1',
+        addresses: [{}],
+        roles: [],
+        phone_numbers: [{}],
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+
+      expect(component.find('PhoneNumbersEditView').length).toEqual(1)
+    })
+  })
 })

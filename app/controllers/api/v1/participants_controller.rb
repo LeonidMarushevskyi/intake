@@ -24,6 +24,11 @@ module Api
           :zip,
           :type
         ],
+        phone_numbers: [
+          :id,
+          :number,
+          :type
+        ],
         roles: []
       ].freeze
 
