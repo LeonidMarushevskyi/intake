@@ -4,7 +4,7 @@ require 'rails_helper'
 describe ApiController do
   controller do
     def custom
-      API.make_api_call('/some_test_path', :get)
+      API.make_api_call('my_security_token', '/some_test_path', :get)
     end
   end
 
