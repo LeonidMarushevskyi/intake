@@ -8,6 +8,13 @@ module SessionHelpers
     expect(page).to have_current_path(root_path(token: 123))
     WebMock.reset!
   end
+
+  def in_browser(name)
+    old_session = Capybara.session_name
+    Capybara.session_name = name
+    yield
+    Capybara.session_name = old_session
+  end
 end
 
 RSpec.configure do |config|

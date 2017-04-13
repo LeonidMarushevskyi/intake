@@ -34,16 +34,16 @@ module API
     api_connection
   end
 
-  def self.make_api_call(url, method, payload = nil)
+  def self.make_api_call(security_token, url, method, payload = nil)
     fetch_api_connection(url).send(method) do |req|
       req.url url
       req.headers['Content-Type'] = CONTENT_TYPE unless method == :get
+      req.headers['Authorization'] = security_token
       req.body = payload.to_json unless payload.nil?
     end
   rescue Faraday::Error => e
     raise ApiError,
-      message: e.message,
-      sent_attributes: payload.to_json,
+      message: e.message, sent_attributes: payload.to_json,
       url: url, method: method
   end
 end

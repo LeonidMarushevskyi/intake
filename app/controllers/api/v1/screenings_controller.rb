@@ -43,23 +43,26 @@ module Api
 
       def create
         new_screening = Screening.new(reference: LUID.generate.first)
-        screening = ScreeningRepository.create(new_screening)
+        screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening
       end
 
       def update
         existing_screening = Screening.new(screening_params.to_h)
-        updated_screening = ScreeningRepository.update(existing_screening)
+        updated_screening = ScreeningRepository.update(session[:security_token], existing_screening)
         render json: updated_screening
       end
 
       def show
-        screening = ScreeningRepository.find(params[:id])
+        screening = ScreeningRepository.find(session[:security_token], params[:id])
         render json: screening
       end
 
       def index
-        screenings = ScreeningRepository.search(screening_index_params.to_h)
+        screenings = ScreeningRepository.search(
+          session[:security_token],
+          screening_index_params.to_h
+        )
         render json: screenings
       end
 

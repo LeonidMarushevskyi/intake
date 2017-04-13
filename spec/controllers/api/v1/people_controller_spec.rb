@@ -2,6 +2,11 @@
 require 'rails_helper'
 
 describe Api::V1::PeopleController do
+  let(:security_token) { 'security_token' }
+  let(:session) do
+    { security_token => security_token }
+  end
+
   describe '#create' do
     let(:person_params) do
       {
@@ -43,13 +48,15 @@ describe Api::V1::PeopleController do
     before do
       person = double(:person)
       expect(Person).to receive(:new)
-        .with(person_params).and_return(person)
+        .with(person_params)
+        .and_return(person)
       expect(PersonRepository).to receive(:create)
-        .with(person).and_return(created_person)
+        .with(security_token, person)
+        .and_return(created_person)
     end
 
     it 'renders person as json' do
-      post :create, params: { person: person_params }, format: :json
+      post :create, params: { person: person_params }, session: session
       expect(JSON.parse(response.body)).to eq(created_person.as_json)
     end
   end
@@ -93,8 +100,11 @@ describe Api::V1::PeopleController do
 
     before do
       person = double(:person)
-      expect(Person).to receive(:new).with(person_params).and_return(person)
-      expect(PersonRepository).to receive(:update).with(person)
+      expect(Person).to receive(:new)
+        .with(person_params)
+        .and_return(person)
+      expect(PersonRepository).to receive(:update)
+        .with(security_token, person)
         .and_return(updated_person)
     end
 
@@ -102,7 +112,7 @@ describe Api::V1::PeopleController do
       process :update,
         method: :put,
         params: { id: person_params[:id], person: person_params },
-        format: :json
+        session: session
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(updated_person.as_json)
     end
@@ -115,10 +125,10 @@ describe Api::V1::PeopleController do
         Person.new(first_name: 'John', last_name: 'Smith')
       ]
       allow(PersonSearchRepository).to receive(:search)
-        .with('foobarbaz')
+        .with(security_token, 'foobarbaz')
         .and_return(people)
 
-      process :search, method: :get, params: { search_term: 'foobarbaz' }
+      process :search, method: :get, params: { search_term: 'foobarbaz' }, session: session
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(people.as_json)
@@ -126,13 +136,16 @@ describe Api::V1::PeopleController do
   end
 
   describe '#show' do
-    let(:person) { double(:person, as_json: { 'id' => '1' }) }
+    let(:person_id) { '1' }
+    let(:person) { double(:person, as_json: { 'id' => person_id }) }
     before do
-      allow(PersonRepository).to receive(:find).with('1').and_return(person)
+      allow(PersonRepository).to receive(:find)
+        .with(security_token, person_id)
+        .and_return(person)
     end
 
     it 'renders person as json' do
-      process :show, method: :get, params: { id: '1' }, format: :json
+      process :show, method: :get, params: { id: person_id }, session: session
       expect(JSON.parse(response.body)).to eq(person.as_json)
     end
   end

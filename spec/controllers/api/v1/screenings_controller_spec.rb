@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 describe Api::V1::ScreeningsController do
+  let(:security_token) { 'security_token' }
+  let(:session) do
+    { security_token => security_token }
+  end
+
   describe '#create' do
     let(:created_screening) { double(:screening, id: '1') }
     before do
@@ -10,12 +15,13 @@ describe Api::V1::ScreeningsController do
       screening = double(:screening)
       expect(Screening).to receive(:new)
         .with(reference: '123ABC').and_return(screening)
-      expect(ScreeningRepository).to receive(:create).with(screening)
+      expect(ScreeningRepository).to receive(:create)
+        .with(security_token, screening)
         .and_return(created_screening)
     end
 
     it 'creates and renders screening as json' do
-      process :create, method: :post, format: :json
+      process :create, method: :post, session: session
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(created_screening.as_json)
     end
@@ -25,11 +31,13 @@ describe Api::V1::ScreeningsController do
     let(:screening) { double(:screening) }
 
     before do
-      expect(ScreeningRepository).to receive(:find).with('1').and_return(screening)
+      expect(ScreeningRepository).to receive(:find)
+        .with(security_token, '1')
+        .and_return(screening)
     end
 
     it 'renders screening as json' do
-      process :show, method: :get, params: { id: '1' }, format: :json
+      process :show, method: :get, params: { id: '1' }, session: session
       expect(JSON.parse(response.body)).to eq(screening.as_json)
     end
   end
@@ -78,14 +86,17 @@ describe Api::V1::ScreeningsController do
       screening = double(:screening)
       screening_attributes = screening_params.as_json(except: unallowed_params)
       expect(Screening).to receive(:new).with(screening_attributes).and_return(screening)
-      expect(ScreeningRepository).to receive(:update).with(screening).and_return(updated_screening)
+      expect(ScreeningRepository).to receive(:update)
+        .with(security_token, screening)
+        .and_return(updated_screening)
     end
 
     it 'updates and renders screening as json' do
       process :update,
         method: :put,
         params: { id: screening_params[:id], screening: screening_params },
-        format: :json
+        format: :json,
+        session: session
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(updated_screening.as_json)
     end
@@ -96,11 +107,12 @@ describe Api::V1::ScreeningsController do
       let(:screenings) { double(:screenings, as_json: [{ id: '1' }]) }
       before do
         allow(ScreeningRepository).to receive(:search)
+          .with(security_token, {})
           .and_return(screenings)
       end
 
       it 'renders screenings as json' do
-        process :index, method: :get, format: :json
+        process :index, method: :get, session: session
         expect(JSON.parse(response.body)).to eq([{ 'id' => '1' }])
       end
     end
@@ -113,12 +125,12 @@ describe Api::V1::ScreeningsController do
 
       before do
         expect(ScreeningRepository).to receive(:search)
-          .with('screening_decisions' => %w(screen_out promote_to_referral))
+          .with(security_token, 'screening_decisions' => %w(screen_out promote_to_referral))
           .and_return(screenings)
       end
 
       it 'renders screenings returned from screening repository' do
-        process :index, method: :get, format: :json, params: params
+        process :index, method: :get, params: params, session: session
         expect(JSON.parse(response.body)).to eq([])
       end
     end

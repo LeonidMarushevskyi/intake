@@ -2,88 +2,82 @@
 require 'rails_helper'
 
 describe PersonRepository do
+  let(:security_token) { 'my_security_token' }
+
   describe '.create' do
-    it 'returns the person if the post to /people is successful' do
-      new_person = FactoryGirl.build(:person, first_name: 'Homer')
-      new_person_attributes = new_person.to_json(except: :id)
-      stub_request(:post, %r{/api/v1/people})
-        .with(body: new_person_attributes)
-        .and_return(
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-          body: new_person.to_json
-        )
-      expect(described_class.create(new_person).id).to eq(new_person.id)
-      expect(a_request(:post, %r{/api/v1/people})
-        .with(body: new_person_attributes)).to have_been_made
+    let(:person_id) { '11' }
+    let(:response) { double(:response, body: { 'id' => person_id, 'first_name' => 'New Person' }) }
+    let(:person) { { id: nil, first_name: 'New Person' } }
+
+    before do
+      expect(API).to receive(:make_api_call)
+        .with(security_token, '/api/v1/people', :post, 'first_name' => 'New Person')
+        .and_return(response)
     end
 
-    it 'raise an error if the response code is not 201' do
-      stub_request(:post, %r{/api/v1/people}).and_return(status: 500)
-      expect do
-        described_class.create(nil)
-      end.to raise_error(ApiError)
+    it 'returns the created person' do
+      created_person = described_class.create(security_token, person)
+      expect(created_person.id).to eq(person_id)
+      expect(created_person.first_name).to eq('New Person')
     end
   end
 
   describe '.find' do
-    it 'returns the person if the get request to /people/:id is successful' do
-      mock_response = double(:mock_response, status: 200, body: 'mock_body')
-      mock_request = double(:mock_request)
-      found_person = double(:person)
-      allow(API.intake_api_connection).to receive(:get)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url).with("#{PersonRepository::PEOPLE_PATH}/1")
-      expect(mock_request).to_not receive(:headers)
-      expect(mock_request).to_not receive(:body=)
-      expect(Person).to receive(:new).with(mock_response.body)
-        .and_return(found_person)
-      expect(described_class.find(1)).to eq(found_person)
+    let(:person_id) { '66' }
+    let(:response) do
+      double(:response, body: { 'id' => person_id, 'first_name' => 'Existing Person' })
     end
 
-    it 'raise an error if the response code is not 200' do
-      stub_request(:get, %r{/api/v1/people/\d}).and_return(status: 500)
-      expect do
-        described_class.find(1)
-      end.to raise_error(ApiError)
+    before do
+      expect(API).to receive(:make_api_call)
+        .with(security_token, "/api/v1/people/#{person_id}", :get)
+        .and_return(response)
+    end
+
+    it 'returns the existing person' do
+      existing_person = described_class.find(security_token, person_id)
+      expect(existing_person.id).to eq(person_id)
+      expect(existing_person.first_name).to eq('Existing Person')
     end
   end
 
   describe '.update' do
-    it 'returns the person if the put to /people/:id is successful' do
-      existing_person = FactoryGirl.build(:person, first_name: 'Homer')
-      existing_person_attributes = existing_person.to_json(except: :id)
-      stub_request(:put, %r{/api/v1/people/#{existing_person.id}})
-        .with(body: existing_person_attributes)
-        .and_return(
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-          body: existing_person.to_json
-        )
-      expect(described_class.update(existing_person).id).to eq(existing_person.id)
-      expect(a_request(:put, %r{/api/v1/people}).with(body: existing_person_attributes))
-        .to have_been_made
+    let(:response) do
+      double(:response, body: { 'id' => person_id, 'first_name' => 'Updated Person' })
+    end
+    let(:person) do
+      Person.new(id: person_id, first_name: 'Updated Person')
     end
 
-    it 'raise an error if the response code is not 201' do
-      existing_person = FactoryGirl.build(:person, first_name: 'Homer')
-      existing_person_attributes = existing_person.to_json(except: :id)
+    context 'when person has an id' do
+      let(:person_id) { '77' }
 
-      stub_request(:put, %r{/api/v1/people/#{existing_person.id}})
-        .with(body: existing_person_attributes)
-        .and_return(status: 500)
+      before do
+        expect(API).to receive(:make_api_call)
+          .with(
+            security_token,
+            "/api/v1/people/#{person_id}",
+            :put,
+            person.as_json(except: :id)
+          )
+          .and_return(response)
+      end
 
-      expect do
-        described_class.update(existing_person)
-      end.to raise_error(ApiError)
+      it 'returns the updated person' do
+        updated_person = described_class.update(security_token, person)
+        expect(updated_person.id).to eq(person_id)
+        expect(updated_person.first_name).to eq('Updated Person')
+      end
     end
 
-    it 'raises an error if person id is not present' do
-      created_person = double(:person, id: nil)
-      expect do
-        described_class.update(created_person)
-      end.to raise_error('Error updating person: id is required')
+    context 'when person has no id' do
+      let(:person_id) { nil }
+
+      it 'raises an error' do
+        expect do
+          described_class.update(security_token, person)
+        end.to raise_error('Error updating person: id is required')
+      end
     end
   end
 end
