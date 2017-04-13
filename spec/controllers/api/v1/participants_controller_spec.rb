@@ -2,6 +2,11 @@
 require 'rails_helper'
 
 describe Api::V1::ParticipantsController do
+  let(:security_token) { 'security_token' }
+  let(:session) do
+    { security_token => security_token }
+  end
+
   describe '#create' do
     let(:participant_params) do
       {
@@ -37,7 +42,8 @@ describe Api::V1::ParticipantsController do
       participant = double(:participant)
       expect(Participant).to receive(:new)
         .with(participant_params).and_return(participant)
-      expect(ParticipantRepository).to receive(:create).with(participant)
+      expect(ParticipantRepository).to receive(:create)
+        .with(security_token, participant)
         .and_return(created_participant)
     end
 
@@ -45,7 +51,7 @@ describe Api::V1::ParticipantsController do
       process :create,
         method: :post,
         params: { screening_id: '1', participant: participant_params },
-        format: :json
+        session: session
       expect(JSON.parse(response.body)).to eq(created_participant.as_json)
     end
   end
@@ -71,24 +77,24 @@ describe Api::V1::ParticipantsController do
     it 'updates and renders participant as json' do
       expect(Participant).to receive(:new).with(participant_params).and_return(participant)
       expect(ParticipantRepository).to receive(:update)
-        .with(participant).and_return(updated_participant)
-      process :update, method: :put, params: params, format: :json
+        .with(security_token, participant)
+        .and_return(updated_participant)
+      process :update, method: :put, params: params, session: session
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(updated_participant.as_json)
     end
   end
 
   describe '#destroy' do
+    let(:participant_id) { '1' }
     before do
-      expect(ParticipantRepository).to receive(:delete).with('1')
+      expect(ParticipantRepository).to receive(:delete)
+        .with(security_token, participant_id)
         .and_return('')
     end
 
     it 'deletes an existing participant' do
-      process :destroy,
-        method: :delete,
-        params: { id: '1' },
-        format: :json
+      process :destroy, method: :delete, params: { id: participant_id }, session: session
       expect(response.body).to be_empty
     end
   end

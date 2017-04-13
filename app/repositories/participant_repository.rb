@@ -5,19 +5,20 @@
 class ParticipantRepository
   PARTICIPANTS_PATH = '/api/v1/participants'
 
-  def self.create(participant)
+  def self.create(security_token, participant)
     participant_data = participant.as_json(except: :id)
-    response = API.make_api_call(PARTICIPANTS_PATH, :post, participant_data)
+    response = API.make_api_call(security_token, PARTICIPANTS_PATH, :post, participant_data)
     Participant.new(response.body)
   end
 
-  def self.delete(id)
-    API.make_api_call("#{PARTICIPANTS_PATH}/#{id}", :delete)
+  def self.delete(security_token, id)
+    API.make_api_call(security_token, "#{PARTICIPANTS_PATH}/#{id}", :delete)
   end
 
-  def self.update(participant)
+  def self.update(security_token, participant)
     raise 'Error updating participant: id is required' unless participant.id
     response = API.make_api_call(
+      security_token,
       "#{PARTICIPANTS_PATH}/#{participant.id}",
       :put,
       participant_json_without_root_id(participant)

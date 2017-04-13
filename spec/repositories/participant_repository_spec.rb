@@ -2,6 +2,8 @@
 require 'rails_helper'
 
 describe ParticipantRepository do
+  let(:security_token) { 'my_security_token' }
+
   describe '.create' do
     let(:participant_id) { '11' }
     let(:response) do
@@ -13,12 +15,12 @@ describe ParticipantRepository do
 
     before do
       expect(API).to receive(:make_api_call)
-        .with('/api/v1/participants', :post, 'first_name' => 'New Participant')
+        .with(security_token, '/api/v1/participants', :post, 'first_name' => 'New Participant')
         .and_return(response)
     end
 
     it 'returns the created participant' do
-      created_participant = described_class.create(participant)
+      created_participant = described_class.create(security_token, participant)
       expect(created_participant.id).to eq(participant_id)
       expect(created_participant.first_name).to eq('New Participant')
     end
@@ -29,8 +31,8 @@ describe ParticipantRepository do
 
     it 'makes a DELETE API call to participants' do
       expect(API).to receive(:make_api_call)
-        .with("/api/v1/participants/#{participant_id}", :delete)
-      described_class.delete(participant_id)
+        .with(security_token, "/api/v1/participants/#{participant_id}", :delete)
+      described_class.delete(security_token, participant_id)
     end
   end
 
@@ -52,6 +54,7 @@ describe ParticipantRepository do
       before do
         expect(API).to receive(:make_api_call)
           .with(
+            security_token,
             "/api/v1/participants/#{participant_id}",
             :put,
             'first_name' => 'Updated Participant'
@@ -60,7 +63,7 @@ describe ParticipantRepository do
       end
 
       it 'returns the updated participant' do
-        updated_participant = described_class.update(participant)
+        updated_participant = described_class.update(security_token, participant)
         expect(updated_participant.id).to eq(participant_id)
         expect(updated_participant.first_name).to eq('Updated Participant')
       end
@@ -71,7 +74,7 @@ describe ParticipantRepository do
 
       it 'raises an error' do
         expect do
-          described_class.update(participant)
+          described_class.update(security_token, participant)
         end.to raise_error('Error updating participant: id is required')
       end
     end
