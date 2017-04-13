@@ -3,122 +3,98 @@ require 'rails_helper'
 
 describe ScreeningRepository do
   describe '.create' do
-    let(:mock_response) { double(:mock_response, status: 201, body: 'mock_body') }
-    let(:mock_request) { double(:mock_request) }
-    let(:new_screening) { FactoryGirl.build(:screening) }
-    let(:created_screening) { double(:screening) }
+    let(:screening_id) { '11' }
+    let(:response) { double(:response, body: { 'id' => screening_id, 'name' => 'New Screening' }) }
+    let(:screening) { double(:screening, as_json: { 'id' => nil, 'name' => 'New Screening' }) }
 
-    it 'returns the screening if the post to /screenings is successful' do
-      allow(API.intake_api_connection).to receive(:post)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url).with(ScreeningRepository::SCREENINGS_PATH)
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(new_screening.as_json.except('id').to_json)
-      expect(Screening).to receive(:new).with(mock_response.body)
-        .and_return(created_screening)
-      expect(described_class.create(new_screening)).to eq(created_screening)
+    before do
+      expect(API).to receive(:make_api_call)
+        .with('/api/v1/screenings', :post, 'name' => 'New Screening')
+        .and_return(response)
     end
 
-    it 'raise an error if the response code is not 201' do
-      stub_request(:post, %r{/api/v1/screenings})
-        .and_return(status: 500)
-      expect do
-        described_class.create(new_screening)
-      end.to raise_error(ApiError)
+    it 'returns the created screening' do
+      created_screening = described_class.create(screening)
+      expect(created_screening.id).to eq(screening_id)
+      expect(created_screening.name).to eq('New Screening')
     end
   end
 
   describe '.find' do
-    it 'returns the screening if the get request to /screenings/:id is successful' do
-      mock_response = double(:mock_response, status: 200, body: { id: 'mock_body' })
-      mock_request = double(:mock_request)
-      found_screening = double(:screening)
-      allow(API.intake_api_connection).to receive(:get)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url).with("#{ScreeningRepository::SCREENINGS_PATH}/1")
-      expect(mock_request).to_not receive(:headers)
-      expect(mock_request).to_not receive(:body=)
-      expect(Screening).to receive(:new).with(mock_response.body)
-        .and_return(found_screening)
-      expect(described_class.find(1)).to eq(found_screening)
+    let(:screening_id) { '33' }
+    let(:response) do
+      double(:response, body: { 'id' => screening_id, 'name' => 'Existing Screening' })
     end
 
-    it 'raise an error if the response code is not 200' do
-      stub_request(:get, %r{/api/v1/screenings/\d})
-        .and_return(status: 500)
+    before do
+      expect(API).to receive(:make_api_call)
+        .with("/api/v1/screenings/#{screening_id}", :get)
+        .and_return(response)
+    end
 
-      expect do
-        described_class.find(1)
-      end.to raise_error(ApiError)
+    it 'returns the existing screening' do
+      existing_screening = described_class.find(screening_id)
+      expect(existing_screening.id).to eq(screening_id)
+      expect(existing_screening.name).to eq('Existing Screening')
     end
   end
 
   describe '.update' do
-    it 'returns the screening if the put to /screenings/:id is successful' do
-      mock_response = double(:mock_response, status: 200, body: { id: 'mock_body' })
-      mock_request = double(:mock_request)
-      created_screening = FactoryGirl.create(:screening)
-      updated_screening = double(:screening)
-      allow(API.intake_api_connection).to receive(:put)
-        .and_yield(mock_request)
-        .and_return(mock_response)
-      expect(mock_request).to receive(:url)
-        .with("#{ScreeningRepository::SCREENINGS_PATH}/#{created_screening.id}")
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(created_screening.as_json.except('id').to_json)
-      expect(Screening).to receive(:new).with(mock_response.body)
-        .and_return(updated_screening)
-      expect(described_class.update(created_screening)).to eq(updated_screening)
+    let(:response) do
+      double(:response, body: { 'id' => screening_id, 'name' => 'Updated Screening' })
+    end
+    let(:screening) do
+      double(
+        :screening,
+        id: screening_id,
+        as_json: { 'id' => screening_id, 'name' => 'Updated Screening' }
+      )
     end
 
-    it 'raise an error if the response code is not 201' do
-      created_screening = double(:screening, id: '1')
+    context 'when screening has an id' do
+      let(:screening_id) { '77' }
 
-      stub_request(:put, %r{/api/v1/screenings})
-        .and_return(status: 500)
+      before do
+        expect(API).to receive(:make_api_call)
+          .with("/api/v1/screenings/#{screening_id}", :put, 'name' => 'Updated Screening')
+          .and_return(response)
+      end
 
-      expect do
-        described_class.update(created_screening)
-      end.to raise_error(ApiError)
+      it 'returns the updated screening' do
+        updated_screening = described_class.update(screening)
+        expect(updated_screening.id).to eq(screening_id)
+        expect(updated_screening.name).to eq('Updated Screening')
+      end
     end
 
-    it 'raises an error if screening id is not present' do
-      created_screening = double(:screening, id: nil)
-      expect do
-        described_class.update(created_screening)
-      end.to raise_error('Error updating screening: id is required')
+    context 'when screening has no id' do
+      let(:screening_id) { nil }
+
+      it 'raises an error' do
+        expect do
+          described_class.update(screening)
+        end.to raise_error('Error updating screening: id is required')
+      end
     end
   end
 
   describe '.search' do
-    it 'raise an error if the response code is not 200' do
-      stub_request(:get, %r{/api/v1/screenings})
-        .and_return(status: 500, headers: { 'Content-Type': 'application/json' })
-
-      expect do
-        described_class.search({})
-      end.to raise_error(ApiError)
+    let(:results) { [{ id: '1' }, { id: '2' }] }
+    let(:response) { double(:response, body: results) }
+    let(:search_terms) do
+      { screening_decisions: %w(promote_to_referral screen_out) }
     end
 
-    it 'returns the screening results when screening search is successful' do
-      results = [{ id: '1' }, { id: '2' }].to_json
-      search_terms = { screening_decisions: %w(promote_to_referral screen_out) }
-      stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
-        .and_return(body: results, status: 200, headers: { 'Content-Type': 'application/json' })
-
-      expect(described_class.search(search_terms)[0].id).to eq('1')
-      expect(described_class.search(search_terms)[1].id).to eq('2')
+    before do
+      expect(API).to receive(:make_api_call)
+        .with("/api/v1/screenings?#{search_terms.to_query}", :get)
+        .and_return(response)
     end
 
-    it 'sends a GET request to api screening search' do
-      search_terms = { screening_decisions: %w(promote_to_referral screen_out) }
-      stub_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})
-        .and_return(body: [].to_json, status: 200, headers: { 'Content-Type': 'application/json' })
-
-      described_class.search(search_terms)
-      expect(a_request(:get, %r{/api/v1/screenings\?#{search_terms.to_query}})).to have_been_made
+    it 'returns the screening results' do
+      screening_results = described_class.search(search_terms)
+      expect(screening_results.first.id).to eq('1')
+      expect(screening_results.last.id).to eq('2')
     end
   end
 end
