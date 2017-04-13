@@ -10,7 +10,7 @@ describe ParticipantRepository do
       double(:response, body: { 'id' => participant_id, 'first_name' => 'New Participant' })
     end
     let(:participant) do
-      { id: nil, first_name: 'New Participant' }
+      double(:participant, as_json: { 'id' => nil, 'first_name' => 'New Participant' })
     end
 
     before do
