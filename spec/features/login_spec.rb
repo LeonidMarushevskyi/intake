@@ -44,4 +44,40 @@ feature 'login' do
       expect(page).to have_current_path(root_path)
     end
   end
+
+  scenario 'user uses session token when communicating to API' do
+    Feature.run_with_activated(:authentication) do
+      bobs_token = '456'
+      in_browser(:bob) do
+        stub_request(:get, "http://www.foo.com/authn/validate?token=#{bobs_token}")
+          .and_return(status: 200)
+        visit root_path(token: bobs_token)
+      end
+
+      alexs_token = '678'
+      in_browser(:alex) do
+        stub_request(:get, "http://www.foo.com/authn/validate?token=#{alexs_token}")
+          .and_return(status: 200)
+        visit root_path(token: alexs_token)
+      end
+
+      WebMock.reset!
+
+      in_browser(:bob) do
+        visit screening_path(1)
+        expect(
+          a_request(:get, api_screening_path(1))
+          .with(headers: { 'Authorization' => bobs_token })
+        ).to have_been_made
+      end
+
+      in_browser(:alex) do
+        visit screening_path(1)
+        expect(
+          a_request(:get, api_screening_path(1))
+          .with(headers: { 'Authorization' => alexs_token })
+        ).to have_been_made
+      end
+    end
+  end
 end
