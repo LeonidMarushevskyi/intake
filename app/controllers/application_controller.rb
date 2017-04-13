@@ -14,17 +14,12 @@ class ApplicationController < ActionController::Base # :nodoc:
   private
 
   def authenticate_user
-    return if session[:security_token] && set_api_header
+    return if session[:security_token]
     if SecurityRepository.token_valid?(security_token)
       session[:security_token] = security_token
-      set_api_header
     else
       redirect_to SecurityRepository.login_url(request.original_url)
     end
-  end
-
-  def set_api_header
-    ::API.intake_api_connection.headers['Authorization'] = session[:security_token]
   end
 
   def security_token
