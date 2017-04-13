@@ -70,8 +70,9 @@ RSpec.configure do |config|
   end
 
   config.around(:example, accessibility: false) do |example|
+    tmp_driver = Capybara.default_driver
     Capybara.default_driver = :selenium
     example.run
-    Capybara.default_driver = :accessible_selenium
+    Capybara.default_driver = tmp_driver
   end
 end
