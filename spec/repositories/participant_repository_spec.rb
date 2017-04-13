@@ -2,63 +2,78 @@
 require 'rails_helper'
 
 describe ParticipantRepository do
-  let(:mock_response) { double(:mock_response, status: status, body: 'mock_body') }
-  let(:mock_request) { double(:mock_request) }
-
   describe '.create' do
-    let(:status) { 201 }
-    let(:new_participant) { FactoryGirl.build(:participant) }
-    let(:created_participant) { double(:participant) }
-
-    before :each do
-      allow(API.intake_api_connection).to receive(:post)
-        .and_yield(mock_request)
-        .and_return(mock_response)
+    let(:participant_id) { '11' }
+    let(:response) do
+      double(:response, body: { 'id' => participant_id, 'first_name' => 'New Participant' })
+    end
+    let(:participant) do
+      { id: nil, first_name: 'New Participant' }
     end
 
-    it 'returns the participant if the post to /participants is successful' do
-      expect(mock_request).to receive(:url).with(ParticipantRepository::PARTICIPANTS_PATH)
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(new_participant.to_json(except: :id))
-      expect(Participant).to receive(:new).with(mock_response.body)
-        .and_return(created_participant)
-      expect(ParticipantRepository.create(new_participant)).to eq(created_participant)
+    before do
+      expect(API).to receive(:make_api_call)
+        .with('/api/v1/participants', :post, 'first_name' => 'New Participant')
+        .and_return(response)
+    end
+
+    it 'returns the created participant' do
+      created_participant = described_class.create(participant)
+      expect(created_participant.id).to eq(participant_id)
+      expect(created_participant.first_name).to eq('New Participant')
     end
   end
 
   describe '.delete' do
-    it 'deletes the participant if the delete to /participants/id is successful' do
-      stub_request(:delete, %r{/api/v1/participants/\d})
-        .and_return(status: 204, headers: { 'Content-Type': 'application/json' })
-      described_class.delete('1')
-      expect(a_request(:delete, %r{/api/v1/participants/1})).to have_been_made
+    let(:participant_id) { '22' }
+
+    it 'makes a DELETE API call to participants' do
+      expect(API).to receive(:make_api_call)
+        .with("/api/v1/participants/#{participant_id}", :delete)
+      described_class.delete(participant_id)
     end
   end
 
   describe '.update' do
-    let(:status) { 200 }
+    let(:response) do
+      double(:response, body: { 'id' => participant_id, 'first_name' => 'Updated Participant' })
+    end
     let(:participant) do
-      participant = FactoryGirl.create(:participant)
-      participant.first_name = 'My New First Name'
-      participant
-    end
-    let(:updated_participant) { double(:participant) }
-    let(:expected_url) { "#{ParticipantRepository::PARTICIPANTS_PATH}/#{participant.id}" }
-    let(:expected_body) { as_json_without_root_id(participant).to_json }
-
-    before :each do
-      allow(API.intake_api_connection).to receive(:put)
-        .and_yield(mock_request)
-        .and_return(mock_response)
+      double(
+        :participant,
+        id: participant_id,
+        as_json: { 'id' => participant_id, 'first_name' => 'Updated Participant' }
+      )
     end
 
-    it 'returns the updated participant if the put to /participants/id is successful' do
-      expect(mock_request).to receive(:url).with(expected_url)
-      expect(mock_request).to receive(:headers).and_return({})
-      expect(mock_request).to receive(:body=).with(expected_body)
-      expect(Participant).to receive(:new).with(mock_response.body)
-        .and_return(updated_participant)
-      expect(ParticipantRepository.update(participant)).to eq(updated_participant)
+    context 'when participant has an id' do
+      let(:participant_id) { '91' }
+
+      before do
+        expect(API).to receive(:make_api_call)
+          .with(
+            "/api/v1/participants/#{participant_id}",
+            :put,
+            'first_name' => 'Updated Participant'
+          )
+          .and_return(response)
+      end
+
+      it 'returns the updated participant' do
+        updated_participant = described_class.update(participant)
+        expect(updated_participant.id).to eq(participant_id)
+        expect(updated_participant.first_name).to eq('Updated Participant')
+      end
+    end
+
+    context 'when participant has no id' do
+      let(:participant_id) { nil }
+
+      it 'raises an error' do
+        expect do
+          described_class.update(participant)
+        end.to raise_error('Error updating participant: id is required')
+      end
     end
   end
 end
