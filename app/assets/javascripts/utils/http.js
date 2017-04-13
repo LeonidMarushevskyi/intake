@@ -88,8 +88,8 @@ export function request(method, url, data, options) {
       .done(resolve).fail((response) => {
         if (response.status === STATUS_CODES.forbidden) {
           const currentLocation = encodeURIComponent(window.location)
-          const loginBaseUrl = window.org.intake.config.authentication_url.replace(/\/$/, '')
-          window.location = `${loginBaseUrl}/authn/login?callback=${currentLocation}`
+          const loginBaseUrl = window.org.intake.config.authentication_login_url
+          window.location = `${loginBaseUrl}${currentLocation}`
         } else {
           reject(response)
         }

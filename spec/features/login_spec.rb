@@ -3,25 +3,22 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'login' do
-  around do |example|
-    authentication_url = ENV['AUTHENTICATION_URL']
-    ENV['AUTHENTICATION_URL'] = 'http://www.example.com'
-    example.run
-    ENV['AUTHENTICATION_URL'] = authentication_url
-  end
+  let(:authentication_login_url) { Rails.configuration.intake[:authentication_login_url] }
+  let(:authentication_base_url) { Rails.configuration.intake[:authentication_base_url] }
+  let(:token_url) { "#{authentication_base_url}/authn/validate?token=123" }
 
   scenario 'user has not logged in', accessibility: false do
     Feature.run_with_activated(:authentication) do
       visit root_path
-      expect(page.current_url).to have_content 'http://www.example.com/authn/login'
+      expect(page.current_url).to have_content authentication_login_url
     end
   end
 
   scenario 'user provides valid security token', accessibility: false do
     Feature.run_with_activated(:authentication) do
-      stub_request(:get, 'http://www.example.com/authn/validate?token=123').and_return(status: 200)
+      stub_request(:get, token_url).and_return(status: 200)
       visit root_path(token: 123)
-      expect(a_request(:get, 'http://www.example.com/authn/validate?token=123')).to have_been_made
+      expect(a_request(:get, token_url)).to have_been_made
       expect(page.current_url).to_not have_content 'http://www.example.com'
       expect(page).to have_current_path(root_path(token: 123))
     end
@@ -29,10 +26,10 @@ feature 'login' do
 
   scenario 'user provides invalid security token', accessibility: false do
     Feature.run_with_activated(:authentication) do
-      stub_request(:get, 'http://www.example.com/authn/validate?token=123').and_return(status: 401)
+      stub_request(:get, token_url).and_return(status: 401)
       visit root_path(token: 123)
-      expect(a_request(:get, 'http://www.example.com/authn/validate?token=123')).to have_been_made
-      expect(page.current_url).to have_content 'http://www.example.com/authn/login'
+      expect(a_request(:get, token_url)).to have_been_made
+      expect(page.current_url).to have_content authentication_login_url
     end
   end
 

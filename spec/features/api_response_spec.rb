@@ -12,9 +12,9 @@ feature 'api responses' do
       headers: { 'Content-Type' => 'application/json' }
     )
     visit root_path
-    base_url = ENV.fetch('AUTHENTICATION_URL').chomp('/')
+    base_url = Rails.configuration.intake[:authentication_login_url]
     redirect_url = CGI.escape("#{page.current_url.chomp('/')}#{screening_path(screening.id)}")
-    login_url = "#{base_url}/authn/login?callback=#{redirect_url}"
+    login_url = "#{base_url}#{redirect_url}"
 
     stub_request(:get, api_screening_path(screening.id)).and_return(body: 'I failed', status: 403)
     visit screening_path(id: screening.id)

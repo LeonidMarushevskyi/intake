@@ -8,10 +8,10 @@ class SecurityRepository
   end
 
   def self.login_url(callback)
-    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/login?callback=#{callback}"
+    "#{Rails.configuration.intake[:authentication_login_url]}#{callback}"
   end
 
   def self.token_validation_url(token)
-    "#{ENV.fetch('AUTHENTICATION_URL')}/authn/validate?token=#{token}"
+    "#{Rails.configuration.intake[:authentication_base_url]}/authn/validate?token=#{token}"
   end
 end

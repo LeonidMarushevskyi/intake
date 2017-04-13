@@ -30,8 +30,8 @@ describe ApplicationController do
       context 'when not athenticated without valid security token' do
         before do
           allow(SecurityRepository).to receive(:token_valid?).and_return(false)
-          allow(ENV).to receive(:fetch).with('AUTHENTICATION_URL')
-            .and_return('http://authentication_url')
+          allow(Rails.configuration).to receive(:intake)
+            .and_return(authentication_login_url: 'http://authentication_url/authn/login?callback=')
         end
 
         it 'redirects to authentication site' do
