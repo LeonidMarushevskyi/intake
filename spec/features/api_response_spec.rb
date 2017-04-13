@@ -4,19 +4,25 @@ require 'feature/testing'
 
 feature 'api responses' do
   let(:screening) { create :screening, name: 'Little Shop Of Horrors' }
+  let(:auth_login_url) { 'http://www.fooooooooo.com/authn/login?callback=' }
 
-  scenario 'API returns a 403', accessibility: false do
+  before do
+    allow(Rails.configuration).to receive(:intake)
+      .and_return(base_path: '/',
+                  authentication_login_url: auth_login_url)
+  end
+
+  scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
     stub_request(:get, api_screenings_path).and_return(
-      body: { screenings: [] }.to_json,
-      status: 200,
-      headers: { 'Content-Type' => 'application/json' }
+      json_body({ screenings: [] }.to_json, status: 200)
     )
-    visit root_path
-    base_url = Rails.configuration.intake[:authentication_login_url]
-    redirect_url = CGI.escape("#{page.current_url.chomp('/')}#{screening_path(screening.id)}")
-    login_url = "#{base_url}#{redirect_url}"
 
-    stub_request(:get, api_screening_path(screening.id)).and_return(body: 'I failed', status: 403)
+    visit root_path
+    redirect_url = CGI.escape("#{page.current_url.chomp('/')}#{screening_path(screening.id)}")
+    login_url = "#{auth_login_url}#{redirect_url}"
+
+    stub_request(:get, api_screening_path(screening.id))
+      .and_return(json_body('I failed', status: 403))
     visit screening_path(id: screening.id)
 
     # have_current_path waits for the async call to finish, but doesn't verify url params
@@ -32,7 +38,6 @@ feature 'api responses' do
       status: 500
     )
     visit screening_path(id: screening.id)
-    expect(page).to_not have_content(screening.name)
     expect(page.current_url).to have_content screening_path(screening.id)
   end
 
@@ -43,7 +48,6 @@ feature 'api responses' do
       headers: { 'Content-Type' => 'application/json' }
     )
     visit screening_path(id: screening.id)
-    expect(page).to have_content(screening.name)
     expect(page.current_url).to have_content screening_path(screening.id)
   end
 end
