@@ -9,23 +9,26 @@ module Api
 
       def create
         person = Person.new(person_params.to_h)
-        created_person = PersonRepository.create(person)
+        created_person = PersonRepository.create(session[:security_token], person)
         render json: created_person
       end
 
       def update
         person = Person.new(person_params.to_h)
-        updated_person = PersonRepository.update(person)
+        updated_person = PersonRepository.update(session[:security_token], person)
         render json: updated_person
       end
 
       def search
-        people_results = PersonSearchRepository.search(params[:search_term])
+        people_results = PersonSearchRepository.search(
+          session[:security_token],
+          params[:search_term]
+        )
         render json: people_results
       end
 
       def show
-        person = PersonRepository.find(params[:id])
+        person = PersonRepository.find(session[:security_token], params[:id])
         render json: person
       end
 

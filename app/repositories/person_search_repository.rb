@@ -5,8 +5,12 @@
 class PersonSearchRepository
   PEOPLE_SEARCH_PATH = '/api/v1/people_search'
 
-  def self.search(search_term)
-    response = API.make_api_call("#{PEOPLE_SEARCH_PATH}?search_term=#{search_term}", :get)
+  def self.search(security_token, search_term)
+    response = API.make_api_call(
+      security_token,
+      "#{PEOPLE_SEARCH_PATH}?search_term=#{search_term}",
+      :get
+    )
     response.body.map do |result_attributes|
       PersonSearch.new(result_attributes)
     end
