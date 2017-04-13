@@ -2,6 +2,8 @@
 require 'rails_helper'
 
 describe ScreeningRepository do
+  let(:security_token) { 'my_security_token' }
+
   describe '.create' do
     let(:screening_id) { '11' }
     let(:response) { double(:response, body: { 'id' => screening_id, 'name' => 'New Screening' }) }
@@ -9,12 +11,12 @@ describe ScreeningRepository do
 
     before do
       expect(API).to receive(:make_api_call)
-        .with('/api/v1/screenings', :post, 'name' => 'New Screening')
+        .with(security_token, '/api/v1/screenings', :post, 'name' => 'New Screening')
         .and_return(response)
     end
 
     it 'returns the created screening' do
-      created_screening = described_class.create(screening)
+      created_screening = described_class.create(security_token, screening)
       expect(created_screening.id).to eq(screening_id)
       expect(created_screening.name).to eq('New Screening')
     end
@@ -28,12 +30,12 @@ describe ScreeningRepository do
 
     before do
       expect(API).to receive(:make_api_call)
-        .with("/api/v1/screenings/#{screening_id}", :get)
+        .with(security_token, "/api/v1/screenings/#{screening_id}", :get)
         .and_return(response)
     end
 
     it 'returns the existing screening' do
-      existing_screening = described_class.find(screening_id)
+      existing_screening = described_class.find(security_token, screening_id)
       expect(existing_screening.id).to eq(screening_id)
       expect(existing_screening.name).to eq('Existing Screening')
     end
@@ -56,12 +58,17 @@ describe ScreeningRepository do
 
       before do
         expect(API).to receive(:make_api_call)
-          .with("/api/v1/screenings/#{screening_id}", :put, 'name' => 'Updated Screening')
+          .with(
+            security_token,
+            "/api/v1/screenings/#{screening_id}",
+            :put,
+            'name' => 'Updated Screening'
+          )
           .and_return(response)
       end
 
       it 'returns the updated screening' do
-        updated_screening = described_class.update(screening)
+        updated_screening = described_class.update(security_token, screening)
         expect(updated_screening.id).to eq(screening_id)
         expect(updated_screening.name).to eq('Updated Screening')
       end
@@ -72,7 +79,7 @@ describe ScreeningRepository do
 
       it 'raises an error' do
         expect do
-          described_class.update(screening)
+          described_class.update(security_token, screening)
         end.to raise_error('Error updating screening: id is required')
       end
     end
@@ -87,12 +94,12 @@ describe ScreeningRepository do
 
     before do
       expect(API).to receive(:make_api_call)
-        .with("/api/v1/screenings?#{search_terms.to_query}", :get)
+        .with(security_token, "/api/v1/screenings?#{search_terms.to_query}", :get)
         .and_return(response)
     end
 
     it 'returns the screening results' do
-      screening_results = described_class.search(search_terms)
+      screening_results = described_class.search(security_token, search_terms)
       expect(screening_results.first.id).to eq('1')
       expect(screening_results.last.id).to eq('2')
     end

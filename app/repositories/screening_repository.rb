@@ -5,19 +5,25 @@
 class ScreeningRepository
   SCREENINGS_PATH = '/api/v1/screenings'
 
-  def self.create(screening)
-    response = API.make_api_call(SCREENINGS_PATH, :post, screening.as_json.except('id'))
+  def self.create(security_token, screening)
+    response = API.make_api_call(
+      security_token,
+      SCREENINGS_PATH,
+      :post,
+      screening.as_json.except('id')
+    )
     Screening.new(response.body)
   end
 
-  def self.find(id)
-    response = API.make_api_call("#{SCREENINGS_PATH}/#{id}", :get)
+  def self.find(security_token, id)
+    response = API.make_api_call(security_token, "#{SCREENINGS_PATH}/#{id}", :get)
     Screening.new(response.body)
   end
 
-  def self.update(screening)
+  def self.update(security_token, screening)
     raise 'Error updating screening: id is required' unless screening.id
     response = API.make_api_call(
+      security_token,
       "#{SCREENINGS_PATH}/#{screening.id}",
       :put,
       screening.as_json.except('id')
@@ -25,8 +31,11 @@ class ScreeningRepository
     Screening.new(response.body)
   end
 
-  def self.search(search_terms)
-    response = API.make_api_call("#{SCREENINGS_PATH}?#{search_terms.to_query}", :get)
+  def self.search(security_token, search_terms)
+    response = API.make_api_call(
+      security_token, "#{SCREENINGS_PATH}?#{search_terms.to_query}",
+      :get
+    )
     response.body.map do |result_attributes|
       Screening.new(result_attributes)
     end
