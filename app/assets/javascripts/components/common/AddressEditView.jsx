@@ -11,7 +11,6 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
         gridClassName='col-md-6'
         id='street_address'
         label='Address'
-        labelClassName='no-gap'
         onChange={(event) => onChange('street_address', event.target.value)}
         value={streetAddress}
       />
@@ -19,7 +18,6 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
         gridClassName='col-md-6'
         id='city'
         label='City'
-        labelClassName='no-gap-top-desktop'
         onChange={(event) => onChange('city', event.target.value)}
         value={city}
       />

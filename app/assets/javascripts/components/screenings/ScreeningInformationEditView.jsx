@@ -14,7 +14,6 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
       <div className='row'>
         <InputField
           gridClassName='col-md-6'
-          labelClassName='no-gap'
           id='name'
           label='Title/Name of Screening'
           placeholder='Enter name of the screening'
@@ -23,7 +22,6 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
         />
         <InputField
           gridClassName='col-md-6'
-          labelClassName='no-gap-top-desktop'
           id='assignee'
           label='Assigned Social Worker'
           placeholder='Enter the name of the worker screening report'

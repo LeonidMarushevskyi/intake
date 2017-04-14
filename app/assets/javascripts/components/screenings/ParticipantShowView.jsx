@@ -25,7 +25,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
           <img src='/assets/default-profile.svg' />
         </div>
         <div className='col-md-5'>
-          <ShowField labelClassName='no-gap' label='Name'>
+          <ShowField label='Name'>
             {nameFormatter(participant)}
           </ShowField>
           <ShowField label='Gender'>
@@ -33,7 +33,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
           </ShowField>
         </div>
         <div className='col-md-5'>
-          <ShowField labelClassName='no-gap-top-desktop' label='Date of birth'>
+          <ShowField label='Date of birth'>
             {participant.get('date_of_birth')}
           </ShowField>
           <ShowField label='Social security number'>

@@ -16,7 +16,6 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
       <div className='row'>
         <DateField
           gridClassName='col-md-6'
-          labelClassName='no-gap'
           id='incident_date'
           label='Incident Date'
           value={screening.get('incident_date') || ''}
@@ -41,7 +40,6 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
         <div className='row'>
           <InputField
             gridClassName='col-md-6'
-            labelClassName='no-gap'
             id='street_address'
             label='Address'
             value={screening.getIn(['address', 'street_address']) || ''}
@@ -49,7 +47,6 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           />
           <InputField
             gridClassName='col-md-6'
-            labelClassName='no-gap'
             id='city'
             label= 'City'
             value={screening.getIn(['address', 'city']) || ''}

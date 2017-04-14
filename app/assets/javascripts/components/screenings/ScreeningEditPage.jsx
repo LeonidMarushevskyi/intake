@@ -149,8 +149,8 @@ export class ScreeningEditPage extends React.Component {
           <div className='card-body'>
             <div className='row'>
               <div className='col-md-12'>
-                <label className='no-gap pull-left' htmlFor='screening_participants'>Search for any person</label>
-                <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
+                <label className='pull-left' htmlFor='screening_participants'>Search for any person</label>
+                <label className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
                 <Autocompleter id='screening_participants'
                   onSelect={this.createParticipant}
                   enableFooter={true}

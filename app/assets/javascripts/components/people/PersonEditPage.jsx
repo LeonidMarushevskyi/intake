@@ -75,7 +75,6 @@ export class PersonEditPage extends React.Component {
           <div className='row'>
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap'
               id='first_name'
               label='First Name'
               value={person.get('first_name') || ''}
@@ -83,7 +82,6 @@ export class PersonEditPage extends React.Component {
             />
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap'
               id='middle_name'
               label='Middle Name'
               value={person.get('middle_name') || ''}
@@ -91,7 +89,6 @@ export class PersonEditPage extends React.Component {
             />
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap'
               id='last_name'
               label='Last Name'
               value={person.get('last_name') || ''}
@@ -99,7 +96,6 @@ export class PersonEditPage extends React.Component {
             />
             <SelectField
               gridClassName='col-md-3'
-              labelClassName='no-gap-top-desktop'
               id='name_suffix'
               label='Suffix'
               value={person.get('name_suffix') || ''}
