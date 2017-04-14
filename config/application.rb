@@ -22,8 +22,15 @@ module CaIntake # :nodoc:
     config.autoload_paths << Rails.root.join('lib')
     config.logger = Logger.new(STDOUT)
     config.log_level = :debug
+
+    authentication_login_url = <<~URL.strip
+      #{ENV.fetch('AUTHENTICATION_URL', '').chomp('/')}/authn/login?callback=
+    URL
+
     config.intake = {
-      'base_path': ENV.fetch('BASE_PATH', '/')
+      'base_path': ENV.fetch('BASE_PATH', '/'),
+      'authentication_base_url': ENV.fetch('AUTHENTICATION_URL', ''),
+      'authentication_login_url': authentication_login_url
     }
   end
 end

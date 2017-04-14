@@ -41,5 +41,13 @@ describe ApiController do
       'method' => 'get',
       'url' => '/some_test_path'
     )
+    expect(response.status).to eq 500
+  end
+
+  it 'responds with error status code' do
+    stub_request(:get, %r{/some_test_path})
+      .and_return(status: 403)
+    process :custom, method: :get
+    expect(response.status).to eq 403
   end
 end

@@ -85,6 +85,14 @@ export function request(method, url, data, options) {
       data: data,
       headers: {'X-CSRF-Token': getCSRFToken()},
     }, options || {}))
-      .done(resolve).fail(reject)
+      .done(resolve).fail((response) => {
+        if (response.status === STATUS_CODES.forbidden) {
+          const currentLocation = encodeURIComponent(window.location)
+          const loginBaseUrl = window.org.intake.config.authentication_login_url
+          window.location = `${loginBaseUrl}${currentLocation}`
+        } else {
+          reject(response)
+        }
+      })
   })
 }
