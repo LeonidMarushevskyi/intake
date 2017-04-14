@@ -1,7 +1,7 @@
 %h1 Forms
 %i Form controls allow users to enter information into a page.
 
-.double-padded.border-regular-light-gray.double-gap-top
+.double-padded.bg-white.double-gap-top
   %h4 General form accessibilitys
   %ul
     %li
@@ -38,7 +38,7 @@
 
 %h2.double-gap-top Buttons
 %i Use buttons to signal actions.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %button.btn.btn-primary
     Primary Button
   %button.btn.btn-default
@@ -55,22 +55,29 @@
     Big Disabled Button
 
 %pre
-  %code
-    :preserve
-      %button.btn.btn-primary
+  %xmp
+    :erb
+      <button class="btn btn-primary">
         Primary Button
-      %button.btn.btn-default
+      </button>
+      <button class="btn btn-default">
         Secondary Button
-      %button.btn.btn-primary.btn-lg
+      </button>
+      <button class="btn btn-primary btn-lg">
         Big Primary Button
-      %button.btn.btn-default.btn-lg
+      </button>
+      <button class="btn btn-default btn-lg">
         Big Secondary Button
-      %button.btn.btn-primary{ disabled: 'disabled' }
+      </button>
+      <button class="btn btn-primary" disabled="disabled">
         Disabled Button
-      %button.btn.btn-default.btn-lg{ disabled: 'disabled' }
+      </button>
+      <button class="btn btn-default btn-lg" disabled="disabled">
         Big Disabled Button
+      </button>
 
-.double-padded.border-regular-light-gray
+
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li Buttons should display a visible focus state when users tab to them.
@@ -99,7 +106,7 @@
 
 %h2.double-gap-top Text Input
 %i Text inputs allow people to enter any combination of letters, numbers, or symbols of their choosing (unless otherwise restricted). Text input boxes can span single or multiple lines.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %label.no-gap{ for: 'input-type-text' } Text input label
   %input#input-type-text{ name: 'input-type-text', type: 'text' }
 
@@ -116,24 +123,23 @@
   %textarea#input-type-textarea{ name: 'input-type-textarea' }
 
 %pre
-  %code
-    :preserve
-      %label{ for: 'input-type-text' } Text input label
-      %input#input-type-text{ name: 'input-type-text', type: 'text' }
-
-      %label.required{ for: 'first-name' }
+  %xmp
+    :erb
+      <label for="input-type-text">Text input label</label>
+      <input id="input-type-text" name="input-type-text" type="text"></input>
+      <label class="required" for="first-name">
         Required text field
-      %input#first-name{ 'aria-required' => 'true', name: 'first-name', required: '', type: 'text' }
+      </label>
+      <input aria-required="true" id="first-name" name="first-name" type="text"></input>
+      <div class="input-error">
+        <label class="input-error-label" for="input-error">Text input error</label>
+        <span class="input-error-message" id="input-error-message" role="alert">Helpful error message</span>
+        <input aria-describedby="input-error-message" id="input-error" name="input-error" type="text"></input>
+      </div>
+      <label for="input-type-textarea">Text area label</label>
+      <textarea id="input-type-textarea" name="input-type-textarea"></textarea>
 
-      .input-error
-        %label.input-error-label{ for: 'input-error' } Text input error
-        %span#input-error-message.input-error-message{ role: 'alert' } Helpful error message
-        %input#input-error{ 'aria-describedby' => 'input-error-message', name: 'input-error', type: 'text' }
-
-      %label{ for: 'input-type-textarea' } Text area label
-      %textarea#input-type-textarea{ name: 'input-type-textarea' }
-
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li
@@ -144,22 +150,23 @@
 
 %h2.double-gap-top Dropdown
 %i A dropdown allows users to select one option from a list.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %label.no-gap{ for: 'options' } Dropdown label
   %select#options{ name: 'options' }
     %option{ value: 'value1' } Option A
     %option{ value: 'value2' } Option B
     %option{ value: 'value3' } Option C
 %pre
-  %code
-    :preserve
-      %label{ for: 'options' } Dropdown label
-      %select#options{ name: 'options' }
-        %option{ value: 'value1' } Option A
-        %option{ value: 'value2' } Option B
-        %option{ value: 'value3' } Option C
+  %xmp
+    :erb
+      <label for="options">Dropdown label</label>
+      <select id="options" name="options">
+        <option value="value1">Option A</option>
+        <option value="value2">Option B</option>
+        <option value="value3">Option C</option>
+      </select>
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li Make sure your dropdown has a label. Don’t replace it with the default menu option (for example, removing the “State” label and just having the dropdown read “Select a state” by default).
@@ -168,7 +175,7 @@
 
 %h2.double-gap-top Checkboxes
 %i Checkboxes allow users to select one or more options from a visible list.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %fieldset.fieldset-inputs.sans
     %legend.sr-only Historical figures 1
     %ul.unstyled-list
@@ -185,25 +192,31 @@
         %input#carver{ disabled: 'disabled', name: 'historical-figures-1', type: 'checkbox' }
         %label{ for: 'carver', style: 'margin-bottom: 0;' } George Washington Carver
 %pre
-  %code
-    :preserve
-      %fieldset.fieldset-inputs.sans
-        %legend.sr-only Historical figures 1
-        %ul.unstyled-list
-          %li
-            %input#truth{ checked: 'checked', name: 'historical-figures-1', type: 'checkbox', value: 'truth' }
-            %label{ for: 'truth' } Sojourner Truth
-          %li
-            %input#douglass{ name: 'historical-figures-1', type: 'checkbox', value: 'douglass' }
-            %label{ for: 'douglass' } Frederick Douglass
-          %li
-            %input#washington{ name: 'historical-figures-1', type: 'checkbox', value: 'washington' }
-            %label{ for: 'washington' } Booker T. Washington
-          %li
-            %input#carver{ disabled: 'disabled', name: 'historical-figures-1', type: 'checkbox' }
-            %label{ for: 'carver' } George Washington Carver
+  %xmp
+    :erb
+      <fieldset class="fieldset-inputs sans">
+        <legend class="sr-only">Historical figures 1</legend>
+        <ul class="unstyled-list">
+          <li>
+            <input checked="checked" id="truth" name="historical-figures-1" type="checkbox" value="truth"></input>
+            <label for="truth">Sojourner Truth</label>
+          </li>
+          <li>
+            <input id="douglass" name="historical-figures-1" type="checkbox" value="douglass"></input>
+            <label for="douglass">Frederick Douglass</label>
+          </li>
+          <li>
+            <input id="washington" name="historical-figures-1" type="checkbox" value="washington"></input>
+            <label for="washington">Booker T. Washington</label>
+          </li>
+          <li>
+            <input disabled="disabled" id="carver" name="historical-figures-1" type="checkbox"></input>
+            <label for="carver">George Washington Carver</label>
+          </li>
+        </ul>
+      </fieldset>
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li
@@ -240,7 +253,7 @@
 
 %h2.double-gap-top Radio buttons
 %i Radio buttons allow users to see all available choices at once and select exactly one option.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %fieldset.fieldset-inputs.sans
     %legend.sr-only Historical figures 2
     %ul.unstyled-list
@@ -254,22 +267,27 @@
         %input#tubman{ name: 'historical-figures-2', type: 'radio', value: 'tubman' }
         %label{ for: 'tubman', style: 'margin-bottom: 0;' } Harriet Tubman
 %pre
-  %code
-    :preserve
-      %fieldset.fieldset-inputs.sans
-        %legend.sr-only Historical figures 2
-        %ul.unstyled-list
-          %li
-            %input#stanton{ checked: 'checked', name: 'historical-figures-2', type: 'radio', value: 'stanton' }
-            %label{ for: 'stanton' } Elizabeth Cady Stanton
-          %li
-            %input#anthony{ name: 'historical-figures-2', type: 'radio', value: 'anthony' }
-            %label{ for: 'anthony' } Susan B. Anthony
-          %li
-            %input#tubman{ name: 'historical-figures-2', type: 'radio', value: 'tubman' }
-            %label{ for: 'tubman' } Harriet Tubman
+  %xmp
+    :erb
+      <fieldset class="fieldset-inputs sans">
+        <legend class="sr-only">Historical figures 2</legend>
+        <ul class="unstyled-list">
+          <li>
+            <input checked="checked" id="stanton" name="historical-figures-2" type="radio" value="stanton"></input>
+            <label for="stanton">Elizabeth Cady Stanton</label>
+          </li>
+          <li>
+            <input id="anthony" name="historical-figures-2" type="radio" value="anthony"></input>
+            <label for="anthony">Susan B. Anthony</label>
+          </li>
+          <li>
+            <input id="tubman" name="historical-figures-2" type="radio" value="tubman"></input>
+            <label for="tubman">Harriet Tubman</label>
+          </li>
+        </ul>
+      </fieldset>
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li
@@ -307,32 +325,30 @@
 
 %h2.double-gap-top Datepicker
 %i Field used to select a date or date range.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %label.no-gap{ for: 'input-type-date' } Date field
   %input.input-type-date#input-type-date{ name: 'input-type-date', type: 'date' }
 %pre
-  %code
-    :preserve
-      %label.no-gap{ for: 'input-type-date' } Date field
-      %input.input-type-date#input-type-date{ name: 'input-type-date', type: 'date' }
-.double-padded.border-regular-light-gray
+  %xmp
+    :erb
+      <label class="no-gap" for="input-type-date">Date field</label>
+      <input class="input-type-date" id="input-type-date" name="input-type-date" type="date"></input>
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li WIP
 
 %h2.double-gap-top Autocompleter
 %i Field used to select people.
-.gap-top.double-padded.border-regular-light-gray
+.gap-top.double-padded.bg-white
   %label.no-gap{ for: 'input-type-autocompleter' } Autocompleter field
   %input.input-type-autocompleter#input-type-autocompleter{ name: 'input-type-autocompleter', type: 'text' }
 %pre
-  %code
-    :preserve
-      %label.no-gap{ for: 'input-type-autocompleter' } Autocompleter field
-      %input.input-type-autocompleter#input-type-autocompleter{ name: 'input-type-autocompleter', type: 'text' }
-.double-padded.border-regular-light-gray
+  %xmp
+    :erb
+      <label class="no-gap" for="input-type-autocompleter">Autocompleter field</label>
+      <input class="input-type-autocompleter" id="input-type-autocompleter" name="input-type-autocompleter" type="text"></input>
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li WIP
-
-
