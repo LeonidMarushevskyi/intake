@@ -83,12 +83,15 @@ pre {
   font-family: $code-font-family;
   font-size: $small-font;
   margin: 0;
-  max-height: 40rem;
-  padding: $double-spacing;
+  max-height: 60rem;
+  
+  background-color: $coal;
 }
 
-code {
-  color: $primary-base;
+pre xmp {
+  color: $white;
+  padding: 0;
+  margin-left: -5rem;
 }
 
 ul,
