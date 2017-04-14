@@ -78,20 +78,19 @@ h4 {
 }
 
 pre {
+  background-color: $coal;
   border: 0;
   border-radius: 0;
   font-family: $code-font-family;
   font-size: $small-font;
   margin: 0;
   max-height: 60rem;
-  
-  background-color: $coal;
-}
 
-pre xmp {
-  color: $white;
-  padding: 0;
-  margin-left: -5rem;
+  xmp {
+    color: $white;
+    margin-left: -5rem;
+    padding: 0 3rem 0 0;
+  }
 }
 
 ul,

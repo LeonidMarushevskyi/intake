@@ -287,11 +287,9 @@ input[type='radio']:disabled + label::before {
 
 /////////////////////////////////////////
 
-// - Multiselect - //
+// - Multi Select - //
 
 /////////////////////////////////////////
-
-@import 'colors';
 
 .Select--multi .Select-control {
   border: none;
@@ -341,4 +339,3 @@ input[type='radio']:disabled + label::before {
 .Select-arrow {
   border: none;
 }
-
