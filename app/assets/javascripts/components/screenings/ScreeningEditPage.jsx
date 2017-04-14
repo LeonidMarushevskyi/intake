@@ -150,7 +150,7 @@ export class ScreeningEditPage extends React.Component {
             <div className='row'>
               <div className='col-md-12'>
                 <label className='pull-left' htmlFor='screening_participants'>Search for any person</label>
-                <label className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
+                <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
                 <Autocompleter id='screening_participants'
                   onSelect={this.createParticipant}
                   enableFooter={true}
