@@ -1,78 +1,64 @@
 %h1 Cards
 
-.double-padded.border-regular-light-gray.gap-top
-  .card
+.double-padded.bg-white.gap-top
+  .card.show
     .card-header
       %span Profile Information
       %a.pull-right{ href: '#', 'aria-label': 'Done editing profile' }
         %i.fa.fa-pencil
     .card-body
       .row
-        .col-md-6
-          %label.no-gap
+        .col-md-4
+          %label
             First name
           .c-gray
-            Pierre
-        .col-md-6
-          %label.no-gap-top-desktop
+            John
+        .col-md-4
+          %label
+            Middle name
+          .c-gray
+            James
+        .col-md-4
+          %label
             Last name
           .c-gray
-            Klein
+            Smith
       .row
-        .col-md-6
+        .col-md-4
           %label
             Gender
           .c-gray
             Male
-      .row
-        .col-md-6
+        .col-md-4
           %label
             Date of birth
           .c-gray
             02/25/1986
-        .col-md-6
+        .col-md-4
           %label
             Social security number
           .c-gray
             158-698-5874
-      .row
-        .col-md-6
-          %label
-            Address
-          .c-gray
-            50 Grand St. Apt #3
-        .col-md-6
-          %label
-            City
-          .c-gray
-            Queens
-      .row
-        .col-md-6
-          %label
-            State
-          .c-gray
-            New York
-        .col-md-6
-          %label
-            ZIP
-          .c-gray
-            11377
 
   .card.edit.double-gap-top
     .card-header
       %span Profile Information
     .card-body
       .row
-        .col-md-6
-          %label.no-gap
+        .col-md-4
+          %label
             First name
-          %input{ name: 'first-name', type: 'text', value: 'Pierre' }
-        .col-md-6
-          %label.no-gap-top-desktop
+          %input{ name: 'first-name', type: 'text', value: 'John' }
+        .col-md-4
+          %label
+            Middle name
+          %input{ name: 'middle-name', type: 'text', value: 'James' }
+        .col-md-4
+          %label
             Last name
-          %input{ name: 'first-name', type: 'text', value: 'Klein' }
+          %input{ name: 'first-name', type: 'text', value: 'Smith' }
       .row
-        .col-md-6
+        .col-md-4
           %label
             Gender
           %select#state{ name: 'gender' }
@@ -80,85 +66,14 @@
             %option{ value: 'Female' } Female
             %option{ value: 'Male', selected: 'selected' } Male
             %option{ value: 'Other' } Other
-      .row
-        .col-md-6
+        .col-md-4
           %label
             Date of birth
-          %input{ name: 'first-name', type: 'date', value: '02-25-1986' }
-        .col-md-6
+          %input{ name: 'DOB', type: 'date', value: '02-25-1986' }
+        .col-md-4
           %label
             Social security number
-          %input{ name: 'first-name', type: 'number', value: '1586985874' }
-      .row
-        .col-md-6
-          %label
-            Address
-          %input{ name: 'first-name', type: 'text', value: '50 Grand St. Apt #3' }
-        .col-md-6
-          %label
-            City
-          %input{ name: 'city', type: 'text', value: 'Queens' }
-      .row
-        .col-md-6
-          %label
-            State
-          %select#state{ name: 'state' }
-            %option{ value: '' }
-            %option{ value: 'AL' } Alabama
-            %option{ value: 'AK' } Alaska
-            %option{ value: 'AZ' } Arizona
-            %option{ value: 'AR' } Arkansas
-            %option{ value: 'CA' } California
-            %option{ value: 'CO' } Colorado
-            %option{ value: 'CT' } Connecticut
-            %option{ value: 'DE' } Delaware
-            %option{ value: 'DC' } District of Columbia
-            %option{ value: 'FL' } Florida
-            %option{ value: 'GA' } GeorgiaHawaii
-            %option{ value: 'HI' }
-            %option{ value: 'ID' } Idaho
-            %option{ value: 'IL' } Illinois
-            %option{ value: 'IN' } Indiana
-            %option{ value: 'IA' } Iowa
-            %option{ value: 'KS' } Kansas
-            %option{ value: 'KY' } Kentucky
-            %option{ value: 'LA' } Louisiana
-            %option{ value: 'ME' } Maine
-            %option{ value: 'MD' } Maryland
-            %option{ value: 'MA' } Massachusetts
-            %option{ value: 'MI' } Michigan
-            %option{ value: 'MN' } Minnesota
-            %option{ value: 'MS' } Mississippi
-            %option{ value: 'MO' } Missouri
-            %option{ value: 'MT' } Montana
-            %option{ value: 'NE' } Nebraska
-            %option{ value: 'NV' } Nevada
-            %option{ value: 'NH' } New Hampshire
-            %option{ value: 'NJ' } New Jersey
-            %option{ value: 'NM' } New Mexico
-            %option{ value: 'NY', selected: 'selected' } New York
-            %option{ value: 'NC' } North Carolina
-            %option{ value: 'ND' } North Dakota
-            %option{ value: 'OH' } Ohio
-            %option{ value: 'OK' } Oklahoma
-            %option{ value: 'OR' } Oregon
-            %option{ value: 'PA' } Pennsylvania
-            %option{ value: 'RI' } Rhode Island
-            %option{ value: 'SC' } South Carolina
-            %option{ value: 'SD' } South Dakota
-            %option{ value: 'TN' } Tennessee
-            %option{ value: 'TX' } Texas
-            %option{ value: 'UT' } Utah
-            %option{ value: 'VT' } Vermont
-            %option{ value: 'VA' } Virginia
-            %option{ value: 'WA' } Washington
-            %option{ value: 'WV' } West Virginia
-            %option{ value: 'WI' } Wisconsin
-            %option{ value: 'WY' } Wyoming
-        .col-md-6
-          %label
-            Address
-          %input{ name: 'zip', type: 'number', value: '11377' }
+          %input{ name: 'SSN', type: 'number', value: '1586985874' }
         .centered
           %button.btn.btn-primary
             Save
@@ -166,174 +81,132 @@
             Cancel
 
 %pre
-  %code
-    :preserve
-      .card
-        .card-header
-          %span Profile Information
-          %a.pull-right{ href: '#', 'aria-label': 'Done editing profile' }
-            %i.fa.fa-pencil
-              mode_edit
-        .card-body
-          .row
-            .col-md-6
-              %label.no-gap
+  %xmp
+    :erb
+      <div class='card show'>
+        <div class='card-header'>
+          <span>Profile Information</span>
+          <a class='pull-right' aria-label='Edit'>
+            <i class='fa fa-pencil'></i>
+          </a>
+        </div>
+        <div class='card-body'>
+          <div class='row'>
+            <div class='col-md-4'>
+              <label>
                 First name
-              .c-gray
-                Pierre
-            .col-md-6
-              %label.no-gap-top-desktop
+              </label>
+              <div class='c-gray'>
+                John
+              </div>
+            </div>
+            <div class='col-md-4'>
+              <label>
+                Middle name
+              </label>
+              <div class='c-gray'>
+                James
+              </div>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Last name
-              .c-gray
-                Klein
-          .row
-            .col-md-6
-              %label
+              </label>
+              <div class='c-gray'>
+                Smith
+              </div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-md-4'>
+              <label>
                 Gender
-              .c-gray
+              </label>
+              <div class='c-gray'>
                 Male
-          .row
-            .col-md-6
-              %label
+              </div>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Date of birth
-              .c-gray
+              </label>
+              <div class='c-gray'>
                 02/25/1986
-            .col-md-6
-              %label
+              </div>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Social security number
-              .c-gray
+              </label>
+              <div class='c-gray'>
                 158-698-5874
-          .row
-            .col-md-6
-              %label
-                Address
-              .c-gray
-                50 Grand St. Apt #3
-            .col-md-6
-              %label
-                City
-              .c-gray
-                Queens
-          .row
-            .col-md-6
-              %label
-                State
-              .c-gray
-                New York
-            .col-md-6
-              %label
-                ZIP
-              .c-gray
-                11377
-
-      .card.edit.double-gap-top
-        .card-header
-          %span Profile Information
-        .card-body
-          .row
-            .col-md-6
-              %label.no-gap
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='card edit double-gap-top'>
+        <div class='card-header'>
+          <span>Profile Information</span>
+        </div>
+        <div class='card-body'>
+          <div class='row'>
+            <div class='col-md-4'>
+              <label>
                 First name
-              %input{ name: 'first-name', type: 'text', value: 'Pierre' }
-            .col-md-6
-              %label.no-gap-top-desktop
+              </label>
+              <input>
+            </div>
+            <div class='col-md-4'>
+              <label>
+                Middle name
+              </label>
+              <input>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Last name
-              %input{ name: 'first-name', type: 'text', value: 'Klein' }
-          .row
-            .col-md-6
-              %label
+              </label>
+              <input>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-md-4'>
+              <label>
                 Gender
-              %select#state{ name: 'gender' }
-                %option{ value: '' }
-                %option{ value: 'Female' } Female
-                %option{ value: 'Male', selected: 'selected' } Male
-                %option{ value: 'Other' } Other
-          .row
-            .col-md-6
-              %label
+              </label>
+              <select id='state'>
+                <option></option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Date of birth
-              %input{ name: 'first-name', type: 'date', value: '02-25-1986' }
-            .col-md-6
-              %label
+              </label>
+              <input>
+            </div>
+            <div class='col-md-4'>
+              <label>
                 Social security number
-              %input{ name: 'first-name', type: 'number', value: '1586985874' }
-          .row
-            .col-md-6
-              %label
-                Address
-              %input{ name: 'first-name', type: 'text', value: '50 Grand St. Apt #3' }
-            .col-md-6
-              %label
-                City
-              %input{ name: 'city', type: 'text', value: 'Queens' }
-          .row
-            .col-md-6
-              %label
-                State
-              %select#state{ name: 'state' }
-                %option{ value: '' }
-                %option{ value: 'AL' } Alabama
-                %option{ value: 'AK' } Alaska
-                %option{ value: 'AZ' } Arizona
-                %option{ value: 'AR' } Arkansas
-                %option{ value: 'CA' } California
-                %option{ value: 'CO' } Colorado
-                %option{ value: 'CT' } Connecticut
-                %option{ value: 'DE' } Delaware
-                %option{ value: 'DC' } District of Columbia
-                %option{ value: 'FL' } Florida
-                %option{ value: 'GA' } GeorgiaHawaii
-                %option{ value: 'HI' }
-                %option{ value: 'ID' } Idaho
-                %option{ value: 'IL' } Illinois
-                %option{ value: 'IN' } Indiana
-                %option{ value: 'IA' } Iowa
-                %option{ value: 'KS' } Kansas
-                %option{ value: 'KY' } Kentucky
-                %option{ value: 'LA' } Louisiana
-                %option{ value: 'ME' } Maine
-                %option{ value: 'MD' } Maryland
-                %option{ value: 'MA' } Massachusetts
-                %option{ value: 'MI' } Michigan
-                %option{ value: 'MN' } Minnesota
-                %option{ value: 'MS' } Mississippi
-                %option{ value: 'MO' } Missouri
-                %option{ value: 'MT' } Montana
-                %option{ value: 'NE' } Nebraska
-                %option{ value: 'NV' } Nevada
-                %option{ value: 'NH' } New Hampshire
-                %option{ value: 'NJ' } New Jersey
-                %option{ value: 'NM' } New Mexico
-                %option{ value: 'NY', selected: 'selected' } New York
-                %option{ value: 'NC' } North Carolina
-                %option{ value: 'ND' } North Dakota
-                %option{ value: 'OH' } Ohio
-                %option{ value: 'OK' } Oklahoma
-                %option{ value: 'OR' } Oregon
-                %option{ value: 'PA' } Pennsylvania
-                %option{ value: 'RI' } Rhode Island
-                %option{ value: 'SC' } South Carolina
-                %option{ value: 'SD' } South Dakota
-                %option{ value: 'TN' } Tennessee
-                %option{ value: 'TX' } Texas
-                %option{ value: 'UT' } Utah
-                %option{ value: 'VT' } Vermont
-                %option{ value: 'VA' } Virginia
-                %option{ value: 'WA' } Washington
-                %option{ value: 'WV' } West Virginia
-                %option{ value: 'WI' } Wisconsin
-                %option{ value: 'WY' } Wyoming
-            .col-md-6
-              %label
-                Address
-              %input{ name: 'zip', type: 'number', value: '11377' }
-            .centered
-              %button.btn.btn-primary
+              </label>
+              <input>
+            </div>
+            <div class='centered'>
+              <button class='btn btn-primary'>
                 Save
-              %button.btn.btn-default
+              </button>
+              <button class='btn btn-default'>
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li
