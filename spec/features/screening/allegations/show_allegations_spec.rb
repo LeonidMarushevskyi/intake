@@ -5,9 +5,9 @@ require 'spec_helper'
 
 feature 'show allegations' do
   scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -98,9 +98,9 @@ feature 'show allegations' do
   end
 
   scenario 'deleting a participant from a screening removes related allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -160,7 +160,7 @@ feature 'show allegations' do
       first_name: 'Marge',
       roles: ['Perpetrator', 'Anonymous Reporter']
     )
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, lisa]
@@ -251,8 +251,8 @@ feature 'show allegations' do
   end
 
   scenario 'saving another card will not persist changes to allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
@@ -287,9 +287,9 @@ feature 'show allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]

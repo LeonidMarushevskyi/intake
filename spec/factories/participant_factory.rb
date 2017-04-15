@@ -11,5 +11,17 @@ FactoryGirl.define do
       first_name { nil }
       last_name { nil }
     end
+
+    trait :reporter do
+      roles { ['Mandated Reporter'] }
+    end
+
+    trait :victim do
+      roles { ['Victim'] }
+    end
+
+    trait :perpetrator do
+      roles { ['Perpetrator'] }
+    end
   end
 end
