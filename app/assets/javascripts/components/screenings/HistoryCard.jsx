@@ -1,9 +1,14 @@
 import React from 'react'
 
 export default class HistoryCard extends React.Component {
-  constructor() {
-    super(...arguments)
+  constructor(props, context) {
+    super(props, context)
   }
+
+  componentDidMount() {
+    this.props.actions.fetchHistoryOfInvolvements()
+  }
+
   render() {
     return (
       <div className='card show double-gap-top' id='history-card'>
@@ -31,3 +36,6 @@ export default class HistoryCard extends React.Component {
   }
 }
 
+HistoryCard.propTypes = {
+  actions: React.PropTypes.object.isRequired,
+}

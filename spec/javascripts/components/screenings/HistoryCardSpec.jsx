@@ -1,8 +1,24 @@
 import React from 'react'
 import HistoryCard from 'components/screenings/HistoryCard'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('HistoryCard', () => {
+  describe('#componentDidMount', () => {
+    let fetchHistoryOfInvolvements
+
+    beforeEach(() => {
+      fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
+      const props = {
+        actions: {fetchHistoryOfInvolvements},
+      }
+      mount(<HistoryCard {...props}/>)
+    })
+
+    it('fetches history of involvements', () => {
+      expect(fetchHistoryOfInvolvements).toHaveBeenCalled()
+    })
+  })
+
   it('renders history card headings', () => {
     const component = shallow(<HistoryCard />)
     const tr = component.find('tr')

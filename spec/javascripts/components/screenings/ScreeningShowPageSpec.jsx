@@ -85,6 +85,7 @@ describe('ScreeningShowPage', () => {
     it('renders the history card', () => {
       const component = shallow(<ScreeningShowPage {...requiredProps} />)
       expect(component.find('HistoryCard').length).toEqual(1)
+      expect(component.find('HistoryCard').props().actions).toEqual(requiredProps.actions)
     })
 
     it('renders the allegations card', () => {
@@ -146,11 +147,12 @@ describe('ScreeningShowPage', () => {
 
   describe('componentDidMount', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
+    const fetchHistoryOfInvolvements = () => Promise.resolve()
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening},
+        actions: {fetchScreening, fetchHistoryOfInvolvements},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -382,6 +384,7 @@ describe('ScreeningShowPage', () => {
       ...requiredProps,
       actions: {
         fetchScreening: () => Promise.resolve(),
+        fetchHistoryOfInvolvements: () => Promise.resolve(),
       },
       participants: Immutable.fromJS([victim, perpetrator]),
       screening: Immutable.fromJS({
@@ -413,6 +416,7 @@ describe('ScreeningShowPage', () => {
         ...requiredProps,
         actions: {
           fetchScreening: () => Promise.resolve(),
+          fetchHistoryOfInvolvements: () => Promise.resolve(),
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),
