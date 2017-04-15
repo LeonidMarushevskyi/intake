@@ -15,6 +15,7 @@ describe('ScreeningShowPage', () => {
     screening: Immutable.fromJS({
       ...requiredScreeningAttributes,
     }),
+    involvements: Immutable.List(),
   }
 
   describe('render', () => {
@@ -83,14 +84,19 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the history card', () => {
+      const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
+      const participants = Immutable.fromJS([{id: 1}])
       const props = {
         ...requiredProps,
-        participants: Immutable.fromJS([{person_id: 1}]),
+        involvements,
+        participants,
       }
       const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)
       expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
-      expect(component.find('HistoryCard').props().participants).toEqual(props.participants)
+      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
+      expect(component.find('HistoryCard').props().participants).toEqual(participants)
+      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
     })
 
     it('renders the allegations card', () => {
@@ -115,6 +121,7 @@ describe('ScreeningShowPage', () => {
           {id: '2', first_name: 'Marshall', last_name: 'Powers'},
         ])
         const props = {
+          ...requiredProps,
           actions: {fetchScreening: () => null},
           params: {id: '1'},
           participants,

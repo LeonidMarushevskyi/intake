@@ -5,12 +5,11 @@ export default class HistoryCard extends React.Component {
     super(props, context)
   }
 
-  componentDidMount() {
-    const {actions, participants} = this.props
-    const personIds = participants.map((p) => p.get('person_id'))
-      .filter((p) => p)
-      .toJS()
-    actions.fetchHistoryOfInvolvements(personIds)
+  componentWillReceiveProps(nextProps) {
+    const {participants, actions, screeningId} = this.props
+    if (participants !== nextProps.participants) {
+      actions.fetchHistoryOfInvolvements(screeningId)
+    }
   }
 
   render() {
@@ -42,5 +41,7 @@ export default class HistoryCard extends React.Component {
 
 HistoryCard.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  involvements: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
+  screeningId: React.PropTypes.string.isRequired,
 }

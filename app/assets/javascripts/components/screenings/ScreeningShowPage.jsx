@@ -196,7 +196,9 @@ export class ScreeningShowPage extends React.Component {
         <WorkerSafetyShowView />
         <HistoryCard
           actions={this.props.actions}
+          involvements={this.props.involvements}
           participants={this.props.participants}
+          screeningId={params.id}
         />
         {
           loaded &&
@@ -227,6 +229,7 @@ export class ScreeningShowPage extends React.Component {
 
 ScreeningShowPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  involvements: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,

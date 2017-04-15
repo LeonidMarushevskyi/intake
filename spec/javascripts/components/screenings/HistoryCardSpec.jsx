@@ -1,32 +1,60 @@
-import React from 'react'
+import * as Immutable from 'immutable'
 import HistoryCard from 'components/screenings/HistoryCard'
-import {shallow, mount} from 'enzyme'
-import * as Immutable from 'Immutable'
+import React from 'react'
+import {shallow} from 'enzyme'
 
 describe('HistoryCard', () => {
-  describe('#componentDidMount', () => {
+  const requiredProps = {
+    actions: {},
+    involvements: Immutable.List(),
+    participants: Immutable.List(),
+    screeningId: '33',
+  }
+
+  describe('#componentWillReceiveProps', () => {
+    let component
     let fetchHistoryOfInvolvements
 
     beforeEach(() => {
       fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
       const props = {
+        ...requiredProps,
         actions: {fetchHistoryOfInvolvements},
-        participants: Immutable.fromJS([
-          {person_id: 1},
-          {person_id: 2},
-          {person_id: null},
-        ]),
+        participants: Immutable.List(),
       }
-      mount(<HistoryCard {...props}/>)
+      component = shallow(<HistoryCard {...props}/>)
     })
 
-    it('fetches history of involvements', () => {
-      expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith([1, 2])
+    describe('when participants change', () => {
+      beforeEach(() => {
+        const updatedProps = {
+          participants: Immutable.fromJS([
+            {id: 1},
+            {id: 2},
+          ]),
+        }
+        component.setProps(updatedProps)
+      })
+
+      it('fetches history of involvements', () => {
+        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(requiredProps.screeningId)
+      })
+    })
+
+    describe('when participants are the same', () => {
+      beforeEach(() => {
+        const updatedProps = {participants: Immutable.List()}
+        component.setProps(updatedProps)
+      })
+
+      it('does not fetch history of involvements', () => {
+        expect(fetchHistoryOfInvolvements).not.toHaveBeenCalled()
+      })
     })
   })
 
   it('renders history card headings', () => {
-    const component = shallow(<HistoryCard />)
+    const component = shallow(<HistoryCard {...requiredProps}/>)
     const tr = component.find('tr')
     expect(tr.text()).toContain('Date')
     expect(tr.text()).toContain('Type/Status')
