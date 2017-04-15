@@ -10,31 +10,31 @@ module WebmockHelpers
   end
 
   def api_person_path(id)
-    %r{.*/api/v1/people/#{id}}
+    intake_api_person_url(id)
   end
 
   def api_people_path
-    %r{.*/api/v1/people}
+    intake_api_people_url
   end
 
   def api_people_search_path(search_term:)
-    %r{.*/api/v1/people_search\?search_term=#{search_term}$}
+    intake_api_people_search_url(search_term: search_term)
   end
 
   def api_screenings_path
-    %r{.*/api/v1/screenings}
+    intake_api_screenings_url
   end
 
   def api_screening_path(id)
-    %r{.*/api/v1/screenings/#{id}}
+    intake_api_screening_url(id)
   end
 
   def api_participants_path
-    %r{.*/api/v1/participants}
+    intake_api_participants_url
   end
 
   def api_participant_path(id)
-    %r{.*/api/v1/participants/#{id}}
+    intake_api_participant_url(id)
   end
 end
 
