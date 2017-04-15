@@ -9,18 +9,18 @@ feature 'Create Screening' do
       reference: 'DQJIYK',
       address: nil
     )
-    stub_request(:post, api_screenings_path)
+    stub_request(:post, intake_api_screenings_url)
       .with(body: as_json_without_root_id(new_screening))
       .and_return(body: new_screening.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
 
-    stub_request(:get, api_screenings_path)
+    stub_request(:get, intake_api_screenings_url)
       .and_return(body: [].to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
-    stub_request(:get, api_screening_path(1))
+    stub_request(:get, intake_api_screening_url(1))
       .and_return(body: new_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -29,7 +29,7 @@ feature 'Create Screening' do
     click_link 'Start Screening'
 
     expect(
-      a_request(:post, api_screenings_path).with(body: as_json_without_root_id(new_screening))
+      a_request(:post, intake_api_screenings_url).with(body: as_json_without_root_id(new_screening))
     ).to have_been_made
     expect(page).to have_content('Edit Screening #DQJIYK')
   end

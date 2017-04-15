@@ -42,7 +42,7 @@ feature 'searching a participant in autocompleter' do
     )
   end
   before do
-    stub_request(:get, api_screening_path(existing_screening.id))
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

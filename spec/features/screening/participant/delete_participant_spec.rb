@@ -23,13 +23,13 @@ feature 'Delete Participant' do
   end
 
   scenario 'removing a participant from an existing screening in edit mode' do
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(
         body: screening.to_json,
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
-    stub_request(:delete, api_participant_path(participant.id))
+    stub_request(:delete, intake_api_participant_url(participant.id))
       .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
     visit edit_screening_path(id: screening.id)
@@ -38,18 +38,18 @@ feature 'Delete Participant' do
         click_button 'Delete participant'
       end
     end
-    expect(a_request(:delete, api_participant_path(participant.id))).to have_been_made
+    expect(a_request(:delete, intake_api_participant_url(participant.id))).to have_been_made
     expect(page).to_not have_css(edit_participant_card_selector(participant.id))
   end
 
   scenario 'removing a participant from an existing screening in show mode' do
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(
         body: screening.to_json,
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
-    stub_request(:delete, api_participant_path(participant.id))
+    stub_request(:delete, intake_api_participant_url(participant.id))
       .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
     visit screening_path(id: screening.id)
@@ -58,7 +58,7 @@ feature 'Delete Participant' do
         click_button 'Delete participant'
       end
     end
-    expect(a_request(:delete, api_participant_path(participant.id))).to have_been_made
+    expect(a_request(:delete, intake_api_participant_url(participant.id))).to have_been_made
     expect(page).to_not have_css(show_participant_card_selector(participant.id))
   end
 end

@@ -74,7 +74,7 @@ feature 'login' do
       in_browser(:bob) do
         visit screening_path(1)
         expect(
-          a_request(:get, api_screening_path(1))
+          a_request(:get, intake_api_screening_url(1))
           .with(headers: { 'Authorization' => bobs_token })
         ).to have_been_made
       end
@@ -82,7 +82,7 @@ feature 'login' do
       in_browser(:alex) do
         visit screening_path(1)
         expect(
-          a_request(:get, api_screening_path(1))
+          a_request(:get, intake_api_screening_url(1))
           .with(headers: { 'Authorization' => alexs_token })
         ).to have_been_made
       end

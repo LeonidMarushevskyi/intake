@@ -72,7 +72,7 @@ feature 'home page' do
       started_at: '2016-08-17T18:24:22.157Z',
       screening_decision: 'differential_response'
     )
-    stub_request(:get, api_screenings_path)
+    stub_request(:get, intake_api_screenings_url)
       .and_return(json_body([screening1, screening2, screening3].to_json, status: 200))
 
     visit root_path
