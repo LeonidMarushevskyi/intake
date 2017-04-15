@@ -8,9 +8,13 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('screening actions', () => {
-  describe('createScreening', () => {
+  let store
+  beforeEach(() => {
+    store = mockStore()
+  })
+
+  describe('.createScreening', () => {
     const screening = {id: '3', name: 'mock_screening'}
-    const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
       promiseObject.then.and.callFake((thenFunction) => thenFunction(screening))
@@ -34,9 +38,8 @@ describe('screening actions', () => {
     })
   })
 
-  describe('fetchScreening', () => {
+  describe('.fetchScreening', () => {
     const screeningId = '1'
-    const store = mockStore()
     const screening = {id: '1', name: 'mock_screening'}
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
@@ -61,9 +64,8 @@ describe('screening actions', () => {
     })
   })
 
-  describe('saveScreening', () => {
+  describe('.saveScreening', () => {
     const screening = {id: '3', name: 'mock_screening'}
-    const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
       promiseObject.then.and.callFake((thenFunction) => thenFunction(screening))
@@ -87,7 +89,7 @@ describe('screening actions', () => {
     })
   })
 
-  describe('saveParticipant', () => {
+  describe('.saveParticipant', () => {
     const participant = {
       screening_id: '1',
       person_id: '2',
@@ -98,7 +100,6 @@ describe('screening actions', () => {
       gender: 'female',
       ssn: 'ssn-1',
     }
-    const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
       promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
@@ -122,9 +123,8 @@ describe('screening actions', () => {
     })
   })
 
-  describe('createParticipant', () => {
+  describe('.createParticipant', () => {
     const participant = {screening_id: '1', person_id: '2', id: null}
-    const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
       promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
@@ -148,9 +148,8 @@ describe('screening actions', () => {
     })
   })
 
-  describe('deleteParticipant', () => {
+  describe('.deleteParticipant', () => {
     const participant = {screening_id: '1', person_id: '2', id: '1'}
-    const store = mockStore()
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
       promiseObject.then.and.callFake((thenFunction) => thenFunction(participant))
