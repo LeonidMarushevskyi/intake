@@ -6,7 +6,11 @@ export default class HistoryCard extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchHistoryOfInvolvements()
+    const {actions, participants} = this.props
+    const personIds = participants.map((p) => p.get('person_id'))
+      .filter((p) => p)
+      .toJS()
+    actions.fetchHistoryOfInvolvements(personIds)
   }
 
   render() {
@@ -38,4 +42,5 @@ export default class HistoryCard extends React.Component {
 
 HistoryCard.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  participants: React.PropTypes.object.isRequired,
 }

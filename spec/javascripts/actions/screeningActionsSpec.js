@@ -171,4 +171,28 @@ describe('screening actions', () => {
       expect(store.getActions()[0].type).toEqual(types.DELETE_PARTICIPANT_SUCCESS)
     })
   })
+
+  describe('.fetchHistoryOfInvolvements', () => {
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction())
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('fetches the history of involvements from the server', () => {
+      const screeningId = 22
+      store.dispatch(screeningActions.fetchHistoryOfInvolvements(screeningId))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'GET',
+        `/api/v1/screenings/${screeningId}/history_of_involvements`,
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a fetchHistoryOfInvolvementsSuccess', () => {
+      store.dispatch(screeningActions.fetchHistoryOfInvolvements())
+      expect(store.getActions()[0].type).toEqual(types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS)
+    })
+  })
 })

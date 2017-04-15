@@ -194,7 +194,10 @@ export class ScreeningShowPage extends React.Component {
             />
         }
         <WorkerSafetyShowView />
-        <HistoryCard actions={this.props.actions} />
+        <HistoryCard
+          actions={this.props.actions}
+          participants={this.props.participants}
+        />
         {
           loaded &&
             <CrossReportCardView

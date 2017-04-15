@@ -83,9 +83,14 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the history card', () => {
-      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      const props = {
+        ...requiredProps,
+        participants: Immutable.fromJS([{person_id: 1}]),
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)
-      expect(component.find('HistoryCard').props().actions).toEqual(requiredProps.actions)
+      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
+      expect(component.find('HistoryCard').props().participants).toEqual(props.participants)
     })
 
     it('renders the allegations card', () => {
