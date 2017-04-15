@@ -42,9 +42,7 @@ feature 'Edit Screening' do
     )
 
     stub_request(:get, api_screening_path(existing_screening.id))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
 
     visit edit_screening_path(id: existing_screening.id)
     expect(page).to have_content 'Edit Screening #My Bad!'
