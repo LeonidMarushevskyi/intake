@@ -66,6 +66,13 @@ module Api
         render json: screenings
       end
 
+      def history_of_involvements
+        involvements = ScreeningRepository.history_of_involvements(
+          session[:security_token], params[:id]
+        )
+        render json: involvements
+      end
+
       private
 
       def screening_index_params

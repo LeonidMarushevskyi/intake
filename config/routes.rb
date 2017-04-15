@@ -17,6 +17,9 @@ Rails.application.routes.draw do
       resources :screenings,
         only: [:show, :create, :update, :index],
         constraints: Routes::InactiveReleaseOneConstraint do
+        member do
+          get 'history_of_involvements'
+        end
       end
 
       resources :participants, only: [:create, :destroy, :update]

@@ -135,4 +135,21 @@ describe Api::V1::ScreeningsController do
       end
     end
   end
+
+  describe '#history_of_involvements' do
+    let(:involvements) { [{ id: 1 }, { id: 2 }] }
+    let(:screening_id) { '99' }
+
+    before do
+      expect(ScreeningRepository).to receive(:history_of_involvements)
+        .with(security_token, screening_id)
+        .and_return(involvements)
+    end
+
+    it 'returns history of involvements' do
+      get :history_of_involvements, params: { id: screening_id }, session: session
+      expect(response).to be_successful
+      expect(response.body).to eq involvements.to_json
+    end
+  end
 end
