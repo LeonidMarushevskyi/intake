@@ -80,7 +80,7 @@ feature 'Edit Screening' do
 
   scenario 'adding an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
-      :participant,
+      :participant, :unknown,
       screening_id: existing_screening.id
     )
     new_participant_request = { screening_id: existing_screening.id, person_id: nil }
