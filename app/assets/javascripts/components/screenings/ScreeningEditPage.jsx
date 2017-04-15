@@ -227,7 +227,12 @@ export class ScreeningEditPage extends React.Component {
             />
         }
         <WorkerSafetyCardView />
-        <HistoryCard />
+        <HistoryCard
+          screeningId={this.props.params.id}
+          actions={this.props.actions}
+          involvements={this.props.involvements}
+          participants={this.props.participants}
+        />
         {
           loaded &&
             <CrossReportCardView
@@ -287,6 +292,7 @@ export class ScreeningEditPage extends React.Component {
 
 ScreeningEditPage.propTypes = {
   actions: React.PropTypes.object.isRequired,
+  involvements: React.PropTypes.object.isRequired,
   params: React.PropTypes.object.isRequired,
   participants: React.PropTypes.object.isRequired,
   screening: React.PropTypes.object.isRequired,
@@ -294,6 +300,7 @@ ScreeningEditPage.propTypes = {
 
 export function mapStateToProps(state, _ownProps) {
   return {
+    involvements: state.involvements,
     participants: state.participants,
     screening: state.screening,
   }
