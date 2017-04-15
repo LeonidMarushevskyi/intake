@@ -9,18 +9,6 @@ module WebmockHelpers
     { body: json, headers: { 'Content-Type' => 'application/json' } }.merge(options)
   end
 
-  def api_person_path(id)
-    intake_api_person_url(id)
-  end
-
-  def api_people_path
-    intake_api_people_url
-  end
-
-  def api_people_search_path(search_term:)
-    intake_api_people_search_url(search_term: search_term)
-  end
-
   def api_screenings_path
     intake_api_screenings_url
   end

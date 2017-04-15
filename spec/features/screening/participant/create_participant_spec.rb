@@ -70,7 +70,7 @@ feature 'Edit Screening' do
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
     %w(Ma Mar Marg Marge).each do |search_text|
-      stub_request(:get, api_people_search_path(search_term: search_text))
+      stub_request(:get, intake_api_people_search_url(search_term: search_text))
         .and_return(body: [marge].to_json,
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })

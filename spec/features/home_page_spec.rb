@@ -22,7 +22,7 @@ feature 'home page' do
       )
 
       %w(Ma Mar Marg Marge).each do |search_text|
-        stub_request(:get, api_people_search_path(search_term: search_text))
+        stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -32,9 +32,11 @@ feature 'home page' do
 
       fill_in_autocompleter 'People', with: 'Marge'
 
-      expect(a_request(:get, api_people_search_path(search_term: 'M'))).to_not have_been_made
+      expect(a_request(:get, intake_api_people_search_url(search_term: 'M'))).to_not have_been_made
       %w(Ma Mar Marg Marge).each do |search_text|
-        expect(a_request(:get, api_people_search_path(search_term: search_text))).to have_been_made
+        expect(
+          a_request(:get, intake_api_people_search_url(search_term: search_text))
+        ).to have_been_made
       end
     end
   end
