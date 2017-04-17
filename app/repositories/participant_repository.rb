@@ -6,7 +6,7 @@ class ParticipantRepository
   PARTICIPANTS_PATH = '/api/v1/participants'
 
   def self.create(security_token, participant)
-    participant_data = participant_json_without_root_id(participant)
+    participant_data = participant.as_json(except: :id)
     response = API.make_api_call(security_token, PARTICIPANTS_PATH, :post, participant_data)
     Participant.new(response.body)
   end
