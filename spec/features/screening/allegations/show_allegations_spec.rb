@@ -5,9 +5,9 @@ require 'spec_helper'
 
 feature 'show allegations' do
   scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -21,7 +21,7 @@ feature 'show allegations' do
     )
     screening.allegations << allegation
 
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit screening_path(id: screening.id)
@@ -92,15 +92,15 @@ feature 'show allegations' do
     screening.allegations << new_allegation
 
     expect(
-      a_request(:put, api_screening_path(screening.id))
+      a_request(:put, intake_api_screening_url(screening.id))
       .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
 
   scenario 'deleting a participant from a screening removes related allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -114,7 +114,7 @@ feature 'show allegations' do
     )
     screening.allegations << allegation
 
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit screening_path(id: screening.id)
@@ -127,7 +127,7 @@ feature 'show allegations' do
       end
     end
 
-    stub_request(:delete, api_participant_path(marge.id))
+    stub_request(:delete, intake_api_participant_url(marge.id))
       .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
     within show_participant_card_selector(marge.id) do
@@ -160,7 +160,7 @@ feature 'show allegations' do
       first_name: 'Marge',
       roles: ['Perpetrator', 'Anonymous Reporter']
     )
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, lisa]
@@ -173,7 +173,7 @@ feature 'show allegations' do
       allegation_types: ['General neglect']
     )
     screening.allegations << allegation
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit screening_path(id: screening.id)
@@ -191,13 +191,13 @@ feature 'show allegations' do
     end
 
     marge.roles = ['Anonymous Reporter']
-    stub_request(:put, api_participant_path(marge.id))
+    stub_request(:put, intake_api_participant_url(marge.id))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
     screening.participants = [lisa, marge]
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -218,12 +218,12 @@ feature 'show allegations' do
     end
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
-    stub_request(:put, api_participant_path(marge.id))
+    stub_request(:put, intake_api_participant_url(marge.id))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -251,16 +251,16 @@ feature 'show allegations' do
   end
 
   scenario 'saving another card will not persist changes to allegations' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit screening_path(id: screening.id)
 
     screening.name = 'Hello'
-    stub_request(:put, api_screening_path(screening.id))
+    stub_request(:put, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     within '#allegations-card.card.show' do
@@ -281,21 +281,21 @@ feature 'show allegations' do
     end
 
     expect(
-      a_request(:put, api_screening_path(screening.id))
+      a_request(:put, intake_api_screening_url(screening.id))
       .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge', roles: ['Perpetrator'])
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa', roles: ['Victim'])
-    homer = FactoryGirl.create(:participant, first_name: 'Homer', roles: ['Perpetrator'])
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
     )
 
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit screening_path(id: screening.id)
@@ -336,7 +336,7 @@ feature 'show allegations' do
     screening.allegations << new_allegation
 
     expect(
-      a_request(:put, api_screening_path(screening.id))
+      a_request(:put, intake_api_screening_url(screening.id))
       .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end

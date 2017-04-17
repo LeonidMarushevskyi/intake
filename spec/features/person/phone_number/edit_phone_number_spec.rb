@@ -13,7 +13,7 @@ feature 'Edit Phone Number' do
       addresses: []
     )
 
-    stub_request(:get, api_person_path(person.id))
+    stub_request(:get, intake_api_person_url(person.id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -56,7 +56,7 @@ feature 'Edit Phone Number' do
       type: nil
     )
 
-    stub_request(:put, api_person_path(person.id))
+    stub_request(:put, intake_api_person_url(person.id))
       .with(body: person.to_json(except: :id))
       .and_return(body: person.to_json,
                   status: 200,
@@ -64,7 +64,7 @@ feature 'Edit Phone Number' do
 
     click_button 'Save'
 
-    expect(a_request(:put, api_person_path(person.id))
+    expect(a_request(:put, intake_api_person_url(person.id))
       .with(body: person.to_json(except: :id))).to have_been_made
   end
 
@@ -80,7 +80,7 @@ feature 'Edit Phone Number' do
       addresses: []
     )
 
-    stub_request(:get, api_person_path(person.id))
+    stub_request(:get, intake_api_person_url(person.id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -98,14 +98,14 @@ feature 'Edit Phone Number' do
     end
 
     person.phone_numbers = []
-    stub_request(:put, api_person_path(person.id))
+    stub_request(:put, intake_api_person_url(person.id))
       .with(body: person.to_json(except: :id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
-    expect(a_request(:put, api_person_path(person.id))
+    expect(a_request(:put, intake_api_person_url(person.id))
       .with(body: person.to_json(except: :id))).to have_been_made
   end
 end

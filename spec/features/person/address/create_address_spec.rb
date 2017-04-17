@@ -55,19 +55,19 @@ feature 'Create Address' do
       end
     end
 
-    stub_request(:post, api_people_path)
+    stub_request(:post, intake_api_people_url)
       .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(created_person.id))
+    stub_request(:get, intake_api_person_url(created_person.id))
       .and_return(body: created_person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
 
     click_button 'Save'
 
-    expect(a_request(:post, api_people_path)
+    expect(a_request(:post, intake_api_people_url)
       .with(body: person.to_json(except: :id)))
       .to have_been_made
 
@@ -84,12 +84,12 @@ feature 'Create Address' do
       ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
-    stub_request(:post, api_people_path)
+    stub_request(:post, intake_api_people_url)
       .with(body: person.to_json(except: :id))
       .and_return(body: created_person.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_person_path(created_person.id))
+    stub_request(:get, intake_api_person_url(created_person.id))
       .and_return(body: created_person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -99,7 +99,7 @@ feature 'Create Address' do
 
     click_button 'Save'
 
-    expect(a_request(:post, api_people_path)
+    expect(a_request(:post, intake_api_people_url)
       .with(body: person.to_json(except: :id)))
       .to have_been_made
   end

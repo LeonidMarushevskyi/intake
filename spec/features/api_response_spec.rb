@@ -13,7 +13,7 @@ feature 'api responses' do
   end
 
   scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
-    stub_request(:get, api_screenings_path).and_return(
+    stub_request(:get, intake_api_screenings_url).and_return(
       json_body({ screenings: [] }.to_json, status: 200)
     )
 
@@ -21,7 +21,7 @@ feature 'api responses' do
     redirect_url = CGI.escape("#{page.current_url.chomp('/')}#{screening_path(screening.id)}")
     login_url = "#{auth_login_url}#{redirect_url}"
 
-    stub_request(:get, api_screening_path(screening.id))
+    stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body('I failed', status: 403))
     visit screening_path(id: screening.id)
 
@@ -33,7 +33,7 @@ feature 'api responses' do
   end
 
   scenario 'API returns an error other than 403' do
-    stub_request(:get, api_screening_path(screening.id)).and_return(
+    stub_request(:get, intake_api_screening_url(screening.id)).and_return(
       body: 'I failed',
       status: 500
     )
@@ -42,7 +42,7 @@ feature 'api responses' do
   end
 
   scenario 'API returns a success' do
-    stub_request(:get, api_screening_path(screening.id)).and_return(
+    stub_request(:get, intake_api_screening_url(screening.id)).and_return(
       body: screening.to_json,
       status: 200,
       headers: { 'Content-Type' => 'application/json' }

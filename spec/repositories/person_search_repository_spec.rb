@@ -10,7 +10,7 @@ describe PersonSearchRepository do
 
     before do
       expect(API).to receive(:make_api_call)
-        .with(security_token, "/api/v1/people_search?search_term=#{search_term}", :get)
+        .with(security_token, "/api/v1/people_search?search_term=#{CGI.escape(search_term)}", :get)
         .and_return(response)
     end
 

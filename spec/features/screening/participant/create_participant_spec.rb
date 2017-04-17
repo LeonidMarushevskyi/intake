@@ -65,12 +65,12 @@ feature 'Edit Screening' do
 
   before do
     Timecop.travel(Time.parse('2016-12-28 17:01 PST').utc)
-    stub_request(:get, api_screening_path(existing_screening.id))
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
     %w(Ma Mar Marg Marge).each do |search_text|
-      stub_request(:get, api_people_search_path(search_term: search_text))
+      stub_request(:get, intake_api_people_search_url(search_term: search_text))
         .and_return(body: [marge].to_json,
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
@@ -80,12 +80,12 @@ feature 'Edit Screening' do
 
   scenario 'adding an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
-      :participant,
+      :participant, :unknown,
       screening_id: existing_screening.id
     )
     new_participant_request = { screening_id: existing_screening.id, person_id: nil }
 
-    stub_request(:post, api_participants_path)
+    stub_request(:post, intake_api_participants_url)
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
       .and_return(body: created_participant_unknown.to_json,
                   status: 201,
@@ -96,7 +96,7 @@ feature 'Edit Screening' do
       expect(page).not_to have_content('Create a new person')
     end
 
-    expect(a_request(:post, api_participants_path)
+    expect(a_request(:post, intake_api_participants_url)
       .with(body: hash_including(new_participant_request)))
       .to have_been_made
 
@@ -116,11 +116,9 @@ feature 'Edit Screening' do
       :participant,
       participant_marge.as_json.merge(id: 23)
     )
-    stub_request(:post, api_participants_path)
-      .with(body: participant_marge.to_json(except: :id))
-      .and_return(body: created_participant_marge.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, intake_api_participants_url)
+      .with(json_body(participant_marge.to_json(except: :id)))
+      .and_return(json_body(created_participant_marge.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
@@ -129,9 +127,8 @@ feature 'Edit Screening' do
       find('li', text: 'Marge Simpson').click
     end
 
-    expect(a_request(:post, api_participants_path)
-      .with(body: participant_marge.to_json(except: :id)))
-      .to have_been_made
+    expect(a_request(:post, intake_api_participants_url)
+      .with(json_body(participant_marge.to_json(except: :id)))).to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')

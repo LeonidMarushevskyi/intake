@@ -23,7 +23,7 @@ feature 'Show Person' do
         ethnicity_detail: 'Mexican'
       }
     )
-    stub_request(:get, api_person_path(person.id))
+    stub_request(:get, intake_api_person_url(person.id))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

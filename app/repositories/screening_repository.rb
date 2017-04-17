@@ -3,12 +3,10 @@
 # ScreeningRepository is a service class responsible for creation of a screening
 # resource via the API
 class ScreeningRepository
-  SCREENINGS_PATH = '/api/v1/screenings'
-
   def self.create(security_token, screening)
     response = API.make_api_call(
       security_token,
-      SCREENINGS_PATH,
+      Rails.application.routes.url_helpers.intake_api_screenings_path,
       :post,
       screening.as_json.except('id')
     )
@@ -16,7 +14,11 @@ class ScreeningRepository
   end
 
   def self.find(security_token, id)
-    response = API.make_api_call(security_token, "#{SCREENINGS_PATH}/#{id}", :get)
+    response = API.make_api_call(
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_screening_path(id),
+      :get
+    )
     Screening.new(response.body)
   end
 
@@ -24,7 +26,7 @@ class ScreeningRepository
     raise 'Error updating screening: id is required' unless screening.id
     response = API.make_api_call(
       security_token,
-      "#{SCREENINGS_PATH}/#{screening.id}",
+      Rails.application.routes.url_helpers.intake_api_screening_path(screening.id),
       :put,
       screening.as_json.except('id')
     )
@@ -33,7 +35,8 @@ class ScreeningRepository
 
   def self.search(security_token, search_terms)
     response = API.make_api_call(
-      security_token, "#{SCREENINGS_PATH}?#{search_terms.to_query}",
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_screenings_path(search_terms),
       :get
     )
     response.body.map do |result_attributes|

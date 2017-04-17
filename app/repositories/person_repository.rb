@@ -3,15 +3,22 @@
 # PersonRepository is a service class responsible for creation of a person
 # resource via the API
 class PersonRepository
-  PEOPLE_PATH = '/api/v1/people'
-
   def self.create(security_token, person)
-    response = API.make_api_call(security_token, PEOPLE_PATH, :post, person.as_json(except: :id))
+    response = API.make_api_call(
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_people_path,
+      :post,
+      person.as_json(except: :id)
+    )
     Person.new(response.body)
   end
 
   def self.find(security_token, id)
-    response = API.make_api_call(security_token, "#{PEOPLE_PATH}/#{id}", :get)
+    response = API.make_api_call(
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_person_path(id),
+      :get
+    )
     Person.new(response.body)
   end
 
@@ -19,7 +26,7 @@ class PersonRepository
     raise 'Error updating person: id is required' unless person.id
     response = API.make_api_call(
       security_token,
-      "#{PEOPLE_PATH}/#{person.id}",
+      Rails.application.routes.url_helpers.intake_api_person_path(person.id),
       :put,
       person.as_json(except: :id)
     )
