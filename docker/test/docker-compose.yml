@@ -7,7 +7,7 @@ services:
       dockerfile: docker/test/Dockerfile
     command: bin/ci
     environment:
-      API_URL: "http://api:3000"
+      API_URL: "http://api"
       RAILS_ENV: test
       CI_REPORTS: /reports
       GENERATE_TEST_REPORTS: 'yes'
