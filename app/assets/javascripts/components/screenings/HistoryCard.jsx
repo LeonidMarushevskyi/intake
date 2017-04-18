@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 
 export default class HistoryCard extends React.Component {
@@ -30,6 +31,16 @@ export default class HistoryCard extends React.Component {
                     <th scope='col'>People and Roles</th>
                   </tr>
                 </thead>
+                <tbody>
+                  {
+                    this.props.involvements.map((involvement, index) => {
+                      const startedAt = involvement.get('started_at')
+                      return (<tr key={index}>
+                        <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+                      </tr>)
+                    })
+                  }
+                </tbody>
               </table>
             </div>
           </div>

@@ -53,12 +53,27 @@ describe('HistoryCard', () => {
     })
   })
 
-  it('renders history card headings', () => {
-    const component = shallow(<HistoryCard {...requiredProps}/>)
-    const tr = component.find('tr')
-    expect(tr.text()).toContain('Date')
-    expect(tr.text()).toContain('Type/Status')
-    expect(tr.text()).toContain('County/Office')
-    expect(tr.text()).toContain('People and Roles')
+  describe('#render', () => {
+    it('renders history card headings', () => {
+      const component = shallow(<HistoryCard {...requiredProps}/>)
+      const tr = component.find('thead tr')
+      expect(tr.text()).toContain('Date')
+      expect(tr.text()).toContain('Type/Status')
+      expect(tr.text()).toContain('County/Office')
+      expect(tr.text()).toContain('People and Roles')
+    })
+
+    it('renders the involvement started_at date', () => {
+      const involvements = Immutable.fromJS([{
+        started_at: '2016-08-13T10:00:00.000Z',
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('08/13/2016')
+    })
   })
 })
