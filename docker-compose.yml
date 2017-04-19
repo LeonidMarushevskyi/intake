@@ -36,6 +36,7 @@ services:
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
       AUTHENTICATION_URL: 'http://www.example.com/'
       AUTHENTICATION: 'false'
+      SEARCH_URL: 'http://api-a.cocina.trn01.cwds.io'
     tty: true
     stdin_open: true
   db:

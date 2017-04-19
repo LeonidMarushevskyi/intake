@@ -4,15 +4,18 @@ development:
     release_one: false
     authentication: false
     centralized_sessions: true
+    people_search_tpt: false
 
 test:
   features:
     release_one: false
     authentication: false
     centralized_sessions: true
+    people_search_tpt: false
 
 production:
   features:
     release_one: <%= ENV.fetch('RELEASE_ONE', false) %>
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
+    people_search_tpt: <%= ENV.fetch('PEOPLE_SEARCH_TPT', false) %>
