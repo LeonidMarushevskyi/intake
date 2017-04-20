@@ -4,4 +4,4 @@ bundle check || bundle install
 npm install
 bin/gulp
 
-while true; do bin/gulp watch; done & bundle exec puma
+bin/gulp server & bundle exec puma
