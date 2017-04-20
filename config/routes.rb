@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     get 'api/v1/people/:id' => 'dev#null', as: :intake_api_person
     get 'api/v1/people' => 'dev#null', as: :intake_api_people
     get 'api/v1/people_search' => 'dev#null', as: :intake_api_people_search
+    get 'api/v2/people_search' => 'dev#null', as: :intake_api_people_search_v2
     get 'api/v1/screenings' => 'dev#null', as: :intake_api_screenings
     get 'api/v1/screenings/:id' => 'dev#null', as: :intake_api_screening
     get 'api/v1/participants' => 'dev#null', as: :intake_api_participants

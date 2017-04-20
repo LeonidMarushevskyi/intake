@@ -1,6 +1,57 @@
 # frozen_string_literal: true
 require 'rails_helper'
 require 'spec_helper'
+require 'feature/testing'
+feature 'searching a person' do
+  let(:existing_screening) { FactoryGirl.create(:screening) }
+  before do
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
+    visit edit_screening_path(id: existing_screening.id)
+  end
+
+  context 'in TPT API' do
+    before do
+      stub_request(:get, intake_api_people_search_v2_url(search_term: 'aa'))
+        .and_return(body: [],
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
+    scenario 'I search for a person' do
+      Feature.run_with_activated(:people_search_tpt) do
+        within '#search-card', text: 'SEARCH' do
+          fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
+        end
+
+        expect(
+          a_request(:get, intake_api_people_search_v2_url(search_term: 'aa'))
+        ).to have_been_made
+      end
+    end
+  end
+
+  context 'in intake API' do
+    before do
+      stub_request(:get, intake_api_people_search_url(search_term: 'aa'))
+        .and_return(body: [],
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
+    scenario 'I search for a person' do
+      Feature.run_with_deactivated(:people_search_tpt) do
+        within '#search-card', text: 'SEARCH' do
+          fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
+        end
+        expect(
+          a_request(:get, intake_api_people_search_url(search_term: 'aa'))
+        ).to have_been_made
+      end
+    end
+  end
+end
+
 feature 'searching a participant in autocompleter' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:date_of_birth) { 15.years.ago.to_date }
