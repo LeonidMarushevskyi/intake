@@ -53,26 +53,31 @@ feature 'login' do
     end
   end
 
-  scenario 'user uses session token when communicating to API', accessibility: false do
+  scenario 'user uses session token when communicating to API' do
     Feature.run_with_activated(:authentication) do
-      bobs_token = '456'
+      screening = FactoryGirl.create(:screening, name: 'My Screening')
+      stub_request(:get, intake_api_screening_url(1))
+        .and_return(json_body(screening.to_json, status: 200))
+      stub_request(:get, intake_api_screenings_url)
+        .and_return(json_body([].to_json, status: 200))
+
+      bobs_token = 'BOBS_TOKEN'
       in_browser(:bob) do
         stub_request(:get, "http://www.example.com/authn/validate?token=#{bobs_token}")
           .and_return(status: 200)
         visit root_path(token: bobs_token)
       end
 
-      alexs_token = '678'
+      alexs_token = 'ALEXS_TOKEN'
       in_browser(:alex) do
         stub_request(:get, "http://www.example.com/authn/validate?token=#{alexs_token}")
           .and_return(status: 200)
         visit root_path(token: alexs_token)
       end
 
-      WebMock.reset!
-
       in_browser(:bob) do
         visit screening_path(1)
+        expect(page).to have_content 'My Screening'
         expect(
           a_request(:get, intake_api_screening_url(1))
           .with(headers: { 'Authorization' => bobs_token })
@@ -81,6 +86,7 @@ feature 'login' do
 
       in_browser(:alex) do
         visit screening_path(1)
+        expect(page).to have_content 'My Screening'
         expect(
           a_request(:get, intake_api_screening_url(1))
           .with(headers: { 'Authorization' => alexs_token })
