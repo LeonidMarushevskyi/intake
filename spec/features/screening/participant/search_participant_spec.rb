@@ -5,48 +5,49 @@ require 'feature/testing'
 feature 'searching a person' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   before do
-    stub_request(:get, api_screening_path(existing_screening.id))
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
     visit edit_screening_path(id: existing_screening.id)
-
-    stub_request(:get, api_people_search_path(search_term: 'aa'))
-      .and_return(body: [],
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, api_people_search_path_v2(search_term: 'aa'))
-      .and_return(body: [],
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
   end
 
-  it 'in TPT API' do
-    Feature.run_with_activated(:people_search_tpt) do
-      within '#search-card', text: 'SEARCH' do
-        fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
-      end
+  context 'in TPT API' do
+    before do
+      stub_request(:get, intake_api_people_search_v2_url(search_term: 'aa'))
+        .and_return(body: [],
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
+    scenario 'I search for a person' do
+      Feature.run_with_activated(:people_search_tpt) do
+        within '#search-card', text: 'SEARCH' do
+          fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
+        end
 
-      expect(
-        a_request(:get, api_people_search_path(search_term: 'aa'))
-      ).not_to have_been_made
-      expect(
-        a_request(:get, api_people_search_path_v2(search_term: 'aa'))
-      ).to have_been_made
+        expect(
+          a_request(:get, intake_api_people_search_v2_url(search_term: 'aa'))
+        ).to have_been_made
+      end
     end
   end
 
-  it 'in intake API' do
-    Feature.run_with_deactivated(:people_search_tpt) do
-      within '#search-card', text: 'SEARCH' do
-        fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
+  context 'in intake API' do
+    before do
+      stub_request(:get, intake_api_people_search_url(search_term: 'aa'))
+        .and_return(body: [],
+                    status: 200,
+                    headers: { 'Content-Type' => 'application/json' })
+    end
+    scenario 'I search for a person' do
+      Feature.run_with_deactivated(:people_search_tpt) do
+        within '#search-card', text: 'SEARCH' do
+          fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
+        end
+        expect(
+          a_request(:get, intake_api_people_search_url(search_term: 'aa'))
+        ).to have_been_made
       end
-      expect(
-        a_request(:get, api_people_search_path(search_term: 'aa'))
-      ).to have_been_made
-      expect(
-        a_request(:get, api_people_search_path_v2(search_term: 'aa'))
-      ).not_to have_been_made
     end
   end
 end
