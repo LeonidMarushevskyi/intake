@@ -15,6 +15,8 @@ class Screening # :nodoc:
   attribute :name
   attribute :reference
   attribute :report_narrative
+  attribute :safety_alerts, Array
+  attribute :safety_information, String
   attribute :screening_decision
   attribute :screening_decision_detail
   attribute :started_at

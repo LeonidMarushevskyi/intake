@@ -22,6 +22,8 @@ describe Screening do
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
         report_narrative: 'Narrative 123 test',
+        safety_alerts: ['Firearms in Home', 'Gang Affiliation or Gang Activity'],
+        safety_information: 'bad and scary',
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',
@@ -84,6 +86,11 @@ describe Screening do
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
         report_narrative: 'Narrative 123 test',
+        safety_alerts: array_including(
+          'Firearms in Home',
+          'Gang Affiliation or Gang Activity'
+        ),
+        safety_information: 'bad and scary',
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
         started_at: '2016-08-13T10:00:00.000Z',

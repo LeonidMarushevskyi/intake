@@ -78,7 +78,13 @@ feature 'Edit Screening' do
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    expect(page).to have_css('#worker-safety-card.edit', text: 'WORKER SAFETY')
+    within '#worker-safety-card', text: 'WORKER SAFETY' do
+      has_react_select_field('Worker safety alerts', with: existing_screening.safety_alerts)
+      expect(page).to have_field('Additional safety information',
+        with: existing_screening.safety_information)
+      expect(page).to have_content('Save')
+      expect(page).to have_content('Cancel')
+    end
 
     expect(page).to have_css('#history-card.show', text: 'HISTORY')
 
