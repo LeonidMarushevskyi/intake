@@ -227,7 +227,7 @@ export class ScreeningEditPage extends React.Component {
               setField={this.setField}
             />
         }
-        <WorkerSafetyCardView />
+        <WorkerSafetyCardView mode='edit'/>
         <HistoryCard
           screeningId={this.props.params.id}
           actions={this.props.actions}

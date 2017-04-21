@@ -1,18 +1,33 @@
 import React from 'react'
+import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 
 export default class WorkerSafetyCardView extends React.Component {
-  constructor() {
-    super(...arguments)
+  constructor(props) {
+    super(props)
+    this.state = {
+      mode: this.props.mode,
+    }
+    this.onEdit = this.onEdit.bind(this)
+  }
+
+  onEdit(event) {
+    event.preventDefault()
+    this.setState({mode: 'edit'})
   }
 
   render() {
-    return (
-      <div className='card edit double-gap-top' id='worker-safety-card'>
-        <div className='card-header'>
-          <span>Worker Safety</span>
-        </div>
-        <div className='card-body no-pad-top' />
-      </div>
-    )
+    const {mode} = this.state
+    const allprops = {
+      show: {
+        onEdit: this.onEdit,
+      },
+    }
+    const WorkerSafetyView = (mode === 'edit') ? WorkerSafetyShowView : WorkerSafetyShowView
+    const props = allprops[mode]
+    return <WorkerSafetyView {...props} />
   }
+}
+
+WorkerSafetyCardView.propTypes = {
+  mode: React.PropTypes.oneOf(['show']),
 }

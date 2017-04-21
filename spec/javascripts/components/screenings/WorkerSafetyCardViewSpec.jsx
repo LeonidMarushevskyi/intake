@@ -1,10 +1,23 @@
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('WorkerSafetyCardView', () => {
-  it('renders blank worker safety card view', () => {
-    const component = shallow(<WorkerSafetyCardView />)
-    expect(component.find('.card-header').text()).toEqual('Worker Safety')
+  let component
+  const props = {
+    onEdit: jasmine.createSpy(),
+  }
+
+  beforeEach(() => {
+    component = shallow(<WorkerSafetyCardView mode='show'/>)
+  })
+
+  describe('when mode is set to show', () => {
+    beforeEach(() => {
+      component = mount(<WorkerSafetyCardView {...props} mode='show'/>)
+    })
+    it('renders the worker safety show card', () => {
+      expect(component.find('WorkerSafetyShowView').length).toEqual(1)
+    })
   })
 })
