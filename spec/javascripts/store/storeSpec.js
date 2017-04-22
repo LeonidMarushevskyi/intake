@@ -8,8 +8,16 @@ describe('Store', () => {
   let initialState
   let store
   beforeEach(() => {
-    initialState = {person: Immutable.Map(), screening: Immutable.Map(), participants: Immutable.List()}
-    store = createStore(rootReducer, initialState)
+    initialState = {
+      person: Immutable.Map(),
+      screening: Immutable.Map(),
+      participants: Immutable.List(),
+    }
+    store = createStore(rootReducer)
+  })
+
+  it('has initial state', () => {
+    expect(store.getState()).toEqual(initialState)
   })
 
   it('handles fetch person', () => {
@@ -35,7 +43,6 @@ describe('Store', () => {
   })
 
   it('handles create person', () => {
-    expect(store.getState()).toEqual(initialState)
     const person = {
       id: '1',
       first_name: 'Kevin',
@@ -84,7 +91,6 @@ describe('Store', () => {
   })
 
   it('handles fetch screening', () => {
-    expect(store.getState()).toEqual(initialState)
     const participant = {id: '2', person_id: '3', screening_id: '1'}
     const screening = {
       id: '1',
@@ -98,7 +104,6 @@ describe('Store', () => {
   })
 
   it('handles create screening', () => {
-    expect(store.getState()).toEqual(initialState)
     const screening = {
       id: '1',
       name: 'Mock screening',
@@ -121,7 +126,6 @@ describe('Store', () => {
       }),
     }
     store = createStore(rootReducer, initialState)
-    expect(store.getState()).toEqual(initialState)
     const updatedScreening = initialState.screening
       .set('participants', Immutable.fromJS([participant])).toJS()
     const action = screeningActions.updateScreeningSuccess(updatedScreening)
@@ -131,7 +135,6 @@ describe('Store', () => {
   })
 
   it('handles create participant', () => {
-    expect(store.getState()).toEqual(initialState)
     const participant = {id: '2', person_id: '3', screening_id: '1'}
     initialState = {
       ...initialState,
