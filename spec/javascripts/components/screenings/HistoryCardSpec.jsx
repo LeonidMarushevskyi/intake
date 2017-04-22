@@ -99,5 +99,18 @@ describe('HistoryCard', () => {
       const tr = component.find('tbody tr')
       expect(tr.text()).toContain('Screening(Closed)')
     })
+
+    it('renders the incident county', () => {
+      const involvements = Immutable.fromJS([{
+        incident_county: 'Sacramento',
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('Sacramento')
+    })
   })
 })

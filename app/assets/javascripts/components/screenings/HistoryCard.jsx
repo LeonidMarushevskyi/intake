@@ -42,6 +42,7 @@ export default class HistoryCard extends React.Component {
                     this.props.involvements.map((involvement, index) => {
                       const startedAt = involvement.get('started_at')
                       const endedAt = involvement.get('ended_at')
+                      const incidentCounty = involvement.get('incident_county')
                       const status = endedAt ? 'Closed' : 'In Progress'
                       return (
                         <tr key={index}>
@@ -50,6 +51,7 @@ export default class HistoryCard extends React.Component {
                             <div className='row'>Screening</div>
                             <div className='row'>{`(${status})`}</div>
                           </td>
+                          <td>{incidentCounty}</td>
                         </tr>
                       )
                     })
