@@ -7,6 +7,7 @@ import Immutable from 'immutable'
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
@@ -228,11 +229,11 @@ export class ScreeningShowPage extends React.Component {
 }
 
 ScreeningShowPage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  involvements: React.PropTypes.object.isRequired,
-  params: React.PropTypes.object.isRequired,
-  participants: React.PropTypes.object.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  involvements: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  participants: PropTypes.object.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {

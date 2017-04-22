@@ -2,6 +2,7 @@ import CheckboxField from 'components/common/CheckboxField'
 import CROSS_REPORT from 'CrossReport'
 import InputField from 'components/common/InputField'
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 export default class CrossReportEditView extends React.Component {
@@ -114,8 +115,8 @@ export default class CrossReportEditView extends React.Component {
 }
 
 CrossReportEditView.propTypes = {
-  crossReport: React.PropTypes.object,
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
+  crossReport: PropTypes.object,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 }

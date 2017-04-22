@@ -9,6 +9,7 @@ import LANGUAGE from 'Language'
 import NAME_SUFFIX from 'NameSuffix'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import RacesEditView from 'components/people/RacesEditView'
+import PropTypes from 'prop-types'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
@@ -180,10 +181,10 @@ export class PersonEditPage extends React.Component {
 }
 
 PersonEditPage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  params: React.PropTypes.object.isRequired,
-  person: React.PropTypes.object.isRequired,
-  router: React.PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  person: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

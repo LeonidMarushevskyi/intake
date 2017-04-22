@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import PHONE_NUMBER_TYPE from 'PhoneNumberType'
 import InputField from 'components/common/InputField'
@@ -31,8 +32,8 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
   </div>
 )
 PhoneNumberField.propTypes = {
-  Number: React.PropTypes.string,
-  Type: React.PropTypes.string,
-  onChange: React.PropTypes.func.isRequired,
+  Number: PropTypes.string,
+  Type: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 }
 export default PhoneNumberField

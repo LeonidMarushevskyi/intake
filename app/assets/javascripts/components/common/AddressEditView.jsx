@@ -1,6 +1,7 @@
 import ADDRESS_TYPE from 'AddressType'
 import InputField from 'components/common/InputField'
 import React from 'react'
+import PropTypes from 'prop-types'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
@@ -52,11 +53,11 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
   </div>
 )
 AddressEditView.propTypes = {
-  city: React.PropTypes.string,
-  onChange: React.PropTypes.func,
-  state: React.PropTypes.string,
-  streetAddress: React.PropTypes.string,
-  type: React.PropTypes.string,
-  zip: React.PropTypes.string,
+  city: PropTypes.string,
+  onChange: PropTypes.func,
+  state: PropTypes.string,
+  streetAddress: PropTypes.string,
+  type: PropTypes.string,
+  zip: PropTypes.string,
 }
 export default AddressEditView

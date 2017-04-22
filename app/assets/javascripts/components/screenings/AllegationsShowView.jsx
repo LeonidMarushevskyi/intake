@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import EditLink from 'components/common/EditLink'
 import nameFormatter from 'utils/nameFormatter'
@@ -44,8 +45,8 @@ const AllegationsShowView = ({allegations, onEdit}) => (
 )
 
 AllegationsShowView.propTypes = {
-  allegations: React.PropTypes.object.isRequired,
-  onEdit: React.PropTypes.func.isRequired,
+  allegations: PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
 }
 
 export default AllegationsShowView

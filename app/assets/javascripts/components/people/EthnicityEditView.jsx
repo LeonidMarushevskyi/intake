@@ -1,5 +1,6 @@
 import CheckboxField from 'components/common/CheckboxField'
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
 import {HISPANIC_LATINO_ORIGIN, ETHNICITY_DETAILS} from 'Ethnicity'
@@ -89,8 +90,8 @@ export class EthnicityEditView extends React.Component {
 }
 
 EthnicityEditView.propTypes = {
-  ethnicity: React.PropTypes.object.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  ethnicity: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default EthnicityEditView

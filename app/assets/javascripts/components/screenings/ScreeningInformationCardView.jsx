@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
@@ -57,10 +58,10 @@ export default class ScreeningInformationCardView extends React.Component {
 }
 
 ScreeningInformationCardView.propTypes = {
-  mode: React.PropTypes.string,
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  mode: PropTypes.string,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 

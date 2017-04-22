@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const CheckboxField = ({id, value, checked, disabled, onChange}) => (
   <div>
@@ -14,11 +15,11 @@ const CheckboxField = ({id, value, checked, disabled, onChange}) => (
 )
 
 CheckboxField.propTypes = {
-  checked: React.PropTypes.bool,
-  disabled: React.PropTypes.bool,
-  id: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  value: React.PropTypes.string,
+  checked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 }
 
 export default CheckboxField

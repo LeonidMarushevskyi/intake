@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
 import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
 import IncidentInformationShowView from 'components/screenings/IncidentInformationShowView'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 export default class IncidentInformationCardView extends React.Component {
@@ -58,9 +59,9 @@ export default class IncidentInformationCardView extends React.Component {
 }
 
 IncidentInformationCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['edit', 'show']),
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  mode: PropTypes.oneOf(['edit', 'show']),
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }

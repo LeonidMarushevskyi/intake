@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const AddressInfo = (address) => {
   const {type, streetAddress, city, state, zip} = address
@@ -13,10 +14,10 @@ const AddressInfo = (address) => {
 }
 
 AddressInfo.propTypes = {
-  city: React.PropTypes.string,
-  state: React.PropTypes.string,
-  streetAddress: React.PropTypes.string,
-  type: React.PropTypes.string,
-  zip: React.PropTypes.string,
+  city: PropTypes.string,
+  state: PropTypes.string,
+  streetAddress: PropTypes.string,
+  type: PropTypes.string,
+  zip: PropTypes.string,
 }
 export default AddressInfo

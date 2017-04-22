@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import COMMUNICATION_METHOD from 'CommunicationMethod'
 import EditLink from 'components/common/EditLink'
@@ -41,8 +42,8 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
 )
 
 ScreeningInformationShowView.propTypes = {
-  onEdit: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 
 export default ScreeningInformationShowView

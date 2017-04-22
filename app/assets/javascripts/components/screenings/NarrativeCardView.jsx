@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
 import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 export default class NarrativeCardView extends React.Component {
@@ -52,9 +53,9 @@ export default class NarrativeCardView extends React.Component {
 }
 
 NarrativeCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['edit', 'show']),
-  narrative: React.PropTypes.string,
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
+  mode: PropTypes.oneOf(['edit', 'show']),
+  narrative: PropTypes.string,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 }

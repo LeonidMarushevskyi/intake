@@ -2,6 +2,7 @@ import COUNTY from 'County'
 import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import LOCATION_TYPE from 'LocationType'
+import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
@@ -103,9 +104,9 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
 )
 
 IncidentInformationEditView.propTypes = {
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default IncidentInformationEditView

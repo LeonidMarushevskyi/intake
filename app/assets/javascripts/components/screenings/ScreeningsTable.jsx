@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
 import moment from 'moment'
@@ -40,7 +41,7 @@ export default class ScreeningsTable extends React.Component {
 }
 
 ScreeningsTable.propTypes = {
-  screenings: React.PropTypes.array,
+  screenings: PropTypes.array,
 }
 
 ScreeningsTable.defaultProps = {

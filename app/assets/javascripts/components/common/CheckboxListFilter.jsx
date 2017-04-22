@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class CheckboxListFilter extends React.Component {
   constructor() {
@@ -52,9 +53,9 @@ CheckboxListFilter.defaultProps = {
 }
 
 CheckboxListFilter.propTypes = {
-  collection: React.PropTypes.object,
-  legend: React.PropTypes.string,
-  name: React.PropTypes.string,
-  onChange: React.PropTypes.func,
-  selected: React.PropTypes.array,
+  collection: PropTypes.object,
+  legend: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  selected: PropTypes.array,
 }

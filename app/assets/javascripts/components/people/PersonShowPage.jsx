@@ -1,6 +1,7 @@
 import * as personActions from 'actions/personActions'
 import Gender from 'Gender'
 import React from 'react'
+import PropTypes from 'prop-types'
 import NAME_SUFFIX from 'NameSuffix'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
@@ -127,9 +128,9 @@ export class PersonShowPage extends React.Component {
 }
 
 PersonShowPage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  params: React.PropTypes.object.isRequired,
-  person: React.PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  person: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, _ownProps) {

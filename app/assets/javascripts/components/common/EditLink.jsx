@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const EditLink = ({ariaLabel, onClick}) => (
   <a aria-label={ariaLabel} className='gap-right pull-right' href='#' onClick={onClick}>
@@ -7,7 +8,7 @@ const EditLink = ({ariaLabel, onClick}) => (
 )
 
 EditLink.propTypes = {
-  ariaLabel: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 export default EditLink

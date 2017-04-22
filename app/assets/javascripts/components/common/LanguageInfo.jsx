@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const LanguageInfo = ({languages}) => {
   const lan = languages && languages.filter(Boolean).join(', ')
@@ -6,7 +7,7 @@ const LanguageInfo = ({languages}) => {
 }
 
 LanguageInfo.propTypes = {
-  languages: React.PropTypes.array,
+  languages: PropTypes.array,
 }
 
 export default LanguageInfo

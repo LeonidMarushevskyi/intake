@@ -4,6 +4,7 @@ import Gender from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
+import PropTypes from 'prop-types'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
@@ -118,10 +119,10 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
 }
 
 ParticipantEditView.propTypes = {
-  onCancel: React.PropTypes.func,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  onSave: React.PropTypes.func,
-  participant: React.PropTypes.object.isRequired,
+  onCancel: PropTypes.func,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  onSave: PropTypes.func,
+  participant: PropTypes.object.isRequired,
 }
 export default ParticipantEditView

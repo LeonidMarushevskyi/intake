@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
@@ -97,8 +98,8 @@ export default class HistoryCard extends React.Component {
 }
 
 HistoryCard.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  involvements: React.PropTypes.object.isRequired,
-  participants: React.PropTypes.object.isRequired,
-  screeningId: React.PropTypes.string.isRequired,
+  actions: PropTypes.object.isRequired,
+  involvements: PropTypes.object.isRequired,
+  participants: PropTypes.object.isRequired,
+  screeningId: PropTypes.string.isRequired,
 }

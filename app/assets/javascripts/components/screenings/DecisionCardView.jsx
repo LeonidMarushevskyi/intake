@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import DecisionEditView from 'components/screenings/DecisionEditView'
 import DecisionShowView from 'components/screenings/DecisionShowView'
@@ -53,9 +54,9 @@ export default class DecisionCardView extends React.Component {
 }
 
 DecisionCardView.propTypes = {
-  mode: React.PropTypes.string,
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  mode: PropTypes.string,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }

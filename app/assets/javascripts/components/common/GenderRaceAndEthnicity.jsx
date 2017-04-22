@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Gender from 'Gender'
 
 const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
@@ -12,9 +13,9 @@ const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
 }
 
 GenderRaceAndEthnicity.propTypes = {
-  ethnicity: React.PropTypes.object,
-  gender: React.PropTypes.string,
-  races: React.PropTypes.array,
+  ethnicity: PropTypes.object,
+  gender: PropTypes.string,
+  races: PropTypes.array,
 }
 
 export default GenderRaceAndEthnicity

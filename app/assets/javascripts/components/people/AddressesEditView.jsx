@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import AddressEditView from 'components/common/AddressEditView'
 
@@ -81,6 +82,6 @@ export default class AddressesEditView extends React.Component {
 }
 
 AddressesEditView.propTypes = {
-  addresses: React.PropTypes.object.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  addresses: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
