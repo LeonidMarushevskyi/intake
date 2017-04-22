@@ -178,5 +178,33 @@ describe('HistoryCard', () => {
       const tr = component.find('tbody tr span.reporter')
       expect(tr.text()).toContain('Reporter: Malory Archer')
     })
+
+    it('renders the assigned worker', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        assignee: 'Algernop Krieger',
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.assignee')
+      expect(tr.text()).toContain('Worker: Algernop Krieger')
+    })
+
+    it('renders the no worker when assignee is null', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        assignee: null,
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.assignee')
+      expect(tr.text()).toEqual('Worker: ')
+    })
   })
 })
