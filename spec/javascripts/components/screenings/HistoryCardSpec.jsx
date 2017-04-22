@@ -75,5 +75,29 @@ describe('HistoryCard', () => {
       const tr = component.find('tbody tr')
       expect(tr.text()).toContain('08/13/2016')
     })
+
+    it('renders the involvement status In Progress when ended_at is null', () => {
+      const involvements = Immutable.fromJS([{ended_at: null}])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('Screening(In Progress)')
+    })
+
+    it('renders the involvement status Closed when ended_at is not null', () => {
+      const involvements = Immutable.fromJS([{
+        ended_at: '2016-08-13T10:00:00.000Z',
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('Screening(Closed)')
+    })
   })
 })

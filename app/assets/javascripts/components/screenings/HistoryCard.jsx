@@ -23,6 +23,12 @@ export default class HistoryCard extends React.Component {
           <div className='row'>
             <div className='table-responsive'>
               <table className='table table-hover'>
+                <colgroup>
+                  <col className='col-md-2' />
+                  <col className='col-md-2'/>
+                  <col className='col-md-2' />
+                  <col className='col-md-6'/>
+                </colgroup>
                 <thead>
                   <tr>
                     <th scope='col'>Date</th>
@@ -35,9 +41,17 @@ export default class HistoryCard extends React.Component {
                   {
                     this.props.involvements.map((involvement, index) => {
                       const startedAt = involvement.get('started_at')
-                      return (<tr key={index}>
-                        <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
-                      </tr>)
+                      const endedAt = involvement.get('ended_at')
+                      const status = endedAt ? 'Closed' : 'In Progress'
+                      return (
+                        <tr key={index}>
+                          <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+                          <td>
+                            <div className='row'>Screening</div>
+                            <div className='row'>{`(${status})`}</div>
+                          </td>
+                        </tr>
+                      )
                     })
                   }
                 </tbody>
