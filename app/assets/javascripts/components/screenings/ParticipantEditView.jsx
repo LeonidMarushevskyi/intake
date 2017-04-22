@@ -8,22 +8,22 @@ import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import nameFormatter from 'utils/nameFormatter'
+import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'RoleType'
 
 const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}) => {
   const roleOptions = (selectedRoles = Immutable.List()) => {
-    const hasReporterRole = selectedRoles.some((role) => [
-      'Mandated Reporter',
-      'Non-mandated Reporter',
-      'Anonymous Reporter',
-    ].includes(role))
+    const hasReporterRole = selectedRoles.some((role) =>
+      ROLE_TYPE_REPORTER.includes(role)
+    )
 
-    return [
-      {label: 'Victim', value: 'Victim'},
-      {label: 'Perpetrator', value: 'Perpetrator'},
-      {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: hasReporterRole},
-      {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: hasReporterRole},
-      {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: hasReporterRole},
-    ]
+    return ROLE_TYPE.map((role) => {
+      const reporter = ROLE_TYPE_REPORTER.includes(role)
+      let item = {label: role, value: role}
+      if (reporter) {
+        item = {...item, disabled: hasReporterRole}
+      }
+      return item
+    })
   }
 
   return (
