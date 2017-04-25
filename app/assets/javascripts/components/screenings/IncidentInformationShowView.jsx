@@ -1,5 +1,6 @@
 import COUNTY from 'County'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import React from 'react'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
@@ -52,7 +53,7 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
 }
 
 IncidentInformationShowView.propTypes = {
-  onEdit: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default IncidentInformationShowView

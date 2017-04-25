@@ -15,6 +15,7 @@ describe('ScreeningShowPage', () => {
     screening: Immutable.fromJS({
       ...requiredScreeningAttributes,
     }),
+    involvements: Immutable.List(),
   }
 
   describe('render', () => {
@@ -83,8 +84,19 @@ describe('ScreeningShowPage', () => {
     })
 
     it('renders the history card', () => {
-      const component = shallow(<ScreeningShowPage {...requiredProps} />)
+      const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
+      const participants = Immutable.fromJS([{id: 1}])
+      const props = {
+        ...requiredProps,
+        involvements,
+        participants,
+      }
+      const component = shallow(<ScreeningShowPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)
+      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
+      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
+      expect(component.find('HistoryCard').props().participants).toEqual(participants)
+      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
     })
 
     it('renders the allegations card', () => {
@@ -109,6 +121,7 @@ describe('ScreeningShowPage', () => {
           {id: '2', first_name: 'Marshall', last_name: 'Powers'},
         ])
         const props = {
+          ...requiredProps,
           actions: {fetchScreening: () => null},
           params: {id: '1'},
           participants,
@@ -146,11 +159,12 @@ describe('ScreeningShowPage', () => {
 
   describe('componentDidMount', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
+    const fetchHistoryOfInvolvements = () => Promise.resolve()
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening},
+        actions: {fetchScreening, fetchHistoryOfInvolvements},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -382,6 +396,7 @@ describe('ScreeningShowPage', () => {
       ...requiredProps,
       actions: {
         fetchScreening: () => Promise.resolve(),
+        fetchHistoryOfInvolvements: () => Promise.resolve(),
       },
       participants: Immutable.fromJS([victim, perpetrator]),
       screening: Immutable.fromJS({
@@ -413,6 +428,7 @@ describe('ScreeningShowPage', () => {
         ...requiredProps,
         actions: {
           fetchScreening: () => Promise.resolve(),
+          fetchHistoryOfInvolvements: () => Promise.resolve(),
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),

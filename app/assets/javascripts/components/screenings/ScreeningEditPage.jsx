@@ -8,6 +8,7 @@ import Immutable from 'immutable'
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
 import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
@@ -227,7 +228,12 @@ export class ScreeningEditPage extends React.Component {
             />
         }
         <WorkerSafetyCardView />
-        <HistoryCard />
+        <HistoryCard
+          screeningId={this.props.params.id}
+          actions={this.props.actions}
+          involvements={this.props.involvements}
+          participants={this.props.participants}
+        />
         {
           loaded &&
             <CrossReportCardView
@@ -286,14 +292,16 @@ export class ScreeningEditPage extends React.Component {
 }
 
 ScreeningEditPage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  params: React.PropTypes.object.isRequired,
-  participants: React.PropTypes.object.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  involvements: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  participants: PropTypes.object.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 
 export function mapStateToProps(state, _ownProps) {
   return {
+    involvements: state.involvements,
     participants: state.participants,
     screening: state.screening,
   }

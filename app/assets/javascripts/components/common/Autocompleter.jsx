@@ -3,6 +3,7 @@ import CreateUnknownParticipant from 'components/screenings/CreateUnknownPartici
 import PersonSuggestion from 'components/common/PersonSuggestion'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
+import PropTypes from 'prop-types'
 const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {
@@ -174,9 +175,9 @@ export default class Autocompleter extends React.Component {
 }
 
 Autocompleter.propTypes = {
-  enableFooter: React.PropTypes.bool,
-  id: React.PropTypes.string,
-  onSelect: React.PropTypes.func,
-  shouldForceOpen: React.PropTypes.func,
+  enableFooter: PropTypes.bool,
+  id: PropTypes.string,
+  onSelect: PropTypes.func,
+  shouldForceOpen: PropTypes.func,
 }
 Autocompleter.displayName = 'Autocompleter'

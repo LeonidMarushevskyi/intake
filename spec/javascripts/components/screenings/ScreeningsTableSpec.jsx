@@ -1,15 +1,15 @@
 import React from 'react'
 import ScreeningsTable from 'components/screenings/ScreeningsTable'
-import TestUtils from 'react-addons-test-utils'
+import {shallow, mount} from 'enzyme'
 
 describe('ScreeningsTable', () => {
   it('renders screening table headings', () => {
-    const view = TestUtils.renderIntoDocument(<ScreeningsTable />)
-    const tr = TestUtils.findRenderedDOMComponentWithTag(view, 'tr')
-    expect(tr.textContent).toContain('Name & ID')
-    expect(tr.textContent).toContain('Response Time')
-    expect(tr.textContent).toContain('Decision')
-    expect(tr.textContent).toContain('Report Date')
+    const view = shallow(<ScreeningsTable />)
+    const tr = view.find('tr')
+    expect(tr.text()).toContain('Name & ID')
+    expect(tr.text()).toContain('Response Time')
+    expect(tr.text()).toContain('Decision')
+    expect(tr.text()).toContain('Report Date')
   })
 
   it('renders screening attributes', () => {
@@ -20,10 +20,10 @@ describe('ScreeningsTable', () => {
       screening_decision: 'screen_out',
       started_at: '2016-09-21T14:26:58.042Z',
     }]
-    const view = TestUtils.renderIntoDocument(<ScreeningsTable screenings={screenings}/>)
-    const tbody = TestUtils.findRenderedDOMComponentWithTag(view, 'tbody')
-    expect(tbody.textContent).toContain('My Screening Name - ABCDEF')
-    expect(tbody.textContent).toContain('Screen out')
-    expect(tbody.textContent).toContain('09/21/2016')
+    const view = mount(<ScreeningsTable screenings={screenings}/>)
+    const tbody = view.find('tbody')
+    expect(tbody.text()).toContain('My Screening Name - ABCDEF')
+    expect(tbody.text()).toContain('Screen out')
+    expect(tbody.text()).toContain('09/21/2016')
   })
 })

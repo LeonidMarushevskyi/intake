@@ -3,6 +3,7 @@ import AgeInfo from 'components/common/AgeInfo'
 import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
 import Languages from 'components/common/LanguageInfo'
 import NAME_SUFFIX from 'NameSuffix'
+import PropTypes from 'prop-types'
 import React from 'react'
 import PhoneNumberInfo from 'components/common/PhoneNumberInfo'
 import sanitizeHtml from 'sanitize-html'
@@ -40,18 +41,18 @@ const PersonSuggestion = ({firstName, lastName, middleName, nameSuffix, dateOfBi
 }
 
 PersonSuggestion.propTypes = {
-  address: React.PropTypes.object,
-  dateOfBirth: React.PropTypes.string,
-  ethnicity: React.PropTypes.object,
-  firstName: React.PropTypes.string,
-  gender: React.PropTypes.string,
-  languages: React.PropTypes.array,
-  lastName: React.PropTypes.string,
-  middleName: React.PropTypes.string,
-  nameSuffix: React.PropTypes.string,
-  phoneNumber: React.PropTypes.object,
-  races: React.PropTypes.array,
-  ssn: React.PropTypes.string,
+  address: PropTypes.object,
+  dateOfBirth: PropTypes.string,
+  ethnicity: PropTypes.object,
+  firstName: PropTypes.string,
+  gender: PropTypes.string,
+  languages: PropTypes.array,
+  lastName: PropTypes.string,
+  middleName: PropTypes.string,
+  nameSuffix: PropTypes.string,
+  phoneNumber: PropTypes.object,
+  races: PropTypes.array,
+  ssn: PropTypes.string,
 }
 
 export default PersonSuggestion

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const PhoneNumberInfo = (PhoneNumber) => {
@@ -12,7 +13,7 @@ const PhoneNumberInfo = (PhoneNumber) => {
 }
 
 PhoneNumberInfo.propTypes = {
-  number: React.PropTypes.string,
-  type: React.PropTypes.string,
+  number: PropTypes.string,
+  type: PropTypes.string,
 }
 export default PhoneNumberInfo

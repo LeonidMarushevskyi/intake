@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationRow from 'components/screenings/AllegationRow'
 
@@ -64,10 +65,10 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
 }
 
 AllegationsEditView.propTypes = {
-  allegations: React.PropTypes.object.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
+  allegations: PropTypes.object.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 }
 
 export default AllegationsEditView

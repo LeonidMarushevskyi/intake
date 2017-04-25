@@ -1,5 +1,6 @@
 import ParticipantEditView from 'components/screenings/ParticipantEditView'
 import ParticipantShowView from 'components/screenings/ParticipantShowView'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 export default class ParticipantCardView extends React.Component {
@@ -61,10 +62,10 @@ export default class ParticipantCardView extends React.Component {
 }
 
 ParticipantCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['edit', 'show']),
-  onCancel: React.PropTypes.func,
-  onChange: React.PropTypes.func,
-  onDelete: React.PropTypes.func,
-  onSave: React.PropTypes.func,
-  participant: React.PropTypes.object.isRequired,
+  mode: PropTypes.oneOf(['edit', 'show']),
+  onCancel: PropTypes.func,
+  onChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  onSave: PropTypes.func,
+  participant: PropTypes.object.isRequired,
 }

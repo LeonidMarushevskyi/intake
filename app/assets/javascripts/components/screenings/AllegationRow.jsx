@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import nameFormatter from 'utils/nameFormatter'
 import Select from 'react-select'
 import Immutable from 'immutable'
@@ -32,11 +33,11 @@ const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegation
 )
 
 AllegationRow.propTypes = {
-  allegationTypes: React.PropTypes.object,
-  displayVictim: React.PropTypes.bool.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  perpetrator: React.PropTypes.object.isRequired,
-  victim: React.PropTypes.object.isRequired,
+  allegationTypes: PropTypes.object,
+  displayVictim: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  perpetrator: PropTypes.object.isRequired,
+  victim: PropTypes.object.isRequired,
 }
 
 export default AllegationRow

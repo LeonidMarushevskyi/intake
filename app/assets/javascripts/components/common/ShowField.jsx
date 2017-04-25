@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const ShowField = ({gridClassName, labelClassName, label, children}) => (
@@ -8,13 +9,13 @@ const ShowField = ({gridClassName, labelClassName, label, children}) => (
 )
 
 ShowField.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-    React.PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.element,
   ]),
-  gridClassName: React.PropTypes.string,
-  label: React.PropTypes.string.isRequired,
-  labelClassName: React.PropTypes.string,
+  gridClassName: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  labelClassName: PropTypes.string,
 }
 export default ShowField

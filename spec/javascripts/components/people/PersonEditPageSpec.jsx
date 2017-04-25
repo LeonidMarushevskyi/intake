@@ -5,17 +5,16 @@ import {shallow, mount} from 'enzyme'
 
 describe('PersonEditPage', () => {
   let component
+  const requiredProps = {
+    actions: {fetchPerson: () => null},
+    params: {id: '1'},
+    person: Immutable.Map(),
+    router: {},
+  }
+
   describe('render', () => {
     beforeEach(() => {
-      const actionsSpy = {
-        fetchPerson: () => null,
-      }
-      const props = {
-        params: {id: '1'},
-        person: Immutable.Map(),
-        actions: actionsSpy,
-      }
-      component = shallow(<PersonEditPage {...props} />)
+      component = shallow(<PersonEditPage {...requiredProps} />)
       component.setState({
         person: Immutable.fromJS({
           id: '1',
@@ -167,12 +166,11 @@ describe('PersonEditPage', () => {
         fetchPerson: jasmine.createSpy('fetchPerson'),
       }
       const props = {
-        params: {id: '1'},
-        person: Immutable.Map(),
+        ...requiredProps,
         actions: actionsSpy,
       }
       component = mount(<PersonEditPage {...props} />)
-      expect(actionsSpy.fetchPerson).toHaveBeenCalledWith('1')
+      expect(actionsSpy.fetchPerson).toHaveBeenCalledWith(props.params.id)
     })
   })
 

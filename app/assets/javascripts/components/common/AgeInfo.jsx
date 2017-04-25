@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import sanitizeHtml from 'sanitize-html'
 
@@ -32,7 +33,7 @@ const AgeInfo = ({dateOfBirth}) => {
 }
 
 AgeInfo.propTypes = {
-  dateOfBirth: React.PropTypes.string,
+  dateOfBirth: PropTypes.string,
 }
 
 export default AgeInfo

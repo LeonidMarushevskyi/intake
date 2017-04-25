@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, children}) => (
@@ -8,15 +9,15 @@ const SelectField = ({gridClassName, labelClassName, id, label, value, onChange,
 )
 
 SelectField.propTypes = {
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
   ]).isRequired,
-  gridClassName: React.PropTypes.string,
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  labelClassName: React.PropTypes.string,
-  onChange: React.PropTypes.func.isRequired,
-  value: React.PropTypes.string,
+  gridClassName: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  labelClassName: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 }
 export default SelectField

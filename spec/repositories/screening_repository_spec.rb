@@ -104,4 +104,24 @@ describe ScreeningRepository do
       expect(screening_results.last.id).to eq('2')
     end
   end
+
+  describe '.history_of_involvements' do
+    let(:screening_id) { '11' }
+    let(:response) { double(:response, body: involvements) }
+    let(:screening_one) { { 'name' => 'New Screening One' } }
+    let(:screening_two) { { 'name' => 'New Screening Two' } }
+    let(:involvements) { [screening_one, screening_two] }
+
+    before do
+      expect(API).to receive(:make_api_call)
+        .with(security_token, "/api/v1/screenings/#{screening_id}/history_of_involvements", :get)
+        .and_return(response)
+    end
+
+    it 'returns the history of involvements' do
+      involvements = described_class.history_of_involvements(security_token, screening_id)
+      expect(involvements[0].name).to eq('New Screening One')
+      expect(involvements[1].name).to eq('New Screening Two')
+    end
+  end
 end

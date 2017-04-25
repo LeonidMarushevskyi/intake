@@ -88,3 +88,22 @@ export function saveParticipant(participant) {
     .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
   )
 }
+
+export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
+  return {
+    type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
+    history_of_involvements: Immutable.fromJS(history_of_involvements),
+  }
+}
+
+export function fetchHistoryOfInvolvements(screeningId) {
+  return (dispatch) => (
+    Utils.request(
+      'GET',
+        `/api/v1/screenings/${screeningId}/history_of_involvements`,
+        null,
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
+  )
+}

@@ -15,6 +15,7 @@ describe('ScreeningEditPage', () => {
     screening: Immutable.fromJS({
       ...requiredScreeningAttributes,
     }),
+    involvements: Immutable.List(),
   }
 
   describe('render', () => {
@@ -225,8 +226,19 @@ describe('ScreeningEditPage', () => {
     })
 
     it('renders the history card', () => {
-      const component = shallow(<ScreeningEditPage {...requiredProps} />)
+      const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
+      const participants = Immutable.fromJS([{id: 1}])
+      const props = {
+        ...requiredProps,
+        involvements,
+        participants,
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)
+      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
+      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
+      expect(component.find('HistoryCard').props().participants).toEqual(participants)
+      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
     })
 
     it('renders the allegations card', () => {
@@ -252,10 +264,11 @@ describe('ScreeningEditPage', () => {
 
   describe('componentDidMount', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
+    const fetchHistoryOfInvolvements = () => Promise.resolve()
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening},
+        actions: {fetchScreening, fetchHistoryOfInvolvements},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(Promise.resolve())
@@ -275,9 +288,10 @@ describe('ScreeningEditPage', () => {
     beforeEach(() => {
       const fetchScreening = jasmine.createSpy('fetchScreening')
       fetchScreening.and.returnValue(Promise.resolve())
+      const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
-        actions: {fetchScreening},
+        actions: {fetchScreening, fetchHistoryOfInvolvements},
         params: {id: '222'},
         screening: Immutable.fromJS({
           report_narrative: 'my narrative',
@@ -598,6 +612,7 @@ describe('ScreeningEditPage', () => {
         ...requiredProps,
         actions: {
           fetchScreening: () => Promise.resolve(),
+          fetchHistoryOfInvolvements: () => Promise.resolve(),
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),

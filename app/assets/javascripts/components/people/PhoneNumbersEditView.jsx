@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
 import PhoneNumberField from 'components/common/PhoneNumberField'
 
@@ -72,6 +73,6 @@ export default class PhoneNumbersEditView extends React.Component {
 }
 
 PhoneNumbersEditView.propTypes = {
-  onChange: React.PropTypes.func.isRequired,
-  phoneNumbers: React.PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  phoneNumbers: PropTypes.object.isRequired,
 }

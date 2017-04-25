@@ -1,5 +1,6 @@
 import EditLink from 'components/common/EditLink'
 import GENDER from 'Gender'
+import PropTypes from 'prop-types'
 import React from 'react'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
@@ -88,8 +89,8 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
 )
 
 ParticipantShowView.propTypes = {
-  onDelete: React.PropTypes.func,
-  onEdit: React.PropTypes.func.isRequired,
-  participant: React.PropTypes.object.isRequired,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func.isRequired,
+  participant: PropTypes.object.isRequired,
 }
 export default ParticipantShowView

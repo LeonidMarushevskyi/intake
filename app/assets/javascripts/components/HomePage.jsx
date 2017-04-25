@@ -1,5 +1,6 @@
 import * as screeningActions from 'actions/screeningActions'
 import * as Utils from 'utils/http'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import {Link} from 'react-router'
@@ -51,9 +52,9 @@ export class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  actions: React.PropTypes.object.isRequired,
-  router: React.PropTypes.object.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

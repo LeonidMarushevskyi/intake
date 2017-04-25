@@ -79,12 +79,7 @@ feature 'Show Screening' do
 
     expect(page).to have_css('#worker-safety-card.show', text: 'WORKER SAFETY')
 
-    within '#history-card.show', text: 'HISTORY' do
-      expect(page).to have_content 'Date'
-      expect(page).to have_css('th', text: 'Type/Status')
-      expect(page).to have_css('th', text: 'County/Office')
-      expect(page).to have_css('th', text: 'People and Roles')
-    end
+    expect(page).to have_css('#history-card.show', text: 'HISTORY')
 
     within '#cross-report-card', text: 'CROSS REPORT' do
       expect(page).to have_content 'District attorney'

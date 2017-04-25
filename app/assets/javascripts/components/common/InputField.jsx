@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength}) => (
   <div className={gridClassName}>
@@ -11,17 +12,17 @@ InputField.defaultProps = {
   type: 'text',
 }
 InputField.propTypes = {
-  gridClassName: React.PropTypes.string,
-  id: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  labelClassName: React.PropTypes.string,
-  maxLength: React.PropTypes.string,
-  onChange: React.PropTypes.func.isRequired,
-  placeholder: React.PropTypes.string,
-  type: React.PropTypes.string,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  gridClassName: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  labelClassName: PropTypes.string,
+  maxLength: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]),
 }
 export default InputField

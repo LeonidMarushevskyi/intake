@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const CreateUnknownParticipant = ({saveCallback}) => (
@@ -13,7 +14,7 @@ const CreateUnknownParticipant = ({saveCallback}) => (
 )
 
 CreateUnknownParticipant.propTypes = {
-  saveCallback: React.PropTypes.func.isRequired,
+  saveCallback: PropTypes.func.isRequired,
 }
 
 export default CreateUnknownParticipant

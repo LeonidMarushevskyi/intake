@@ -1,4 +1,5 @@
 import InputField from 'components/common/InputField'
+import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
@@ -82,10 +83,10 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
 }
 
 DecisionEditView.propTypes = {
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 
 export default DecisionEditView

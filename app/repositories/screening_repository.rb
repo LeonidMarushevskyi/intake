@@ -43,4 +43,15 @@ class ScreeningRepository
       Screening.new(result_attributes)
     end
   end
+
+  def self.history_of_involvements(security_token, id)
+    response = API.make_api_call(
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_history_of_involvements_path(id),
+      :get
+    )
+    response.body.map do |result_attributes|
+      Screening.new(result_attributes)
+    end
+  end
 end

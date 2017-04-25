@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import COMMUNICATION_METHOD from 'CommunicationMethod'
 import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
@@ -69,9 +70,9 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
 )
 
 ScreeningInformationEditView.propTypes = {
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default ScreeningInformationEditView

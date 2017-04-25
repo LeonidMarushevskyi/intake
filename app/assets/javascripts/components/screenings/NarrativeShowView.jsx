@@ -1,5 +1,6 @@
 import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
+import PropTypes from 'prop-types'
 import React from 'react'
 
 const NarrativeShowView = ({narrative, onEdit}) => (
@@ -19,7 +20,7 @@ const NarrativeShowView = ({narrative, onEdit}) => (
 )
 
 NarrativeShowView.propTypes = {
-  narrative: React.PropTypes.string,
-  onEdit: React.PropTypes.func.isRequired,
+  narrative: PropTypes.string,
+  onEdit: PropTypes.func.isRequired,
 }
 export default NarrativeShowView

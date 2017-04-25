@@ -9,7 +9,7 @@ class Screening # :nodoc:
   attribute :communication_method
   attribute :ended_at
   attribute :id
-  attribute :incident_county
+  attribute :incident_county, String
   attribute :incident_date
   attribute :location_type
   attribute :name

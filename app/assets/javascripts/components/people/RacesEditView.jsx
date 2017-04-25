@@ -1,6 +1,7 @@
 import CheckboxField from 'components/common/CheckboxField'
 import Immutable from 'immutable'
 import RACES from 'Races'
+import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
 
@@ -114,8 +115,8 @@ export class RacesEditView extends React.Component {
 }
 
 RacesEditView.propTypes = {
-  onChange: React.PropTypes.func.isRequired,
-  races: React.PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  races: PropTypes.object.isRequired,
 }
 
 export default RacesEditView

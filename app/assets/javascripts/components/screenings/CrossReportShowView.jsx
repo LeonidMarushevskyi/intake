@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
@@ -36,7 +37,7 @@ export default class CrossReportShowView extends React.Component {
 }
 
 CrossReportShowView.propTypes = {
-  crossReport: React.PropTypes.object,
-  onEdit: React.PropTypes.func.isRequired,
+  crossReport: PropTypes.object,
+  onEdit: PropTypes.func.isRequired,
 
 }

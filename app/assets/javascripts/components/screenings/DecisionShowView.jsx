@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
@@ -46,7 +47,7 @@ const DecisionShowView = ({screening, onEdit}) => {
 }
 
 DecisionShowView.propTypes = {
-  onEdit: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default DecisionShowView

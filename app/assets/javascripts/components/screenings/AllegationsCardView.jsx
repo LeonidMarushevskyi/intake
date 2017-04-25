@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationsEditView from 'components/screenings/AllegationsEditView'
 import AllegationsShowView from 'components/screenings/AllegationsShowView'
@@ -56,9 +57,9 @@ export default class AllegationsCardView extends React.Component {
 }
 
 AllegationsCardView.propTypes = {
-  allegations: React.PropTypes.object.isRequired,
-  mode: React.PropTypes.string.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  setField: React.PropTypes.func.isRequired,
+  allegations: PropTypes.object.isRequired,
+  mode: PropTypes.string.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  setField: PropTypes.func.isRequired,
 }
