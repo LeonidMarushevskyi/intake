@@ -29,6 +29,10 @@ feature 'Delete Participant' do
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
     stub_request(:delete, intake_api_participant_url(participant.id))
       .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
@@ -49,6 +53,10 @@ feature 'Delete Participant' do
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
     stub_request(:delete, intake_api_participant_url(participant.id))
       .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 

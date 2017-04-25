@@ -36,6 +36,10 @@ feature 'Show Screening' do
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(existing_screening.id)
+    ).and_return(json_body([].to_json, status: 200))
   end
 
   scenario 'showing existing participant' do

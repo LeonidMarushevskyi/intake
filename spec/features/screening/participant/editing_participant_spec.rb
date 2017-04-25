@@ -76,6 +76,10 @@ feature 'Edit Screening' do
         status: 200,
         headers: { 'Content-Type' => 'application/json' }
       )
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
   end
 
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do

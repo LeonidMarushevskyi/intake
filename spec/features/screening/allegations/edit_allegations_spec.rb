@@ -27,6 +27,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -88,6 +92,10 @@ feature 'edit allegations' do
     screening.allegations << allegation
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -162,6 +170,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -196,6 +208,10 @@ feature 'edit allegations' do
     screening.participants = [marge, lisa]
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     within edit_participant_card_selector(lisa.id) do
       fill_in_react_select('Role', with: 'Victim')
@@ -216,6 +232,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -247,6 +267,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -297,6 +321,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -330,6 +358,10 @@ feature 'edit allegations' do
 
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -355,6 +387,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -381,6 +417,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -420,6 +460,10 @@ feature 'edit allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 
@@ -453,6 +497,10 @@ feature 'edit allegations' do
 
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 

@@ -75,6 +75,10 @@ feature 'Edit Screening' do
                     status: 200,
                     headers: { 'Content-Type' => 'application/json' })
     end
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(existing_screening.id)
+    ).and_return(json_body([].to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
   end
 
