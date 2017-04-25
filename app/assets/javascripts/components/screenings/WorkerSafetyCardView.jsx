@@ -1,5 +1,7 @@
+import Immutable from 'immutable'
 import React from 'react'
 import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
+import WorkerSafetyEditView from 'components/screenings/WorkerSafetyEditView'
 
 export default class WorkerSafetyCardView extends React.Component {
   constructor(props) {
@@ -8,11 +10,24 @@ export default class WorkerSafetyCardView extends React.Component {
       mode: this.props.mode,
     }
     this.onEdit = this.onEdit.bind(this)
+    this.onCancel = this.onCancel.bind(this)
+    this.onSave = this.onSave.bind(this)
+    this.fields = Immutable.fromJS(['safety_alerts', 'safety_information'])
   }
 
   onEdit(event) {
     event.preventDefault()
     this.setState({mode: 'edit'})
+  }
+  onCancel() {
+    this.setState({mode: 'show'})
+    this.props.onCancel(this.fields)
+  }
+
+  onSave() {
+    return this.props.onSave(this.fields).then(() => {
+      this.setState({mode: 'show'})
+    })
   }
 
   render() {
@@ -20,14 +35,27 @@ export default class WorkerSafetyCardView extends React.Component {
     const allprops = {
       show: {
         onEdit: this.onEdit,
+        safetyAlerts: this.props.screening.get('safety_alerts'),
+        safetyInformation: this.props.screening.get('safety_information'),
+      },
+      edit: {
+        onCancel: this.onCancel,
+        onChange: this.props.onChange,
+        onSave: this.onSave,
+        safetyAlerts: this.props.screening.get('safety_alerts'),
+        safetyInformation: this.props.screening.get('safety_information'),
       },
     }
-    const WorkerSafetyView = (mode === 'edit') ? WorkerSafetyShowView : WorkerSafetyShowView
+    const WorkerSafetyView = (mode === 'edit') ? WorkerSafetyEditView : WorkerSafetyShowView
     const props = allprops[mode]
     return <WorkerSafetyView {...props} />
   }
 }
 
 WorkerSafetyCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['show']),
+  mode: React.PropTypes.oneOf(['show', 'edit']),
+  onCancel: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func.isRequired,
+  onSave: React.PropTypes.func.isRequired,
+  screening: React.PropTypes.object.isRequired,
 }

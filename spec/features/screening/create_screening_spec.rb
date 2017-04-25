@@ -7,6 +7,8 @@ feature 'Create Screening' do
     new_screening = FactoryGirl.build(
       :screening,
       reference: 'DQJIYK',
+      safety_alerts: [],
+      safety_information: nil,
       address: nil
     )
     stub_request(:post, intake_api_screenings_url)

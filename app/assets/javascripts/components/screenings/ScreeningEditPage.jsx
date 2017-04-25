@@ -112,12 +112,14 @@ export class ScreeningEditPage extends React.Component {
   }
 
   mergeScreeningWithEdits(changes) {
-    const crossReportEdits = changes.get('cross_reports')
-    if (crossReportEdits) {
-      return this.state.screening.set('cross_reports', crossReportEdits).mergeDeep(changes)
-    } else {
-      return this.state.screening.mergeDeep(changes)
-    }
+    // Lists require to be reassigned the edits instead of appending.
+    const lists = changes.filter((val) => val.constructor.name === 'List')
+    const nonlists = changes.filterNot((val) => val.constructor.name === 'List')
+    let screening = this.state.screening
+    lists.map((v, k) => {
+      screening = screening.set(k, v)
+    })
+    return screening.mergeDeep(nonlists)
   }
 
   participants() {
@@ -227,7 +229,16 @@ export class ScreeningEditPage extends React.Component {
               setField={this.setField}
             />
         }
-        <WorkerSafetyCardView mode='edit'/>
+        {
+          loaded &&
+            <WorkerSafetyCardView
+              screening={mergedScreening}
+              mode='edit'
+              onCancel={this.cancelEdit}
+              onSave={this.cardSave}
+              onChange={this.setField}
+            />
+        }
         <HistoryCard
           screeningId={this.props.params.id}
           actions={this.props.actions}

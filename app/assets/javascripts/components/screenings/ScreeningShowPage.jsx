@@ -10,7 +10,7 @@ import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
-import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
+import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -194,7 +194,16 @@ export class ScreeningShowPage extends React.Component {
               setField={this.setField}
             />
         }
-        <WorkerSafetyShowView />
+        {
+          loaded &&
+          <WorkerSafetyCardView
+            mode='show'
+            screening={mergedScreening}
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+          />
+        }
         <HistoryCard
           actions={this.props.actions}
           involvements={this.props.involvements}

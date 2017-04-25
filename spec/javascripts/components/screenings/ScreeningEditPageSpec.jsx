@@ -7,6 +7,7 @@ describe('ScreeningEditPage', () => {
   const requiredScreeningAttributes = {
     id: '123456',
     allegations: [],
+    safety_alerts: [],
   }
   const requiredProps = {
     actions: {},
@@ -77,6 +78,10 @@ describe('ScreeningEditPage', () => {
             {agency_type: 'District attorney', agency_name: 'SAC DA'},
             {agency_type: 'Licensing', agency_name: ''},
           ],
+          safety_alerts: [
+            'Firearms in Home',
+            'Gang Affiliation or Gang Activity',
+          ],
           address: {
             street_address: '123 Fake St.',
             city: 'Sacramento',
@@ -89,6 +94,15 @@ describe('ScreeningEditPage', () => {
           screening,
         }
         instance = shallow(<ScreeningEditPage {...props}/>).instance()
+      })
+      it('safety_alert edits override the entire screeningEdits.safety_alerts array', () => {
+        const changeJS = {
+          safety_alerts: [
+            'Dangerous Animal on Premises',
+          ],
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS))
+        expect(updated_screening.toJS().safety_alerts).toEqual(['Dangerous Animal on Premises'])
       })
       it('cross_reports edits override the entire screeningEdits.cross_reports array', () => {
         const changeJS = {
@@ -257,8 +271,16 @@ describe('ScreeningEditPage', () => {
     })
 
     it('renders the worker safety card', () => {
-      const component = shallow(<ScreeningEditPage {...requiredProps} />)
-      expect(component.find('WorkerSafetyCardView').length).toEqual(1)
+      const props = {
+        ...requiredProps,
+        mode: 'edit',
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      const safetyCard = component.find('WorkerSafetyCardView')
+      expect(safetyCard.length).toEqual(1)
+      expect(safetyCard.props().mode).toEqual('edit')
+      expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
   })
 
@@ -620,6 +642,7 @@ describe('ScreeningEditPage', () => {
           id: '3',
           allegations: [],
           cross_reports: [],
+          safety_alerts: [],
         }),
       }
       const component = mount(<ScreeningEditPage {...props} />)
@@ -648,6 +671,7 @@ describe('ScreeningEditPage', () => {
           allegation_types: ['General neglect'],
         }],
         cross_reports: [],
+        safety_alerts: [],
       })
     })
 

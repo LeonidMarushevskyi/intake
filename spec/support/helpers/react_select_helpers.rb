@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module ReactSelectHelpers
   def fill_in_react_select(selector, with:)
     input = find_field(selector)

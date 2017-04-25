@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'rails_helper'
 require 'spec_helper'
 
@@ -13,9 +12,8 @@ feature 'Edit Screening' do
       zip: '20134'
     )
   end
-
-  scenario 'edit an existing screening' do
-    existing_screening = FactoryGirl.create(
+  let(:existing_screening) do
+    FactoryGirl.create(
       :screening,
       additional_information: 'This is why I decided what I did',
       address: address,
@@ -26,6 +24,8 @@ feature 'Edit Screening' do
       incident_date: '2016-08-11',
       name: 'Little Shop Of Horrors',
       reference: 'My Bad!',
+      safety_alerts: ['Dangerous Animal on Premises', 'Firearms in Home'],
+      safety_information: 'Potential safety alert: dangerous dog at home.',
       report_narrative: 'Narrative 123 test',
       screening_decision: 'screen_out',
       screening_decision_detail: 'information_request',
@@ -40,13 +40,16 @@ feature 'Edit Screening' do
         }
       ]
     )
-
+  end
+  before(:each) do
     stub_request(:get, intake_api_screening_url(existing_screening.id))
-      .and_return(json_body(existing_screening.to_json, status: 200))
-
+      .and_return(body: existing_screening.to_json,
+                  status: 200,
+                  headers: { 'Content-Type' => 'application/json' })
     visit edit_screening_path(id: existing_screening.id)
-    expect(page).to have_content 'Edit Screening #My Bad!'
+  end
 
+  scenario 'edit an existing screening' do
     within '#screening-information-card.edit', text: 'SCREENING INFORMATION' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
       expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
@@ -84,6 +87,8 @@ feature 'Edit Screening' do
         with: existing_screening.safety_information)
       expect(page).to have_content('Save')
       expect(page).to have_content('Cancel')
+      remove_react_select_option('Worker safety alerts', existing_screening.safety_alerts.first)
+      expect(page).to have_no_content(existing_screening.safety_alerts.first)
     end
 
     expect(page).to have_css('#history-card.show', text: 'HISTORY')
@@ -102,6 +107,17 @@ feature 'Edit Screening' do
       expect(page).to have_field('Law_enforcement-agency-name', text: '')
       expect(page).to have_button 'Save'
       expect(page).to have_button 'Cancel'
+    end
+  end
+  scenario 'adding multiple alerts to a Worker Safety Card' do
+    within '#worker-safety-card', text: 'WORKER SAFETY' do
+      fill_in_react_select('Worker safety alerts',
+        with: ['Dangerous Animal on Premises', 'Firearms in Home'])
+      has_react_select_field('Worker safety alerts',
+        with: ['Dangerous Animal on Premises', 'Firearms in Home'])
+      click_button 'Save'
+      expect(page).to have_content('Dangerous Animal on Premises')
+      expect(page).to have_content('Firearms in Home')
     end
   end
 end
@@ -127,6 +143,7 @@ feature 'individual card save' do
       incident_county: 'sacramento',
       incident_date: '2016-08-11',
       name: 'Little Shop Of Horrors',
+      safety_alerts: [],
       reference: 'My Bad!',
       report_narrative: 'Narrative 123 test',
       screening_decision: 'differential_response',
@@ -246,6 +263,24 @@ feature 'individual card save' do
 
       expect(doj_input.value.length).to equal(128)
     end
+  end
+
+  scenario 'Worker safety card saves in isolation' do
+    existing_screening.safety_alerts = ['Dangerous Animal on Premises']
+    existing_screening.safety_information = 'Important information!'
+    stub_request(:put, intake_api_screening_url(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+      .and_return(json_body(existing_screening.to_json))
+
+    within '#worker-safety-card' do
+      fill_in_react_select 'Worker safety alerts', with: 'Dangerous Animal on Premises'
+      fill_in 'safety_information', with: 'Important information!'
+      click_button 'Save'
+    end
+    expect(
+      a_request(:put, intake_api_screening_url(existing_screening.id))
+      .with(json_body(as_json_without_root_id(existing_screening)))
+    ).to have_been_made
   end
 
   scenario 'Incident information saves and cancels in isolation' do

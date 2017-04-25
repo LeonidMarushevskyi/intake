@@ -111,7 +111,11 @@ describe('ScreeningShowPage', () => {
 
     it('renders the worker safety card', () => {
       const component = shallow(<ScreeningShowPage {...requiredProps} />)
-      expect(component.find('WorkerSafetyShowView').length).toEqual(1)
+      component.setState({loaded: true})
+      const safetyCard = component.find('WorkerSafetyCardView')
+      expect(safetyCard.length).toEqual(1)
+      expect(safetyCard.props().mode).toEqual('show')
+      expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
 
     describe('participants card', () => {
