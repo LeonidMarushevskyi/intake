@@ -75,6 +75,12 @@ module Api
         render json: involvements
       end
 
+      def submit
+        ScreeningRepository.submit(
+          session[:security_token], params[:id]
+        )
+      end
+
       private
 
       def screening_index_params

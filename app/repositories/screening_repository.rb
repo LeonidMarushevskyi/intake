@@ -54,4 +54,12 @@ class ScreeningRepository
       Screening.new(result_attributes)
     end
   end
+
+  def self.submit(security_token, id)
+    API.make_api_call(
+      security_token,
+      Rails.application.routes.url_helpers.intake_api_screening_submit_path(id),
+      :post
+    )
+  end
 end

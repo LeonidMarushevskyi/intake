@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
+          post 'submit'
         end
       end
 
