@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     get 'api/v1/screenings/:id' => 'dev#null', as: :intake_api_screening
     get 'api/v1/screenings/:id/history_of_involvements' => 'dev#null',
         as: :intake_api_history_of_involvements
+    post 'api/v1/screenings/:id/submit' => 'dev#null', as: :intake_api_screening_submit
     get 'api/v1/participants' => 'dev#null', as: :intake_api_participants
     get 'api/v1/participants/:id' => 'dev#null', as: :intake_api_participant
   end
