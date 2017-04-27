@@ -89,6 +89,24 @@ export function saveParticipant(participant) {
   )
 }
 
+export function submitScreeningSuccess() {
+  return {
+    type: types.SUBMIT_SCREENING_SUCCESS,
+  }
+}
+
+export function submitScreening(screeningId) {
+  return (dispatch) => (
+    Utils.request(
+      'POST',
+        `/api/v1/screenings/${screeningId}/submit`,
+        null,
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(submitScreeningSuccess(jsonResponse)))
+  )
+}
+
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
   return {
     type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,

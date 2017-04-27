@@ -293,6 +293,23 @@ describe('ScreeningEditPage', () => {
       expect(safetyCard.props().mode).toEqual('edit')
       expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
+
+    it('renders the submit button', () => {
+      const component = shallow(<ScreeningEditPage {...requiredProps} />)
+      expect(component.find('button[children="Submit"]').length).toEqual(1)
+    })
+
+    it('clicking the submit button submits the screening', () => {
+      const submitScreening = jasmine.createSpy('submitScreening')
+      const props = {
+        ...requiredProps,
+        params: { id: '99' },
+        actions: { submitScreening }
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.find('button[children="Submit"]').simulate('click')
+      expect(submitScreening).toHaveBeenCalledWith('99')
+    })
   })
 
   describe('componentDidMount', () => {

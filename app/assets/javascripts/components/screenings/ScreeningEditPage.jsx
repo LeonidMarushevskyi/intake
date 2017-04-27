@@ -272,7 +272,13 @@ export class ScreeningEditPage extends React.Component {
         }
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' data-toggle='modal' data-target='#submitModal'>Submit</button>
+            <button
+              className='btn btn-primary'
+              data-toggle='modal'
+              data-target='#submitModal'
+              onClick={(event) => this.props.actions.submitScreening(this.props.params.id)}>
+              Submit
+            </button>
           </div>
         </div>
         <div aria-label='submit modal confirmation' className='modal fade' id='submitModal'>
