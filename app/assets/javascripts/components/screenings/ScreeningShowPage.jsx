@@ -1,4 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
+import * as screeningEditHelpers from 'utils/screeningEditHelper'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
@@ -26,14 +27,20 @@ export class ScreeningShowPage extends React.Component {
       screeningEdits: Immutable.Map(),
       participantsEdits: Immutable.Map(),
     }
-    this.cancelEdit = this.cancelEdit.bind(this)
-    this.cardSave = this.cardSave.bind(this)
-    this.deleteParticipant = this.deleteParticipant.bind(this)
-    this.setField = this.setField.bind(this)
-    this.saveParticipant = this.saveParticipant.bind(this)
-    this.setParticipantField = this.setParticipantField.bind(this)
-    this.cancelParticipantEdit = this.cancelParticipantEdit.bind(this)
-    this.mergeScreeningWithEdits = this.mergeScreeningWithEdits.bind(this)
+    const sharedMethods = [
+      'cancelEdit',
+      'cancelParticipantEdit',
+      'cardSave',
+      'deleteParticipant',
+      'mergeScreeningWithEdits',
+      'participants',
+      'saveParticipant',
+      'setField',
+      'setParticipantField',
+    ]
+    sharedMethods.forEach((method) => {
+      this[method] = screeningEditHelpers[method].bind(this)
+    })
   }
 
   componentDidMount() {
@@ -45,79 +52,6 @@ export class ScreeningShowPage extends React.Component {
     if (!this.props.screening.equals(nextProps.screening)) {
       this.setState({screening: nextProps.screening})
     }
-  }
-
-  setField(fieldSeq, value, callback) {
-    const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits}, callback)
-  }
-
-  cardSave(fieldList) {
-    let screening
-    if (fieldList.includes('allegations')) {
-      const allegations = addNewAllegations(
-        this.props.screening.get('id'),
-        this.props.participants,
-        this.props.screening.get('allegations'),
-        this.state.screeningEdits.get('allegations')
-      ).filterNot((allegation) => allegation.get('allegation_types').isEmpty())
-
-      screening = this.state.screening.set('allegations', allegations)
-    } else {
-      const changes = this.state.screeningEdits.filter((value, key) =>
-        fieldList.includes(key) && value !== undefined
-      )
-      screening = this.mergeScreeningWithEdits(changes)
-    }
-    return this.props.actions.saveScreening(screening.toJS())
-  }
-
-  cancelEdit(fieldList) {
-    const updatedEdits = this.state.screeningEdits.filterNot((value, key) => fieldList.includes(key))
-    this.setState({screeningEdits: updatedEdits})
-  }
-
-  deleteParticipant(id) {
-    this.props.actions.deleteParticipant(id)
-  }
-
-  setParticipantField(id, value) {
-    const participantsEdits = this.state.participantsEdits.set(id, value)
-    this.setState({participantsEdits: participantsEdits})
-  }
-
-  cancelParticipantEdit(id) {
-    const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
-    this.setState({participantsEdits: updatedParticipantsEdits})
-  }
-
-  saveParticipant(participant) {
-    return this.props.actions.saveParticipant(participant.toJS())
-      .then(() => {
-        this.props.actions.fetchScreening(this.props.params.id)
-      })
-  }
-
-  mergeScreeningWithEdits(changes) {
-    const crossReportEdits = changes.get('cross_reports')
-    if (crossReportEdits) {
-      return this.state.screening.set('cross_reports', crossReportEdits).mergeDeep(changes)
-    } else {
-      return this.state.screening.mergeDeep(changes)
-    }
-  }
-
-  participants() {
-    // We want to merge the keys of each participant, but we don't want deep merge
-    // to combine the address lists for us. So, we do a custom merge at one level deep.
-    const mergedParticipants = this.props.participants.map((participant) => {
-      const participantId = participant.get('id')
-      const relevantEdits = this.state.participantsEdits.get(participantId)
-      const participantEdits = (relevantEdits || Immutable.Map())
-      return participant.merge(participantEdits)
-    })
-
-    return mergedParticipants
   }
 
   renderParticipantsCard() {
