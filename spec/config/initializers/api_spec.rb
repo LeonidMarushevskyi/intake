@@ -3,12 +3,12 @@ require 'rails_helper'
 
 describe API do
   before do
-    allow(ENV).to receive(:fetch).with('TPT_API_URL', false)
-      .and_return('http://tpt_api_url')
-    allow(ENV).to receive(:fetch).with('TPT_API_URL')
-      .and_return('http://tpt_api_url')
-    allow(ENV).to receive(:fetch).with('API_URL')
-      .and_return('http://api')
+    @original_env = ENV
+    stub_const('ENV', ENV.to_hash.merge('TPT_API_URL' => 'http://tpt_api_url'))
+  end
+
+  after do
+    stub_const('ENV', @original_env)
   end
 
   describe '.make_api_call' do
@@ -67,13 +67,11 @@ describe API do
     end
 
     it 'makes a request to default intake api if TPT_API env var is not present' do
-      allow(ENV).to receive(:fetch).with('TPT_API_URL', false)
-        .and_return(false)
-
-      stub_request(:get, 'http://api/api/v1/people_search?search_term=Bob').and_return(status: 200)
+      stub_const('ENV', @original_env)
+      stub_request(:get, %r{/api/v1/people_search\?search_term=Bob}).and_return(status: 200)
       API.make_api_call(security_token, '/api/v1/people_search?search_term=Bob', :get)
       expect(
-        a_request(:get, 'http://api/api/v1/people_search?search_term=Bob')
+        a_request(:get,  %r{/api/v1/people_search\?search_term=Bob})
         .with(headers: { Authorization: security_token })
       ).to have_been_made
     end
