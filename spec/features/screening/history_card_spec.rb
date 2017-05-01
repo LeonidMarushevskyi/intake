@@ -46,19 +46,11 @@ feature 'History card' do
       existing_screening.participants = [unknown, lana, archer]
 
       screening_involvement = {
-        started_at: started_at, # NOT Screening started_at needs to be created_at
-        # maybe suggest another story?
+        started_at: started_at,
         ended_at: nil,
         assignee: worker,
         incident_county: 'Sacramento',
         participants: [reporter, victim_archer, perpetrator],
-        allegations: [
-          FactoryGirl.create(
-            :allegation,
-            victim_id: victim_archer.id,
-            perpetrator_id: perpetrator.id
-          )
-        ]
       }
 
       stub_request(:get, intake_api_screening_url(existing_screening.id))
