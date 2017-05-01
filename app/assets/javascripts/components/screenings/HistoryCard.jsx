@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
-import {ROLE_TYPE_REPORTER} from 'RoleType'
+import {ROLE_TYPE_REPORTER, ROLE_TYPE_NON_REPORTER} from 'RoleType'
 
 export default class HistoryCard extends React.Component {
   constructor(props, context) {
@@ -49,16 +49,18 @@ export default class HistoryCard extends React.Component {
                       const incidentCounty = involvement.get('incident_county')
                       const participants = involvement.get('participants')
                       const assignee = involvement.get('assignee')
-                      const nonOnlyReporters = participants.filterNot((p) => {
+                      const reporterTypes = Immutable.fromJS(ROLE_TYPE_REPORTER)
+                      const nonReporterTypes = Immutable.fromJS(ROLE_TYPE_NON_REPORTER)
+
+                      const nonOnlyReporters = participants.filter((p) => {
                         const roles = p.get('roles')
-                        const reporterTypes = Immutable.fromJS(ROLE_TYPE_REPORTER)
-                        return roles.every((role) => reporterTypes.includes(role))
+                        return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
                       })
                       const reporter = participants.filter((p) => {
                         const roles = p.get('roles')
-                        return Immutable.fromJS(ROLE_TYPE_REPORTER)
-                          .some((role) => roles.includes(role))
+                        return reporterTypes.some((role) => roles.includes(role))
                       }).first()
+
                       const status = endedAt ? 'Closed' : 'In Progress'
                       return (
                         <tr key={index}>

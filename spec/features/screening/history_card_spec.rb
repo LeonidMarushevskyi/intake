@@ -36,6 +36,9 @@ feature 'History card' do
     let(:started_at) { 2.days.ago }
     let(:victim_archer) { FactoryGirl.create(:participant, :victim, first_name: 'Archer') }
     let(:perpetrator) { FactoryGirl.create(:participant, :perpetrator) }
+    let(:participant_without_role) do
+      FactoryGirl.create(:participant, first_name: 'Participant Without Role', roles: [])
+    end
     let(:reporter) { FactoryGirl.create(:participant, :reporter) }
     let(:worker) { 'Intake Worker' }
 
@@ -50,7 +53,7 @@ feature 'History card' do
         ended_at: nil,
         assignee: worker,
         incident_county: 'Sacramento',
-        participants: [reporter, victim_archer, perpetrator],
+        participants: [reporter, victim_archer, perpetrator, participant_without_role]
       }
 
       stub_request(:get, intake_api_screening_url(existing_screening.id))
@@ -72,6 +75,8 @@ feature 'History card' do
         expect(page).to have_content(victim_archer.last_name)
         expect(page).to have_content(perpetrator.first_name)
         expect(page).to have_content(perpetrator.last_name)
+        expect(page).to have_content(participant_without_role.first_name)
+        expect(page).to have_content(participant_without_role.last_name)
         expect(page).to have_content("Reporter: #{reporter.first_name} #{reporter.last_name}")
         expect(page).to have_content("Worker: #{worker}")
       end
