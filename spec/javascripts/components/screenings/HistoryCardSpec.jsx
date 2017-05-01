@@ -122,7 +122,7 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Sacramento')
     })
 
-    it('renders people who are not only reporters', () => {
+    it('renders all people who are not reporters unless also victim/perp', () => {
       const involvements = Immutable.fromJS([{
         participants: [{
           first_name: 'Stirling',
@@ -152,6 +152,23 @@ describe('HistoryCard', () => {
       expect(participants.text()).toContain('Lana Kane')
       expect(participants.text()).toContain('Malory Archer')
       expect(participants.text()).not.toContain('Cyril Figgis')
+    })
+
+    it('renders people who do not have a role', () => {
+      const involvements = Immutable.fromJS([{
+        participants: [{
+          first_name: 'Cheryl',
+          last_name: 'Tunt',
+          roles: [],
+        }],
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const participants = component.find('tbody tr span.participants')
+      expect(participants.text()).toContain('Cheryl Tunt')
     })
 
     it('renders the reporter', () => {
