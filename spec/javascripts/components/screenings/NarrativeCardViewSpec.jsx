@@ -55,7 +55,6 @@ describe('NarrativeCardView', () => {
             const editLink = component.find('a[aria-label="Edit narrative"]')
             editLink.simulate('click')
           })
-
           it('the narrative edit view is rendered with the original narrative', () => {
             expect(component.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
           })

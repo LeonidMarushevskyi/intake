@@ -7,6 +7,8 @@ describe('ScreeningEditPage', () => {
   const requiredScreeningAttributes = {
     id: '123456',
     allegations: [],
+    safety_alerts: [],
+    cross_reports: [],
   }
   const requiredProps = {
     actions: {},
@@ -77,6 +79,10 @@ describe('ScreeningEditPage', () => {
             {agency_type: 'District attorney', agency_name: 'SAC DA'},
             {agency_type: 'Licensing', agency_name: ''},
           ],
+          safety_alerts: [
+            'Firearms in Home',
+            'Gang Affiliation or Gang Activity',
+          ],
           address: {
             street_address: '123 Fake St.',
             city: 'Sacramento',
@@ -89,6 +95,15 @@ describe('ScreeningEditPage', () => {
           screening,
         }
         instance = shallow(<ScreeningEditPage {...props}/>).instance()
+      })
+      it('safety_alert edits override the entire screeningEdits.safety_alerts array', () => {
+        const changeJS = {
+          safety_alerts: [
+            'Dangerous Animal on Premises',
+          ],
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS))
+        expect(updated_screening.toJS().safety_alerts).toEqual(['Dangerous Animal on Premises'])
       })
       it('cross_reports edits override the entire screeningEdits.cross_reports array', () => {
         const changeJS = {
@@ -124,6 +139,16 @@ describe('ScreeningEditPage', () => {
         expect(updated_screening.name).toEqual('changing the name as well')
         expect(updated_screening.report_narrative).toEqual('This is what happened')
         expect(updated_screening.additional_information).toEqual('Some more relevant information')
+      })
+      it('merge empty and non-empty fields appropriately to existing values', () => {
+        const changeJS = {
+          assignee: null,
+          name: 'changing the name as well',
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS)).toJS()
+        expect(updated_screening.assignee).toEqual(null)
+        expect(updated_screening.name).toEqual('changing the name as well')
+        expect(updated_screening.report_narrative).toEqual('This is what happened')
       })
     })
 
@@ -257,8 +282,16 @@ describe('ScreeningEditPage', () => {
     })
 
     it('renders the worker safety card', () => {
-      const component = shallow(<ScreeningEditPage {...requiredProps} />)
-      expect(component.find('WorkerSafetyCardView').length).toEqual(1)
+      const props = {
+        ...requiredProps,
+        mode: 'edit',
+      }
+      const component = shallow(<ScreeningEditPage {...props} />)
+      component.setState({loaded: true})
+      const safetyCard = component.find('WorkerSafetyCardView')
+      expect(safetyCard.length).toEqual(1)
+      expect(safetyCard.props().mode).toEqual('edit')
+      expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
   })
 
@@ -616,11 +649,7 @@ describe('ScreeningEditPage', () => {
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),
-        screening: Immutable.fromJS({
-          id: '3',
-          allegations: [],
-          cross_reports: [],
-        }),
+        screening: Immutable.fromJS(requiredScreeningAttributes),
       }
       const component = mount(<ScreeningEditPage {...props} />)
       component.setState({loaded: true})
@@ -637,17 +666,18 @@ describe('ScreeningEditPage', () => {
       expect(saveButton.length).toEqual(1)
       saveButton.simulate('click')
       expect(saveScreening).toHaveBeenCalledWith({
-        id: '3',
+        id: '123456',
         allegations: [{
           id: null,
           perpetrator,
           perpetrator_id: perpetrator.id,
-          screening_id: '3',
+          screening_id: '123456',
           victim,
           victim_id: victim.id,
           allegation_types: ['General neglect'],
         }],
         cross_reports: [],
+        safety_alerts: [],
       })
     })
 

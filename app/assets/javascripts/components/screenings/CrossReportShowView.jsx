@@ -27,7 +27,7 @@ export default class CrossReportShowView extends React.Component {
                     })
                   }
                 </ul>
-                }
+              }
             </ShowField>
           </div>
         </div>

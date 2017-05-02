@@ -29,14 +29,15 @@ export class ScreeningEditPage extends React.Component {
 
     const methods = [
       'cancelEdit',
-      'cardSave',
       'cancelParticipantEdit',
+      'cardSave',
       'createParticipant',
       'deleteParticipant',
+      'mergeScreeningWithEdits',
+      'participants',
+      'saveParticipant',
       'setField',
       'setParticipantField',
-      'saveParticipant',
-      'mergeScreeningWithEdits',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -112,12 +113,15 @@ export class ScreeningEditPage extends React.Component {
   }
 
   mergeScreeningWithEdits(changes) {
-    const crossReportEdits = changes.get('cross_reports')
-    if (crossReportEdits) {
-      return this.state.screening.set('cross_reports', crossReportEdits).mergeDeep(changes)
-    } else {
-      return this.state.screening.mergeDeep(changes)
-    }
+    // Changes in lists are already applied and returned in `changes`.
+    // No need to merge old list with new list.
+    const lists = changes.filter((val) => val !== null && val.constructor.name === 'List')
+    const nonlists = changes.filterNot((val) => val !== null && val.constructor.name === 'List')
+    let screening = this.state.screening
+    lists.map((v, k) => {
+      screening = screening.set(k, v)
+    })
+    return screening.mergeDeep(nonlists)
   }
 
   participants() {
@@ -227,7 +231,16 @@ export class ScreeningEditPage extends React.Component {
               setField={this.setField}
             />
         }
-        <WorkerSafetyCardView />
+        {
+          loaded &&
+            <WorkerSafetyCardView
+              screening={mergedScreening}
+              mode='edit'
+              onCancel={this.cancelEdit}
+              onSave={this.cardSave}
+              onChange={this.setField}
+            />
+        }
         <HistoryCard
           screeningId={this.props.params.id}
           actions={this.props.actions}

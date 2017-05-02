@@ -17,6 +17,7 @@ module Api
         :name,
         :reference,
         :report_narrative,
+        :safety_information,
         :screening_decision,
         :screening_decision_detail,
         :started_at,
@@ -38,7 +39,8 @@ module Api
           :perpetrator_id,
           :victim_id,
           allegation_types: []
-        ]
+        ],
+        safety_alerts: []
       ].freeze
 
       def create

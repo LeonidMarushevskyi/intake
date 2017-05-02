@@ -77,7 +77,11 @@ feature 'Show Screening' do
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    expect(page).to have_css('#worker-safety-card.show', text: 'WORKER SAFETY')
+    within '#worker-safety-card', text: 'WORKER SAFETY' do
+      expect(page).to have_css('i', class: 'fa-pencil')
+      expect(page).to have_content('Worker safety alerts')
+      expect(page).to have_content('Additional safety information')
+    end
 
     expect(page).to have_css('#history-card.show', text: 'HISTORY')
 

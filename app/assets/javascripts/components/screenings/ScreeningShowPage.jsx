@@ -10,7 +10,7 @@ import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
-import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
+import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -99,12 +99,15 @@ export class ScreeningShowPage extends React.Component {
   }
 
   mergeScreeningWithEdits(changes) {
-    const crossReportEdits = changes.get('cross_reports')
-    if (crossReportEdits) {
-      return this.state.screening.set('cross_reports', crossReportEdits).mergeDeep(changes)
-    } else {
-      return this.state.screening.mergeDeep(changes)
-    }
+    // Changes in lists are already applied and returned in `changes`.
+    // No need to merge old list with new list.
+    const lists = changes.filter((val) => val !== null && val.constructor.name === 'List')
+    const nonlists = changes.filterNot((val) => val !== null && val.constructor.name === 'List')
+    let screening = this.state.screening
+    lists.map((v, k) => {
+      screening = screening.set(k, v)
+    })
+    return screening.mergeDeep(nonlists)
   }
 
   participants() {
@@ -194,7 +197,16 @@ export class ScreeningShowPage extends React.Component {
               setField={this.setField}
             />
         }
-        <WorkerSafetyShowView />
+        {
+          loaded &&
+          <WorkerSafetyCardView
+            mode='show'
+            screening={mergedScreening}
+            onCancel={this.cancelEdit}
+            onChange={this.setField}
+            onSave={this.cardSave}
+          />
+        }
         <HistoryCard
           actions={this.props.actions}
           involvements={this.props.involvements}
