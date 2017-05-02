@@ -5,9 +5,9 @@ require 'spec_helper'
 
 feature 'show allegations' do
   scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -65,21 +65,21 @@ feature 'show allegations' do
         table_rows = page.all('tr')
 
         within table_rows[0] do
-          expect(page).to have_content('Marge')
           expect(page).to have_content('Lisa')
-          has_react_select_field(
-            "allegations_#{lisa.id}_#{marge.id}",
-            with: ['General neglect', 'Severe neglect']
-          )
-        end
-
-        within table_rows[1] do
-          expect(page).to have_no_content('Lisa')
           expect(page).to have_content('Homer')
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
           fill_in_react_select(select_field_id, with: ['Exploitation'])
+        end
+
+        within table_rows[1] do
+          expect(page).to have_no_content('Lisa')
+          expect(page).to have_content('Marge')
+          has_react_select_field(
+            "allegations_#{lisa.id}_#{marge.id}",
+            with: ['General neglect', 'Severe neglect']
+          )
         end
       end
 
@@ -93,7 +93,7 @@ feature 'show allegations' do
       screening_id: screening.id,
       allegation_types: ['Exploitation']
     )
-    screening.allegations << new_allegation
+    screening.allegations.unshift(new_allegation)
 
     expect(
       a_request(:put, intake_api_screening_url(screening.id))
@@ -102,9 +102,9 @@ feature 'show allegations' do
   end
 
   scenario 'deleting a participant from a screening removes related allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -303,9 +303,9 @@ feature 'show allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -329,18 +329,18 @@ feature 'show allegations' do
         table_rows = page.all('tr')
 
         within table_rows[0] do
-          expect(page).to have_content('Marge')
           expect(page).to have_content('Lisa')
-          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
-        end
-
-        within table_rows[1] do
-          expect(page).to have_no_content('Lisa')
           expect(page).to have_content('Homer')
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
           fill_in_react_select(select_field_id, with: ['Exploitation'])
+        end
+
+        within table_rows[1] do
+          expect(page).to have_no_content('Lisa')
+          expect(page).to have_content('Marge')
+          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
         end
       end
       click_button 'Save'

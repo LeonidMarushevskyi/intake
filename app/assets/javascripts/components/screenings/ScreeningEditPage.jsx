@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
-import {addNewAllegations} from 'utils/allegationsHelper'
+import {sortedAllegationsList} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -68,7 +68,7 @@ export class ScreeningEditPage extends React.Component {
   cardSave(fieldList) {
     let screening
     if (fieldList.includes('allegations')) {
-      const allegations = addNewAllegations(
+      const allegations = sortedAllegationsList(
         this.props.screening.get('id'),
         this.props.participants,
         this.props.screening.get('allegations'),
@@ -219,7 +219,7 @@ export class ScreeningEditPage extends React.Component {
         {
           loaded &&
             <AllegationsCardView
-              allegations={addNewAllegations(
+              allegations={sortedAllegationsList(
                 screening.get('id'),
                 this.props.participants,
                 screening.get('allegations'),

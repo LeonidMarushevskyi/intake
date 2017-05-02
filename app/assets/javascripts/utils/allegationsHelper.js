@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import _ from 'lodash'
 
 function findAllegation(allegations, victimId, perpetratorId) {
   return allegations.find((allegation) => (
@@ -11,7 +12,7 @@ function findParticipantsByRole(participants, role) {
   return participants.filter((participant) => participant.get('roles').includes(role))
 }
 
-export function addNewAllegations(screeningId, participants, allegations, allegationsEdits) {
+function buildAllegations(screeningId, participants, allegations, allegationsEdits) {
   const flattenDepth = 1
   const victims = findParticipantsByRole(participants, 'Victim')
   const perpetrators = findParticipantsByRole(participants, 'Perpetrator')
@@ -50,4 +51,31 @@ export function addNewAllegations(screeningId, participants, allegations, allega
         })
       }
     })
-  }).flatten(flattenDepth).filterNot((allegation) => allegation === null) }
+  }).flatten(flattenDepth).filterNot((allegation) => allegation === null)
+}
+
+export function sortedAllegationsList(screeningId, participants, allegations, allegationsEdits) {
+  const unsortedAllegations = buildAllegations(screeningId, participants, allegations, allegationsEdits).toJS()
+
+  const sortFields = [
+    (allegation) => (allegation.victim.date_of_birth || ''),
+    'victim.last_name',
+    'victim.first_name',
+    (allegation) => (allegation.perpetrator.date_of_birth || ''),
+    'perpetrator.last_name',
+    'perpetrator.first_name',
+  ]
+
+  const sortOrder = [
+    'desc',
+    'asc',
+    'asc',
+    'desc',
+    'asc',
+    'asc',
+  ]
+
+  const sortedAllegations = _.orderBy(unsortedAllegations, sortFields, sortOrder)
+  return Immutable.fromJS(sortedAllegations)
+}
+
