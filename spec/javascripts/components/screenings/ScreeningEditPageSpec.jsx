@@ -8,6 +8,7 @@ describe('ScreeningEditPage', () => {
     id: '123456',
     allegations: [],
     safety_alerts: [],
+    cross_reports: [],
   }
   const requiredProps = {
     actions: {},
@@ -138,6 +139,16 @@ describe('ScreeningEditPage', () => {
         expect(updated_screening.name).toEqual('changing the name as well')
         expect(updated_screening.report_narrative).toEqual('This is what happened')
         expect(updated_screening.additional_information).toEqual('Some more relevant information')
+      })
+      it('merge empty and non-empty fields appropriately to existing values', () => {
+        const changeJS = {
+          assignee: null,
+          name: 'changing the name as well',
+        }
+        const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS)).toJS()
+        expect(updated_screening.assignee).toEqual(null)
+        expect(updated_screening.name).toEqual('changing the name as well')
+        expect(updated_screening.report_narrative).toEqual('This is what happened')
       })
     })
 
@@ -638,12 +649,7 @@ describe('ScreeningEditPage', () => {
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),
-        screening: Immutable.fromJS({
-          id: '3',
-          allegations: [],
-          cross_reports: [],
-          safety_alerts: [],
-        }),
+        screening: Immutable.fromJS(requiredScreeningAttributes),
       }
       const component = mount(<ScreeningEditPage {...props} />)
       component.setState({loaded: true})
@@ -660,12 +666,12 @@ describe('ScreeningEditPage', () => {
       expect(saveButton.length).toEqual(1)
       saveButton.simulate('click')
       expect(saveScreening).toHaveBeenCalledWith({
-        id: '3',
+        id: '123456',
         allegations: [{
           id: null,
           perpetrator,
           perpetrator_id: perpetrator.id,
-          screening_id: '3',
+          screening_id: '123456',
           victim,
           victim_id: victim.id,
           allegation_types: ['General neglect'],

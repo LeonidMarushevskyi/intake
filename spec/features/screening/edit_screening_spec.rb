@@ -47,6 +47,7 @@ feature 'Edit Screening' do
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
     visit edit_screening_path(id: existing_screening.id)
+    expect(page).to have_content 'Edit Screening #My Bad!'
   end
 
   scenario 'edit an existing screening' do
@@ -109,15 +110,36 @@ feature 'Edit Screening' do
       expect(page).to have_button 'Cancel'
     end
   end
-  scenario 'adding multiple alerts to a Worker Safety Card' do
+
+  scenario 'aborting changes in Worker Saftey Card' do
     within '#worker-safety-card', text: 'WORKER SAFETY' do
       fill_in_react_select('Worker safety alerts',
-        with: ['Dangerous Animal on Premises', 'Firearms in Home'])
+        with: 'Hostile, Aggressive Client')
       has_react_select_field('Worker safety alerts',
-        with: ['Dangerous Animal on Premises', 'Firearms in Home'])
-      click_button 'Save'
+        with: ['Dangerous Animal on Premises', 'Firearms in Home', 'Hostile, Aggressive Client'])
+      click_button 'Cancel'
       expect(page).to have_content('Dangerous Animal on Premises')
       expect(page).to have_content('Firearms in Home')
+      expect(page).to have_no_content('Hostile, Aggressive Client')
+    end
+  end
+
+  scenario 'adding multiple alerts to existing ones in a Worker Safety Card' do
+    within '#worker-safety-card', text: 'WORKER SAFETY' do
+      has_react_select_field('Worker safety alerts',
+        with: ['Dangerous Animal on Premises', 'Firearms in Home'])
+      fill_in_react_select('Worker safety alerts',
+        with: 'Hostile, Aggressive Client')
+      fill_in_react_select('Worker safety alerts',
+        with: 'Severe Mental Health Status')
+      has_react_select_field('Worker safety alerts',
+        with: ['Dangerous Animal on Premises', 'Firearms in Home',
+               'Hostile, Aggressive Client', 'Severe Mental Health Status'])
+      click_button 'Save'
+      expect(page).to have_content('Hostile, Aggressive Client')
+      expect(page).to have_content('Dangerous Animal on Premises')
+      expect(page).to have_content('Firearms in Home')
+      expect(page).to have_content('Severe Mental Health Status')
     end
   end
 end

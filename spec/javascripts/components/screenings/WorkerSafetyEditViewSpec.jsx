@@ -44,7 +44,7 @@ describe('WorkerSafetyEditView', () => {
   it('calls onSave when the form is submitted', () => {
     const saveButton = component.find('button.btn-primary')
     saveButton.simulate('click')
-    expect(onSave).toHaveBeenCalled()
+    expect(onSave).toHaveBeenCalledWith()
   })
 
   it('calls onChange when the additional safety information is changed', () => {
@@ -68,6 +68,6 @@ describe('WorkerSafetyEditView', () => {
   it('calls onCancel when the form is cancelled', () => {
     const cancelButton = component.find('.btn.btn-default')
     cancelButton.simulate('click')
-    expect(onCancel).toHaveBeenCalled()
+    expect(onCancel).toHaveBeenCalledWith()
   })
 })

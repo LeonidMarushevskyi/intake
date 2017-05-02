@@ -35,19 +35,19 @@ export default class WorkerSafetyCardView extends React.Component {
     const allprops = {
       show: {
         onEdit: this.onEdit,
-        safetyAlerts: this.props.screening.get('safety_alerts'),
-        safetyInformation: this.props.screening.get('safety_information'),
       },
       edit: {
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
-        safetyAlerts: this.props.screening.get('safety_alerts'),
-        safetyInformation: this.props.screening.get('safety_information'),
       },
     }
     const WorkerSafetyView = (mode === 'edit') ? WorkerSafetyEditView : WorkerSafetyShowView
-    const props = allprops[mode]
+    const props = {
+      ...allprops[mode],
+      safetyAlerts: this.props.screening.get('safety_alerts'),
+      safetyInformation: this.props.screening.get('safety_information'),
+    }
     return <WorkerSafetyView {...props} />
   }
 }

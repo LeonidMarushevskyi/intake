@@ -12,7 +12,10 @@ describe('WorkerSafetyCardView', () => {
     onEdit: jasmine.createSpy('onEdit'),
     onCancel: jasmine.createSpy('onCancel'),
     onChange: jasmine.createSpy('onChange'),
-    screening: Immutable.fromJS({safety_alerts: [], safety_information: ''}),
+    screening: Immutable.fromJS({
+      safety_alerts: ['Gang Affiliation or Gang Activity'],
+      safety_information: 'Info',
+    }),
     onSave: jasmine.createSpy('onSave').and.returnValue(promiseSpy),
   }
 
