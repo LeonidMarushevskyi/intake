@@ -71,28 +71,24 @@ export class PersonNewPage extends React.Component {
           <div className='row'>
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap'
               id='first_name'
               label='First Name'
               onChange={(event) => this.setField(['first_name'], event.target.value)}
             />
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap-top-desktop'
               id='middle_name'
               label='Middle Name'
               onChange={(event) => this.setField(['middle_name'], event.target.value)}
             />
             <InputField
               gridClassName='col-md-3'
-              labelClassName='no-gap-top-desktop'
               id='last_name'
               label='Last Name'
               onChange={(event) => this.setField(['last_name'], event.target.value)}
             />
             <SelectField
               gridClassName='col-md-3'
-              labelClassName='no-gap-top-desktop'
               id='name_suffix'
               label='Suffix'
               onChange={(event) => this.setField(['name_suffix'], event.target.value || null)}

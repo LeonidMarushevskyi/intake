@@ -1,0 +1,120 @@
+/////////////////////////////////////////
+
+// - Navigation - //
+
+/////////////////////////////////////////
+
+.top-navigation {
+  background-color: $dark-blue;
+  color: $white;
+  font-size: 2.4rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+}
+
+.sidenav-list {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: list-item;
+    margin: 0;
+  }
+
+  > li::before {
+    display: none;
+  }
+
+  > li::after {
+    display: none;
+  }
+
+  li {
+    border-top: 1px solid $gray;
+    font-size: 1.7rem;
+
+    &:first-child {
+      border-top: 0;
+    }
+  }
+
+  a {
+    border: 0;
+    display: block;
+    line-height: 1.3;
+    padding: .85rem 1rem .85rem 1.8rem;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $gray-lightest;
+      color: $primary-blue;
+      text-decoration: none;
+    }
+
+    &:focus {
+      position: relative;
+      z-index: 1;
+    }
+
+    &.current {
+      border-left: 4px solid $primary-blue;
+      color: $primary-blue;
+      font-weight: 700;
+      padding-left: 1.4rem;
+    }
+  }
+}
+
+.sidenav-sub-list {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  > li {
+    display: list-item;
+    margin: 0;
+  }
+
+  > li::before {
+    display: none;
+  }
+
+  > li::after {
+    display: none;
+  }
+
+  li {
+    border: 0;
+    font-size: 1.5rem;
+  }
+
+  a {
+    line-height: 1.3;
+    padding-left: 2.8rem;
+
+    &:hover {
+      border: 0;
+      padding-left: 2.8rem;
+    }
+
+    &.current {
+      border: 0;
+      padding-left: 2.8rem;
+    }
+  }
+
+  .sidenav-sub-list a {
+    padding-left: 3.8rem;
+
+    &:hover {
+      padding-left: 3.8rem;
+    }
+  }
+}

@@ -33,16 +33,16 @@ export class PersonShowPage extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='First Name'>
+            <ShowField gridClassName='col-md-3' label='First Name'>
               {person.get('first_name')}
             </ShowField>
-            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Middle Name'>
+            <ShowField gridClassName='col-md-3' label='Middle Name'>
               {person.get('middle_name')}
             </ShowField>
-            <ShowField gridClassName='col-md-3' labelClassName='no-gap' label='Last Name'>
+            <ShowField gridClassName='col-md-3' label='Last Name'>
               {person.get('last_name')}
             </ShowField>
-            <ShowField gridClassName='col-md-3' labelClassName='no-gap-top-desktop' label='Suffix'>
+            <ShowField gridClassName='col-md-3' label='Suffix'>
               {NAME_SUFFIX[person.get('name_suffix')]}
             </ShowField>
           </div>

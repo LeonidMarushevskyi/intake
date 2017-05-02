@@ -1,0 +1,72 @@
+/////////////////////////////////////////
+
+// - Cards - //
+
+/////////////////////////////////////////
+
+.card {
+
+  .c-gray {
+    color: $coal;
+  }
+
+  .card-header {
+    display: block;
+    font-size: $large-font;
+    overflow: hidden;
+    padding: $base-spacing / 1.5  $double-spacing;
+
+    span {
+      float: left;
+      font-weight: $normal-weight;
+      margin: 0;
+      padding: 0;
+      text-transform: uppercase;
+    }
+
+    a {
+      float: right;
+      text-decoration: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+    }
+  }
+
+  .card-body {
+    border-top: 0;
+    padding: 0 $double-spacing $base-spacing;
+
+    .btn {
+      margin-bottom: $base-spacing;
+      margin-top: $double-spacing;
+    }
+
+    @media screen and (max-width: 767px) {
+      .centered {
+        margin-left: $base-spacing;
+        margin-right: $base-spacing;
+      }
+
+      .btn {
+        margin-bottom: 0;
+        margin-top: $base-spacing;
+      }
+    }
+  }
+
+  &.edit {
+    background-color: $white;
+    border-left: .5rem solid $light-blue;
+  }
+
+  &.show {
+    border-left: .5rem solid $medium-grey;
+
+    .card-header {
+      border-bottom: .2rem solid $dark-sand;
+    }
+  }
+}

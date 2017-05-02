@@ -3,7 +3,7 @@
 
 %h2 Non-Sortable Table
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   .table-responsive
     %table.table.table-hover
       %thead
@@ -73,77 +73,116 @@
             Curabitur fringilla sed urna in dictum.
 
 %pre
-  %code
-    :preserve
-      .table-responsive
-        %table.table.table-hover
-          %thead
-            %tr
-              %th{ scope: 'col' }
+  %xmp
+    :erb
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">
                 Item
-              %th{ scope: 'col' }
+              </th>
+              <th scope="col">
                 Qty
-              %th{ scope: 'col' }
+              </th>
+              <th scope="col">
                 Price
-              %th{ scope: 'col' }
+              </th>
+              <th scope="col">
                 Description
-          %tbody
-            %tr
-              %th{ scope: 'row' }
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
                 Pellentesque
-              %td
+              </th>
+              <td>
                 2
-              %td
+              </td>
+              <td>
                 5
-              %td
+              </td>
+              <td>
                 Aenean accumsan lorem ante.
-            %tr
-              %th{ scope: 'row' }
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">
                 Adipiscing
-              %td
+              </th>
+              <td>
                 1
-              %td
+              </td>
+              <td>
                 15
-              %td
+              </td>
+              <td>
                 Proin fringilla tellus eget dui consequat ullamcorper.
-            %tr
-              %th{ scope: 'row' }
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">
                 Suspendisse
-              %td
+              </th>
+              <td>
                 26
-              %td
+              </td>
+              <td>
                 1
-              %td
+              </td>
+              <td>
                 Vestibulum feugiat non nulla nec semper.
-            %tr
-              %th{ scope: 'row' }
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">
                 Morbi
-              %td
+              </th>
+              <td>
                 6
-              %td
+              </td>
+              <td>
                 19
-              %td
+              </td>
+              <td>
                 Ut justo eros, vehicula at tincidunt vel, viverra sit amet sem.
-            %tr
-              %th{ scope: 'row' }
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">
                 Vestibulum
-              %td
+              </th>
+              <td>
                 20
-              %td
+              </td>
+              <td>
                 3
-              %td
+              </td>
+              <td>
                 Maecenas vel lobortis eros.
-            %tr
-              %th{ scope: 'row' }
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">
                 Aenean
-              %td
+              </th>
+              <td>
                 9
-              %td
+              </td>
+              <td>
                 8
-              %td
+              </td>
+              <td>
                 Curabitur fringilla sed urna in dictum.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-.double-padded.border-regular-light-gray
+.double-padded.bg-white
   %h4 Accessibility
   %ul
     %li

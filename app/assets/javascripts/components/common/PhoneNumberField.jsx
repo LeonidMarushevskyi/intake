@@ -8,7 +8,6 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
   <div>
     <InputField
       gridClassName='col-md-6'
-      labelClassName='no-gap'
       id='number'
       type='tel'
       placeholder='Ex: 910-435-3223'
@@ -18,7 +17,6 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
     />
     <SelectField
       gridClassName='col-md-6'
-      labelClassName='no-gap-top-desktop'
       label='Phone Number Type'
       id='type'
       value={Type}

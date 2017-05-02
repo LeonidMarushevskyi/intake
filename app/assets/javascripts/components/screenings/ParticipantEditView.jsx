@@ -42,7 +42,6 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
         <div className='row'>
           <InputField
             gridClassName='col-md-6'
-            labelClassName='no-gap'
             id='first_name'
             label='First Name'
             value={participant.get('first_name') || ''}
@@ -50,7 +49,6 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           />
           <InputField
             gridClassName='col-md-6'
-            labelClassName='no-gap-top-desktop'
             id='last_name'
             label='Last Name'
             value={participant.get('last_name') || ''}
