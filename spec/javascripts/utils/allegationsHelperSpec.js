@@ -1,7 +1,236 @@
-import {addNewAllegations} from 'utils/allegationsHelper'
+import {sortedAllegationsList} from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
-describe('addNewAllegations', () => {
+describe('sortedAllegationsList', () => {
+  const screeningId = '9'
+  const allegations = Immutable.List()
+
+  it('sorts victims based on their birth date', () => {
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([archer, malory, cyril])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with birth dates ahead of victims without birth dates', () => {
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim']}
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([archer, malory, cyril])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with the same birth date based on last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([malory, cyril, archer])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with the same birth date when one victim has no last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([malory, cyril, archer])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with the same birth date when both victims have no last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([malory, cyril, archer])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with the same birth date and last name based on first name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2008-01-01', roles: ['Perpetrator']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([cyril, archer, malory])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: cyril.id, perpetrator: cyril},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('sorts victims with the same birth date and last name based when one victim has no first name', () => {
+    const malory = {id: '2', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2008-01-01', roles: ['Perpetrator']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+    const participants = Immutable.fromJS([cyril, archer, malory])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators based on their birth date', () => {
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([archer, malory, cyril])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with no birth date to the end of the list', () => {
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Perpetrator']}
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([archer, malory, cyril])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with the same birth date based on last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([malory, cyril, archer])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with the same birth date when one has no last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([malory, cyril, archer])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with the same birth date when both have no last name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '1990-02-02', roles: ['Victim']}
+    const cyril = {id: '4', first_name: 'Cyril', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([malory, archer, cyril])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with the same birth date and last name based on first name', () => {
+    const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2008-01-01', roles: ['Victim']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([cyril, archer, malory])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: archer.id, perpetrator: archer},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+
+  it('within a victim group, sorts perpetrators with the same birth date and last name when one has no first name', () => {
+    const malory = {id: '2', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+    const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2008-01-01', roles: ['Victim']}
+    const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+    const participants = Immutable.fromJS([cyril, archer, malory])
+    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const expectedResult = Immutable.fromJS([
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: archer.id, perpetrator: archer},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
+    ])
+
+    expect(result.toJS()).toEqual(expectedResult.toJS())
+    expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+})
+
+describe('buildNewAllegations', () => {
   const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim', 'Perpetrator']}
   const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', roles: ['Perpetrator']}
   const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', roles: ['Anonymous Reporter']}
@@ -12,12 +241,12 @@ describe('addNewAllegations', () => {
   it('returns combinations of victims and perpetrators', () => {
     const participants = Immutable.fromJS([archer, malory, cyril, lana, pam])
     const allegations = Immutable.List()
-    const result = addNewAllegations(screeningId, participants, allegations)
+    const result = sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
-      {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: malory.id, perpetrator: malory},
+      {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: lana.id, perpetrator: lana},
     ])
     expect(result.toJS()).toEqual(expectedResult.toJS())
@@ -26,7 +255,7 @@ describe('addNewAllegations', () => {
   })
 
   it('returns an empty list when there are no victims or perpetrators', () => {
-    expect(addNewAllegations(screeningId, Immutable.List(), Immutable.List())).toEqual(
+    expect(sortedAllegationsList(screeningId, Immutable.List(), Immutable.List())).toEqual(
       Immutable.List()
     )
   })
@@ -38,11 +267,11 @@ describe('addNewAllegations', () => {
       {id: '456', screening_id: '3', victim_id: '6', perpetrator_id: '1'},
       {id: '789', screening_id: '3', victim_id: '6', perpetrator_id: '2'},
     ])
-    const result = addNewAllegations(screeningId, participants, allegations)
+    const result = sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
-      {id: '456', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: '789', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: malory.id, perpetrator: malory},
+      {id: '456', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
     ])
     expect(result.toJS()).toEqual(expectedResult.toJS())
     expect(result.size).toEqual(3)
@@ -56,12 +285,12 @@ describe('addNewAllegations', () => {
       {id: '456', screening_id: '3', victim_id: '6', perpetrator_id: '1'},
       {id: '789', screening_id: '3', victim_id: '6', perpetrator_id: '2'},
     ])
-    const result = addNewAllegations(screeningId, participants, allegations)
+    const result = sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
-      {id: '456', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: '789', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: malory.id, perpetrator: malory},
+      {id: '456', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: archer.id, perpetrator: archer},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: lana.id, perpetrator: lana},
     ])
     expect(result.toJS()).toEqual(expectedResult.toJS())
@@ -75,7 +304,7 @@ describe('addNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2'},
     ])
-    const result = addNewAllegations(screeningId, participants, allegations, allegationsEdits)
+    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])
@@ -89,7 +318,7 @@ describe('addNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2', allegation_types: ['General neglect']},
     ])
-    const result = addNewAllegations(screeningId, participants, allegations, allegationsEdits)
+    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: ['General neglect'], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])
@@ -103,7 +332,7 @@ describe('addNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2'},
     ])
-    const result = addNewAllegations(screeningId, participants, allegations, allegationsEdits)
+    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: ['General neglect'], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])

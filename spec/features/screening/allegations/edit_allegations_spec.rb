@@ -23,7 +23,7 @@ feature 'edit allegations' do
       last_name: 'Simpson',
       roles: %w(Victim Perpetrator)
     )
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
     screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
@@ -41,20 +41,20 @@ feature 'edit allegations' do
 
         within(table_rows[0]) do
           expect(page).to have_content('Bart')
-          expect(page).to have_content('Marge')
-          has_react_select_field("allegations_#{bart.id}_#{marge.id}", with: [])
-        end
-
-        within(table_rows[1]) do
-          expect(page).to have_no_content('Bart')
           expect(page).to have_content('Homer')
           has_react_select_field("allegations_#{bart.id}_#{homer.id}", with: [])
         end
 
+        within(table_rows[1]) do
+          expect(page).to have_no_content('Bart')
+          expect(page).to have_content('Marge')
+          has_react_select_field("allegations_#{bart.id}_#{marge.id}", with: [])
+        end
+
         within(table_rows[2]) do
           expect(page).to have_content('Lisa')
-          expect(page).to have_content('Marge')
-          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
+          expect(page).to have_content('Bart')
+          has_react_select_field("allegations_#{lisa.id}_#{bart.id}", with: [])
         end
 
         within(table_rows[3]) do
@@ -65,8 +65,8 @@ feature 'edit allegations' do
 
         within(table_rows[4]) do
           expect(page).to have_no_content('Lisa')
-          expect(page).to have_content('Bart')
-          has_react_select_field("allegations_#{lisa.id}_#{bart.id}", with: [])
+          expect(page).to have_content('Marge')
+          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
         end
       end
     end
@@ -78,7 +78,7 @@ feature 'edit allegations' do
       first_name: 'Marge',
       roles: ['Perpetrator', 'Anonymous Reporter']
     )
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, lisa]
@@ -381,9 +381,9 @@ feature 'edit allegations' do
   end
 
   scenario 'editing allegation types will not impact other allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
@@ -398,12 +398,12 @@ feature 'edit allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
 
-        within(table_rows[1]) do
+        within(table_rows[0]) do
           fill_in_react_select "allegations_#{lisa.id}_#{homer.id}", with: 'General neglect'
           has_react_select_field "allegations_#{lisa.id}_#{homer.id}", with: ['General neglect']
         end
 
-        within(table_rows[0]) do
+        within(table_rows[1]) do
           has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: []
         end
       end
@@ -411,9 +411,9 @@ feature 'edit allegations' do
   end
 
   scenario 'I remove a participant for whom I have added allegation types' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
@@ -427,14 +427,13 @@ feature 'edit allegations' do
     within '#allegations-card.card.edit' do
       within 'tbody' do
         table_rows = page.all('tr')
-
         within(table_rows[0]) do
-          fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
-          has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
+          has_react_select_field "allegations_#{lisa.id}_#{homer.id}", with: []
         end
 
         within(table_rows[1]) do
-          has_react_select_field "allegations_#{lisa.id}_#{homer.id}", with: []
+          fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
+          has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
         end
       end
     end
@@ -487,9 +486,9 @@ feature 'edit allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer')
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -509,18 +508,18 @@ feature 'edit allegations' do
         table_rows = page.all('tr')
 
         within table_rows[0] do
-          expect(page).to have_content('Marge')
           expect(page).to have_content('Lisa')
-          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
-        end
-
-        within table_rows[1] do
-          expect(page).to have_no_content('Lisa')
           expect(page).to have_content('Homer')
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
           fill_in_react_select(select_field_id, with: ['Exploitation'])
+        end
+
+        within table_rows[1] do
+          expect(page).to have_no_content('Lisa')
+          expect(page).to have_content('Marge')
+          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
         end
       end
       click_button 'Save'
