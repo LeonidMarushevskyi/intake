@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base # :nodoc:
   private
 
   def authenticate_user
+    session.delete(:security_token) if security_token
     return if session[:security_token]
+
     if SecurityRepository.token_valid?(security_token)
       session[:security_token] = security_token
     else

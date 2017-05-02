@@ -20,14 +20,33 @@ describe ApplicationController do
           .with(:authentication).and_return(true)
       end
 
-      context 'when athenticated' do
+      context 'when authenticated and no new token is provided' do
         it 'does nothing' do
           process :custom, method: :get, session: { security_token: 'my_secure_token' }
           expect(response).to be_successful
+          expect(session[:security_token]).to eq('my_secure_token')
         end
       end
 
-      context 'when not athenticated without valid security token' do
+      context 'when authenticated and a new token is provided' do
+        let(:new_security_token) { 'new_token' }
+        before do
+          expect(SecurityRepository).to receive(:token_valid?)
+            .with(new_security_token)
+            .and_return(true)
+        end
+
+        it 'replaces the current token' do
+          process :custom,
+            method: :get,
+            session: { security_token: 'my_secure_token' },
+            params: { token: new_security_token }
+          expect(response).to be_successful
+          expect(session[:security_token]).to eq(new_security_token)
+        end
+      end
+
+      context 'when not authenticated without valid security token' do
         before do
           allow(SecurityRepository).to receive(:token_valid?).and_return(false)
           allow(Rails.configuration).to receive(:intake)
@@ -40,7 +59,7 @@ describe ApplicationController do
         end
       end
 
-      context 'when not athenticated with valid security token' do
+      context 'when not authenticated with valid security token' do
         let(:security_token) { 'my_secure_token' }
         before do
           expect(SecurityRepository).to receive(:token_valid?)
