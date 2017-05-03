@@ -453,7 +453,211 @@ feature 'edit allegations' do
     end
   end
 
-  scenario 'saving another card will not persists changes to allegations' do
+  scenario 'I remove the victim role from a participant for whom I have edited allegations' do
+    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryGirl.create(
+      :participant,
+      roles: ['Victim', 'Anonymous Reporter'],
+      first_name: 'Lisa',
+      last_name: 'Simps'
+    )
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+    allegation_attributes = {
+      victim_id: lisa.id,
+      perpetrator_id: marge.id,
+      screening_id: screening.id,
+      allegation_types: ['General neglect']
+    }
+
+    screening_with_new_allegation = screening.dup.tap do |obj|
+      obj.assign_attributes(
+        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+      )
+    end
+
+    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    screening.assign_attributes(allegations: [persisted_allegation])
+
+    stub_request(:put, intake_api_screening_url(screening.id))
+      .with(body: as_json_without_root_id(
+        screening_with_new_allegation
+      ).merge('participants' => []))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within '#allegations-card.card.edit' do
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.show' do
+      expect(page).to have_content('Lisa')
+      expect(page).to have_content('Marge')
+      expect(page).to have_content('General neglect')
+    end
+
+    lisa.roles = ['Anonymous Reporter']
+    stub_request(:put, intake_api_participant_url(lisa.id))
+      .with(json_body(as_json_without_root_id(lisa)))
+      .and_return(json_body(lisa.to_json, status: 200))
+
+    screening.assign_attributes(allegations: [])
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(lisa.id) do
+      remove_react_select_option('Role', 'Victim')
+      click_button 'Save'
+    end
+
+    within show_participant_card_selector(lisa.id) do
+      click_link 'Edit participant'
+    end
+
+    within '#allegations-card.card.show' do
+      expect(page).to have_no_content('Lisa')
+      expect(page).to have_no_content('Marge')
+      expect(page).to have_no_content('General neglect')
+      click_link 'Edit allegations'
+    end
+
+    within '#allegations-card.card.edit' do
+      expect(page).to have_no_content('Lisa')
+      expect(page).to have_no_content('Marge')
+      expect(page).to have_no_content('General neglect')
+    end
+
+    lisa.roles = ['Anonymous Reporter', 'Victim']
+    stub_request(:put, intake_api_participant_url(lisa.id))
+      .with(json_body(as_json_without_root_id(lisa)))
+      .and_return(json_body(lisa.to_json, status: 200))
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(lisa.id) do
+      fill_in_react_select('Role', with: 'Victim')
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.edit' do
+      expect(page).to have_content('Lisa')
+      expect(page).to have_content('Marge')
+      expect(page).to have_no_content('General neglect')
+    end
+  end
+
+  scenario 'I remove the perpetrator role from a participant for whom I have edited allegations' do
+    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    marge = FactoryGirl.create(
+      :participant,
+      roles: ['Perpetrator', 'Anonymous Reporter'],
+      first_name: 'Marge',
+      last_name: 'Simps'
+    )
+    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
+
+    visit edit_screening_path(id: screening.id)
+    allegation_attributes = {
+      victim_id: lisa.id,
+      perpetrator_id: marge.id,
+      screening_id: screening.id,
+      allegation_types: ['General neglect']
+    }
+
+    screening_with_new_allegation = screening.dup.tap do |obj|
+      obj.assign_attributes(
+        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+      )
+    end
+
+    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    screening.assign_attributes(allegations: [persisted_allegation])
+
+    stub_request(:put, intake_api_screening_url(screening.id))
+      .with(body: as_json_without_root_id(
+        screening_with_new_allegation
+      ).merge('participants' => []))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within '#allegations-card.card.edit' do
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.show' do
+      expect(page).to have_content('Lisa')
+      expect(page).to have_content('Marge')
+      expect(page).to have_content('General neglect')
+    end
+
+    marge.roles = ['Anonymous Reporter']
+    stub_request(:put, intake_api_participant_url(marge.id))
+      .with(json_body(as_json_without_root_id(marge)))
+      .and_return(json_body(marge.to_json, status: 200))
+
+    screening.assign_attributes(allegations: [])
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(marge.id) do
+      remove_react_select_option('Role', 'Perpetrator')
+      click_button 'Save'
+    end
+
+    within show_participant_card_selector(marge.id) do
+      click_link 'Edit participant'
+    end
+
+    within '#allegations-card.card.show' do
+      expect(page).to have_no_content('Lisa')
+      expect(page).to have_no_content('Marge')
+      expect(page).to have_no_content('General neglect')
+      click_link 'Edit allegations'
+    end
+
+    within '#allegations-card.card.edit' do
+      expect(page).to have_no_content('Lisa')
+      expect(page).to have_no_content('Marge')
+      expect(page).to have_no_content('General neglect')
+    end
+
+    marge.roles = ['Anonymous Reporter', 'Perpetrator']
+    stub_request(:put, intake_api_participant_url(marge.id))
+      .with(json_body(as_json_without_root_id(marge)))
+      .and_return(json_body(marge.to_json, status: 200))
+    stub_request(:get, intake_api_screening_url(screening.id))
+      .and_return(json_body(screening.to_json, status: 200))
+
+    within edit_participant_card_selector(marge.id) do
+      fill_in_react_select('Role', with: 'Perpetrator')
+      click_button 'Save'
+    end
+
+    within '#allegations-card.card.edit' do
+      expect(page).to have_content('Lisa')
+      expect(page).to have_content('Marge')
+      expect(page).to have_no_content('General neglect')
+    end
+  end
+
+  scenario 'saving another card will not persist changes to allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])

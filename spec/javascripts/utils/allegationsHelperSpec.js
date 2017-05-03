@@ -1,4 +1,4 @@
-import {sortedAllegationsList} from 'utils/allegationsHelper'
+import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
 describe('sortedAllegationsList', () => {
@@ -338,5 +338,77 @@ describe('buildNewAllegations', () => {
     ])
     expect(result.toJS()).toEqual(expectedResult.toJS())
     expect(Immutable.is(result, expectedResult)).toEqual(true)
+  })
+})
+
+describe('removeInvalidAllegations', () => {
+  it('does not explode if a participant has no roles object', () => {
+    const participant = Immutable.fromJS({id: '2'})
+    const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const expectedAllegations = Immutable.fromJS({1: {3: ['General neglect']}})
+    expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
+    expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
+  })
+
+  it('does not explode if passed an empty allegations set', () => {
+    const participant = Immutable.fromJS({id: '2', roles: []})
+    const allegations = null
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    expect(returnedAllegations.toJS()).toEqual({})
+    expect(Immutable.is(returnedAllegations, Immutable.Map())).toEqual(true)
+  })
+
+  it('removes allegations for a participant if the participant is not a victim', () => {
+    const participant = Immutable.fromJS({id: '2', roles: []})
+    const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const expectedAllegations = Immutable.fromJS({1: {3: ['General neglect']}})
+    expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
+    expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
+  })
+
+  it('does not remove allegations for a participant if the participant is a victim', () => {
+    const participant = Immutable.fromJS({id: '2', roles: ['Victim']})
+    const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    expect(returnedAllegations.toJS()).toEqual(allegations.toJS())
+    expect(Immutable.is(returnedAllegations, allegations)).toEqual(true)
+  })
+
+  it('removes allegations for a participant if the participant is not a perpetrator', () => {
+    const participant = Immutable.fromJS({id: '2', roles: []})
+    const allegations = Immutable.fromJS({3: {2: ['General neglect'], 1: ['General neglect']}})
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const expectedAllegations = Immutable.fromJS({3: {1: ['General neglect']}})
+    expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
+    expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
+  })
+
+  it('does not remove allegations for a participant if the participant is a perpetrator', () => {
+    const participant = Immutable.fromJS({id: '2', roles: ['Perpetrator']})
+    const allegations = Immutable.fromJS({3: {2: ['General neglect'], 1: ['General neglect']}})
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    expect(returnedAllegations.toJS()).toEqual(allegations.toJS())
+    expect(Immutable.is(returnedAllegations, allegations)).toEqual(true)
+  })
+
+  it('removes allegations for a participant if the participant is not a victim nor a perpetrator', () => {
+    const participant = Immutable.fromJS({id: '2', roles: []})
+    const allegations = Immutable.fromJS({
+      3: {2: ['General neglect'], 1: ['General neglect']},
+      2: {4: ['Neglect']},
+    })
+
+    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const expectedAllegations = Immutable.fromJS({3: {1: ['General neglect']}})
+    expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
+    expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
   })
 })
