@@ -79,3 +79,19 @@ export function sortedAllegationsList(screeningId, participants, allegations, al
   return Immutable.fromJS(sortedAllegations)
 }
 
+export function removeInvalidAllegations(participant, allegations) {
+  // allegations are stored in memory as {victim_id: {perp_id: [allegation_types]}}
+  const id = participant.get('id')
+  const roles = participant.get('roles') || Immutable.List()
+  let filteredAllegations = allegations || Immutable.Map()
+
+  if (!roles.includes('Victim')) {
+    filteredAllegations = filteredAllegations.delete(id)
+  }
+
+  if (!roles.includes('Perpetrator')) {
+    filteredAllegations = filteredAllegations.map((allegation) => allegation.delete(id))
+  }
+
+  return filteredAllegations
+}

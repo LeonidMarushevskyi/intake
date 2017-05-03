@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
-import {sortedAllegationsList} from 'utils/allegationsHelper'
+import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -109,6 +109,7 @@ export class ScreeningEditPage extends React.Component {
     return this.props.actions.saveParticipant(participant.toJS())
       .then(() => {
         this.props.actions.fetchScreening(this.props.params.id)
+        this.setField(['allegations'], removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations')))
       })
   }
 

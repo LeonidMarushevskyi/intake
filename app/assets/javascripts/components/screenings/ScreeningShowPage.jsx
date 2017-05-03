@@ -15,7 +15,7 @@ import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapStateToProps} from 'components/screenings/ScreeningEditPage'
-import {sortedAllegationsList} from 'utils/allegationsHelper'
+import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 
 export class ScreeningShowPage extends React.Component {
   constructor(props, context) {
@@ -95,6 +95,7 @@ export class ScreeningShowPage extends React.Component {
     return this.props.actions.saveParticipant(participant.toJS())
       .then(() => {
         this.props.actions.fetchScreening(this.props.params.id)
+        this.setField(['allegations'], removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations')))
       })
   }
 
