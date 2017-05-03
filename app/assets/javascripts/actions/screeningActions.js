@@ -105,10 +105,12 @@ export function submitScreening(screeningId) {
     )
     .then(
       (jsonResponse) => {
+        /* eslint-disable no-alert */
         alert('Successfully submitted screening')
         dispatch(submitScreeningSuccess(jsonResponse))
       },
       (jsonResponse) => alert(jsonResponse.responseText)
+      /* eslint-enable no-alert */
     )
   )
 }

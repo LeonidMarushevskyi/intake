@@ -21,10 +21,14 @@ feature 'Submit Screening' do
       Feature.run_with_activated(:referral_submit) do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
-        expect(a_request(:post, intake_api_screening_submit_url(existing_screening.id))).to have_been_made
+        expect(
+          a_request(:post, intake_api_screening_submit_url(existing_screening.id))
+        ).to have_been_made
         expect(page.driver.browser.switch_to.alert.text).to eq('Successfully submitted screening')
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content 'Congratulations! You have completed the process to submit a screening.'
+        expect(page).to have_content(
+          'Congratulations! You have completed the process to submit a screening.'
+        )
       end
     end
   end
@@ -40,10 +44,14 @@ feature 'Submit Screening' do
       Feature.run_with_activated(:referral_submit) do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
-        expect(a_request(:post, intake_api_screening_submit_url(existing_screening.id))).to have_been_made
+        expect(
+          a_request(:post, intake_api_screening_submit_url(existing_screening.id))
+        ).to have_been_made
         expect(page.driver.browser.switch_to.alert.text).to include(error_json)
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content 'Congratulations! You have completed the process to submit a screening.'
+        expect(page).to have_content(
+          'Congratulations! You have completed the process to submit a screening.'
+        )
       end
     end
   end

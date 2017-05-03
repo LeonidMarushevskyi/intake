@@ -333,5 +333,4 @@ feature 'individual card save' do
       ).to have_been_made
     end
   end
-
 end

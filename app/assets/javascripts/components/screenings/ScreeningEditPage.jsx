@@ -277,7 +277,8 @@ export class ScreeningEditPage extends React.Component {
               className='btn btn-primary'
               data-toggle='modal'
               data-target='#submitModal'
-              onClick={(event) => IntakeConfig.config().referral_submit && this.props.actions.submitScreening(this.props.params.id)}>
+              onClick={(_event) => IntakeConfig.config().referral_submit && this.props.actions.submitScreening(this.props.params.id)}
+            >
               Submit
             </button>
           </div>

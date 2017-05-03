@@ -303,7 +303,7 @@ describe('ScreeningEditPage', () => {
     describe('when referral_submit is ON', () => {
       beforeEach(() => {
         spyOn(config, 'config').and.returnValue({
-          referral_submit: true
+          referral_submit: true,
         })
       })
 
@@ -311,8 +311,8 @@ describe('ScreeningEditPage', () => {
         const submitScreening = jasmine.createSpy('submitScreening')
         const props = {
           ...requiredProps,
-          params: { id: '99' },
-          actions: { submitScreening }
+          params: {id: '99'},
+          actions: {submitScreening},
         }
         const component = shallow(<ScreeningEditPage {...props} />)
         component.find('button[children="Submit"]').simulate('click')
@@ -323,7 +323,7 @@ describe('ScreeningEditPage', () => {
     describe('when referral_submit is OFF', () => {
       beforeEach(() => {
         spyOn(config, 'config').and.returnValue({
-          referral_submit: false
+          referral_submit: false,
         })
       })
 
@@ -331,8 +331,8 @@ describe('ScreeningEditPage', () => {
         const submitScreening = jasmine.createSpy('submitScreening')
         const props = {
           ...requiredProps,
-          params: { id: '99' },
-          actions: { submitScreening }
+          params: {id: '99'},
+          actions: {submitScreening},
         }
         const component = shallow(<ScreeningEditPage {...props} />)
         component.find('button[children="Submit"]').simulate('click')

@@ -89,7 +89,7 @@ describe('screening actions', () => {
     })
   })
 
-  describe ('.submitScreening', () => {
+  describe('.submitScreening', () => {
     const screeningId = '3'
     beforeEach(() => {
       const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
