@@ -115,8 +115,8 @@ export class ScreeningEditPage extends React.Component {
   mergeScreeningWithEdits(changes) {
     // Changes in lists are already applied and returned in `changes`.
     // No need to merge old list with new list.
-    const lists = changes.filter((val) => val instanceof Immutable.List)
-    const nonlists = changes.filterNot((val) => val instanceof Immutable.List)
+    const lists = changes.filter((val) => Immutable.List.isList(val))
+    const nonlists = changes.filterNot((val) => Immutable.List.isList(val))
     let screening = this.state.screening
     lists.map((v, k) => {
       screening = screening.set(k, v)
