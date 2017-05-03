@@ -103,7 +103,13 @@ export function submitScreening(screeningId) {
         null,
         {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(submitScreeningSuccess(jsonResponse)))
+    .then(
+      (jsonResponse) => {
+        alert('Successfully submitted screening')
+        dispatch(submitScreeningSuccess(jsonResponse))
+      },
+      (jsonResponse) => alert(jsonResponse.responseText)
+    )
   )
 }
 
