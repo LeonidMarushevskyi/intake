@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
 
 Rails.application.routes.draw do
   root 'home#index'
@@ -19,7 +20,7 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
-          post 'submit'
+          post 'submit', constraints: Routes::ActiveReferralSubmitConstraint
         end
       end
 

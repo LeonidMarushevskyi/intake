@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningEditPage} from 'components/screenings/ScreeningEditPage'
 import {mount, shallow} from 'enzyme'
+import * as config from 'config'
 
 describe('ScreeningEditPage', () => {
   const requiredScreeningAttributes = {
@@ -299,16 +300,44 @@ describe('ScreeningEditPage', () => {
       expect(component.find('button[children="Submit"]').length).toEqual(1)
     })
 
-    it('clicking the submit button submits the screening', () => {
-      const submitScreening = jasmine.createSpy('submitScreening')
-      const props = {
-        ...requiredProps,
-        params: { id: '99' },
-        actions: { submitScreening }
-      }
-      const component = shallow(<ScreeningEditPage {...props} />)
-      component.find('button[children="Submit"]').simulate('click')
-      expect(submitScreening).toHaveBeenCalledWith('99')
+    describe('when referral_submit is ON', () => {
+      beforeEach(() => {
+        spyOn(config, 'config').and.returnValue({
+          referral_submit: true
+        })
+      })
+
+      it('clicking the submit button submits the screening', () => {
+        const submitScreening = jasmine.createSpy('submitScreening')
+        const props = {
+          ...requiredProps,
+          params: { id: '99' },
+          actions: { submitScreening }
+        }
+        const component = shallow(<ScreeningEditPage {...props} />)
+        component.find('button[children="Submit"]').simulate('click')
+        expect(submitScreening).toHaveBeenCalledWith('99')
+      })
+    })
+
+    describe('when referral_submit is OFF', () => {
+      beforeEach(() => {
+        spyOn(config, 'config').and.returnValue({
+          referral_submit: false
+        })
+      })
+
+      it('clicking the submit button does not submits the screening', () => {
+        const submitScreening = jasmine.createSpy('submitScreening')
+        const props = {
+          ...requiredProps,
+          params: { id: '99' },
+          actions: { submitScreening }
+        }
+        const component = shallow(<ScreeningEditPage {...props} />)
+        component.find('button[children="Submit"]').simulate('click')
+        expect(submitScreening).not.toHaveBeenCalledWith('99')
+      })
     })
   })
 
