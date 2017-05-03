@@ -89,6 +89,30 @@ describe('screening actions', () => {
     })
   })
 
+  describe('.submitScreening', () => {
+    const screeningId = '3'
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction({}))
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('submits a screening to the server', () => {
+      store.dispatch(screeningActions.submitScreening(screeningId))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'POST',
+        `/api/v1/screenings/${screeningId}/submit`,
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a submitScreeningSuccess', () => {
+      store.dispatch(screeningActions.submitScreening(screeningId))
+      expect(store.getActions()[0].type).toEqual(types.SUBMIT_SCREENING_SUCCESS)
+    })
+  })
+
   describe('.saveParticipant', () => {
     const participant = {
       screening_id: '1',

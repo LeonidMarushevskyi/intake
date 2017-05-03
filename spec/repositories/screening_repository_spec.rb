@@ -124,4 +124,13 @@ describe ScreeningRepository do
       expect(involvements[1].name).to eq('New Screening Two')
     end
   end
+
+  describe '.submit' do
+    let(:screening_id) { '42' }
+    it 'makes a post request to /api/v1/screenings/:id/submit' do
+      expect(API).to receive(:make_api_call)
+        .with(security_token, "/api/v1/screenings/#{screening_id}/submit", :post)
+      described_class.submit(security_token, screening_id)
+    end
+  end
 end

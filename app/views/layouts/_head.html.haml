@@ -1,7 +1,7 @@
 :javascript
   window.org = {
     intake: {
-      config: #{Rails.configuration.intake.to_json}
+      config: #{Rails.configuration.intake.merge(referral_submit: Feature.active?(:referral_submit)).to_json}
     }
   }
 

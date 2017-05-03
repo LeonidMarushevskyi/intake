@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import {config} from 'config'
 
 export const STATUS_CODES = Object.freeze({
   'continue': 100,
@@ -67,7 +68,7 @@ function getCSRFToken() {
 }
 
 function basepath() {
-  const basepath = window.org.intake.config.base_path
+  const basepath = config().base_path
   return basepath.replace(/\/$/, '')
 }
 
@@ -89,7 +90,7 @@ export function request(method, url, data, options) {
         if (response.status === STATUS_CODES.forbidden) {
           const firstIndex = 0
           const currentLocation = encodeURIComponent(window.location.href.split('?')[firstIndex])
-          const loginBaseUrl = window.org.intake.config.authentication_login_url
+          const loginBaseUrl = config().authentication_login_url
           window.location = `${loginBaseUrl}${currentLocation}`
         } else {
           reject(response)

@@ -152,4 +152,20 @@ describe Api::V1::ScreeningsController do
       expect(response.body).to eq involvements.to_json
     end
   end
+
+  describe '#submit' do
+    let(:screening_id) { '99' }
+
+    before do
+      expect(ScreeningRepository).to receive(:submit)
+        .with(security_token, screening_id)
+        .and_return(nil)
+    end
+
+    it 'submits screening' do
+      post :submit, params: { id: screening_id }, session: session
+      expect(response).to be_successful
+      expect(response.body).to eq ''
+    end
+  end
 end

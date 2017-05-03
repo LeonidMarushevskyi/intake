@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
 
 Rails.application.routes.draw do
   root 'home#index'
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
+          post 'submit', constraints: Routes::ActiveReferralSubmitConstraint
         end
       end
 
@@ -50,6 +52,7 @@ Rails.application.routes.draw do
     get 'api/v1/screenings/:id' => 'dev#null', as: :intake_api_screening
     get 'api/v1/screenings/:id/history_of_involvements' => 'dev#null',
         as: :intake_api_history_of_involvements
+    post 'api/v1/screenings/:id/submit' => 'dev#null', as: :intake_api_screening_submit
     get 'api/v1/participants' => 'dev#null', as: :intake_api_participants
     get 'api/v1/participants/:id' => 'dev#null', as: :intake_api_participant
   end

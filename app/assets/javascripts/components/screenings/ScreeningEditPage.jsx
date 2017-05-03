@@ -15,6 +15,7 @@ import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import * as IntakeConfig from 'config'
 
 export class ScreeningEditPage extends React.Component {
   constructor(props, context) {
@@ -272,7 +273,14 @@ export class ScreeningEditPage extends React.Component {
         }
         <div className='row'>
           <div className='centered'>
-            <button className='btn btn-primary' data-toggle='modal' data-target='#submitModal'>Submit</button>
+            <button
+              className='btn btn-primary'
+              data-toggle='modal'
+              data-target='#submitModal'
+              onClick={(_event) => IntakeConfig.config().referral_submit && this.props.actions.submitScreening(this.props.params.id)}
+            >
+              Submit
+            </button>
           </div>
         </div>
         <div aria-label='submit modal confirmation' className='modal fade' id='submitModal'>
