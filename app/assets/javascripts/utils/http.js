@@ -87,7 +87,8 @@ export function request(method, url, data, options) {
     }, options || {}))
       .done(resolve).fail((response) => {
         if (response.status === STATUS_CODES.forbidden) {
-          const currentLocation = encodeURIComponent(window.location)
+          const firstIndex = 0
+          const currentLocation = encodeURIComponent(window.location.href.split('?')[firstIndex])
           const loginBaseUrl = window.org.intake.config.authentication_login_url
           window.location = `${loginBaseUrl}${currentLocation}`
         } else {

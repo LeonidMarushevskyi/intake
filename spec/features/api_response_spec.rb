@@ -23,7 +23,7 @@ feature 'api responses' do
 
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body('I failed', status: 403))
-    visit screening_path(id: screening.id)
+    visit screening_path(id: screening.id, params: { bar: 'foo' })
 
     # have_current_path waits for the async call to finish, but doesn't verify url params
     # comparing the current_url to login_url compares the full strings
