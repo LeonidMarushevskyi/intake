@@ -17,7 +17,7 @@ feature 'Submit Screening' do
         .and_return(status: 200)
     end
 
-    scenario 'displays a success modal and submits a screening to the API' do
+    scenario 'displays a success alert and submits a screening to the API' do
       Feature.run_with_activated(:referral_submit) do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
@@ -26,9 +26,6 @@ feature 'Submit Screening' do
         ).to have_been_made
         expect(page.driver.browser.switch_to.alert.text).to eq('Successfully submitted screening')
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content(
-          'Congratulations! You have completed the process to submit a screening.'
-        )
       end
     end
   end
@@ -40,7 +37,7 @@ feature 'Submit Screening' do
         .and_return(json_body(error_json, status: 400))
     end
 
-    scenario 'displays a success modal and alert with the error responseText' do
+    scenario 'displays alert with the error responseText' do
       Feature.run_with_activated(:referral_submit) do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
@@ -49,9 +46,6 @@ feature 'Submit Screening' do
         ).to have_been_made
         expect(page.driver.browser.switch_to.alert.text).to include(error_json)
         page.driver.browser.switch_to.alert.accept
-        expect(page).to have_content(
-          'Congratulations! You have completed the process to submit a screening.'
-        )
       end
     end
   end
