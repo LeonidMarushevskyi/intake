@@ -16,7 +16,7 @@ describe('AllegationsShowView', () => {
     expect(component.text()).toContain('Allegation(s)')
   })
 
-  it('renders rows for allegations', () => {
+  it('renders rows for allegations, with allegation types in alphabetical order', () => {
     const bart = {
       id: '1',
       first_name: 'Bart',
@@ -34,7 +34,7 @@ describe('AllegationsShowView', () => {
     }
     const allegations = Immutable.fromJS([
       {id: '10', victim: bart, perpetrator: homer, allegation_types: ['Exploitation']},
-      {id: '11', victim: bart, perpetrator: marge, allegation_types: ['General neglect', 'Severe neglect']},
+      {id: '11', victim: bart, perpetrator: marge, allegation_types: ['Severe neglect', 'General neglect']},
     ])
     const props = {...requiredProps, allegations}
     const component = shallow(<AllegationsShowView {...props} />)
