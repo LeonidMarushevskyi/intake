@@ -39,6 +39,22 @@ export function saveScreening(screening) {
   )
 }
 
+export function updateParticipantSuccess(participant) {
+  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+}
+
+export function saveParticipant(participant) {
+  return (dispatch) => (
+    Utils.request(
+      'PUT',
+        `/api/v1/participants/${participant.id}`,
+        JSON.stringify({participant: participant}),
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+  )
+}
+
 export function createParticipantSuccess(participant) {
   return {type: types.CREATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
 }
@@ -73,19 +89,22 @@ export function deleteParticipant(id) {
   )
 }
 
-export function updateParticipantSuccess(participant) {
-  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
+  return {
+    type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
+    history_of_involvements: Immutable.fromJS(history_of_involvements),
+  }
 }
 
-export function saveParticipant(participant) {
+export function fetchHistoryOfInvolvements(screeningId) {
   return (dispatch) => (
     Utils.request(
-      'PUT',
-        `/api/v1/participants/${participant.id}`,
-        JSON.stringify({participant: participant}),
+      'GET',
+        `/api/v1/screenings/${screeningId}/history_of_involvements`,
+        null,
         {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+    .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
   )
 }
 
@@ -115,21 +134,3 @@ export function submitScreening(screeningId) {
   )
 }
 
-export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
-  return {
-    type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
-    history_of_involvements: Immutable.fromJS(history_of_involvements),
-  }
-}
-
-export function fetchHistoryOfInvolvements(screeningId) {
-  return (dispatch) => (
-    Utils.request(
-      'GET',
-        `/api/v1/screenings/${screeningId}/history_of_involvements`,
-        null,
-        {contentType: 'application/json'}
-    )
-    .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
-  )
-}
