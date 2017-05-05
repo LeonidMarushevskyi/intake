@@ -27,15 +27,16 @@ const AllegationsShowView = ({allegations, onEdit}) => (
               </tr>
             </thead>
             <tbody>
-              {allegations.map((allegation) =>
-                allegation.get('allegation_types').map((allegationType) =>
+              {allegations.map((allegation) => {
+                const sortedAllegationTypes = allegation.get('allegation_types').sort()
+                return sortedAllegationTypes.map((allegationType) =>
                   <tr>
                     <td><strong>{nameFormatter(allegation.get('victim'))}</strong></td>
                     <td>{nameFormatter(allegation.get('perpetrator'))}</td>
                     <td>{allegationType}</td>
                   </tr>
                 )
-              )}
+              })}
             </tbody>
           </table>
         </div>
