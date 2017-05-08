@@ -192,18 +192,20 @@ describe('screening actions', () => {
     })
 
     describe('when server responds with success', () => {
-      beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
+      const referralId = '44'
+      const jsonResponse = {referral_id: referralId}
+      beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(jsonResponse)))
 
       it('dispatches a submitScreeningSuccess', () => {
-        const expectedActions = [screeningActions.submitScreeningSuccess()]
+        const expectedActions = [screeningActions.submitScreeningSuccess(jsonResponse)]
         store.dispatch(screeningActions.submitScreening(screeningId)).then(() =>
           expect(store.getActions()).toEqual(expectedActions)
         )
       })
 
-      it('displays an success alert', () => {
+      it('displays an success alert with the referralId', () => {
         store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
-          expect(window.alert).toHaveBeenCalledWith('Successfully submitted screening')
+          expect(window.alert).toHaveBeenCalledWith(`Successfully created referral ${referralId}`)
         })
       })
     })

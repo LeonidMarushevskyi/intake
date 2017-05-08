@@ -155,17 +155,20 @@ describe Api::V1::ScreeningsController do
 
   describe '#submit' do
     let(:screening_id) { '99' }
+    let(:submit_response) do
+      { referral_id: FFaker::Guid.guid }
+    end
 
     before do
       expect(ScreeningRepository).to receive(:submit)
         .with(security_token, screening_id)
-        .and_return(nil)
+        .and_return(submit_response)
     end
 
     it 'submits screening' do
       post :submit, params: { id: screening_id }, session: session
       expect(response).to be_successful
-      expect(response.body).to eq ''
+      expect(response.body).to eq submit_response.to_json
     end
   end
 end

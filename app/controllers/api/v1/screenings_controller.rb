@@ -76,9 +76,7 @@ module Api
       end
 
       def submit
-        ScreeningRepository.submit(
-          session[:security_token], params[:id]
-        )
+        render json: ScreeningRepository.submit(session[:security_token], params[:id])
       end
 
       private

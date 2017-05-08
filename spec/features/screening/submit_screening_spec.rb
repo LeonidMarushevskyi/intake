@@ -22,9 +22,10 @@ feature 'Submit Screening' do
     end
 
     context 'when successfully submmitting referral' do
+      let(:referral_id) { FFaker::Guid.guid }
       before do
         stub_request(:post, intake_api_screening_submit_url(existing_screening.id))
-          .and_return(status: 200)
+          .and_return(json_body({ referral_id: referral_id }.to_json, status: 201))
       end
 
       scenario 'displays a success modal and submits a screening to the API' do
@@ -35,7 +36,7 @@ feature 'Submit Screening' do
           a_request(:post, intake_api_screening_submit_url(existing_screening.id))
         ).to have_been_made
 
-        expect(alert_dialog.text).to eq('Successfully submitted screening')
+        expect(alert_dialog.text).to eq("Successfully created referral #{referral_id}")
         alert_dialog.accept
 
         within '#submitModal' do

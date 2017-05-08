@@ -108,9 +108,10 @@ export function fetchHistoryOfInvolvements(screeningId) {
   )
 }
 
-export function submitScreeningSuccess() {
+export function submitScreeningSuccess(jsonResponse) {
+  const referralId = jsonResponse.referral_id
   /* eslint-disable no-alert */
-  alert('Successfully submitted screening')
+  alert(`Successfully created referral ${referralId}`)
   /* eslint-enable no-alert */
   return {
     type: types.SUBMIT_SCREENING_SUCCESS,

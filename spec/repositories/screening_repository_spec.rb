@@ -128,10 +128,14 @@ describe ScreeningRepository do
 
   describe '.submit' do
     let(:screening_id) { '42' }
-    it 'makes a post request to /api/v1/screenings/:id/submit' do
+    let(:response_body) { double(:response_body) }
+    let(:response) { double(:response, body: response_body) }
+
+    it 'responds with response body' do
       expect(API).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}/submit", :post)
-      described_class.submit(security_token, screening_id)
+        .and_return(response)
+      expect(described_class.submit(security_token, screening_id)).to eq response_body
     end
   end
 end
