@@ -11,6 +11,7 @@ gem 'pundit'
 gem 'rails', '~> 5.0.1'
 gem 'redis-rails'
 gem 'virtus'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false

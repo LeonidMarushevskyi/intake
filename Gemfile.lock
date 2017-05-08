@@ -183,6 +183,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustache (0.99.8)
+    newrelic_rpm (4.1.0.333)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -391,6 +392,7 @@ DEPENDENCIES
   headless (= 2.3.1)
   i18n-tasks
   license_finder
+  newrelic_rpm
   pry
   pry-byebug
   pry-doc
@@ -417,4 +419,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
