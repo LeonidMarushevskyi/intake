@@ -263,6 +263,9 @@ GEM
       redis-store (~> 1.2.0)
     redis-store (1.2.0)
       redis (>= 2.2)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -392,6 +395,7 @@ DEPENDENCIES
   rails (~> 5.0.1)
   rails-controller-testing
   redis-rails
+  responders
   rspec-rails (~> 3.4)
   rspec_junit_formatter
   rubocop

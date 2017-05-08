@@ -10,6 +10,7 @@ gem 'puma'
 gem 'pundit'
 gem 'rails', '~> 5.0.1'
 gem 'redis-rails'
+gem 'responders'
 gem 'virtus'
 
 group :development, :test do
