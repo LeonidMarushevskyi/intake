@@ -178,9 +178,10 @@ describe('screening actions', () => {
 
   describe('.submitScreening', () => {
     const screeningId = '3'
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
+    beforeEach(() => spyOn(window, 'alert'))
 
     it('submits a screening to the server', () => {
+      spyOn(Utils, 'request').and.returnValue(Promise.resolve())
       store.dispatch(screeningActions.submitScreening(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
@@ -190,10 +191,40 @@ describe('screening actions', () => {
       )
     })
 
-    it('dispatches a submitScreeningSuccess', () => {
-      const expectedActions = [screeningActions.submitScreeningSuccess()]
-      store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
-        expect(store.getActions()).toEqual(expectedActions)
+    describe('when server responds with success', () => {
+      beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
+
+      it('dispatches a submitScreeningSuccess', () => {
+        const expectedActions = [screeningActions.submitScreeningSuccess()]
+        store.dispatch(screeningActions.submitScreening(screeningId)).then(() =>
+          expect(store.getActions()).toEqual(expectedActions)
+        )
+      })
+
+      it('displays an success alert', () => {
+        store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
+          expect(window.alert).toHaveBeenCalledWith('Successfully submitted screening')
+        })
+      })
+    })
+
+    describe('when server responds with failure', () => {
+      const jsonFailureResponse = {responseText: 'Failure response message'}
+      beforeEach(() => {
+        spyOn(Utils, 'request').and.returnValue(Promise.reject(jsonFailureResponse))
+      })
+
+      it('dispatches a submitScreeningFailure', () => {
+        const expectedActions = [screeningActions.submitScreeningFailure(jsonFailureResponse)]
+        store.dispatch(screeningActions.submitScreening(screeningId)).then(() =>
+          expect(store.getActions()).toEqual(expectedActions)
+        )
+      })
+
+      it('displays an response in an alert', () => {
+        store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
+          expect(window.alert).toHaveBeenCalledWith('Failure response message')
+        })
       })
     })
   })

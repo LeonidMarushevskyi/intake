@@ -109,8 +109,20 @@ export function fetchHistoryOfInvolvements(screeningId) {
 }
 
 export function submitScreeningSuccess() {
+  /* eslint-disable no-alert */
+  alert('Successfully submitted screening')
+  /* eslint-enable no-alert */
   return {
     type: types.SUBMIT_SCREENING_SUCCESS,
+  }
+}
+
+export function submitScreeningFailure(jsonResponse) {
+  /* eslint-disable no-alert */
+  alert(jsonResponse.responseText)
+  /* eslint-enable no-alert */
+  return {
+    type: types.SUBMIT_SCREENING_FAILURE,
   }
 }
 
@@ -123,13 +135,8 @@ export function submitScreening(screeningId) {
         {contentType: 'application/json'}
     )
     .then(
-      (jsonResponse) => {
-        /* eslint-disable no-alert */
-        alert('Successfully submitted screening')
-        dispatch(submitScreeningSuccess(jsonResponse))
-      },
-      (jsonResponse) => alert(jsonResponse.responseText)
-      /* eslint-enable no-alert */
+      (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
+      (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
     )
   )
 }
