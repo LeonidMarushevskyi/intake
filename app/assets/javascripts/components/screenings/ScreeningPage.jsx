@@ -15,9 +15,10 @@ import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {IndexLink, Link} from 'react-router'
 import * as IntakeConfig from 'config'
 
-export class ScreeningEditPage extends React.Component {
+export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -43,6 +44,7 @@ export class ScreeningEditPage extends React.Component {
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
     })
+    this.mode = this.props.params.mode || this.props.mode
   }
 
   componentDidMount() {
@@ -139,28 +141,34 @@ export class ScreeningEditPage extends React.Component {
     return mergedParticipants
   }
 
+  renderAutocompleter() {
+    return (
+      <div className='card edit double-gap-top' id='search-card'>
+        <div className='card-header'>
+          <span>Search</span>
+        </div>
+        <div className='card-body'>
+          <div className='row'>
+            <div className='col-md-12'>
+              <label className='pull-left' htmlFor='screening_participants'>Search for any person</label>
+              <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
+              <Autocompleter id='screening_participants'
+                onSelect={this.createParticipant}
+                enableFooter={true}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   renderParticipantsCard() {
     const participants = this.participants()
 
     return (
       <div>
-        <div className='card edit double-gap-top' id='search-card'>
-          <div className='card-header'>
-            <span>Search</span>
-          </div>
-          <div className='card-body'>
-            <div className='row'>
-              <div className='col-md-12'>
-                <label className='pull-left' htmlFor='screening_participants'>Search for any person</label>
-                <span className='c-gray pull-left half-gap-left'>(Children, parents, collaterals, reporters, alleged perpetrators...)</span>
-                <Autocompleter id='screening_participants'
-                  onSelect={this.createParticipant}
-                  enableFooter={true}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        { this.mode === 'edit' && this.renderAutocompleter() }
         {
           participants.map((participant) =>
             <ParticipantCardView
@@ -170,11 +178,19 @@ export class ScreeningEditPage extends React.Component {
               onChange={this.setParticipantField}
               onSave={this.saveParticipant}
               participant={participant}
-              mode='edit'
+              mode={this.mode}
             />
             )
-
         }
+      </div>
+    )
+  }
+
+  renderFooterLinks() {
+    return (
+      <div>
+        <IndexLink to='/' className='gap-right'>Home</IndexLink>
+        <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>
       </div>
     )
   }
@@ -184,11 +200,11 @@ export class ScreeningEditPage extends React.Component {
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     return (
       <div>
-        <h1>{`Edit Screening #${mergedScreening.get('reference')}`}</h1>
+        <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
         {
           loaded &&
           <ScreeningInformationCardView
-            mode='edit'
+            mode={this.mode}
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
@@ -199,18 +215,18 @@ export class ScreeningEditPage extends React.Component {
         {
           loaded &&
           <NarrativeCardView
-            mode='edit'
-            narrative={mergedScreening.get('report_narrative')}
+            mode={this.mode}
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
             ref='narrativeCard'
+            narrative={mergedScreening.get('report_narrative')}
           />
         }
         {
           loaded &&
           <IncidentInformationCardView
-            mode='edit'
+            mode={this.mode}
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
@@ -221,26 +237,26 @@ export class ScreeningEditPage extends React.Component {
         {
           loaded &&
             <AllegationsCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onSave={this.cardSave}
+              setField={this.setField}
               allegations={sortedAllegationsList(
                 screening.get('id'),
                 this.props.participants,
                 screening.get('allegations'),
                 this.state.screeningEdits.get('allegations')
               )}
-              mode='edit'
-              onCancel={this.cancelEdit}
-              onSave={this.cardSave}
-              setField={this.setField}
             />
         }
         {
           loaded &&
             <WorkerSafetyCardView
-              screening={mergedScreening}
-              mode='edit'
+              mode={this.mode}
               onCancel={this.cancelEdit}
               onSave={this.cardSave}
               onChange={this.setField}
+              screening={mergedScreening}
             />
         }
         <HistoryCard
@@ -252,18 +268,18 @@ export class ScreeningEditPage extends React.Component {
         {
           loaded &&
             <CrossReportCardView
-              crossReport={mergedScreening.get('cross_reports')}
-              mode='edit'
+              mode={this.mode}
               onCancel={this.cancelEdit}
-              onChange={this.setField}
               onSave={this.cardSave}
+              onChange={this.setField}
               ref='crossReportCard'
+              crossReport={mergedScreening.get('cross_reports')}
             />
         }
         {
           loaded &&
           <DecisionCardView
-            mode='edit'
+            mode={this.mode}
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
@@ -308,17 +324,23 @@ export class ScreeningEditPage extends React.Component {
             </div>
           </div>
         </div>
+        { this.mode === 'show' && this.renderFooterLinks() }
       </div>
     )
   }
 }
 
-ScreeningEditPage.propTypes = {
+ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   involvements: PropTypes.object.isRequired,
+  mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
+}
+
+ScreeningPage.defaultProps = {
+  mode: 'show',
 }
 
 export function mapStateToProps(state, _ownProps) {
@@ -335,4 +357,5 @@ function mapDispatchToProps(dispatch, _ownProps) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScreeningEditPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningPage)
+

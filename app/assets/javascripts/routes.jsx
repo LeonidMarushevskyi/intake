@@ -6,8 +6,7 @@ import HomePage from 'components/HomePage'
 import PersonNewPage from 'components/people/PersonNewPage'
 import PersonShowPage from 'components/people/PersonShowPage'
 import PersonEditPage from 'components/people/PersonEditPage'
-import ScreeningEditPage from 'components/screenings/ScreeningEditPage'
-import ScreeningShowPage from 'components/screenings/ScreeningShowPage'
+import ScreeningPage from 'components/screenings/ScreeningPage'
 
 const historyIntake = useRouterHistory(createHistory)({
   basename: window.org.intake.config.base_path,
@@ -20,8 +19,8 @@ export default (
       <Route path='people/new' component={PersonNewPage} />
       <Route path='people/:id' component={PersonShowPage} />
       <Route path='people/:id/edit' component={PersonEditPage} />
-      <Route path='screenings/:id' component={ScreeningShowPage} />
-      <Route path='screenings/:id/edit' component={ScreeningEditPage} />
+      <Route path='screenings/:id' component={ScreeningPage}/>
+      <Route path='screenings/:id/:mode' component={ScreeningPage} />
     </Route>
   </Router>
 )

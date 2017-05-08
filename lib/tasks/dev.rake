@@ -1,5 +1,9 @@
-# rubocop:disable BlockLength
 # frozen_string_literal: true
+
+def host_env_string
+  'REDIS_HOST=$(docker-machine ip intake) REDIS_PORT=6379 API_URL=http://api'
+end
+
 namespace :spec do
   def spec_cmd
     # first ARGV is task name
@@ -8,12 +12,13 @@ namespace :spec do
     "bundle exec rake spec #{extra}"
   end
 
+  task :intake do
+    system "docker-compose exec ca_intake #{spec_cmd}"
+  end
+
   namespace :intake do
-    task :default do
-      system "docker-compose exec ca_intake #{spec_cmd}"
-    end
-    task local: :env do
-      system " #{spec_cmd}"
+    task :local do
+      system "#{host_env_string} #{spec_cmd}"
     end
   end
 
@@ -26,12 +31,6 @@ namespace :spec do
     Rake::Task['spec:api'].invoke
     system 'bin/lint'
     system 'bin/karma'
-  end
-
-  task :env do
-    system 'export REDIS_HOST=$(docker-machine ip intake)'
-    system 'export REDIS_PORT=6379'
-    system 'export API_URL=http://api'
   end
 end
 
