@@ -64,3 +64,13 @@ namespace :logs do
     system 'docker-compose logs -f api'
   end
 end
+
+namespace :console do
+  task :intake do
+    system 'docker-compose exec ca_intake bundle exec rails console'
+  end
+
+  task :api do
+    system 'docker-compose exec api bundle exec rails console'
+  end
+end
