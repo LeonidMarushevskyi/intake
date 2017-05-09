@@ -9,7 +9,7 @@
   -webkit-appearance: none;
   appearance: none;
   border: 0;
-  border-radius: .3rem;
+  border-radius: 10rem;
   cursor: pointer;
   display: inline-block;
   font-family: $font-family;
@@ -17,9 +17,7 @@
   -webkit-font-smoothing: antialiased;
   font-weight: $bold-weight;
   line-height: 1;
-  margin-bottom: .5em;
-  margin-right: .5em;
-  margin-top: .5em;
+  margin-left: .5em;
   outline: none;
   padding: 1rem 2rem;
   text-align: center;
