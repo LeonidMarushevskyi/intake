@@ -6,17 +6,15 @@
 
 .card {
   background-color: $white;
+  color: #darkest-grey;
 
   label {
+    color: $dark-grey;
     margin-top: 3rem;
   }
 
-  .c-gray {
-    color: $coal;
-  }
-
   .card-header {
-    border-bottom: .1rem solid $dark-sand;
+    border-bottom: .1rem solid $lightest-grey;
     display: block;
     font-size: $large-font;
     overflow: hidden;
@@ -63,6 +61,6 @@
   }
 
   &.edit {
-    border-left: .7rem solid $light-blue;
+    border-left: .7rem solid $medium-blue;
   }
 }

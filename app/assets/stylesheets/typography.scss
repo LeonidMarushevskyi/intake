@@ -10,8 +10,8 @@ html {
 }
 
 body {
-  background-color: $light-sand;
-  color: $coal;
+  background-color: $lightest-grey;
+  color: $darkest-grey;
   font-family: $font-family;
   font-size: 1.7rem;
 }
@@ -78,7 +78,7 @@ h4 {
 }
 
 pre {
-  background-color: $coal;
+  background-color: $darkest-grey;
   border: 0;
   border-radius: 0;
   font-family: $code-font-family;

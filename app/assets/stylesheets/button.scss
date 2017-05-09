@@ -27,31 +27,31 @@
 
   &.btn-default {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $medium-grey;
+    box-shadow: inset 0 0 0 2px $dark-grey;
     color: $dark-grey;
   }
 
   &.btn-default:hover {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $dark-grey;
-    color: $dark-grey;
+    box-shadow: inset 0 0 0 2px $darkest-grey;
+    color: $darkest-grey;
   }
 
   &.btn-default:focus {
     box-shadow: inset 0 0 0 2px $primary-darkest-blue, 0 0 3px $focus-color, 0 0 7px $focus-color;
-    color: $dark-grey;
+    color: $darkest-grey;
   }
 
   &.btn-default:active {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $coal;
-    color: $coal;
+    box-shadow: inset 0 0 0 2px $darkest-grey;
+    color: $darkest-grey;
   }
 
   &.btn-primary {
     background-color: transparent;
-    box-shadow: inset 0 0 0 2px $light-blue;
-    color: $dark-blue;
+    box-shadow: inset 0 0 0 2px $medium-blue;
+    color: $medium-blue;
   }
 
   &.btn-primary:hover {
