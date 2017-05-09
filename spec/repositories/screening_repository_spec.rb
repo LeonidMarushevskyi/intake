@@ -107,10 +107,10 @@ describe ScreeningRepository do
 
   describe '.history_of_involvements' do
     let(:screening_id) { '11' }
-    let(:response) { double(:response, body: involvements) }
-    let(:screening_one) { { 'name' => 'New Screening One' } }
-    let(:screening_two) { { 'name' => 'New Screening Two' } }
-    let(:involvements) { [screening_one, screening_two] }
+    let(:response) { double(:response, body: screenings.to_json) }
+    let(:screening_one) { { id: '123456789' } }
+    let(:screening_two) { { id: '987654321' } }
+    let(:screenings) { [screening_one, screening_two] }
 
     before do
       expect(API).to receive(:make_api_call)
@@ -119,9 +119,9 @@ describe ScreeningRepository do
     end
 
     it 'returns the history of involvements' do
-      involvements = described_class.history_of_involvements(security_token, screening_id)
-      expect(involvements[0].name).to eq('New Screening One')
-      expect(involvements[1].name).to eq('New Screening Two')
+      screenings = JSON.parse described_class.history_of_involvements(security_token, screening_id)
+      expect(screenings[0]['id']).to eq('123456789')
+      expect(screenings[1]['id']).to eq('987654321')
     end
   end
 

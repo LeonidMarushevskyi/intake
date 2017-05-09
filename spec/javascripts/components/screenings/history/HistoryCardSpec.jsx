@@ -11,7 +11,7 @@ describe('HistoryCard', () => {
     screeningId: '33',
   }
   const requiredScreeningAttrs = {
-    participants: [],
+    all_people: Immutable.List(),
   }
 
   describe('#componentWillReceiveProps', () => {
@@ -69,7 +69,7 @@ describe('HistoryCard', () => {
     it('renders the involvement started_at date', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        started_at: '2016-08-13T10:00:00.000Z',
+        start_date: '2016-08-13',
       }])
       const props = {
         ...requiredProps,
@@ -80,10 +80,9 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('08/13/2016')
     })
 
-    it('renders the involvement status In Progress when ended_at is null', () => {
+    it('renders the involvement status In Progress when there is no end_date', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        ended_at: null,
       }])
       const props = {
         ...requiredProps,
@@ -94,10 +93,10 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Screening(In Progress)')
     })
 
-    it('renders the involvement status Closed when ended_at is not null', () => {
+    it('renders the involvement status Closed when end_date is present', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        ended_at: '2016-08-13T10:00:00.000Z',
+        end_date: '2016-08-13',
       }])
       const props = {
         ...requiredProps,
@@ -111,7 +110,7 @@ describe('HistoryCard', () => {
     it('renders the incident county', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        incident_county: 'Sacramento',
+        county_name: 'Sacramento',
       }])
       const props = {
         ...requiredProps,
@@ -122,9 +121,22 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Sacramento')
     })
 
+    it('renders even if all_people is nil', () => {
+      const involvements = Immutable.fromJS([
+        {start_date: '2016-01-01'},
+      ])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const participants = component.find('tbody tr span.participants')
+      expect(participants.text()).toEqual('')
+    })
+
     it('renders all people who are not reporters unless also victim/perp', () => {
       const involvements = Immutable.fromJS([{
-        participants: [{
+        all_people: [{
           first_name: 'Stirling',
           last_name: 'Archer',
           roles: ['Victim'],
@@ -156,7 +168,7 @@ describe('HistoryCard', () => {
 
     it('renders people who do not have a role', () => {
       const involvements = Immutable.fromJS([{
-        participants: [{
+        all_people: [{
           first_name: 'Cheryl',
           last_name: 'Tunt',
           roles: [],
@@ -173,19 +185,8 @@ describe('HistoryCard', () => {
 
     it('renders the reporter', () => {
       const involvements = Immutable.fromJS([{
-        participants: [{
-          first_name: 'Stirling',
-          last_name: 'Archer',
-          roles: ['Victim'],
-        }, {
-          first_name: 'Lana',
-          last_name: 'Kane',
-          roles: ['Perpetrator'],
-        }, {
-          first_name: 'Malory',
-          last_name: 'Archer',
-          roles: ['Victim', 'Mandated Reporter'],
-        }],
+        ...requiredScreeningAttrs,
+        reporter: {first_name: 'Alex', last_name: 'Hanson'},
       }])
       const props = {
         ...requiredProps,
@@ -193,13 +194,13 @@ describe('HistoryCard', () => {
       }
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr span.reporter')
-      expect(tr.text()).toContain('Reporter: Malory Archer')
+      expect(tr.text()).toContain('Reporter: Alex Hanson')
     })
 
     it('renders the assigned worker', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        assignee: 'Algernop Krieger',
+        assigned_social_worker: {first_name: 'Bob', last_name: 'Smith'},
       }])
       const props = {
         ...requiredProps,
@@ -207,13 +208,12 @@ describe('HistoryCard', () => {
       }
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr span.assignee')
-      expect(tr.text()).toContain('Worker: Algernop Krieger')
+      expect(tr.text()).toContain('Worker: Bob Smith')
     })
 
     it('renders the no worker when assignee is null', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        assignee: null,
       }])
       const props = {
         ...requiredProps,

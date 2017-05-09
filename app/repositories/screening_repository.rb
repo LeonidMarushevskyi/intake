@@ -50,9 +50,7 @@ class ScreeningRepository
       Rails.application.routes.url_helpers.intake_api_history_of_involvements_path(id),
       :get
     )
-    response.body.map do |result_attributes|
-      Screening.new(result_attributes)
-    end
+    response.body
   end
 
   def self.submit(security_token, id)

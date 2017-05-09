@@ -137,7 +137,7 @@ describe Api::V1::ScreeningsController do
   end
 
   describe '#history_of_involvements' do
-    let(:involvements) { [{ id: 1 }, { id: 2 }] }
+    let(:involvements) { [{ 'id' => 1 }, { 'id' => 2 }] }
     let(:screening_id) { '99' }
 
     before do
