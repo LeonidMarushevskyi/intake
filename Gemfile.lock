@@ -212,8 +212,6 @@ GEM
       coderay (~> 1.1)
     public_suffix (2.0.5)
     puma (3.7.0)
-    pundit (1.1.0)
-      activesupport (>= 3.0.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -391,7 +389,6 @@ DEPENDENCIES
   pry-stack_explorer
   pry-theme
   puma
-  pundit
   rails (~> 5.0.1)
   rails-controller-testing
   redis-rails
