@@ -52,10 +52,16 @@ export default class HistoryCard extends React.Component {
                       const assignee = involvement.get('assigned_social_worker')
                       const nonReporterTypes = Immutable.fromJS(ROLE_TYPE_NON_REPORTER)
 
-                      const nonOnlyReporters = participants.filter((p) => {
-                        const roles = p.get('roles')
-                        return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
-                      })
+                      let nonOnlyReporters
+
+                      if (participants) {
+                        nonOnlyReporters = participants.filter((p) => {
+                          const roles = p.get('roles')
+                          return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
+                        })
+                      } else {
+                        nonOnlyReporters = Immutable.List()
+                      }
 
                       const status = endedAt ? 'Closed' : 'In Progress'
                       return (

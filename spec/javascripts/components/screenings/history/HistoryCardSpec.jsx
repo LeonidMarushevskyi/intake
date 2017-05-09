@@ -121,6 +121,19 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Sacramento')
     })
 
+    it('renders even if all_people is nil', () => {
+      const involvements = Immutable.fromJS([
+        {start_date: '2016-01-01'},
+      ])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const participants = component.find('tbody tr span.participants')
+      expect(participants.text()).toEqual('')
+    })
+
     it('renders all people who are not reporters unless also victim/perp', () => {
       const involvements = Immutable.fromJS([{
         all_people: [{
