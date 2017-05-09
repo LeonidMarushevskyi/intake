@@ -5,16 +5,22 @@
 /////////////////////////////////////////
 
 .card {
+  background-color: $white;
+
+  label {
+    margin-top: 3rem;
+  }
 
   .c-gray {
     color: $coal;
   }
 
   .card-header {
+    border-bottom: .1rem solid $dark-sand;
     display: block;
     font-size: $large-font;
     overflow: hidden;
-    padding: $base-spacing / 1.5  $double-spacing;
+    padding: $base-spacing $double-spacing;
 
     span {
       float: left;
@@ -37,7 +43,7 @@
 
   .card-body {
     border-top: 0;
-    padding: 0 $double-spacing $base-spacing;
+    padding: 0 $double-spacing $double-spacing;
 
     .btn {
       margin-bottom: $base-spacing;
@@ -58,15 +64,6 @@
   }
 
   &.edit {
-    background-color: $white;
-    border-left: .5rem solid $light-blue;
-  }
-
-  &.show {
-    border-left: .5rem solid $medium-grey;
-
-    .card-header {
-      border-bottom: .2rem solid $dark-sand;
-    }
+    border-left: .7rem solid $light-blue;
   }
 }
