@@ -21,7 +21,7 @@ feature 'edit allegations' do
       :participant,
       first_name: 'Bart',
       last_name: 'Simpson',
-      roles: %w(Victim Perpetrator)
+      roles: %w[Victim Perpetrator]
     )
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
     screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])

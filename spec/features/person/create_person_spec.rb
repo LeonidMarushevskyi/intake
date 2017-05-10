@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Create Person' do
@@ -12,7 +13,7 @@ feature 'Create Person' do
       middle_name: 'Jay',
       ssn: '123-23-1234',
       name_suffix: 'esq',
-      languages: %w(English Farsi),
+      languages: %w[English Farsi],
       races: [
         { race: 'Asian', race_detail: 'Chinese' },
         { race: 'Black or African American' }

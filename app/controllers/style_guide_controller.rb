@@ -4,7 +4,7 @@
 # and UX patterns used for the CA Intake project
 class StyleGuideController < ApplicationController # :nodoc:
   layout 'style_guide'
-  PAGES = %w(
+  PAGES = %w[
     forms
     tables
     colors
@@ -14,7 +14,7 @@ class StyleGuideController < ApplicationController # :nodoc:
     alerts
     navigation
     cards
-  ).freeze
+  ].freeze
 
   def index; end
 

@@ -6,6 +6,6 @@ class VersionController < ApplicationController
   def index
     current_sha = `git rev-parse HEAD`.strip
     message = current_sha.present? ? current_sha : 'Git not found'
-    render text: message
+    render plain: message
   end
 end

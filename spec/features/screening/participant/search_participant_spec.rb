@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 require 'spec_helper'
 require 'feature/testing'
@@ -82,7 +83,7 @@ feature 'searching a participant in autocompleter' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
-      languages: %w(French Italian),
+      languages: %w[French Italian],
       addresses: [address],
       phone_numbers: [phone_number],
       races: [
@@ -102,7 +103,7 @@ feature 'searching a participant in autocompleter' do
 
   context 'searching for a person' do
     scenario 'by first name' do
-      %w(Ma Mar Marg Marge).each do |search_text|
+      %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [person].to_json,
                       status: 200,
@@ -135,7 +136,7 @@ feature 'searching a participant in autocompleter' do
         first_name: 'Marge',
         highlight: { first_name: '<em>Marg</em>e' }
       )
-      %w(M Ma Mar Marg).each do |search_text|
+      %w[M Ma Mar Marg].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [marge].to_json,
                       status: 200,
@@ -155,7 +156,7 @@ feature 'searching a participant in autocompleter' do
     scenario 'person without phone_numbers' do
       person_with_out_phone_numbers = person.as_json.except('phone_numbers')
 
-      %w(Ma Mar Marg Marge).each do |search_text|
+      %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [person_with_out_phone_numbers].to_json,
                       status: 200,
@@ -215,7 +216,7 @@ feature 'searching a participant in autocompleter' do
 
     scenario 'person with name only' do
       person_with_name_only = person.as_json.extract!('first_name', 'last_name')
-      %w(Ma Mar Marg Marge).each do |search_text|
+      %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [person_with_name_only].to_json,
                       status: 200,
@@ -239,7 +240,7 @@ feature 'searching a participant in autocompleter' do
         date_of_birth: '2011-09-30',
         highlight: { date_of_birth: '<em>2011</em>-09-30' }
       )
-      %w(2 20 201 2011).each do |search_text|
+      %w[2 20 201 2011].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [marge].to_json,
                       status: 200,
@@ -262,7 +263,7 @@ feature 'searching a participant in autocompleter' do
         ssn: '566-23-8765',
         highlight: { first_name: '<em>566</em>-23-8765' }
       )
-      %w(5 56 566).each do |search_text|
+      %w[5 56 566].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(body: [marge].to_json,
                       status: 200,

@@ -79,7 +79,7 @@ describe Api::V1::ScreeningsController do
         }]
       }.with_indifferent_access
     end
-    let(:unallowed_params) { [:perpetrator, :victim] }
+    let(:unallowed_params) { %i[perpetrator victim] }
     let(:updated_screening) { double(:screening, as_json: { 'id' => 'updated_screening' }) }
 
     before do
@@ -120,12 +120,12 @@ describe Api::V1::ScreeningsController do
     context 'with screening_decisions' do
       let(:screenings) { double(:screenings, as_json: []) }
       let(:params) do
-        { screening_decisions: %w(screen_out promote_to_referral) }
+        { screening_decisions: %w[screen_out promote_to_referral] }
       end
 
       before do
         expect(ScreeningRepository).to receive(:search)
-          .with(security_token, 'screening_decisions' => %w(screen_out promote_to_referral))
+          .with(security_token, 'screening_decisions' => %w[screen_out promote_to_referral])
           .and_return(screenings)
       end
 

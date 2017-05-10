@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'faraday'
@@ -7,7 +8,7 @@ gem 'feature'
 gem 'haml-rails'
 gem 'newrelic_rpm'
 gem 'puma'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.0'
 gem 'redis-rails'
 gem 'responders'
 gem 'virtus'

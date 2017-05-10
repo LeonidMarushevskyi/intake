@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # ApiError is an API error wrapper that produces more information about the exception.
 class ApiError < StandardError

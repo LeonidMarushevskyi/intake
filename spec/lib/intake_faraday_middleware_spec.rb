@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'intake_faraday_middleware'
 
 describe IntakeFaradayMiddleware::RaiseHttpException do

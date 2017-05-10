@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Edit Person' do
@@ -111,7 +112,7 @@ feature 'Edit Person' do
     fill_in_react_select 'Language(s)', with: 'Farsi'
     remove_react_select_option('Language(s)', 'Armenian')
 
-    person.languages = %w(English Farsi)
+    person.languages = %w[English Farsi]
     stub_request(:put, intake_api_person_url(person.id))
       .with(body: person.to_json(except: :id))
       .and_return(status: 200,

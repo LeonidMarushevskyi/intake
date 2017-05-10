@@ -17,7 +17,7 @@ feature 'Edit Screening' do
       type: 'Home'
     )
   end
-  let(:marge_roles) { %w(Victim Perpetrator) }
+  let(:marge_roles) { %w[Victim Perpetrator] }
   let(:marge_phone_number) do
     FactoryGirl.create(
       :phone_number
@@ -338,7 +338,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      has_react_select_field('Role', with: %w(Victim Perpetrator))
+      has_react_select_field('Role', with: %w[Victim Perpetrator])
 
       remove_react_select_option('Role', 'Perpetrator')
       expect(page).to have_no_content('Perpetrator')

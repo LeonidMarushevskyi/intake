@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Routes
   # ActiveReferralSubmitConstraint provides a feature constraint
   # for available routes while release one is inactive

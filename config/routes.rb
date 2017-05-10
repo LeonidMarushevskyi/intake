@@ -1,22 +1,23 @@
 # frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
 
 Rails.application.routes.draw do
   root 'home#index'
   resources :style_guide,
-    only: [:index, :show],
+    only: %i[index show],
     constraints: Routes::InactiveReleaseOneConstraint
 
   resources :screenings,
-    only: [:show, :edit],
+    only: %i[show edit],
     constraints: Routes::InactiveReleaseOneConstraint do
   end
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :screenings,
-        only: [:show, :create, :update, :index],
+        only: %i[show create update index],
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :participants, only: [:create, :destroy, :update]
+      resources :participants, only: %i[create destroy update]
       resource :people, only: [:search] do
         collection do
           get 'search'
@@ -32,13 +33,13 @@ Rails.application.routes.draw do
       end
 
       resources :people,
-        only: [:create, :update, :show],
+        only: %i[create update show],
         constraints: Routes::InactiveReleaseOneConstraint
     end
   end
 
   resources :people,
-    only: [:new, :edit, :show],
+    only: %i[new edit show],
     constraints: Routes::InactiveReleaseOneConstraint
 
   resources :version, only: :index
