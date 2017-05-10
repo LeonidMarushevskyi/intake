@@ -29,7 +29,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
       </div>
       <div className='card-body no-pad-top'>
         <div className='row'>
-          <div className='table-responsive col-md-12'>
+          <div className='col-md-12'>
             <table className='table table-hover'>
               <thead>
                 <tr>
