@@ -125,7 +125,7 @@ describe('ParticipantShowView with no name', () => {
       ssn: '111223333',
     })
     component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
-    expect(component.find('.card-header').html()).toContain('Unknown person')
+    expect(component.find('.card-header').html()).toContain('Unknown Person')
   })
 })
 

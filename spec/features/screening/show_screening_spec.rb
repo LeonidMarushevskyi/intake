@@ -54,7 +54,7 @@ feature 'Show Screening' do
       expect(page).to have_content 'some narrative'
     end
 
-    within '#incident-information-card.show', text: 'Incident Informative' do
+    within '#incident-information-card.show', text: 'Incident Information' do
       expect(page).to have_content '8/11/2016'
       expect(page).to have_content 'Sacramento'
       expect(page).to have_content '123 fake st'
@@ -64,7 +64,7 @@ feature 'Show Screening' do
       expect(page).to have_content "Child's Home"
     end
 
-    within '#decision-card.show', text: 'Decison' do
+    within '#decision-card.show', text: 'Decision' do
       expect(page).to have_content 'Screen out'
       expect(page).to have_content 'Category'
       expect(page).to have_content 'Consultation'
@@ -78,14 +78,14 @@ feature 'Show Screening' do
     end
 
     within '#worker-safety-card', text: 'Worker Safety' do
-      expect(page).to have_css('i', class: 'fa-pencil')
+      expect(page).to have_content('Edit')
       expect(page).to have_content('Worker safety alerts')
       expect(page).to have_content('Additional safety information')
     end
 
     expect(page).to have_css('#history-card.show', text: 'History')
 
-    within '#cross-report-card', text: 'CROSS REPORT' do
+    within '#cross-report-card', text: 'Cross Report' do
       expect(page).to have_content 'District attorney'
       expect(page).to have_content 'SCDA'
       expect(page).to have_content 'Licensing'

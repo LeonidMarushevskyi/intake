@@ -48,7 +48,7 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       first_name: null,
       last_name: null,
-    }))).toEqual('Unknown person')
+    }))).toEqual('Unknown Person')
   })
 
   describe('with middle name', () => {
