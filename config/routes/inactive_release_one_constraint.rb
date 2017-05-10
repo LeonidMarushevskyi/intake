@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Routes
   # InactiveReleaseOneConstraint provides a feature constraint
   # for available routes while release one is inactive

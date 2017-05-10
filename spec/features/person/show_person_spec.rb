@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Show Person' do
@@ -12,7 +13,7 @@ feature 'Show Person' do
       gender: 'male',
       date_of_birth: '05/29/1990',
       ssn: '123-23-1234',
-      languages: %w(Turkish Thai Vietnamese),
+      languages: %w[Turkish Thai Vietnamese],
       races: [
         { race: 'White', race_detail: 'Romanian' },
         { race: 'Asian', race_detail: 'Chinese' },

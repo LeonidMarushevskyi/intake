@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Person do
@@ -35,8 +36,8 @@ describe Person do
           { id: '1', number: '111-111-1111', type: 'Cell' },
           { id: '2', number: '222-222-2222', type: 'Home' }
         ],
-        languages: %w(English Farsi),
-        races: %w(White Asian),
+        languages: %w[English Farsi],
+        races: %w[White Asian],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
           ethnicity_detail: 'Mexican'
@@ -75,8 +76,8 @@ describe Person do
           number: '222-222-2222',
           type: 'Home'
         }],
-        languages: %w(English Farsi),
-        races: %w(White Asian),
+        languages: %w[English Farsi],
+        races: %w[White Asian],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
           ethnicity_detail: 'Mexican'

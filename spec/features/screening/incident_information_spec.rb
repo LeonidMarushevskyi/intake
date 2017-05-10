@@ -37,7 +37,7 @@ feature 'screening incident information card' do
       .and_return(json_body(existing_screening.to_json))
     within '#incident-information-card.edit' do
       fill_in 'Address', with: '33 Whatever Rd'
-      find_field('street_address').send_keys [:backspace, :backspace, :backspace]
+      find_field('street_address').send_keys %i[backspace backspace backspace]
       click_button 'Save'
       expect(
         a_request(:put, intake_api_screening_url(existing_screening.id))

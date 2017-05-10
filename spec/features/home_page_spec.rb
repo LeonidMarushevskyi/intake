@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 require 'feature/testing'
 feature 'home page' do
@@ -21,7 +22,7 @@ feature 'home page' do
         addresses: [address]
       )
 
-      %w(Ma Mar Marg Marge).each do |search_text|
+      %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(:get, intake_api_people_search_url(search_term: search_text))
           .and_return(json_body([marge].to_json, status: 200))
       end
@@ -33,7 +34,7 @@ feature 'home page' do
       fill_in_autocompleter 'People', with: 'Marge'
 
       expect(a_request(:get, intake_api_people_search_url(search_term: 'M'))).to_not have_been_made
-      %w(Ma Mar Marg Marge).each do |search_text|
+      %w[Ma Mar Marg Marge].each do |search_text|
         expect(
           a_request(:get, intake_api_people_search_url(search_term: search_text))
         ).to have_been_made

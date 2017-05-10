@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'capybara/rspec'
 require 'capybara/accessible'
 require 'support/capybara/screenshot'

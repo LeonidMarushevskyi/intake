@@ -16,18 +16,18 @@ module Api
         :person_id,
         :screening_id,
         :ssn,
-        addresses: [
-          :id,
-          :street_address,
-          :city,
-          :state,
-          :zip,
-          :type
+        addresses: %i[
+          id
+          street_address
+          city
+          state
+          zip
+          type
         ],
-        phone_numbers: [
-          :id,
-          :number,
-          :type
+        phone_numbers: %i[
+          id
+          number
+          type
         ],
         roles: []
       ].freeze

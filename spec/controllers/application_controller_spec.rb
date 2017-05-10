@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ApplicationController do
   controller do
     before_action :authenticate_user, if: :authentication_enabled?
     def custom
-      render nothing: true
+      render body: nil
     end
   end
 

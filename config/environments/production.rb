@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -69,5 +70,5 @@ Rails.application.configure do
   # reply_to: ''
   # }
   # config.action_mailer.raise_delivery_errors = false
-  config.eager_load_paths += %W(#{config.root}/lib)
+  config.eager_load_paths += %W[#{config.root}/lib]
 end

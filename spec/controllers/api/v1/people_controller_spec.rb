@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Api::V1::PeopleController do
@@ -30,7 +31,7 @@ describe Api::V1::PeopleController do
           { id: '', number: '111-111-1111', type: 'Cell' },
           { id: '', number: '222-222-2222', type: 'Home' }
         ],
-        languages: %w(English Farsi),
+        languages: %w[English Farsi],
         races: [
           { race: 'Asian', race_detail: 'Chinese' },
           { race: 'Black or African American' }

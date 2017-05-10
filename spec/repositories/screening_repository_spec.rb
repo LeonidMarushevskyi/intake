@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ScreeningRepository do
@@ -89,7 +90,7 @@ describe ScreeningRepository do
     let(:results) { [{ id: '1' }, { id: '2' }] }
     let(:response) { double(:response, body: results) }
     let(:search_terms) do
-      { screening_decisions: %w(promote_to_referral screen_out) }
+      { screening_decisions: %w[promote_to_referral screen_out] }
     end
 
     before do
