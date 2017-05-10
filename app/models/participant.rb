@@ -9,10 +9,15 @@ class Participant
   attribute :first_name
   attribute :gender
   attribute :last_name
+  attribute :middle_name
   attribute :ssn
+  attribute :name_suffix
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]
   attribute :person_id
   attribute :screening_id
   attribute :roles, Array[String]
+  attribute :languages, Array
+  attribute :races, Array
+  attribute :ethnicity, Ethnicity, default: ->(_person, _attribute) { Ethnicity.new }
 end
