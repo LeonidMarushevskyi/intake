@@ -20,18 +20,18 @@ export default class RelationshipsCard extends React.Component {
 
     if (_.isEmpty(relationships) || relationships.isEmpty()) {
       return (
-        <span className='semibold'> has no known relationships.</span>
+        <strong> has no known relationships</strong>
       )
     } else {
       return (
         <span>
-          <span className='semibold'> is the..</span>
+          <strong> is the...</strong>
           <ul className='relationships'>
             {
               relationships.map((relationship) =>
                 <li key={relationship.get('related_person_id')} id={relationship.get('related_person_id')}>
-                  <span className='semibold'>{relationship.get('relationship')} </span>
-                  of {nameFormatter(relationship)}
+                  <strong>{relationship.get('relationship')}</strong>
+                  &nbsp;of {nameFormatter(relationship)}
                 </li>
               )
             }
@@ -59,7 +59,7 @@ export default class RelationshipsCard extends React.Component {
   renderParticipant(participant, index) {
     return (
       <div className='row' key={index}>
-        <div className='col-md-6'>
+        <div className='col-md-6 gap-top'>
           {nameFormatter(participant)}
           {this.renderParticipantRelationships(participant)}
         </div>
