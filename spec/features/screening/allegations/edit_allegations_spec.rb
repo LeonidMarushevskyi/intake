@@ -367,6 +367,7 @@ feature 'edit allegations' do
 
     within '#allegations-card.card.edit' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: ['Severe neglect']
+      page.find('.card-header').click
       click_button 'Cancel'
     end
 
