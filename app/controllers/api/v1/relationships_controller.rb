@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'rails_helper'
 
 # Relationships controller handles all service requests for
 # retrieving relationships between people on a screening
