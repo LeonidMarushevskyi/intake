@@ -31,8 +31,8 @@ describe Participant do
             type: 'Home'
           }
         ],
-        languages: %w(English Farsi),
-        races: %w(White Asian),
+        languages: %w[English Farsi],
+        races: %w[White Asian],
         person_id: '1',
         screening_id: '2',
         roles: ['Victim'],
@@ -66,8 +66,8 @@ describe Participant do
             number: '330-789-4567',
             type: 'Home'
           )],
-          languages: %w(English Farsi),
-          races: %w(White Asian),
+          languages: %w[English Farsi],
+          races: %w[White Asian],
           ethnicity: a_hash_including(
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: 'Mexican'
