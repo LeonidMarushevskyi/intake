@@ -32,6 +32,7 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: old_ssn,
+      languages: ['Armenian'],
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       roles: marge_roles
@@ -98,6 +99,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
+        has_react_select_field('Language(s)', with: marge.languages)
         expect(page).to have_field('Date of birth', with: marge.date_of_birth)
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
@@ -297,6 +299,31 @@ feature 'Edit Screening' do
         a_request(:put, intake_api_participant_url(marge.id))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
+    end
+  end
+
+  scenario 'when a user modifies an existing persons languages' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      fill_in_react_select 'Language(s)', with: 'English'
+      fill_in_react_select 'Language(s)', with: 'Farsi'
+      remove_react_select_option('Language(s)', 'Armenian')
+
+      marge.languages = %w[English Farsi]
+      stub_request(:put, intake_api_participant_url(marge.id))
+        .with(body: marge.to_json(except: :id))
+        .and_return(status: 200,
+      body: marge.to_json,
+      headers: { 'Content-Type' => 'application/json' })
+      stub_request(:get, intake_api_participant_url(marge.id))
+        .and_return(status: 200,
+      body: marge.to_json,
+      headers: { 'Content-Type' => 'application/json' })
+
+      click_button 'Save'
+      expect(a_request(:put, intake_api_participant_url(marge.id))
+        .with(body: marge.to_json(except: :id))).to have_been_made
     end
   end
 
