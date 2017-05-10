@@ -1,40 +1,7 @@
 # frozen_string_literal: true
 
-def host_env_string
-  'REDIS_HOST=$(docker-machine ip intake) REDIS_PORT=6379 API_URL=http://api'
-end
-
-namespace :spec do
-  def spec_cmd
-    # first ARGV is task name
-    args = ARGV.drop(1)
-    extra = args.any? ? "SPEC='#{args.join(' ')}'" : ''
-    "bundle exec rake spec #{extra}"
-  end
-
-  task :intake do
-    system "docker-compose exec ca_intake #{spec_cmd}"
-  end
-
-  namespace :intake do
-    task :local do
-      system "#{host_env_string} #{spec_cmd}"
-    end
-  end
-
-  task :api do
-    system "docker-compose exec api #{spec_cmd}"
-  end
-
-  task :full do
-    Rake::Task['spec:intake'].invoke
-    Rake::Task['spec:api'].invoke
-    system 'bin/lint'
-    system 'bin/karma'
-  end
-end
-
 namespace :docker do
+  desc 'Runs docker-compose down, up, and all migrations'
   task :reup do
     steps = [
       'docker-compose down',
@@ -46,6 +13,7 @@ namespace :docker do
     steps.each { |step| system(step) }
   end
 
+  desc 'Cleans docker of old dangling containers & images'
   task :clean do
     steps = [
       'docker rm $(docker ps -q -f status=exited)',
@@ -57,19 +25,23 @@ namespace :docker do
 end
 
 namespace :logs do
+  desc 'Show logs for ca_intake container'
   task :intake do
     system 'docker-compose logs -f ca_intake'
   end
+  desc 'Show logs for api container'
   task :api do
     system 'docker-compose logs -f api'
   end
 end
 
 namespace :console do
+  desc 'Start rails console in ca_intake container'
   task :intake do
     system 'docker-compose exec ca_intake bundle exec rails console'
   end
 
+  desc 'Start rails console in api container'
   task :api do
     system 'docker-compose exec api bundle exec rails console'
   end
