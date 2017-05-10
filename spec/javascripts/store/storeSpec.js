@@ -12,6 +12,7 @@ describe('Store', () => {
       person: Immutable.Map(),
       screening: Immutable.Map(),
       participants: Immutable.List(),
+      relationships: Immutable.List(),
       involvements: Immutable.List(),
     }
     store = createStore(rootReducer)

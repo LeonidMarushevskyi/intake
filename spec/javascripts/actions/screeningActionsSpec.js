@@ -228,4 +228,28 @@ describe('screening actions', () => {
       })
     })
   })
+
+  describe('.fetchRelationshipsByScreeningId', () => {
+    beforeEach(() => {
+      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
+      promiseObject.then.and.callFake((thenFunction) => thenFunction())
+      spyOn(Utils, 'request').and.returnValue(promiseObject)
+    })
+
+    it('fetches screening relationships from the server', () => {
+      const screeningId = 22
+      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'GET',
+        `/api/v1/screenings/${screeningId}/relationships`,
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
+      store.dispatch(screeningActions.fetchRelationshipsByScreeningId())
+      expect(store.getActions()[0].type).toEqual(types.FETCH_RELATIONSHIPS_SUCCESS)
+    })
+  })
 })
