@@ -4,7 +4,7 @@ def host_env_string
   'REDIS_HOST=$(docker-machine ip intake) REDIS_PORT=6379 API_URL=http://api'
 end
 
-namespace :spec do
+namespace :spec do # rubocop:disable BlockLength
   def spec_cmd
     # first ARGV is task name
     args = ARGV.drop(1)
@@ -37,4 +37,3 @@ namespace :spec do
     system 'bin/karma'
   end
 end
-
