@@ -58,10 +58,10 @@ feature 'Relationship card' do
           first_name: participant.first_name,
           last_name: participant.last_name,
           relationships: [{
-            first_name: 'Jake',
-            last_name: 'Campbell',
-            relationship: 'Sister',
-            related_person_id: '7'
+            related_person_id: '7',
+            related_person_first_name: 'Jake',
+            related_person_last_name: 'Campbell',
+            relationship: 'Sister'
           }]
         }
       ]
@@ -175,8 +175,8 @@ feature 'Relationship card' do
             first_name: participant.first_name,
             last_name: participant.last_name,
             relationships: [{
-              first_name: 'Jake',
-              last_name: 'Campbell',
+              related_person_first_name: 'Jake',
+              related_person_last_name: 'Campbell',
               relationship: 'Sister',
               related_person_id: '7'
             }]
