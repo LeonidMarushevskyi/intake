@@ -29,7 +29,8 @@ module Api
           number
           type
         ],
-        roles: []
+        roles: [],
+        languages: []
       ].freeze
 
       def create

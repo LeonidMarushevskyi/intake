@@ -32,7 +32,8 @@ describe Api::V1::ParticipantsController do
         ],
         person_id: '2',
         screening_id: '1',
-        ssn: '123-23-1234'
+        ssn: '123-23-1234',
+        languages: %w[French Farsi]
       }.with_indifferent_access
     end
     let(:created_participant) do
