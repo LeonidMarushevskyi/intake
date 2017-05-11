@@ -21,7 +21,8 @@ def build_participant_from_person_and_screening(person, screening)
     person_id: person.id,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
-    phone_numbers: person.phone_numbers
+    phone_numbers: person.phone_numbers,
+    languages: person.languages
   )
 end
 
@@ -122,7 +123,6 @@ feature 'Edit Screening' do
       participant_marge.as_json.merge(id: 23)
     )
     stub_request(:post, intake_api_participants_url)
-      .with(json_body(participant_marge.to_json(except: :id)))
       .and_return(json_body(created_participant_marge.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -134,6 +134,7 @@ feature 'Edit Screening' do
 
     expect(a_request(:post, intake_api_participants_url)
       .with(json_body(participant_marge.to_json(except: :id)))).to have_been_made
+    # .with(body: as_json_without_root_id(participant_marge))).to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')

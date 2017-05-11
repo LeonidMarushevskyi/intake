@@ -53,6 +53,10 @@ FactoryGirl.define do
     trait :unknown do
       first_name { nil }
       last_name { nil }
+      gender { nil }
+      ssn { nil }
+      date_of_birth { nil }
+      languages { [] }
     end
 
     trait :reporter do
