@@ -93,7 +93,6 @@ feature 'Edit Screening' do
       end
 
       within '.card-body' do
-        
         expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
