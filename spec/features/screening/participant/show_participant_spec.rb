@@ -60,7 +60,7 @@ feature 'Show Screening' do
         expect(page).to have_content(existing_participant.ssn)
         expect(page).to have_content(address.street_address)
         expect(page).to have_content(address.city)
-        expect(page).to have_content(address.state)
+        expect(page).to have_content('New York')
         expect(page).to have_content(address.zip)
         expect(page).to have_content(address.type)
       end

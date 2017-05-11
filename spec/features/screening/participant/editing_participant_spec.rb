@@ -93,13 +93,16 @@ feature 'Edit Screening' do
       end
 
       within '.card-body' do
+        
         expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
         expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
-        has_react_select_field('Language(s)', with: marge.languages)
+        within('.col-md-6', text: 'Language(s)') do
+          has_react_select_field('Language(s)', with: marge.languages)
+        end
         expect(page).to have_field('Date of birth', with: marge.date_of_birth)
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
@@ -302,17 +305,18 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'when a user modifies an existing persons languages' do
+  scenario 'when a user modifies an existing participant languages' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      fill_in_react_select 'Language(s)', with: 'English'
-      fill_in_react_select 'Language(s)', with: 'Farsi'
-      remove_react_select_option('Language(s)', 'Armenian')
-
+      within('.col-md-6', text: 'Language(s)') do
+        fill_in_react_select 'Language(s)', with: 'English'
+        fill_in_react_select 'Language(s)', with: 'Farsi'
+        remove_react_select_option('Language(s)', 'Armenian')
+      end
       marge.languages = %w[English Farsi]
       stub_request(:put, intake_api_participant_url(marge.id))
-        .with(body: marge.to_json(except: :id))
+        .with(body: marge.to_json)
         .and_return(status: 200,
                     body: marge.to_json,
                     headers: { 'Content-Type' => 'application/json' })
@@ -323,7 +327,7 @@ feature 'Edit Screening' do
 
       click_button 'Save'
       expect(a_request(:put, intake_api_participant_url(marge.id))
-        .with(body: marge.to_json(except: :id))).to have_been_made
+        .with(json_body(as_json_without_root_id(marge)))).to have_been_made
     end
   end
 
@@ -365,9 +369,10 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      has_react_select_field('Role', with: %w[Victim Perpetrator])
-
-      remove_react_select_option('Role', 'Perpetrator')
+      within('.col-md-6', text: 'Role') do
+        has_react_select_field('Role', with: %w[Victim Perpetrator])
+        remove_react_select_option('Role', 'Perpetrator')
+      end
       expect(page).to have_no_content('Perpetrator')
 
       marge.roles = ['Victim']
@@ -395,12 +400,14 @@ feature 'Edit Screening' do
       visit edit_screening_path(id: screening.id)
 
       within edit_participant_card_selector(marge.id) do
-        fill_in_react_select('Role', with: 'Non-mandated Reporter')
-        has_react_select_field('Role', with: ['Mandated Reporter'])
+        within('.col-md-6', text: 'Role') do
+          fill_in_react_select('Role', with: 'Non-mandated Reporter')
+          has_react_select_field('Role', with: ['Mandated Reporter'])
 
-        remove_react_select_option('Role', 'Mandated Reporter')
-        fill_in_react_select('Role', with: 'Non-mandated Reporter')
-        has_react_select_field('Role', with: ['Non-mandated Reporter'])
+          remove_react_select_option('Role', 'Mandated Reporter')
+          fill_in_react_select('Role', with: 'Non-mandated Reporter')
+          has_react_select_field('Role', with: ['Non-mandated Reporter'])
+        end
       end
     end
   end
