@@ -12,6 +12,7 @@ describe('ParticipantShowView', () => {
       first_name: 'Kevin',
       last_name: 'McCallister',
       gender: 'male',
+      languages: ['English', 'Arabic'],
       date_of_birth: '11/16/1990',
       ssn: '111223333',
     })
@@ -41,11 +42,13 @@ describe('ParticipantShowView', () => {
   })
 
   it('renders the participant show fields', () => {
-    expect(component.find('ShowField').length).toEqual(4)
+    expect(component.find('ShowField').length).toEqual(5)
     expect(component.find('ShowField[label="Name"]').html())
       .toContain('Kevin McCallister')
     expect(component.find('ShowField[label="Gender"]').html())
       .toContain('Male')
+    expect(component.find('ShowField[label="Language(s)"]').html())
+      .toContain('English, Arabic')
     expect(component.find('ShowField[label="Date of birth"]').html())
       .toContain('11/16/1990')
     expect(component.find('ShowField[label="Social security number"]').html())

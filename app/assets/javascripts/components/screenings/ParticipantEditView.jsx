@@ -3,11 +3,13 @@ import DateField from 'components/common/DateField'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
+import LANGUAGE from 'Language'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
+import selectOptions from 'utils/selectHelper'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'RoleType'
 
@@ -92,6 +94,18 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
           </SelectField>
         </div>
+        <div className='row'>
+            <div className='col-md-6'>
+              <label htmlFor='languages'>Language(s)</label>
+              <Select
+                multi
+                inputProps={{id: 'languages'}}
+                options={selectOptions(LANGUAGE)}
+                value={(participant.get('languages') || Immutable.List()).toJS()}
+                onChange={(languages) => onChange(['languages'], Immutable.List(languages.map((languages) => languages.value)) || [])}
+              />
+            </div>
+          </div>
         <div className='row'>
           <InputField
             gridClassName='col-md-6'

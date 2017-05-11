@@ -314,12 +314,12 @@ feature 'Edit Screening' do
       stub_request(:put, intake_api_participant_url(marge.id))
         .with(body: marge.to_json(except: :id))
         .and_return(status: 200,
-      body: marge.to_json,
-      headers: { 'Content-Type' => 'application/json' })
+                    body: marge.to_json,
+                    headers: { 'Content-Type' => 'application/json' })
       stub_request(:get, intake_api_participant_url(marge.id))
         .and_return(status: 200,
-      body: marge.to_json,
-      headers: { 'Content-Type' => 'application/json' })
+                    body: marge.to_json,
+                    headers: { 'Content-Type' => 'application/json' })
 
       click_button 'Save'
       expect(a_request(:put, intake_api_participant_url(marge.id))

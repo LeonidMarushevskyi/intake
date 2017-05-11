@@ -32,6 +32,11 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
             {GENDER[participant.get('gender')]}
           </ShowField>
         </div>
+        <div className='row gap-top'>
+          <ShowField gridClassName='col-md-12' label='Language(s)'>
+            {(participant.get('languages') || []).join(', ')}
+          </ShowField>
+        </div>
         <div className='col-md-5'>
           <ShowField label='Date of birth'>
             {participant.get('date_of_birth')}
