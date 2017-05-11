@@ -7,9 +7,10 @@ import PersonNewPage from 'components/people/PersonNewPage'
 import PersonShowPage from 'components/people/PersonShowPage'
 import PersonEditPage from 'components/people/PersonEditPage'
 import ScreeningPage from 'components/screenings/ScreeningPage'
+import {config} from 'config'
 
 const historyIntake = useRouterHistory(createHistory)({
-  basename: window.org.intake.config.base_path,
+  basename: config().base_path,
 })
 
 export default (

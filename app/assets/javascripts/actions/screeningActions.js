@@ -39,6 +39,22 @@ export function saveScreening(screening) {
   )
 }
 
+export function updateParticipantSuccess(participant) {
+  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+}
+
+export function saveParticipant(participant) {
+  return (dispatch) => (
+    Utils.request(
+      'PUT',
+        `/api/v1/participants/${participant.id}`,
+        JSON.stringify({participant: participant}),
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+  )
+}
+
 export function createParticipantSuccess(participant) {
   return {type: types.CREATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
 }
@@ -73,48 +89,6 @@ export function deleteParticipant(id) {
   )
 }
 
-export function updateParticipantSuccess(participant) {
-  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
-}
-
-export function saveParticipant(participant) {
-  return (dispatch) => (
-    Utils.request(
-      'PUT',
-        `/api/v1/participants/${participant.id}`,
-        JSON.stringify({participant: participant}),
-        {contentType: 'application/json'}
-    )
-    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
-  )
-}
-
-export function submitScreeningSuccess() {
-  return {
-    type: types.SUBMIT_SCREENING_SUCCESS,
-  }
-}
-
-export function submitScreening(screeningId) {
-  return (dispatch) => (
-    Utils.request(
-      'POST',
-        `/api/v1/screenings/${screeningId}/submit`,
-        null,
-        {contentType: 'application/json'}
-    )
-    .then(
-      (jsonResponse) => {
-        /* eslint-disable no-alert */
-        alert('Successfully submitted screening')
-        dispatch(submitScreeningSuccess(jsonResponse))
-      },
-      (jsonResponse) => alert(jsonResponse.responseText)
-      /* eslint-enable no-alert */
-    )
-  )
-}
-
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
   return {
     type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
@@ -133,3 +107,37 @@ export function fetchHistoryOfInvolvements(screeningId) {
     .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
   )
 }
+
+export function submitScreeningSuccess() {
+  /* eslint-disable no-alert */
+  alert('Successfully submitted screening')
+  /* eslint-enable no-alert */
+  return {
+    type: types.SUBMIT_SCREENING_SUCCESS,
+  }
+}
+
+export function submitScreeningFailure(jsonResponse) {
+  /* eslint-disable no-alert */
+  alert(jsonResponse.responseText)
+  /* eslint-enable no-alert */
+  return {
+    type: types.SUBMIT_SCREENING_FAILURE,
+  }
+}
+
+export function submitScreening(screeningId) {
+  return (dispatch) => (
+    Utils.request(
+      'POST',
+        `/api/v1/screenings/${screeningId}/submit`,
+        null,
+        {contentType: 'application/json'}
+    )
+    .then(
+      (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
+      (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
+    )
+  )
+}
+
