@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import _ from 'lodash'
 import nameFormatter from 'utils/nameFormatter'
 
 export default class RelationshipsCard extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-  }
-
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
     if (participants !== nextProps.participants) {
@@ -18,7 +13,7 @@ export default class RelationshipsCard extends React.Component {
   renderParticipantRelationships(participant) {
     const relationships = participant.get('relationships')
 
-    if (_.isEmpty(relationships) || relationships.isEmpty()) {
+    if (relationships.isEmpty()) {
       return (
         <strong> has no known relationships</strong>
       )
@@ -43,7 +38,7 @@ export default class RelationshipsCard extends React.Component {
 
   renderRelationships() {
     const {relationships} = this.props
-    if (_.isEmpty(relationships) || relationships.isEmpty()) {
+    if (relationships.isEmpty()) {
       return (
         <div className='row'>
           Add people to see their relationships here.
