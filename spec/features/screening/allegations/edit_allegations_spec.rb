@@ -472,6 +472,11 @@ feature 'edit allegations' do
       intake_api_history_of_involvements_url(screening.id)
     ).and_return(json_body([].to_json, status: 200))
 
+    stub_request(
+      :get,
+      intake_api_relationships_by_screening_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
+
     visit edit_screening_path(id: screening.id)
     allegation_attributes = {
       victim_id: lisa.id,
@@ -572,6 +577,11 @@ feature 'edit allegations' do
     stub_request(
       :get,
       intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
+
+    stub_request(
+      :get,
+      intake_api_relationships_by_screening_url(screening.id)
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)

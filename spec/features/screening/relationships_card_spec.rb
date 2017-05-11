@@ -77,7 +77,7 @@ feature 'Relationship card' do
         gender: 'female',
         last_name: 'Simpson',
         ssn: '123-23-1234',
-        languages: %w(French Italian),
+        languages: %w[French Italian],
         addresses: [],
         phone_numbers: [],
         races: [
@@ -159,7 +159,7 @@ feature 'Relationship card' do
         )
         new_participant_request = { screening_id: participants_screening.id, person_id: nil }
 
-        %w(Ma Mar Marg Marge).each do |search_text|
+        %w[Ma Mar Marg Marge].each do |search_text|
           stub_request(:get, intake_api_people_search_url(search_term: search_text))
             .and_return(body: [marge].to_json,
                         status: 200,

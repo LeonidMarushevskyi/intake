@@ -183,9 +183,15 @@ feature 'show allegations' do
     screening.allegations << allegation
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
+
     stub_request(
       :get,
       intake_api_history_of_involvements_url(screening.id)
+    ).and_return(json_body([].to_json, status: 200))
+
+    stub_request(
+      :get,
+      intake_api_relationships_by_screening_url(screening.id)
     ).and_return(json_body([].to_json, status: 200))
 
     visit screening_path(id: screening.id)
