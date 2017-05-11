@@ -30,7 +30,7 @@ export default class RelationshipsCard extends React.Component {
             {
               relationships.map((relationship) =>
                 <li key={relationship.get('related_person_id')} id={relationship.get('related_person_id')}>
-                  <strong>{relationship.get('relationship')}</strong>
+                  <strong>{relationship.get('indexed_person_relationship')}</strong>
                   &nbsp;of {nameFormatter(relationship)}
                 </li>
               )

@@ -69,7 +69,7 @@ describe('RelationshipsCard', () => {
           ]),
         }
         component = shallow(<RelationshipsCard {...props}/>)
-        expect(component.find('div#relationships-card .card-body .row').text()).toEqual('Aubrey Campbell has no known relationships.')
+        expect(component.find('div#relationships-card .card-body .row').text()).toEqual('Aubrey Campbell has no known relationships')
       })
     })
     describe('when participant has a relationship', () => {
@@ -77,7 +77,22 @@ describe('RelationshipsCard', () => {
         const props = {
           ...requiredProps,
           relationships: Immutable.fromJS([
-            {id: '1', first_name: 'Aubrey', last_name: 'Campbell', relationships: [{first_name: 'Jake', last_name: 'Campbell', relationship: 'Sister', related_person_id: '7'}]},
+            {
+              id: '1',
+              first_name: 'Aubrey',
+              last_name: 'Campbell',
+              relationships: [
+                {
+                  related_person_first_name: 'Jake',
+                  related_person_last_name: 'Campbell',
+                  relationship: 'Sister/Brother (Half)',
+                  related_person_relationship: 'Brother',
+                  indexed_person_relationship: 'Sister',
+                  relationship_context: 'Half',
+                  related_person_id: '7',
+                },
+              ],
+            },
           ]),
         }
         component = shallow(<RelationshipsCard {...props} />)
@@ -92,7 +107,22 @@ describe('RelationshipsCard', () => {
           const props = {
             ...requiredProps,
             relationships: Immutable.fromJS([
-              {id: '1', first_name: '', last_name: '', relationships: [{first_name: '', last_name: '', relationship: 'Sister', related_person_id: '7'}]},
+              {
+                id: '1',
+                first_name: '',
+                last_name: '',
+                relationships: [
+                  {
+                    related_person_first_name: '',
+                    related_person_last_name: '',
+                    relationship: 'Sister/Brother (Half)',
+                    related_person_relationship: 'Brother',
+                    indexed_person_relationship: 'Sister',
+                    relationship_context: 'Half',
+                    related_person_id: '7',
+                  },
+                ],
+              },
             ]),
           }
           component = shallow(<RelationshipsCard {...props} />)
@@ -100,35 +130,6 @@ describe('RelationshipsCard', () => {
           const relationships = component.find('div#relationships-card .card-body .row .relationships').text()
           expect(relationship).toContain('Unknown person is the..')
           expect(relationships).toContain('Sister of Unknown person')
-        })
-
-        it('shows unknown last name if person only have first name', () => {
-          const props = {
-            ...requiredProps,
-            relationships: Immutable.fromJS([
-              {id: '1', first_name: 'Aubrey', last_name: '', relationships: [{first_name: 'Jake', last_name: '', relationship: 'Sister', related_person_id: '7'}]},
-            ]),
-            screeningId: 42,
-          }
-          component = shallow(<RelationshipsCard {...props} />)
-          const relationship = component.find('div#relationships-card .card-body .row').text()
-          const relationships = component.find('div#relationships-card .card-body .row .relationships').text()
-          expect(relationship).toContain('Aubrey (Unknown last name) is the..')
-          expect(relationships).toContain('Sister of Jake (Unknown last name)')
-        })
-
-        it('shows unknown first name if has last name only', () => {
-          const props = {
-            ...requiredProps,
-            relationships: Immutable.fromJS([
-              {id: '1', first_name: '', last_name: 'Campbell', relationships: [{first_name: '', last_name: 'Jones', relationship: 'Sister', related_person_id: '7'}]},
-            ]),
-          }
-          component = shallow(<RelationshipsCard {...props} />)
-          const relationship = component.find('div#relationships-card .card-body .row').text()
-          const relationships = component.find('div#relationships-card .card-body .row .relationships').text()
-          expect(relationship).toContain('(Unknown first name) Campbell is the..')
-          expect(relationships).toContain('Sister of (Unknown first name) Jones')
         })
       })
     })
@@ -139,8 +140,23 @@ describe('RelationshipsCard', () => {
           ...requiredProps,
           relationships: Immutable.fromJS([
             {id: '1', first_name: 'Aubrey', last_name: 'Campbell', relationships: [
-              {first_name: 'Jake', last_name: 'Campbell', relationship: 'Sister', related_person_id: '7'},
-              {first_name: 'Joe', last_name: 'Campbell', relationship: 'Niece', related_person_id: '20'},
+              {
+                first_name: 'Jake',
+                last_name: 'Campbell',
+                relationship: 'Sister/Brother (Half)',
+                related_person_relationship: 'Brother',
+                indexed_person_relationship: 'Sister',
+                relationship_context: 'Half',
+                related_person_id: '7',
+              },
+              {
+                first_name: 'Joe',
+                last_name: 'Campbell',
+                relationship: 'Niece/Uncle',
+                related_person_relationship: 'Uncle',
+                indexed_person_relationship: 'Niece',
+                related_person_id: '20',
+              },
             ]},
           ]),
         }
@@ -161,29 +177,55 @@ describe('RelationshipsCard', () => {
     describe('when participants have a variety of known relationships', () => {
       it('shows each participant with related relationships', () => {
         const props = {
+          ...requiredProps,
           relationships: Immutable.fromJS([
-            {id: '1', first_name: 'Aubrey', last_name: 'Campbell', relationships: []},
-            {id: '6', first_name: 'Jake', last_name: 'Jones', relationships: [{first_name: 'Joe', last_name: 'Simpson', relationship: 'Brother', related_person_id: '7'}]},
-            {id: '20', first_name: 'Sam', last_name: 'Campbell', relationships: [{first_name: 'Joe', last_name: 'Simpson', relationship: 'Uncle', related_person_id: '7'}]},
-            {id: '7', first_name: 'Joe', last_name: 'Simpson', relationships: [
-              {first_name: 'Jake', last_name: 'Jones', relationship: 'Brother', related_person_id: '6'},
-              {first_name: 'Sam', last_name: 'Campbell', relationship: 'Nephew', related_person_id: '20'},
-            ]},
+            {
+              id: '1',
+              first_name: 'Aubrey',
+              last_name: 'Campbell',
+              relationships: [],
+            },
+            {
+              id: '6',
+              first_name: 'Jake',
+              last_name: 'Jones',
+              relationships: [
+                {
+                  related_person_first_name: 'Joe',
+                  related_person_last_name: 'Simpson',
+                  relationship: 'Brother/Brother',
+                  related_person_relationship: 'Brother',
+                  indexed_person_relationship: 'Brother',
+                  related_person_id: '7',
+                },
+              ],
+            },
+            {
+              id: '20',
+              first_name: 'Sam',
+              last_name: 'Campbell',
+              relationships: [
+                {
+                  related_person_first_name: 'Joe',
+                  related_person_last_name: 'Simpson',
+                  relationship: 'Nephew/Uncle',
+                  related_person_relationship: 'Uncle',
+                  indexed_person_relationship: 'Nephew',
+                  related_person_id: '7',
+                },
+              ],
+            },
           ]),
         }
         const component = shallow(<RelationshipsCard {...props} />)
         const relationRows = component.find('.row')
-        expect(relationRows.at(0).text()).toEqual('Aubrey Campbell has no known relationships.')
+        expect(relationRows.at(0).text()).toEqual('Aubrey Campbell has no known relationships')
 
-        expect(relationRows.at(1).text()).toContain('Jake Jones is the..')
+        expect(relationRows.at(1).text()).toContain('Jake Jones is the...')
         expect(relationRows.at(1).find('li#7').text()).toContain('Brother of Joe Simpson')
 
-        expect(relationRows.at(2).text()).toContain('Sam Campbell is the..')
-        expect(relationRows.at(2).find('li#7').text()).toContain('Uncle of Joe Simpson')
-
-        expect(relationRows.at(3).text()).toContain('Joe Simpson is the..')
-        expect(relationRows.at(3).find('li#6').text()).toContain('Brother of Jake Jones')
-        expect(relationRows.at(3).find('li#20').text()).toContain('Nephew of Sam Campbell')
+        expect(relationRows.at(2).text()).toContain('Sam Campbell is the...')
+        expect(relationRows.at(2).find('li#7').text()).toContain('Nephew of Joe Simpson')
       })
     })
   })
