@@ -1,4 +1,4 @@
-// Helpers //
+// Space Helpers //
 
 .centered {
   text-align: center;
@@ -42,12 +42,6 @@
 
 .no-gap-right {
   margin-right: 0;
-}
-
-@media screen and (min-width: 767px) {
-  label.no-gap-top-desktop {
-    margin-top: 0;
-  }
 }
 
 .half-padded {
@@ -176,4 +170,25 @@
 
 .pull-right {
   float: right;
+}
+
+// Mobile Helpers //
+
+
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 481px) {
+  .hide-phone {
+    display: none;
+  }
 }
