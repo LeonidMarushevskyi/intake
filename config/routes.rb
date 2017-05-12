@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
+          get 'relationships' => 'relationships#by_screening_id'
           post 'submit', constraints: Routes::ActiveReferralSubmitConstraint
         end
       end
@@ -56,5 +57,7 @@ Rails.application.routes.draw do
     post 'api/v1/screenings/:id/submit' => 'dev#null', as: :intake_api_screening_submit
     get 'api/v1/participants' => 'dev#null', as: :intake_api_participants
     get 'api/v1/participants/:id' => 'dev#null', as: :intake_api_participant
+    get 'api/v1/screenings/:id/relationships' => 'dev#null',
+        as: :intake_api_relationships_by_screening
   end
 end

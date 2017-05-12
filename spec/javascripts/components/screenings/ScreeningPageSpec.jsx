@@ -17,6 +17,7 @@ export const requiredProps = {
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
   involvements: Immutable.List(),
+  relationships: Immutable.List(),
   mode: 'edit',
 }
 
@@ -50,6 +51,21 @@ describe('render', () => {
     expect(allegationsCard.props().allegations).toEqual(Immutable.List())
     expect(allegationsCard.props().mode).toEqual('edit')
     expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
+  })
+
+  it('renders the relations card', () => {
+    const props = {
+      ...requiredProps,
+      mode: 'edit',
+      participants: Immutable.fromJS([]),
+      relationships: Immutable.fromJS([{id: '123'}]),
+    }
+    const component = shallow(<ScreeningPage {...props} />)
+    expect(component.find('RelationshipsCard').length).toEqual(1)
+    expect(component.find('RelationshipsCard').props().participants).toEqual(Immutable.fromJS([]))
+    expect(component.find('RelationshipsCard').props().relationships).toEqual(props.relationships)
+    expect(component.find('RelationshipsCard').props().screeningId).toEqual(props.params.id)
+    expect(component.find('RelationshipsCard').props().actions).toEqual(props.actions)
   })
 
   it('renders the worker safety card', () => {
@@ -254,6 +270,10 @@ describe('Show mode', () => {
           {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
           {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
         ]),
+        relationships: Immutable.fromJS([
+          {id: '1', first_name: 'Melissa', last_name: 'Powers', relationships: []},
+          {id: '2', first_name: 'Marshall', last_name: 'Powers', relationships: []},
+        ]),
       }
 
       component = shallow(<ScreeningPage {...props} />)
@@ -297,6 +317,15 @@ describe('Show mode', () => {
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
       expect(allegationsCard.props().mode).toEqual('show')
       expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
+    })
+
+    it('renders the relationships card', () => {
+      const relationshipsCard = component.find('RelationshipsCard')
+      expect(relationshipsCard.length).toEqual(1)
+      expect(relationshipsCard.props().participants).toEqual(props.participants)
+      expect(relationshipsCard.props().relationships).toEqual(props.relationships)
+      expect(relationshipsCard.props().screeningId).toEqual(props.params.id)
+      expect(relationshipsCard.props().actions).toEqual(props.actions)
     })
 
     it('renders the worker safety card', () => {

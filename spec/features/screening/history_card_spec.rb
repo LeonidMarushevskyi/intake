@@ -58,10 +58,16 @@ feature 'History card' do
 
       stub_request(:get, intake_api_screening_url(existing_screening.id))
         .and_return(json_body(existing_screening.to_json))
+
       stub_request(
         :get,
         intake_api_history_of_involvements_url(existing_screening.id)
       ).and_return(json_body(screening_involvement.to_json, status: 200))
+
+      stub_request(
+        :get,
+        intake_api_relationships_by_screening_url(existing_screening.id)
+      ).and_return(json_body([].to_json, status: 200))
     end
 
     scenario 'viewing a screening' do

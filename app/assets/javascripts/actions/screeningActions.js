@@ -141,3 +141,21 @@ export function submitScreening(screeningId) {
   )
 }
 
+export function fetchRelationshipsByScreeningIdSuccess(relationships) {
+  return {
+    type: types.FETCH_RELATIONSHIPS_SUCCESS,
+    relationships: Immutable.fromJS(relationships),
+  }
+}
+
+export function fetchRelationshipsByScreeningId(screeningId) {
+  return (dispatch) => (
+    Utils.request(
+      'GET',
+        `/api/v1/screenings/${screeningId}/relationships`,
+        null,
+        {contentType: 'application/json'}
+    )
+    .then((jsonResponse) => dispatch(fetchRelationshipsByScreeningIdSuccess(jsonResponse)))
+  )
+}

@@ -228,4 +228,29 @@ describe('screening actions', () => {
       })
     })
   })
+
+  describe('.fetchRelationshipsByScreeningId', () => {
+    const screeningId = '3'
+
+    beforeEach(() => {
+      spyOn(Utils, 'request').and.returnValue(Promise.resolve())
+    })
+
+    it('fetches screening relationships from the server', () => {
+      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId))
+      expect(Utils.request).toHaveBeenCalledWith(
+        'GET',
+        `/api/v1/screenings/${screeningId}/relationships`,
+        null,
+        {contentType: 'application/json'}
+      )
+    })
+
+    it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
+      const expectedActions = [screeningActions.fetchRelationshipsByScreeningIdSuccess()]
+      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
 })

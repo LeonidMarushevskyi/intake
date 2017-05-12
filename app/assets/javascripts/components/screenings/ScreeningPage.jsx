@@ -10,6 +10,7 @@ import NarrativeCardView from 'components/screenings/NarrativeCardView'
 import ParticipantCardView from 'components/screenings/ParticipantCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
+import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
@@ -249,6 +250,12 @@ export class ScreeningPage extends React.Component {
               )}
             />
         }
+        <RelationshipsCard
+          actions={this.props.actions}
+          participants={this.props.participants}
+          relationships={this.props.relationships}
+          screeningId={this.props.params.id}
+        />
         {
           loaded &&
             <WorkerSafetyCardView
@@ -336,6 +343,7 @@ ScreeningPage.propTypes = {
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
+  relationships: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
 }
 
@@ -347,6 +355,7 @@ export function mapStateToProps(state, _ownProps) {
   return {
     involvements: state.involvements,
     participants: state.participants,
+    relationships: state.relationships,
     screening: state.screening,
   }
 }
