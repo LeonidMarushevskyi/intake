@@ -54,10 +54,11 @@ class ScreeningRepository
   end
 
   def self.submit(security_token, id)
-    API.make_api_call(
+    response = API.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screening_submit_path(id),
       :post
     )
+    response.body
   end
 end
