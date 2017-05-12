@@ -230,14 +230,13 @@ describe('screening actions', () => {
   })
 
   describe('.fetchRelationshipsByScreeningId', () => {
+    const screeningId = '3'
+
     beforeEach(() => {
-      const promiseObject = jasmine.createSpyObj('PromiseSpyObj', ['then'])
-      promiseObject.then.and.callFake((thenFunction) => thenFunction())
-      spyOn(Utils, 'request').and.returnValue(promiseObject)
+      spyOn(Utils, 'request').and.returnValue(Promise.resolve())
     })
 
     it('fetches screening relationships from the server', () => {
-      const screeningId = 22
       store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'GET',
@@ -248,8 +247,10 @@ describe('screening actions', () => {
     })
 
     it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
-      store.dispatch(screeningActions.fetchRelationshipsByScreeningId())
-      expect(store.getActions()[0].type).toEqual(types.FETCH_RELATIONSHIPS_SUCCESS)
+      const expectedActions = [screeningActions.fetchRelationshipsByScreeningIdSuccess()]
+      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
   })
 })
