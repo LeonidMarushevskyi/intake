@@ -5,28 +5,41 @@ def host_env_string
 end
 
 namespace :spec do # rubocop:disable BlockLength
-  def spec_cmd
+  def file_list
     # first ARGV is task name
     args = ARGV.drop(1)
-    extra = args.any? ? "SPEC='#{args.join(' ')}'" : ''
-    "bundle exec rake spec #{extra}"
+    args.any? ? args.join(' ') : 'spec'
+  end
+
+  def gulp?
+    run_gulp = file_list == 'spec' || file_list == 'spec/' || file_list.include?('features')
+    'bin/gulp &&' if run_gulp
   end
 
   desc 'Run specs in ca_intake container'
   task :intake do
-    system "docker-compose exec ca_intake #{spec_cmd}"
+    system "#{gulp?} docker-compose exec ca_intake bundle exec rspec #{file_list}"
   end
 
   namespace :intake do
     desc 'Run specs locally outside container'
     task :local do
-      system "#{host_env_string} #{spec_cmd}"
+      docker_cmd = 'docker-compose exec ca_intake bundle exec rspec'
+      system "#{host_env_string} #{gulp?} #{docker_cmd} #{file_list}"
+    end
+    desc 'Run specs in parallel in ca_intake container (from host)'
+    task :parallel do
+      # docker-compose supports ENV vars for run, but not exec (yet?)
+      # We need to set RAILS_ENV because the spawned spec processes pick up
+      # RAILS_ENV=development from our dev environment.
+      docker_cmd = 'docker-compose run -e RAILS_ENV=test --rm ca_intake bundle exec parallel_rspec'
+      system "#{gulp?} #{docker_cmd} #{file_list}"
     end
   end
 
   desc 'Run specs in api container'
   task :api do
-    system "docker-compose exec api #{spec_cmd}"
+    system "docker-compose exec api bundle exec rspec #{file_list}"
   end
 
   desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
