@@ -48,6 +48,16 @@
         margin-right: $base-spacing;
       }
     }
+
+    .btn {
+      margin-left: $half-spacing;
+      margin-top: $double-spacing;
+    }
+
+    .btn-block {
+      margin-left: 0;
+      margin-top: $double-spacing;
+    }
   }
 
   &.edit {

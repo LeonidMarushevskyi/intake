@@ -17,7 +17,6 @@
   -webkit-font-smoothing: antialiased;
   font-weight: $bold-weight;
   line-height: 1;
-  margin-left: .5em;
   outline: none;
   padding: 1rem 2rem;
   text-align: center;
@@ -67,11 +66,6 @@
     background-color: transparent;
     box-shadow: inset 0 0 0 2px $dark-blue;
     color: $dark-blue;
-  }
-
-  &.btn-block {
-    margin-left: 0;
-    margin-top: $double-spacing;
   }
 }
 
