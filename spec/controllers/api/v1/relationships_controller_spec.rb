@@ -27,13 +27,9 @@ describe Api::V1::RelationshipsController do
     end
 
     before do
-      stub_request(:get, %r{api/v1/screenings/#{screening_id}/relationships})
-        .with(headers: { 'Authorization' => security_token })
-        .and_return(
-          body: expected_json,
-          status: 200,
-          headers: { 'Content-Type' => 'application/json' }
-        )
+      expect(RelationshipsRepository).to receive(:find_by_screening_id)
+        .with(security_token, screening_id)
+        .and_return(expected_json)
     end
 
     it 'responds with success' do

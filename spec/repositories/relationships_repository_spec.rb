@@ -7,11 +7,14 @@ describe RelationshipsRepository do
 
   describe '.find_by_screening_id' do
     let(:screening_id) { '12' }
+    let(:response) do
+      double(:response, body: [], status: 200, headers: {})
+    end
 
     it 'returns the relationships for all participants' do
-      stub_request(:get, "http://api:3000/api/v1/screenings/#{screening_id}/relationships")
-        .with(headers: { 'Authorization' => 'my_security_token' })
-        .to_return(status: 200, body: [], headers: {})
+      expect(API).to receive(:make_api_call)
+        .with(security_token, "/api/v1/screenings/#{screening_id}/relationships", :get)
+        .and_return(response)
 
       relationships = described_class.find_by_screening_id(security_token, screening_id)
 
