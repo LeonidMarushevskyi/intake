@@ -23,26 +23,26 @@ p {
 }
 
 a {
-  color: $primary-blue;
+  color: $medium-blue;
   text-decoration: underline;
 }
 
 a:hover,
 a:active {
-  color: $primary-darker-blue;
+  color: $dark-blue;
 }
 
 a:visited {
-  color: $visited-color;
+  color: $medium-blue;
 }
 
 a:focus {
-  box-shadow: 0 0 3px $focus-color, 0 0 7px $focus-color;
+  box-shadow: 0 0 3px $medium-blue, 0 0 7px $medium-blue;
   outline: 0;
 }
 
 .dark-background-link a {
-  color: $gray-lighter;
+  color: $light-grey;
 }
 
 h1,
