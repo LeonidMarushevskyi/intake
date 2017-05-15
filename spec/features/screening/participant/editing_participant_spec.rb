@@ -302,7 +302,7 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'when a user modifies an existing participant languages' do
+  scenario 'when a user modifies languages for an existing participant' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do

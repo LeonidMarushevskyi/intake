@@ -50,7 +50,7 @@ FactoryGirl.define do
       ].sample
     end
 
-    trait :unknown do
+    trait :unpopulated do
       first_name { nil }
       last_name { nil }
       gender { nil }

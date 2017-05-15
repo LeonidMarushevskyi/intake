@@ -5,7 +5,7 @@ import EthnicityEditView from 'components/people/EthnicityEditView'
 import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
-import LANGUAGE from 'Language'
+import LANGUAGES from 'Languages'
 import NAME_SUFFIX from 'NameSuffix'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import RacesEditView from 'components/people/RacesEditView'
@@ -124,7 +124,7 @@ export class PersonNewPage extends React.Component {
               <Select
                 multi
                 inputProps={{id: 'languages'}}
-                options={selectOptions(LANGUAGE)}
+                options={selectOptions(LANGUAGES)}
                 value={person.get('languages').toJS()}
                 onChange={(languages) => this.setField(
                   ['languages'],

@@ -86,7 +86,7 @@ feature 'Edit Screening' do
 
   scenario 'adding an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
-      :participant, :unknown,
+      :participant, :unpopulated,
       screening_id: existing_screening.id
     )
     new_participant_request = { screening_id: existing_screening.id, person_id: nil }
@@ -134,7 +134,6 @@ feature 'Edit Screening' do
 
     expect(a_request(:post, intake_api_participants_url)
       .with(json_body(participant_marge.to_json(except: :id)))).to have_been_made
-    # .with(body: as_json_without_root_id(participant_marge))).to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')

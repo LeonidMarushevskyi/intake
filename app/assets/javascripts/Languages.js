@@ -1,4 +1,4 @@
-const LANGUAGE = Object.freeze([
+const LANGUAGES = Object.freeze([
   'American Sign Language',
   'Arabic',
   'Armenian',
@@ -35,4 +35,4 @@ const LANGUAGE = Object.freeze([
   'Vietnamese',
 ])
 
-export default LANGUAGE
+export default LANGUAGES
