@@ -50,5 +50,54 @@ describe('nameFormatter', () => {
       last_name: null,
     }))).toEqual('Unknown person')
   })
+
+  describe('with middle name', () => {
+    it('renders nothing for blank middle name', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        middle_name: null,
+        last_name: 'Preston',
+      }))).toEqual('Bill Preston')
+    })
+
+    it('renders middle name', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        middle_name: 'S.',
+        last_name: 'Preston',
+      }))).toEqual('Bill S. Preston')
+    })
+  })
+
+  describe('with suffix', () => {
+    it('renders nothing for blank suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        middle_name: 'S.',
+        last_name: 'Preston',
+        name_suffix: null,
+      }))).toEqual('Bill S. Preston')
+    })
+
+    it('renders suffix with comma', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        middle_name: 'S.',
+        last_name: 'Preston',
+        name_suffix: 'esq',
+      }))).toEqual('Bill S. Preston, Esq')
+    })
+
+    it('renders suffix without comma for II, III, and IV', () => {
+      Immutable.List(['ii', 'iii', 'iv']).map((suffix) => {
+        expect(nameFormatter(Immutable.fromJS({
+          first_name: 'Bill',
+          middle_name: 'S.',
+          last_name: 'Preston',
+          name_suffix: suffix,
+        }))).toEqual(`Bill S. Preston ${suffix.toUpperCase()}`)
+      })
+    })
+  })
 })
 
