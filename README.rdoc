@@ -32,7 +32,6 @@ System dependencies:
 * Execute the the test suite using: bundle exec rspec spec/
 * Run all the lints using: bin/lint
 
-
 == Section 3. License
 
 The Casebook Intake Accelerator is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
