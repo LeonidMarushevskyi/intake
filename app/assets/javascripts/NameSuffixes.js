@@ -1,4 +1,4 @@
-const NAME_SUFFIX = Object.freeze({
+const NAME_SUFFIXES = Object.freeze({
   esq: 'Esq',
   ii: 'II',
   iii: 'III',
@@ -10,4 +10,4 @@ const NAME_SUFFIX = Object.freeze({
   jd: 'JD',
 })
 
-export default NAME_SUFFIX
+export default NAME_SUFFIXES

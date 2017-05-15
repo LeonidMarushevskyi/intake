@@ -2,14 +2,14 @@ import AddressInfo from 'components/common/AddressInfo'
 import AgeInfo from 'components/common/AgeInfo'
 import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
 import Languages from 'components/common/LanguageInfo'
-import NAME_SUFFIX from 'NameSuffix'
+import NAME_SUFFIXES from 'NameSuffixes'
 import PropTypes from 'prop-types'
 import React from 'react'
 import PhoneNumberInfo from 'components/common/PhoneNumberInfo'
 import sanitizeHtml from 'sanitize-html'
 
 const PersonSuggestion = ({firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races, ethnicity, ssn, address, phoneNumber}) => {
-  const fullName = [firstName, middleName, lastName, NAME_SUFFIX[nameSuffix]].filter(Boolean).join(' ')
+  const fullName = [firstName, middleName, lastName, NAME_SUFFIXES[nameSuffix]].filter(Boolean).join(' ')
   const sanitizedField = (field) => ({
     dangerouslySetInnerHTML: {
       __html: sanitizeHtml(field, {allowedTags: ['em']}),

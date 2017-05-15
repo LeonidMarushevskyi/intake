@@ -1,7 +1,7 @@
 import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
 import Gender from 'Gender'
-import NAME_SUFFIX from 'NameSuffix'
+import NAME_SUFFIXES from 'NameSuffixes'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGES from 'Languages'
@@ -72,7 +72,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             onChange={(event) => onChange(['name_suffix'], event.target.value || null)}
           >
             <option key='' value='' />
-            {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
+            {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
           </SelectField>
         </div>
         <div className='row'>

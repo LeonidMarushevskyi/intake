@@ -6,7 +6,7 @@ import GENDER from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGES from 'Languages'
-import NAME_SUFFIX from 'NameSuffix'
+import NAME_SUFFIXES from 'NameSuffixes'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import RacesEditView from 'components/people/RacesEditView'
 import PropTypes from 'prop-types'
@@ -102,7 +102,7 @@ export class PersonEditPage extends React.Component {
               onChange={(event) => this.setField(['name_suffix'], event.target.value || null)}
             >
               <option key='' />
-              {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
+              {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
             </SelectField>
           </div>
            <PhoneNumbersEditView

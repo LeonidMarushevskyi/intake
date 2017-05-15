@@ -361,7 +361,7 @@ feature 'Edit Screening' do
       click_button 'Cancel'
     end
 
-    expect(page).to have_content 'MARGE SIMPSON'
+    expect(page).to have_content 'MARGE JACQUELINE SIMPSON, SR'
     expect(page).to have_link 'Edit participant'
     expect(page).to have_content old_ssn
   end
