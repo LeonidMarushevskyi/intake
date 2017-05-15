@@ -4,7 +4,7 @@
 # resource via the API
 class PersonRepository
   def self.create(security_token, person)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_people_path,
       :post,
@@ -14,7 +14,7 @@ class PersonRepository
   end
 
   def self.find(security_token, id)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_person_path(id),
       :get
@@ -24,7 +24,7 @@ class PersonRepository
 
   def self.update(security_token, person)
     raise 'Error updating person: id is required' unless person.id
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_person_path(person.id),
       :put,
