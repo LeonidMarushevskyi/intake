@@ -22,7 +22,9 @@ describe('ParticipantEditView', () => {
       const participant = Immutable.fromJS({
         id: participantId,
         first_name: 'Lisa',
+        middle_name: 'Marie',
         last_name: 'Simpson',
+        name_suffix: 'phd',
         date_of_birth: '2016-12-31',
         gender: 'female',
         languages: [],
@@ -81,7 +83,7 @@ describe('ParticipantEditView', () => {
     })
 
     it('renders the participants first and last name in the card header', () => {
-      expect(component.find('.card-header').text()).toContain('Lisa Simpson')
+      expect(component.find('.card-header').text()).toContain('Lisa Marie Simpson, PhD')
     })
 
     it('renders the participant header with no name when first and last name is null', () => {
@@ -106,8 +108,12 @@ describe('ParticipantEditView', () => {
     it('renders the input fields', () => {
       expect(component.find('InputField[label="First Name"]').props().value)
         .toEqual('Lisa')
+      expect(component.find('InputField[label="Middle Name"]').props().value)
+        .toEqual('Marie')
       expect(component.find('InputField[label="Last Name"]').props().value)
         .toEqual('Simpson')
+      expect(component.find('SelectField[label="Suffix"]').props().value)
+        .toEqual('phd')
       expect(component.find('DateField[label="Date of birth"]').props().value)
         .toEqual('2016-12-31')
       expect(component.find('SelectField[label="Gender"]').props().value)
