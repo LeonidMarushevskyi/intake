@@ -1,6 +1,6 @@
 import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
-import Gender from 'Gender'
+import Genders from 'Genders'
 import NAME_SUFFIXES from 'NameSuffixes'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
@@ -111,10 +111,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             onChange={(event) => onChange(['gender'], event.target.value || null)}
           >
             <option key='' value='' />
-            {
-              Object.keys(Gender).map((item) =>
-                <option key={item} value={item}>{Gender[item]}</option>)
-            }
+            {Object.keys(Genders).map((item) => <option key={item} value={item}>{Genders[item]}</option>)}
           </SelectField>
         </div>
         <div className='row'>

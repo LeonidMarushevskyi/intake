@@ -1,5 +1,5 @@
 import * as personActions from 'actions/personActions'
-import Gender from 'Gender'
+import Genders from 'Genders'
 import React from 'react'
 import PropTypes from 'prop-types'
 import NAME_SUFFIXES from 'NameSuffixes'
@@ -65,7 +65,7 @@ export class PersonShowPage extends React.Component {
               {person.get('date_of_birth')}
             </ShowField>
             <ShowField gridClassName='col-md-6' label='Gender'>
-              {Gender[person.get('gender')]}
+              {Genders[person.get('gender')]}
             </ShowField>
           </div>
           <div className='row gap-top'>

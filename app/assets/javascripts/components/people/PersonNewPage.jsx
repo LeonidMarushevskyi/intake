@@ -2,7 +2,7 @@ import * as personActions from 'actions/personActions'
 import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
 import EthnicityEditView from 'components/people/EthnicityEditView'
-import GENDER from 'Gender'
+import GENDERS from 'Genders'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGES from 'Languages'
@@ -115,7 +115,7 @@ export class PersonNewPage extends React.Component {
               onChange={(event) => this.setField(['gender'], event.target.value || null)}
             >
               <option key='' />
-              {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
+              {Object.keys(GENDERS).map((item) => <option key={item} value={item}>{GENDERS[item]}</option>)}
             </SelectField>
           </div>
           <div className='row'>
