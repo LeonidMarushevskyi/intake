@@ -1,2 +1,2 @@
 #!/bin/bash
-RAILS_ENV=test USE_XVFB=true bundle exec rake spec
+RAILS_ENV=test USE_XVFB=true bin/gulp && bundle exec rake spec
