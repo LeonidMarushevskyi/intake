@@ -9,6 +9,7 @@ abort(production_message) if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
 require 'factory_girl_rails'
+require 'support/assets_gulp'
 require 'faker'
 require 'rails-controller-testing'
 # Add additional requires below this line. Rails is not loaded until this point!

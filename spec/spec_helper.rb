@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.before :suite do
     if ENV['USE_XVFB'] == 'true'
       require 'headless'
-      @headless_manager = Headless.new(reuse: false)
+      @headless_manager = Headless.new
       @headless_manager.start
     end
   end

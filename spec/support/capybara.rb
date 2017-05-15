@@ -9,5 +9,3 @@ Capybara.javascript_driver = Capybara.default_driver
 
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true
-
-Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i

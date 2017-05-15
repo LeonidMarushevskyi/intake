@@ -181,9 +181,6 @@ GEM
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
-    parallel (1.11.2)
-    parallel_tests (2.14.1)
-      parallel
     parser (2.4.0.0)
       ast (~> 2.2)
     pleaserun (0.0.28)
@@ -386,7 +383,6 @@ DEPENDENCIES
   i18n-tasks
   license_finder
   newrelic_rpm
-  parallel_tests
   pry
   pry-byebug
   pry-doc

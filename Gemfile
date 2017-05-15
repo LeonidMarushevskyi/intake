@@ -19,7 +19,6 @@ group :development, :test do
   gem 'fpm'
   gem 'haml-lint'
   gem 'i18n-tasks'
-  gem 'parallel_tests'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
