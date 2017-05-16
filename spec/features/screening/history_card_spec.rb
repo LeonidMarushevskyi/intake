@@ -38,10 +38,11 @@ feature 'History card' do
         {
           start_date: '2016-09-10',
           county_name: 'Sacramento',
-          assigned_social_worker: { first_name: 'Bob', last_name: 'Smith' },
+          # until we have users, TPT is saving the entire name in the last_name field
+          assigned_social_worker: { first_name: nil, last_name: 'Bob Smith' },
           reporter: { first_name: 'Alex', last_name: 'Hanson' },
           all_people: [
-            { first_name: 'Bob', last_name: 'Smith', roles: ['Assigned Social Worker'] },
+            { first_name: 'Bob', last_name: 'Bob Smith', roles: ['Assigned Social Worker'] },
             { first_name: 'Alex', last_name: 'Hanson', roles: ['Reporter'] },
             { first_name: 'Sally', last_name: 'Johnson', roles: ['Victim'] },
             { first_name: 'Sam', last_name: 'Anderson', roles: ['Perpetrator'] },
