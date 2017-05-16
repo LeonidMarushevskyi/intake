@@ -44,28 +44,28 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
       <div className='card-body'>
         <div className='row'>
           <InputField
-            gridClassName='col-md-6'
+            gridClassName='col-md-3'
             id='first_name'
             label='First Name'
             value={participant.get('first_name') || ''}
             onChange={(event) => onChange(['first_name'], event.target.value || null)}
           />
           <InputField
-            gridClassName='col-md-6'
+            gridClassName='col-md-3'
             id='middle_name'
             label='Middle Name'
             value={participant.get('middle_name') || ''}
             onChange={(event) => onChange(['middle_name'], event.target.value || null)}
           />
           <InputField
-            gridClassName='col-md-6'
+            gridClassName='col-md-3'
             id='last_name'
             label='Last Name'
             value={participant.get('last_name') || ''}
             onChange={(event) => onChange(['last_name'], event.target.value || null)}
           />
           <SelectField
-            gridClassName='col-md-6'
+            gridClassName='col-md-3'
             id='name_suffix'
             label='Suffix'
             value={participant.get('name_suffix') || ''}
