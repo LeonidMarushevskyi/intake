@@ -134,6 +134,7 @@ feature 'Relationship card' do
       scenario 'removing a person updates relationships' do
         stub_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
           .and_return(json_body([].to_json, status: 200))
+        stub_request(:delete, intake_api_participant_url(participant.id))
 
         visit edit_screening_path(id: participants_screening.id)
         within edit_participant_card_selector(participant.id) do
