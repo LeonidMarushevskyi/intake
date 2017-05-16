@@ -1,5 +1,5 @@
 import EditLink from 'components/common/EditLink'
-import GENDER from 'Gender'
+import GENDERS from 'Genders'
 import PropTypes from 'prop-types'
 import React from 'react'
 import US_STATE from 'USState'
@@ -29,7 +29,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
             {nameFormatter(participant)}
           </ShowField>
           <ShowField label='Gender'>
-            {GENDER[participant.get('gender')]}
+            {GENDERS[participant.get('gender')]}
           </ShowField>
         </div>
         <div className='row gap-top'>

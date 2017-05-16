@@ -1,8 +1,8 @@
 import * as personActions from 'actions/personActions'
-import Gender from 'Gender'
+import Genders from 'Genders'
 import React from 'react'
 import PropTypes from 'prop-types'
-import NAME_SUFFIX from 'NameSuffix'
+import NAME_SUFFIXES from 'NameSuffixes'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import {Link} from 'react-router'
@@ -43,7 +43,7 @@ export class PersonShowPage extends React.Component {
               {person.get('last_name')}
             </ShowField>
             <ShowField gridClassName='col-md-3' label='Suffix'>
-              {NAME_SUFFIX[person.get('name_suffix')]}
+              {NAME_SUFFIXES[person.get('name_suffix')]}
             </ShowField>
           </div>
           <div>
@@ -65,7 +65,7 @@ export class PersonShowPage extends React.Component {
               {person.get('date_of_birth')}
             </ShowField>
             <ShowField gridClassName='col-md-6' label='Gender'>
-              {Gender[person.get('gender')]}
+              {Genders[person.get('gender')]}
             </ShowField>
           </div>
           <div className='row gap-top'>

@@ -10,7 +10,9 @@ describe('ParticipantShowView', () => {
     const participant = Immutable.fromJS({
       id: '200',
       first_name: 'Kevin',
+      middle_name: 'Home Alone',
       last_name: 'McCallister',
+      name_suffix: 'iv',
       gender: 'male',
       languages: ['English', 'Arabic'],
       date_of_birth: '11/16/1990',
@@ -25,8 +27,8 @@ describe('ParticipantShowView', () => {
     expect(component.find('#participants-card-200').length).toEqual(1)
   })
 
-  it('renders the participants first and last name', () => {
-    expect(component.find('.card-header').text()).toContain('Kevin McCallister')
+  it('renders the participants full name', () => {
+    expect(component.find('.card-header').text()).toContain('Kevin Home Alone McCallister IV')
   })
 
   it('renders the delete link', () => {
@@ -44,7 +46,7 @@ describe('ParticipantShowView', () => {
   it('renders the participant show fields', () => {
     expect(component.find('ShowField').length).toEqual(5)
     expect(component.find('ShowField[label="Name"]').html())
-      .toContain('Kevin McCallister')
+      .toContain('Kevin Home Alone McCallister IV')
     expect(component.find('ShowField[label="Gender"]').html())
       .toContain('Male')
     expect(component.find('ShowField[label="Language(s)"]').html())

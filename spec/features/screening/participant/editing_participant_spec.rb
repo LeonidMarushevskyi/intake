@@ -29,8 +29,10 @@ feature 'Edit Screening' do
       person_id: 1,
       date_of_birth: 15.years.ago.to_date.to_s(:db),
       first_name: 'Marge',
-      gender: 'female',
+      middle_name: 'Jacqueline',
       last_name: 'Simpson',
+      name_suffix: 'sr',
+      gender: 'female',
       ssn: old_ssn,
       languages: ['Armenian'],
       addresses: [marge_address],
@@ -88,14 +90,16 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
-        expect(page).to have_content 'MARGE SIMPSON'
+        expect(page).to have_content 'MARGE JACQUELINE SIMPSON, SR'
         expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do
         expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
+        expect(page).to have_field('Middle Name', with: marge.middle_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
+        expect(page).to have_field('Suffix', with: marge.name_suffix)
         expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
@@ -357,7 +361,7 @@ feature 'Edit Screening' do
       click_button 'Cancel'
     end
 
-    expect(page).to have_content 'MARGE SIMPSON'
+    expect(page).to have_content 'MARGE JACQUELINE SIMPSON, SR'
     expect(page).to have_link 'Edit participant'
     expect(page).to have_content old_ssn
   end

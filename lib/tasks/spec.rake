@@ -22,6 +22,13 @@ namespace :spec do # rubocop:disable BlockLength
     task :local do
       system "#{host_env_string} #{spec_cmd}"
     end
+
+    desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
+    task :full do
+      Rake::Task['spec:intake'].invoke
+      system 'bin/lint'
+      system 'bin/karma'
+    end
   end
 
   desc 'Run specs in api container'
@@ -29,11 +36,20 @@ namespace :spec do # rubocop:disable BlockLength
     system "docker-compose exec api #{spec_cmd}"
   end
 
-  desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
+  namespace :api do
+    desc 'Run ALL THE SPECS, & RUBOCOP!!!'
+    task :full do
+      Rake::Task['spec:api'].invoke
+      system 'docker-compose exec api rubocop'
+    end
+  end
+
+  desc 'Run specs and linters for both intake and api'
   task :full do
     Rake::Task['spec:intake'].invoke
-    Rake::Task['spec:api'].invoke
     system 'bin/lint'
     system 'bin/karma'
+    Rake::Task['spec:api'].invoke
+    system 'docker-compose exec api rubocop'
   end
 end

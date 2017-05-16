@@ -13,8 +13,10 @@ describe Api::V1::ParticipantsController do
       {
         date_of_birth: '05/29/1990',
         first_name: 'Homer',
-        gender: 'male',
+        middle_name: 'Jay',
         last_name: 'Simpson',
+        name_suffix: 'esq',
+        gender: 'male',
         addresses: [{
           id: '',
           street_address: '123 fake st',

@@ -1,6 +1,7 @@
 import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
-import Gender from 'Gender'
+import Genders from 'Genders'
+import NAME_SUFFIXES from 'NameSuffixes'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGES from 'Languages'
@@ -51,11 +52,28 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           />
           <InputField
             gridClassName='col-md-6'
+            id='middle_name'
+            label='Middle Name'
+            value={participant.get('middle_name') || ''}
+            onChange={(event) => onChange(['middle_name'], event.target.value || null)}
+          />
+          <InputField
+            gridClassName='col-md-6'
             id='last_name'
             label='Last Name'
             value={participant.get('last_name') || ''}
             onChange={(event) => onChange(['last_name'], event.target.value || null)}
           />
+          <SelectField
+            gridClassName='col-md-6'
+            id='name_suffix'
+            label='Suffix'
+            value={participant.get('name_suffix') || ''}
+            onChange={(event) => onChange(['name_suffix'], event.target.value || null)}
+          >
+            <option key='' value='' />
+            {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
+          </SelectField>
         </div>
         <div className='row'>
           <div className='col-md-6'>
@@ -93,10 +111,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             onChange={(event) => onChange(['gender'], event.target.value || null)}
           >
             <option key='' value='' />
-            {
-              Object.keys(Gender).map((item) =>
-                <option key={item} value={item}>{Gender[item]}</option>)
-            }
+            {Object.keys(Genders).map((item) => <option key={item} value={item}>{Genders[item]}</option>)}
           </SelectField>
         </div>
         <div className='row'>

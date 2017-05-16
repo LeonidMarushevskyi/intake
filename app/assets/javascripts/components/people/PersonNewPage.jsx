@@ -2,11 +2,11 @@ import * as personActions from 'actions/personActions'
 import AddressesEditView from 'components/people/AddressesEditView'
 import DateField from 'components/common/DateField'
 import EthnicityEditView from 'components/people/EthnicityEditView'
-import GENDER from 'Gender'
+import GENDERS from 'Genders'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
 import LANGUAGES from 'Languages'
-import NAME_SUFFIX from 'NameSuffix'
+import NAME_SUFFIXES from 'NameSuffixes'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import RacesEditView from 'components/people/RacesEditView'
 import PropTypes from 'prop-types'
@@ -94,7 +94,7 @@ export class PersonNewPage extends React.Component {
               onChange={(event) => this.setField(['name_suffix'], event.target.value || null)}
             >
               <option key='' />
-              {Object.keys(NAME_SUFFIX).map((item) => <option key={item} value={item}>{NAME_SUFFIX[item]}</option>)}
+              {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
             </SelectField>
           </div>
           <PhoneNumbersEditView
@@ -115,7 +115,7 @@ export class PersonNewPage extends React.Component {
               onChange={(event) => this.setField(['gender'], event.target.value || null)}
             >
               <option key='' />
-              {Object.keys(GENDER).map((item) => <option key={item} value={item}>{GENDER[item]}</option>)}
+              {Object.keys(GENDERS).map((item) => <option key={item} value={item}>{GENDERS[item]}</option>)}
             </SelectField>
           </div>
           <div className='row'>
