@@ -3,11 +3,13 @@ import DateField from 'components/common/DateField'
 import Gender from 'Gender'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
+import LANGUAGES from 'Languages'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
+import selectOptions from 'utils/selectHelper'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'RoleType'
 
@@ -62,7 +64,9 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
               multi
               inputProps={{id: `roles_${participant.get('id')}`}}
               value={participant.get('roles').toJS()}
-              onChange={(roles) => onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])}
+              onChange={(roles) =>
+                onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])
+              }
               options={roleOptions(participant.get('roles'))}
               clearable={false}
               placeholder=''
@@ -89,9 +93,29 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             onChange={(event) => onChange(['gender'], event.target.value || null)}
           >
             <option key='' value='' />
-            {Object.keys(Gender).map((item) => <option key={item} value={item}>{Gender[item]}</option>)}
+            {
+              Object.keys(Gender).map((item) =>
+                <option key={item} value={item}>{Gender[item]}</option>)
+            }
           </SelectField>
         </div>
+        <div className='row'>
+            <div className='col-md-6'>
+              <label htmlFor='languages'>Language(s)</label>
+              <Select
+                multi
+                inputProps={{id: 'languages'}}
+                options={selectOptions(LANGUAGES)}
+                value={(participant.get('languages') || Immutable.List()).toJS()}
+                onChange={(languages) =>
+                  onChange(
+                    ['languages'],
+                    Immutable.List(languages.map((languages) => languages.value)) || []
+                  )
+                }
+              />
+            </div>
+          </div>
         <div className='row'>
           <InputField
             gridClassName='col-md-6'

@@ -25,6 +25,7 @@ describe('ParticipantEditView', () => {
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
+        languages: [],
         ssn: 'ssn-1',
         roles: [],
       })
@@ -48,6 +49,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: 'Simpson',
+        languages: [],
         roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
@@ -59,6 +61,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: 'Lisa',
         last_name: null,
+        languages: [],
         roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
@@ -70,6 +73,7 @@ describe('ParticipantEditView', () => {
         id: '199',
         first_name: null,
         last_name: null,
+        languages: [],
         roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
@@ -87,6 +91,7 @@ describe('ParticipantEditView', () => {
         last_name: null,
         date_of_birth: '2016-12-31',
         gender: 'female',
+        languages: [],
         ssn: 'ssn-1',
         roles: [],
       })
@@ -152,6 +157,7 @@ describe('ParticipantEditView', () => {
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
+        languages: [],
         ssn: 'ssn-1',
         roles: [],
       })
@@ -161,6 +167,25 @@ describe('ParticipantEditView', () => {
       component = shallow(<ParticipantEditView participant={participant} onDelete={onDelete}/>)
       component.find('.delete-button').simulate('click')
       expect(onDelete).toHaveBeenCalled()
+    })
+
+    describe('languages', () => {
+      it('renders the language field', () => {
+        const language_container = component.find('label[htmlFor="languages"]').parent()
+        expect(language_container.find('Select[multi]').length).toEqual(1)
+        expect(language_container.find('Select[multi]').props().inputProps.id).toEqual('languages')
+        expect(language_container.find('Select[multi]').props().value).toEqual([])
+      })
+
+      it('renders the language field after changes', () => {
+        const language_container = component.find('label[htmlFor="languages"]').parent()
+        const newSelectedLanguages = [
+          {label: 'Farsi', value: 'farsi'},
+          {label: 'English', value: 'english'},
+        ]
+        language_container.find('Select[multi]').simulate('change', newSelectedLanguages)
+        expect(onChange).toHaveBeenCalledWith(['languages'], Immutable.List(['farsi', 'english']))
+      })
     })
   })
 
@@ -175,6 +200,7 @@ describe('ParticipantEditView', () => {
       participantId = '199'
       const participant = Immutable.fromJS({
         id: participantId,
+        languages: [],
         roles: [],
       })
       component = shallow(
@@ -186,12 +212,14 @@ describe('ParticipantEditView', () => {
     })
 
     it('renders the role field', () => {
-      expect(component.find(`label[htmlFor="roles_${participantId}"]`).length).toEqual(1)
-      expect(component.find(`label[htmlFor="roles_${participantId}"]`).text()).toEqual('Role')
-      expect(component.find('Select[multi]').length).toEqual(1)
-      expect(component.find('Select[multi]').props().inputProps.id).toEqual(`roles_${participantId}`)
-      expect(component.find('Select[multi]').props().value).toEqual([])
-      expect(component.find('Select[multi]').props().options).toEqual([
+      const roles_label = component.find(`label[htmlFor="roles_${participantId}"]`)
+      const roles_field = roles_label.parent().find('Select[multi]')
+      expect(roles_label.length).toEqual(1)
+      expect(roles_label.text()).toEqual('Role')
+      expect(roles_field.length).toEqual(1)
+      expect(roles_field.props().inputProps.id).toEqual(`roles_${participantId}`)
+      expect(roles_field.props().value).toEqual([])
+      expect(roles_field.props().options).toEqual([
         {label: 'Victim', value: 'Victim'},
         {label: 'Perpetrator', value: 'Perpetrator'},
         {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: false},
@@ -204,7 +232,8 @@ describe('ParticipantEditView', () => {
       const newSelectedRoles = [
         {label: 'Perpetrator', value: 'Perpetrator'},
       ]
-      component.find('Select[multi]').simulate('Change', newSelectedRoles)
+      const roles_container = component.find(`label[htmlFor="roles_${participantId}"]`).parent()
+      roles_container.find('Select[multi]').simulate('Change', newSelectedRoles)
       expect(onChange).toHaveBeenCalledWith(['roles'], Immutable.List(['Perpetrator']))
     })
 
@@ -215,6 +244,7 @@ describe('ParticipantEditView', () => {
         participantId = '199'
         const participant = Immutable.fromJS({
           id: participantId,
+          languages: [],
           roles: ['Mandated Reporter'],
         })
         component = shallow(
@@ -233,7 +263,8 @@ describe('ParticipantEditView', () => {
           {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
           {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
         ]
-        expect(component.find('Select[multi]').props().options).toEqual(expectedOptions)
+        const roles_container = component.find(`label[htmlFor="roles_${participantId}"]`).parent()
+        expect(roles_container.find('Select[multi]').props().options).toEqual(expectedOptions)
       })
     })
   })
@@ -246,6 +277,7 @@ describe('ParticipantEditView', () => {
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
+        languages: [],
         ssn: 'ssn-1',
         addresses: [{}],
         roles: [],
@@ -284,6 +316,7 @@ describe('ParticipantEditView', () => {
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
+        languages: [],
         ssn: 'ssn-1',
         addresses: [{}],
         roles: [],

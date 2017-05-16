@@ -5,9 +5,18 @@ require 'spec_helper'
 
 feature 'show allegations' do
   scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      date_of_birth: nil)
+    lisa = FactoryGirl.create(:participant, :victim,
+      first_name: 'Lisa',
+      last_name: 'Simpsson',
+      date_of_birth: nil)
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simps',
+      date_of_birth: nil)
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -102,9 +111,15 @@ feature 'show allegations' do
   end
 
   scenario 'deleting a participant from a screening removes related allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simpson')
+    lisa = FactoryGirl.create(:participant, :victim,
+      first_name: 'Lisa',
+      last_name: 'Simpson')
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simpson')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]
@@ -309,9 +324,18 @@ feature 'show allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simps',
+      date_of_birth: nil)
+    lisa = FactoryGirl.create(:participant, :victim,
+      first_name: 'Lisa',
+      last_name: 'Simps',
+      date_of_birth: nil)
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simps',
+      date_of_birth: nil)
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]

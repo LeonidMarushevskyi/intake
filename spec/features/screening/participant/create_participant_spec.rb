@@ -21,7 +21,8 @@ def build_participant_from_person_and_screening(person, screening)
     person_id: person.id,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
-    phone_numbers: person.phone_numbers
+    phone_numbers: person.phone_numbers,
+    languages: person.languages
   )
 end
 
@@ -85,7 +86,7 @@ feature 'Edit Screening' do
 
   scenario 'adding an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
-      :participant, :unknown,
+      :participant, :unpopulated,
       screening_id: existing_screening.id
     )
     new_participant_request = { screening_id: existing_screening.id, person_id: nil }
@@ -122,7 +123,6 @@ feature 'Edit Screening' do
       participant_marge.as_json.merge(id: 23)
     )
     stub_request(:post, intake_api_participants_url)
-      .with(json_body(participant_marge.to_json(except: :id)))
       .and_return(json_body(created_participant_marge.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -150,6 +150,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
+        has_react_select_field('Language(s)', with: marge.languages)
         expect(page).to have_field('Date of birth', with: marge.date_of_birth)
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)

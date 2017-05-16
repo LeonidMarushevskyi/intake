@@ -154,7 +154,7 @@ feature 'Relationship card' do
       scenario 'adding a new person updates relationships' do
         visit edit_screening_path(id: participants_screening.id)
         new_participant = FactoryGirl.create(
-          :participant, :unknown,
+          :participant, :unpopulated,
           screening_id: participants_screening.id
         )
         new_participant_request = { screening_id: participants_screening.id, person_id: nil }

@@ -18,11 +18,6 @@ feature 'Show Screening' do
 
   existing_participant = FactoryGirl.create(
     :participant,
-    first_name: 'Homer',
-    last_name: 'Simpson',
-    gender: 'male',
-    ssn: '123-23-1234',
-    date_of_birth: '1990-09-05',
     addresses: [address],
     phone_numbers: [phone_number]
   )
@@ -47,24 +42,27 @@ feature 'Show Screening' do
 
     within show_participant_card_selector(existing_participant.id) do
       within '.card-header' do
-        expect(page).to have_content 'HOMER SIMPSON'
+        expect(page).to have_content(
+          "#{existing_participant.first_name} #{existing_participant.last_name}".upcase
+        )
         expect(page).to have_link 'Edit participant'
         expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do
-        expect(page).to have_content('Homer')
-        expect(page).to have_content('Simpson')
+        expect(page).to have_content(existing_participant.first_name)
+        expect(page).to have_content(existing_participant.last_name)
         expect(page).to have_content(phone_number.number)
         expect(page).to have_content(phone_number.type)
-        expect(page).to have_content('Male')
-        expect(page).to have_content('1990-09-05')
-        expect(page).to have_content('123-23-1234')
-        expect(page).to have_content('123 Fake St')
-        expect(page).to have_content('Springfield')
+        expect(page).to have_content(existing_participant.gender.capitalize)
+        expect(page).to have_content(existing_participant.languages.join(', '))
+        expect(page).to have_content(existing_participant.date_of_birth)
+        expect(page).to have_content(existing_participant.ssn)
+        expect(page).to have_content(address.street_address)
+        expect(page).to have_content(address.city)
         expect(page).to have_content('New York')
-        expect(page).to have_content('12345')
-        expect(page).to have_content('Home')
+        expect(page).to have_content(address.zip)
+        expect(page).to have_content(address.type)
       end
     end
   end

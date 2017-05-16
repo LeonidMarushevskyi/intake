@@ -88,6 +88,7 @@ describe('screening actions', () => {
       last_name: 'Simpson',
       date_of_birth: '2016-12-31',
       gender: 'female',
+      languages: ['English', 'Spanish'],
       ssn: 'ssn-1',
     }
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))

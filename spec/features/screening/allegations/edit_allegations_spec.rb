@@ -9,21 +9,27 @@ feature 'edit allegations' do
       :participant,
       :perpetrator,
       first_name: 'Marge',
-      last_name: 'Simpson'
+      last_name: 'Simpson',
+      date_of_birth: nil
     )
     homer = FactoryGirl.create(
       :participant,
       :perpetrator,
       first_name: 'Homer',
-      last_name: 'Simpson'
+      last_name: 'Simpson',
+      date_of_birth: nil
     )
     bart = FactoryGirl.create(
       :participant,
       first_name: 'Bart',
       last_name: 'Simpson',
+      date_of_birth: nil,
       roles: %w[Victim Perpetrator]
     )
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
+    lisa = FactoryGirl.create(:participant, :victim,
+      first_name: 'Lisa',
+      last_name: 'Simpson',
+      date_of_birth: nil)
     screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])
     stub_request(:get, intake_api_screening_url(screening.id))
       .and_return(json_body(screening.to_json, status: 200))
@@ -382,8 +388,14 @@ feature 'edit allegations' do
   end
 
   scenario 'editing allegation types will not impact other allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      date_of_birth: nil)
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      date_of_birth: nil)
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
@@ -412,8 +424,14 @@ feature 'edit allegations' do
   end
 
   scenario 'I remove a participant for whom I have added allegation types' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      date_of_birth: nil)
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      date_of_birth: nil)
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_screening_url(screening.id))
@@ -701,9 +719,15 @@ feature 'edit allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    marge = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Marge',
+      last_name: 'Simpson',
+      date_of_birth: nil)
+    homer = FactoryGirl.create(:participant, :perpetrator,
+      first_name: 'Homer',
+      last_name: 'Simpson',
+      date_of_birth: nil)
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    homer = FactoryGirl.create(:participant, :perpetrator, first_name: 'Homer', last_name: 'Simps')
     screening = FactoryGirl.create(
       :screening,
       participants: [marge, homer, lisa]

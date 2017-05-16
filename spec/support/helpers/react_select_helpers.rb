@@ -9,7 +9,7 @@ module ReactSelectHelpers
 
   def has_react_select_field(selector, with:)
     input = find_field(selector)
-    input_container = input.parent
+    input_container = input.find(:xpath, '../..')
     selected_values = input_container.all('.Select-value-label').map(&:text)
     expect(selected_values).to eq(with)
   end
