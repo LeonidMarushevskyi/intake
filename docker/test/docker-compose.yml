@@ -11,6 +11,7 @@ services:
       RAILS_ENV: test
       CI_REPORTS: /reports
       GENERATE_TEST_REPORTS: 'yes'
+      USE_XVFB: 'true'
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
     links:
