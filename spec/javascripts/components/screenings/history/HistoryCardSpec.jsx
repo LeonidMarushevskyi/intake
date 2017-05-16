@@ -200,7 +200,7 @@ describe('HistoryCard', () => {
     it('renders the assigned worker', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        assigned_social_worker: {first_name: 'Bob', last_name: 'Smith'},
+        assigned_social_worker: {first_name: null, last_name: 'Bob Smith'},
       }])
       const props = {
         ...requiredProps,

@@ -83,7 +83,7 @@ export default class HistoryCard extends React.Component {
                                 {`Reporter: ${reporter ? nameFormatter(reporter) : '' }`}
                               </span>
                               <span className='col-md-6 assignee'>
-                                {`Worker: ${assignee ? nameFormatter(assignee) : ''}`}
+                                {`Worker: ${assignee ? assignee.get('last_name') : ''}`}
                               </span>
                             </div>
                           </td>
