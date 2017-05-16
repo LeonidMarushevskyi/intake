@@ -99,5 +99,87 @@ describe('nameFormatter', () => {
       })
     })
   })
-})
 
+  describe('edge cases', () => {
+    it('renders with a only middle name', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: null,
+        middle_name: 'S.',
+        name_suffix: null,
+      }))).toEqual('Unknown S.')
+    })
+
+    it('renders with a only a suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: null,
+        middle_name: null,
+        name_suffix: 'esq',
+      }))).toEqual('Unknown person')
+    })
+
+    it('renders with a only middle name and a suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: null,
+        middle_name: 'S.',
+        name_suffix: 'esq',
+      }))).toEqual('Unknown S., Esq')
+    })
+
+    it('renders with a only first name and middle name', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        last_name: null,
+        middle_name: 'S.',
+        name_suffix: null,
+      }))).toEqual('Bill S. (Unknown last name)')
+    })
+
+    it('renders with a only last name and middle name', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: 'Preston',
+        middle_name: 'S.',
+        name_suffix: null,
+      }))).toEqual('(Unknown first name) S. Preston')
+    })
+
+    it('renders with a only first name and suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        last_name: null,
+        middle_name: null,
+        name_suffix: 'esq',
+      }))).toEqual('Bill (Unknown last name), Esq')
+    })
+
+    it('renders with a only last name and suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: 'Preston',
+        middle_name: null,
+        name_suffix: 'esq',
+      }))).toEqual('(Unknown first name) Preston, Esq')
+    })
+
+    it('renders with a only first name, middle name, and suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: 'Bill',
+        last_name: null,
+        middle_name: 'S.',
+        name_suffix: 'esq',
+      }))).toEqual('Bill S. (Unknown last name), Esq')
+    })
+
+    it('renders with a only last name, middle name, and suffix', () => {
+      expect(nameFormatter(Immutable.fromJS({
+        first_name: null,
+        last_name: 'Preston',
+        middle_name: 'S.',
+        name_suffix: 'esq',
+      }))).toEqual('(Unknown first name) S. Preston, Esq')
+    })
+  })
+})
