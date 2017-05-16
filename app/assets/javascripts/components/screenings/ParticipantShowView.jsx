@@ -32,8 +32,8 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
             {GENDERS[participant.get('gender')]}
           </ShowField>
         </div>
-        <div className='row gap-top'>
-          <ShowField gridClassName='col-md-12' label='Language(s)'>
+        <div className='col-md-5'>
+          <ShowField label='Language(s)'>
             {(participant.get('languages') || []).join(', ')}
           </ShowField>
         </div>
