@@ -5,7 +5,7 @@
 class ParticipantRepository
   def self.create(security_token, participant)
     participant_data = participant.as_json(except: :id)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_participants_path,
       :post,
@@ -15,7 +15,7 @@ class ParticipantRepository
   end
 
   def self.delete(security_token, id)
-    API.make_api_call(
+    IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_participant_path(id),
       :delete
@@ -24,7 +24,7 @@ class ParticipantRepository
 
   def self.update(security_token, participant)
     raise 'Error updating participant: id is required' unless participant.id
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_participant_path(participant.id),
       :put,

@@ -4,7 +4,7 @@
 # resource via the API
 class ScreeningRepository
   def self.create(security_token, screening)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screenings_path,
       :post,
@@ -14,7 +14,7 @@ class ScreeningRepository
   end
 
   def self.find(security_token, id)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screening_path(id),
       :get
@@ -24,7 +24,7 @@ class ScreeningRepository
 
   def self.update(security_token, screening)
     raise 'Error updating screening: id is required' unless screening.id
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screening_path(screening.id),
       :put,
@@ -34,7 +34,7 @@ class ScreeningRepository
   end
 
   def self.search(security_token, search_terms)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screenings_path(search_terms),
       :get
@@ -45,7 +45,7 @@ class ScreeningRepository
   end
 
   def self.history_of_involvements(security_token, id)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_history_of_involvements_path(id),
       :get
@@ -54,7 +54,7 @@ class ScreeningRepository
   end
 
   def self.submit(security_token, id)
-    response = API.make_api_call(
+    response = IntakeAPI.make_api_call(
       security_token,
       Rails.application.routes.url_helpers.intake_api_screening_submit_path(id),
       :post

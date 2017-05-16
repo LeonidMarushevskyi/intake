@@ -15,7 +15,7 @@ describe ParticipantRepository do
     end
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, '/api/v1/participants', :post, 'first_name' => 'New Participant')
         .and_return(response)
     end
@@ -31,7 +31,7 @@ describe ParticipantRepository do
     let(:participant_id) { '22' }
 
     it 'makes a DELETE API call to participants' do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/participants/#{participant_id}", :delete)
       described_class.delete(security_token, participant_id)
     end
@@ -53,7 +53,7 @@ describe ParticipantRepository do
       let(:participant_id) { '91' }
 
       before do
-        expect(API).to receive(:make_api_call)
+        expect(IntakeAPI).to receive(:make_api_call)
           .with(
             security_token,
             "/api/v1/participants/#{participant_id}",

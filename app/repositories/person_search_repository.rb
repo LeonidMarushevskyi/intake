@@ -4,7 +4,7 @@
 # resource via the API
 class PersonSearchRepository
   def self.search(security_token, search_term)
-    response = API.make_api_call(
+    response = connection_class.make_api_call(
       security_token,
       person_search_path(search_term),
       :get
@@ -21,6 +21,14 @@ class PersonSearchRepository
       )
     else
       Rails.application.routes.url_helpers.intake_api_people_search_path(search_term: search_term)
+    end
+  end
+
+  def self.connection_class
+    if Rails.application.config.intake[:tpt_api_url] && Feature.inactive?(:people_search_tpt)
+      TPT
+    else
+      IntakeAPI
     end
   end
 end

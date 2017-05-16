@@ -45,7 +45,7 @@ Rails.application.routes.draw do
 
   resources :version, only: :index
 
-  scope host: ENV.fetch('API_URL') do
+  scope host: Rails.application.config.intake[:api_url] do
     get 'api/v1/people/:id' => 'dev#null', as: :intake_api_person
     get 'api/v1/people' => 'dev#null', as: :intake_api_people
     get 'api/v1/people_search' => 'dev#null', as: :intake_api_people_search

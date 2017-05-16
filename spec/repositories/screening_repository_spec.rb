@@ -11,7 +11,7 @@ describe ScreeningRepository do
     let(:screening) { double(:screening, as_json: { 'id' => nil, 'name' => 'New Screening' }) }
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, '/api/v1/screenings', :post, 'name' => 'New Screening')
         .and_return(response)
     end
@@ -30,7 +30,7 @@ describe ScreeningRepository do
     end
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}", :get)
         .and_return(response)
     end
@@ -58,7 +58,7 @@ describe ScreeningRepository do
       let(:screening_id) { '77' }
 
       before do
-        expect(API).to receive(:make_api_call)
+        expect(IntakeAPI).to receive(:make_api_call)
           .with(
             security_token,
             "/api/v1/screenings/#{screening_id}",
@@ -94,7 +94,7 @@ describe ScreeningRepository do
     end
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings?#{search_terms.to_query}", :get)
         .and_return(response)
     end
@@ -114,7 +114,7 @@ describe ScreeningRepository do
     let(:screenings) { [screening_one, screening_two] }
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}/history_of_involvements", :get)
         .and_return(response)
     end
@@ -132,7 +132,7 @@ describe ScreeningRepository do
     let(:response) { double(:response, body: response_body) }
 
     it 'responds with response body' do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}/submit", :post)
         .and_return(response)
       expect(described_class.submit(security_token, screening_id)).to eq response_body

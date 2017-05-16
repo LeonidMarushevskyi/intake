@@ -11,7 +11,7 @@ describe PersonRepository do
     let(:person) { { id: nil, first_name: 'New Person' } }
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, '/api/v1/people', :post, 'first_name' => 'New Person')
         .and_return(response)
     end
@@ -30,7 +30,7 @@ describe PersonRepository do
     end
 
     before do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/people/#{person_id}", :get)
         .and_return(response)
     end
@@ -54,7 +54,7 @@ describe PersonRepository do
       let(:person_id) { '77' }
 
       before do
-        expect(API).to receive(:make_api_call)
+        expect(IntakeAPI).to receive(:make_api_call)
           .with(
             security_token,
             "/api/v1/people/#{person_id}",

@@ -12,7 +12,7 @@ describe RelationshipsRepository do
     end
 
     it 'returns the relationships for all participants' do
-      expect(API).to receive(:make_api_call)
+      expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}/relationships", :get)
         .and_return(response)
 
