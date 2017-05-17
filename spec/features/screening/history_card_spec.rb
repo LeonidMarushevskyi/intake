@@ -2,119 +2,118 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'support/factory_girl'
 
-feature 'History card' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+feature 'Show Screening' do
+  before do
+    lana = FactoryGirl.create(:participant, first_name: 'Lana', legacy_id: 2)
+    archer = FactoryGirl.create(:participant, first_name: 'Archer', legacy_id: 1)
+    existing_screening.participants = [lana, archer]
 
-  scenario 'edit an existing screening' do
     stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
-    visit edit_screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show.card', text: 'HISTORY' do
-      expect(page).to have_css('th', text: 'Date')
-      expect(page).to have_css('th', text: 'Type/Status')
-      expect(page).to have_css('th', text: 'County/Office')
-      expect(page).to have_css('th', text: 'People and Roles')
-    end
+    stub_request(
+      :get,
+      intake_api_history_of_involvements_url(existing_screening.id)
+    ).and_return(json_body(screening_involvement.to_json, status: 200))
   end
 
-  scenario 'view an existing screening' do
+  scenario 'showing existing screening' do
+    address = FactoryGirl.create(
+      :address,
+      street_address: '123 fake st',
+      city: 'Springfield',
+      state: 'NY',
+      zip: '12345'
+    )
+    existing_screening = FactoryGirl.create(
+      :screening,
+      additional_information: 'The reasoning for this decision',
+      address: address,
+      assignee: 'Bob Loblaw',
+      communication_method: 'mail',
+      ended_at: '2016-08-22T11:00:00.000Z',
+      incident_county: 'sacramento',
+      incident_date: '2016-08-11',
+      location_type: "Child's Home",
+      name: 'The Rocky Horror Picture Show',
+      reference: 'My Bad!',
+      report_narrative: 'some narrative',
+      screening_decision: 'screen_out',
+      screening_decision_detail: 'consultation',
+      started_at: '2016-08-13T10:00:00.000Z',
+      cross_reports: [
+        { agency_type: 'District attorney', agency_name: 'SCDA' },
+        { agency_type: 'Licensing' }
+      ]
+    )
+
     stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(json_body(existing_screening.to_json))
+
     visit screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show', text: 'HISTORY' do
-      expect(page).to have_css('th', text: 'Date')
-      expect(page).to have_css('th', text: 'Type/Status')
-      expect(page).to have_css('th', text: 'County/Office')
-      expect(page).to have_css('th', text: 'People and Roles')
-    end
-  end
+    expect(page).to have_content 'Screening #My Bad!'
 
-  context 'a screening with participants' do
-    let(:screening_involvement) do
-      [
-        {
-          start_date: '2016-09-10',
-          county_name: 'el_dorado',
-          # until we have users, TPT is saving the entire name in the last_name field
-          assigned_social_worker: { first_name: nil, last_name: 'Bob Smith' },
-          reporter: { first_name: 'Alex', last_name: 'Hanson' },
-          all_people: [
-            { first_name: 'Bob', last_name: 'Bob Smith', roles: ['Assigned Social Worker'] },
-            { first_name: 'Alex', last_name: 'Hanson', roles: ['Reporter'] },
-            { first_name: 'Sally', last_name: 'Johnson', roles: ['Victim'] },
-            { first_name: 'Sam', last_name: 'Anderson', roles: ['Perpetrator'] },
-            { first_name: 'James', last_name: 'Robinson', roles: [] }
-          ]
-        }
-      ]
+    within '#screening-information-card.show', text: 'Screening Information' do
+      expect(page).to have_content 'The Rocky Horror Picture Show'
+      expect(page).to have_content 'Bob Loblaw'
+      expect(page).to have_content '8/13/2016 10:00 AM'
+      expect(page).to have_content '8/22/2016 11:00 AM'
+      expect(page).to have_content 'Mail'
     end
 
-    before do
-      lana = FactoryGirl.create(:participant, first_name: 'Lana', legacy_id: 2)
-      archer = FactoryGirl.create(:participant, first_name: 'Archer', legacy_id: 1)
-      existing_screening.participants = [lana, archer]
-
-      stub_request(:get, intake_api_screening_url(existing_screening.id))
-        .and_return(json_body(existing_screening.to_json))
-
-      stub_request(
-        :get,
-        intake_api_history_of_involvements_url(existing_screening.id)
-      ).and_return(json_body(screening_involvement.to_json, status: 200))
-
-      stub_request(
-        :get,
-        intake_api_relationships_by_screening_url(existing_screening.id)
-      ).and_return(json_body([].to_json, status: 200))
+    within '#narrative-card.show', text: 'Narrative' do
+      expect(page).to have_content 'some narrative'
     end
 
-    scenario 'viewing a screening' do
-      visit screening_path(id: existing_screening.id)
+    within '#incident-information-card.show', text: 'Incident Information' do
+      expect(page).to have_content '8/11/2016'
+      expect(page).to have_content 'Sacramento'
+      expect(page).to have_content '123 fake st'
+      expect(page).to have_content 'Springfield'
+      expect(page).to have_content 'New York'
+      expect(page).to have_content '12345'
+      expect(page).to have_content "Child's Home"
+    end
 
-      within '#history-card.card.show', text: 'HISTORY' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
-        expect(page).to have_content(start_time)
-        expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('El Dorado')
-        expect(page).to have_content('Sally Johnson')
-        expect(page).to have_content('Sam Anderson')
-        expect(page).to have_content('James Robinson')
-        expect(page).to have_content('Reporter: Alex Hanson')
-        expect(page).to have_content('Worker: Bob Smith')
+    within '#decision-card.show', text: 'DECISION' do
+      expect(page).to have_content 'Screen out'
+      expect(page).to have_content 'Category'
+      expect(page).to have_content 'Consultation'
+      expect(page).to have_content 'The reasoning for this decision'
+    end
+
+    within '#allegations-card.show', text: 'Allegations' do
+      expect(page).to have_css('th', text: 'Alleged Victim/Children')
+      expect(page).to have_css('th', text: 'Alleged Perpetrator')
+      expect(page).to have_css('th', text: 'Allegation(s)')
+    end
+
+    within '#worker-safety-card', text: 'Worker safety' do
+      expect(page).to have_content('Edit')
+      expect(page).to have_content('Worker safety alerts')
+      expect(page).to have_content('Additional safety information')
+    end
+
+    expect(page).to have_css('#history-card.show', text: 'History')
+
+    within '#cross-report-card', text: 'CROSS REPORT' do
+      expect(page).to have_content 'District attorney'
+      expect(page).to have_content 'SCDA'
+      expect(page).to have_content 'Licensing'
+      click_link 'Edit cross report'
+      expect(page).to have_field('District_attorney-agency-name', with: 'SCDA')
+
+      da_input = find_field('District_attorney-agency-name')
+      10.times do
+        da_input.send_keys [:backspace]
       end
-
-      expect(
-        a_request(
-          :get,
-          intake_api_history_of_involvements_url(existing_screening.id)
-        )
-      ).to have_been_made
+      expect(page).to have_field('District_attorney-agency-name', with: '')
     end
 
-    scenario 'editing a screening' do
-      visit edit_screening_path(id: existing_screening.id)
-
-      expect(
-        a_request(
-          :get,
-          intake_api_history_of_involvements_url(existing_screening.id)
-        )
-      ).to have_been_made
-
-      within '#history-card.card.show', text: 'HISTORY' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
-        expect(page).to have_content(start_time)
-        expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('El Dorado')
-        expect(page).to have_content('Sally Johnson')
-        expect(page).to have_content('Sam Anderson')
-        expect(page).to have_content('James Robinson')
-        expect(page).to have_content('Reporter: Alex Hanson')
-        expect(page).to have_content('Worker: Bob Smith')
-      end
-    end
+    expect(page).to have_link('Home', href: root_path)
+    expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
 end

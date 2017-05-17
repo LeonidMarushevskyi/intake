@@ -97,7 +97,7 @@ feature 'Edit Screening' do
       .and_return(body: created_participant_unknown.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    within '#search-card', text: 'SEARCH' do
+    within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('.btn', text: /Create a new person/).click
       expect(page).not_to have_content('Create a new person')
@@ -109,7 +109,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(created_participant_unknown.id) do
       within '.card-header' do
-        expect(page).to have_content 'UNKNOWN PERSON'
+        expect(page).to have_content 'Unknown Person'
       end
     end
   end
@@ -128,7 +128,7 @@ feature 'Edit Screening' do
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
-    within '#search-card', text: 'SEARCH' do
+    within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
@@ -146,7 +146,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(created_participant_marge.id) do
       within '.card-header' do
-        expect(page).to have_content 'MARGE SIMPSON'
+        expect(page).to have_content 'Marge Simpson'
         expect(page).to have_button 'Delete participant'
       end
 

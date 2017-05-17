@@ -30,7 +30,7 @@ feature 'Edit Address' do
     visit edit_person_path(id: person.id)
 
     within '.card-header' do
-      expect(page).to have_content 'EDIT BASIC DEMOGRAPHICS CARD'
+      expect(page).to have_content 'Edit Basic Demographics Card'
     end
 
     within '#addresses' do
@@ -53,7 +53,7 @@ feature 'Edit Address' do
 
     expect(page).to have_current_path(person_path(id: person.id))
     within '.card-header' do
-      expect(page).to have_content('BASIC DEMOGRAPHICS CARD')
+      expect(page).to have_content('Basic Demographics Card')
     end
     expect(page).to have_content('123 fake st')
   end

@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const EditLink = ({ariaLabel, onClick}) => (
-  <button aria-label={ariaLabel} className='btn btn-primary pull-right' href='#' onClick={onClick}>
+  <a aria-label={ariaLabel} className='btn btn-primary pull-right' href='#' onClick={onClick}>
     Edit
-  </button>
+  </a>
 )
 
 EditLink.propTypes = {
