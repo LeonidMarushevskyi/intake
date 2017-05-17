@@ -10,4 +10,11 @@ describe('involvementsReducer', () => {
       expect(involvementsReducer(Immutable.List(), action).toJS()).toEqual(involvements)
     })
   })
+
+  describe('on CREATE_SCREENING_SUCCESS', () => {
+    it('returns an empty immutable list', () => {
+      const action = screeningActions.createScreeningSuccess({})
+      expect(involvementsReducer(Immutable.fromJS({history_of_involvements: [{id: 1}]}), action)).toEqual(Immutable.List())
+    })
+  })
 })

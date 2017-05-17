@@ -10,4 +10,11 @@ describe('relationshipsReducer', () => {
       expect(relationshipsReducer(Immutable.List(), action).toJS()).toEqual(relationships)
     })
   })
+
+  describe('on CREATE_SCREENING_SUCCESS', () => {
+    it('returns an empty immutable list', () => {
+      const action = screeningActions.createScreeningSuccess({})
+      expect(relationshipsReducer(Immutable.fromJS({relationships: [{id: 1}]}), action)).toEqual(Immutable.List())
+    })
+  })
 })
