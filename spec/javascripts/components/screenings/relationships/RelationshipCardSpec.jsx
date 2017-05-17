@@ -26,19 +26,6 @@ describe('RelationshipsCard', () => {
       component = shallow(<RelationshipsCard {...updatedProps}/>)
     })
 
-    describe('when participants are empty arrays and screeningId is different', () => {
-      beforeEach(() => {
-        const updatedProps = {
-          screeningId: '5',
-        }
-        component.setProps(updatedProps)
-      })
-
-      it('fetches history of involvements', () => {
-        expect(fetchRelationshipsByScreeningId).toHaveBeenCalledWith(requiredProps.screeningId)
-      })
-    })
-
     describe('when participants change', () => {
       it('fetch relationships', () => {
         const newProps = {

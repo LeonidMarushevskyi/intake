@@ -13,7 +13,7 @@ export default class HistoryCard extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
-    if (screeningId !== nextProps.screeningId || participants !== nextProps.participants) {
+    if (participants !== nextProps.participants) {
       actions.fetchHistoryOfInvolvements(screeningId)
     }
   }

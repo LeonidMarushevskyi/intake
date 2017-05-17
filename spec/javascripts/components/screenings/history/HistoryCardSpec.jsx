@@ -28,19 +28,6 @@ describe('HistoryCard', () => {
       component = shallow(<HistoryCard {...props}/>)
     })
 
-    describe('when participants are empty arrays and screeningId is different', () => {
-      beforeEach(() => {
-        const updatedProps = {
-          screeningId: '5',
-        }
-        component.setProps(updatedProps)
-      })
-
-      it('fetches history of involvements', () => {
-        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(requiredProps.screeningId)
-      })
-    })
-
     describe('when participants change', () => {
       beforeEach(() => {
         const updatedProps = {
