@@ -183,7 +183,7 @@ describe('HistoryCard', () => {
       expect(participants.text()).toContain('Cheryl Tunt')
     })
 
-    it('renders the reporter', () => {
+    it('renders the reporter when both first and last names are present', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
         reporter: {first_name: 'Alex', last_name: 'Hanson'},
@@ -195,6 +195,51 @@ describe('HistoryCard', () => {
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr span.reporter')
       expect(tr.text()).toContain('Reporter: Alex Hanson')
+    })
+
+    it('displays nothing when the reporter has no first and last name', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        reporter: {first_name: null, last_name: null},
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.reporter')
+      expect(tr.text()).toContain('Reporter: ')
+      expect(tr.text()).not.toContain('Unknown person')
+    })
+
+    it('follows the nameFormatter convention if the reporter just has a last name', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        reporter: {first_name: null, last_name: 'Johnson'},
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.reporter')
+      expect(tr.text()).toContain('Reporter: ')
+      expect(tr.text()).toContain('(Unknown first name) Johnson')
+    })
+
+    it('follows the nameFormatter convention if the reporter just has a first name', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        reporter: {first_name: 'Bob', last_name: null},
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.reporter')
+      expect(tr.text()).toContain('Reporter: ')
+      expect(tr.text()).toContain('Bob (Unknown last name)')
     })
 
     it('renders the assigned worker', () => {

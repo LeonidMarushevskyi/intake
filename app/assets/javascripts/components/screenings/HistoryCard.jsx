@@ -63,6 +63,11 @@ export default class HistoryCard extends React.Component {
                         nonOnlyReporters = Immutable.List()
                       }
 
+                      let reporterName = ''
+                      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
+                        reporterName = nameFormatter(reporter)
+                      }
+
                       const status = endedAt ? 'Closed' : 'In Progress'
                       return (
                         <tr key={index}>
@@ -80,7 +85,7 @@ export default class HistoryCard extends React.Component {
                             </div>
                             <div className='row'>
                               <span className='col-md-6 reporter'>
-                                {`Reporter: ${reporter ? nameFormatter(reporter) : '' }`}
+                                {`Reporter: ${reporterName}`}
                               </span>
                               <span className='col-md-6 assignee'>
                                 {`Worker: ${assignee ? assignee.get('last_name') : ''}`}
