@@ -1,4 +1,4 @@
-import COUNTY from 'County'
+import COUNTIES from 'Counties'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -23,7 +23,7 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
         </div>
         <div className='row'>
           <ShowField gridClassName='col-md-6' label='Incident County'>
-            {COUNTY[screening.get('incident_county')]}
+            {COUNTIES[screening.get('incident_county')]}
           </ShowField>
         </div>
         <div className='row'>
