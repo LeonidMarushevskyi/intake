@@ -110,7 +110,7 @@ describe('HistoryCard', () => {
     it('renders the incident county', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
-        county_name: 'Sacramento',
+        county_name: 'el_dorado',
       }])
       const props = {
         ...requiredProps,
@@ -118,7 +118,7 @@ describe('HistoryCard', () => {
       }
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr')
-      expect(tr.text()).toContain('Sacramento')
+      expect(tr.text()).toContain('El Dorado')
     })
 
     it('renders even if all_people is nil', () => {

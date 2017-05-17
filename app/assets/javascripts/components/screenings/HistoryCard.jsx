@@ -4,6 +4,7 @@ import React from 'react'
 import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'RoleType'
+import COUNTIES from 'Counties'
 
 export default class HistoryCard extends React.Component {
   constructor(props, context) {
@@ -76,7 +77,7 @@ export default class HistoryCard extends React.Component {
                             <div className='row'>Screening</div>
                             <div className='row'>{`(${status})`}</div>
                           </td>
-                          <td>{incidentCounty}</td>
+                          <td>{COUNTIES[incidentCounty]}</td>
                           <td>
                             <div className='row'>
                               <span className='col-md-12 participants'>

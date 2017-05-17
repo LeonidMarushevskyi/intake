@@ -1,4 +1,4 @@
-import COUNTY from 'County'
+import COUNTIES from 'Counties'
 import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import LOCATION_TYPE from 'LocationType'
@@ -31,7 +31,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           onChange={(event) => onChange(['incident_county'], event.target.value || null)}
         >
           <option key='' />
-          {Object.keys(COUNTY).map((item) => <option key={item} value={item}>{COUNTY[item]}</option>)}
+          {Object.keys(COUNTIES).map((item) => <option key={item} value={item}>{COUNTIES[item]}</option>)}
         </SelectField>
       </div>
 

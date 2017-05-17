@@ -37,7 +37,7 @@ feature 'History card' do
       [
         {
           start_date: '2016-09-10',
-          county_name: 'Sacramento',
+          county_name: 'el_dorado',
           # until we have users, TPT is saving the entire name in the last_name field
           assigned_social_worker: { first_name: nil, last_name: 'Bob Smith' },
           reporter: { first_name: 'Alex', last_name: 'Hanson' },
@@ -78,7 +78,7 @@ feature 'History card' do
         start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('Sacramento')
+        expect(page).to have_content('El Dorado')
         expect(page).to have_content('Sally Johnson')
         expect(page).to have_content('Sam Anderson')
         expect(page).to have_content('James Robinson')
@@ -108,7 +108,7 @@ feature 'History card' do
         start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('Sacramento')
+        expect(page).to have_content('El Dorado')
         expect(page).to have_content('Sally Johnson')
         expect(page).to have_content('Sam Anderson')
         expect(page).to have_content('James Robinson')

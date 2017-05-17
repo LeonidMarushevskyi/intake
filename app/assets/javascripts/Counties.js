@@ -1,4 +1,4 @@
-const COUNTY = Object.freeze({
+const COUNTIES = Object.freeze({
   alameda: 'Alameda',
   alpine: 'Alpine',
   amador: 'Amador',
@@ -59,4 +59,4 @@ const COUNTY = Object.freeze({
   yuba: 'Yuba',
 })
 
-export default COUNTY
+export default COUNTIES
