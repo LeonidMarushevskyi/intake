@@ -256,6 +256,21 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Worker: Bob Smith')
     })
 
+    it('does not render null if the assigned worker has no last name', () => {
+      const involvements = Immutable.fromJS([{
+        ...requiredScreeningAttrs,
+        assigned_social_worker: {first_name: null, last_name: null},
+      }])
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.assignee')
+      expect(tr.text()).toContain('Worker: ')
+      expect(tr.text()).not.toContain('null')
+    })
+
     it('renders the no worker when assignee is null', () => {
       const involvements = Immutable.fromJS([{
         ...requiredScreeningAttrs,
