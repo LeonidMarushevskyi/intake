@@ -5,7 +5,7 @@ import nameFormatter from 'utils/nameFormatter'
 export default class RelationshipsCard extends React.Component {
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
-    if (participants !== nextProps.participants) {
+    if (screeningId !== nextProps.screeningId || participants !== nextProps.participants) {
       actions.fetchRelationshipsByScreeningId(screeningId)
     }
   }
