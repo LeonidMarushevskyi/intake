@@ -58,7 +58,7 @@ describe Screening do
             id: '1',
             first_name: 'Homer',
             last_name: 'Simpson',
-            person_id: '3',
+            legacy_id: '3',
             roles: ['Victim'],
             screening_id: '2',
             addresses: [
@@ -123,7 +123,7 @@ describe Screening do
             gender: nil,
             last_name: 'Simpson',
             ssn: nil,
-            person_id: '3',
+            legacy_id: '3',
             roles: ['Victim'],
             screening_id: '2',
             addresses: array_including(

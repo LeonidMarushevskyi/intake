@@ -14,7 +14,7 @@ class Participant
   attribute :name_suffix
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]
-  attribute :person_id
+  attribute :legacy_id
   attribute :screening_id
   attribute :roles, Array[String]
   attribute :languages, Array
