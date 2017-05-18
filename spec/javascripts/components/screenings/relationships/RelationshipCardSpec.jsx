@@ -103,7 +103,7 @@ describe('RelationshipsCard', () => {
       })
 
       describe('when participant does not have a full name', () => {
-        it('shows unknown person if neither first nor last name', () => {
+        it('shows unknown Person if neither first nor last name', () => {
           const props = {
             ...requiredProps,
             relationships: Immutable.fromJS([
@@ -128,8 +128,8 @@ describe('RelationshipsCard', () => {
           component = shallow(<RelationshipsCard {...props} />)
           const relationship = component.find('div#relationships-card .card-body .row').text()
           const relationships = component.find('div#relationships-card .card-body .row .relationships').text()
-          expect(relationship).toContain('Unknown person is the..')
-          expect(relationships).toContain('Sister of Unknown person')
+          expect(relationship).toContain('Unknown Person is the..')
+          expect(relationships).toContain('Sister of Unknown Person')
         })
       })
     })

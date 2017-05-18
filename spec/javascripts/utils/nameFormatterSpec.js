@@ -116,7 +116,7 @@ describe('nameFormatter', () => {
         last_name: null,
         middle_name: null,
         name_suffix: 'esq',
-      }))).toEqual('Unknown person')
+      }))).toEqual('Unknown Person')
     })
 
     it('renders with a only middle name and a suffix', () => {
