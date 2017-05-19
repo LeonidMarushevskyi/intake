@@ -265,7 +265,7 @@ describe('ParticipantEditView', () => {
         const expectedOptions = [
           {label: 'Victim', value: 'Victim'},
           {label: 'Perpetrator', value: 'Perpetrator'},
-          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: true},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter'},
           {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
           {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
         ]
