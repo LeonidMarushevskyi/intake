@@ -15,7 +15,7 @@ module Api
         :last_name,
         :name_suffix,
         :gender,
-        :person_id,
+        :legacy_id,
         :screening_id,
         :ssn,
         addresses: %i[

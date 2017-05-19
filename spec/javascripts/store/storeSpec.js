@@ -137,7 +137,7 @@ describe('Store', () => {
   })
 
   it('handles create participant', () => {
-    const participant = {id: '2', person_id: '3', screening_id: '1'}
+    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
     initialState = {
       ...initialState,
       screening: Immutable.fromJS({

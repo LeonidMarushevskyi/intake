@@ -32,7 +32,7 @@ describe Api::V1::ParticipantsController do
             type: 'Work'
           }
         ],
-        person_id: '2',
+        legacy_id: '2',
         screening_id: '1',
         ssn: '123-23-1234',
         languages: %w[French Farsi]

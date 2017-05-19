@@ -31,8 +31,8 @@ describe('participantsReducer', () => {
 
   describe('on CREATE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening with new participant from the action', () => {
-      const newParticipant = {id: '2', screening_id: '1', person_id: '3'}
-      const oldParticipant = {id: '3', screening_id: '1', person_id: '4'}
+      const newParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
+      const oldParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
       const participants = Immutable.fromJS([oldParticipant])
       const action = screeningActions.createParticipantSuccess(newParticipant)
       expect(participantsReducer(participants, action).toJS()).toEqual([
