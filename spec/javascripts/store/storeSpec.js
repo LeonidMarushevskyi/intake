@@ -93,7 +93,7 @@ describe('Store', () => {
   })
 
   it('handles fetch screening', () => {
-    const participant = {id: '2', person_id: '3', screening_id: '1'}
+    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
     const screening = {
       id: '1',
       name: 'Mock screening',
@@ -118,7 +118,7 @@ describe('Store', () => {
   })
 
   it('handles update screening', () => {
-    const participant = {id: '2', person_id: '3', screening_id: '1'}
+    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
     initialState = {
       ...initialState,
       screening: Immutable.fromJS({

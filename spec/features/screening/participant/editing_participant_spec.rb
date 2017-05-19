@@ -26,7 +26,7 @@ feature 'Edit Screening' do
   let(:marge) do
     FactoryGirl.create(
       :participant,
-      person_id: 1,
+      legacy_id: 1,
       date_of_birth: 15.years.ago.to_date.to_s(:db),
       first_name: 'Marge',
       middle_name: 'Jacqueline',
@@ -54,7 +54,7 @@ feature 'Edit Screening' do
   let(:homer) do
     FactoryGirl.create(
       :participant,
-      person_id: 2,
+      legacy_id: 2,
       date_of_birth: 25.years.ago.to_date.to_s(:db),
       first_name: 'Homer',
       gender: 'male',

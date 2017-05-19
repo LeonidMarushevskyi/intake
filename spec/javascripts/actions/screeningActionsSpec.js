@@ -82,7 +82,7 @@ describe('screening actions', () => {
   describe('.saveParticipant', () => {
     const participant = {
       screening_id: '1',
-      person_id: '2',
+      legacy_id: '2',
       id: '199',
       first_name: 'Lisa',
       last_name: 'Simpson',
