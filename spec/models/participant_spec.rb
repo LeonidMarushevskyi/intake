@@ -34,6 +34,7 @@ describe Participant do
         languages: %w[English Farsi],
         races: %w[White Asian],
         legacy_id: '1',
+        legacy_source_table: 'CLIENT_T',
         screening_id: '2',
         roles: ['Victim'],
         ethnicity: {
@@ -73,6 +74,7 @@ describe Participant do
             ethnicity_detail: 'Mexican'
           ),
           legacy_id: '1',
+          legacy_source_table: 'CLIENT_T',
           screening_id: '2',
           roles: ['Victim']
         )

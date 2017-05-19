@@ -16,6 +16,7 @@ module Api
         :name_suffix,
         :gender,
         :legacy_id,
+        :legacy_source_table,
         :screening_id,
         :ssn,
         addresses: %i[

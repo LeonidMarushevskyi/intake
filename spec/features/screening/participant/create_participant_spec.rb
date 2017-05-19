@@ -18,6 +18,7 @@ def build_participant_from_person_and_screening(person, screening)
     only: filtered_participant_attributes
   ).merge(
     legacy_id: person.id,
+    legacy_source_table: person.legacy_source_table,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
@@ -48,6 +49,7 @@ feature 'Edit Screening' do
   let(:marge) do
     FactoryGirl.create(
       :person_search,
+      legacy_source_table: 'CLIENT_T',
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
@@ -88,7 +90,11 @@ feature 'Edit Screening' do
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
-    new_participant_request = { screening_id: existing_screening.id, legacy_id: nil }
+    new_participant_request = {
+      screening_id: existing_screening.id,
+      legacy_id: nil,
+      legacy_source_table: nil
+    }
 
     stub_request(:post, intake_api_participants_url)
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
