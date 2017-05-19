@@ -54,8 +54,8 @@ describe('participantsReducer', () => {
 
   describe('on DELETE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening without the deleted participant from the action', () => {
-      const firstParticipant = {id: '2', screening_id: '1', person_id: '3'}
-      const secondParticipant = {id: '3', screening_id: '1', person_id: '4'}
+      const firstParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
+      const secondParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
       const participants = Immutable.fromJS([firstParticipant, secondParticipant])
       const action = screeningActions.deleteParticipantSuccess(secondParticipant.id)
       expect(participantsReducer(participants, action).toJS()).toEqual([

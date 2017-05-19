@@ -12,7 +12,7 @@ feature 'Delete Participant' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
-      person_id: 1
+      legacy_id: 1
     )
   end
   let(:screening) do
