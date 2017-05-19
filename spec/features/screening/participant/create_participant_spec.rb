@@ -17,7 +17,6 @@ def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
   ).merge(
-    id: nil,
     legacy_id: person.id,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
@@ -114,14 +113,9 @@ feature 'Edit Screening' do
   end
 
   scenario 'creating a new participant from a person' do
-    participant_marge = FactoryGirl.build(
-      :participant,
-      build_participant_from_person_and_screening(marge, existing_screening)
-    )
-    created_participant_marge = FactoryGirl.build(
-      :participant,
-      participant_marge.as_json.merge(id: 23)
-    )
+    marge_attributes = build_participant_from_person_and_screening(marge, existing_screening)
+    participant_marge = FactoryGirl.build(:participant, marge_attributes)
+    created_participant_marge = FactoryGirl.create(:participant, participant_marge.as_json)
     stub_request(:post, intake_api_participants_url)
       .and_return(json_body(created_participant_marge.to_json, status: 201))
 
