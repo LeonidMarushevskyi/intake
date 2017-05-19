@@ -53,8 +53,8 @@ feature 'History card' do
     end
 
     before do
-      lana = FactoryGirl.create(:participant, first_name: 'Lana', person_id: 2)
-      archer = FactoryGirl.create(:participant, first_name: 'Archer', person_id: 1)
+      lana = FactoryGirl.create(:participant, first_name: 'Lana', legacy_id: 2)
+      archer = FactoryGirl.create(:participant, first_name: 'Archer', legacy_id: 1)
       existing_screening.participants = [lana, archer]
 
       stub_request(:get, intake_api_screening_url(existing_screening.id))
