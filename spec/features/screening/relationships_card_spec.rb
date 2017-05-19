@@ -71,7 +71,7 @@ feature 'Relationship card' do
     end
     let(:marge) do
       FactoryGirl.create(
-        :person,
+        :person_search,
         date_of_birth: 5.years.ago.to_s(:db),
         first_name: 'Marge',
         gender: 'female',

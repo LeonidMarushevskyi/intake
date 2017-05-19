@@ -47,7 +47,7 @@ feature 'Edit Screening' do
   end
   let(:marge) do
     FactoryGirl.create(
-      :person,
+      :person_search,
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
