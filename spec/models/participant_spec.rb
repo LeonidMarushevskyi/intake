@@ -33,7 +33,7 @@ describe Participant do
         ],
         languages: %w[English Farsi],
         races: %w[White Asian],
-        person_id: '1',
+        legacy_id: '1',
         screening_id: '2',
         roles: ['Victim'],
         ethnicity: {
@@ -72,7 +72,7 @@ describe Participant do
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: 'Mexican'
           ),
-          person_id: '1',
+          legacy_id: '1',
           screening_id: '2',
           roles: ['Victim']
         )

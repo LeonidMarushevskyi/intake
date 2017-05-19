@@ -82,7 +82,7 @@ describe('screening actions', () => {
   describe('.saveParticipant', () => {
     const participant = {
       screening_id: '1',
-      person_id: '2',
+      legacy_id: '2',
       id: '199',
       first_name: 'Lisa',
       last_name: 'Simpson',
@@ -112,7 +112,7 @@ describe('screening actions', () => {
   })
 
   describe('.createParticipant', () => {
-    const participant = {screening_id: '1', person_id: '2', id: null}
+    const participant = {screening_id: '1', legacy_id: '2', id: null}
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))
 
     it('posts the participant to the server', () => {

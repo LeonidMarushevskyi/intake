@@ -31,8 +31,8 @@ describe('participantsReducer', () => {
 
   describe('on CREATE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening with new participant from the action', () => {
-      const newParticipant = {id: '2', screening_id: '1', person_id: '3'}
-      const oldParticipant = {id: '3', screening_id: '1', person_id: '4'}
+      const newParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
+      const oldParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
       const participants = Immutable.fromJS([oldParticipant])
       const action = screeningActions.createParticipantSuccess(newParticipant)
       expect(participantsReducer(participants, action).toJS()).toEqual([
@@ -44,8 +44,8 @@ describe('participantsReducer', () => {
 
   describe('on UPDATE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening with updated participants from the action', () => {
-      const oldParticipant = {id: '2', screening_id: '3', person_id: '10', ssn: '12345'}
-      const newParticipant = {id: '2', screening_id: '3', person_id: '10', ssn: '78456'}
+      const oldParticipant = {id: '2', screening_id: '3', legacy_id: '10', ssn: '12345'}
+      const newParticipant = {id: '2', screening_id: '3', legacy_id: '10', ssn: '78456'}
       const participants = Immutable.fromJS([oldParticipant])
       const action = screeningActions.updateParticipantSuccess(newParticipant)
       expect(participantsReducer(participants, action).toJS()).toEqual([newParticipant])
@@ -54,8 +54,8 @@ describe('participantsReducer', () => {
 
   describe('on DELETE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening without the deleted participant from the action', () => {
-      const firstParticipant = {id: '2', screening_id: '1', person_id: '3'}
-      const secondParticipant = {id: '3', screening_id: '1', person_id: '4'}
+      const firstParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
+      const secondParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
       const participants = Immutable.fromJS([firstParticipant, secondParticipant])
       const action = screeningActions.deleteParticipantSuccess(secondParticipant.id)
       expect(participantsReducer(participants, action).toJS()).toEqual([

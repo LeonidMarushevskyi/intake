@@ -101,7 +101,7 @@ export class ScreeningPage extends React.Component {
 
   createParticipant(person) {
     const {params} = this.props
-    const participant = Object.assign({}, person, {screening_id: params.id, person_id: person.id, id: null})
+    const participant = Object.assign({}, person, {screening_id: params.id, legacy_id: person.id, id: null})
     this.props.actions.createParticipant(participant)
   }
 

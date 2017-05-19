@@ -38,7 +38,7 @@ describe('participants-related functions', () => {
     gender: 'male',
     ssn: '987654321',
     date_of_birth: null,
-    person_id: '1',
+    legacy_id: '1',
     screening_id: '3',
     addresses: Immutable.List([address1, address2]),
   })
@@ -51,7 +51,7 @@ describe('participants-related functions', () => {
     gender: 'female',
     ssn: '123456789',
     date_of_birth: null,
-    person_id: '2',
+    legacy_id: '2',
     screening_id: '3',
     addresses: Immutable.List(),
   })
@@ -71,7 +71,7 @@ describe('participants-related functions', () => {
 
   describe('createParticipant', () => {
     const person = {id: '3'}
-    const participant = {id: null, screening_id: props.params.id, person_id: person.id}
+    const participant = {id: null, screening_id: props.params.id, legacy_id: person.id}
 
     it('calls the createParticipant action', () => {
       component.instance().createParticipant(person)

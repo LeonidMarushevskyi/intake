@@ -158,7 +158,7 @@ feature 'Relationship card' do
           :participant, :unpopulated,
           screening_id: participants_screening.id
         )
-        new_participant_request = { screening_id: participants_screening.id, person_id: nil }
+        new_participant_request = { screening_id: participants_screening.id, legacy_id: nil }
 
         %w[Ma Mar Marg Marge].each do |search_text|
           stub_request(:get, intake_api_people_search_url(search_term: search_text))

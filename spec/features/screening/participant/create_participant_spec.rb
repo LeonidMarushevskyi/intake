@@ -18,7 +18,7 @@ def build_participant_from_person_and_screening(person, screening)
     only: filtered_participant_attributes
   ).merge(
     id: nil,
-    person_id: person.id,
+    legacy_id: person.id,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
@@ -89,7 +89,7 @@ feature 'Edit Screening' do
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
-    new_participant_request = { screening_id: existing_screening.id, person_id: nil }
+    new_participant_request = { screening_id: existing_screening.id, legacy_id: nil }
 
     stub_request(:post, intake_api_participants_url)
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
