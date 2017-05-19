@@ -83,12 +83,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
               inputProps={{id: `roles_${participant.get('id')}`}}
               value={participant.get('roles').toJS()}
               onChange={(roles) =>
-                {
-                  onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])
-                  // focus on the first non-disabled option (workaround a react-select bug
-                  // that put focus on a disabled option and allowed users to select it)
-                  this.focusStartOption()
-                }
+                onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])
               }
               options={roleOptions(participant.get('roles'))}
               clearable={false}
