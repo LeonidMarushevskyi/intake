@@ -27,7 +27,6 @@ export class ScreeningPage extends React.Component {
       screening: props.screening,
       screeningEdits: Immutable.Map(),
       participantsEdits: Immutable.Map(),
-      autocompleterFocus: false,
     }
 
     const methods = [
