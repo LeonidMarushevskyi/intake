@@ -14,7 +14,7 @@ feature 'home page' do
         type: 'Home'
       )
       marge = FactoryGirl.create(
-        :person,
+        :person_search,
         first_name: 'Marge',
         gender: 'female',
         last_name: 'Simpson',

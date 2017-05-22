@@ -5,7 +5,7 @@ require 'spec_helper'
 
 feature 'Delete Participant' do
   let(:participant) do
-    FactoryGirl.build(
+    FactoryGirl.create(
       :participant,
       date_of_birth: 15.years.ago.to_date.to_s(:db),
       first_name: 'Marge',

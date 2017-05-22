@@ -75,7 +75,7 @@ feature 'searching a participant in autocompleter' do
   end
   let(:person) do
     FactoryGirl.create(
-      :person,
+      :person_search,
       date_of_birth: date_of_birth.to_s(:db),
       first_name: 'Marge',
       middle_name: 'Jacqueline',

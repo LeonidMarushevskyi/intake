@@ -33,6 +33,7 @@ describe Api::V1::ParticipantsController do
           }
         ],
         legacy_id: '2',
+        legacy_source_table: 'CLIENT_T',
         screening_id: '1',
         ssn: '123-23-1234',
         languages: %w[French Farsi]
