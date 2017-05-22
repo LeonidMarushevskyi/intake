@@ -90,7 +90,6 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
-
         expect(page).to have_content 'Marge Jacqueline Simpson, Sr'
         expect(page).to have_button 'Delete participant'
       end

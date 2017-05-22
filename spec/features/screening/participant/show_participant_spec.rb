@@ -44,7 +44,6 @@ feature 'Show Screening' do
 
     within show_participant_card_selector(existing_participant.id) do
       within '.card-header' do
-
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
