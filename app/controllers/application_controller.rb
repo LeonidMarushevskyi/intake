@@ -4,6 +4,7 @@ require 'gulp_assets'
 
 # CA Intake Application Controller.
 class ApplicationController < ActionController::Base # :nodoc:
+  before_action :set_cache_headers
   include GulpAssets::Helper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -29,5 +30,11 @@ class ApplicationController < ActionController::Base # :nodoc:
 
   def authentication_enabled?
     Feature.active?(:authentication)
+  end
+
+  def set_cache_headers
+    response.headers['Cache-Control'] = 'no-cache, no-store'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
   end
 end
