@@ -22,6 +22,11 @@ describe ApplicationController do
         expect(response.headers['Pragma']).to eq 'no-cache'
         expect(response.headers['Expires']).to eq '0'
       end
+
+      it 'disallows inclusion in frames' do
+        process :custom, method: :get
+        expect(response.headers['X-Frame-Options']).to eq 'DENY'
+      end
     end
 
     context 'when authentication is enabled' do
