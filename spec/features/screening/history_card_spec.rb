@@ -11,7 +11,7 @@ feature 'History card' do
       .and_return(json_body(existing_screening.to_json))
     visit edit_screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show.card', text: 'HISTORY' do
+    within '#history-card.card.show.card', text: 'History' do
       expect(page).to have_css('th', text: 'Date')
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
@@ -24,7 +24,7 @@ feature 'History card' do
       .and_return(json_body(existing_screening.to_json))
     visit screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show', text: 'HISTORY' do
+    within '#history-card.card.show', text: 'History' do
       expect(page).to have_css('th', text: 'Date')
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
@@ -74,7 +74,7 @@ feature 'History card' do
     scenario 'viewing a screening' do
       visit screening_path(id: existing_screening.id)
 
-      within '#history-card.card.show', text: 'HISTORY' do
+      within '#history-card.card.show', text: 'History' do
         start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')
@@ -104,7 +104,7 @@ feature 'History card' do
         )
       ).to have_been_made
 
-      within '#history-card.card.show', text: 'HISTORY' do
+      within '#history-card.card.show', text: 'History' do
         start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')

@@ -14,7 +14,7 @@ feature 'Relationship card' do
         .and_return(json_body([].to_json, status: 200))
       visit edit_screening_path(id: existing_screening.id)
 
-      within '#relationships-card', text: 'RELATIONSHIPS' do
+      within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Add people to see their relationships here.')
       end
 
@@ -33,7 +33,7 @@ feature 'Relationship card' do
         .and_return(json_body([].to_json, status: 200))
       visit screening_path(id: existing_screening.id)
 
-      within '#relationships-card', text: 'RELATIONSHIPS' do
+      within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Add people to see their relationships here.')
       end
 
@@ -100,7 +100,7 @@ feature 'Relationship card' do
     scenario 'viewing a screening' do
       visit screening_path(id: participants_screening.id)
 
-      within '#relationships-card.card.show', text: 'RELATIONSHIPS' do
+      within '#relationships-card.card.show', text: 'Relationships' do
         expect(page).to have_content(
           "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
         )
@@ -119,7 +119,7 @@ feature 'Relationship card' do
       scenario 'loads relationships on initial page load' do
         visit edit_screening_path(id: participants_screening.id)
 
-        within '#relationships-card.card.show', text: 'RELATIONSHIPS' do
+        within '#relationships-card.card.show', text: 'Relationships' do
           expect(page).to have_content(
             "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
           )
@@ -147,7 +147,7 @@ feature 'Relationship card' do
           a_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
         ).to have_been_made.twice
 
-        within '#relationships-card.card.show', text: 'RELATIONSHIPS' do
+        within '#relationships-card.card.show', text: 'Relationships' do
           expect(page).to have_content('Add people to see their relationships here.')
         end
       end
@@ -199,7 +199,7 @@ feature 'Relationship card' do
         stub_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
           .and_return(json_body(new_relationships.to_json, status: 200))
 
-        within '#search-card', text: 'SEARCH' do
+        within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'Marge'
           find('.btn', text: /Create a new person/).click
           expect(page).not_to have_content('Create a new person')
@@ -211,11 +211,11 @@ feature 'Relationship card' do
 
         within edit_participant_card_selector(new_participant.id) do
           within '.card-header' do
-            expect(page).to have_content 'UNKNOWN PERSON'
+            expect(page).to have_content 'Unknown Person'
           end
         end
 
-        within '#relationships-card.card.show', text: 'RELATIONSHIPS' do
+        within '#relationships-card.card.show', text: 'Relationships' do
           expect(page).to have_content(
             "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
           )

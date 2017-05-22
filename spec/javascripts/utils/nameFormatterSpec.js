@@ -48,7 +48,7 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       first_name: null,
       last_name: null,
-    }))).toEqual('Unknown person')
+    }))).toEqual('Unknown Person')
   })
 
   describe('with middle name', () => {
@@ -116,7 +116,7 @@ describe('nameFormatter', () => {
         last_name: null,
         middle_name: null,
         name_suffix: 'esq',
-      }))).toEqual('Unknown person')
+      }))).toEqual('Unknown Person')
     })
 
     it('renders with a only middle name and a suffix', () => {

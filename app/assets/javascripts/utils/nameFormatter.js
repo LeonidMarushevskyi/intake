@@ -26,7 +26,7 @@ const nameFormatter = (nameableObject) => {
     const name = `Unknown ${middleName}`
     return addSuffix(name, nameSuffix)
   } else {
-    return 'Unknown person'
+    return 'Unknown Person'
   }
 }
 

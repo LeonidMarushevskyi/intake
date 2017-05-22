@@ -79,7 +79,7 @@ describe('ParticipantEditView', () => {
         roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header span').text()).toEqual('Unknown person')
+      expect(component.find('.card-header span').text()).toEqual('Unknown Person')
     })
 
     it('renders the participants first and last name in the card header', () => {

@@ -35,7 +35,7 @@
   }
 
   li {
-    border-top: 1px solid $gray;
+    border-top: 1px solid $light-grey;
     font-size: 1.7rem;
 
     &:first-child {
@@ -51,8 +51,8 @@
     text-decoration: none;
 
     &:hover {
-      background-color: $gray-lightest;
-      color: $primary-blue;
+      background-color: $lightest-grey;
+      color: $medium-blue;
       text-decoration: none;
     }
 
@@ -62,8 +62,8 @@
     }
 
     &.current {
-      border-left: 4px solid $primary-blue;
-      color: $primary-blue;
+      border-left: 4px solid $medium-blue;
+      color: $medium-blue;
       font-weight: 700;
       padding-left: 1.4rem;
     }
