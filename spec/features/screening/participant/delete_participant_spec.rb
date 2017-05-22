@@ -15,12 +15,7 @@ feature 'Delete Participant' do
       legacy_id: 1
     )
   end
-  let(:screening) do
-    FactoryGirl.build(
-      :screening,
-      participants: [participant]
-    )
-  end
+  let(:screening) { FactoryGirl.create(:screening, participants: [participant]) }
 
   scenario 'removing a participant from an existing screening in edit mode' do
     stub_request(:get, intake_api_screening_url(screening.id))

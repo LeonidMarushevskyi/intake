@@ -6,7 +6,6 @@ require 'spec_helper'
 feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
-
   let(:marge_address) do
     FactoryGirl.create(
       :address,
@@ -40,7 +39,6 @@ feature 'Edit Screening' do
       roles: marge_roles
     )
   end
-
   let(:homer_address) do
     FactoryGirl.create(
       :address,
@@ -64,13 +62,7 @@ feature 'Edit Screening' do
       roles: ['Reporter']
     )
   end
-
-  let(:screening) do
-    FactoryGirl.build(
-      :screening,
-      participants: [marge, homer]
-    )
-  end
+  let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
 
   before do
     stub_request(:get, intake_api_screening_url(screening.id))
