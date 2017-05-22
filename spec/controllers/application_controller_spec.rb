@@ -15,6 +15,15 @@ describe ApplicationController do
   end
 
   describe '#authenticate_user' do
+    context 'for all calls' do
+      it 'directs the browser not to cache content' do
+        process :custom, method: :get
+        expect(response.headers['Cache-Control']).to eq 'no-cache, no-store'
+        expect(response.headers['Pragma']).to eq 'no-cache'
+        expect(response.headers['Expires']).to eq '0'
+      end
+    end
+
     context 'when authentication is enabled' do
       before do
         allow(Feature).to receive(:active?)
