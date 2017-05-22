@@ -27,7 +27,8 @@ def build_participant_from_person_and_screening(person, screening)
 end
 
 feature 'Edit Screening' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_participant) { FactoryGirl.create(:participant) }
+  let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
   let(:marge_address) do
     FactoryGirl.create(
@@ -137,6 +138,11 @@ feature 'Edit Screening' do
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
+
+    # The new participant was added to the top of the list of participants
+    created_participant_selector = edit_participant_card_selector(created_participant_marge.id)
+    existing_participant_selector = edit_participant_card_selector(existing_participant.id)
+    expect(find("#{created_participant_selector}+div")).to match_css(existing_participant_selector)
 
     within edit_participant_card_selector(created_participant_marge.id) do
       within '.card-header' do
