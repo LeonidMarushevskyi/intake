@@ -36,5 +36,6 @@ class ApplicationController < ActionController::Base # :nodoc:
     response.headers['Cache-Control'] = 'no-cache, no-store'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
+    response.headers['X-Frame-Options'] = 'DENY'
   end
 end
