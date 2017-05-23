@@ -27,6 +27,11 @@ describe ApplicationController do
         process :custom, method: :get
         expect(response.headers['X-Frame-Options']).to eq 'DENY'
       end
+
+      it 'directs browser behavior for cross-site-scripting attacks' do
+        process :custom, method: :get
+        expect(response.headers['X-XSS-Protection']).to eq '1'
+      end
     end
 
     context 'when authentication is enabled' do
