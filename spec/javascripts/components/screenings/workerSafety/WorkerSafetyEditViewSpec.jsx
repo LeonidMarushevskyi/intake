@@ -27,6 +27,20 @@ describe('WorkerSafetyEditView', () => {
     expect(component.find('.card-header').text()).toContain('Worker Safety')
   })
 
+  it('renders the correct options', () => {
+    expect(component.find('Select[multi]').props().options).toEqual([
+      {label: 'Dangerous Animal on Premises', value: 'Dangerous Animal on Premises'},
+      {label: 'Dangerous Environment', value: 'Dangerous Environment'},
+      {label: 'Firearms in Home', value: 'Firearms in Home'},
+      {label: 'Gang Affiliation or Gang Activity', value: 'Gang Affiliation or Gang Activity'},
+      {label: 'Hostile, Aggressive Client', value: 'Hostile, Aggressive Client'},
+      {label: 'Remote or Isolated Location', value: 'Remote or Isolated Location'},
+      {label: 'Severe Mental Health Status', value: 'Severe Mental Health Status'},
+      {label: 'Threat or Assault on Staff Member', value: 'Threat or Assault on Staff Member'},
+      {label: 'Other', value: 'Other'},
+    ])
+  })
+
   it('renders the worker safety edit fields', () => {
     expect(component.find('Select[multi]').length).toEqual(1)
     expect(component.find('Select[multi]').props().inputProps.id).toEqual('safety_alerts')
