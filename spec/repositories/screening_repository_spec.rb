@@ -128,14 +128,17 @@ describe ScreeningRepository do
 
   describe '.submit' do
     let(:screening_id) { '42' }
-    let(:response_body) { double(:response_body) }
-    let(:response) { double(:response, body: response_body) }
+    let(:response) do
+      double(:response, body: { 'id' => screening_id, 'name' => 'Submitted Screening' })
+    end
 
     it 'responds with response body' do
       expect(IntakeAPI).to receive(:make_api_call)
         .with(security_token, "/api/v1/screenings/#{screening_id}/submit", :post)
         .and_return(response)
-      expect(described_class.submit(security_token, screening_id)).to eq response_body
+      submitted_screening = described_class.submit(security_token, screening_id)
+      expect(submitted_screening.id).to eq(screening_id)
+      expect(submitted_screening.name).to eq('Submitted Screening')
     end
   end
 end

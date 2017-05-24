@@ -22,6 +22,7 @@ describe Screening do
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
+        referral_id: 'PW5exD60S0',
         report_narrative: 'Narrative 123 test',
         safety_alerts: ['Firearms in Home', 'Gang Affiliation or Gang Activity'],
         safety_information: 'bad and scary',
@@ -86,6 +87,7 @@ describe Screening do
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
+        referral_id: 'PW5exD60S0',
         report_narrative: 'Narrative 123 test',
         safety_alerts: array_including(
           'Firearms in Home',
