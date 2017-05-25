@@ -37,6 +37,8 @@ export default class HistoryCard extends React.Component {
         assigneeName = nameFormatter(assignee)
       }
 
+      const allegations = referral.get('allegations')
+
       return (
         <tr key={`referral-${index}`}>
           <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
@@ -46,6 +48,47 @@ export default class HistoryCard extends React.Component {
           </td>
           <td>{COUNTIES[incidentCounty]}</td>
           <td>
+            <div className='row'>
+              <div className='table-responsive'>
+                <table className='table'>
+                  <colgroup>
+                    <col className='col-md-3' />
+                    <col className='col-md-3'/>
+                    <col className='col-md-6'/>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th scope='col'>Victim</th>
+                      <th scope='col'>Perpetrator</th>
+                      <th scope='col'>Allegation(s) &amp; Disposition</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      allegations && allegations.map((allegation) => {
+                        let victimName = ''
+                        if (allegation.get('victim_first_name') || allegation.get('victim_last_name')) {
+                          victimName = nameFormatter(allegation, 'victim')
+                        }
+
+                        let perpetratorName = ''
+                        if (allegation.get('perpetrator_first_name') || allegation.get('perpetrator_last_name')) {
+                          perpetratorName = nameFormatter(allegation, 'perpetrator')
+                        }
+
+                        return (
+                          <tr>
+                            <td>{victimName}</td>
+                            <td>{perpetratorName}</td>
+                            <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
                 {`Reporter: ${reporterName}`}
@@ -150,7 +193,7 @@ export default class HistoryCard extends React.Component {
                     <th scope='col'>People and Roles</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id='history-of-involvement'>
                   {
                     this.renderHOI()
                   }

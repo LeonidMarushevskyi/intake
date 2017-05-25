@@ -121,7 +121,7 @@ describe('HistoryCard', () => {
         involvements,
       }
       const component = shallow(<HistoryCard {...props}/>)
-      const tr = component.find('tbody tr')
+      const tr = component.find('tbody#history-of-involvement > tr')
       expect(tr.text()).toContain('08/13/2016')
     })
 
@@ -134,7 +134,7 @@ describe('HistoryCard', () => {
         involvements,
       }
       const component = shallow(<HistoryCard {...props}/>)
-      const tr = component.find('tbody tr')
+      const tr = component.find('tbody#history-of-involvement > tr')
       expect(tr.text()).toContain('Referral(In Progress)')
     })
 
@@ -149,7 +149,7 @@ describe('HistoryCard', () => {
         involvements,
       }
       const component = shallow(<HistoryCard {...props}/>)
-      const tr = component.find('tbody tr')
+      const tr = component.find('tbody#history-of-involvement > tr')
       expect(tr.text()).toContain('Referral(Closed)')
     })
 
@@ -164,7 +164,7 @@ describe('HistoryCard', () => {
         involvements,
       }
       const component = shallow(<HistoryCard {...props}/>)
-      const tr = component.find('tbody tr')
+      const tr = component.find('tbody#history-of-involvement > tr')
       expect(tr.text()).toContain('El Dorado')
     })
 
@@ -233,6 +233,63 @@ describe('HistoryCard', () => {
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr span.assignee')
       expect(tr.text()).toEqual('Worker: ')
+    })
+
+    it('displays allegations headers', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{ }],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const headerRow = component.find('tbody#history-of-involvement tr thead tr').first()
+      expect(headerRow.text()).toContain('Victim')
+      expect(headerRow.text()).toContain('Perpetrator')
+      expect(headerRow.text()).toContain('Allegation(s) & Disposition')
+    })
+
+    it('displays allegations', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [
+          {
+            allegations: [
+              {
+                allegation_description: 'General Neglect',
+                disposition_description: 'Entered in Error',
+                perpetrator_first_name: 'Perpetrator1',
+                perpetrator_last_name: 'p1LastName',
+                victim_first_name: 'Victim1',
+                victim_last_name: 'v1LastName',
+              }, {
+                allegation_description: 'Severe Neglect',
+                disposition_description: 'Substantiated',
+                perpetrator_first_name: 'Perpetrator2',
+                perpetrator_last_name: 'p2LastName',
+                victim_first_name: 'Victim2',
+                victim_last_name: 'v2LastName',
+              },
+            ],
+          },
+        ],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tableRows = component.find('tbody#history-of-involvement tr tbody tr')
+
+      const firstRowCells = tableRows.at(0).find('td')
+      expect(firstRowCells.at(0).text()).toContain('Victim1 v1LastName')
+      expect(firstRowCells.at(1).text()).toContain('Perpetrator1 p1LastName')
+      expect(firstRowCells.at(2).text()).toContain('General Neglect (Entered in Error)')
+
+      const secondRowCells = tableRows.at(1).find('td')
+      expect(secondRowCells.at(0).text()).toContain('Victim2 v2LastName')
+      expect(secondRowCells.at(1).text()).toContain('Perpetrator2 p2LastName')
+      expect(secondRowCells.at(2).text()).toContain('Severe Neglect (Substantiated)')
     })
   })
 
