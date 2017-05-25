@@ -66,7 +66,10 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('People and Roles')
     })
 
-    it('renders the involvement started_at date', () => {
+  })
+
+  describe('#renderScreenings', () => {
+    it('renders the screening started_at date', () => {
       const involvements = Immutable.fromJS({
         screenings: [
           {
@@ -84,7 +87,7 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('08/13/2016')
     })
 
-    it('renders the involvement status In Progress when there is no end_date', () => {
+    it('renders the screening status In Progress when there is no end_date', () => {
       const involvements = Immutable.fromJS({
         screenings: [
           {
@@ -101,7 +104,7 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Screening(In Progress)')
     })
 
-    it('renders the involvement status Closed when end_date is present', () => {
+    it('renders the screening status Closed when end_date is present', () => {
       const involvements = Immutable.fromJS({
         screenings: [
           {
@@ -119,7 +122,7 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('Screening(Closed)')
     })
 
-    it('renders the incident county', () => {
+    it('renders the screening county', () => {
       const involvements = Immutable.fromJS({
         screenings: [
           {

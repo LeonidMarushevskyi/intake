@@ -46,7 +46,7 @@ export default class HistoryCard extends React.Component {
 
       const status = endedAt ? 'Closed' : 'In Progress'
       return (
-        <tr key={index}>
+        <tr key={`screening-${index}`}>
           <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
           <td>
             <div className='row'>Screening</div>
