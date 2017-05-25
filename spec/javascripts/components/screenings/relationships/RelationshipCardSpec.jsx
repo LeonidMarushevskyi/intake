@@ -141,8 +141,8 @@ describe('RelationshipsCard', () => {
           relationships: Immutable.fromJS([
             {id: '1', first_name: 'Aubrey', last_name: 'Campbell', relationships: [
               {
-                first_name: 'Jake',
-                last_name: 'Campbell',
+                related_person_first_name: 'Jake',
+                related_person_last_name: 'Campbell',
                 relationship: 'Sister/Brother (Half)',
                 related_person_relationship: 'Brother',
                 indexed_person_relationship: 'Sister',
@@ -150,8 +150,8 @@ describe('RelationshipsCard', () => {
                 related_person_id: '7',
               },
               {
-                first_name: 'Joe',
-                last_name: 'Campbell',
+                related_person_first_name: 'Joe',
+                related_person_last_name: 'Campbell',
                 relationship: 'Niece/Uncle',
                 related_person_relationship: 'Uncle',
                 indexed_person_relationship: 'Niece',

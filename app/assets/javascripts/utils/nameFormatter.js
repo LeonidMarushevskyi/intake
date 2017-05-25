@@ -10,11 +10,28 @@ const addSuffix = (name, suffix) => {
   }
 }
 
-const nameFormatter = (nameableObject) => {
-  const firstName = nameableObject.get('first_name') || nameableObject.get('related_person_first_name')
-  const lastName = nameableObject.get('last_name') || nameableObject.get('related_person_last_name')
-  const middleName = nameableObject.get('middle_name')
-  const nameSuffix = nameableObject.get('name_suffix')
+const nameFormatter = (nameableObject, type) => {
+  let firstNameKey
+  let lastNameKey
+  let middleNameKey
+  let suffixKey
+
+  if (type) {
+    firstNameKey = `${type}_first_name`
+    lastNameKey = `${type}_last_name`
+    middleNameKey = `${type}_middle_name`
+    suffixKey = `${type}_name_suffix`
+  } else {
+    firstNameKey = 'first_name'
+    lastNameKey = 'last_name'
+    middleNameKey = 'middle_name'
+    suffixKey = 'name_suffix'
+  }
+
+  const firstName = nameableObject.get(firstNameKey)
+  const lastName = nameableObject.get(lastNameKey)
+  const middleName = nameableObject.get(middleNameKey)
+  const nameSuffix = nameableObject.get(suffixKey)
 
   if (firstName || lastName) {
     const names = [firstName || '(Unknown first name)']
