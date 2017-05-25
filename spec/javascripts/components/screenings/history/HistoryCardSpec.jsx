@@ -66,6 +66,174 @@ describe('HistoryCard', () => {
       expect(tr.text()).toContain('People and Roles')
     })
 
+    it('calls buildHOI', () => {
+      const spy = spyOn(HistoryCard.prototype, 'renderHOI')
+      shallow(<HistoryCard {...requiredProps}/>)
+      expect(spy).toHaveBeenCalled()
+    })
+  })
+
+  describe('#buildHOI', () => {
+    it('calls renderScreenings and renderReferrals', () => {
+      const referralSpy = spyOn(HistoryCard.prototype, 'renderReferrals')
+      const screeningSpy = spyOn(HistoryCard.prototype, 'renderScreenings')
+      shallow(<HistoryCard {...requiredProps}/>)
+      expect(referralSpy).toHaveBeenCalled()
+      expect(screeningSpy).toHaveBeenCalled()
+    })
+
+    it('only calls renderScreenings if screenings are present', () => {
+      const involvements = Immutable.fromJS({referrals: []})
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const referralSpy = spyOn(HistoryCard.prototype, 'renderReferrals')
+      const screeningSpy = spyOn(HistoryCard.prototype, 'renderScreenings')
+      shallow(<HistoryCard {...props}/>)
+      expect(screeningSpy).not.toHaveBeenCalled()
+      expect(referralSpy).toHaveBeenCalled()
+    })
+
+    it('only calls renderReferrals if referrals are present', () => {
+      const involvements = Immutable.fromJS({screenings: []})
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const referralSpy = spyOn(HistoryCard.prototype, 'renderReferrals')
+      const screeningSpy = spyOn(HistoryCard.prototype, 'renderScreenings')
+      shallow(<HistoryCard {...props}/>)
+      expect(referralSpy).not.toHaveBeenCalled()
+      expect(screeningSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('#renderReferrals', () => {
+    it('renders the referral started_at date', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{
+          start_date: '2016-08-13',
+        }],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('08/13/2016')
+    })
+
+    it('renders the referral status as In Progress when there is no end_date', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{}],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('Referral(In Progress)')
+    })
+
+    it('renders the referral status as Closed when end_date is present', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{
+          end_date: '2016-08-13',
+        }],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('Referral(Closed)')
+    })
+
+    it('renders the referral county', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{
+          county_name: 'el_dorado',
+        }],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr')
+      expect(tr.text()).toContain('El Dorado')
+    })
+
+    it('renders the referral reporter', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [
+          {
+            reporter: {first_name: 'Alex', last_name: 'Hanson'},
+          },
+        ],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.reporter')
+      expect(tr.text()).toContain('Reporter: Alex Hanson')
+    })
+
+    it('displays nothing when the referral reporter has no first and last name', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [
+          {
+            reporter: {first_name: null, last_name: null},
+          },
+        ],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.reporter')
+      expect(tr.text()).toContain('Reporter: ')
+      expect(tr.text()).not.toContain('Unknown person')
+    })
+
+    it('renders the referral assigned worker', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [
+          {
+            assigned_social_worker: {first_name: 'Bob', last_name: 'Smith'},
+          },
+        ],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.assignee')
+      expect(tr.text()).toContain('Worker: Bob Smith')
+    })
+
+    it('displays nothing when the referral assigned worker has no first and last name', () => {
+      const involvements = Immutable.fromJS({
+        referrals: [{
+          assigned_social_worker: {first_name: null, last_name: null},
+        }],
+      })
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const tr = component.find('tbody tr span.assignee')
+      expect(tr.text()).toEqual('Worker: ')
+    })
   })
 
   describe('#renderScreenings', () => {

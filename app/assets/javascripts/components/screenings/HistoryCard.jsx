@@ -18,6 +18,48 @@ export default class HistoryCard extends React.Component {
     }
   }
 
+  renderReferrals() {
+    return this.props.involvements.get('referrals').map((referral, index) => {
+      const startedAt = referral.get('start_date')
+      const endedAt = referral.get('end_date')
+      const status = endedAt ? 'Closed' : 'In Progress'
+      const incidentCounty = referral.get('county_name')
+
+      const reporter = referral.get('reporter')
+      let reporterName = ''
+      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
+        reporterName = nameFormatter(reporter)
+      }
+
+      const assignee = referral.get('assigned_social_worker')
+      let assigneeName = ''
+      if (assignee && (assignee.get('first_name') || assignee.get('last_name'))) {
+        assigneeName = nameFormatter(assignee)
+      }
+
+      return (
+        <tr key={`referral-${index}`}>
+          <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+          <td>
+            <div className='row'>Referral</div>
+            <div className='row'>{`(${status})`}</div>
+          </td>
+          <td>{COUNTIES[incidentCounty]}</td>
+          <td>
+            <div className='row'>
+              <span className='col-md-6 reporter'>
+                {`Reporter: ${reporterName}`}
+              </span>
+              <span className='col-md-6 assignee'>
+                {`Worker: ${assigneeName}`}
+              </span>
+            </div>
+          </td>
+        </tr>
+      )
+    })
+  }
+
   renderScreenings() {
     return this.props.involvements.get('screenings').map((involvement, index) => {
       const startedAt = involvement.get('start_date')
@@ -73,6 +115,17 @@ export default class HistoryCard extends React.Component {
     })
   }
 
+  renderHOI() {
+    const hoi = []
+    if (this.props.involvements.get('screenings')) {
+      hoi.push(this.renderScreenings())
+    }
+    if (this.props.involvements.get('referrals')) {
+      hoi.push(this.renderReferrals())
+    }
+    return hoi
+  }
+
   render() {
     return (
       <div className='card show double-gap-top' id='history-card'>
@@ -99,7 +152,7 @@ export default class HistoryCard extends React.Component {
                 </thead>
                 <tbody>
                   {
-                    this.props.involvements.get('screenings') && this.renderScreenings()
+                    this.renderHOI()
                   }
                 </tbody>
               </table>
