@@ -57,7 +57,7 @@ feature 'Edit Screening' do
       first_name: 'Homer',
       gender: 'male',
       last_name: 'Simpson',
-      ssn: old_ssn,
+      ssn: nil,
       addresses: [homer_address],
       roles: ['Reporter']
     )
@@ -150,6 +150,33 @@ feature 'Edit Screening' do
         expect(page).to have_field('First Name', with: 'My new first name')
       end
     end
+  end
+
+  context 'editing social security number (ssn)' do
+    scenario 'numbers are formatted correctly' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          fill_in 'Social security number', with: ''
+          expect(page).to have_field('Social security number', with: '')
+          fill_in 'Social security number', with: 1
+          expect(page).to have_field('Social security number', with: '1__-__-____')
+          fill_in 'Social security number', with: 123456789
+          expect(page).to have_field('Social security number', with: '123-45-6789')
+        end
+      end
+    end
+
+    scenario 'an invalid character is inserted' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          fill_in 'Social security number', with: '12k3456789'
+          expect(page).to have_field('Social security number', with: '123-45-6789')
+        end
+      end
+    end
+
   end
 
   scenario 'editing and then removing a phone number from a participant' do
