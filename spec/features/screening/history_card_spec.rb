@@ -33,7 +33,7 @@ feature 'History card' do
   end
 
   context 'a screening with participants' do
-    let(:screening_involvement) do
+    let(:screenings) do
       [
         {
           start_date: '2016-09-10',
@@ -50,6 +50,11 @@ feature 'History card' do
           ]
         }
       ]
+    end
+    let(:screening_involvement) do
+      {
+        screenings: screenings
+      }
     end
 
     before do
@@ -75,7 +80,8 @@ feature 'History card' do
       visit screening_path(id: existing_screening.id)
 
       within '#history-card.card.show', text: 'History' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
+        start_time = Time.parse(screening_involvement[:screenings]
+          .first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')
         expect(page).to have_content('El Dorado')
@@ -105,7 +111,8 @@ feature 'History card' do
       ).to have_been_made
 
       within '#history-card.card.show', text: 'History' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
+        start_time = Time.parse(screening_involvement[:screenings]
+          .first[:start_date]).strftime('%m/%d/%Y')
         expect(page).to have_content(start_time)
         expect(page).to have_content('Screening (In Progress)')
         expect(page).to have_content('El Dorado')

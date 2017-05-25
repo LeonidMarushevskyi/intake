@@ -18,6 +18,61 @@ export default class HistoryCard extends React.Component {
     }
   }
 
+  renderScreenings() {
+    return this.props.involvements.get('screenings').map((involvement, index) => {
+      const startedAt = involvement.get('start_date')
+      const endedAt = involvement.get('end_date')
+      const incidentCounty = involvement.get('county_name')
+      const participants = involvement.get('all_people')
+      const reporter = involvement.get('reporter')
+      const assignee = involvement.get('assigned_social_worker')
+      const nonReporterTypes = Immutable.fromJS(ROLE_TYPE_NON_REPORTER)
+
+      let nonOnlyReporters
+
+      if (participants) {
+        nonOnlyReporters = participants.filter((p) => {
+          const roles = p.get('roles')
+          return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
+        })
+      } else {
+        nonOnlyReporters = Immutable.List()
+      }
+
+      let reporterName = ''
+      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
+        reporterName = nameFormatter(reporter)
+      }
+
+      const status = endedAt ? 'Closed' : 'In Progress'
+      return (
+        <tr key={index}>
+          <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+          <td>
+            <div className='row'>Screening</div>
+            <div className='row'>{`(${status})`}</div>
+          </td>
+          <td>{COUNTIES[incidentCounty]}</td>
+          <td>
+            <div className='row'>
+              <span className='col-md-12 participants'>
+                { nonOnlyReporters.map((p) => nameFormatter(p)).join(', ') }
+              </span>
+            </div>
+            <div className='row'>
+              <span className='col-md-6 reporter'>
+                {`Reporter: ${reporterName}`}
+              </span>
+              <span className='col-md-6 assignee'>
+                {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}
+              </span>
+            </div>
+          </td>
+        </tr>
+      )
+    })
+  }
+
   render() {
     return (
       <div className='card show double-gap-top' id='history-card'>
@@ -44,58 +99,7 @@ export default class HistoryCard extends React.Component {
                 </thead>
                 <tbody>
                   {
-                    this.props.involvements.map((involvement, index) => {
-                      const startedAt = involvement.get('start_date')
-                      const endedAt = involvement.get('end_date')
-                      const incidentCounty = involvement.get('county_name')
-                      const participants = involvement.get('all_people')
-                      const reporter = involvement.get('reporter')
-                      const assignee = involvement.get('assigned_social_worker')
-                      const nonReporterTypes = Immutable.fromJS(ROLE_TYPE_NON_REPORTER)
-
-                      let nonOnlyReporters
-
-                      if (participants) {
-                        nonOnlyReporters = participants.filter((p) => {
-                          const roles = p.get('roles')
-                          return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
-                        })
-                      } else {
-                        nonOnlyReporters = Immutable.List()
-                      }
-
-                      let reporterName = ''
-                      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
-                        reporterName = nameFormatter(reporter)
-                      }
-
-                      const status = endedAt ? 'Closed' : 'In Progress'
-                      return (
-                        <tr key={index}>
-                          <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
-                          <td>
-                            <div className='row'>Screening</div>
-                            <div className='row'>{`(${status})`}</div>
-                          </td>
-                          <td>{COUNTIES[incidentCounty]}</td>
-                          <td>
-                            <div className='row'>
-                              <span className='col-md-12 participants'>
-                                { nonOnlyReporters.map((p) => nameFormatter(p)).join(', ') }
-                              </span>
-                            </div>
-                            <div className='row'>
-                              <span className='col-md-6 reporter'>
-                                {`Reporter: ${reporterName}`}
-                              </span>
-                              <span className='col-md-6 assignee'>
-                                {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })
+                    this.props.involvements.get('screenings') && this.renderScreenings()
                   }
                 </tbody>
               </table>
