@@ -18,25 +18,33 @@ export default class HistoryCard extends React.Component {
     }
   }
 
+  personName(nameableObject, nameType) {
+    let firstNameKey
+    let lastNameKey
+
+    if (nameType) {
+      firstNameKey = `${nameType}_first_name`
+      lastNameKey = `${nameType}_last_name`
+    } else {
+      firstNameKey = 'first_name'
+      lastNameKey = 'last_name'
+    }
+
+    if (nameableObject && (nameableObject.get(firstNameKey) || nameableObject.get(lastNameKey))) {
+      return nameFormatter(nameableObject, nameType)
+    } else {
+      return ''
+    }
+  }
+
   renderReferrals() {
     return this.props.involvements.get('referrals').map((referral, index) => {
       const startedAt = referral.get('start_date')
       const endedAt = referral.get('end_date')
       const status = endedAt ? 'Closed' : 'In Progress'
       const incidentCounty = referral.get('county_name')
-
       const reporter = referral.get('reporter')
-      let reporterName = ''
-      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
-        reporterName = nameFormatter(reporter)
-      }
-
       const assignee = referral.get('assigned_social_worker')
-      let assigneeName = ''
-      if (assignee && (assignee.get('first_name') || assignee.get('last_name'))) {
-        assigneeName = nameFormatter(assignee)
-      }
-
       const allegations = referral.get('allegations')
 
       return (
@@ -64,37 +72,23 @@ export default class HistoryCard extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {
-                      allegations && allegations.map((allegation) => {
-                        let victimName = ''
-                        if (allegation.get('victim_first_name') || allegation.get('victim_last_name')) {
-                          victimName = nameFormatter(allegation, 'victim')
-                        }
-
-                        let perpetratorName = ''
-                        if (allegation.get('perpetrator_first_name') || allegation.get('perpetrator_last_name')) {
-                          perpetratorName = nameFormatter(allegation, 'perpetrator')
-                        }
-
-                        return (
-                          <tr>
-                            <td>{victimName}</td>
-                            <td>{perpetratorName}</td>
-                            <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
-                          </tr>
-                        )
-                      })
-                    }
+                    { allegations && allegations.map((allegation) => (
+                      <tr>
+                        <td>{this.personName(allegation, 'victim')}</td>
+                        <td>{this.personName(allegation, 'perpetrator')}</td>
+                        <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${reporterName}`}
+                {`Reporter: ${this.personName(reporter)}`}
               </span>
               <span className='col-md-6 assignee'>
-                {`Worker: ${assigneeName}`}
+                {`Worker: ${this.personName(assignee)}`}
               </span>
             </div>
           </td>
@@ -124,11 +118,6 @@ export default class HistoryCard extends React.Component {
         nonOnlyReporters = Immutable.List()
       }
 
-      let reporterName = ''
-      if (reporter && (reporter.get('first_name') || reporter.get('last_name'))) {
-        reporterName = nameFormatter(reporter)
-      }
-
       const status = endedAt ? 'Closed' : 'In Progress'
       return (
         <tr key={`screening-${index}`}>
@@ -146,7 +135,7 @@ export default class HistoryCard extends React.Component {
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${reporterName}`}
+                {`Reporter: ${this.personName(reporter)}`}
               </span>
               <span className='col-md-6 assignee'>
                 {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}
