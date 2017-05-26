@@ -96,5 +96,4 @@ describe('InputField', () => {
       expect(inputElement.props().mask).toEqual('111-111-1111')
     })
   })
-
 })

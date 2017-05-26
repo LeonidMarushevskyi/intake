@@ -161,7 +161,7 @@ feature 'Edit Screening' do
           expect(page).to have_field('Social security number', with: '')
           fill_in 'Social security number', with: 1
           expect(page).to have_field('Social security number', with: '1__-__-____')
-          fill_in 'Social security number', with: 123456789
+          fill_in 'Social security number', with: 123_456_789
           expect(page).to have_field('Social security number', with: '123-45-6789')
         end
       end
