@@ -141,6 +141,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-6'
             id='ssn'
             label='Social security number'
+            mask='111-11-1111'
             value={participant.get('ssn') || ''}
             onChange={(event) => onChange(['ssn'], event.target.value || null)}
           />

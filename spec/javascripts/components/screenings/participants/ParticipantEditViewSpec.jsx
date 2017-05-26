@@ -333,4 +333,24 @@ describe('ParticipantEditView', () => {
       expect(component.find('PhoneNumbersEditView').length).toEqual(1)
     })
   })
+
+  describe('social security number (ssn)', () => {
+    it('renders ssn in edit view', () => {
+      const participant = Immutable.fromJS({
+        id: '199',
+        first_name: 'Lisa',
+        last_name: 'Simpson',
+        date_of_birth: '2016-12-31',
+        gender: 'female',
+        languages: [],
+        ssn: '123456789',
+        addresses: [{}],
+        roles: [],
+        phone_numbers: [{}],
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+
+      expect(component.find('InputField[label="Social security number"]').props().mask).toEqual('111-11-1111')
+    })
+  })
 })

@@ -59,4 +59,41 @@ describe('InputField', () => {
     inputElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
   })
+
+  describe('when mask is NOT passed in', () => {
+    const props = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...props}/>)
+    })
+    it('renders an input field', () => {
+      const maskedInput = component.find('MaskedInput')
+      expect(maskedInput.length).toEqual(0)
+    })
+  })
+
+  describe('when mask is passed in', () => {
+    const propsWithMaskedInput = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+      mask: '111-111-1111',
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...propsWithMaskedInput}/>)
+    })
+    it('renders a MaskedInput field', () => {
+      const inputElement = component.find('MaskedInput')
+      expect(inputElement.props().mask).toEqual('111-111-1111')
+    })
+  })
 })
