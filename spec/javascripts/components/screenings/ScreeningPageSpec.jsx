@@ -16,7 +16,7 @@ export const requiredProps = {
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
-  involvements: Immutable.List(),
+  involvements: Immutable.fromJS({screenings: []}),
   relationships: Immutable.List(),
   mode: 'edit',
 }
