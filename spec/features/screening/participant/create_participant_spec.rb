@@ -33,6 +33,7 @@ feature 'Edit Screening' do
   let(:marge_address) do
     FactoryGirl.create(
       :address,
+      :with_legacy,
       street_address: '123 Fake St',
       city: 'Springfield',
       state: 'NY',

@@ -23,7 +23,9 @@ describe Api::V1::ParticipantsController do
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
-          type: 'placement'
+          type: 'placement',
+          legacy_id: '123456789',
+          legacy_source_table: 'ADDR_T'
         }],
         phone_numbers: [
           {
