@@ -1,4 +1,5 @@
 import NAME_SUFFIXES from 'NameSuffixes'
+import _ from 'lodash'
 
 const addSuffix = (name, suffix) => {
   if (['ii', 'iii', 'iv'].includes(suffix)) {
@@ -10,7 +11,11 @@ const addSuffix = (name, suffix) => {
   }
 }
 
-const nameFormatter = (nameableObject, nameType, nameDefault) => {
+const nameFormatter = (nameableObject, options) => {
+  const formatOptions = options || {}
+  const nameType = formatOptions.name_type
+  const nameDefault = formatOptions.name_default
+
   let firstNameKey
   let lastNameKey
   let middleNameKey
@@ -42,12 +47,10 @@ const nameFormatter = (nameableObject, nameType, nameDefault) => {
   } else if (middleName) {
     const name = `Unknown ${middleName}`
     return addSuffix(name, nameSuffix)
+  } else if (_.isUndefined(nameDefault)) {
+    return 'Unknown Person'
   } else {
-    if (nameDefault != null) {
-      return nameDefault
-    } else {
-      return 'Unknown Person'
-    }
+    return nameDefault
   }
 }
 

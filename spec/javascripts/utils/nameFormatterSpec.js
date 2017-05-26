@@ -13,7 +13,7 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       related_person_first_name: 'Foo',
       related_person_last_name: 'Bar',
-    }), 'related_person')).toEqual('Foo Bar')
+    }), {name_type: 'related_person'})).toEqual('Foo Bar')
   })
 
   it('renders with a blank first name', () => {
@@ -27,7 +27,7 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       related_person_first_name: null,
       related_person_last_name: 'Bar',
-    }), 'related_person')).toEqual('(Unknown first name) Bar')
+    }), {name_type: 'related_person'})).toEqual('(Unknown first name) Bar')
   })
 
   it('renders with a blank last name', () => {
@@ -41,7 +41,7 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       related_person_first_name: 'Foo',
       related_person_last_name: null,
-    }), 'related_person')).toEqual('Foo (Unknown last name)')
+    }), {name_type: 'related_person'})).toEqual('Foo (Unknown last name)')
   })
 
   it('renders with a blank first name and blank last name', () => {
@@ -55,14 +55,14 @@ describe('nameFormatter', () => {
     expect(nameFormatter(Immutable.fromJS({
       first_name: null,
       last_name: null,
-    }), null, 'Unknown Clown')).toEqual('Unknown Clown')
+    }), {name_default: 'Unknown Clown'})).toEqual('Unknown Clown')
   })
 
   it('Accepts an empty string as a nameDefault', () => {
     expect(nameFormatter(Immutable.fromJS({
       first_name: null,
       last_name: null,
-    }), null, '')).toEqual('')
+    }), {name_default: ''})).toEqual('')
   })
 
   describe('with middle name', () => {

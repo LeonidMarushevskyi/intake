@@ -55,8 +55,8 @@ export default class HistoryCard extends React.Component {
                   <tbody>
                     { allegations && allegations.map((allegation) => (
                       <tr>
-                        <td>{allegation ? nameFormatter(allegation, 'victim', '') : ''}</td>
-                        <td>{allegation ? nameFormatter(allegation, 'perpetrator', '') : ''}</td>
+                        <td>{allegation ? nameFormatter(allegation, {name_type: 'victim', name_default: ''}) : ''}</td>
+                        <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
                         <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
                       </tr>
                     ))}
@@ -66,10 +66,10 @@ export default class HistoryCard extends React.Component {
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${reporter ? nameFormatter(reporter, null, '') : ''}`}
+                {`Reporter: ${reporter ? nameFormatter(reporter, {name_default: ''}) : ''}`}
               </span>
               <span className='col-md-6 assignee'>
-                {`Worker: ${assignee ? nameFormatter(assignee, null, '') : ''}`}
+                {`Worker: ${assignee ? nameFormatter(assignee, {name_default: ''}) : ''}`}
               </span>
             </div>
           </td>
@@ -116,7 +116,7 @@ export default class HistoryCard extends React.Component {
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${reporter ? nameFormatter(reporter, null, '') : ''}`}
+                {`Reporter: ${reporter ? nameFormatter(reporter, {name_default: ''}) : ''}`}
               </span>
               <span className='col-md-6 assignee'>
                 {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}
