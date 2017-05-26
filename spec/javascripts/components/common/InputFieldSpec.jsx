@@ -73,10 +73,9 @@ describe('InputField', () => {
       component = shallow(<InputField {...props}/>)
     })
     it('renders an input field', () => {
-      const inputElement = component.find('input')
-      expect(inputElement.props().mask).toEqual(undefined)
+      const maskedInput = component.find('MaskedInput')
+      expect(maskedInput.length).toEqual(0)
     })
-
   })
 
   describe('when mask is passed in', () => {
