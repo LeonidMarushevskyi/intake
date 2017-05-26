@@ -5,9 +5,6 @@ require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constra
 
 Rails.application.routes.draw do
   root 'home#index'
-  resources :style_guide,
-    only: %i[index show],
-    constraints: Routes::InactiveReleaseOneConstraint
 
   resources :screenings,
     only: %i[show edit],
