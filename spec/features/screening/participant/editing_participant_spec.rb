@@ -171,12 +171,11 @@ feature 'Edit Screening' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
         within '.card-body' do
-          fill_in 'Social security number', with: '12k3456789'
+          fill_in 'Social security number', with: '12k34?!#adf56789'
           expect(page).to have_field('Social security number', with: '123-45-6789')
         end
       end
     end
-
   end
 
   scenario 'editing and then removing a phone number from a participant' do
