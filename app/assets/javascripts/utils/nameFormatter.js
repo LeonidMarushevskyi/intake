@@ -10,17 +10,17 @@ const addSuffix = (name, suffix) => {
   }
 }
 
-const nameFormatter = (nameableObject, type) => {
+const nameFormatter = (nameableObject, nameType, nameDefault) => {
   let firstNameKey
   let lastNameKey
   let middleNameKey
   let suffixKey
 
-  if (type) {
-    firstNameKey = `${type}_first_name`
-    lastNameKey = `${type}_last_name`
-    middleNameKey = `${type}_middle_name`
-    suffixKey = `${type}_name_suffix`
+  if (nameType) {
+    firstNameKey = `${nameType}_first_name`
+    lastNameKey = `${nameType}_last_name`
+    middleNameKey = `${nameType}_middle_name`
+    suffixKey = `${nameType}_name_suffix`
   } else {
     firstNameKey = 'first_name'
     lastNameKey = 'last_name'
@@ -43,7 +43,11 @@ const nameFormatter = (nameableObject, type) => {
     const name = `Unknown ${middleName}`
     return addSuffix(name, nameSuffix)
   } else {
-    return 'Unknown Person'
+    if (nameDefault != null) {
+      return nameDefault
+    } else {
+      return 'Unknown Person'
+    }
   }
 }
 

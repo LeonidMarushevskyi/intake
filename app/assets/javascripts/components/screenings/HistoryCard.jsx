@@ -18,25 +18,6 @@ export default class HistoryCard extends React.Component {
     }
   }
 
-  personName(nameableObject, nameType) {
-    let firstNameKey
-    let lastNameKey
-
-    if (nameType) {
-      firstNameKey = `${nameType}_first_name`
-      lastNameKey = `${nameType}_last_name`
-    } else {
-      firstNameKey = 'first_name'
-      lastNameKey = 'last_name'
-    }
-
-    if (nameableObject && (nameableObject.get(firstNameKey) || nameableObject.get(lastNameKey))) {
-      return nameFormatter(nameableObject, nameType)
-    } else {
-      return ''
-    }
-  }
-
   renderReferrals() {
     return this.props.involvements.get('referrals').map((referral, index) => {
       const startedAt = referral.get('start_date')
@@ -74,8 +55,8 @@ export default class HistoryCard extends React.Component {
                   <tbody>
                     { allegations && allegations.map((allegation) => (
                       <tr>
-                        <td>{this.personName(allegation, 'victim')}</td>
-                        <td>{this.personName(allegation, 'perpetrator')}</td>
+                        <td>{allegation ? nameFormatter(allegation, 'victim', '') : ''}</td>
+                        <td>{allegation ? nameFormatter(allegation, 'perpetrator', '') : ''}</td>
                         <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
                       </tr>
                     ))}
@@ -85,10 +66,10 @@ export default class HistoryCard extends React.Component {
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${this.personName(reporter)}`}
+                {`Reporter: ${reporter ? nameFormatter(reporter, null, '') : ''}`}
               </span>
               <span className='col-md-6 assignee'>
-                {`Worker: ${this.personName(assignee)}`}
+                {`Worker: ${assignee ? nameFormatter(assignee, null, '') : ''}`}
               </span>
             </div>
           </td>
@@ -135,7 +116,7 @@ export default class HistoryCard extends React.Component {
             </div>
             <div className='row'>
               <span className='col-md-6 reporter'>
-                {`Reporter: ${this.personName(reporter)}`}
+                {`Reporter: ${reporter ? nameFormatter(reporter, null, '') : ''}`}
               </span>
               <span className='col-md-6 assignee'>
                 {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}

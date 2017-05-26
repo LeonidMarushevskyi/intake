@@ -51,6 +51,20 @@ describe('nameFormatter', () => {
     }))).toEqual('Unknown Person')
   })
 
+  it('Uses the nameDefault, when present, if there are no first and last names', () => {
+    expect(nameFormatter(Immutable.fromJS({
+      first_name: null,
+      last_name: null,
+    }), null, 'Unknown Clown')).toEqual('Unknown Clown')
+  })
+
+  it('Accepts an empty string as a nameDefault', () => {
+    expect(nameFormatter(Immutable.fromJS({
+      first_name: null,
+      last_name: null,
+    }), null, '')).toEqual('')
+  })
+
   describe('with middle name', () => {
     it('renders nothing for blank middle name', () => {
       expect(nameFormatter(Immutable.fromJS({

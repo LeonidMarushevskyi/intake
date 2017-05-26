@@ -199,8 +199,7 @@ describe('HistoryCard', () => {
       }
       const component = shallow(<HistoryCard {...props}/>)
       const tr = component.find('tbody tr span.reporter')
-      expect(tr.text()).toContain('Reporter: ')
-      expect(tr.text()).not.toContain('Unknown person')
+      expect(tr.text()).toEqual('Reporter: ')
     })
 
     it('renders the referral assigned worker', () => {
