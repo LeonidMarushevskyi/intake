@@ -118,6 +118,8 @@ describe('ParticipantEditView', () => {
         .toEqual('2016-12-31')
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
+      expect(component.find('InputField[label="Social security number"]').props().placeholder)
+        .toEqual('')
       expect(component.find('InputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
     })
