@@ -23,12 +23,18 @@ export default class RelationshipsCard extends React.Component {
           <strong> is the...</strong>
           <ul className='relationships'>
             {
-              relationships.map((relationship) =>
-                <li key={relationship.get('related_person_id')} id={relationship.get('related_person_id')}>
-                  <strong>{relationship.get('indexed_person_relationship')}</strong>
-                  &nbsp;of {nameFormatter(relationship, {name_type: 'related_person'})}
-                </li>
-              )
+              relationships.map((relationship) => {
+                const related_legacy_id = relationship.get('related_person_legacy_id')
+                return (
+                  <li
+                    key={`${participant.get('id')}-${related_legacy_id}`}
+                    id={`participant-${participant.get('id')}-relationship-${related_legacy_id}`}
+                  >
+                    <strong>{relationship.get('indexed_person_relationship')}</strong>
+                    &nbsp;of {nameFormatter(relationship, {name_type: 'related_person'})}
+                  </li>
+                )
+              })
             }
           </ul>
         </span>
