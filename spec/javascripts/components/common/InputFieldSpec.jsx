@@ -78,14 +78,14 @@ describe('InputField', () => {
     })
   })
 
-  describe('when mask is passed in', () => {
+  describe('when mask is passed WITHOUT placeholder props', () => {
     const propsWithMaskedInput = {
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myInputFieldId',
       label: 'this is my label',
       onChange: onChange,
-      mask: '111-111-1111',
+      mask: '111-11-1111',
     }
 
     beforeEach(() => {
@@ -93,7 +93,36 @@ describe('InputField', () => {
     })
     it('renders a MaskedInput field', () => {
       const inputElement = component.find('MaskedInput')
-      expect(inputElement.props().mask).toEqual('111-111-1111')
+      expect(inputElement.props().mask).toEqual('111-11-1111')
+      expect(inputElement.props().placeholder).toEqual(undefined)
+    })
+  })
+
+  describe('when mask is passed WITH placeholder props', () => {
+    const propsWithMaskedInput = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+      mask: '111-11-1111',
+      blurPlaceholder: 'I feel lonely :( ',
+      focusPlaceholder: 'I like attention :) ',
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...propsWithMaskedInput}/>)
+    })
+
+    it('assigns placeholder props properly', () => {
+      const inputElement = component.find('MaskedInput')
+      const event = {target: {placeholder: null}}
+
+      expect(inputElement.props().mask).toEqual('111-11-1111')
+      inputElement.props().onBlur(event)
+      expect(event.target.placeholder).toEqual('I feel lonely :( ')
+      inputElement.props().onFocus(event)
+      expect(event.target.placeholder).toEqual('I like attention :) ')
     })
   })
 })

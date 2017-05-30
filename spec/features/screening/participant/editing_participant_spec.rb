@@ -167,11 +167,30 @@ feature 'Edit Screening' do
       end
     end
 
+    scenario 'ssn placeholder in input field is behaving as intended' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
+          fill_in 'Social security number', with: 12
+          expect(active_element['id']).to eq("participant-#{homer.id}-ssn")
+          expect(active_element['placeholder']).to eq('___-__-____')
+          fill_in 'First Name', with: 'Change Focus'
+          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
+          click_button 'Save'
+        end
+      end
+      within show_participant_card_selector(homer.id) do
+        expect(page).not_to have_content('12_-__-___')
+        expect(page).to have_content('12 -  -    ')
+      end
+    end
+
     scenario 'an invalid character is inserted' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
         within '.card-body' do
-          fill_in 'Social security number', with: '12k34?!#adf56789'
+          fill_in 'Social security number', with: '12k34?!#adf567890'
           expect(page).to have_field('Social security number', with: '123-45-6789')
         end
       end
@@ -425,5 +444,9 @@ feature 'Edit Screening' do
         has_react_select_field('Role', with: ['Non-mandated Reporter'])
       end
     end
+  end
+
+  def active_element
+    page.evaluate_script('document.activeElement')
   end
 end
