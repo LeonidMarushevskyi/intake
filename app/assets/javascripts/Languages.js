@@ -12,7 +12,7 @@ const LANGUAGES = Object.freeze([
   'Hawaiian',
   'Hebrew',
   'Hmong',
-  'Ilacano',
+  'Ilocano',
   'Indochinese',
   'Italian',
   'Japanese',
