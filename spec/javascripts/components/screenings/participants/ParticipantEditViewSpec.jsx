@@ -79,7 +79,7 @@ describe('ParticipantEditView', () => {
         roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header span').text()).toEqual('Unknown person')
+      expect(component.find('.card-header span').text()).toEqual('Unknown Person')
     })
 
     it('renders the participants first and last name in the card header', () => {
@@ -118,6 +118,8 @@ describe('ParticipantEditView', () => {
         .toEqual('2016-12-31')
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
+      expect(component.find('InputField[label="Social security number"]').props().placeholder)
+        .toEqual('')
       expect(component.find('InputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
     })
@@ -133,7 +135,7 @@ describe('ParticipantEditView', () => {
     })
 
     it('fires the onChange call when a field changes', () => {
-      component.find('#ssn').simulate('change', {target: {value: '123-756-075'}})
+      component.find('#participant-199-ssn').simulate('change', {target: {value: '123-756-075'}})
       expect(onChange).toHaveBeenCalledWith(['ssn'], '123-756-075')
     })
 
@@ -149,7 +151,7 @@ describe('ParticipantEditView', () => {
 
     it('when the user edits and hits cancel', () => {
       const cancelButton = component.find('button[children="Cancel"]')
-      component.find('#ssn').simulate('change', {target: {value: '123-756-075'}})
+      component.find('#participant-199-ssn').simulate('change', {target: {value: '123-756-075'}})
       cancelButton.simulate('click')
       expect(onCancel).toHaveBeenCalled()
       expect(component.find('InputField[label="Social security number"]').props().value)
@@ -265,7 +267,7 @@ describe('ParticipantEditView', () => {
         const expectedOptions = [
           {label: 'Victim', value: 'Victim'},
           {label: 'Perpetrator', value: 'Perpetrator'},
-          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: true},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter'},
           {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
           {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
         ]
@@ -331,6 +333,27 @@ describe('ParticipantEditView', () => {
       component = shallow(<ParticipantEditView participant={participant} />)
 
       expect(component.find('PhoneNumbersEditView').length).toEqual(1)
+    })
+  })
+
+  describe('social security number (ssn)', () => {
+    it('renders ssn in edit view', () => {
+      const participant = Immutable.fromJS({
+        id: '199',
+        first_name: 'Lisa',
+        last_name: 'Simpson',
+        date_of_birth: '2016-12-31',
+        gender: 'female',
+        languages: [],
+        ssn: '123456789',
+        addresses: [{}],
+        roles: [],
+        phone_numbers: [{}],
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+
+      expect(component.find('InputField[label="Social security number"]').props().mask)
+        .toEqual('111-11-1111')
     })
   })
 })

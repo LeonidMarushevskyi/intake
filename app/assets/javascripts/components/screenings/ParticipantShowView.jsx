@@ -5,6 +5,7 @@ import React from 'react'
 import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
 import nameFormatter from 'utils/nameFormatter'
+import ssnFormatter from 'utils/ssnFormatter'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
@@ -42,7 +43,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
             {participant.get('date_of_birth')}
           </ShowField>
           <ShowField label='Social security number'>
-            {participant.get('ssn')}
+            {ssnFormatter(participant.get('ssn'))}
           </ShowField>
         </div>
       </div>

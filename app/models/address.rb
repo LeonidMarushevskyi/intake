@@ -7,6 +7,8 @@ class Address # :nodoc:
 
   attribute :city
   attribute :id
+  attribute :legacy_id
+  attribute :legacy_source_table
   attribute :state
   attribute :street_address
   attribute :zip

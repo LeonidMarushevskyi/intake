@@ -11,7 +11,7 @@ feature 'History card' do
       .and_return(json_body(existing_screening.to_json))
     visit edit_screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show.card', text: 'HISTORY' do
+    within '#history-card.card.show.card', text: 'History' do
       expect(page).to have_css('th', text: 'Date')
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
@@ -24,7 +24,7 @@ feature 'History card' do
       .and_return(json_body(existing_screening.to_json))
     visit screening_path(id: existing_screening.id)
 
-    within '#history-card.card.show', text: 'HISTORY' do
+    within '#history-card.card.show', text: 'History' do
       expect(page).to have_css('th', text: 'Date')
       expect(page).to have_css('th', text: 'Type/Status')
       expect(page).to have_css('th', text: 'County/Office')
@@ -33,7 +33,7 @@ feature 'History card' do
   end
 
   context 'a screening with participants' do
-    let(:screening_involvement) do
+    let(:screenings) do
       [
         {
           start_date: '2016-09-10',
@@ -50,6 +50,41 @@ feature 'History card' do
           ]
         }
       ]
+    end
+
+    let(:referrals) do
+      [
+        {
+          start_date: '2016-11-14',
+          end_date: '2016-12-14',
+          county_name: 'madera',
+          reporter: {
+            first_name: 'Reporter',
+            last_name: 'rLastName'
+          },
+          assigned_social_worker: {
+            first_name: 'Social',
+            last_name: 'sLastName'
+          },
+          allegations: [
+            {
+              allegation_description: 'General Neglect',
+              disposition_description: 'Entered in Error',
+              perpetrator_first_name: 'Perpetrator',
+              perpetrator_last_name: 'pLastName',
+              victim_first_name: 'Victim',
+              victim_last_name: 'vLastName'
+            }
+          ]
+        }
+      ]
+    end
+
+    let(:screening_involvement) do
+      {
+        referrals: referrals,
+        screenings: screenings
+      }
     end
 
     before do
@@ -74,16 +109,50 @@ feature 'History card' do
     scenario 'viewing a screening' do
       visit screening_path(id: existing_screening.id)
 
-      within '#history-card.card.show', text: 'HISTORY' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
-        expect(page).to have_content(start_time)
-        expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('El Dorado')
-        expect(page).to have_content('Sally Johnson')
-        expect(page).to have_content('Sam Anderson')
-        expect(page).to have_content('James Robinson')
-        expect(page).to have_content('Reporter: Alex Hanson')
-        expect(page).to have_content('Worker: Bob Smith')
+      within '#history-card.card.show', text: 'History' do
+        within 'tbody#history-of-involvement' do
+          rows = page.all('tr')
+
+          within rows[0] do
+            start_time = Time.parse(screening_involvement[:screenings]
+              .first[:start_date]).strftime('%m/%d/%Y')
+            expect(page).to have_content(start_time)
+            expect(page).to have_content('Screening (In Progress)')
+            expect(page).to have_content('El Dorado')
+            expect(page).to have_content('Sally Johnson')
+            expect(page).to have_content('Sam Anderson')
+            expect(page).to have_content('James Robinson')
+            expect(page).to have_content('Reporter: Alex Hanson')
+            expect(page).to have_content('Worker: Bob Smith')
+          end
+
+          within rows[1] do
+            start_time = Time.parse(screening_involvement[:referrals]
+              .first[:start_date]).strftime('%m/%d/%Y')
+            expect(page).to have_content(start_time)
+            expect(page).to have_content('Referral (Closed)')
+            expect(page).to have_content('Madera')
+
+            within 'table' do
+              allegation_rows = page.all('tr')
+
+              within allegation_rows[0] do
+                expect(page).to have_content('Victim')
+                expect(page).to have_content('Perpetrator')
+                expect(page).to have_content('Allegation(s) & Disposition')
+              end
+
+              within allegation_rows[1] do
+                expect(page).to have_content('Victim vLastName')
+                expect(page).to have_content('Perpetrator pLastName')
+                expect(page).to have_content('General Neglect (Entered in Error)')
+              end
+            end
+
+            expect(page).to have_content('Reporter: Reporter rLastName')
+            expect(page).to have_content('Worker: Social sLastName')
+          end
+        end
       end
 
       expect(
@@ -104,16 +173,50 @@ feature 'History card' do
         )
       ).to have_been_made
 
-      within '#history-card.card.show', text: 'HISTORY' do
-        start_time = Time.parse(screening_involvement.first[:start_date]).strftime('%m/%d/%Y')
-        expect(page).to have_content(start_time)
-        expect(page).to have_content('Screening (In Progress)')
-        expect(page).to have_content('El Dorado')
-        expect(page).to have_content('Sally Johnson')
-        expect(page).to have_content('Sam Anderson')
-        expect(page).to have_content('James Robinson')
-        expect(page).to have_content('Reporter: Alex Hanson')
-        expect(page).to have_content('Worker: Bob Smith')
+      within '#history-card.card.show', text: 'History' do
+        within 'tbody#history-of-involvement' do
+          rows = page.all('tr')
+
+          within rows[0] do
+            start_time = Time.parse(screening_involvement[:screenings]
+              .first[:start_date]).strftime('%m/%d/%Y')
+            expect(page).to have_content(start_time)
+            expect(page).to have_content('Screening (In Progress)')
+            expect(page).to have_content('El Dorado')
+            expect(page).to have_content('Sally Johnson')
+            expect(page).to have_content('Sam Anderson')
+            expect(page).to have_content('James Robinson')
+            expect(page).to have_content('Reporter: Alex Hanson')
+            expect(page).to have_content('Worker: Bob Smith')
+          end
+
+          within rows[1] do
+            start_time = Time.parse(screening_involvement[:referrals]
+              .first[:start_date]).strftime('%m/%d/%Y')
+            expect(page).to have_content(start_time)
+            expect(page).to have_content('Referral (Closed)')
+            expect(page).to have_content('Madera')
+
+            within 'table' do
+              allegation_rows = page.all('tr')
+
+              within allegation_rows[0] do
+                expect(page).to have_content('Victim')
+                expect(page).to have_content('Perpetrator')
+                expect(page).to have_content('Allegation(s) & Disposition')
+              end
+
+              within allegation_rows[1] do
+                expect(page).to have_content('Victim vLastName')
+                expect(page).to have_content('Perpetrator pLastName')
+                expect(page).to have_content('General Neglect (Entered in Error)')
+              end
+            end
+
+            expect(page).to have_content('Reporter: Reporter rLastName')
+            expect(page).to have_content('Worker: Social sLastName')
+          end
+        end
       end
     end
   end

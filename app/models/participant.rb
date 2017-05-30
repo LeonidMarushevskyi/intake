@@ -15,6 +15,7 @@ class Participant
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]
   attribute :legacy_id
+  attribute :legacy_source_table
   attribute :screening_id
   attribute :roles, Array[String]
   attribute :languages, Array

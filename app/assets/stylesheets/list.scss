@@ -6,10 +6,15 @@
 
 
 .list-item {
-  background-color: $light-grey;
-  margin-top: $double-spacing;
+  background-color: $lightest-blue;
+  margin: $double-spacing 0 0;
   padding: $base-spacing 0;
   position: relative;
+
+  input,
+  select {
+    background-color: $white;
+  }
 }
 
 .list-item__a {

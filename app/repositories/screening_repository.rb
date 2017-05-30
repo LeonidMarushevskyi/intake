@@ -59,6 +59,6 @@ class ScreeningRepository
       Rails.application.routes.url_helpers.intake_api_screening_submit_path(id),
       :post
     )
-    response.body
+    Screening.new(response.body)
   end
 end

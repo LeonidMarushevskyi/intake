@@ -5,7 +5,7 @@ require 'spec_helper'
 
 feature 'Delete Participant' do
   let(:participant) do
-    FactoryGirl.build(
+    FactoryGirl.create(
       :participant,
       date_of_birth: 15.years.ago.to_date.to_s(:db),
       first_name: 'Marge',
@@ -15,12 +15,7 @@ feature 'Delete Participant' do
       legacy_id: 1
     )
   end
-  let(:screening) do
-    FactoryGirl.build(
-      :screening,
-      participants: [participant]
-    )
-  end
+  let(:screening) { FactoryGirl.create(:screening, participants: [participant]) }
 
   scenario 'removing a participant from an existing screening in edit mode' do
     stub_request(:get, intake_api_screening_url(screening.id))

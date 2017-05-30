@@ -42,11 +42,11 @@ export default class WorkerSafetyEditView extends React.Component {
               />
             </div>
           </div>
-        </div>
-        <div className='row'>
-          <div className='centered'>
-            <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
-            <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
+          <div className='row'>
+            <div className='centered'>
+              <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
+              <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
+            </div>
           </div>
         </div>
       </div>

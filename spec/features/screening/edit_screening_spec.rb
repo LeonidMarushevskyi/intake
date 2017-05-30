@@ -52,7 +52,7 @@ feature 'Edit Screening' do
   end
 
   scenario 'edit an existing screening' do
-    within '#screening-information-card.edit', text: 'SCREENING INFORMATION' do
+    within '#screening-information-card.edit', text: 'Screening Information' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
       expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
@@ -62,11 +62,11 @@ feature 'Edit Screening' do
       expect(page).to have_content('Cancel')
     end
 
-    within '#narrative-card.edit', text: 'NARRATIVE' do
+    within '#narrative-card.edit', text: 'Narrative' do
       expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
     end
 
-    within '#incident-information-card.edit', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card.edit', text: 'Incident Information' do
       expect(page).to have_field('Incident Date', with: '2016-08-11')
       expect(page).to have_field('Incident County', with: 'sacramento')
       expect(page).to have_field('Address', with: '123 Fake St')
@@ -77,13 +77,13 @@ feature 'Edit Screening' do
       expect(page).to have_content('Cancel')
     end
 
-    within '#allegations-card.edit', text: 'ALLEGATIONS' do
+    within '#allegations-card.edit', text: 'Allegations' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    within '#worker-safety-card', text: 'WORKER SAFETY' do
+    within '#worker-safety-card', text: 'Worker Safety' do
       has_react_select_field('Worker safety alerts', with: existing_screening.safety_alerts)
       expect(page).to have_field('Additional safety information',
         with: existing_screening.safety_information)
@@ -93,15 +93,15 @@ feature 'Edit Screening' do
       expect(page).to have_no_content(existing_screening.safety_alerts.first)
     end
 
-    expect(page).to have_css('#history-card.show', text: 'HISTORY')
+    expect(page).to have_css('#history-card.show', text: 'History')
 
-    within '#decision-card.edit', text: 'DECISION ' do
+    within '#decision-card.edit', text: 'Decision ' do
       expect(page).to have_field('Screening Decision', with: 'screen_out')
       expect(page).to have_select('Category', selected: 'Information request')
       expect(page).to have_field('Additional information', with: 'This is why I decided what I did')
     end
 
-    within '#cross-report-card.edit', text: 'CROSS REPORT' do
+    within '#cross-report-card.edit', text: 'Cross Report' do
       expect(page).to have_content('Cross reported to')
       expect(page.find('input[value="District attorney"]')).to be_checked
       expect(page).to have_field('District_attorney-agency-name', with: 'SCDA Office')
@@ -113,7 +113,7 @@ feature 'Edit Screening' do
   end
 
   scenario 'aborting changes in Worker Saftey Card' do
-    within '#worker-safety-card', text: 'WORKER SAFETY' do
+    within '#worker-safety-card', text: 'Worker Safety' do
       fill_in_react_select('Worker safety alerts',
         with: 'Hostile, Aggressive Client')
       has_react_select_field('Worker safety alerts',
@@ -126,7 +126,7 @@ feature 'Edit Screening' do
   end
 
   scenario 'adding multiple alerts to existing ones in a Worker Safety Card' do
-    within '#worker-safety-card', text: 'WORKER SAFETY' do
+    within '#worker-safety-card', text: 'Worker Safety' do
       has_react_select_field('Worker safety alerts',
         with: ['Dangerous Animal on Premises', 'Firearms in Home'])
       fill_in_react_select('Worker safety alerts',
@@ -187,7 +187,7 @@ feature 'individual card save' do
   end
 
   scenario 'unchanged attributes are not blanked' do
-    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card', text: 'Incident Information' do
       updated_screening = as_json_without_root_id(
         existing_screening
       ).merge(incident_date: '1996-02-12')
@@ -307,7 +307,7 @@ feature 'individual card save' do
   end
 
   scenario 'Incident information saves and cancels in isolation' do
-    within '#incident-information-card', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card', text: 'Incident Information' do
       existing_screening.address.assign_attributes(
         street_address: '33 Whatever Rd',
         city: 'Modesto',

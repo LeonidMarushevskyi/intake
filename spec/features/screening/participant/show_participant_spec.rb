@@ -20,6 +20,7 @@ feature 'Show Screening' do
     :participant,
     middle_name: 'Jay',
     name_suffix: 'esq',
+    ssn: '123-__-____',
     addresses: [address],
     phone_numbers: [phone_number]
   )
@@ -45,7 +46,7 @@ feature 'Show Screening' do
     within show_participant_card_selector(existing_participant.id) do
       within '.card-header' do
         expect(page).to have_content(
-          "#{existing_participant.first_name} JAY #{existing_participant.last_name}, ESQ".upcase
+          "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
         expect(page).to have_link 'Edit participant'
         expect(page).to have_button 'Delete participant'
@@ -60,7 +61,7 @@ feature 'Show Screening' do
         expect(page).to have_content(existing_participant.gender.capitalize)
         expect(page).to have_content(existing_participant.languages.join(', '))
         expect(page).to have_content(existing_participant.date_of_birth)
-        expect(page).to have_content(existing_participant.ssn)
+        expect(page).to have_content('123-  -    ')
         expect(page).to have_content(address.street_address)
         expect(page).to have_content(address.city)
         expect(page).to have_content('New York')

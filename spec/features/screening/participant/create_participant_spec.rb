@@ -17,8 +17,8 @@ def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
   ).merge(
-    id: nil,
     legacy_id: person.id,
+    legacy_source_table: person.legacy_source_table,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
@@ -27,11 +27,13 @@ def build_participant_from_person_and_screening(person, screening)
 end
 
 feature 'Edit Screening' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_participant) { FactoryGirl.create(:participant) }
+  let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
   let(:marge_address) do
     FactoryGirl.create(
       :address,
+      :with_legacy,
       street_address: '123 Fake St',
       city: 'Springfield',
       state: 'NY',
@@ -48,7 +50,8 @@ feature 'Edit Screening' do
   end
   let(:marge) do
     FactoryGirl.create(
-      :person,
+      :person_search,
+      legacy_source_table: 'CLIENT_T',
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
@@ -89,14 +92,18 @@ feature 'Edit Screening' do
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
-    new_participant_request = { screening_id: existing_screening.id, legacy_id: nil }
+    new_participant_request = {
+      screening_id: existing_screening.id,
+      legacy_id: nil,
+      legacy_source_table: nil
+    }
 
     stub_request(:post, intake_api_participants_url)
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
       .and_return(body: created_participant_unknown.to_json,
                   status: 201,
                   headers: { 'Content-Type' => 'application/json' })
-    within '#search-card', text: 'SEARCH' do
+    within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('.btn', text: /Create a new person/).click
       expect(page).not_to have_content('Create a new person')
@@ -108,26 +115,21 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(created_participant_unknown.id) do
       within '.card-header' do
-        expect(page).to have_content 'UNKNOWN PERSON'
+        expect(page).to have_content 'Unknown Person'
       end
     end
   end
 
   scenario 'creating a new participant from a person' do
-    participant_marge = FactoryGirl.build(
-      :participant,
-      build_participant_from_person_and_screening(marge, existing_screening)
-    )
-    created_participant_marge = FactoryGirl.build(
-      :participant,
-      participant_marge.as_json.merge(id: 23)
-    )
+    marge_attributes = build_participant_from_person_and_screening(marge, existing_screening)
+    participant_marge = FactoryGirl.build(:participant, marge_attributes)
+    created_participant_marge = FactoryGirl.create(:participant, participant_marge.as_json)
     stub_request(:post, intake_api_participants_url)
       .and_return(json_body(created_participant_marge.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
-    within '#search-card', text: 'SEARCH' do
+    within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
@@ -138,9 +140,14 @@ feature 'Edit Screening' do
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
 
+    # The new participant was added to the top of the list of participants
+    created_participant_selector = edit_participant_card_selector(created_participant_marge.id)
+    existing_participant_selector = edit_participant_card_selector(existing_participant.id)
+    expect(find("#{created_participant_selector}+div")).to match_css(existing_participant_selector)
+
     within edit_participant_card_selector(created_participant_marge.id) do
       within '.card-header' do
-        expect(page).to have_content 'MARGE SIMPSON'
+        expect(page).to have_content 'Marge Simpson'
         expect(page).to have_button 'Delete participant'
       end
 

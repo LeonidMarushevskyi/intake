@@ -19,11 +19,15 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     const hasReporterRole = selectedRoles.some((role) =>
       ROLE_TYPE_REPORTER.includes(role)
     )
+    // Need to identify the reporter role already selected for this participant so
+    // we can leave its select element active and not disable it as disabeled items
+    // are removed from the list of selected items as part of the onChange action.
+    const selectedReporterRole = selectedRoles.find((role) => ROLE_TYPE_REPORTER.includes(role))
 
     return ROLE_TYPE.map((role) => {
       const reporter = ROLE_TYPE_REPORTER.includes(role)
       let item = {label: role, value: role}
-      if (reporter) {
+      if (reporter && role !== selectedReporterRole) {
         item = {...item, disabled: hasReporterRole}
       }
       return item
@@ -82,9 +86,10 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
               multi
               inputProps={{id: `roles_${participant.get('id')}`}}
               value={participant.get('roles').toJS()}
-              onChange={(roles) =>
-                onChange(['roles'], Immutable.List(roles.map((role) => role.value)) || [])
-              }
+              onChange={(roles) => {
+                onChange(['roles'], Immutable.List(
+                  roles.filter((role) => !role.disabled).map((role) => role.value)) || [])
+              }}
               options={roleOptions(participant.get('roles'))}
               clearable={false}
               placeholder=''
@@ -134,8 +139,12 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
         <div className='row'>
           <InputField
             gridClassName='col-md-6'
-            id='ssn'
+            id={`participant-${participant.get('id')}-ssn`}
             label='Social security number'
+            mask='111-11-1111'
+            placeholder=''
+            blurPlaceholder=''
+            focusPlaceholder='___-__-____'
             value={participant.get('ssn') || ''}
             onChange={(event) => onChange(['ssn'], event.target.value || null)}
           />

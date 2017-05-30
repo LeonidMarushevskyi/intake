@@ -30,14 +30,23 @@ describe('participantsReducer', () => {
   })
 
   describe('on CREATE_PARTICIPANT_SUCCESS', () => {
+    const newParticipant = {id: '2', screening_id: '1', person_id: '3'}
+    const oldParticipants = Immutable.List([{id: '3', screening_id: '1', person_id: '4'}])
+    let action
+    beforeEach(() => {
+      action = screeningActions.createParticipantSuccess(newParticipant)
+    })
+
     it('returns the screening with new participant from the action', () => {
-      const newParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
-      const oldParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
-      const participants = Immutable.fromJS([oldParticipant])
-      const action = screeningActions.createParticipantSuccess(newParticipant)
-      expect(participantsReducer(participants, action).toJS()).toEqual([
-        oldParticipant,
+      expect(participantsReducer(Immutable.List([]), action).toJS()).toEqual([
         newParticipant,
+      ])
+    })
+
+    it('adds new participants to the beginning of the list', () => {
+      expect(participantsReducer(oldParticipants, action).toJS()).toEqual([
+        newParticipant,
+        oldParticipants.toJS()[0],
       ])
     })
   })

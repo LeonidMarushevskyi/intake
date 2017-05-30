@@ -16,21 +16,11 @@ module Api
         :name_suffix,
         :gender,
         :legacy_id,
+        :legacy_source_table,
         :screening_id,
         :ssn,
-        addresses: %i[
-          id
-          street_address
-          city
-          state
-          zip
-          type
-        ],
-        phone_numbers: %i[
-          id
-          number
-          type
-        ],
+        addresses: %i[id legacy_id legacy_source_table street_address city state zip type],
+        phone_numbers: %i[id number type],
         roles: [],
         languages: []
       ].freeze

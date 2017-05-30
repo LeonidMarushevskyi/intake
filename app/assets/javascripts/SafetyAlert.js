@@ -1,5 +1,6 @@
 const SAFETY_ALERT = Object.freeze([
   'Dangerous Animal on Premises',
+  'Dangerous Environment',
   'Firearms in Home',
   'Gang Affiliation or Gang Activity',
   'Hostile, Aggressive Client',

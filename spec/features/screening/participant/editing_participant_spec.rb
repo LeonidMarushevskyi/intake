@@ -6,7 +6,6 @@ require 'spec_helper'
 feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
-
   let(:marge_address) do
     FactoryGirl.create(
       :address,
@@ -40,7 +39,6 @@ feature 'Edit Screening' do
       roles: marge_roles
     )
   end
-
   let(:homer_address) do
     FactoryGirl.create(
       :address,
@@ -59,18 +57,12 @@ feature 'Edit Screening' do
       first_name: 'Homer',
       gender: 'male',
       last_name: 'Simpson',
-      ssn: old_ssn,
+      ssn: nil,
       addresses: [homer_address],
       roles: ['Reporter']
     )
   end
-
-  let(:screening) do
-    FactoryGirl.build(
-      :screening,
-      participants: [marge, homer]
-    )
-  end
+  let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
 
   before do
     stub_request(:get, intake_api_screening_url(screening.id))
@@ -90,7 +82,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
-        expect(page).to have_content 'MARGE JACQUELINE SIMPSON, SR'
+        expect(page).to have_content 'Marge Jacqueline Simpson, Sr'
         expect(page).to have_button 'Delete participant'
       end
 
@@ -156,6 +148,51 @@ feature 'Edit Screening' do
     within edit_participant_card_selector(homer.id) do
       within '.card-body' do
         expect(page).to have_field('First Name', with: 'My new first name')
+      end
+    end
+  end
+
+  context 'editing social security number (ssn)' do
+    scenario 'numbers are formatted correctly' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          fill_in 'Social security number', with: ''
+          expect(page).to have_field('Social security number', with: '')
+          fill_in 'Social security number', with: 1
+          expect(page).to have_field('Social security number', with: '1__-__-____')
+          fill_in 'Social security number', with: 123_456_789
+          expect(page).to have_field('Social security number', with: '123-45-6789')
+        end
+      end
+    end
+
+    scenario 'ssn placeholder in input field is behaving as intended' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
+          fill_in 'Social security number', with: 12
+          expect(active_element['id']).to eq("participant-#{homer.id}-ssn")
+          expect(active_element['placeholder']).to eq('___-__-____')
+          fill_in 'First Name', with: 'Change Focus'
+          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
+          click_button 'Save'
+        end
+      end
+      within show_participant_card_selector(homer.id) do
+        expect(page).not_to have_content('12_-__-___')
+        expect(page).to have_content('12 -  -    ')
+      end
+    end
+
+    scenario 'an invalid character is inserted' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          fill_in 'Social security number', with: '12k34?!#adf567890'
+          expect(page).to have_field('Social security number', with: '123-45-6789')
+        end
       end
     end
   end
@@ -361,7 +398,7 @@ feature 'Edit Screening' do
       click_button 'Cancel'
     end
 
-    expect(page).to have_content 'MARGE JACQUELINE SIMPSON, SR'
+    expect(page).to have_content 'Marge Jacqueline Simpson, Sr'
     expect(page).to have_link 'Edit participant'
     expect(page).to have_content old_ssn
   end
@@ -407,5 +444,9 @@ feature 'Edit Screening' do
         has_react_select_field('Role', with: ['Non-mandated Reporter'])
       end
     end
+  end
+
+  def active_element
+    page.evaluate_script('document.activeElement')
   end
 end

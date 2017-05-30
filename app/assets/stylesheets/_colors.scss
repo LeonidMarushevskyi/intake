@@ -1,192 +1,80 @@
 /////////////////////////////////////////
 
-// - New Colors- //
-
-/////////////////////////////////////////
-
-$dark-blue: #1377a0;
-$light-blue: #25aae1;
-$dark-sand: #f0f1ea;
-$light-sand: #f9faf5;
-$dark-grey: #8e8e8e;
-$medium-grey: #d4d4d4;
-$light-grey: #f7f7f7;
-$white: #fff;
-$coal: #3c4046;
-
-/////////////////////////////////////////
-
 // - Colors- //
 
 /////////////////////////////////////////
 
-// Primary Colors //
+$lightest-blue: #f5f5f5;
+$light-blue: #1ba7fa;
+$medium-blue: #2c7dae;
+$dark-blue: #053d53;
 
-$primary-blue: #0071bc;
-$primary-darker-blue: #205493;
-$primary-darkest-blue: #112e51;
-$primary-base: #212121;
-$gray-dark: #323a45;
-$gray-light: #aeb0b5;
+$light-green: #3fbfad;
+$medium-green: #2b8377;
+$dark-green: #065144;
+
 $white: #fff;
+$lightest-grey: #e8e8e8;
+$light-grey: #d4d4d4;
+$medium-grey: #b1b1b1;
+$dark-grey: #767676;
+$darkest-grey: #050505;
 
-// Secondary Colors //
-
-$primary-blue-alt: #02bfe7;
-$primary-blue-alt-darkest: #046b99;
-$primary-blue-alt-dark: #00a6d2;
-$primary-blue-alt-light: #9bdaf1;
-$primary-blue-alt-lightest: #e1f3f8;
-
-$secondary-red: #e31c3d;
-$secondary-red-darkest: #981b1e;
-$secondary-red-dark: #cd2026;
-$secondary-red-light: #e59393;
-$secondary-red-lightest: #f9dede;
-
-// Background Colors //
-
-$gray: #5b616b;
-$gray-lighter: #d6d7d9;
-$gray-lightest: #f1f1f1;
-$gray-warm-dark: #494440;
-$gray-warm-light: #e4e2e0;
-$gray-cool-light: #dce4ef;
-
-// Tertiary Colors //
-
-$gold: #fdb81e;
-$gold-light: #f9c642;
-$gold-lighter: #fad980;
-$gold-lightest: #fff1d2;
-
-$green: #2e8540;
-$green-light: #4aa564;
-$green-lighter: #94bfa2;
-$green-lightest: #e7f4e4;
-
-$cool-blue-light: #4773aa;
-$cool-blue-lighter: #8ba6ca;
-
-// Special State Colors //
-
-$focus-color: #3e94cf;
-$visited-color: #4c2c92;
+$yellow: #e8d41c;
+$orange: #fa8d29;
+$red: #e3263d;
 
 /////////////////////////////////////////
 
-// - Colors Classes- //
+// - Color Helpers - //
 
 /////////////////////////////////////////
 
-// Primary Colors //
+.c-lightest-blue {color: $lightest-blue;}
+.c-light-blue {color: $light-blue;}
+.c-medium-blue {color: $medium-blue;}
+.c-dark-blue {color: $dark-blue;}
 
-.c-primary-blue {color: $primary-blue;}
-.c-primary-darker-blue {color: $primary-darker-blue;}
-.c-primary-darkest-blue {color: $primary-darkest-blue;}
-.c-primary-base {color: $primary-base;}
-.c-gray-dark {color: $gray-dark;}
-.c-gray-light {color: $gray-light;}
+.c-light-green {color: $light-green;}
+.c-medium-green {color: $medium-green;}
+.c-dark-green {color: $dark-green;}
+
 .c-white {color: $white;}
+.c-lightest-grey {color: $lightest-grey;}
+.c-light-grey {color: $light-grey;}
+.c-medium-grey {color: $medium-grey;}
+.c-dark-grey {color: $dark-grey;}
+.c-darkest-grey {color: $darkest-grey;}
 
-// Secondary Colors //
+.c-yellow {color: $yellow;}
+.c-orange {color: $orange;}
+.c-red {color: $red;}
 
-.c-primary-blue-alt {color: $primary-blue-alt;}
-.c-primary-blue-alt-darkest {color: $primary-blue-alt-darkest;}
-.c-primary-blue-alt-dark {color: $primary-blue-alt-dark;}
-.c-primary-blue-alt-light {color: $primary-blue-alt-light;}
-.c-primary-blue-alt-lightest {color: $primary-blue-alt-lightest;}
+.bg-lightest-blue {background-color: $lightest-blue;}
+.bg-light-blue {background-color: $light-blue;}
+.bg-medium-blue {background-color: $medium-blue;}
+.bg-dark-blue {background-color: $dark-blue;}
 
-.c-secondary-red {color: $secondary-red;}
-.c-secondary-red-darkest {color: $secondary-red-darkest;}
-.c-secondary-red-dark {color: $secondary-red-dark;}
-.c-secondary-red-light {color: $secondary-red-light;}
-.c-secondary-red-lightest {color: $secondary-red-lightest;}
+.bg-light-green {background-color: $light-green;}
+.bg-medium-green {background-color: $medium-green;}
+.bg-dark-green {background-color: $dark-green;}
 
-// Background Colors //
-
-.c-gray {color: $gray;}
-.c-gray-lighter {color: $gray-lighter;}
-.c-gray-lightest {color: $gray-lightest;}
-.c-gray-warm-dark {color: $gray-warm-dark;}
-.c-gray-warm-light {color: $gray-warm-light;}
-.c-gray-cool-light {color: $gray-cool-light;}
-
-// Tertiary Colors //
-
-.c-gold {color: $gold;}
-.c-gold-light {color: $gold-light;}
-.c-gold-lighter {color: $gold-lighter;}
-.c-gold-lightest {color: $gold-lightest;}
-
-.c-green {color: $green;}
-.c-green-light {color: $green-light;}
-.c-green-lighter {color: $green-lighter;}
-.c-green-lightest {color: $green-lightest;}
-
-.c-cool-blue-light {color: $cool-blue-light;}
-.c-cool-blue-lighter {color: $cool-blue-lighter;}
-
-// Special State Colors //
-
-.c-focus-color {color: $focus-color;}
-.c-visited-color {color: $visited-color;}
-
-/////////////////////////////////////////
-
-// - Colors Background Classes- //
-
-/////////////////////////////////////////
-
-// Primary Colors //
-
-.bg-primary-blue {background-color: $primary-blue;}
-.bg-primary-darker-blue {background-color: $primary-darker-blue;}
-.bg-primary-darkest-blue {background-color: $primary-darkest-blue;}
-.bg-primary-base {background-color: $primary-base;}
-.bg-gray-dark {background-color: $gray-dark;}
-.bg-gray-light {background-color: $gray-light;}
 .bg-white {background-color: $white;}
+.bg-lightest-grey {background-color: $lightest-grey;}
+.bg-light-grey {background-color: $light-grey;}
+.bg-medium-grey {background-color: $medium-grey;}
+.bg-dark-grey {background-color: $dark-grey;}
+.bg-darkest-grey {background-color: $darkest-grey;}
 
-// Secondary Colors //
+.bg-yellow {background-color: $yellow;}
+.bg-orange {background-color: $orange;}
+.bg-red {background-color: $red;}
 
-.bg-primary-blue-alt {background-color: $primary-blue-alt;}
-.bg-primary-blue-alt-darkest {background-color: $primary-blue-alt-darkest;}
-.bg-primary-blue-alt-dark {background-color: $primary-blue-alt-dark;}
-.bg-primary-blue-alt-light {background-color: $primary-blue-alt-light;}
-.bg-primary-blue-alt-lightest {background-color: $primary-blue-alt-lightest;}
 
-.bg-secondary-red {background-color: $secondary-red;}
-.bg-secondary-red-darkest {background-color: $secondary-red-darkest;}
-.bg-secondary-red-dark {background-color: $secondary-red-dark;}
-.bg-secondary-red-light {background-color: $secondary-red-light;}
-.bg-secondary-red-lightest {background-color: $secondary-red-lightest;}
+/////////////////////////////////////////
 
-// Background Colors //
+// - Need Refactoring - //
 
-.bg-gray {background-color: $gray;}
-.bg-gray-lighter {background-color: $gray-lighter;}
-.bg-gray-lightest {background-color: $gray-lightest;}
-.bg-gray-warm-dark {background-color: $gray-warm-dark;}
-.bg-gray-warm-light {background-color: $gray-warm-light;}
-.bg-gray-cool-light {background-color: $gray-cool-light;}
+/////////////////////////////////////////
 
-// Tertiary Colors //
-
-.bg-gold {background-color: $gold;}
-.bg-gold-light {background-color: $gold-light;}
-.bg-gold-lighter {background-color: $gold-lighter;}
-.bg-gold-lightest {background-color: $gold-lightest;}
-
-.bg-green {background-color: $green;}
-.bg-green-light {background-color: $green-light;}
-.bg-green-lighter {background-color: $green-lighter;}
-.bg-green-lightest {background-color: $green-lightest;}
-
-.bg-cool-blue-light {background-color: $cool-blue-light;}
-.bg-cool-blue-lighter {background-color: $cool-blue-lighter;}
-
-// Special State Colors //
-
-.bg-focus-color {background-color: $focus-color;}
-.bg-visited-color {background-color: $visited-color;}
+.c-gray {color: $darkest-grey;}

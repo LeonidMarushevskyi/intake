@@ -16,7 +16,7 @@ describe('ParticipantShowView', () => {
       gender: 'male',
       languages: ['English', 'Arabic'],
       date_of_birth: '11/16/1990',
-      ssn: '111223333',
+      ssn: '111-22-33__',
     })
     onEdit = jasmine.createSpy()
     component = shallow(<ParticipantShowView participant={participant} onEdit={onEdit}/>)
@@ -54,7 +54,7 @@ describe('ParticipantShowView', () => {
     expect(component.find('ShowField[label="Date of birth"]').html())
       .toContain('11/16/1990')
     expect(component.find('ShowField[label="Social security number"]').html())
-      .toContain('111223333')
+      .toContain('111-22-33  ')
   })
 
   it('calls the onEdit function when edit link is clicked', () => {
@@ -125,7 +125,7 @@ describe('ParticipantShowView with no name', () => {
       ssn: '111223333',
     })
     component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
-    expect(component.find('.card-header').html()).toContain('Unknown person')
+    expect(component.find('.card-header').html()).toContain('Unknown Person')
   })
 })
 

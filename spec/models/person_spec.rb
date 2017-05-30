@@ -58,14 +58,18 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
-          type: 'Placement'
+          type: 'Placement',
+          legacy_id: nil,
+          legacy_source_table: nil
         }, {
           id: '3',
           street_address: '711 capital mall',
           city: 'Sacramento',
           state: 'CA',
           zip: '95822',
-          type: 'Home'
+          type: 'Home',
+          legacy_id: nil,
+          legacy_source_table: nil
         }],
         phone_numbers: [{
           id: '1',

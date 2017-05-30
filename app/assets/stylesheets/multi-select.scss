@@ -2,7 +2,7 @@
 
 .Select--multi .Select-control {
   border: none;
-  border-bottom: .2rem solid $medium-grey;
+  border: .1rem solid $light-grey;
   border-radius: 0;
   height: auto;
   padding: .6rem .7em;
@@ -10,9 +10,9 @@
 
 .Select--multi .Select-value {
   background-color: $white;
-  border: .2rem solid $cool-blue-light;
+  border: .2rem solid $lightest-blue;
   border-radius: 40rem;
-  color: $cool-blue-light;
+  color: $lightest-blue;
   margin: .3rem;
   padding: .2rem 1rem;
 }
@@ -27,7 +27,7 @@
 
   &:hover {
     background: $white;
-    color: $cool-blue-light;
+    color: $lightest-blue;
   }
 }
 

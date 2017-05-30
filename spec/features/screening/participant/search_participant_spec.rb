@@ -22,7 +22,7 @@ feature 'searching a person' do
     end
     scenario 'I search for a person' do
       Feature.run_with_activated(:people_search_tpt) do
-        within '#search-card', text: 'SEARCH' do
+        within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
         end
 
@@ -42,7 +42,7 @@ feature 'searching a person' do
     end
     scenario 'I search for a person' do
       Feature.run_with_deactivated(:people_search_tpt) do
-        within '#search-card', text: 'SEARCH' do
+        within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
         end
         expect(
@@ -75,7 +75,7 @@ feature 'searching a participant in autocompleter' do
   end
   let(:person) do
     FactoryGirl.create(
-      :person,
+      :person_search,
       date_of_birth: date_of_birth.to_s(:db),
       first_name: 'Marge',
       middle_name: 'Jacqueline',
@@ -110,7 +110,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
@@ -143,7 +143,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marg'
       end
 
@@ -163,7 +163,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
@@ -194,7 +194,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person',
           with: person.ssn, select_option_with: 'Marge'
       end
@@ -223,7 +223,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: person.first_name
       end
 
@@ -247,7 +247,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: '2011'
       end
 
@@ -270,7 +270,7 @@ feature 'searching a participant in autocompleter' do
                       headers: { 'Content-Type' => 'application/json' })
       end
 
-      within '#search-card', text: 'SEARCH' do
+      within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: '566'
       end
 

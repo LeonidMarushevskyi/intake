@@ -42,7 +42,7 @@ feature 'Show Screening' do
 
     expect(page).to have_content 'Screening #My Bad!'
 
-    within '#screening-information-card.show', text: 'SCREENING INFORMATION' do
+    within '#screening-information-card.show', text: 'Screening Information' do
       expect(page).to have_content 'The Rocky Horror Picture Show'
       expect(page).to have_content 'Bob Loblaw'
       expect(page).to have_content '8/13/2016 10:00 AM'
@@ -50,11 +50,11 @@ feature 'Show Screening' do
       expect(page).to have_content 'Mail'
     end
 
-    within '#narrative-card.show', text: 'NARRATIVE' do
+    within '#narrative-card.show', text: 'Narrative' do
       expect(page).to have_content 'some narrative'
     end
 
-    within '#incident-information-card.show', text: 'INCIDENT INFORMATION' do
+    within '#incident-information-card.show', text: 'Incident Information' do
       expect(page).to have_content '8/11/2016'
       expect(page).to have_content 'Sacramento'
       expect(page).to have_content '123 fake st'
@@ -64,28 +64,28 @@ feature 'Show Screening' do
       expect(page).to have_content "Child's Home"
     end
 
-    within '#decision-card.show', text: 'DECISION' do
+    within '#decision-card.show', text: 'Decision' do
       expect(page).to have_content 'Screen out'
       expect(page).to have_content 'Category'
       expect(page).to have_content 'Consultation'
       expect(page).to have_content 'The reasoning for this decision'
     end
 
-    within '#allegations-card.show', text: 'ALLEGATIONS' do
+    within '#allegations-card.show', text: 'Allegations' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
       expect(page).to have_css('th', text: 'Allegation(s)')
     end
 
-    within '#worker-safety-card', text: 'WORKER SAFETY' do
-      expect(page).to have_css('i', class: 'fa-pencil')
+    within '#worker-safety-card', text: 'Worker Safety' do
+      expect(page).to have_content('Edit')
       expect(page).to have_content('Worker safety alerts')
       expect(page).to have_content('Additional safety information')
     end
 
-    expect(page).to have_css('#history-card.show', text: 'HISTORY')
+    expect(page).to have_css('#history-card.show', text: 'History')
 
-    within '#cross-report-card', text: 'CROSS REPORT' do
+    within '#cross-report-card', text: 'Cross Report' do
       expect(page).to have_content 'District attorney'
       expect(page).to have_content 'SCDA'
       expect(page).to have_content 'Licensing'

@@ -103,7 +103,7 @@ describe('RelationshipsCard', () => {
       })
 
       describe('when participant does not have a full name', () => {
-        it('shows unknown person if neither first nor last name', () => {
+        it('shows unknown Person if neither first nor last name', () => {
           const props = {
             ...requiredProps,
             relationships: Immutable.fromJS([
@@ -128,8 +128,8 @@ describe('RelationshipsCard', () => {
           component = shallow(<RelationshipsCard {...props} />)
           const relationship = component.find('div#relationships-card .card-body .row').text()
           const relationships = component.find('div#relationships-card .card-body .row .relationships').text()
-          expect(relationship).toContain('Unknown person is the..')
-          expect(relationships).toContain('Sister of Unknown person')
+          expect(relationship).toContain('Unknown Person is the..')
+          expect(relationships).toContain('Sister of Unknown Person')
         })
       })
     })
@@ -141,8 +141,8 @@ describe('RelationshipsCard', () => {
           relationships: Immutable.fromJS([
             {id: '1', first_name: 'Aubrey', last_name: 'Campbell', relationships: [
               {
-                first_name: 'Jake',
-                last_name: 'Campbell',
+                related_person_first_name: 'Jake',
+                related_person_last_name: 'Campbell',
                 relationship: 'Sister/Brother (Half)',
                 related_person_relationship: 'Brother',
                 indexed_person_relationship: 'Sister',
@@ -150,8 +150,8 @@ describe('RelationshipsCard', () => {
                 related_person_id: '7',
               },
               {
-                first_name: 'Joe',
-                last_name: 'Campbell',
+                related_person_first_name: 'Joe',
+                related_person_last_name: 'Campbell',
                 relationship: 'Niece/Uncle',
                 related_person_relationship: 'Uncle',
                 indexed_person_relationship: 'Niece',

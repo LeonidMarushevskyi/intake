@@ -5,23 +5,26 @@
 /////////////////////////////////////////
 
 .card {
+  background-color: $white;
+  color: $darkest-grey;
 
-  .c-gray {
-    color: $coal;
+  label {
+    color: $dark-grey;
+    margin-top: 3rem;
   }
 
   .card-header {
+    border-bottom: .1rem solid $lightest-grey;
     display: block;
     font-size: $large-font;
     overflow: hidden;
-    padding: $base-spacing / 1.5  $double-spacing;
+    padding: $base-spacing $double-spacing;
 
     span {
       float: left;
       font-weight: $normal-weight;
       margin: 0;
       padding: 0;
-      text-transform: uppercase;
     }
 
     a {
@@ -37,36 +40,27 @@
 
   .card-body {
     border-top: 0;
-    padding: 0 $double-spacing $base-spacing;
-
-    .btn {
-      margin-bottom: $base-spacing;
-      margin-top: $double-spacing;
-    }
+    padding: 0 $double-spacing $double-spacing;
 
     @media screen and (max-width: 767px) {
       .centered {
         margin-left: $base-spacing;
         margin-right: $base-spacing;
       }
+    }
 
-      .btn {
-        margin-bottom: 0;
-        margin-top: $base-spacing;
-      }
+    .btn {
+      margin-left: $half-spacing;
+      margin-top: $double-spacing;
+    }
+
+    .btn-block {
+      margin-left: 0;
+      margin-top: $double-spacing;
     }
   }
 
   &.edit {
-    background-color: $white;
-    border-left: .5rem solid $light-blue;
-  }
-
-  &.show {
-    border-left: .5rem solid $medium-grey;
-
-    .card-header {
-      border-bottom: .2rem solid $dark-sand;
-    }
+    border-left: .7rem solid $medium-blue;
   }
 }
