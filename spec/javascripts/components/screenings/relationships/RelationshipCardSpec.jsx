@@ -147,7 +147,7 @@ describe('RelationshipsCard', () => {
                 related_person_relationship: 'Brother',
                 indexed_person_relationship: 'Sister',
                 relationship_context: 'Half',
-                related_person_id: '7',
+                related_person_legacy_id: '7',
               },
               {
                 related_person_first_name: 'Joe',
@@ -155,7 +155,7 @@ describe('RelationshipsCard', () => {
                 relationship: 'Niece/Uncle',
                 related_person_relationship: 'Uncle',
                 indexed_person_relationship: 'Niece',
-                related_person_id: '20',
+                related_person_legacy_id: '20',
               },
             ]},
           ]),
@@ -164,8 +164,8 @@ describe('RelationshipsCard', () => {
       })
       it('shows the participant name the relationship', () => {
         const relationship = component.find('div#relationships-card .card-body .row').text()
-        const jakeRelationship = component.find('div#relationships-card .card-body .row .relationships li#7').text()
-        const joeRelationship = component.find('div#relationships-card .card-body .row .relationships li#20').text()
+        const jakeRelationship = component.find('li#participant-1-relationship-7').text()
+        const joeRelationship = component.find('li#participant-1-relationship-20').text()
         expect(relationship).toContain('Aubrey Campbell is the..')
         expect(jakeRelationship).toContain('Sister of Jake Campbell')
         expect(joeRelationship).toContain('Niece of Joe Campbell')
@@ -196,7 +196,7 @@ describe('RelationshipsCard', () => {
                   relationship: 'Brother/Brother',
                   related_person_relationship: 'Brother',
                   indexed_person_relationship: 'Brother',
-                  related_person_id: '7',
+                  related_person_legacy_id: '7',
                 },
               ],
             },
@@ -211,7 +211,7 @@ describe('RelationshipsCard', () => {
                   relationship: 'Nephew/Uncle',
                   related_person_relationship: 'Uncle',
                   indexed_person_relationship: 'Nephew',
-                  related_person_id: '7',
+                  related_person_legacy_id: '7',
                 },
               ],
             },
@@ -222,10 +222,10 @@ describe('RelationshipsCard', () => {
         expect(relationRows.at(0).text()).toEqual('Aubrey Campbell has no known relationships')
 
         expect(relationRows.at(1).text()).toContain('Jake Jones is the...')
-        expect(relationRows.at(1).find('li#7').text()).toContain('Brother of Joe Simpson')
+        expect(relationRows.at(1).find('li#participant-6-relationship-7').text()).toContain('Brother of Joe Simpson')
 
         expect(relationRows.at(2).text()).toContain('Sam Campbell is the...')
-        expect(relationRows.at(2).find('li#7').text()).toContain('Nephew of Joe Simpson')
+        expect(relationRows.at(2).find('li#participant-20-relationship-7').text()).toContain('Nephew of Joe Simpson')
       })
     })
   })

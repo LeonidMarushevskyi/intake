@@ -58,11 +58,21 @@ feature 'Relationship card' do
           first_name: participant.first_name,
           last_name: participant.last_name,
           relationships: [{
-            related_person_id: '7',
+            related_person_id: nil,
+            related_person_legacy_id: '789',
             related_person_first_name: 'Jake',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Brother (Half)',
             related_person_relationship: 'Brother',
+            indexed_person_relationship: 'Sister',
+            relationship_context: 'Half'
+          }, {
+            related_person_id: nil,
+            related_person_legacy_id: '156',
+            related_person_first_name: 'Jane',
+            related_person_last_name: 'Campbell',
+            relationship: 'Sister/Sister (Half)',
+            related_person_relationship: 'Sister',
             indexed_person_relationship: 'Sister',
             relationship_context: 'Half'
           }]
@@ -105,6 +115,7 @@ feature 'Relationship card' do
           "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
         )
         expect(page).to have_content('Sister of Jake Campbell')
+        expect(page).to have_content('Sister of Jane Campbell')
       end
 
       expect(
@@ -124,6 +135,7 @@ feature 'Relationship card' do
             "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
           )
           expect(page).to have_content('Sister of Jake Campbell')
+          expect(page).to have_content('Sister of Jane Campbell')
         end
 
         expect(
