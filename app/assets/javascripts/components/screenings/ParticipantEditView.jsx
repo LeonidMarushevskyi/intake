@@ -139,10 +139,12 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
         <div className='row'>
           <InputField
             gridClassName='col-md-6'
-            id='ssn'
+            id={`participant-${participant.get('id')}-ssn`}
             label='Social security number'
             mask='111-11-1111'
             placeholder=''
+            blurPlaceholder=''
+            focusPlaceholder='___-__-____'
             value={participant.get('ssn') || ''}
             onChange={(event) => onChange(['ssn'], event.target.value || null)}
           />

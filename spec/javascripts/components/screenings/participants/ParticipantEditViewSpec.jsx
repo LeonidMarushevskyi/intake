@@ -135,7 +135,7 @@ describe('ParticipantEditView', () => {
     })
 
     it('fires the onChange call when a field changes', () => {
-      component.find('#ssn').simulate('change', {target: {value: '123-756-075'}})
+      component.find('#participant-199-ssn').simulate('change', {target: {value: '123-756-075'}})
       expect(onChange).toHaveBeenCalledWith(['ssn'], '123-756-075')
     })
 
@@ -151,7 +151,7 @@ describe('ParticipantEditView', () => {
 
     it('when the user edits and hits cancel', () => {
       const cancelButton = component.find('button[children="Cancel"]')
-      component.find('#ssn').simulate('change', {target: {value: '123-756-075'}})
+      component.find('#participant-199-ssn').simulate('change', {target: {value: '123-756-075'}})
       cancelButton.simulate('click')
       expect(onCancel).toHaveBeenCalled()
       expect(component.find('InputField[label="Social security number"]').props().value)
@@ -352,7 +352,8 @@ describe('ParticipantEditView', () => {
       })
       component = shallow(<ParticipantEditView participant={participant} />)
 
-      expect(component.find('InputField[label="Social security number"]').props().mask).toEqual('111-11-1111')
+      expect(component.find('InputField[label="Social security number"]').props().mask)
+        .toEqual('111-11-1111')
     })
   })
 })
