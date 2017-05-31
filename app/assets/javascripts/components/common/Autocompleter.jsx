@@ -78,6 +78,15 @@ export default class Autocompleter extends React.Component {
         return suggestion[fieldName]
       }
     }
+    var maskSSN = (suggestion) => {
+      const ssn = suggestion.ssn
+      const maxLength = 4
+      if (ssn && ssn.length > maxLength) {
+        return {ssn: `${ssn.substring(ssn.length - maxLength, ssn.length)}`}
+      } else {
+        return suggestion
+      }
+    }
     return {
       firstName: highlightedText('first_name', suggestion, highlight),
       lastName: highlightedText('last_name', suggestion, highlight),
@@ -88,7 +97,7 @@ export default class Autocompleter extends React.Component {
       races: races,
       ethnicity: ethnicity,
       dateOfBirth: highlightedText('date_of_birth', suggestion, highlight),
-      ssn: highlightedText('ssn', suggestion, highlight),
+      ssn: highlightedText('ssn', maskSSN(suggestion), highlight),
       address: address && {
         city: address.city,
         state: address.state,
