@@ -156,7 +156,7 @@ describe('HistoryCard', () => {
     it('renders the referral county', () => {
       const involvements = Immutable.fromJS({
         referrals: [{
-          county_name: 'el_dorado',
+          county_name: 'El Dorado',
         }],
       })
       const props = {
@@ -263,7 +263,7 @@ describe('HistoryCard', () => {
                 victim_last_name: 'v1LastName',
               }, {
                 allegation_description: 'Severe Neglect',
-                disposition_description: 'Substantiated',
+                disposition_description: null,
                 perpetrator_first_name: 'Perpetrator2',
                 perpetrator_last_name: 'p2LastName',
                 victim_first_name: 'Victim2',
@@ -288,7 +288,7 @@ describe('HistoryCard', () => {
       const secondRowCells = tableRows.at(1).find('td')
       expect(secondRowCells.at(0).text()).toContain('Victim2 v2LastName')
       expect(secondRowCells.at(1).text()).toContain('Perpetrator2 p2LastName')
-      expect(secondRowCells.at(2).text()).toContain('Severe Neglect (Substantiated)')
+      expect(secondRowCells.at(2).text()).toContain('Severe Neglect (Pending decision)')
     })
   })
 
