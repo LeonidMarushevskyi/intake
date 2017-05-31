@@ -35,7 +35,7 @@ export default class HistoryCard extends React.Component {
             <div className='row'>Referral</div>
             <div className='row'>{`(${status})`}</div>
           </td>
-          <td>{COUNTIES[incidentCounty]}</td>
+          <td>{incidentCounty}</td>
           <td>
             <div className='row'>
               <div className='table-responsive'>
@@ -53,13 +53,16 @@ export default class HistoryCard extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    { allegations && allegations.map((allegation) => (
-                      <tr>
-                        <td>{allegation ? nameFormatter(allegation, {name_type: 'victim', name_default: ''}) : ''}</td>
-                        <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
-                        <td>{`${allegation.get('allegation_description')} (${allegation.get('disposition_description')})`}</td>
-                      </tr>
-                    ))}
+                    { allegations && allegations.map((allegation) => {
+                      const disposition = allegation.get('disposition_description') || 'Pending decision'
+                      return (
+                        <tr>
+                          <td>{allegation ? nameFormatter(allegation, {name_type: 'victim', name_default: ''}) : ''}</td>
+                          <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
+                          <td>{`${allegation.get('allegation_description')} (${disposition})`}</td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>

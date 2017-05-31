@@ -57,7 +57,7 @@ feature 'History card' do
         {
           start_date: '2016-11-14',
           end_date: '2016-12-14',
-          county_name: 'madera',
+          county_name: 'Madera',
           reporter: {
             first_name: 'Reporter',
             last_name: 'rLastName'
