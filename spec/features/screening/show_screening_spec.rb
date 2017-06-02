@@ -90,13 +90,13 @@ feature 'Show Screening' do
       expect(page).to have_content 'SCDA'
       expect(page).to have_content 'Licensing'
       click_link 'Edit cross report'
-      expect(page).to have_field('District_attorney-agency-name', with: 'SCDA')
+      expect(page).to have_field('District attorney agency name', with: 'SCDA')
 
-      da_input = find_field('District_attorney-agency-name')
+      da_input = find_field('District attorney agency name')
       10.times do
         da_input.send_keys [:backspace]
       end
-      expect(page).to have_field('District_attorney-agency-name', with: '')
+      expect(page).to have_field('District attorney agency name', with: '')
     end
 
     expect(page).to have_link('Home', href: root_path)
