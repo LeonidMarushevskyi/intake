@@ -1,9 +1,11 @@
 import CheckboxField from 'components/common/CheckboxField'
-import CROSS_REPORT from 'CrossReport'
-import InputField from 'components/common/InputField'
+import DateField from 'components/common/DateField'
 import Immutable from 'immutable'
+import InputField from 'components/common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
+import SelectField from 'components/common/SelectField'
+import {AGENCY_TYPES, COMMUNICATION_METHODS} from 'CrossReport'
 
 export default class CrossReportEditView extends React.Component {
   constructor(props) {
@@ -15,7 +17,7 @@ export default class CrossReportEditView extends React.Component {
   }
 
   crossReportData() {
-    return CROSS_REPORT.map((agencyType) => {
+    return AGENCY_TYPES.map((agencyType) => {
       const persistedInfo = this.persistedInfo(agencyType)
       return {
         agencyType: agencyType,
@@ -76,9 +78,10 @@ export default class CrossReportEditView extends React.Component {
                             placeholder='Agency Name'
                             value={agencyName || ''}
                           />
-                          }
-                        </div>
-                      </li>)
+                      }
+                    </div>
+                  </li>
+                )
               })
             }
           </ul>
@@ -90,6 +93,7 @@ export default class CrossReportEditView extends React.Component {
     const crossReportData = this.crossReportData()
     const startIndex = 0
     const halfIndex = 2
+    const hasCrossReport = !this.props.crossReport.isEmpty()
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -97,20 +101,41 @@ export default class CrossReportEditView extends React.Component {
         </div>
         <div className='card-body no-pad-top'>
           <div className='row col-md-12'>
-            <label>Cross reported to</label>
+            <label>This report has cross reported to:</label>
           </div>
           <div className='row gap-top'>
             {this.renderCrossReport(crossReportData.slice(startIndex, halfIndex))}
             {this.renderCrossReport(crossReportData.slice(halfIndex))}
           </div>
-            <div className='row'>
-              <div className='centered'>
-                <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
-                <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
-              </div>
+          <div className='row gap-top'>
+            {
+              hasCrossReport &&
+                <fieldset className='fieldset-inputs'>
+                  <legend>Communication Time and Method</legend>
+                  <DateField
+                    gridClassName='col-md-6'
+                    id='cross_report_reported_on'
+                    label='Cross Reported on Date'
+                  />
+                  <SelectField
+                    gridClassName='col-md-6'
+                    id='cross_report_communication_method'
+                    label='Communication Method'
+                  >
+                    <option key='' value='' />
+                    {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}
+                  </SelectField>
+                </fieldset>
+            }
+          </div>
+          <div className='row'>
+            <div className='centered'>
+              <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
+              <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
             </div>
           </div>
         </div>
+      </div>
     )
   }
 }

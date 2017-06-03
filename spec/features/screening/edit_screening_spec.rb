@@ -102,7 +102,7 @@ feature 'Edit Screening' do
     end
 
     within '#cross-report-card.edit', text: 'Cross Report' do
-      expect(page).to have_content('Cross reported to')
+      expect(page).to have_content('This report has cross reported to:')
       expect(page.find('input[value="District attorney"]')).to be_checked
       expect(page).to have_field('District attorney agency name', with: 'SCDA Office')
       expect(page.find('input[value="Law enforcement"]')).to be_checked

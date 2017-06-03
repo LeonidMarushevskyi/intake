@@ -1,8 +1,13 @@
-const CROSS_REPORT = Object.freeze([
+export const AGENCY_TYPES = Object.freeze([
   'District attorney',
   'Law enforcement',
   'Department of justice',
   'Licensing',
 ])
 
-export default CROSS_REPORT
+export const COMMUNICATION_METHODS = Object.freeze([
+  'Child Abuse Form',
+  'Electronic Report',
+  'Suspected Child Abuse Report',
+  'Telephone Report',
+])

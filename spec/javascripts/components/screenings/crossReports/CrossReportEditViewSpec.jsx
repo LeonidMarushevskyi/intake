@@ -23,7 +23,7 @@ describe('CrossReportEditView', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
   })
   it('renders the display label', () => {
-    expect(component.find('.card-body').text()).toContain('Cross reported to')
+    expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
 
   it('renders the checkboxes', () => {
@@ -40,6 +40,54 @@ describe('CrossReportEditView', () => {
   it('renders the save and cancel buttons', () => {
     expect(component.find('.btn.btn-primary').text()).toEqual('Save')
     expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
+  })
+
+  describe('when an agency is selected', () => {
+    beforeEach(() => {
+      props = {
+        crossReports: Immutable.fromJS([{agency_type: 'Department of justice'}]),
+        onChange: () => null,
+        onSave: () => null,
+        onCancel: () => null,
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+
+    it('renders the Communication Time and Method legend', () => {
+      expect(component.find('legend').text()).toContain('Communication Time and Method')
+    })
+
+    it('renders Reported on date field', () => {
+      expect(component.find('DateField').length).toEqual(1)
+    })
+
+    it('renders Communication method select field', () => {
+      expect(component.find('SelectField').length).toEqual(1)
+    })
+  })
+
+  describe('when no agency is selected', () => {
+    beforeEach(() => {
+      props = {
+        crossReports: Immutable.fromJS([]),
+        onChange: () => null,
+        onSave: () => null,
+        onCancel: () => null,
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+
+    it("doesn't render the Communication Time and Method legend", () => {
+      expect(component.text()).not.toContain('Communication Time and Method')
+    })
+
+    it("doesn't render Reported on date field", () => {
+      expect(component.find('DateField').length).toEqual(0)
+    })
+
+    it("doesn't render Communication method select field", () => {
+      expect(component.find('Select').length).toEqual(0)
+    })
   })
 
   it('preselect cross report details passed to props', () => {
