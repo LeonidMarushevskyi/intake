@@ -22,8 +22,8 @@ export default class CrossReportShowView extends React.Component {
               {crossReports &&
                 <ul className='unstyled-list'>{
                     crossReports.map(({agency_type, agency_name}, index) => {
-                      const agencyName = (agency_name && ` - ${agency_name}`) || ''
-                      return (<li key={`CR-${index}`}>{`${agency_type}${agencyName}`}</li>)
+                      const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
+                      return (<li key={index}>{agencyTypeAndName}</li>)
                     })
                   }
                 </ul>
