@@ -22,6 +22,7 @@ describe('CrossReportEditView', () => {
   it('renders the card title', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
   })
+
   it('renders the display label', () => {
     expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
@@ -46,8 +47,8 @@ describe('CrossReportEditView', () => {
     beforeEach(() => {
       props = {
         crossReports: Immutable.fromJS([
-          {agency_type: 'Department of justice'},
-          {agency_type: 'Law enforcement'},
+          {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+          {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
         ]),
         onChange: jasmine.createSpy(),
         onSave: () => null,
@@ -60,29 +61,63 @@ describe('CrossReportEditView', () => {
       expect(component.find('legend').text()).toContain('Communication Time and Method')
     })
 
-    it('renders Reported on date field', () => {
+    it('renders Reported on date field with the first cross reports reported on value', () => {
       expect(component.find('DateField').length).toEqual(1)
+      expect(component.find('DateField').props().value).toEqual('2011-02-13')
     })
 
-    it('renders Communication method select field', () => {
+    it('renders Communication method select field with the first cross reports reported on value', () => {
       expect(component.find('SelectField').length).toEqual(1)
+      expect(component.find('SelectField').props().value).toEqual('Child Abuse Form')
     })
 
-    it('updates all cross reports reported on when Reported on is changed', () => {
+    it("updates cross reports 'reported on' when 'reported on' is changed", () => {
       const reportedOnField = component.find('DateField')
-      reportedOnField.simulate('change', {target: {value: '1999/01/01'}})
+      const newReportedOn = '1999/01/01'
+      reportedOnField.simulate('change', {target: {value: newReportedOn}})
       expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'Department of justice', reported_on: '1999/01/01'},
-        {agency_type: 'Law enforcement', reported_on: '1999/01/01'},
+        {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
+        {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
       ])
     })
 
-    it('updates all cross reports communication method when communication method is changed', () => {
+    it("updates cross reports 'communication method' when 'communication method' is changed", () => {
       const communicationMethodField = component.find('SelectField')
-      communicationMethodField.simulate('change', {target: {value: 'Child Abuse Form'}})
+      const newCommunicationMethod = 'Electronic Report'
+      communicationMethodField.simulate('change', {target: {value: newCommunicationMethod}})
       expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'Department of justice', communication_method: 'Child Abuse Form'},
-        {agency_type: 'Law enforcement', communication_method: 'Child Abuse Form'},
+        {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+      ])
+    })
+
+    it('adds new cross report agency when a new agency is checked', () => {
+      const checkbox = component.find('CheckboxField[value="District attorney"]')
+      checkbox.simulate('change', {target: {checked: true}})
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+        {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+        {agency_type: 'District attorney', agency_name: null, reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+      ])
+    })
+
+    it('removes cross reports agency when an agency is unchecked', () => {
+      const uncheck = component.find('CheckboxField[value="Department of justice"]')
+      uncheck.simulate('change', {target: {checked: false}})
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+      ])
+    })
+
+    it('changes existing cross reports agency name when agency name is changed', () => {
+      const input = component.find('InputField[label="Department of justice agency name"]')
+      input.simulate('change', {target: {value: 'DoJ Office'}})
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+        {agency_type: 'Department of justice', agency_name: 'DoJ Office', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
+        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
       ])
     })
   })
@@ -127,27 +162,5 @@ describe('CrossReportEditView', () => {
   it('calls onCancel', () => {
     component.find('.btn.btn-default').simulate('click')
     expect(props.onCancel).toHaveBeenCalled()
-  })
-
-  describe('checkboxes', () => {
-    it('when checked and calls onChange with new agency', () => {
-      const checkbox = component.find('CheckboxField[value="Law enforcement"]')
-      checkbox.simulate('change', {target: {checked: true}})
-      expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'District attorney', agency_name: 'SCDA Office'},
-        {agency_type: 'Department of justice'},
-        {agency_type: 'Law enforcement'},
-      ])
-    })
-
-    it('when unchecked calls onChange', () => {
-      const uncheck = component.find('CheckboxField[value="District attorney"]')
-      uncheck.simulate('change', {target: {checked: false}})
-      expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'Department of justice'},
-      ])
-    })
   })
 })

@@ -44,6 +44,14 @@ describe('CrossReportShowView', () => {
       expect(component.html()).toContain('District of attorney - SCDA')
       expect(component.html()).toContain('Licensing')
     })
+
+    it('renders the reported on field', () => {
+      expect(component.find('ShowField[label="Cross Reported on Date"]').html()).toContain('1/15/2017')
+    })
+
+    it('renders the communication method field', () => {
+      expect(component.find('ShowField[label="Communication Method"]').html()).toContain('Electronic Report')
+    })
   })
 
   describe('when cross reports are not present', () => {
@@ -56,6 +64,18 @@ describe('CrossReportShowView', () => {
     it("doesn't render the cross report agencies", () => {
       expect(component.html()).not.toContain('District of attorney')
       expect(component.html()).not.toContain('Licensing')
+    })
+
+    it("doesn't render the reported on field", () => {
+      expect(component.find('ShowField[label="Cross Reported on Date"]').html()).toEqual(
+        '<div class="col-md-6"><label>Cross Reported on Date</label><div class="c-gray"></div></div>'
+      )
+    })
+
+    it("doesn't render the communication method field", () => {
+      expect(component.find('ShowField[label="Communication Method"]').html()).toEqual(
+        '<div class="col-md-6"><label>Communication Method</label><div class="c-gray"></div></div>'
+      )
     })
   })
 })

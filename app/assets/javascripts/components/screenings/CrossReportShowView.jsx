@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
+import moment from 'moment'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -10,6 +11,13 @@ export default class CrossReportShowView extends React.Component {
 
   render() {
     const crossReports = this.props.crossReports.toJS()
+    let reportedOn
+    let communicationMethod
+    const [firstCrossReport] = crossReports
+    if (firstCrossReport) {
+      reportedOn = moment(firstCrossReport.reported_on).format('MM/DD/YYYY')
+      communicationMethod = firstCrossReport.communication_method
+    }
     return (
       <div className='card show double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -29,6 +37,10 @@ export default class CrossReportShowView extends React.Component {
                 </ul>
               }
             </ShowField>
+          </div>
+          <div className='row'>
+            <ShowField gridClassName='col-md-6' label='Cross Reported on Date'>{reportedOn}</ShowField>
+            <ShowField gridClassName='col-md-6' label='Communication Method'>{communicationMethod}</ShowField>
           </div>
         </div>
       </div>

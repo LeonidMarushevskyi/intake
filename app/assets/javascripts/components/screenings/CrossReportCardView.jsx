@@ -13,7 +13,6 @@ export default class CrossReportCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-
     this.fields = Immutable.fromJS(['cross_reports'])
   }
 

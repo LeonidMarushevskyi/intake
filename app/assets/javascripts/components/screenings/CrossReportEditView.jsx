@@ -29,9 +29,16 @@ export default class CrossReportEditView extends React.Component {
 
   changeAgencyType(selectedType, isChecked) {
     const {crossReports} = this.props
+    const [firstCrossReport] = crossReports.toJS()
+    const otherAttributes = {
+      reported_on: firstCrossReport && firstCrossReport.reported_on,
+      communication_method: firstCrossReport && firstCrossReport.communication_method
+    }
     let newReport
     if (isChecked) {
-      newReport = crossReports.push(Immutable.Map({agency_type: selectedType}))
+      newReport = crossReports.push(
+        Immutable.Map(Object.assign(otherAttributes, {agency_type: selectedType, agency_name: null}))
+      )
     } else {
       newReport = crossReports.filterNot((item) => item.get('agency_type') === selectedType)
     }
@@ -40,13 +47,8 @@ export default class CrossReportEditView extends React.Component {
 
   changeAgencyName(selectedType, value) {
     const {crossReports} = this.props
-    let newReport
     const index = crossReports.toJS().findIndex((item) => item.agency_type === selectedType)
-    if (value) {
-      newReport = crossReports.set(index, Immutable.Map({agency_type: selectedType, agency_name: value}))
-    } else {
-      newReport = crossReports.set(index, Immutable.Map({agency_type: selectedType}))
-    }
+    const newReport = crossReports.setIn([index, 'agency_name'], value || null)
     this.props.onChange(['cross_reports'], newReport)
   }
 
@@ -90,10 +92,17 @@ export default class CrossReportEditView extends React.Component {
   }
 
   render() {
-    const crossReportData = this.crossReportData()
     const startIndex = 0
     const halfIndex = 2
     const hasCrossReport = !this.props.crossReports.isEmpty()
+    let reportedOn
+    let communicationMethod
+    if (hasCrossReport) {
+      const [firstCrossReport] = this.props.crossReports.toJS()
+      reportedOn = firstCrossReport.reported_on
+      communicationMethod = firstCrossReport.communication_method
+    }
+    const crossReportData = this.crossReportData()
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -104,8 +113,8 @@ export default class CrossReportEditView extends React.Component {
             <label>This report has cross reported to:</label>
           </div>
           <div className='row gap-top'>
-            {this.renderCrossReport(crossReportData.slice(startIndex, halfIndex))}
-            {this.renderCrossReport(crossReportData.slice(halfIndex))}
+            { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
+            { this.renderCrossReport(crossReportData.slice(halfIndex)) }
           </div>
           <div className='row gap-top'>
             {
@@ -121,6 +130,7 @@ export default class CrossReportEditView extends React.Component {
                         .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
                     }}
+                    value={reportedOn}
                   />
                   <SelectField
                     gridClassName='col-md-6'
@@ -131,6 +141,7 @@ export default class CrossReportEditView extends React.Component {
                         .map((crossReport) => crossReport.merge({communication_method: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
                     }}
+                    value={communicationMethod}
                   >
                     <option key='' value='' />
                     {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}
