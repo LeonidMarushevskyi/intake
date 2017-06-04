@@ -35,16 +35,15 @@ describe('CrossReportShowView', () => {
       {agency_type: 'Licensing'},
     ])
     const component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
-    expect(component.find('ShowField[label="Cross reported to"]').html())
-      .toContain('District of attorney - SCDA')
-    expect(component.find('ShowField[label="Cross reported to"]').html())
-      .toContain('Licensing')
+    expect(component.find('ShowField[label="This report has cross reported to:"]').length).toEqual(1)
+    expect(component.html()).toContain('District of attorney - SCDA')
+    expect(component.html()).toContain('Licensing')
   })
 
   it('does not renders when the cross report is empty ', () => {
     const crossReports = Immutable.List([])
     const component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
-    expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('District of attorney')
-    expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('Licensing')
+    expect(component.html()).not.toContain('District of attorney')
+    expect(component.html()).not.toContain('Licensing')
   })
 })

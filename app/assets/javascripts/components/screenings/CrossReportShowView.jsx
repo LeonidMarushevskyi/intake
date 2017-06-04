@@ -18,9 +18,9 @@ export default class CrossReportShowView extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <ShowField gridClassName='col-md-12' label='Cross reported to'>
+            <ShowField gridClassName='col-md-12' label='This report has cross reported to:'>
               {crossReports &&
-                <ul>{
+                <ul className='unstyled-list'>{
                     crossReports.map(({agency_type, agency_name}, index) => {
                       const agencyName = (agency_name && ` - ${agency_name}`) || ''
                       return (<li key={`CR-${index}`}>{`${agency_type}${agencyName}`}</li>)
