@@ -93,7 +93,7 @@ export default class CrossReportEditView extends React.Component {
     const crossReportData = this.crossReportData()
     const startIndex = 0
     const halfIndex = 2
-    const hasCrossReport = !this.props.crossReport.isEmpty()
+    const hasCrossReport = !this.props.crossReports.isEmpty()
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -116,11 +116,21 @@ export default class CrossReportEditView extends React.Component {
                     gridClassName='col-md-6'
                     id='cross_report_reported_on'
                     label='Cross Reported on Date'
+                    onChange={(event) => {
+                      const updatedCrossReports = this.props.crossReports
+                        .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
+                      this.props.onChange(['cross_reports'], updatedCrossReports)
+                    }}
                   />
                   <SelectField
                     gridClassName='col-md-6'
                     id='cross_report_communication_method'
                     label='Communication Method'
+                    onChange={(event) => {
+                      const updatedCrossReports = this.props.crossReports
+                        .map((crossReport) => crossReport.merge({communication_method: event.target.value}))
+                      this.props.onChange(['cross_reports'], updatedCrossReports)
+                    }}
                   >
                     <option key='' value='' />
                     {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}

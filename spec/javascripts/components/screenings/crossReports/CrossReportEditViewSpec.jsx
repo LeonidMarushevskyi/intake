@@ -45,8 +45,11 @@ describe('CrossReportEditView', () => {
   describe('when an agency is selected', () => {
     beforeEach(() => {
       props = {
-        crossReports: Immutable.fromJS([{agency_type: 'Department of justice'}]),
-        onChange: () => null,
+        crossReports: Immutable.fromJS([
+          {agency_type: 'Department of justice'},
+          {agency_type: 'Law enforcement'},
+        ]),
+        onChange: jasmine.createSpy(),
         onSave: () => null,
         onCancel: () => null,
       }
@@ -63,6 +66,24 @@ describe('CrossReportEditView', () => {
 
     it('renders Communication method select field', () => {
       expect(component.find('SelectField').length).toEqual(1)
+    })
+
+    it('updates all cross reports reported on when Reported on is changed', () => {
+      const reportedOnField = component.find('DateField')
+      reportedOnField.simulate('change', {target: {value: '1999/01/01'}})
+      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+        {agency_type: 'Department of justice', reported_on: '1999/01/01'},
+        {agency_type: 'Law enforcement', reported_on: '1999/01/01'},
+      ])
+    })
+
+    it('updates all cross reports communication method when communication method is changed', () => {
+      const communicationMethodField = component.find('SelectField')
+      communicationMethodField.simulate('change', {target: {value: 'Child Abuse Form'}})
+      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+        {agency_type: 'Department of justice', communication_method: 'Child Abuse Form'},
+        {agency_type: 'Law enforcement', communication_method: 'Child Abuse Form'},
+      ])
     })
   })
 

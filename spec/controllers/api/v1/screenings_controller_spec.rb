@@ -54,11 +54,15 @@ describe Api::V1::ScreeningsController do
         cross_reports: [
           {
             agency_type: 'Department of justice',
-            agency_name: 'SCD office'
+            agency_name: 'SCD office',
+            reported_on: '1990-01-15',
+            communication_method: 'Child Abuse Form'
           },
           {
             agency_type: 'Licensing',
-            agency_name: 'SCD office'
+            agency_name: 'SCD office',
+            reported_on: '1990-01-15',
+            communication_method: 'Child Abuse Form'
           }
         ],
         address: {
