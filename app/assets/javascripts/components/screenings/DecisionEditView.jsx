@@ -30,6 +30,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
             gridClassName='col-md-6'
             id='screening_decision'
             label= 'Screening Decision'
+            required
             value={screening.get('screening_decision')}
             onChange={(event) => onChangeDecision(event)}
           >

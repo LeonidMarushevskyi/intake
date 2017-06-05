@@ -55,6 +55,7 @@ feature 'Show Screening' do
 
     within '#narrative-card.show', text: 'Narrative' do
       expect(page).to have_content 'some narrative'
+      expect(page.find('label', text: 'Report Narrative')[:class]).to include('required')
     end
 
     within '#incident-information-card.show', text: 'Incident Information' do
@@ -68,6 +69,7 @@ feature 'Show Screening' do
     end
 
     within '#decision-card.show', text: 'Decision' do
+      expect(page.find('label', text: 'Screening Decision')[:class]).to include('required')
       expect(page).to have_content 'Screen out'
       expect(page).to have_content 'Category'
       expect(page).to have_content 'Consultation'

@@ -11,7 +11,7 @@ const NarrativeShowView = ({narrative, onEdit}) => (
     </div>
     <div className='card-body'>
       <div className='row'>
-        <ShowField gridClassName='col-md-12' label='Report Narrative'>
+        <ShowField gridClassName='col-md-12' label='Report Narrative' labelClassName='required'>
           {narrative}
         </ShowField>
       </div>

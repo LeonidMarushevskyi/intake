@@ -9,11 +9,11 @@ const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => (
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-12'>
-          <label htmlFor='report_narrative'>Report Narrative</label>
+          <label htmlFor='report_narrative' className='required'>Report Narrative</label>
           <textarea
             id='report_narrative'
             onChange={(event) => onChange(['report_narrative'], event.target.value || null)}
-            value={narrative || ''}
+            required value={narrative || ''}
           />
         </div>
       </div>

@@ -90,6 +90,11 @@ describe('DecisionEditView', () => {
     expect(component.find('.card-header').text()).toEqual('Decision')
   })
 
+  it('renders the report narrative label as required', () => {
+    expect(component.find('SelectField[label="Screening Decision"]').props().required)
+      .toEqual(true)
+  })
+
   it('renders the input fields', () => {
     expect(component.find('SelectField[label="Screening Decision"]').props().value)
       .toEqual('differential_response')

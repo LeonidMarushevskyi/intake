@@ -26,6 +26,11 @@ describe('NarrativeEditView', () => {
     expect(component.find('#narrative-card .card-header').text()).toEqual('Narrative')
   })
 
+  it('renders the report narrative label as required', () => {
+    expect(component.find('textarea').props().required)
+        .toEqual(true)
+  })
+
   it('renders the report narrative textarea', () => {
     expect(component.find('textarea').props().value).toEqual('some narrative')
   })

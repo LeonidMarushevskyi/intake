@@ -65,6 +65,7 @@ feature 'Edit Screening' do
 
     within '#narrative-card.edit', text: 'Narrative' do
       expect(page).to have_field('Report Narrative', with: 'Narrative 123 test')
+      expect(page.find('label', text: 'Report Narrative')[:class]).to include('required')
     end
 
     within '#incident-information-card.edit', text: 'Incident Information' do
@@ -97,6 +98,7 @@ feature 'Edit Screening' do
     expect(page).to have_css('#history-card.show', text: 'History')
 
     within '#decision-card.edit', text: 'Decision ' do
+      expect(page.find('label', text: 'Screening Decision')[:class]).to include('required')
       expect(page).to have_field('Screening Decision', with: 'screen_out')
       expect(page).to have_select('Category', selected: 'Information request')
       expect(page).to have_field('Additional information', with: 'This is why I decided what I did')

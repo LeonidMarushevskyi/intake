@@ -20,6 +20,11 @@ describe('NarrativeShowView', () => {
     expect(component.find('.card-header').text()).toContain('Narrative')
   })
 
+  it('renders the report narrative label as required', () => {
+    expect(component.find('ShowField[label="Report Narrative"]').props().labelClassName)
+      .toEqual('required')
+  })
+
   it('renders the edit link', () => {
     expect(component.find('EditLink').props().ariaLabel).toEqual('Edit narrative')
   })

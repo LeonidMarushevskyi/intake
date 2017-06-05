@@ -29,7 +29,7 @@ const DecisionShowView = ({screening, onEdit}) => {
     </div>
     <div className='card-body'>
       <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Screening Decision'>
+        <ShowField gridClassName='col-md-6' label='Screening Decision' labelClassName='required'>
           {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
         </ShowField>
         <ShowField gridClassName='col-md-6' label={decisionDetailLabel}>
