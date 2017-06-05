@@ -24,6 +24,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
           gridClassName='col-md-6'
           id='assignee'
           label='Assigned Social Worker'
+          labelClassName='required'
           placeholder='Enter the name of the worker screening report'
           value={screening.get('assignee') || ''}
           onChange={(event) => onChange(['assignee'], event.target.value)}

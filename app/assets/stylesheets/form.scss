@@ -213,9 +213,7 @@ input[type='radio']:disabled + label::before {
 }
 
 .required::after {
-  @include fa-icon;
-  color: $red;
-  content: '\f069';
+  content: ' (Required)';
 }
 
 /////////////////////////////////////////
