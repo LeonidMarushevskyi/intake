@@ -57,4 +57,26 @@ describe('DateField', () => {
     inputElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
   })
+
+  describe('when DateField is required', () => {
+    const props = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+      required: true,
+      value: 'this is my field value',
+    }
+
+    beforeEach(() => {
+      component = shallow(<DateField {...props}/>)
+    })
+    it('renders a required date field', () => {
+      expect(component.find('label.required').exists()).toEqual(true)
+      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('input').prop('required')).toEqual(true)
+      expect(component.find('input').prop('aria-required')).toEqual(true)
+    })
+  })
 })

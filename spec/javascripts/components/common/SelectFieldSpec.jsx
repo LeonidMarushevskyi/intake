@@ -56,4 +56,26 @@ describe('SelectField', () => {
     selectElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
   })
+
+  describe('when SelectField is required', () => {
+    const props = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myDateFieldId',
+      label: 'this is my label',
+      required: true,
+      value: 'this-is-my-value',
+      onChange: onChange,
+    }
+
+    beforeEach(() => {
+      component = shallow(<SelectField {...props}/>)
+    })
+    it('renders a required select field', () => {
+      expect(component.find('label.required').exists()).toEqual(true)
+      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('select').prop('required')).toEqual(true)
+      expect(component.find('select').prop('aria-required')).toEqual(true)
+    })
+  })
 })
