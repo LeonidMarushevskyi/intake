@@ -1,10 +1,8 @@
-import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
 import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
-import {ROLE_TYPE_NON_REPORTER} from 'RoleType'
-import COUNTIES from 'Counties'
+import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
 
 export default class HistoryCard extends React.Component {
   constructor(props, context) {
@@ -81,61 +79,8 @@ export default class HistoryCard extends React.Component {
     })
   }
 
-  renderScreenings() {
-    return this.props.involvements.get('screenings').map((involvement, index) => {
-      const startedAt = involvement.get('start_date')
-      const endedAt = involvement.get('end_date')
-      const incidentCounty = involvement.get('county_name')
-      const participants = involvement.get('all_people')
-      const reporter = involvement.get('reporter')
-      const assignee = involvement.get('assigned_social_worker')
-      const nonReporterTypes = Immutable.fromJS(ROLE_TYPE_NON_REPORTER)
-
-      let nonOnlyReporters
-
-      if (participants) {
-        nonOnlyReporters = participants.filter((p) => {
-          const roles = p.get('roles')
-          return roles.some((role) => nonReporterTypes.includes(role)) || roles.isEmpty()
-        })
-      } else {
-        nonOnlyReporters = Immutable.List()
-      }
-
-      const status = endedAt ? 'Closed' : 'In Progress'
-      return (
-        <tr key={`screening-${index}`}>
-          <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
-          <td>
-            <div className='row'>Screening</div>
-            <div className='row'>{`(${status})`}</div>
-          </td>
-          <td>{COUNTIES[incidentCounty]}</td>
-          <td>
-            <div className='row'>
-              <span className='col-md-12 participants'>
-                { nonOnlyReporters.map((p) => nameFormatter(p)).join(', ') }
-              </span>
-            </div>
-            <div className='row'>
-              <span className='col-md-6 reporter'>
-                {`Reporter: ${reporter ? nameFormatter(reporter, {name_default: ''}) : ''}`}
-              </span>
-              <span className='col-md-6 assignee'>
-                {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}
-              </span>
-            </div>
-          </td>
-        </tr>
-      )
-    })
-  }
-
   renderHOI() {
     const hoi = []
-    if (this.props.involvements.get('screenings')) {
-      hoi.push(this.renderScreenings())
-    }
     if (this.props.involvements.get('referrals')) {
       hoi.push(this.renderReferrals())
     }
@@ -143,6 +88,7 @@ export default class HistoryCard extends React.Component {
   }
 
   render() {
+    const screenings = this.props.involvements.get('screenings')
     return (
       <div className='card show double-gap-top' id='history-card'>
         <div className='card-header'>
@@ -167,6 +113,9 @@ export default class HistoryCard extends React.Component {
                   </tr>
                 </thead>
                 <tbody id='history-of-involvement'>
+                  { screenings && screenings.map((screening, screeningIndex) =>
+                    <HistoryCardScreening screening={screening} index={screeningIndex} />
+                  )}
                   {
                     this.renderHOI()
                   }
