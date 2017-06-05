@@ -125,4 +125,68 @@ describe('InputField', () => {
       expect(event.target.placeholder).toEqual('I like attention :) ')
     })
   })
+
+  describe('when InputField is NOT required', () => {
+    const props = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...props}/>)
+    })
+    it('renders an input field', () => {
+      expect(component.find('label.required').exists()).toEqual(false)
+      expect(component.find('label').not('.required').exists()).toEqual(true)
+      expect(component.find('input').prop('required')).toEqual(false)
+      expect(component.find('input').prop('aria-required')).toEqual(false)
+    })
+  })
+
+  describe('when InputField is required', () => {
+    const props = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+      required: true,
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...props}/>)
+    })
+    it('renders a required input field', () => {
+      expect(component.find('label.required').exists()).toEqual(true)
+      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('input').prop('required')).toEqual(true)
+      expect(component.find('input').prop('aria-required')).toEqual(true)
+    })
+  })
+
+  describe('when MaskedInput is required', () => {
+    const propsWithMaskedInput = {
+      gridClassName: 'myWrapperTest',
+      labelClassName: 'myLabelTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      onChange: onChange,
+      mask: '111-11-1111',
+      required: true,
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...propsWithMaskedInput}/>)
+    })
+    it('renders a required MaskedInput field', () => {
+      expect(component.find('label.required').exists()).toEqual(true)
+      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('MaskedInput').prop('required')).toEqual(true)
+      expect(component.find('MaskedInput').prop('aria-required')).toEqual(true)
+      expect(component.find('MaskedInput').props().mask).toEqual('111-11-1111')
+    })
+  })
 })

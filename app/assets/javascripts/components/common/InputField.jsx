@@ -3,12 +3,22 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 
-const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder}) => {
-  let input = (<input id={id} type={type} placeholder={placeholder} value={value} onChange={onChange} maxLength={maxLength}/>)
+const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
+  let classNames = labelClassName || ''
+  let input =
+    <input id={id} type={type} placeholder={placeholder}
+      value={value} onChange={onChange} maxLength={maxLength}
+      aria-required={required} required={required}
+    />
+
+  if (required) {
+    classNames = classNames.concat(' required').trim()
+  }
 
   if (!_.isEmpty(mask)) {
     input =
-      <MaskedInput id={id} type={type} value={value} mask={mask} placeholder={placeholder}
+      <MaskedInput id={id} type={type} value={value} mask={mask}
+        placeholder={placeholder} required={required} aria-required={required}
         onBlur={(event) => {
           event.target.placeholder = blurPlaceholder
         }}
@@ -21,7 +31,7 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
 
   return (
     <div className={gridClassName}>
-      <label className={labelClassName} htmlFor={id}>{label}</label>
+      <label className={classNames} htmlFor={id}>{label}</label>
       {input}
     </div>
   )
@@ -30,6 +40,7 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
 InputField.defaultProps = {
   type: 'text',
   mask: '',
+  required: false,
 }
 InputField.propTypes = {
   blurPlaceholder: PropTypes.string,
@@ -42,6 +53,7 @@ InputField.propTypes = {
   maxLength: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
   type: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
