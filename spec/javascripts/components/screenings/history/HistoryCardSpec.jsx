@@ -106,5 +106,27 @@ describe('HistoryCard', () => {
       const referralCards = component.find('HistoryCardReferral')
       expect(referralCards.length).toEqual(0)
     })
+
+    it('renders cases, if present', () => {
+      const involvements = Immutable.fromJS({cases: [{}]})
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const caseCards = component.find('HistoryCardCase')
+      expect(caseCards.length).toEqual(1)
+    })
+
+    it('does not render cases if empty', () => {
+      const involvements = Immutable.fromJS({cases: []})
+      const props = {
+        ...requiredProps,
+        involvements,
+      }
+      const component = shallow(<HistoryCard {...props}/>)
+      const caseCards = component.find('HistoryCardCase')
+      expect(caseCards.length).toEqual(0)
+    })
   })
 })
