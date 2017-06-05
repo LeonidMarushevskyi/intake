@@ -32,6 +32,8 @@ describe('ScreeningInformationShowView', () => {
     }
     component = shallow(<ScreeningInformationShowView {...props} />)
     expect(component.find('ShowField').length).toEqual(5)
+    expect(component.find('ShowField[label="Assigned Social Worker"]').props().labelClassName)
+      .toEqual('required')
     expect(component.find('ShowField[label="Title/Name of Screening"]').html())
       .toContain('The Rocky Horror Picture Show')
     expect(component.find('ShowField[label="Assigned Social Worker"]').html())

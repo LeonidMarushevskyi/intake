@@ -43,6 +43,7 @@ feature 'Show Screening' do
     expect(page).to have_content 'Screening #My Bad!'
 
     within '#screening-information-card.show', text: 'Screening Information' do
+      expect(page.find('label', text: 'Assigned Social Worker')[:class]).to include('required')
       expect(page).to have_content 'The Rocky Horror Picture Show'
       expect(page).to have_content 'Bob Loblaw'
       expect(page).to have_content '8/13/2016 10:00 AM'

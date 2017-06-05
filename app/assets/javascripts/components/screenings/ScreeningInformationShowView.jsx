@@ -20,7 +20,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         <ShowField gridClassName='col-md-6' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label='Assigned Social Worker'>
+        <ShowField gridClassName='col-md-6' labelClassName='required' label='Assigned Social Worker'>
           {screening.get('assignee')}
         </ShowField>
       </div>
