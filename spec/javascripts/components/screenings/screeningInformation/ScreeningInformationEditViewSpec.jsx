@@ -33,6 +33,8 @@ describe('ScreeningInformationEditView', () => {
         .toEqual('The Rocky Horror Picture Show')
       expect(component.find('InputField[label="Assigned Social Worker"]').props().value)
         .toEqual('Michael Bluth')
+      expect(component.find('InputField[label="Assigned Social Worker"]').props().required)
+        .toEqual(true)
       expect(component.find('DateField[label="Screening Start Date/Time"]').props().value)
         .toEqual('2016-08-13T10:00:00.000Z')
       expect(component.find('DateField[label="Screening End Date/Time"]').props().value)

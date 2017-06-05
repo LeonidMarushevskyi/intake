@@ -52,7 +52,7 @@ feature 'Edit Screening' do
   scenario 'edit an existing screening' do
     within '#screening-information-card.edit', text: 'Screening Information' do
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
-      expect(page.find('label', text:'Assigned Social Worker')[:class]).to include('required')
+      expect(page.find('label', text: 'Assigned Social Worker')[:class]).to include('required')
       expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
       expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
       expect(page).to have_field('Screening End Date/Time', with: '2016-08-13T11:00:00.000Z')
