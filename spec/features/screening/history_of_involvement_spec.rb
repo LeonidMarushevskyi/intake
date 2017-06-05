@@ -80,10 +80,67 @@ feature 'History card' do
       ]
     end
 
+    let(:cases) do
+      [
+        {
+          start_date: '2016-01-01',
+          end_date: '2016-11-01',
+          focus_child: {
+            last_name: 'fc1Last',
+            id: '0rumtwQ0Bn',
+            first_name: 'fChild1'
+          },
+          county_name: 'El Dorado',
+          parents: [
+            {
+              last_name: 'p1Last',
+              id: 'AbiQA5q0Bo',
+              first_name: 'Parent1'
+            },
+            {
+              last_name: 'p2Last',
+              id: 'CaTvuzq0Bo',
+              first_name: 'Parent2'
+            }
+          ],
+          assigned_social_worker: {
+            last_name: 'sw1LastName',
+            first_name: 'SocialWorker1'
+          }
+        },
+        {
+          start_date: '2016-02-03',
+          focus_child: {
+            last_name: 'fc2Last',
+            id: '1234567',
+            first_name: 'fChild2'
+          },
+          county_name: 'Plumas',
+          parents: [
+            {
+              last_name: 'p3Last',
+              id: 'ABC123',
+              first_name: 'Parent3'
+            },
+            {
+              last_name: 'p4Last',
+              id: 'ABCDEFG',
+              first_name: 'Parent4'
+            }
+          ],
+          assigned_social_worker: {
+            last_name: 'sw2LastName',
+            first_name: 'SocialWorker2'
+          }
+        }
+      ]
+    end
+
     let(:screening_involvement) do
       {
         referrals: referrals,
-        screenings: screenings
+        screenings: screenings,
+        cases: cases
       }
     end
 
@@ -111,7 +168,8 @@ feature 'History card' do
 
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
-          rows = page.all('tr')
+          rows = page.all('#history-of-involvement > tr')
+          expect(rows.count).to eq 4
 
           within rows[0] do
             start_time = Time.parse(screening_involvement[:screenings]
@@ -151,6 +209,27 @@ feature 'History card' do
 
             expect(page).to have_content('Reporter: Reporter rLastName')
             expect(page).to have_content('Worker: Social sLastName')
+          end
+
+          within rows[2] do
+            expect(page).to have_content('01/01/2016 - 11/01/2016')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('Closed')
+            expect(page).to have_content('El Dorado')
+            expect(page).to have_content('Focus Child: fChild1 fc1Last')
+            expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
+            expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
+          end
+
+          within rows[3] do
+            expect(page).to have_content('02/03/2016')
+            expect(page).to have_no_content('-')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('Open')
+            expect(page).to have_content('Plumas')
+            expect(page).to have_content('Focus Child: fChild2 fc2Last')
+            expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
+            expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
           end
         end
       end
@@ -175,7 +254,8 @@ feature 'History card' do
 
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
-          rows = page.all('tr')
+          rows = page.all('#history-of-involvement > tr')
+          expect(rows.count).to eq 4
 
           within rows[0] do
             start_time = Time.parse(screening_involvement[:screenings]
@@ -215,6 +295,27 @@ feature 'History card' do
 
             expect(page).to have_content('Reporter: Reporter rLastName')
             expect(page).to have_content('Worker: Social sLastName')
+          end
+
+          within rows[2] do
+            expect(page).to have_content('01/01/2016 - 11/01/2016')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('Closed')
+            expect(page).to have_content('El Dorado')
+            expect(page).to have_content('Focus Child: fChild1 fc1Last')
+            expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
+            expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
+          end
+
+          within rows[3] do
+            expect(page).to have_content('02/03/2016')
+            expect(page).to have_no_content('-')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('Open')
+            expect(page).to have_content('Plumas')
+            expect(page).to have_content('Focus Child: fChild2 fc2Last')
+            expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
+            expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
           end
         end
       end
