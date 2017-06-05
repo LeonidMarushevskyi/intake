@@ -35,6 +35,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
           gridClassName='col-md-6'
           id='started_at'
           label='Screening Start Date/Time'
+          required
           value={screening.get('started_at')}
           onChange={(event) => onChange(['started_at'], event.target.value)}
         />
@@ -51,6 +52,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
             gridClassName='col-md-6'
             id='communication_method'
             label='Communication Method'
+            required
             value={screening.get('communication_method')}
             onChange={(event) => onChange(['communication_method'], event.target.value || null)}
           >

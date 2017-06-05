@@ -25,7 +25,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField gridClassName='col-md-6' label='Screening Start Date/Time'>
+        <ShowField gridClassName='col-md-6' labelClassName='required' label='Screening Start Date/Time'>
           {parseDateTime(screening.get('started_at'))}
         </ShowField>
         <ShowField gridClassName='col-md-6' label='Screening End Date/Time'>
@@ -33,7 +33,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField gridClassName='col-md-6' label='Communication Method'>
+        <ShowField gridClassName='col-md-6' labelClassName='required' label='Communication Method'>
           {COMMUNICATION_METHOD[screening.get('communication_method')]}
         </ShowField>
       </div>

@@ -33,14 +33,21 @@ describe('ScreeningInformationEditView', () => {
         .toEqual('The Rocky Horror Picture Show')
       expect(component.find('InputField[label="Assigned Social Worker"]').props().value)
         .toEqual('Michael Bluth')
-      expect(component.find('InputField[label="Assigned Social Worker"]').props().required)
-        .toEqual(true)
       expect(component.find('DateField[label="Screening Start Date/Time"]').props().value)
         .toEqual('2016-08-13T10:00:00.000Z')
       expect(component.find('DateField[label="Screening End Date/Time"]').props().value)
         .toEqual('2016-08-22T11:00:00.000Z')
       expect(component.find('SelectField[label="Communication Method"]').props().value)
         .toEqual('mail')
+    })
+
+    it('renders the required input fields as required', () => {
+      expect(component.find('InputField[label="Assigned Social Worker"]').props().required)
+        .toEqual(true)
+      expect(component.find('DateField[label="Screening Start Date/Time"]').props().required)
+        .toEqual(true)
+      expect(component.find('SelectField[label="Communication Method"]').props().required)
+        .toEqual(true)
     })
 
     it('renders the save and cancel button', () => {
