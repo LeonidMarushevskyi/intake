@@ -1,8 +1,8 @@
+import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
-import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
-import moment from 'moment'
+import dateFormatter from 'utils/dateFormatter'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -15,7 +15,7 @@ export default class CrossReportShowView extends React.Component {
     let communicationMethod
     const [firstCrossReport] = crossReports
     if (firstCrossReport) {
-      reportedOn = moment(firstCrossReport.reported_on).format('MM/DD/YYYY')
+      reportedOn = dateFormatter(firstCrossReport.reported_on)
       communicationMethod = firstCrossReport.communication_method
     }
     return (

@@ -32,7 +32,7 @@ export default class CrossReportEditView extends React.Component {
     const [firstCrossReport] = crossReports.toJS()
     const otherAttributes = {
       reported_on: firstCrossReport && firstCrossReport.reported_on,
-      communication_method: firstCrossReport && firstCrossReport.communication_method
+      communication_method: firstCrossReport && firstCrossReport.communication_method,
     }
     let newReport
     if (isChecked) {
