@@ -37,7 +37,7 @@ end
 group :development do
   gem 'license_finder'
   gem 'spring'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.5'
 end
 
 group :test do
