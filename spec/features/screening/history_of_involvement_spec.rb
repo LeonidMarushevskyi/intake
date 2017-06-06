@@ -59,21 +59,43 @@ feature 'History card' do
           end_date: '2016-12-14',
           county_name: 'Madera',
           reporter: {
-            first_name: 'Reporter',
-            last_name: 'rLastName'
+            first_name: 'Reporter1',
+            last_name: 'r1LastName'
           },
           assigned_social_worker: {
-            first_name: 'Social',
-            last_name: 'sLastName'
+            first_name: 'Social1',
+            last_name: 's1LastName'
           },
           allegations: [
             {
               allegation_description: 'General Neglect',
               disposition_description: 'Entered in Error',
-              perpetrator_first_name: 'Perpetrator',
-              perpetrator_last_name: 'pLastName',
-              victim_first_name: 'Victim',
-              victim_last_name: 'vLastName'
+              perpetrator_first_name: 'Perpetrator1',
+              perpetrator_last_name: 'p1LastName',
+              victim_first_name: 'Victim1',
+              victim_last_name: 'v1LastName'
+            }
+          ]
+        },
+        {
+          start_date: '2016-05-06',
+          county_name: 'San Francisco',
+          reporter: {
+            first_name: 'Reporter2',
+            last_name: 'r2LastName'
+          },
+          assigned_social_worker: {
+            first_name: 'Social2',
+            last_name: 's2LastName'
+          },
+          allegations: [
+            {
+              allegation_description: 'Severe Neglect',
+              disposition_description: 'Confirmed',
+              perpetrator_first_name: 'Perpetrator2',
+              perpetrator_last_name: 'p2LastName',
+              victim_first_name: 'Victim2',
+              victim_last_name: 'v2LastName'
             }
           ]
         }
@@ -169,7 +191,7 @@ feature 'History card' do
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
           rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 4
+          expect(rows.count).to eq 5
 
           within rows[0] do
             start_time = Time.parse(screening_involvement[:screenings]
@@ -185,9 +207,7 @@ feature 'History card' do
           end
 
           within rows[1] do
-            start_time = Time.parse(screening_involvement[:referrals]
-              .first[:start_date]).strftime('%m/%d/%Y')
-            expect(page).to have_content(start_time)
+            expect(page).to have_content('11/14/2016 - 12/14/2016')
             expect(page).to have_content('Referral (Closed)')
             expect(page).to have_content('Madera')
 
@@ -201,17 +221,42 @@ feature 'History card' do
               end
 
               within allegation_rows[1] do
-                expect(page).to have_content('Victim vLastName')
-                expect(page).to have_content('Perpetrator pLastName')
+                expect(page).to have_content('Victim1 v1LastName')
+                expect(page).to have_content('Perpetrator1 p1LastName')
                 expect(page).to have_content('General Neglect (Entered in Error)')
               end
             end
 
-            expect(page).to have_content('Reporter: Reporter rLastName')
-            expect(page).to have_content('Worker: Social sLastName')
+            expect(page).to have_content('Reporter: Reporter1 r1LastName')
+            expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
           within rows[2] do
+            expect(page).to have_content('05/06/2016')
+            expect(page).to have_content('Referral (In Progress)')
+            expect(page).to have_content('San Francisco')
+
+            within 'table' do
+              allegation_rows = page.all('tr')
+
+              within allegation_rows[0] do
+                expect(page).to have_content('Victim')
+                expect(page).to have_content('Perpetrator')
+                expect(page).to have_content('Allegation(s) & Disposition')
+              end
+
+              within allegation_rows[1] do
+                expect(page).to have_content('Victim2 v2LastName')
+                expect(page).to have_content('Perpetrator2 p2LastName')
+                expect(page).to have_content('Severe Neglect (Confirmed)')
+              end
+            end
+
+            expect(page).to have_content('Reporter: Reporter2 r2LastName')
+            expect(page).to have_content('Worker: Social2 s2LastName')
+          end
+
+          within rows[3] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('Closed')
@@ -221,7 +266,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
           end
 
-          within rows[3] do
+          within rows[4] do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('-')
             expect(page).to have_content('Case')
@@ -255,7 +300,7 @@ feature 'History card' do
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
           rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 4
+          expect(rows.count).to eq 5
 
           within rows[0] do
             start_time = Time.parse(screening_involvement[:screenings]
@@ -287,17 +332,42 @@ feature 'History card' do
               end
 
               within allegation_rows[1] do
-                expect(page).to have_content('Victim vLastName')
-                expect(page).to have_content('Perpetrator pLastName')
+                expect(page).to have_content('Victim1 v1LastName')
+                expect(page).to have_content('Perpetrator1 p1LastName')
                 expect(page).to have_content('General Neglect (Entered in Error)')
               end
             end
 
-            expect(page).to have_content('Reporter: Reporter rLastName')
-            expect(page).to have_content('Worker: Social sLastName')
+            expect(page).to have_content('Reporter: Reporter1 r1LastName')
+            expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
           within rows[2] do
+            expect(page).to have_content('05/06/2016')
+            expect(page).to have_content('Referral (In Progress)')
+            expect(page).to have_content('San Francisco')
+
+            within 'table' do
+              allegation_rows = page.all('tr')
+
+              within allegation_rows[0] do
+                expect(page).to have_content('Victim')
+                expect(page).to have_content('Perpetrator')
+                expect(page).to have_content('Allegation(s) & Disposition')
+              end
+
+              within allegation_rows[1] do
+                expect(page).to have_content('Victim2 v2LastName')
+                expect(page).to have_content('Perpetrator2 p2LastName')
+                expect(page).to have_content('Severe Neglect (Confirmed)')
+              end
+            end
+
+            expect(page).to have_content('Reporter: Reporter2 r2LastName')
+            expect(page).to have_content('Worker: Social2 s2LastName')
+          end
+
+          within rows[3] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('Closed')
@@ -307,7 +377,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
           end
 
-          within rows[3] do
+          within rows[4] do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('-')
             expect(page).to have_content('Case')

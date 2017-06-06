@@ -4,14 +4,25 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryCardReferral', () => {
-  it('renders the referral started_at date', () => {
+  it('renders the referral start date', () => {
     const referral = Immutable.fromJS({
       start_date: '2016-08-13',
     })
 
     const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
     const cells = component.find('tr > td')
-    expect(cells.at(0).text()).toContain('08/13/2016')
+    expect(cells.at(0).text()).toEqual('08/13/2016')
+  })
+
+  it('renders the referral end date', () => {
+    const referral = Immutable.fromJS({
+      start_date: '2016-08-13',
+      end_date: '2016-09-23',
+    })
+
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(0).text()).toEqual('08/13/2016 - 09/23/2016')
   })
 
   it('renders the referral status as In Progress when there is no end_date', () => {

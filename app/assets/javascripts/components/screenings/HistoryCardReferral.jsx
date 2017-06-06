@@ -5,7 +5,13 @@ import nameFormatter from 'utils/nameFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
   const startedAt = referral.get('start_date')
+  let dateString = `${moment(startedAt).format('MM/DD/YYYY')}`
+
   const endedAt = referral.get('end_date')
+  if (endedAt) {
+    dateString += ` - ${moment(endedAt).format('MM/DD/YYYY')}`
+  }
+
   const status = endedAt ? 'Closed' : 'In Progress'
   const incidentCounty = referral.get('county_name')
   const reporter = referral.get('reporter')
@@ -14,7 +20,7 @@ const HistoryCardReferral = ({referral, index}) => {
 
   return (
     <tr key={`referral-${index}`}>
-      <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+      <td>{dateString}</td>
       <td>
         <div className='row'>Referral</div>
         <div className='row'>{`(${status})`}</div>
