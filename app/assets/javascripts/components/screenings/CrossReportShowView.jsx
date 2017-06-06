@@ -9,7 +9,7 @@ export default class CrossReportShowView extends React.Component {
   }
 
   render() {
-    const crossReport = this.props.crossReport.toJS()
+    const crossReports = this.props.crossReports.toJS()
     return (
       <div className='card show double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -19,9 +19,9 @@ export default class CrossReportShowView extends React.Component {
         <div className='card-body'>
           <div className='row'>
             <ShowField gridClassName='col-md-12' label='Cross reported to'>
-              {crossReport &&
+              {crossReports &&
                 <ul>{
-                    crossReport.map(({agency_type, agency_name}, index) => {
+                    crossReports.map(({agency_type, agency_name}, index) => {
                       const agencyName = (agency_name && ` - ${agency_name}`) || ''
                       return (<li key={`CR-${index}`}>{`${agency_type}${agencyName}`}</li>)
                     })
@@ -37,7 +37,7 @@ export default class CrossReportShowView extends React.Component {
 }
 
 CrossReportShowView.propTypes = {
-  crossReport: PropTypes.object,
+  crossReports: PropTypes.object,
   onEdit: PropTypes.func.isRequired,
 
 }

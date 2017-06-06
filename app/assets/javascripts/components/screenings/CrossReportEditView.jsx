@@ -11,7 +11,7 @@ export default class CrossReportEditView extends React.Component {
   }
 
   persistedInfo(agencyType) {
-    return this.props.crossReport.toJS().find((item) => item.agency_type === agencyType)
+    return this.props.crossReports.toJS().find((item) => item.agency_type === agencyType)
   }
 
   crossReportData() {
@@ -26,24 +26,24 @@ export default class CrossReportEditView extends React.Component {
   }
 
   changeAgencyType(selectedType, isChecked) {
-    const {crossReport} = this.props
+    const {crossReports} = this.props
     let newReport
     if (isChecked) {
-      newReport = crossReport.push(Immutable.Map({agency_type: selectedType}))
+      newReport = crossReports.push(Immutable.Map({agency_type: selectedType}))
     } else {
-      newReport = crossReport.filterNot((item) => item.get('agency_type') === selectedType)
+      newReport = crossReports.filterNot((item) => item.get('agency_type') === selectedType)
     }
     this.props.onChange(['cross_reports'], newReport)
   }
 
   changeAgencyName(selectedType, value) {
-    const {crossReport} = this.props
+    const {crossReports} = this.props
     let newReport
-    const index = crossReport.toJS().findIndex((item) => item.agency_type === selectedType)
+    const index = crossReports.toJS().findIndex((item) => item.agency_type === selectedType)
     if (value) {
-      newReport = crossReport.set(index, Immutable.Map({agency_type: selectedType, agency_name: value}))
+      newReport = crossReports.set(index, Immutable.Map({agency_type: selectedType, agency_name: value}))
     } else {
-      newReport = crossReport.set(index, Immutable.Map({agency_type: selectedType}))
+      newReport = crossReports.set(index, Immutable.Map({agency_type: selectedType}))
     }
     this.props.onChange(['cross_reports'], newReport)
   }
@@ -116,7 +116,7 @@ export default class CrossReportEditView extends React.Component {
 }
 
 CrossReportEditView.propTypes = {
-  crossReport: PropTypes.object,
+  crossReports: PropTypes.object,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

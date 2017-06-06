@@ -9,7 +9,7 @@ describe('CrossReportShowView', () => {
 
   beforeEach(() => {
     onEdit = jasmine.createSpy()
-    component = shallow(<CrossReportShowView crossReport={Immutable.List()} onEdit={onEdit} />)
+    component = shallow(<CrossReportShowView crossReports={Immutable.List()} onEdit={onEdit} />)
   })
 
   it('renders the card header', () => {
@@ -30,11 +30,11 @@ describe('CrossReportShowView', () => {
   })
 
   it('renders the show fields', () => {
-    const crossReport = Immutable.List([
+    const crossReports = Immutable.List([
       {agency_type: 'District of attorney', agency_name: 'SCDA'},
       {agency_type: 'Licensing'},
     ])
-    const component = shallow(<CrossReportShowView crossReport={crossReport} onEdit={onEdit} />)
+    const component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
     expect(component.find('ShowField[label="Cross reported to"]').html())
       .toContain('District of attorney - SCDA')
     expect(component.find('ShowField[label="Cross reported to"]').html())
@@ -42,8 +42,8 @@ describe('CrossReportShowView', () => {
   })
 
   it('does not renders when the cross report is empty ', () => {
-    const crossReport = Immutable.List([])
-    const component = shallow(<CrossReportShowView crossReport={crossReport} onEdit={onEdit} />)
+    const crossReports = Immutable.List([])
+    const component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
     expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('District of attorney')
     expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('Licensing')
   })

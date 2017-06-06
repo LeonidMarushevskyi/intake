@@ -8,7 +8,7 @@ describe('CrossReportEditView', () => {
   let props
   beforeEach(() => {
     props = {
-      crossReport: Immutable.fromJS([
+      crossReports: Immutable.fromJS([
         {agency_type: 'District attorney', agency_name: 'SCDA Office'},
         {agency_type: 'Department of justice'},
       ]),

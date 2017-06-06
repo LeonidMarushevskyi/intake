@@ -10,7 +10,7 @@ describe('CrossReportCardView', () => {
     onChange: jasmine.createSpy(),
     onEdit: jasmine.createSpy(),
     onSave: jasmine.createSpy(),
-    crossReport: Immutable.fromJS([
+    crossReports: Immutable.fromJS([
       {agency_type: 'District attorney', agency_name: 'SCDA Office'},
       {agency_type: 'Department of justice'},
     ]),
@@ -27,7 +27,7 @@ describe('CrossReportCardView', () => {
 
       it('renders the edit view', () => {
         expect(component.find('CrossReportEditView').length).toEqual(1)
-        expect(component.find('CrossReportEditView').props().crossReport.toJS()).toEqual([
+        expect(component.find('CrossReportEditView').props().crossReports.toJS()).toEqual([
           {agency_type: 'District attorney', agency_name: 'SCDA Office'},
           {agency_type: 'Department of justice'},
         ])
@@ -40,7 +40,7 @@ describe('CrossReportCardView', () => {
         })
 
         it('the cross report show view is rendered', () => {
-          expect(component.find('CrossReportShowView').props().crossReport.toJS()).toEqual([
+          expect(component.find('CrossReportShowView').props().crossReports.toJS()).toEqual([
             {agency_type: 'District attorney', agency_name: 'SCDA Office'},
             {agency_type: 'Department of justice'},
           ])
