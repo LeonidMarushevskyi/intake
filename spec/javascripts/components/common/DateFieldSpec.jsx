@@ -4,9 +4,10 @@ import DateField from 'components/common/DateField'
 
 describe('DateField', () => {
   let component
+  let props
   const onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
-    const props = {
+    props = {
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
@@ -41,6 +42,14 @@ describe('DateField', () => {
     expect(inputElement.props().type).toEqual('date')
     expect(inputElement.props().className).toEqual('input-type-date')
     expect(inputElement.props().value).toEqual('this is my field value')
+  })
+
+  it('renders the input element with empty string when value is null', () => {
+    const propsWithNullValue = Object.assign(props, {value: null})
+    component = shallow(<DateField {...propsWithNullValue}/>)
+    const inputElement = component.find('input')
+    expect(inputElement.length).toEqual(1)
+    expect(inputElement.props().value).toEqual('')
   })
 
   it('calls onChange when a change event occurs on input field', () => {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const DateField = ({gridClassName, labelClassName, id, label, onChange, value}) => (
   <div className={gridClassName}>
     <label className={labelClassName} htmlFor={id}>{label}</label>
-    <input id={id} type='date' className='input-type-date' value={value} onChange={onChange}/>
+    <input id={id} type='date' className='input-type-date' value={value || ''} onChange={onChange}/>
   </div>
 )
 

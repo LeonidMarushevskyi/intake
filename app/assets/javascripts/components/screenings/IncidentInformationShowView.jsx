@@ -1,14 +1,13 @@
 import COUNTIES from 'Counties'
-import moment from 'moment'
+import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
-import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
-import EditLink from 'components/common/EditLink'
+import US_STATE from 'USState'
+import dateFormatter from 'utils/dateFormatter'
 
 const IncidentInformationShowView = ({screening, onEdit}) => {
-  const incidentDate = screening.get('incident_date') === null ?
-    '' : moment(screening.get('incident_date')).format('MM/DD/YYYY')
+  const incidentDate = dateFormatter(screening.get('incident_date'))
   return (
     <div className='card show double-gap-top' id='incident-information-card'>
       <div className='card-header'>
