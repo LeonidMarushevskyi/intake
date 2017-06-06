@@ -4,9 +4,10 @@ import SelectField from 'components/common/SelectField'
 
 describe('SelectField', () => {
   let component
+  let props
   const onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
-    const props = {
+    props = {
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
@@ -40,6 +41,14 @@ describe('SelectField', () => {
     expect(selectElement.length).toEqual(1)
     expect(selectElement.props().value).toEqual('this-is-my-value')
     expect(selectElement.find('option').length).toEqual(1)
+  })
+
+  it('renders the select element value with empty string when value is null', () => {
+    const propsWithNullValue = Object.assign(props, {value: null})
+    component = shallow(<SelectField {...propsWithNullValue}/>)
+    const inputElement = component.find('select')
+    expect(inputElement.length).toEqual(1)
+    expect(inputElement.props().value).toEqual('')
   })
 
   it('calls onChange when a change event occurs on select field', () => {

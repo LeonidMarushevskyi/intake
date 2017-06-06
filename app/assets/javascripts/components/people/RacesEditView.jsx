@@ -80,7 +80,7 @@ export class RacesEditView extends React.Component {
                     <SelectField
                       id={`${raceId}-race-detail`}
                       label={''}
-                      value={selectedRaceDetail || ''}
+                      value={selectedRaceDetail}
                       onChange={(event) => this.changeRaceDetail(race, event.target.value)}
                     >
                       <option key='' value='' />

@@ -41,7 +41,7 @@ describe('RacesEditView', () => {
     expect(component.find('CheckboxField[value="Unknown"]').props().checked).toEqual(false)
 
     expect(component.find('SelectField').length).toEqual(2)
-    expect(component.find('SelectField[id="White-race-detail"]').props().value).toEqual('')
+    expect(component.find('SelectField[id="White-race-detail"]').props().value).toEqual(undefined)
     expect(component.find('SelectField[id="Asian-race-detail"]').props().value).toEqual('Chinese')
   })
 

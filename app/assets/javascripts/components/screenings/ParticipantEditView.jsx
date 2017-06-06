@@ -72,7 +72,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-3'
             id='name_suffix'
             label='Suffix'
-            value={participant.get('name_suffix') || ''}
+            value={participant.get('name_suffix')}
             onChange={(event) => onChange(['name_suffix'], event.target.value || null)}
           >
             <option key='' value='' />
@@ -112,7 +112,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-6'
             id='gender'
             label='Gender'
-            value={participant.get('gender') || ''}
+            value={participant.get('gender')}
             onChange={(event) => onChange(['gender'], event.target.value || null)}
           >
             <option key='' value='' />

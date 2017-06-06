@@ -50,7 +50,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
             gridClassName='col-md-6'
             id='communication_method'
             label='Communication Method'
-            value={screening.get('communication_method') || ''}
+            value={screening.get('communication_method')}
             onChange={(event) => onChange(['communication_method'], event.target.value || null)}
           >
             <option key='' />
