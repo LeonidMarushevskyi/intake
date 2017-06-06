@@ -18,7 +18,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           gridClassName='col-md-6'
           id='incident_date'
           label='Incident Date'
-          value={screening.get('incident_date') || ''}
+          value={screening.get('incident_date')}
           onChange={(event) => onChange(['incident_date'], event.target.value)}
         />
       </div>

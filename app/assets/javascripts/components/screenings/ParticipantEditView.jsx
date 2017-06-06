@@ -105,7 +105,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-6'
             id='date_of_birth'
             label='Date of birth'
-            value={participant.get('date_of_birth') || ''}
+            value={participant.get('date_of_birth')}
             onChange={(event) => onChange(['date_of_birth'], event.target.value || null)}
           />
           <SelectField

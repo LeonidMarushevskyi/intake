@@ -107,6 +107,7 @@ export class PersonNewPage extends React.Component {
               id='date_of_birth'
               label='Date of birth'
               onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
+              value={this.state.person.get('date_of_birth')}
             />
             <SelectField
               gridClassName='col-md-6'

@@ -34,14 +34,14 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave}) =
           gridClassName='col-md-6'
           id='started_at'
           label='Screening Start Date/Time'
-          value={screening.get('started_at') || ''}
+          value={screening.get('started_at')}
           onChange={(event) => onChange(['started_at'], event.target.value)}
         />
         <DateField
           gridClassName='col-md-6'
           id='ended_at'
           label='Screening End Date/Time'
-          value={screening.get('ended_at') || ''}
+          value={screening.get('ended_at')}
           onChange={(event) => onChange(['ended_at'], event.target.value)}
         />
         </div>
