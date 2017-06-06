@@ -10,6 +10,11 @@ import {AGENCY_TYPES, COMMUNICATION_METHODS} from 'CrossReport'
 export default class CrossReportEditView extends React.Component {
   constructor(props) {
     super(props)
+    const [firstCrossReport] = props.crossReports.toJS()
+    this.state = {
+      communicationMethod: firstCrossReport && firstCrossReport.communication_method,
+      reportedOn: firstCrossReport && firstCrossReport.reported_on,
+    }
   }
 
   persistedInfo(agencyType) {
@@ -29,20 +34,20 @@ export default class CrossReportEditView extends React.Component {
 
   changeAgencyType(selectedType, isChecked) {
     const {crossReports} = this.props
-    const [firstCrossReport] = crossReports.toJS()
-    const otherAttributes = {
-      reported_on: firstCrossReport && firstCrossReport.reported_on,
-      communication_method: firstCrossReport && firstCrossReport.communication_method,
-    }
-    let newReport
+    let updatedCrossReports
     if (isChecked) {
-      newReport = crossReports.push(
-        Immutable.Map(Object.assign(otherAttributes, {agency_type: selectedType, agency_name: null}))
+      updatedCrossReports = crossReports.push(
+        Immutable.Map({
+          agency_type: selectedType,
+          agency_name: null,
+          reported_on: this.state.reportedOn,
+          communication_method: this.state.communicationMethod,
+        })
       )
     } else {
-      newReport = crossReports.filterNot((item) => item.get('agency_type') === selectedType)
+      updatedCrossReports = crossReports.filterNot((item) => item.get('agency_type') === selectedType)
     }
-    this.props.onChange(['cross_reports'], newReport)
+    this.props.onChange(['cross_reports'], updatedCrossReports)
   }
 
   changeAgencyName(selectedType, value) {
@@ -95,13 +100,6 @@ export default class CrossReportEditView extends React.Component {
     const startIndex = 0
     const halfIndex = 2
     const hasCrossReport = !this.props.crossReports.isEmpty()
-    let reportedOn
-    let communicationMethod
-    if (hasCrossReport) {
-      const [firstCrossReport] = this.props.crossReports.toJS()
-      reportedOn = firstCrossReport.reported_on
-      communicationMethod = firstCrossReport.communication_method
-    }
     const crossReportData = this.crossReportData()
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
@@ -129,8 +127,9 @@ export default class CrossReportEditView extends React.Component {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
+                      this.setState({reportedOn: event.target.value})
                     }}
-                    value={reportedOn}
+                    value={this.state.reportedOn}
                   />
                   <SelectField
                     gridClassName='col-md-6'
@@ -140,8 +139,9 @@ export default class CrossReportEditView extends React.Component {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({communication_method: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
+                      this.setState({communicationMethod: event.target.value})
                     }}
-                    value={communicationMethod}
+                    value={this.state.communicationMethod}
                   >
                     <option key='' value='' />
                     {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}

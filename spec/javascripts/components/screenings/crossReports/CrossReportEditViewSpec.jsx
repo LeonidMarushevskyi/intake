@@ -122,6 +122,84 @@ describe('CrossReportEditView', () => {
     })
   })
 
+  describe('caching communication and date data when an agency is selected', () => {
+    beforeEach(() => {
+      props = {
+        crossReports: Immutable.fromJS([{
+          agency_type: 'Department of justice',
+          agency_name: null,
+          reported_on: null,
+          communication_method: null,
+        }]),
+        onChange: jasmine.createSpy('onChange'),
+        onSave: () => null,
+        onCancel: () => null,
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+
+    describe('when user selects a communication method, then de-selects agency', () => {
+      beforeEach(() => {
+        component.find('SelectField').simulate('change', {target: {value: 'Electronic Report'}})
+        component.find('CheckboxField[value="Department of justice"]')
+          .simulate('change', {target: {checked: false}})
+        component.setProps({crossReports: Immutable.fromJS([])})
+      })
+
+      it('adds agency with cached communication method when user selects an agency', () => {
+        component.find('CheckboxField[value="Law enforcement"]')
+          .simulate('change', {target: {checked: true}})
+        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+          agency_type: 'Law enforcement',
+          agency_name: null,
+          reported_on: null,
+          communication_method: 'Electronic Report',
+        }])
+      })
+    })
+
+    describe('when user adds a reported on, then de-selects agency', () => {
+      beforeEach(() => {
+        component.find('DateField').simulate('change', {target: {value: '2011-05-09'}})
+        component.find('CheckboxField[value="Department of justice"]')
+          .simulate('change', {target: {checked: false}})
+        component.setProps({crossReports: Immutable.fromJS([])})
+      })
+
+      it('adds agency with cached reported on when user selects an agency', () => {
+        component.find('CheckboxField[value="Law enforcement"]')
+          .simulate('change', {target: {checked: true}})
+        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+          agency_type: 'Law enforcement',
+          agency_name: null,
+          reported_on: '2011-05-09',
+          communication_method: null,
+        }])
+      })
+    })
+
+    describe('when user selects a communication method and reported on, then de-selects agency', () => {
+      beforeEach(() => {
+        component.find('SelectField').simulate('change', {target: {value: 'Electronic Report'}})
+        component.find('DateField').simulate('change', {target: {value: '2011-05-09'}})
+        component.find('CheckboxField[value="Department of justice"]')
+          .simulate('change', {target: {checked: false}})
+        component.setProps({crossReports: Immutable.fromJS([])})
+      })
+
+      it('adds agency with cached communication method and reported on when user selects an agency', () => {
+        component.find('CheckboxField[value="Law enforcement"]')
+          .simulate('change', {target: {checked: true}})
+        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+          agency_type: 'Law enforcement',
+          agency_name: null,
+          reported_on: '2011-05-09',
+          communication_method: 'Electronic Report',
+        }])
+      })
+    })
+  })
+
   describe('when no agency is selected', () => {
     beforeEach(() => {
       props = {

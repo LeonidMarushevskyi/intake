@@ -144,4 +144,68 @@ feature 'cross reports' do
       expect(page).to have_field('Cross Reported on Date', with: Date.today.to_s(:db))
     end
   end
+
+  scenario 'communication method and time fields are cached' do
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
+      .and_return(json_body(existing_screening.to_json, status: 200))
+    visit edit_screening_path(id: existing_screening.id)
+
+    reported_on = Date.today.to_s(:db)
+    communication_method = 'Child Abuse Form'
+
+    within '#cross-report-card' do
+      find('label', text: 'Department of justice').click
+      fill_in 'Cross Reported on Date', with: reported_on
+      select communication_method, from: 'Communication Method'
+      find('label', text: 'Department of justice').click
+      find('label', text: 'Law enforcement').click
+      expect(page).to have_field('Cross Reported on Date', with: reported_on)
+      expect(page).to have_field('Communication Method', with: communication_method)
+
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(:put, intake_api_screening_url(existing_screening.id))
+      .with(
+        body: hash_including(
+          'cross_reports' => array_including(
+            hash_including(
+              'agency_type' => 'Law enforcement',
+              'agency_name' => nil,
+              'reported_on' => reported_on,
+              'communication_method' => communication_method
+            )
+          )
+        )
+      )
+    ).to have_been_made
+  end
+
+  scenario 'communication method and time fields are cleared from cache after save' do
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
+      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(:put, intake_api_screening_url(existing_screening.id))
+      .and_return(json_body(existing_screening.to_json, status: 200))
+    visit edit_screening_path(id: existing_screening.id)
+
+    reported_on = Date.today.to_s(:db)
+    communication_method = 'Child Abuse Form'
+
+    within '#cross-report-card' do
+      find('label', text: 'Department of justice').click
+      fill_in 'Cross Reported on Date', with: reported_on
+      select communication_method, from: 'Communication Method'
+      find('label', text: 'Department of justice').click
+      click_button 'Save'
+    end
+
+    click_link 'Edit cross report'
+
+    within '#cross-report-card' do
+      find('label', text: 'Department of justice').click
+      expect(page).to have_field('Cross Reported on Date', with: '')
+      expect(page).to have_field('Communication Method', with: '')
+    end
+  end
 end
