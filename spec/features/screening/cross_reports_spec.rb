@@ -145,6 +145,18 @@ feature 'cross reports' do
     end
   end
 
+  scenario 'viewing empty cross reports on an existing screening' do
+    stub_request(:get, intake_api_screening_url(existing_screening.id))
+      .and_return(json_body(existing_screening.to_json, status: 200))
+    visit screening_path(id: existing_screening.id)
+
+    within '#cross-report-card', text: 'Cross Report' do
+      expect(page).to_not have_content 'Communication Time and Method'
+      expect(page).to_not have_content 'Cross Reported on Date'
+      expect(page).to_not have_content 'Communication Method'
+    end
+  end
+
   scenario 'communication method and time fields are cached' do
     stub_request(:get, intake_api_screening_url(existing_screening.id))
       .and_return(json_body(existing_screening.to_json, status: 200))

@@ -67,15 +67,11 @@ describe('CrossReportShowView', () => {
     })
 
     it("doesn't render the reported on field", () => {
-      expect(component.find('ShowField[label="Cross Reported on Date"]').html()).toEqual(
-        '<div class="col-md-6"><label>Cross Reported on Date</label><div class="c-gray"></div></div>'
-      )
+      expect(component.find('ShowField[label="Cross Reported on Date"]').length).toEqual(0)
     })
 
     it("doesn't render the communication method field", () => {
-      expect(component.find('ShowField[label="Communication Method"]').html()).toEqual(
-        '<div class="col-md-6"><label>Communication Method</label><div class="c-gray"></div></div>'
-      )
+      expect(component.find('ShowField[label="Communication Method"]').length).toEqual(0)
     })
   })
 })

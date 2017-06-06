@@ -27,21 +27,26 @@ export default class CrossReportShowView extends React.Component {
         <div className='card-body'>
           <div className='row'>
             <ShowField gridClassName='col-md-12' label='This report has cross reported to:'>
-              {crossReports &&
-                <ul className='unstyled-list'>{
-                    crossReports.map(({agency_type, agency_name}, index) => {
-                      const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
-                      return (<li key={index}>{agencyTypeAndName}</li>)
-                    })
-                  }
+              {
+                crossReports &&
+                  <ul className='unstyled-list'>
+                    {
+                      crossReports.map(({agency_type, agency_name}, index) => {
+                        const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
+                        return (<li key={index}>{agencyTypeAndName}</li>)
+                      })
+                    }
                 </ul>
               }
             </ShowField>
           </div>
-          <div className='row'>
-            <ShowField gridClassName='col-md-6' label='Cross Reported on Date'>{reportedOn}</ShowField>
-            <ShowField gridClassName='col-md-6' label='Communication Method'>{communicationMethod}</ShowField>
-          </div>
+          {
+            firstCrossReport &&
+              <div className='row'>
+                <ShowField gridClassName='col-md-6' label='Cross Reported on Date'>{reportedOn}</ShowField>
+                <ShowField gridClassName='col-md-6' label='Communication Method'>{communicationMethod}</ShowField>
+              </div>
+          }
         </div>
       </div>
     )
@@ -51,5 +56,4 @@ export default class CrossReportShowView extends React.Component {
 CrossReportShowView.propTypes = {
   crossReports: PropTypes.object,
   onEdit: PropTypes.func.isRequired,
-
 }
