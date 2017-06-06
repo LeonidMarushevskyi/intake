@@ -44,6 +44,8 @@ describe('DecisionShowView', () => {
     expect(component.find('ShowField').length).toEqual(3)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Differential response')
+    expect(component.find('ShowField[label="Service name"]').props().labelClassName)
+      .not.toContain('required')
     expect(component.find('ShowField[label="Service name"]').html())
       .toContain('Some character string')
     expect(component.find('ShowField[label="Additional information"]').html())
@@ -62,8 +64,32 @@ describe('DecisionShowView', () => {
       .toEqual('Screen out')
     expect(component.find('ShowField[label="Category"]').html())
       .toContain('Consultation')
+    expect(component.find('ShowField[label="Category"]').props().labelClassName)
+      .not.toContain('required')
     expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('the decision is decided')
+  })
+
+  it('renders Staff name for decision details when screening decision is information_to_child_welfare_services', () => {
+    const screening = Immutable.fromJS({
+      screening_decision: 'information_to_child_welfare_services',
+    })
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    expect(component.find('ShowField[label="Screening Decision"]').props().children)
+      .toEqual('Information to child welfare services')
+    expect(component.find('ShowField[label="Staff name"]').props().labelClassName)
+      .not.toContain('required')
+  })
+
+  it('renders Response time for decision details when screening decision is promote_to_referral', () => {
+    const screening = Immutable.fromJS({
+      screening_decision: 'promote_to_referral',
+    })
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    expect(component.find('ShowField[label="Screening Decision"]').props().children)
+      .toEqual('Promote to referral')
+    expect(component.find('ShowField[label="Response time"]').props().labelClassName)
+      .toContain('required')
   })
 
   it('renders show fields correctly when values are not set', () => {

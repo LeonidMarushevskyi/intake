@@ -6,12 +6,11 @@ import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 import SelectField from 'components/common/SelectField'
 
 const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
-  const decisionLabel = (() => {
-    const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')]
-    return (Boolean(decisionOptions) && decisionOptions.label) || ''
-  })()
-
   const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
+  const decisionLabel = (() => (
+    (Boolean(decisionOptions) && decisionOptions.label) || ''
+  ))()
+  const isRequired = decisionLabel === 'Response time'
 
   const onChangeDecision = (event) => {
     onChange(['screening_decision'], event.target.value || null, () => {
@@ -42,6 +41,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
               gridClassName='col-md-6'
               id='decisionDetail'
               label={decisionLabel}
+              required={isRequired}
               value={screening.getIn(['screening_decision_detail'])}
               onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
             >
@@ -56,6 +56,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
                 gridClassName='col-md-6'
                 id='decisionDetail'
                 label={decisionLabel}
+                required={isRequired}
                 value={screening.getIn(['screening_decision_detail']) || ''}
                 onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
                 maxLength='64'

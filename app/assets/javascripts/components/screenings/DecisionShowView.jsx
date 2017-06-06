@@ -11,6 +11,8 @@ const DecisionShowView = ({screening, onEdit}) => {
     return (decisionOptions && decisionOptions.label) || ''
   })()
 
+  const decisionDetailClass = decisionDetailLabel === 'Response time' ? 'required' : ''
+
   const decisionDetailText = (() => {
     const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
     if (decisionOptions.type === 'text') {
@@ -32,7 +34,7 @@ const DecisionShowView = ({screening, onEdit}) => {
         <ShowField gridClassName='col-md-6' label='Screening Decision' labelClassName='required'>
           {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label={decisionDetailLabel}>
+        <ShowField gridClassName='col-md-6' label={decisionDetailLabel} labelClassName={decisionDetailClass}>
           {decisionDetailText}
         </ShowField>
       </div>

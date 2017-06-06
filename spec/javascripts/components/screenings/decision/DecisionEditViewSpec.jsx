@@ -48,6 +48,7 @@ describe('conditional decision options', () => {
       }
     })
     expect(options.length).toEqual(optionList.length + 1)
+    expect(component.find('#decisionDetail').props().required).toEqual(true)
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Response time')
   })
   it('renders options for Screen out', () => {
@@ -65,7 +66,24 @@ describe('conditional decision options', () => {
       }
     })
     expect(options.length).toEqual(optionList.length + 1)
+    expect(component.find('#decisionDetail').props().required).toBeFalsy()
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Category')
+  })
+
+  it('renders non-required Staff name field for Information to child welfare services', () => {
+    component.setProps({screening: Immutable.fromJS({
+      screening_decision: 'information_to_child_welfare_services',
+    })})
+    expect(component.find('#decisionDetail').props().required).toBeFalsy()
+    expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Staff name')
+  })
+
+  it('renders non-required Service name field for Differential response', () => {
+    component.setProps({screening: Immutable.fromJS({
+      screening_decision: 'differential_response',
+    })})
+    expect(component.find('#decisionDetail').props().required).toBeFalsy()
+    expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
 })
 

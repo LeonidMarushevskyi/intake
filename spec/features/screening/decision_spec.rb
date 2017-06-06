@@ -103,6 +103,7 @@ feature 'decision card' do
     end
 
     within '#decision-card.show' do
+      expect(page.find('label', text: 'Response time')[:class]).to include('required')
       expect(page).to have_content('Promote to referral')
       expect(page).to have_content('Response time')
       expect(page).to have_content('3 days')
@@ -112,6 +113,7 @@ feature 'decision card' do
     # And the cancel effect is persistent
     click_link 'Edit decision'
     within '#decision-card.edit' do
+      expect(page.find('label', text: 'Response time')[:class]).to include('required')
       expect(page).to have_field('Screening Decision', with: 'promote_to_referral')
       expect(page).to have_field('Response time', with: '3_days')
       expect(page).to have_field('Additional information', with: 'this is why it is')
