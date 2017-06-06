@@ -1,10 +1,10 @@
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'RoleType'
 import COUNTIES from 'Counties'
+import dateFormatter from 'utils/dateFormatter'
 
 const HistoryCardScreening = ({screening, index}) => {
   const startedAt = screening.get('start_date')
@@ -30,7 +30,7 @@ const HistoryCardScreening = ({screening, index}) => {
 
   return (
     <tr key={`screening-${index}`}>
-      <td>{ moment(startedAt).format('MM/DD/YYYY') }</td>
+      <td>{dateFormatter(startedAt)}</td>
       <td>
         <div className='row'>Screening</div>
         <div className='row'>{`(${status})`}</div>

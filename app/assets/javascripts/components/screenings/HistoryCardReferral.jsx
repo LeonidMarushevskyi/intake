@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
+import dateFormatter from 'utils/dateFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
   const startedAt = referral.get('start_date')
-  let dateString = `${moment(startedAt).format('MM/DD/YYYY')}`
+  let dateString = `${dateFormatter(startedAt)}`
 
   const endedAt = referral.get('end_date')
   if (endedAt) {
-    dateString += ` - ${moment(endedAt).format('MM/DD/YYYY')}`
+    dateString += ` - ${dateFormatter(endedAt)}`
   }
 
   const status = endedAt ? 'Closed' : 'In Progress'

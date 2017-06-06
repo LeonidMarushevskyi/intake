@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import moment from 'moment'
 import nameFormatter from 'utils/nameFormatter'
+import dateFormatter from 'utils/dateFormatter'
 
 const HistoryCardCase = ({hoiCase, index}) => {
   const startedAt = hoiCase.get('start_date')
-  let dateString = `${moment(startedAt).format('MM/DD/YYYY')}`
+  let dateString = `${dateFormatter(startedAt)}`
 
   const endedAt = hoiCase.get('end_date')
   if (endedAt) {
-    dateString += ` - ${moment(hoiCase.get('end_date')).format('MM/DD/YYYY')}`
+    dateString += ` - ${dateFormatter(endedAt)}`
   }
 
   const status = endedAt ? 'Closed' : 'Open'
