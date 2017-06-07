@@ -121,6 +121,7 @@ feature 'History card' do
             first_name: 'fChild1'
           },
           county_name: 'El Dorado',
+          service_component: 'Family Reunification',
           parents: [
             {
               last_name: 'p1Last',
@@ -272,8 +273,7 @@ feature 'History card' do
 
           within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
-            expect(page).to have_content('Case')
-            expect(page).to have_content('Closed')
+            expect(page).to have_content('Case (Closed - Family Reunification)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
@@ -389,8 +389,7 @@ feature 'History card' do
 
           within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
-            expect(page).to have_content('Case')
-            expect(page).to have_content('Closed')
+            expect(page).to have_content('Case (Closed - Family Reunification)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')

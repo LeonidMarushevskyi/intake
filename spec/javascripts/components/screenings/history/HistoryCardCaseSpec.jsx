@@ -63,6 +63,16 @@ describe('HistoryCardCase', () => {
     expect(cells.at(1).text()).toEqual('Case(Closed)')
   })
 
+  it('displays the service component if present', () => {
+    const hoiCase = Immutable.fromJS({
+      service_component: 'Family Reunification',
+    })
+
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Case(Open - Family Reunification)')
+  })
+
   it('displays the county', () => {
     const hoiCase = Immutable.fromJS({
       county_name: 'El Dorado',

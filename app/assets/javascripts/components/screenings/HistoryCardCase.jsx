@@ -4,7 +4,12 @@ import nameFormatter from 'utils/nameFormatter'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardCase = ({hoiCase, index}) => {
-  const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
+  let status = hoiCase.get('end_date') ? 'Closed' : 'Open'
+  const serviceComponent = hoiCase.get('service_component')
+  if (serviceComponent) {
+    status += ` - ${serviceComponent}`
+  }
+
   const incidentCounty = hoiCase.get('county_name')
   const assignee = hoiCase.get('assigned_social_worker')
 
