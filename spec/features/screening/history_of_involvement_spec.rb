@@ -48,6 +48,14 @@ feature 'History card' do
             { first_name: 'Sam', last_name: 'Anderson', roles: ['Perpetrator'] },
             { first_name: 'James', last_name: 'Robinson', roles: [] }
           ]
+        },
+        {
+          start_date: '2016-08-10',
+          end_date: '2016-11-12',
+          county_name: 'el_dorado',
+          reporter: { first_name: nil, last_name: nil },
+          assigned_social_worker: { first_name: nil, last_name: nil },
+          all_people: []
         }
       ]
     end
@@ -191,12 +199,11 @@ feature 'History card' do
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
           rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 5
+          expect(rows.count).to eq 6
 
           within rows[0] do
-            start_time = Time.parse(screening_involvement[:screenings]
-              .first[:start_date]).strftime('%m/%d/%Y')
-            expect(page).to have_content(start_time)
+            expect(page).to have_content('09/10/2016')
+            expect(page).to have_no_content('09/10/2016 -')
             expect(page).to have_content('Screening (In Progress)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Sally Johnson')
@@ -207,6 +214,13 @@ feature 'History card' do
           end
 
           within rows[1] do
+            expect(page).to have_content('08/10/2016 - 11/12/2016')
+            expect(page).to have_content('Screening (Closed)')
+            expect(page).to have_content('Reporter: ')
+            expect(page).to have_content('Worker: ')
+          end
+
+          within rows[2] do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
             expect(page).to have_content('Referral (Closed)')
             expect(page).to have_content('Madera')
@@ -231,7 +245,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
-          within rows[2] do
+          within rows[3] do
             expect(page).to have_content('05/06/2016')
             expect(page).to have_content('Referral (In Progress)')
             expect(page).to have_content('San Francisco')
@@ -256,7 +270,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social2 s2LastName')
           end
 
-          within rows[3] do
+          within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('Closed')
@@ -266,7 +280,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
           end
 
-          within rows[4] do
+          within rows[5] do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('-')
             expect(page).to have_content('Case')
@@ -300,12 +314,11 @@ feature 'History card' do
       within '#history-card.card.show', text: 'History' do
         within 'tbody#history-of-involvement' do
           rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 5
+          expect(rows.count).to eq 6
 
           within rows[0] do
-            start_time = Time.parse(screening_involvement[:screenings]
-              .first[:start_date]).strftime('%m/%d/%Y')
-            expect(page).to have_content(start_time)
+            expect(page).to have_content('09/10/2016')
+            expect(page).to have_no_content('09/10/2016 -')
             expect(page).to have_content('Screening (In Progress)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Sally Johnson')
@@ -316,6 +329,13 @@ feature 'History card' do
           end
 
           within rows[1] do
+            expect(page).to have_content('08/10/2016 - 11/12/2016')
+            expect(page).to have_content('Screening (Closed)')
+            expect(page).to have_content('Reporter: ')
+            expect(page).to have_content('Worker: ')
+          end
+
+          within rows[2] do
             start_time = Time.parse(screening_involvement[:referrals]
               .first[:start_date]).strftime('%m/%d/%Y')
             expect(page).to have_content(start_time)
@@ -342,7 +362,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
-          within rows[2] do
+          within rows[3] do
             expect(page).to have_content('05/06/2016')
             expect(page).to have_content('Referral (In Progress)')
             expect(page).to have_content('San Francisco')
@@ -367,7 +387,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social2 s2LastName')
           end
 
-          within rows[3] do
+          within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('Closed')
@@ -377,7 +397,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
           end
 
-          within rows[4] do
+          within rows[5] do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('-')
             expect(page).to have_content('Case')

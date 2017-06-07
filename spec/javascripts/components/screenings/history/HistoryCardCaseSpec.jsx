@@ -4,6 +4,13 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryCardCase', () => {
+  it('renders No Date when neither start nor end date is present', () => {
+    const hoiCase = Immutable.fromJS({})
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(0).text()).toEqual('No Date')
+  })
+
   it('renders the case start_at date', () => {
     const hoiCase = Immutable.fromJS({
       start_date: '2016-08-13',
@@ -15,6 +22,16 @@ describe('HistoryCardCase', () => {
   })
 
   it('renders the end_at date', () => {
+    const hoiCase = Immutable.fromJS({
+      end_date: '2016-09-25',
+    })
+
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(0).text()).toEqual('09/25/2016')
+  })
+
+  it('renders a date range when both start and end dates are present', () => {
     const hoiCase = Immutable.fromJS({
       start_date: '2016-08-13',
       end_date: '2016-09-25',

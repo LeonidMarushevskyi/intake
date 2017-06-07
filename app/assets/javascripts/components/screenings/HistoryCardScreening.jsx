@@ -9,6 +9,21 @@ import dateFormatter from 'utils/dateFormatter'
 const HistoryCardScreening = ({screening, index}) => {
   const startedAt = screening.get('start_date')
   const endedAt = screening.get('end_date')
+
+  let dateString = `${dateFormatter(startedAt)}`
+
+  if (startedAt && endedAt) {
+    dateString += ' - '
+  }
+
+  if (endedAt) {
+    dateString += `${dateFormatter(endedAt)}`
+  }
+
+  if (dateString === '') {
+    dateString = 'No Date'
+  }
+
   const incidentCounty = screening.get('county_name')
   const participants = screening.get('all_people')
   const reporter = screening.get('reporter')
@@ -30,7 +45,7 @@ const HistoryCardScreening = ({screening, index}) => {
 
   return (
     <tr key={`screening-${index}`}>
-      <td>{dateFormatter(startedAt)}</td>
+      <td>{dateString}</td>
       <td>
         <div className='row'>Screening</div>
         <div className='row'>{`(${status})`}</div>

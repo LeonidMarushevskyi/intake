@@ -9,7 +9,17 @@ describe('HistoryCardScreening', () => {
   }
 
   describe('#render', () => {
-    it('renders the screening started_at date', () => {
+    it('renders No Date when neither start nor end date are present', () => {
+      const screening = Immutable.fromJS({
+        ...requiredProps,
+      })
+
+      const component = shallow(<HistoryCardScreening screening={screening} index={1}/>)
+      const tr = component.find('tr')
+      expect(tr.text()).toContain('No Date')
+    })
+
+    it('renders the screening start date', () => {
       const screening = Immutable.fromJS({
         ...requiredProps,
         start_date: '2016-08-13',
@@ -18,6 +28,29 @@ describe('HistoryCardScreening', () => {
       const component = shallow(<HistoryCardScreening screening={screening} index={1}/>)
       const tr = component.find('tr')
       expect(tr.text()).toContain('08/13/2016')
+    })
+
+    it('renders the screening end date', () => {
+      const screening = Immutable.fromJS({
+        ...requiredProps,
+        end_date: '2016-09-13',
+      })
+
+      const component = shallow(<HistoryCardScreening screening={screening} index={1}/>)
+      const tr = component.find('tr')
+      expect(tr.text()).toContain('09/13/2016')
+    })
+
+    it('renders a date range when both start and end dates are present', () => {
+      const screening = Immutable.fromJS({
+        ...requiredProps,
+        start_date: '2016-08-13',
+        end_date: '2016-09-13',
+      })
+
+      const component = shallow(<HistoryCardScreening screening={screening} index={1}/>)
+      const tr = component.find('tr')
+      expect(tr.text()).toContain('08/13/2016 - 09/13/2016')
     })
 
     it('renders the screening status In Progress when there is no end_date', () => {

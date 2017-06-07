@@ -5,11 +5,20 @@ import dateFormatter from 'utils/dateFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
   const startedAt = referral.get('start_date')
+  const endedAt = referral.get('end_date')
+
   let dateString = `${dateFormatter(startedAt)}`
 
-  const endedAt = referral.get('end_date')
+  if (startedAt && endedAt) {
+    dateString += ' - '
+  }
+
   if (endedAt) {
-    dateString += ` - ${dateFormatter(endedAt)}`
+    dateString += `${dateFormatter(endedAt)}`
+  }
+
+  if (dateString === '') {
+    dateString = 'No Date'
   }
 
   const status = endedAt ? 'Closed' : 'In Progress'
