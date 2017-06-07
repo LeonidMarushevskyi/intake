@@ -107,8 +107,7 @@ select {
 }
 
 legend {
-  font-size: 3rem;
-  font-weight: $bold-weight;
+  border-bottom: none;
 }
 
 .fieldset-inputs label {
