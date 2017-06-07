@@ -18,7 +18,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
 
   return (
     <tr key={`case-${index}`}>
-      <td>{dateRangeFormatter(hoiCase)}</td>
+      <td>{dateRangeFormatter(hoiCase.toJS())}</td>
       <td>
         <div className='row'>Case</div>
         <div className='row'>{`(${status})`}</div>

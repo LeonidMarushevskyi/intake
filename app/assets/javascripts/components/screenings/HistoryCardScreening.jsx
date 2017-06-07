@@ -28,7 +28,7 @@ const HistoryCardScreening = ({screening, index}) => {
 
   return (
     <tr key={`screening-${index}`}>
-      <td>{dateRangeFormatter(screening)}</td>
+      <td>{dateRangeFormatter(screening.toJS())}</td>
       <td>
         <div className='row'>Screening</div>
         <div className='row'>{`(${status})`}</div>

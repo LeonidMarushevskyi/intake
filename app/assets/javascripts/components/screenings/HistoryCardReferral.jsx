@@ -12,7 +12,7 @@ const HistoryCardReferral = ({referral, index}) => {
 
   return (
     <tr key={`referral-${index}`}>
-      <td>{dateRangeFormatter(referral)}</td>
+      <td>{dateRangeFormatter(referral.toJS())}</td>
       <td>
         <div className='row'>Referral</div>
         <div className='row'>{`(${status})`}</div>

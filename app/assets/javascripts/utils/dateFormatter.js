@@ -9,22 +9,10 @@ export function dateFormatter(date) {
   }
 }
 
-export function dateRangeFormatter(dateableObject) {
-  const formattedDates = []
-
-  const startedAt = dateableObject.get('start_date')
-  if (startedAt) {
-    formattedDates.push(dateFormatter(startedAt))
-  }
-
-  const endedAt = dateableObject.get('end_date')
-  if (endedAt) {
-    formattedDates.push(dateFormatter(endedAt))
-  }
-
-  if (startedAt || endedAt) {
-    return formattedDates.join(' - ')
-  } else {
-    return 'No Date'
-  }
+export function dateRangeFormatter({start_date, end_date}) {
+  return [
+    dateFormatter(start_date),
+    dateFormatter(end_date),
+  ].filter((dateString) => Boolean(dateString))
+   .join(' - ') || 'No Date'
 }
