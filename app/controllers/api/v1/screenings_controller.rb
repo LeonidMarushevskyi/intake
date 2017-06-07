@@ -25,6 +25,8 @@ module Api
           id
           agency_type
           agency_name
+          reported_on
+          communication_method
         ],
         address: %i[
           id

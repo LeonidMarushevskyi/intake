@@ -278,7 +278,7 @@ export class ScreeningPage extends React.Component {
               onSave={this.cardSave}
               onChange={this.setField}
               ref='crossReportCard'
-              crossReport={mergedScreening.get('cross_reports')}
+              crossReports={mergedScreening.get('cross_reports')}
             />
         }
         {

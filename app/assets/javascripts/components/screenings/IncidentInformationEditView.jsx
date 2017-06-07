@@ -27,7 +27,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           gridClassName='col-md-6'
           id='incident_county'
           label='Incident County'
-          value={screening.get('incident_county') || ''}
+          value={screening.get('incident_county')}
           onChange={(event) => onChange(['incident_county'], event.target.value || null)}
         >
           <option key='' />
@@ -58,7 +58,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
             gridClassName='col-md-6'
             id='state'
             label='State'
-            value={screening.getIn(['address', 'state']) || ''}
+            value={screening.getIn(['address', 'state'])}
             onChange={(event) => onChange(['address', 'state'], event.target.value || null)}
           >
             <option key='' />
@@ -78,7 +78,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           gridClassName='col-md-6'
           id='location_type'
           label='Location Type'
-          value={screening.get('location_type') || ''}
+          value={screening.get('location_type')}
           onChange={(event) => onChange(['location_type'], event.target.value || null)}
         >
           <option key='' />

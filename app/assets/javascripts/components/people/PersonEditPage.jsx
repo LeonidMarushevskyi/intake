@@ -121,7 +121,7 @@ export class PersonEditPage extends React.Component {
               gridClassName='col-md-6'
               id='gender'
               label='Gender'
-              value={person.get('gender') || ''}
+              value={person.get('gender')}
               onChange={(event) => this.setField(['gender'], event.target.value || null)}
             >
               <option key='' />

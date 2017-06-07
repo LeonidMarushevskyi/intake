@@ -102,11 +102,11 @@ feature 'Edit Screening' do
     end
 
     within '#cross-report-card.edit', text: 'Cross Report' do
-      expect(page).to have_content('Cross reported to')
+      expect(page).to have_content('This report has cross reported to:')
       expect(page.find('input[value="District attorney"]')).to be_checked
-      expect(page).to have_field('District_attorney-agency-name', with: 'SCDA Office')
+      expect(page).to have_field('District attorney agency name', with: 'SCDA Office')
       expect(page.find('input[value="Law enforcement"]')).to be_checked
-      expect(page).to have_field('Law_enforcement-agency-name', text: '')
+      expect(page).to have_field('Law enforcement agency name', text: '')
       expect(page).to have_button 'Save'
       expect(page).to have_button 'Cancel'
     end
@@ -234,7 +234,7 @@ feature 'individual card save' do
 
     within '#cross-report-card' do
       find('label', text: 'Department of justice').click
-      fill_in 'Department_of_justice-agency-name', with: 'Sac Office'
+      fill_in 'Department of justice agency name', with: 'Sac Office'
       click_button 'Save'
     end
 
@@ -245,13 +245,13 @@ feature 'individual card save' do
 
     within '#cross-report-card' do
       click_link 'Edit cross report'
-      expect(page).to have_field('Department_of_justice-agency-name', with: 'Sac Office')
+      expect(page).to have_field('Department of justice agency name', with: 'Sac Office')
 
-      doj_input = find_field('Department_of_justice-agency-name')
+      doj_input = find_field('Department of justice agency name')
       10.times do
         doj_input.send_keys [:backspace]
       end
-      expect(page).to have_field('Department_of_justice-agency-name', with: '')
+      expect(page).to have_field('Department of justice agency name', with: '')
     end
 
     existing_screening.cross_reports = [
@@ -278,7 +278,7 @@ feature 'individual card save' do
 
     within '#cross-report-card' do
       find('label', text: 'Department of justice').click
-      doj_input = find_field('Department_of_justice-agency-name')
+      doj_input = find_field('Department of justice agency name')
 
       130.times do
         doj_input.send_keys ['a']

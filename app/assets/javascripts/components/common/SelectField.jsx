@@ -4,7 +4,7 @@ import React from 'react'
 const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, children}) => (
   <div className={gridClassName}>
     <label className={labelClassName} htmlFor={id}>{label}</label>
-    <select id={id} value={value} onChange={onChange}>{children}</select>
+    <select id={id} value={value || ''} onChange={onChange}>{children}</select>
   </div>
 )
 

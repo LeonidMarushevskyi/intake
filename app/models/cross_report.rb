@@ -6,4 +6,6 @@ class CrossReport
 
   attribute :agency_type, String
   attribute :agency_name, String
+  attribute :communication_method, String
+  attribute :reported_on, String
 end

@@ -13,7 +13,6 @@ export default class CrossReportCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-
     this.fields = Immutable.fromJS(['cross_reports'])
   }
 
@@ -37,14 +36,14 @@ export default class CrossReportCardView extends React.Component {
     const {mode} = this.state
     const allprops = {
       edit: {
-        crossReport: this.props.crossReport,
+        crossReports: this.props.crossReports,
         onChange: this.props.onChange,
         onSave: this.onSave,
         onCancel: this.onCancel,
       },
       show: {
         onEdit: this.onEdit,
-        crossReport: this.props.crossReport,
+        crossReports: this.props.crossReports,
       },
     }
     const CrossReportView = (mode === 'edit') ? CrossReportEditView : CrossReportShowView
@@ -54,7 +53,7 @@ export default class CrossReportCardView extends React.Component {
 }
 
 CrossReportCardView.propTypes = {
-  crossReport: PropTypes.object,
+  crossReports: PropTypes.object,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

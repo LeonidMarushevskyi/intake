@@ -1,7 +1,8 @@
+import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
-import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
+import dateFormatter from 'utils/dateFormatter'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -9,7 +10,14 @@ export default class CrossReportShowView extends React.Component {
   }
 
   render() {
-    const crossReport = this.props.crossReport.toJS()
+    const crossReports = this.props.crossReports.toJS()
+    let reportedOn
+    let communicationMethod
+    const [firstCrossReport] = crossReports
+    if (firstCrossReport) {
+      reportedOn = dateFormatter(firstCrossReport.reported_on)
+      communicationMethod = firstCrossReport.communication_method
+    }
     return (
       <div className='card show double-gap-top' id='cross-report-card'>
         <div className='card-header'>
@@ -18,18 +26,27 @@ export default class CrossReportShowView extends React.Component {
         </div>
         <div className='card-body'>
           <div className='row'>
-            <ShowField gridClassName='col-md-12' label='Cross reported to'>
-              {crossReport &&
-                <ul>{
-                    crossReport.map(({agency_type, agency_name}, index) => {
-                      const agencyName = (agency_name && ` - ${agency_name}`) || ''
-                      return (<li key={`CR-${index}`}>{`${agency_type}${agencyName}`}</li>)
-                    })
-                  }
+            <ShowField gridClassName='col-md-12' label='This report has cross reported to:'>
+              {
+                crossReports &&
+                  <ul className='unstyled-list'>
+                    {
+                      crossReports.map(({agency_type, agency_name}, index) => {
+                        const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
+                        return (<li key={index}>{agencyTypeAndName}</li>)
+                      })
+                    }
                 </ul>
               }
             </ShowField>
           </div>
+          {
+            firstCrossReport &&
+              <div className='row'>
+                <ShowField gridClassName='col-md-6' label='Cross Reported on Date'>{reportedOn}</ShowField>
+                <ShowField gridClassName='col-md-6' label='Communication Method'>{communicationMethod}</ShowField>
+              </div>
+          }
         </div>
       </div>
     )
@@ -37,7 +54,6 @@ export default class CrossReportShowView extends React.Component {
 }
 
 CrossReportShowView.propTypes = {
-  crossReport: PropTypes.object,
+  crossReports: PropTypes.object,
   onEdit: PropTypes.func.isRequired,
-
 }

@@ -30,7 +30,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
             gridClassName='col-md-6'
             id='screening_decision'
             label= 'Screening Decision'
-            value={screening.get('screening_decision') || ''}
+            value={screening.get('screening_decision')}
             onChange={(event) => onChangeDecision(event)}
           >
             <option key='' />
@@ -41,7 +41,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
               gridClassName='col-md-6'
               id='decisionDetail'
               label={decisionLabel}
-              value={screening.getIn(['screening_decision_detail']) || ''}
+              value={screening.getIn(['screening_decision_detail'])}
               onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
             >
               <option key='' />

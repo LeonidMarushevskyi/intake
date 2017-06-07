@@ -9,7 +9,7 @@ describe('CrossReportShowView', () => {
 
   beforeEach(() => {
     onEdit = jasmine.createSpy()
-    component = shallow(<CrossReportShowView crossReport={Immutable.List()} onEdit={onEdit} />)
+    component = shallow(<CrossReportShowView crossReports={Immutable.List()} onEdit={onEdit} />)
   })
 
   it('renders the card header', () => {
@@ -29,22 +29,49 @@ describe('CrossReportShowView', () => {
     })
   })
 
-  it('renders the show fields', () => {
-    const crossReport = Immutable.List([
-      {agency_type: 'District of attorney', agency_name: 'SCDA'},
-      {agency_type: 'Licensing'},
-    ])
-    const component = shallow(<CrossReportShowView crossReport={crossReport} onEdit={onEdit} />)
-    expect(component.find('ShowField[label="Cross reported to"]').html())
-      .toContain('District of attorney - SCDA')
-    expect(component.find('ShowField[label="Cross reported to"]').html())
-      .toContain('Licensing')
+  describe('when cross reports are present', () => {
+    let component
+    beforeEach(() => {
+      const crossReports = Immutable.List([
+        {agency_type: 'District of attorney', agency_name: 'SCDA', reported_on: '2017-01-15', communication_method: 'Electronic Report'},
+        {agency_type: 'Licensing'},
+      ])
+      component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
+    })
+
+    it('renders the cross report agencies', () => {
+      expect(component.find('ShowField[label="This report has cross reported to:"]').length).toEqual(1)
+      expect(component.html()).toContain('District of attorney - SCDA')
+      expect(component.html()).toContain('Licensing')
+    })
+
+    it('renders the reported on field', () => {
+      expect(component.find('ShowField[label="Cross Reported on Date"]').html()).toContain('1/15/2017')
+    })
+
+    it('renders the communication method field', () => {
+      expect(component.find('ShowField[label="Communication Method"]').html()).toContain('Electronic Report')
+    })
   })
 
-  it('does not renders when the cross report is empty ', () => {
-    const crossReport = Immutable.List([])
-    const component = shallow(<CrossReportShowView crossReport={crossReport} onEdit={onEdit} />)
-    expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('District of attorney')
-    expect(component.find('ShowField[label="Cross reported to"]').html()).not.toContain('Licensing')
+  describe('when cross reports are not present', () => {
+    let component
+    beforeEach(() => {
+      const crossReports = Immutable.List()
+      component = shallow(<CrossReportShowView crossReports={crossReports} onEdit={onEdit} />)
+    })
+
+    it("doesn't render the cross report agencies", () => {
+      expect(component.html()).not.toContain('District of attorney')
+      expect(component.html()).not.toContain('Licensing')
+    })
+
+    it("doesn't render the reported on field", () => {
+      expect(component.find('ShowField[label="Cross Reported on Date"]').length).toEqual(0)
+    })
+
+    it("doesn't render the communication method field", () => {
+      expect(component.find('ShowField[label="Communication Method"]').length).toEqual(0)
+    })
   })
 })
