@@ -1,4 +1,5 @@
-import dateFormatter from 'utils/dateFormatter'
+import Immutable from 'immutable'
+import {dateFormatter, dateRangeFormatter} from 'utils/dateFormatter'
 
 describe('dateFormatter', () => {
   it('returns empty string when passed undefined', () => {
@@ -15,5 +16,27 @@ describe('dateFormatter', () => {
 
   it("displays date in 'MM/DD/YYYY' when passed date in format 'YYYY-MM-DD'", () => {
     expect(dateFormatter('2011-01-21')).toEqual('01/21/2011')
+  })
+})
+
+describe('dateRangeFormatter', () => {
+  it('returns No Date if neither start date nor end date are present', () => {
+    const dateableObject = Immutable.Map({})
+    expect(dateRangeFormatter(dateableObject)).toEqual('No Date')
+  })
+
+  it('returns a properly formatted start date if start_date is present', () => {
+    const dateableObject = Immutable.Map({start_date: '2016-09-12'})
+    expect(dateRangeFormatter(dateableObject)).toEqual('09/12/2016')
+  })
+
+  it('returns a properly formatted end date if end_date is present', () => {
+    const dateableObject = Immutable.Map({end_date: '2016-09-12'})
+    expect(dateRangeFormatter(dateableObject)).toEqual('09/12/2016')
+  })
+
+  it('returns a properly formatted date range if both start and end date are present', () => {
+    const dateableObject = Immutable.Map({start_date: '2016-07-08', end_date: '2016-09-12'})
+    expect(dateRangeFormatter(dateableObject)).toEqual('07/08/2016 - 09/12/2016')
   })
 })

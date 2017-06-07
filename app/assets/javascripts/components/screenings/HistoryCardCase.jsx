@@ -1,27 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
-import dateFormatter from 'utils/dateFormatter'
+import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardCase = ({hoiCase, index}) => {
-  const startedAt = hoiCase.get('start_date')
-  const endedAt = hoiCase.get('end_date')
-
-  let dateString = `${dateFormatter(startedAt)}`
-
-  if (startedAt && endedAt) {
-    dateString += ' - '
-  }
-
-  if (endedAt) {
-    dateString += `${dateFormatter(endedAt)}`
-  }
-
-  if (dateString === '') {
-    dateString = 'No Date'
-  }
-
-  const status = endedAt ? 'Closed' : 'Open'
+  const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
   const incidentCounty = hoiCase.get('county_name')
   const assignee = hoiCase.get('assigned_social_worker')
 
@@ -35,7 +18,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
 
   return (
     <tr key={`case-${index}`}>
-      <td>{dateString}</td>
+      <td>{dateRangeFormatter(hoiCase)}</td>
       <td>
         <div className='row'>Case</div>
         <div className='row'>{`(${status})`}</div>

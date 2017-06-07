@@ -4,26 +4,9 @@ import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'RoleType'
 import COUNTIES from 'Counties'
-import dateFormatter from 'utils/dateFormatter'
+import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardScreening = ({screening, index}) => {
-  const startedAt = screening.get('start_date')
-  const endedAt = screening.get('end_date')
-
-  let dateString = `${dateFormatter(startedAt)}`
-
-  if (startedAt && endedAt) {
-    dateString += ' - '
-  }
-
-  if (endedAt) {
-    dateString += `${dateFormatter(endedAt)}`
-  }
-
-  if (dateString === '') {
-    dateString = 'No Date'
-  }
-
   const incidentCounty = screening.get('county_name')
   const participants = screening.get('all_people')
   const reporter = screening.get('reporter')
@@ -41,11 +24,11 @@ const HistoryCardScreening = ({screening, index}) => {
     nonOnlyReporters = Immutable.List()
   }
 
-  const status = endedAt ? 'Closed' : 'In Progress'
+  const status = screening.get('end_date') ? 'Closed' : 'In Progress'
 
   return (
     <tr key={`screening-${index}`}>
-      <td>{dateString}</td>
+      <td>{dateRangeFormatter(screening)}</td>
       <td>
         <div className='row'>Screening</div>
         <div className='row'>{`(${status})`}</div>
