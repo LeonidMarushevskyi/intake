@@ -49,7 +49,7 @@ describe('HistoryCardReferral', () => {
 
     const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
     const cells = component.find('tr > td')
-    expect(cells.at(1).text()).toContain('Referral(In Progress)')
+    expect(cells.at(1).text()).toEqual('Referral(Open)')
   })
 
   it('renders the referral status as Closed when end_date is present', () => {
@@ -59,7 +59,17 @@ describe('HistoryCardReferral', () => {
 
     const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
     const cells = component.find('tr > td')
-    expect(cells.at(1).text()).toContain('Referral(Closed)')
+    expect(cells.at(1).text()).toEqual('Referral(Closed)')
+  })
+
+  it('renders the response time if present', () => {
+    const referral = Immutable.fromJS({
+      response_time: 'Immediate',
+    })
+
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Referral(Open - Immediate)')
   })
 
   it('renders the referral county', () => {

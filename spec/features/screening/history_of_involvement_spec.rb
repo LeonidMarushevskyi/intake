@@ -65,6 +65,7 @@ feature 'History card' do
         {
           start_date: '2016-11-14',
           end_date: '2016-12-14',
+          response_time: 'Immediate',
           county_name: 'Madera',
           reporter: {
             first_name: 'Reporter1',
@@ -222,7 +223,7 @@ feature 'History card' do
 
           within rows[2] do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
-            expect(page).to have_content('Referral (Closed)')
+            expect(page).to have_content('Referral (Closed - Immediate)')
             expect(page).to have_content('Madera')
 
             within 'table' do
@@ -247,7 +248,7 @@ feature 'History card' do
 
           within rows[3] do
             expect(page).to have_content('05/06/2016')
-            expect(page).to have_content('Referral (In Progress)')
+            expect(page).to have_content('Referral (Open)')
             expect(page).to have_content('San Francisco')
 
             within 'table' do
@@ -336,10 +337,8 @@ feature 'History card' do
           end
 
           within rows[2] do
-            start_time = Time.parse(screening_involvement[:referrals]
-              .first[:start_date]).strftime('%m/%d/%Y')
-            expect(page).to have_content(start_time)
-            expect(page).to have_content('Referral (Closed)')
+            expect(page).to have_content('11/14/2016 - 12/14/2016')
+            expect(page).to have_content('Referral (Closed - Immediate)')
             expect(page).to have_content('Madera')
 
             within 'table' do
@@ -364,7 +363,7 @@ feature 'History card' do
 
           within rows[3] do
             expect(page).to have_content('05/06/2016')
-            expect(page).to have_content('Referral (In Progress)')
+            expect(page).to have_content('Referral (Open)')
             expect(page).to have_content('San Francisco')
 
             within 'table' do
