@@ -4,6 +4,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('CrossReportEditView', () => {
+  const crossReportRequiredMessage = 'Temp required message until UX provides text'
   let component
   let props
   beforeEach(() => {
@@ -21,6 +22,25 @@ describe('CrossReportEditView', () => {
 
   it('renders the card title', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
+  })
+
+  describe('Interaction with Alligations Card', () => {
+    const severeAlligation = { allegation_types: ['Severe Neglect'] }
+    const nonSevereAlligation = { allegation_types: ['Exploitation'] }
+
+    it('marks labels as required when have severe allegations', () => {
+      expect(component.find('CheckboxField[label="District attorney"]').props().required)
+        .toEqual(true)
+      expect(component.find('CheckboxField[label="Law enforcement"]').props().required)
+        .toEqual(true)
+    })
+    it('does not mark labels required when have non-severe allegation only', () => {
+      expect(component.find('CheckboxField[label="District attorney"]').props().required)
+        .toEqual(false)
+      expect(component.find('CheckboxField[label="Law enforcement"]').props().required)
+        .toEqual(false)
+
+    })
   })
 
   it('renders the display label', () => {

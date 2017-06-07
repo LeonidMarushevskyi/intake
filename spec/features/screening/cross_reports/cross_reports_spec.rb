@@ -12,8 +12,7 @@ feature 'show cross reports' do
     'Exploitation',
     'Sibling at Risk'
   ]
-  scenario 'adding certain allegations makes cross reports required' do
-    crossReportRequiredMessage = 'Temp required until UX provides text'
+  scenario 'adding certain allegations makes certain cross reports required' do
     marge = FactoryGirl.create(
       :participant,
       :perpetrator,
@@ -35,40 +34,35 @@ feature 'show cross reports' do
       :get,
       intake_api_history_of_involvements_url(screening.id)
     ).and_return(json_body([].to_json, status: 200))
-    visit screening_path(id: screening.id)
+    visit edit_screening_path(id: screening.id)
 
-    within '#cross-report-card.show' do
-      expect(page).to have_no_content(crossReportRequiredMessage)
+    within '#cross-report-card.edit' do
+      expect(page.find('label', text: 'District attorney')[:class]).to_not include('required')
+      expect(page.find('label', text: 'Law enforcement')[:class]).to_not include('required')
     end
 
     SERIOUS_ALLEGATIONS.each{ |allegation|
       within '#allegations-card' do
-        click_link 'Edit'
-        puts allegation
         fill_in_react_select "allegations_#{bart.id}_#{marge.id}", with: allegation
       end
 
-      within '#cross-report-card.show' do
-        expect(page).to have_content(crossReportRequiredMessage)
-        click_link 'Edit'
+      within '#cross-report-card.edit' do
+        expect(page.find('label', text: 'District attorney')[:class]).to include('required')
+        expect(page.find('label', text: 'Law enforcement')[:class]).to include('required')
       end
 
-      within '#cross-report-card.edit' do
-        expect(page).to have_content(crossReportRequiredMessage)
-      end
+      # TEST that required fields are indicated within '#cross-report-card.show'
 
       within '#allegations-card' do
         remove_react_select_option "allegations_#{bart.id}_#{marge.id}", allegation
       end
 
       within '#cross-report-card.edit' do
-        expect(page).to have_no_content(crossReportRequiredMessage)
-        click_button 'Cancel'
+        expect(page.find('label', text: 'District attorney')[:class]).to_not include('required')
+        expect(page.find('label', text: 'Law enforcement')[:class]).to_not include('required')
       end
 
-      within '#cross-report-card.show' do
-        expect(page).to have_no_content(crossReportRequiredMessage)
-      end
+      # TEST that required fields are indicated within '#cross-report-card.show'
     }
   end
 end
