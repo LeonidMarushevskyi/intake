@@ -4,7 +4,12 @@ import nameFormatter from 'utils/nameFormatter'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
-  const status = referral.get('end_date') ? 'Closed' : 'In Progress'
+  let status = referral.get('end_date') ? 'Closed' : 'Open'
+  const responseTime = referral.get('response_time')
+  if (responseTime) {
+    status += ` - ${responseTime}`
+  }
+
   const incidentCounty = referral.get('county_name')
   const reporter = referral.get('reporter')
   const assignee = referral.get('assigned_social_worker')
