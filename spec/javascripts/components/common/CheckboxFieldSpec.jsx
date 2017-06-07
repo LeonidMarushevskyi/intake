@@ -11,6 +11,7 @@ describe('CheckboxField', () => {
       value: 'this-is-my-value',
       checked: true,
       disabled: true,
+      required: true,
       onChange: onChange,
     }
     component = shallow(<CheckboxField {...props} />)
@@ -30,7 +31,13 @@ describe('CheckboxField', () => {
   })
 
   it('renders the disable prop', () => {
-    expect(component.find('input').props().checked).toEqual(true)
+    expect(component.find('input').props().disabled).toEqual(true)
+  })
+
+  it('renders the required prop', () => {
+    expect(component.find('label.required').exists()).toEqual(true)
+    expect(component.find('input').prop('required')).toEqual(true)
+    expect(component.find('input').prop('aria-required')).toEqual(true)
   })
 
   it('calls onChange when a change event occurs on checkbox field', () => {
