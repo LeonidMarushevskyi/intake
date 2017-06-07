@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
-import dateFormatter from 'utils/dateFormatter'
+import {dateFormatter} from 'utils/dateFormatter'
 
 const IncidentInformationShowView = ({screening, onEdit}) => {
   const incidentDate = dateFormatter(screening.get('incident_date'))

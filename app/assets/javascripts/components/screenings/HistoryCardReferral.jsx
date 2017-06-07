@@ -1,18 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
-import dateFormatter from 'utils/dateFormatter'
+import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
-  const startedAt = referral.get('start_date')
-  let dateString = `${dateFormatter(startedAt)}`
-
-  const endedAt = referral.get('end_date')
-  if (endedAt) {
-    dateString += ` - ${dateFormatter(endedAt)}`
-  }
-
-  const status = endedAt ? 'Closed' : 'In Progress'
+  const status = referral.get('end_date') ? 'Closed' : 'In Progress'
   const incidentCounty = referral.get('county_name')
   const reporter = referral.get('reporter')
   const assignee = referral.get('assigned_social_worker')
@@ -20,7 +12,7 @@ const HistoryCardReferral = ({referral, index}) => {
 
   return (
     <tr key={`referral-${index}`}>
-      <td>{dateString}</td>
+      <td>{dateRangeFormatter(referral.toJS())}</td>
       <td>
         <div className='row'>Referral</div>
         <div className='row'>{`(${status})`}</div>

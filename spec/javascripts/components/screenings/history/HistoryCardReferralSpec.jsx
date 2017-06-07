@@ -4,6 +4,13 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryCardReferral', () => {
+  it('renders No Date when neither start nor end date is present', () => {
+    const referral = Immutable.fromJS({})
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(0).text()).toEqual('No Date')
+  })
+
   it('renders the referral start date', () => {
     const referral = Immutable.fromJS({
       start_date: '2016-08-13',
@@ -15,6 +22,16 @@ describe('HistoryCardReferral', () => {
   })
 
   it('renders the referral end date', () => {
+    const referral = Immutable.fromJS({
+      end_date: '2016-09-23',
+    })
+
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(0).text()).toEqual('09/23/2016')
+  })
+
+  it('renders a date range when both start and end dates are present', () => {
     const referral = Immutable.fromJS({
       start_date: '2016-08-13',
       end_date: '2016-09-23',

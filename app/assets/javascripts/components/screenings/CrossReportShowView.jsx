@@ -2,7 +2,7 @@ import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'components/common/ShowField'
-import dateFormatter from 'utils/dateFormatter'
+import {dateFormatter} from 'utils/dateFormatter'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {

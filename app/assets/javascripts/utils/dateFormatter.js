@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 
-const dateFormatter = (date) => {
+export function dateFormatter(date) {
   if (_.isEmpty(date)) {
     return ''
   } else {
@@ -9,4 +9,10 @@ const dateFormatter = (date) => {
   }
 }
 
-export default dateFormatter
+export function dateRangeFormatter({start_date, end_date}) {
+  return [
+    dateFormatter(start_date),
+    dateFormatter(end_date),
+  ].filter((dateString) => Boolean(dateString))
+   .join(' - ') || 'No Date'
+}
