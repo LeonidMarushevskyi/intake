@@ -6,7 +6,7 @@ class PersonRepository
   def self.create(security_token, person)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_people_path,
+      ExternalRoutes.intake_api_people_path,
       :post,
       person.as_json(except: :id)
     )
@@ -16,7 +16,7 @@ class PersonRepository
   def self.find(security_token, id)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_person_path(id),
+      ExternalRoutes.intake_api_person_path(id),
       :get
     )
     Person.new(response.body)
@@ -26,7 +26,7 @@ class PersonRepository
     raise 'Error updating person: id is required' unless person.id
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_person_path(person.id),
+      ExternalRoutes.intake_api_person_path(person.id),
       :put,
       person.as_json(except: :id)
     )

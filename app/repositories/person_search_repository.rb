@@ -16,11 +16,9 @@ class PersonSearchRepository
 
   def self.person_search_path(search_term)
     if Feature.active?(:people_search_tpt)
-      Rails.application.routes.url_helpers.intake_api_people_search_v2_path(
-        search_term: search_term
-      )
+      ExternalRoutes.intake_api_people_search_v2_path(search_term: search_term)
     else
-      Rails.application.routes.url_helpers.intake_api_people_search_path(search_term: search_term)
+      ExternalRoutes.intake_api_people_search_path(search_term: search_term)
     end
   end
 
