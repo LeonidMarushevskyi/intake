@@ -61,7 +61,7 @@ export default class CrossReportEditView extends React.Component {
   isRequired(agencyType, allegations) {
     const potentiallyRequiredAgencies = Immutable.fromJS(['District attorney', 'Law enforcement'])
     const severeAllegations = ALLEGATION_TYPES
-      .filter((type) => type.is_serious)
+      .filter((type) => type.requiresCrossReport)
       .map((type) => (type.value))
     let hasSevereAllegations
     const allAllegationTypes = allegations.map((a) => a.get('allegation_types')).flatten()

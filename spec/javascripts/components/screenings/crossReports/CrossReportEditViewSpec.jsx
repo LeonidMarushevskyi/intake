@@ -29,8 +29,8 @@ describe('CrossReportEditView', () => {
   })
 
   describe('Interaction with Allegations Card', () => {
-    const severeAllegations = ALLEGATION_TYPES.filter((type) => type.is_serious).map((type) => (type.value))
-    const nonSevereAllegations = ALLEGATION_TYPES.filter((type) => !type.is_serious).map((type) => (type.value))
+    const severeAllegations = ALLEGATION_TYPES.filter((type) => type.requiresCrossReport).map((type) => (type.value))
+    const nonSevereAllegations = ALLEGATION_TYPES.filter((type) => !type.requiresCrossReport).map((type) => (type.value))
 
     it('marks labels as required when have severe allegations', () => {
       severeAllegations.forEach((allegation) => {
