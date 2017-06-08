@@ -5,13 +5,13 @@ require 'spec_helper'
 
 feature 'show cross reports' do
   SERIOUS_ALLEGATIONS = [
-    'Severe Neglect',
-    'Physical Abuse',
-    'Sexual Abuse',
-    'Emotional Abuse',
+    'Severe neglect',
+    'Physical abuse',
+    'Sexual abuse',
+    'Emotional abuse',
     'Exploitation',
-    'Sibling at Risk'
-  ]
+    'At risk, sibling abused'
+  ].freeze
   scenario 'adding certain allegations makes certain cross reports required' do
     marge = FactoryGirl.create(
       :participant,
@@ -41,7 +41,7 @@ feature 'show cross reports' do
       expect(page.find('label', text: 'Law enforcement')[:class]).to_not include('required')
     end
 
-    SERIOUS_ALLEGATIONS.each{ |allegation|
+    SERIOUS_ALLEGATIONS.each do |allegation|
       within '#allegations-card' do
         fill_in_react_select "allegations_#{bart.id}_#{marge.id}", with: allegation
       end
@@ -51,8 +51,6 @@ feature 'show cross reports' do
         expect(page.find('label', text: 'Law enforcement')[:class]).to include('required')
       end
 
-      # TEST that required fields are indicated within '#cross-report-card.show'
-
       within '#allegations-card' do
         remove_react_select_option "allegations_#{bart.id}_#{marge.id}", allegation
       end
@@ -61,8 +59,6 @@ feature 'show cross reports' do
         expect(page.find('label', text: 'District attorney')[:class]).to_not include('required')
         expect(page.find('label', text: 'Law enforcement')[:class]).to_not include('required')
       end
-
-      # TEST that required fields are indicated within '#cross-report-card.show'
-    }
+    end
   end
 end

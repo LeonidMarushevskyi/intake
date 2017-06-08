@@ -1,10 +1,10 @@
+import ALLEGATION_TYPES from 'AllegationTypes'
 import CrossReportEditView from 'components/screenings/CrossReportEditView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('CrossReportEditView', () => {
-  const crossReportRequiredMessage = 'Temp required message until UX provides text'
   let component
   let props
   beforeEach(() => {
@@ -16,6 +16,10 @@ describe('CrossReportEditView', () => {
       onChange: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
+      allegations: Immutable.fromJS([
+        {allegation_types: ['Exploitation', 'Severe neglect']},
+        {allegation_types: ['General neglect']},
+      ]),
     }
     component = shallow(<CrossReportEditView {...props}/>)
   })
@@ -24,22 +28,50 @@ describe('CrossReportEditView', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
   })
 
-  describe('Interaction with Alligations Card', () => {
-    const severeAlligation = { allegation_types: ['Severe Neglect'] }
-    const nonSevereAlligation = { allegation_types: ['Exploitation'] }
+  describe('Interaction with Allegations Card', () => {
+    const severeAllegations = ALLEGATION_TYPES.filter((type) => type.is_serious).map((type) => (type.value))
+    const nonSevereAllegations = ALLEGATION_TYPES.filter((type) => !type.is_serious).map((type) => (type.value))
 
     it('marks labels as required when have severe allegations', () => {
-      expect(component.find('CheckboxField[label="District attorney"]').props().required)
-        .toEqual(true)
-      expect(component.find('CheckboxField[label="Law enforcement"]').props().required)
-        .toEqual(true)
+      severeAllegations.forEach((allegation) => {
+        component.setProps({allegations: Immutable.fromJS([
+          {allegation_types: [allegation]},
+        ])})
+
+        expect(component.find('CheckboxField[value="District attorney"]').props().required)
+          .toBeTruthy()
+        expect(component.find('CheckboxField[value="Law enforcement"]').props().required)
+          .toBeTruthy()
+      })
     })
     it('does not mark labels required when have non-severe allegation only', () => {
-      expect(component.find('CheckboxField[label="District attorney"]').props().required)
-        .toEqual(false)
-      expect(component.find('CheckboxField[label="Law enforcement"]').props().required)
-        .toEqual(false)
+      nonSevereAllegations.forEach((allegation) => {
+        component.setProps({allegations: Immutable.fromJS([
+          {allegation_types: [allegation]},
+        ])})
 
+        expect(component.find('CheckboxField[value="District attorney"]').props().required)
+        .toBeFalsy()
+        expect(component.find('CheckboxField[value="Law enforcement"]').props().required)
+        .toBeFalsy()
+      })
+    })
+  })
+
+  describe('isRequired', () => {
+    it('returns true if at least an allegation and an agency are required', () => {
+      expect(component.instance().isRequired('District attorney', props.allegations)).toEqual(true)
+    })
+
+    it('returns false if an agency is not required', () => {
+      expect(component.instance().isRequired('Licensing', props.allegations)).toEqual(false)
+    })
+
+    it('returns false if no allegations require an cross report', () => {
+      expect(component.instance().isRequired(
+        'District attorney',
+        Immutable.fromJS([{allegation_types: ['General neglect']}])
+      )).toEqual(false)
     })
   })
 
