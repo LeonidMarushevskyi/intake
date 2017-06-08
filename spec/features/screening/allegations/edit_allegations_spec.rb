@@ -31,11 +31,11 @@ feature 'edit allegations' do
       last_name: 'Simpson',
       date_of_birth: nil)
     screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -96,11 +96,11 @@ feature 'edit allegations' do
       screening_id: screening.id
     )
     screening.allegations << allegation
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -114,13 +114,13 @@ feature 'edit allegations' do
     end
 
     marge.roles = ['Anonymous Reporter']
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
     screening.participants = [lisa, marge]
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -140,12 +140,12 @@ feature 'edit allegations' do
     end
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -174,11 +174,11 @@ feature 'edit allegations' do
     marge = FactoryGirl.create(:participant, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -196,7 +196,7 @@ feature 'edit allegations' do
     within edit_participant_card_selector(marge.id) do
       fill_in_react_select('Role', with: 'Perpetrator')
       marge.roles = ['Perpetrator']
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
       click_button 'Save'
@@ -207,16 +207,16 @@ feature 'edit allegations' do
     end
 
     lisa.roles = ['Victim']
-    stub_request(:put, intake_api_participant_url(lisa.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
       .with(body: as_json_without_root_id(lisa))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.participants = [marge, lisa]
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     within edit_participant_card_selector(lisa.id) do
@@ -236,11 +236,11 @@ feature 'edit allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -253,7 +253,7 @@ feature 'edit allegations' do
     end
 
     within edit_participant_card_selector(marge.id) do
-      stub_request(:delete, intake_api_participant_url(marge.id))
+      stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
       click_button 'Delete participant'
@@ -271,11 +271,11 @@ feature 'edit allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -296,7 +296,7 @@ feature 'edit allegations' do
     persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within '#allegations-card.card.edit' do
@@ -306,7 +306,7 @@ feature 'edit allegations' do
     end
 
     expect(
-      a_request(:put, intake_api_screening_url(screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(body: as_json_without_root_id(
         screening_with_new_allegation
       ).merge('participants' => []))
@@ -325,11 +325,11 @@ feature 'edit allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -362,11 +362,11 @@ feature 'edit allegations' do
     )
     screening.allegations << allegation
 
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -398,11 +398,11 @@ feature 'edit allegations' do
       date_of_birth: nil)
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -434,11 +434,11 @@ feature 'edit allegations' do
       date_of_birth: nil)
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -458,7 +458,7 @@ feature 'edit allegations' do
     end
 
     within edit_participant_card_selector(marge.id) do
-      stub_request(:delete, intake_api_participant_url(marge.id))
+      stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
 
       click_button 'Delete participant'
@@ -482,17 +482,17 @@ feature 'edit allegations' do
     )
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
 
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     stub_request(
       :get,
-      intake_api_relationships_by_screening_url(screening.id)
+      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -512,7 +512,7 @@ feature 'edit allegations' do
     persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(body: as_json_without_root_id(
         screening_with_new_allegation
       ).merge('participants' => []))
@@ -530,12 +530,12 @@ feature 'edit allegations' do
     end
 
     lisa.roles = ['Anonymous Reporter']
-    stub_request(:put, intake_api_participant_url(lisa.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
       .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(lisa.id) do
@@ -561,10 +561,10 @@ feature 'edit allegations' do
     end
 
     lisa.roles = ['Anonymous Reporter', 'Victim']
-    stub_request(:put, intake_api_participant_url(lisa.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
       .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(lisa.id) do
@@ -589,17 +589,17 @@ feature 'edit allegations' do
     )
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
 
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     stub_request(
       :get,
-      intake_api_relationships_by_screening_url(screening.id)
+      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -619,7 +619,7 @@ feature 'edit allegations' do
     persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(body: as_json_without_root_id(
         screening_with_new_allegation
       ).merge('participants' => []))
@@ -637,12 +637,12 @@ feature 'edit allegations' do
     end
 
     marge.roles = ['Anonymous Reporter']
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -668,10 +668,10 @@ feature 'edit allegations' do
     end
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
@@ -690,11 +690,11 @@ feature 'edit allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -704,7 +704,7 @@ feature 'edit allegations' do
     end
 
     screening.name = 'Hello'
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     within '#screening-information-card.card.edit' do
@@ -713,7 +713,7 @@ feature 'edit allegations' do
     end
 
     expect(
-      a_request(:put, intake_api_screening_url(screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end
@@ -733,11 +733,11 @@ feature 'edit allegations' do
       participants: [marge, homer, lisa]
     )
 
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -774,7 +774,7 @@ feature 'edit allegations' do
     screening.allegations << new_allegation
 
     expect(
-      a_request(:put, intake_api_screening_url(screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening).merge('participants' => [])))
     ).to have_been_made
   end

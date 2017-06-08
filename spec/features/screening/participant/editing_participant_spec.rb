@@ -65,7 +65,7 @@ feature 'Edit Screening' do
   let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
 
   before do
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(
         body: screening.to_json,
         status: 200,
@@ -73,7 +73,7 @@ feature 'Edit Screening' do
       )
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
   end
 
@@ -112,7 +112,7 @@ feature 'Edit Screening' do
       marge.ssn = new_ssn
       marge.addresses.first.city = 'New City'
 
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
         .and_return(status: 200,
                     body: marge.to_json,
@@ -130,7 +130,7 @@ feature 'Edit Screening' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, intake_api_participant_url(marge.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
@@ -213,7 +213,7 @@ feature 'Edit Screening' do
 
       marge.phone_numbers.first.number = '789-456-1245'
 
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
     end
@@ -223,7 +223,7 @@ feature 'Edit Screening' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, intake_api_participant_url(marge.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
@@ -252,7 +252,7 @@ feature 'Edit Screening' do
 
     marge.phone_numbers = []
 
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
@@ -261,7 +261,7 @@ feature 'Edit Screening' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, intake_api_participant_url(marge.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
@@ -285,7 +285,7 @@ feature 'Edit Screening' do
 
       marge.addresses.first.city = 'New City'
 
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
         .and_return(status: 200,
                     body: marge.to_json,
@@ -297,7 +297,7 @@ feature 'Edit Screening' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, intake_api_participant_url(marge.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
@@ -326,7 +326,7 @@ feature 'Edit Screening' do
 
     marge.addresses = []
 
-    stub_request(:put, intake_api_participant_url(marge.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(status: 200,
                   body: marge.to_json,
@@ -337,7 +337,7 @@ feature 'Edit Screening' do
         click_button 'Save'
       end
       expect(
-        a_request(:put, intake_api_participant_url(marge.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end
@@ -353,18 +353,18 @@ feature 'Edit Screening' do
         remove_react_select_option('Language(s)', 'Armenian')
       end
       marge.languages = %w[English Farsi]
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: marge.to_json)
         .and_return(status: 200,
                     body: marge.to_json,
                     headers: { 'Content-Type' => 'application/json' })
-      stub_request(:get, intake_api_participant_url(marge.id))
+      stub_request(:get, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(status: 200,
                     body: marge.to_json,
                     headers: { 'Content-Type' => 'application/json' })
 
       click_button 'Save'
-      expect(a_request(:put, intake_api_participant_url(marge.id))
+      expect(a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))).to have_been_made
     end
   end
@@ -380,7 +380,9 @@ feature 'Edit Screening' do
       end
     end
 
-    expect(a_request(:put, intake_api_participant_url(marge.id))).to_not have_been_made
+    expect(
+      a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+    ).to_not have_been_made
 
     within show_participant_card_selector(marge.id) do
       within '.card-body' do
@@ -412,7 +414,7 @@ feature 'Edit Screening' do
       expect(page).to have_no_content('Perpetrator')
 
       marge.roles = ['Victim']
-      stub_request(:put, intake_api_participant_url(marge.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
 
@@ -422,7 +424,7 @@ feature 'Edit Screening' do
     end
 
     expect(
-      a_request(:put, intake_api_participant_url(marge.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
 

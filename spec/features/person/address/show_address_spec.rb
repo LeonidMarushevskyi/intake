@@ -28,7 +28,7 @@ feature 'Show Person' do
       addresses: [address1, address2],
       languages: []
     )
-    stub_request(:get, intake_api_person_url(person.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .and_return(body: person.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })

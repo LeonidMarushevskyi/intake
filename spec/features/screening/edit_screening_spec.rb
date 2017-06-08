@@ -43,7 +43,7 @@ feature 'Edit Screening' do
     )
   end
   before(:each) do
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -176,7 +176,7 @@ feature 'individual card save' do
   end
 
   before(:each) do
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(body: existing_screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -191,13 +191,13 @@ feature 'individual card save' do
       updated_screening = as_json_without_root_id(
         existing_screening
       ).merge(incident_date: '1996-02-12')
-      stub_request(:put, intake_api_screening_url(existing_screening.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
       fill_in 'Incident Date', with: updated_screening[:incident_date]
       click_button 'Save'
       expect(
-        a_request(:put, intake_api_screening_url(existing_screening.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(as_json_without_root_id(updated_screening)))
       ).to have_been_made
     end
@@ -208,13 +208,13 @@ feature 'individual card save' do
       updated_screening = as_json_without_root_id(existing_screening).merge(
         report_narrative: 'This is the updated narrative'
       ).to_json
-      stub_request(:put, intake_api_screening_url(existing_screening.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(updated_screening))
         .and_return(json_body(updated_screening))
       fill_in 'Report Narrative', with: 'This is the updated narrative'
       click_button 'Save'
       expect(
-        a_request(:put, intake_api_screening_url(existing_screening.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(updated_screening))
       ).to have_been_made
     end
@@ -228,7 +228,7 @@ feature 'individual card save' do
       }
     ]
 
-    stub_request(:put, intake_api_screening_url(existing_screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
@@ -239,7 +239,7 @@ feature 'individual card save' do
     end
 
     expect(
-      a_request(:put, intake_api_screening_url(existing_screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
 
@@ -261,7 +261,7 @@ feature 'individual card save' do
       }
     ]
 
-    stub_request(:put, intake_api_screening_url(existing_screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
@@ -270,7 +270,7 @@ feature 'individual card save' do
     end
 
     expect(
-      a_request(:put, intake_api_screening_url(existing_screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
 
@@ -291,7 +291,7 @@ feature 'individual card save' do
   scenario 'Worker safety card saves in isolation' do
     existing_screening.safety_alerts = ['Dangerous Animal on Premises']
     existing_screening.safety_information = 'Important information!'
-    stub_request(:put, intake_api_screening_url(existing_screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
@@ -301,7 +301,7 @@ feature 'individual card save' do
       click_button 'Save'
     end
     expect(
-      a_request(:put, intake_api_screening_url(existing_screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
   end
@@ -317,7 +317,7 @@ feature 'individual card save' do
       )
       existing_screening.incident_date = '1996-02-12'
 
-      stub_request(:put, intake_api_screening_url(existing_screening.id))
+      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(as_json_without_root_id(existing_screening)))
         .and_return(json_body(existing_screening.to_json))
 
@@ -329,7 +329,7 @@ feature 'individual card save' do
       click_button 'Save'
 
       expect(
-        a_request(:put, intake_api_screening_url(existing_screening.id))
+        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(as_json_without_root_id(existing_screening)))
       ).to have_been_made
     end

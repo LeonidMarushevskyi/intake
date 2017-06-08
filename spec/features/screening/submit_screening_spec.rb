@@ -8,9 +8,9 @@ feature 'Submit Screening' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   before do
     no_screenings = []
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(json_body(existing_screening.to_json, status: 200))
-    stub_request(:get, intake_api_screenings_url)
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(no_screenings.to_json, status: 200))
   end
 
@@ -29,8 +29,9 @@ feature 'Submit Screening' do
         )
       end
       before do
-        stub_request(:post, intake_api_screening_submit_url(existing_screening.id))
-          .and_return(json_body(screening_with_referral.to_json, status: 201))
+        stub_request(
+          :post, host_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
+        ).and_return(json_body(screening_with_referral.to_json, status: 201))
       end
 
       scenario 'displays a success modal and submits a screening to the API' do
@@ -38,7 +39,9 @@ feature 'Submit Screening' do
         click_button 'Submit'
 
         expect(
-          a_request(:post, intake_api_screening_submit_url(existing_screening.id))
+          a_request(
+            :post, host_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
+          )
         ).to have_been_made
 
         expect(alert_dialog.text).to eq(
@@ -55,15 +58,18 @@ feature 'Submit Screening' do
     context 'when error submitting referral' do
       let(:error_json) { 'Unable to process JSON' }
       before do
-        stub_request(:post, intake_api_screening_submit_url(existing_screening.id))
-          .and_return(json_body(error_json, status: 400))
+        stub_request(
+          :post, host_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
+        ).and_return(json_body(error_json, status: 400))
       end
 
       scenario 'displays a success modal and alert with the error responseText' do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
         expect(
-          a_request(:post, intake_api_screening_submit_url(existing_screening.id))
+          a_request(
+            :post, host_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
+          )
         ).to have_been_made
 
         expect(alert_dialog.text).to include(error_json)

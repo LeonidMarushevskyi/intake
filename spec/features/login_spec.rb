@@ -57,9 +57,9 @@ feature 'login' do
   scenario 'user uses session token when communicating to API' do
     Feature.run_with_activated(:authentication) do
       screening = FactoryGirl.create(:screening, name: 'My Screening')
-      stub_request(:get, intake_api_screening_url(1))
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
         .and_return(json_body(screening.to_json, status: 200))
-      stub_request(:get, intake_api_screenings_url)
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([].to_json, status: 200))
 
       bobs_token = 'BOBS_TOKEN'
@@ -80,7 +80,7 @@ feature 'login' do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
-          a_request(:get, intake_api_screening_url(1))
+          a_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
           .with(headers: { 'Authorization' => bobs_token })
         ).to have_been_made
       end
@@ -89,7 +89,7 @@ feature 'login' do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
-          a_request(:get, intake_api_screening_url(1))
+          a_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
           .with(headers: { 'Authorization' => alexs_token })
         ).to have_been_made
       end

@@ -23,8 +23,9 @@ feature 'home page' do
       )
 
       %w[Ma Mar Marg Marge].each do |search_text|
-        stub_request(:get, intake_api_people_search_url(search_term: search_text))
-          .and_return(json_body([marge].to_json, status: 200))
+        stub_request(
+          :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+        ).and_return(json_body([marge].to_json, status: 200))
       end
 
       visit root_path
@@ -33,10 +34,14 @@ feature 'home page' do
 
       fill_in_autocompleter 'People', with: 'Marge'
 
-      expect(a_request(:get, intake_api_people_search_url(search_term: 'M'))).to_not have_been_made
+      expect(
+        a_request(:get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: 'M')))
+      ).to_not have_been_made
       %w[Ma Mar Marg Marge].each do |search_text|
         expect(
-          a_request(:get, intake_api_people_search_url(search_term: search_text))
+          a_request(
+            :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+          )
         ).to have_been_made
       end
     end
@@ -73,7 +78,7 @@ feature 'home page' do
       started_at: '2016-08-17T18:24:22.157Z',
       screening_decision: 'differential_response'
     )
-    stub_request(:get, intake_api_screenings_url)
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body([screening1, screening2, screening3].to_json, status: 200))
 
     visit root_path

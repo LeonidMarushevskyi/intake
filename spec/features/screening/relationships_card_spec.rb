@@ -8,10 +8,12 @@ feature 'Relationship card' do
 
   context 'a screening without participants' do
     scenario 'edit an existing screening' do
-      stub_request(:get, intake_api_screening_url(existing_screening.id))
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
-      stub_request(:get, intake_api_relationships_by_screening_url(existing_screening.id))
-        .and_return(json_body([].to_json, status: 200))
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
+      ).and_return(json_body([].to_json, status: 200))
       visit edit_screening_path(id: existing_screening.id)
 
       within '#relationships-card', text: 'Relationships' do
@@ -21,16 +23,18 @@ feature 'Relationship card' do
       expect(
         a_request(
           :get,
-          intake_api_relationships_by_screening_url(existing_screening.id)
+          host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
         )
       ).to_not have_been_made
     end
 
     scenario 'view an existing screening' do
-      stub_request(:get, intake_api_screening_url(existing_screening.id))
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
-      stub_request(:get, intake_api_relationships_by_screening_url(existing_screening.id))
-        .and_return(json_body([].to_json, status: 200))
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
+      ).and_return(json_body([].to_json, status: 200))
       visit screening_path(id: existing_screening.id)
 
       within '#relationships-card', text: 'Relationships' do
@@ -40,7 +44,7 @@ feature 'Relationship card' do
       expect(
         a_request(
           :get,
-          intake_api_relationships_by_screening_url(existing_screening.id)
+          host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
         )
       ).to_not have_been_made
     end
@@ -99,11 +103,15 @@ feature 'Relationship card' do
     end
 
     before do
-      stub_request(:get, intake_api_screening_url(participants_screening.id))
-        .and_return(json_body(participants_screening.to_json))
       stub_request(
         :get,
-        intake_api_relationships_by_screening_url(participants_screening.id)
+        host_url(ExternalRoutes.intake_api_screening_path(participants_screening.id))
+      ).and_return(json_body(participants_screening.to_json))
+      stub_request(
+        :get,
+        host_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+        )
       ).and_return(json_body(relationships.to_json, status: 200))
     end
 
@@ -121,7 +129,9 @@ feature 'Relationship card' do
       expect(
         a_request(
           :get,
-          intake_api_relationships_by_screening_url(participants_screening.id)
+          host_url(
+            ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+          )
         )
       ).to have_been_made
     end
@@ -139,14 +149,23 @@ feature 'Relationship card' do
         end
 
         expect(
-          a_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
+          a_request(
+            :get,
+            host_url(
+              ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+            )
+          )
         ).to have_been_made
       end
 
       scenario 'removing a person updates relationships' do
-        stub_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
-          .and_return(json_body([].to_json, status: 200))
-        stub_request(:delete, intake_api_participant_url(participant.id))
+        stub_request(
+          :get,
+          host_url(
+            ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+          )
+        ).and_return(json_body([].to_json, status: 200))
+        stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
 
         visit edit_screening_path(id: participants_screening.id)
         within edit_participant_card_selector(participant.id) do
@@ -156,7 +175,12 @@ feature 'Relationship card' do
         end
 
         expect(
-          a_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
+          a_request(
+            :get,
+            host_url(
+              ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+            )
+          )
         ).to have_been_made.twice
 
         within '#relationships-card.card.show', text: 'Relationships' do
@@ -173,13 +197,14 @@ feature 'Relationship card' do
         new_participant_request = { screening_id: participants_screening.id, legacy_id: nil }
 
         %w[Ma Mar Marg Marge].each do |search_text|
-          stub_request(:get, intake_api_people_search_url(search_term: search_text))
-            .and_return(body: [marge].to_json,
-                        status: 200,
-                        headers: { 'Content-Type' => 'application/json' })
+          stub_request(
+            :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+          ).and_return(body: [marge].to_json,
+                       status: 200,
+                       headers: { 'Content-Type' => 'application/json' })
         end
 
-        stub_request(:post, intake_api_participants_url)
+        stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
           .with(body: new_participant.as_json(except: :id).merge(new_participant_request))
           .and_return(body: new_participant.to_json,
                       status: 201,
@@ -208,8 +233,12 @@ feature 'Relationship card' do
           }
         ]
 
-        stub_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
-          .and_return(json_body(new_relationships.to_json, status: 200))
+        stub_request(
+          :get,
+          host_url(
+            ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+          )
+        ).and_return(json_body(new_relationships.to_json, status: 200))
 
         within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'Marge'
@@ -218,7 +247,12 @@ feature 'Relationship card' do
         end
 
         expect(
-          a_request(:get, intake_api_relationships_by_screening_url(participants_screening.id))
+          a_request(
+            :get,
+            host_url(
+              ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+            )
+          )
         ).to have_been_made.twice
 
         within edit_participant_card_selector(new_participant.id) do

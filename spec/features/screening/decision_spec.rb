@@ -15,7 +15,7 @@ feature 'decision card' do
   end
 
   before(:each) do
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(body: screening.to_json,
                   status: 200,
                   headers: { 'Content-Type' => 'application/json' })
@@ -69,7 +69,7 @@ feature 'decision card' do
       additional_information: 'I changed my decision rationale'
     )
 
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
       .and_return(json_body(screening.to_json))
 
@@ -91,7 +91,7 @@ feature 'decision card' do
     expect(page).to have_content('Additional information')
     expect(page).to have_content('I changed my decision rationale')
     expect(
-      a_request(:put, intake_api_screening_url(screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
     ).to have_been_made
   end
