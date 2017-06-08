@@ -30,7 +30,10 @@ export class HomePage extends React.Component {
 
   getScreenings() {
     Utils.request('GET', '/api/v1/screenings')
-      .then((jsonResponse) => this.setState({screenings: jsonResponse}))
+      .then((jsonResponse) => {
+        this.setState({screenings: jsonResponse})
+      }
+    )
   }
 
   render() {
