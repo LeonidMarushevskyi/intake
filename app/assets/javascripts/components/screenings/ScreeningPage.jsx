@@ -197,6 +197,12 @@ export class ScreeningPage extends React.Component {
   render() {
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
+    const sortedAllegations = sortedAllegationsList(
+      screening.get('id'),
+      this.props.participants,
+      screening.get('allegations'),
+      this.state.screeningEdits.get('allegations')
+    )
     return (
       <div>
         <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
@@ -240,12 +246,7 @@ export class ScreeningPage extends React.Component {
               onCancel={this.cancelEdit}
               onSave={this.cardSave}
               setField={this.setField}
-              allegations={sortedAllegationsList(
-                screening.get('id'),
-                this.props.participants,
-                screening.get('allegations'),
-                this.state.screeningEdits.get('allegations')
-              )}
+              allegations={sortedAllegations}
             />
         }
         <RelationshipsCard
@@ -278,6 +279,7 @@ export class ScreeningPage extends React.Component {
               onSave={this.cardSave}
               onChange={this.setField}
               ref='crossReportCard'
+              allegations={sortedAllegations}
               crossReports={mergedScreening.get('cross_reports')}
             />
         }

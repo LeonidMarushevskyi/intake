@@ -53,6 +53,29 @@ describe('render', () => {
     expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
   })
 
+  it('renders to Cross Report Card and pass it allegations', () => {
+    const props = {
+      ...requiredProps,
+      mode: 'edit',
+      screening: Immutable.fromJS({
+        allegations: [],
+        id: '123456',
+        safety_alerts: [],
+        cross_reports: [
+          {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+          {agency_type: 'Department of justice'},
+        ],
+      }),
+    }
+    const component = shallow(<ScreeningPage {...props} />)
+    component.setState({loaded: true})
+    const crossReportsCard = component.find('CrossReportCardView')
+    expect(crossReportsCard.length).toEqual(1)
+    expect(crossReportsCard.props().allegations).toEqual(Immutable.fromJS([]))
+    expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
+    expect(crossReportsCard.props().mode).toEqual('edit')
+  })
+
   it('renders the relations card', () => {
     const props = {
       ...requiredProps,

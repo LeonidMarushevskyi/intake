@@ -36,6 +36,7 @@ export default class CrossReportCardView extends React.Component {
     const {mode} = this.state
     const allprops = {
       edit: {
+        allegations: this.props.allegations,
         crossReports: this.props.crossReports,
         onChange: this.props.onChange,
         onSave: this.onSave,
@@ -52,7 +53,12 @@ export default class CrossReportCardView extends React.Component {
   }
 }
 
+CrossReportCardView.defaultProps = {
+  allegations: Immutable.fromJS([]),
+}
+
 CrossReportCardView.propTypes = {
+  allegations: PropTypes.object,
   crossReports: PropTypes.object,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func.isRequired,
