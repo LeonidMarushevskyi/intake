@@ -3,8 +3,14 @@
 require 'rails_helper'
 require 'feature/testing'
 feature 'home page' do
-  scenario 'displays search bar when release one is enabled' do
-    Feature.run_with_activated(:release_one) do
+  context 'when release one is enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_one) do
+        example.run
+      end
+    end
+
+    scenario 'displays search bar' do
       address = FactoryGirl.create(
         :address,
         street_address: '123 Fake St',
@@ -47,13 +53,30 @@ feature 'home page' do
     end
   end
 
-  scenario 'includes title and navigation links when release one is disabled' do
-    Feature.run_with_deactivated(:release_one) do
-      visit root_path
-
-      expect(page).to have_title 'Intake'
-      expect(page).to have_link 'Start Screening'
+  context 'when release two is enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
     end
+
+    scenario 'hide list of screenings when release two is enabled' do
+      screening = FactoryGirl.create :screening, name: 'Test Screening', reference: 'ABCD'
+      visit root_path
+      expect(
+        a_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      ).to_not have_been_made
+      expect(page).to have_link 'Start Screening'
+      expect(page).not_to have_content screening.name
+      expect(page).not_to have_content screening.reference
+      expect(page).not_to have_css 'table'
+    end
+  end
+
+  scenario 'includes title and navigation links when release one is disabled' do
+    visit root_path
+    expect(page).to have_title 'Intake'
+    expect(page).to have_link 'Start Screening'
   end
 
   scenario 'includes a list of saved screenings' do
