@@ -40,10 +40,10 @@ const HistoryCardReferral = ({referral, index}) => {
                 </tr>
               </thead>
               <tbody>
-                { allegations && allegations.map((allegation) => {
+                { allegations && allegations.map((allegation, index) => {
                   const disposition = allegation.get('disposition_description') || 'Pending decision'
                   return (
-                    <tr>
+                    <tr key={`allegation-${index}`}>
                       <td>{allegation ? nameFormatter(allegation, {name_type: 'victim', name_default: ''}) : ''}</td>
                       <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
                       <td>{`${allegation.get('allegation_description')} (${disposition})`}</td>

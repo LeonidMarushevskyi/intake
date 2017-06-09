@@ -29,8 +29,8 @@ const AllegationsShowView = ({allegations, onEdit}) => (
             <tbody>
               {allegations.map((allegation) => {
                 const sortedAllegationTypes = allegation.get('allegation_types').sort()
-                return sortedAllegationTypes.map((allegationType) =>
-                  <tr>
+                return sortedAllegationTypes.map((allegationType, index) =>
+                  <tr key={`allegation_type-${index}`}>
                     <td><strong>{nameFormatter(allegation.get('victim'))}</strong></td>
                     <td>{nameFormatter(allegation.get('perpetrator'))}</td>
                     <td>{allegationType}</td>

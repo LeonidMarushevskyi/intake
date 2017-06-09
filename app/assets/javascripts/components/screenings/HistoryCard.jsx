@@ -46,13 +46,13 @@ export default class HistoryCard extends React.Component {
                 </thead>
                 <tbody id='history-of-involvement'>
                   {screenings && screenings.map((screening, screeningIndex) =>
-                    <HistoryCardScreening screening={screening} index={screeningIndex} />
+                    <HistoryCardScreening screening={screening} index={screeningIndex} key={screeningIndex} />
                   )}
                   {referrals && referrals.map((referral, referralIndex) =>
-                    <HistoryCardReferral referral={referral} index={referralIndex} />
+                    <HistoryCardReferral referral={referral} index={referralIndex} key={referralIndex} />
                   )}
                   {cases && cases.map((hoiCase, caseIndex) =>
-                    <HistoryCardCase hoiCase={hoiCase} index={caseIndex} />
+                    <HistoryCardCase hoiCase={hoiCase} index={caseIndex} key={caseIndex} />
                   )}
                 </tbody>
               </table>
