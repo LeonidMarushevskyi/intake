@@ -1,19 +1,15 @@
+import ClassNames from 'classnames'
 import MaskedInput from 'react-maskedinput'
 import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 
 const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
-  let classNames = labelClassName || ''
   let input =
     <input id={id} type={type} placeholder={placeholder}
       value={value} onChange={onChange} maxLength={maxLength}
       aria-required={required} required={required}
     />
-
-  if (required) {
-    classNames = classNames.concat(' required').trim()
-  }
 
   if (!_.isEmpty(mask)) {
     input =
@@ -31,7 +27,7 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
 
   return (
     <div className={gridClassName}>
-      <label className={classNames} htmlFor={id}>{label}</label>
+      <label className={ClassNames(labelClassName, {required: required})} htmlFor={id}>{label}</label>
       {input}
     </div>
   )
@@ -40,8 +36,8 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
 InputField.defaultProps = {
   type: 'text',
   mask: '',
-  required: false,
 }
+
 InputField.propTypes = {
   blurPlaceholder: PropTypes.string,
   focusPlaceholder: PropTypes.string,

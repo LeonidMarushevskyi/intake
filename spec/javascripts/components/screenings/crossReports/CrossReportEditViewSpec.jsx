@@ -78,12 +78,12 @@ describe('CrossReportEditView', () => {
 
   it('renders labels for required field as required', () => {
     component.find('#type-District_attorney').simulate('click')
-    expect(component.find('InputField[label="District attorney agency name"]').props().labelClassName)
-        .toEqual('required')
-    expect(component.find('DateField[label="Cross Reported on Date"]').props().labelClassName)
-        .toEqual('required')
-    expect(component.find('SelectField[label="Communication Method"]').props().labelClassName)
-        .toEqual('required')
+    expect(component.find('InputField[label="District attorney agency name"]').props().required)
+        .toEqual(true)
+    expect(component.find('DateField[label="Cross Reported on Date"]').props().required)
+        .toEqual(true)
+    expect(component.find('SelectField[label="Communication Method"]').props().required)
+        .toEqual(true)
   })
 
   it('renders the checkboxes', () => {

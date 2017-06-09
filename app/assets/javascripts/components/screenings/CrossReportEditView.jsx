@@ -98,10 +98,10 @@ export default class CrossReportEditView extends React.Component {
                           <InputField
                             id={`${typeId}-agency-name`}
                             label={`${agencyType} agency name`}
-                            labelClassName='required'
                             maxLength='128'
                             onChange={(event) => this.changeAgencyName(agencyType, event.target.value)}
                             placeholder='Agency Name'
+                            required
                             value={agencyName || ''}
                           />
                       }
@@ -142,26 +142,26 @@ export default class CrossReportEditView extends React.Component {
                     gridClassName='col-md-6'
                     id='cross_report_reported_on'
                     label='Cross Reported on Date'
-                    labelClassName='required'
                     onChange={(event) => {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
                       this.setState({reportedOn: event.target.value})
                     }}
+                    required
                     value={this.state.reportedOn}
                   />
                   <SelectField
                     gridClassName='col-md-6'
                     id='cross_report_communication_method'
                     label='Communication Method'
-                    labelClassName='required'
                     onChange={(event) => {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({communication_method: event.target.value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
                       this.setState({communicationMethod: event.target.value})
                     }}
+                    required
                     value={this.state.communicationMethod}
                   >
                     <option key='' value='' />

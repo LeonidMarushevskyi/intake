@@ -141,8 +141,6 @@ describe('InputField', () => {
     it('renders an input field', () => {
       expect(component.find('label.required').exists()).toEqual(false)
       expect(component.find('label').not('.required').exists()).toEqual(true)
-      expect(component.find('input').prop('required')).toEqual(false)
-      expect(component.find('input').prop('aria-required')).toEqual(false)
     })
   })
 
