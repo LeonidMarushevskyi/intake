@@ -28,7 +28,7 @@ feature 'login' do
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
       expect(page.current_url).to_not have_content auth_login_url
-      expect(page).to have_current_path(root_path(token: 123))
+      expect(page).to have_current_path(root_path)
     end
   end
 

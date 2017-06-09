@@ -61,8 +61,11 @@ describe ApplicationController do
             method: :get,
             session: { security_token: 'my_secure_token' },
             params: { token: new_security_token }
-          expect(response).to be_successful
+
+          # redirects without the token on url
+          expect(response).to have_http_status(302)
           expect(session[:security_token]).to eq(new_security_token)
+          expect(response.location).to_not include('token')
         end
       end
 
@@ -90,7 +93,8 @@ describe ApplicationController do
         it 'sets session security token' do
           process :custom, method: :get, params: { token: security_token }
           expect(session[:security_token]).to eq security_token
-          expect(response).to be_successful
+          expect(response).to have_http_status(302)
+          expect(response.location).to_not include('token')
         end
       end
     end
