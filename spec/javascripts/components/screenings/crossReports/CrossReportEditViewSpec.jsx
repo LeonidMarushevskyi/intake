@@ -24,8 +24,9 @@ describe('CrossReportEditView', () => {
     component = shallow(<CrossReportEditView {...props}/>)
   })
 
-  it('renders the card title', () => {
+  it('renders the card title and cross reported label', () => {
     expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
+    expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
 
   describe('Interaction with Allegations Card', () => {
@@ -75,8 +76,14 @@ describe('CrossReportEditView', () => {
     })
   })
 
-  it('renders the display label', () => {
-    expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
+  it('renders labels for required field as required', () => {
+    component.find('#type-District_attorney').simulate('click')
+    expect(component.find('InputField[label="District attorney agency name"]').props().labelClassName)
+        .toEqual('required')
+    expect(component.find('DateField[label="Cross Reported on Date"]').props().labelClassName)
+        .toEqual('required')
+    expect(component.find('SelectField[label="Communication Method"]').props().labelClassName)
+        .toEqual('required')
   })
 
   it('renders the checkboxes', () => {

@@ -16,9 +16,9 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       expect(page).to_not have_content 'Communication Time and Method'
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       fill_in 'Department of justice agency name', with: 'Sac Office'
-      find('label', text: 'Law enforcement').click
+      find('label', text: /\ALaw enforcement\z/).click
       fill_in 'Law enforcement agency name', with: 'LA Office'
       expect(page).to have_content 'Communication Time and Method'
       fill_in 'Cross Reported on Date', with: reported_on
@@ -72,11 +72,11 @@ feature 'cross reports' do
     visit edit_screening_path(id: existing_screening.id)
 
     within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       expect(find(:checkbox, 'Department of justice')).to_not be_checked
 
       expect(find(:checkbox, 'Law enforcement')).to be_checked
-      find('label', text: 'District attorney').click
+      find('label', text: /\ADistrict attorney\z/).click
       click_button 'Save'
     end
 
@@ -166,11 +166,11 @@ feature 'cross reports' do
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       fill_in 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
-      find('label', text: 'Department of justice').click
-      find('label', text: 'Law enforcement').click
+      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ALaw enforcement\z/).click
       expect(page).to have_field('Cross Reported on Date', with: reported_on)
       expect(page).to have_field('Communication Method', with: communication_method)
 
@@ -205,17 +205,17 @@ feature 'cross reports' do
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       fill_in 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       click_button 'Save'
     end
 
     click_link 'Edit cross report'
 
     within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
+      find('label', text: /\ADepartment of justice\z/).click
       expect(page).to have_field('Cross Reported on Date', with: '')
       expect(page).to have_field('Communication Method', with: '')
     end

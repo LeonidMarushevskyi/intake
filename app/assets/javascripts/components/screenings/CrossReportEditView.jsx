@@ -98,7 +98,7 @@ export default class CrossReportEditView extends React.Component {
                           <InputField
                             id={`${typeId}-agency-name`}
                             label={`${agencyType} agency name`}
-                            labelClassName='hidden'
+                            labelClassName='required'
                             maxLength='128'
                             onChange={(event) => this.changeAgencyName(agencyType, event.target.value)}
                             placeholder='Agency Name'
@@ -142,6 +142,7 @@ export default class CrossReportEditView extends React.Component {
                     gridClassName='col-md-6'
                     id='cross_report_reported_on'
                     label='Cross Reported on Date'
+                    labelClassName='required'
                     onChange={(event) => {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
@@ -154,6 +155,7 @@ export default class CrossReportEditView extends React.Component {
                     gridClassName='col-md-6'
                     id='cross_report_communication_method'
                     label='Communication Method'
+                    labelClassName='required'
                     onChange={(event) => {
                       const updatedCrossReports = this.props.crossReports
                         .map((crossReport) => crossReport.merge({communication_method: event.target.value}))
