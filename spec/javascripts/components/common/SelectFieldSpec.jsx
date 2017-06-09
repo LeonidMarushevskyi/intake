@@ -8,6 +8,7 @@ describe('SelectField', () => {
   const onChange = jasmine.createSpy('onChange')
   beforeEach(() => {
     props = {
+      children: [],
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
@@ -59,6 +60,7 @@ describe('SelectField', () => {
 
   describe('when SelectField is required', () => {
     const props = {
+      children: [],
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myDateFieldId',

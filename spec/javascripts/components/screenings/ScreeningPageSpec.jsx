@@ -24,7 +24,7 @@ export const requiredProps = {
 describe('render', () => {
   it('renders the history card', () => {
     const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
-    const participants = Immutable.fromJS([{id: 1}])
+    const participants = Immutable.fromJS([{id: 1, roles: []}])
     const props = {
       ...requiredProps,
       involvements,

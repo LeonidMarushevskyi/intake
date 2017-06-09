@@ -41,6 +41,7 @@ describe('participants-related functions', () => {
     legacy_id: '1',
     screening_id: '3',
     addresses: Immutable.List([address1, address2]),
+    roles: [],
   })
 
   const participantId2 = '456'
@@ -54,6 +55,7 @@ describe('participants-related functions', () => {
     legacy_id: '2',
     screening_id: '3',
     addresses: Immutable.List(),
+    roles: [],
   })
 
   const props = {
