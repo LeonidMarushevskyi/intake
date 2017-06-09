@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base # :nodoc:
 
     if SecurityRepository.token_valid?(security_token)
       session[:security_token] = security_token
+      params.delete(:token)
+      redirect_to request.path
     else
       redirect_to SecurityRepository.login_url(request.original_url)
     end
