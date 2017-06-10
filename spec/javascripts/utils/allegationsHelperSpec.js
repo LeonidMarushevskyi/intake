@@ -1,4 +1,5 @@
-import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
+import ALLEGATION_TYPES from 'AllegationTypes'
+import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
 describe('sortedAllegationsList', () => {
@@ -403,12 +404,52 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: []})
     const allegations = Immutable.fromJS({
       3: {2: ['General neglect'], 1: ['General neglect']},
-      2: {4: ['Neglect']},
+      2: {4: ['General neglect']},
     })
 
     const returnedAllegations = removeInvalidAllegations(participant, allegations)
     const expectedAllegations = Immutable.fromJS({3: {1: ['General neglect']}})
     expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
     expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
+  })
+})
+
+describe('areCrossReportsRequired', () => {
+  it('does not explode if allegations do not exist', () => {
+    const result = areCrossReportsRequired()
+    expect(result).toEqual(false)
+  })
+
+  it('returns true if allegations include an allegation that require cross reports', () => {
+    const allegationsRequiringReports = ALLEGATION_TYPES.filter((type) => type.requiresCrossReport).map((type) => (type.value))
+    allegationsRequiringReports.forEach((allegation) => {
+      const allegations = Immutable.fromJS([
+        {allegation_types: [allegation]},
+      ])
+
+      const result = areCrossReportsRequired(allegations)
+      expect(result).toEqual(true)
+    })
+  })
+
+  it('returns false if no allegations require cross reports', () => {
+    const allegationsNotRequiringReports = ALLEGATION_TYPES.filter((type) => !type.requiresCrossReport).map((type) => (type.value))
+    allegationsNotRequiringReports.forEach((allegation) => {
+      const allegations = Immutable.fromJS([
+        {allegation_types: [allegation]},
+      ])
+
+      const result = areCrossReportsRequired(allegations)
+      expect(result).toEqual(false)
+    })
+  })
+
+  it('returns true if only 1 of multiple allegations requires cross reports', () => {
+    const allegations = Immutable.fromJS([
+      {allegation_types: ['General neglect', 'Severe neglect']},
+    ])
+
+    const result = areCrossReportsRequired(allegations)
+    expect(result).toEqual(true)
   })
 })

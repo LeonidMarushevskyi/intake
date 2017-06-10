@@ -1,4 +1,3 @@
-import ALLEGATION_TYPES from 'AllegationTypes'
 import CheckboxField from 'components/common/CheckboxField'
 import DateField from 'components/common/DateField'
 import Immutable from 'immutable'
@@ -58,20 +57,9 @@ export default class CrossReportEditView extends React.Component {
     this.props.onChange(['cross_reports'], newReport)
   }
 
-  isRequired(agencyType, allegations) {
+  isAgencyRequired(agencyType, areCrossReportsRequired) {
     const potentiallyRequiredAgencies = Immutable.fromJS(['District attorney', 'Law enforcement'])
-    const severeAllegations = ALLEGATION_TYPES
-      .filter((type) => type.requiresCrossReport)
-      .map((type) => (type.value))
-    let hasSevereAllegations
-    const allAllegationTypes = allegations.map((a) => a.get('allegation_types')).flatten()
-
-    severeAllegations.forEach((severeAllegation) => (
-      hasSevereAllegations =
-        hasSevereAllegations || allAllegationTypes.includes(severeAllegation)
-    ))
-
-    return potentiallyRequiredAgencies.includes(agencyType) && hasSevereAllegations
+    return potentiallyRequiredAgencies.includes(agencyType) && areCrossReportsRequired
   }
 
   renderCrossReport(crossReportOptions) {
@@ -81,7 +69,6 @@ export default class CrossReportEditView extends React.Component {
             {
               crossReportOptions.map((item) => {
                 const {agencyType, selected, agencyName} = item
-                const {allegations} = this.props
                 const typeId = agencyType.replace(/ /gi, '_')
                 return (
                   <li key={agencyType}>
@@ -91,7 +78,7 @@ export default class CrossReportEditView extends React.Component {
                         value={agencyType}
                         checked={selected}
                         onChange={(event) => this.changeAgencyType(agencyType, event.target.checked)}
-                        required={this.isRequired(agencyType, allegations)}
+                        required={this.isAgencyRequired(agencyType, this.props.areCrossReportsRequired)}
                       />
                       {
                         selected &&
@@ -182,12 +169,8 @@ export default class CrossReportEditView extends React.Component {
   }
 }
 
-CrossReportEditView.defaultProps = {
-  allegations: Immutable.fromJS([]),
-}
-
 CrossReportEditView.propTypes = {
-  allegations: PropTypes.object,
+  areCrossReportsRequired: PropTypes.bool,
   crossReports: PropTypes.object,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

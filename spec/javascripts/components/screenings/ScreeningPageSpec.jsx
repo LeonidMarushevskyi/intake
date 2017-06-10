@@ -53,13 +53,21 @@ describe('render', () => {
     expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
   })
 
-  it('renders to Cross Report Card and pass it allegations', () => {
+  it('renders to Cross Report Card and specifies if cross reporting is required', () => {
+    const participants = Immutable.fromJS([
+      {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim', 'Perpetrator']},
+      {id: '2', first_name: 'Malory', last_name: 'Archer', roles: ['Perpetrator']},
+    ])
     const props = {
       ...requiredProps,
+      participants: participants,
       mode: 'edit',
       screening: Immutable.fromJS({
-        allegations: [],
+        allegations: [
+          {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2', allegation_types: ['Exploitation', 'Severe neglect']},
+        ],
         id: '123456',
+        participants: participants,
         safety_alerts: [],
         cross_reports: [
           {agency_type: 'District attorney', agency_name: 'SCDA Office'},
@@ -71,7 +79,7 @@ describe('render', () => {
     component.setState({loaded: true})
     const crossReportsCard = component.find('CrossReportCardView')
     expect(crossReportsCard.length).toEqual(1)
-    expect(crossReportsCard.props().allegations).toEqual(Immutable.fromJS([]))
+    expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
     expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
     expect(crossReportsCard.props().mode).toEqual('edit')
   })

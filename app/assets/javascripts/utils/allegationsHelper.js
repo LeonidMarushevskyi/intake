@@ -1,3 +1,4 @@
+import ALLEGATION_TYPES from 'AllegationTypes'
 import Immutable from 'immutable'
 import _ from 'lodash'
 
@@ -94,4 +95,18 @@ export function removeInvalidAllegations(participant, allegations) {
   }
 
   return filteredAllegations
+}
+
+export function areCrossReportsRequired(allegations) {
+  if (_.isEmpty(allegations)) return false
+  const allegationsRequiringReports = ALLEGATION_TYPES
+    .filter((type) => type.requiresCrossReport)
+    .map((type) => (type.value))
+  let reportsRequired
+  const allAllegationTypes = allegations.map((a) => a.get('allegation_types')).flatten()
+  allegationsRequiringReports.forEach((allegation) => (
+    reportsRequired =
+      reportsRequired || allAllegationTypes.includes(allegation)
+  ))
+  return reportsRequired
 }

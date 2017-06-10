@@ -13,7 +13,7 @@ import React from 'react'
 import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
-import {sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
+import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {IndexLink, Link} from 'react-router'
@@ -279,7 +279,7 @@ export class ScreeningPage extends React.Component {
               onSave={this.cardSave}
               onChange={this.setField}
               ref='crossReportCard'
-              allegations={sortedAllegations}
+              areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
               crossReports={mergedScreening.get('cross_reports')}
             />
         }
