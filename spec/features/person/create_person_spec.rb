@@ -44,13 +44,9 @@ feature 'Create Person' do
 
     stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: person.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 201))
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
 

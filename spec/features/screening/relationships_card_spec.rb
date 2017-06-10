@@ -199,16 +199,12 @@ feature 'Relationship card' do
         %w[Ma Mar Marg Marge].each do |search_text|
           stub_request(
             :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-          ).and_return(body: [marge].to_json,
-                       status: 200,
-                       headers: { 'Content-Type' => 'application/json' })
+          ).and_return(json_body([marge].to_json, status: 200))
         end
 
         stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
           .with(body: new_participant.as_json(except: :id).merge(new_participant_request))
-          .and_return(body: new_participant.to_json,
-                      status: 201,
-                      headers: { 'Content-Type' => 'application/json' })
+          .and_return(json_body(new_participant.to_json, status: 201))
 
         new_relationships = [
           {

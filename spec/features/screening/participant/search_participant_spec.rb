@@ -7,9 +7,7 @@ feature 'searching a person' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   before do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
   end
 
@@ -18,9 +16,7 @@ feature 'searching a person' do
       stub_request(
         :get,
         host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa'))
-      ).and_return(body: [],
-                   status: 200,
-                   headers: { 'Content-Type' => 'application/json' })
+      ).and_return(json_body([].to_json, status: 200))
     end
     scenario 'I search for a person' do
       Feature.run_with_activated(:people_search_tpt) do
@@ -43,9 +39,7 @@ feature 'searching a person' do
   context 'in intake API' do
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: 'aa')))
-        .and_return(body: [],
-                    status: 200,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body([].to_json, status: 200))
     end
     scenario 'I search for a person' do
       Feature.run_with_deactivated(:people_search_tpt) do
@@ -102,9 +96,7 @@ feature 'searching a participant in autocompleter' do
   end
   before do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
   end
 
@@ -114,9 +106,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [person].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([person].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -150,9 +140,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [marge].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([marge].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -171,9 +159,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [person_with_out_phone_numbers].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([person_with_out_phone_numbers].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -205,9 +191,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [person_with_out_addresses].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([person_with_out_addresses].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -237,9 +221,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [person_with_name_only].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([person_with_name_only].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -263,9 +245,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [marge].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([marge].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
@@ -288,9 +268,7 @@ feature 'searching a participant in autocompleter' do
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-        ).and_return(body: [marge].to_json,
-                     status: 200,
-                     headers: { 'Content-Type' => 'application/json' })
+        ).and_return(json_body([marge].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do

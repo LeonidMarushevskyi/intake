@@ -44,9 +44,7 @@ feature 'Edit Screening' do
   end
   before(:each) do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
     expect(page).to have_content 'Edit Screening #My Bad!'
   end
@@ -177,9 +175,7 @@ feature 'individual card save' do
 
   before(:each) do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
     within '#screening-information-card' do
       fill_in 'Title/Name of Screening', with: 'This should not save'

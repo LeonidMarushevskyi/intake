@@ -151,7 +151,7 @@ feature 'show allegations' do
     end
 
     stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(nil, status: 204))
 
     within show_participant_card_selector(marge.id) do
       click_button 'Delete participant'

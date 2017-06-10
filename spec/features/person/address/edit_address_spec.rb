@@ -21,9 +21,7 @@ feature 'Edit Address' do
 
   before do
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
   end
 
   scenario 'when a user navigates to edit page' do
@@ -72,13 +70,9 @@ feature 'Edit Address' do
 
     stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
     expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
@@ -93,9 +87,7 @@ feature 'Edit Address' do
 
     stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
 
     within '#addresses' do
       expect(page).to have_field('Address', with: first_address.street_address)

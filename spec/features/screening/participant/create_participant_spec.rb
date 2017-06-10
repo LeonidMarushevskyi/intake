@@ -71,16 +71,12 @@ feature 'Edit Screening' do
   before do
     Timecop.travel(Time.parse('2016-12-28 17:01 PST').utc)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(existing_screening.to_json, status: 200))
     %w[Ma Mar Marg Marge].each do |search_text|
       stub_request(
         :get,
         host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-      ).and_return(body: [marge].to_json,
-                   status: 200,
-                   headers: { 'Content-Type' => 'application/json' })
+      ).and_return(json_body([marge].to_json, status: 200))
     end
     stub_request(
       :get,
@@ -102,9 +98,7 @@ feature 'Edit Screening' do
 
     stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
-      .and_return(body: created_participant_unknown.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(created_participant_unknown.to_json, status: 201))
     within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('.btn', text: /Create a new person/).click

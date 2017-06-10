@@ -50,13 +50,9 @@ feature 'Create Phone Number' do
 
     stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: person.as_json.merge(id: '1').to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.as_json.merge(id: '1').to_json, status: 201))
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path('1')))
-      .and_return(body: person.as_json.merge(id: '1').to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.as_json.merge(id: '1').to_json, status: 200))
 
     click_button 'Save'
 
@@ -74,16 +70,12 @@ feature 'Create Phone Number' do
     # the following stub allows the user to transistion to the person show page
     stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: created_person.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(created_person.to_json, status: 201))
     visit new_person_path
     click_button 'Add new phone number'
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(created_person.id)))
-      .and_return(body: created_person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(created_person.to_json, status: 200))
 
     click_button 'Save'
 

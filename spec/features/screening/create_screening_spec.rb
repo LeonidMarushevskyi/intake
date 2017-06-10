@@ -14,19 +14,13 @@ feature 'Create Screening' do
     )
     stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
       .with(body: as_json_without_root_id(new_screening))
-      .and_return(body: new_screening.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(new_screening.to_json, status: 201))
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
-      .and_return(body: [].to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body([].to_json, status: 200))
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
-      .and_return(body: new_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(new_screening.to_json, status: 200))
 
     visit root_path
     click_link 'Start Screening'

@@ -254,7 +254,7 @@ feature 'edit allegations' do
 
     within edit_participant_card_selector(marge.id) do
       stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(nil, status: 204))
 
       click_button 'Delete participant'
     end
@@ -459,7 +459,7 @@ feature 'edit allegations' do
 
     within edit_participant_card_selector(marge.id) do
       stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(status: 204, headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(nil, status: 204))
 
       click_button 'Delete participant'
     end

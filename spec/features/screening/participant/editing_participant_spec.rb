@@ -66,11 +66,7 @@ feature 'Edit Screening' do
 
   before do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-      .and_return(
-        body: screening.to_json,
-        status: 200,
-        headers: { 'Content-Type' => 'application/json' }
-      )
+      .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
       host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
@@ -114,9 +110,7 @@ feature 'Edit Screening' do
 
       stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
-        .and_return(status: 200,
-                    body: marge.to_json,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(marge.to_json, status: 200))
     end
 
     within edit_participant_card_selector(homer.id) do
@@ -287,9 +281,7 @@ feature 'Edit Screening' do
 
       stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: as_json_without_root_id(marge))
-        .and_return(status: 200,
-                    body: marge.to_json,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(marge.to_json, status: 200))
     end
 
     within edit_participant_card_selector(marge.id) do
@@ -328,9 +320,7 @@ feature 'Edit Screening' do
 
     stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
-      .and_return(status: 200,
-                  body: marge.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
@@ -355,13 +345,9 @@ feature 'Edit Screening' do
       marge.languages = %w[English Farsi]
       stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: marge.to_json)
-        .and_return(status: 200,
-                    body: marge.to_json,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(marge.to_json, status: 200))
       stub_request(:get, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(status: 200,
-                    body: marge.to_json,
-                    headers: { 'Content-Type' => 'application/json' })
+        .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
       expect(a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))

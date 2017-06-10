@@ -15,9 +15,7 @@ feature 'Edit Phone Number' do
     )
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
     visit edit_person_path(id: person.id)
 
     within '#phone-numbers' do
@@ -59,9 +57,7 @@ feature 'Edit Phone Number' do
 
     stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
 
@@ -82,9 +78,7 @@ feature 'Edit Phone Number' do
     )
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
     visit edit_person_path(id: person.id)
 
     within '#phone-numbers' do
@@ -101,9 +95,7 @@ feature 'Edit Phone Number' do
     person.phone_numbers = []
     stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
     expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))

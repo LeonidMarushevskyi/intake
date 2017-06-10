@@ -46,11 +46,8 @@ feature 'api responses' do
   end
 
   scenario 'API returns a success' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id))).and_return(
-      body: screening.to_json,
-      status: 200,
-      headers: { 'Content-Type' => 'application/json' }
-    )
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
     visit screening_path(id: screening.id)
     expect(page.current_url).to have_content screening_path(screening.id)
   end
