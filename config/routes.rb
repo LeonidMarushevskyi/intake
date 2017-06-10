@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
+require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_and_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
 
 Rails.application.routes.draw do
@@ -14,7 +15,11 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :screenings,
-        only: %i[show create update index],
+        only: %i[index],
+        constraints: Routes::InactiveReleaseOneAndTwoConstraint
+
+      resources :screenings,
+        only: %i[show create update],
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
@@ -32,13 +37,13 @@ Rails.application.routes.draw do
 
       resources :people,
         only: %i[create update show],
-        constraints: Routes::InactiveReleaseOneConstraint
+        constraints: Routes::InactiveReleaseOneAndTwoConstraint
     end
   end
 
   resources :people,
     only: %i[new edit show],
-    constraints: Routes::InactiveReleaseOneConstraint
+    constraints: Routes::InactiveReleaseOneAndTwoConstraint
 
   resources :version, only: :index
 end
