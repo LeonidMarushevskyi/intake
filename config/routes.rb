@@ -41,20 +41,4 @@ Rails.application.routes.draw do
     constraints: Routes::InactiveReleaseOneConstraint
 
   resources :version, only: :index
-
-  scope host: Rails.application.config.intake[:api_url] do
-    get 'api/v1/people/:id' => 'dev#null', as: :intake_api_person
-    get 'api/v1/people' => 'dev#null', as: :intake_api_people
-    get 'api/v1/people_search' => 'dev#null', as: :intake_api_people_search
-    get 'api/v2/people_search' => 'dev#null', as: :intake_api_people_search_v2
-    get 'api/v1/screenings' => 'dev#null', as: :intake_api_screenings
-    get 'api/v1/screenings/:id' => 'dev#null', as: :intake_api_screening
-    get 'api/v1/screenings/:id/history_of_involvements' => 'dev#null',
-        as: :intake_api_history_of_involvements
-    post 'api/v1/screenings/:id/submit' => 'dev#null', as: :intake_api_screening_submit
-    get 'api/v1/participants' => 'dev#null', as: :intake_api_participants
-    get 'api/v1/participants/:id' => 'dev#null', as: :intake_api_participant
-    get 'api/v1/screenings/:id/relationships' => 'dev#null',
-        as: :intake_api_relationships_by_screening
-  end
 end
