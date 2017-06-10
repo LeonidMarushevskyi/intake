@@ -7,13 +7,14 @@ feature 'login' do
   let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
   let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
 
-  before do
-    allow(Rails.configuration).to receive(:intake).and_return(
+  around do |example|
+    with_config(
       authentication_base_url: 'http://www.example.com',
       authentication_login_url: auth_login_url,
-      base_path: '/',
-      api_url: 'http://api:3000'
-    )
+      base_path: '/'
+    ) do
+      example.run
+    end
   end
 
   scenario 'user has not logged in', accessibility: false do

@@ -7,12 +7,13 @@ feature 'api responses' do
   let(:screening) { create :screening, name: 'Little Shop Of Horrors' }
   let(:auth_login_url) { 'http://www.fooooooooo.com/authn/login?callback=' }
 
-  before do
-    allow(Rails.configuration).to receive(:intake).and_return(
+  around do |example|
+    with_config(
       base_path: '/',
-      authentication_login_url: auth_login_url,
-      api_url: 'http://api:3000'
-    )
+      authentication_login_url: auth_login_url
+    ) do
+      example.run
+    end
   end
 
   scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
