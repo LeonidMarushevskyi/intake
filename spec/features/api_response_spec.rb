@@ -8,9 +8,11 @@ feature 'api responses' do
   let(:auth_login_url) { 'http://www.fooooooooo.com/authn/login?callback=' }
 
   before do
-    allow(Rails.configuration).to receive(:intake)
-      .and_return(base_path: '/',
-                  authentication_login_url: auth_login_url)
+    allow(Rails.configuration).to receive(:intake).and_return(
+      base_path: '/',
+      authentication_login_url: auth_login_url,
+      api_url: 'http://api:3000'
+    )
   end
 
   scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
