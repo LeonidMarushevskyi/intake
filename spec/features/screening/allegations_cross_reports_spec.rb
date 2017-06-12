@@ -5,28 +5,22 @@ require 'spec_helper'
 
 feature 'show cross reports' do
   scenario 'adding certain allegations makes certain cross reports required' do
-    marge = FactoryGirl.create(
+    perpetrator = FactoryGirl.create(
       :participant,
-      :perpetrator,
-      first_name: 'Marge',
-      last_name: 'Simpson'
+      :perpetrator
     )
-    bart = FactoryGirl.create(
+    victim = FactoryGirl.create(
       :participant,
-      :victim,
-      first_name: 'Bart',
-      last_name: 'Simpson'
+      :victim
     )
     screening = FactoryGirl.create(
       :screening,
       id: 1,
-      participants: [marge, bart],
+      participants: [perpetrator, victim],
       allegations: [{
         screening_id: 1,
-        perpetrator_id: marge.id,
-        perpetrator: marge,
-        victim_id: bart.id,
-        victim: bart,
+        perpetrator_id: perpetrator.id,
+        victim_id: victim.id,
         allegation_types: ['Severe neglect']
       }],
       cross_reports: [
