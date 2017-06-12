@@ -58,6 +58,13 @@ describe('DateField', () => {
     expect(onChange).toHaveBeenCalled()
   })
 
+  it('does not render a required date field', () => {
+    expect(component.find('label.required').exists()).toEqual(false)
+    expect(component.find('label').not('.required').exists()).toEqual(true)
+    expect(component.find('input').prop('required')).toBeFalsy()
+    expect(component.find('input').prop('aria-required')).toBeFalsy()
+  })
+
   describe('when DateField is required', () => {
     const props = {
       gridClassName: 'myWrapperTest',

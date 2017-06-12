@@ -58,6 +58,13 @@ describe('SelectField', () => {
     expect(onChange).toHaveBeenCalled()
   })
 
+  it('does not render a required select field', () => {
+    expect(component.find('label.required').exists()).toEqual(false)
+    expect(component.find('label').not('.required').exists()).toEqual(true)
+    expect(component.find('select').prop('required')).toBeFalsy()
+    expect(component.find('select').prop('aria-required')).toBeFalsy()
+  })
+
   describe('when SelectField is required', () => {
     const props = {
       children: [],
