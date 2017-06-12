@@ -21,8 +21,8 @@ describe('NarrativeShowView', () => {
   })
 
   it('renders the report narrative label as required', () => {
-    expect(component.find('ShowField[label="Report Narrative"]').props().labelClassName)
-      .toEqual('required')
+    expect(component.find('ShowField[label="Report Narrative"]').props().required)
+      .toEqual(true)
   })
 
   it('renders the edit link', () => {

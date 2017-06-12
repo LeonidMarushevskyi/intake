@@ -88,8 +88,8 @@ describe('DecisionShowView', () => {
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Promote to referral')
-    expect(component.find('ShowField[label="Response time"]').props().labelClassName)
-      .toContain('required')
+    expect(component.find('ShowField[label="Response time"]').props().required)
+      .toEqual(true)
   })
 
   it('renders show fields correctly when values are not set', () => {

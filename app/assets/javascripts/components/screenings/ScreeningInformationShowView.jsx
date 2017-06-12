@@ -20,12 +20,12 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         <ShowField gridClassName='col-md-6' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
-        <ShowField gridClassName='col-md-6' labelClassName='required' label='Assigned Social Worker'>
+        <ShowField gridClassName='col-md-6' label='Assigned Social Worker' required>
           {screening.get('assignee')}
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField gridClassName='col-md-6' labelClassName='required' label='Screening Start Date/Time'>
+        <ShowField gridClassName='col-md-6' label='Screening Start Date/Time' required>
           {parseDateTime(screening.get('started_at'))}
         </ShowField>
         <ShowField gridClassName='col-md-6' label='Screening End Date/Time'>
@@ -33,7 +33,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField gridClassName='col-md-6' labelClassName='required' label='Communication Method'>
+        <ShowField gridClassName='col-md-6' label='Communication Method' required>
           {COMMUNICATION_METHOD[screening.get('communication_method')]}
         </ShowField>
       </div>
