@@ -26,10 +26,8 @@ feature 'Edit Person' do
   end
 
   before do
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
   end
 
   scenario 'when a user navigates to edit page' do
@@ -85,18 +83,14 @@ feature 'Edit Person' do
     person.races = [{ race: 'Unknown' }]
     person.ethnicity = { hispanic_latino_origin: 'Declined to answer' }
 
-    stub_request(:put, intake_api_person_url(person.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
-    expect(a_request(:put, intake_api_person_url(person.id))
+    expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))).to have_been_made
 
     expect(page).to have_current_path(person_path(id: person.id))
@@ -113,18 +107,14 @@ feature 'Edit Person' do
     remove_react_select_option('Language(s)', 'Armenian')
 
     person.languages = %w[English Farsi]
-    stub_request(:put, intake_api_person_url(person.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
-    expect(a_request(:put, intake_api_person_url(person.id))
+    expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))).to have_been_made
 
     expect(page).to have_current_path(person_path(id: person.id))
@@ -146,18 +136,14 @@ feature 'Edit Person' do
       { race: 'White', race_detail: 'Romanian' }
     ]
 
-    stub_request(:put, intake_api_person_url(person.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
-    expect(a_request(:put, intake_api_person_url(person.id))
+    expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))).to have_been_made
 
     expect(page).to have_current_path(person_path(id: person.id))
@@ -177,18 +163,14 @@ feature 'Edit Person' do
     person.first_name = 'Lisa'
     person.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
 
-    stub_request(:put, intake_api_person_url(person.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(status: 200,
-                  body: person.to_json,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 200))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
-    expect(a_request(:put, intake_api_person_url(person.id))
+    expect(a_request(:put, host_url(ExternalRoutes.intake_api_person_path(person.id)))
       .with(body: person.to_json(except: :id))).to have_been_made
 
     expect(page).to have_current_path(person_path(id: person.id))

@@ -6,7 +6,7 @@ class ScreeningRepository
   def self.create(security_token, screening)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_screenings_path,
+      ExternalRoutes.intake_api_screenings_path,
       :post,
       screening.as_json.except('id')
     )
@@ -16,7 +16,7 @@ class ScreeningRepository
   def self.find(security_token, id)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_screening_path(id),
+      ExternalRoutes.intake_api_screening_path(id),
       :get
     )
     Screening.new(response.body)
@@ -26,7 +26,7 @@ class ScreeningRepository
     raise 'Error updating screening: id is required' unless screening.id
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_screening_path(screening.id),
+      ExternalRoutes.intake_api_screening_path(screening.id),
       :put,
       screening.as_json.except('id')
     )
@@ -36,7 +36,7 @@ class ScreeningRepository
   def self.search(security_token, search_terms)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_screenings_path(search_terms),
+      ExternalRoutes.intake_api_screenings_path(search_terms),
       :get
     )
     response.body.map do |result_attributes|
@@ -47,7 +47,7 @@ class ScreeningRepository
   def self.history_of_involvements(security_token, id)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_history_of_involvements_path(id),
+      ExternalRoutes.intake_api_history_of_involvements_path(id),
       :get
     )
     response.body
@@ -56,7 +56,7 @@ class ScreeningRepository
   def self.submit(security_token, id)
     response = IntakeAPI.make_api_call(
       security_token,
-      Rails.application.routes.url_helpers.intake_api_screening_submit_path(id),
+      ExternalRoutes.intake_api_screening_submit_path(id),
       :post
     )
     Screening.new(response.body)

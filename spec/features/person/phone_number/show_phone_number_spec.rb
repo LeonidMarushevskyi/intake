@@ -20,10 +20,8 @@ feature 'Show Person' do
       ],
       addresses: FactoryGirl.create(:address, id: nil)
     )
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     visit person_path(id: person.id)
 

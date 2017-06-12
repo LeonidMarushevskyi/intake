@@ -30,13 +30,11 @@ feature 'Show Screening' do
   )
 
   before do
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
-      .and_return(body: existing_screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
+      .and_return(json_body(existing_screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(existing_screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
     ).and_return(json_body([].to_json, status: 200))
   end
 

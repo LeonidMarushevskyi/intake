@@ -56,19 +56,15 @@ feature 'Create Address' do
       end
     end
 
-    stub_request(:post, intake_api_people_url)
+    stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: created_person.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(created_person.id))
-      .and_return(body: created_person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(created_person.to_json, status: 201))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(created_person.id)))
+      .and_return(json_body(created_person.to_json, status: 200))
 
     click_button 'Save'
 
-    expect(a_request(:post, intake_api_people_url)
+    expect(a_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id)))
       .to have_been_made
 
@@ -85,22 +81,18 @@ feature 'Create Address' do
       ethnicity: { hispanic_latino_origin: nil, ethnicity_detail: nil }
     )
     created_person = FactoryGirl.create(:person, person.as_json.merge(id: '1'))
-    stub_request(:post, intake_api_people_url)
+    stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: created_person.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(created_person.id))
-      .and_return(body: created_person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(created_person.to_json, status: 201))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(created_person.id)))
+      .and_return(json_body(created_person.to_json, status: 200))
 
     visit new_person_path
     click_button 'Add new address'
 
     click_button 'Save'
 
-    expect(a_request(:post, intake_api_people_url)
+    expect(a_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id)))
       .to have_been_made
   end

@@ -42,20 +42,19 @@ feature 'Create Person' do
     find('label', text: 'Yes').click
     select 'Mexican'
 
-    stub_request(:post, intake_api_people_url)
+    stub_request(:post, host_url(ExternalRoutes.intake_api_people_path))
       .with(body: person.to_json(except: :id))
-      .and_return(body: person.to_json,
-                  status: 201,
-                  headers: { 'Content-Type' => 'application/json' })
-    stub_request(:get, intake_api_person_url(person.id))
-      .and_return(body: person.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+      .and_return(json_body(person.to_json, status: 201))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_person_path(person.id)))
+      .and_return(json_body(person.to_json, status: 200))
 
     click_button 'Save'
 
-    expect(a_request(:post, intake_api_people_url).with(body: person.to_json(except: :id)))
-      .to have_been_made
+    expect(
+      a_request(
+        :post, host_url(ExternalRoutes.intake_api_people_path)
+      ).with(body: person.to_json(except: :id))
+    ).to have_been_made
 
     expect(page).to have_current_path(person_path(person.id))
     within '.card-header' do

@@ -17,10 +17,8 @@ feature 'screening information card' do
   end
 
   before(:each) do
-    stub_request(:get, intake_api_screening_url(screening.id))
-      .and_return(body: screening.to_json,
-                  status: 200,
-                  headers: { 'Content-Type' => 'application/json' })
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
   end
@@ -48,12 +46,12 @@ feature 'screening information card' do
       ended_at: '2016-08-17T10:00:00.000Z'
     )
 
-    stub_request(:put, intake_api_screening_url(screening.id))
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
       .and_return(json_body(screening.to_json))
 
     expect(
-      a_request(:put, intake_api_screening_url(screening.id))
+      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
     ).to have_been_made
   end

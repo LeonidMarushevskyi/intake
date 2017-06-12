@@ -7,7 +7,7 @@ feature 'History card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
   scenario 'edit an existing screening' do
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(json_body(existing_screening.to_json))
     visit edit_screening_path(id: existing_screening.id)
 
@@ -20,7 +20,7 @@ feature 'History card' do
   end
 
   scenario 'view an existing screening' do
-    stub_request(:get, intake_api_screening_url(existing_screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(json_body(existing_screening.to_json))
     visit screening_path(id: existing_screening.id)
 
@@ -181,17 +181,17 @@ feature 'History card' do
       archer = FactoryGirl.create(:participant, first_name: 'Archer', legacy_id: 1)
       existing_screening.participants = [lana, archer]
 
-      stub_request(:get, intake_api_screening_url(existing_screening.id))
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
 
       stub_request(
         :get,
-        intake_api_history_of_involvements_url(existing_screening.id)
+        host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
       ).and_return(json_body(screening_involvement.to_json, status: 200))
 
       stub_request(
         :get,
-        intake_api_relationships_by_screening_url(existing_screening.id)
+        host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
       ).and_return(json_body([].to_json, status: 200))
     end
 
@@ -297,7 +297,7 @@ feature 'History card' do
       expect(
         a_request(
           :get,
-          intake_api_history_of_involvements_url(existing_screening.id)
+          host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
         )
       ).to have_been_made
     end
@@ -308,7 +308,7 @@ feature 'History card' do
       expect(
         a_request(
           :get,
-          intake_api_history_of_involvements_url(existing_screening.id)
+          host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
         )
       ).to have_been_made
 
