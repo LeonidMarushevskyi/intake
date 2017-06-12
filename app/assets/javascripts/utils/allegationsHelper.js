@@ -98,15 +98,11 @@ export function removeInvalidAllegations(participant, allegations) {
 }
 
 export function areCrossReportsRequired(allegations) {
-  if (_.isEmpty(allegations)) return false
+  if (!allegations || allegations.isEmpty()) return false
   const allegationsRequiringReports = ALLEGATION_TYPES
     .filter((type) => type.requiresCrossReport)
     .map((type) => (type.value))
-  let reportsRequired
+
   const allAllegationTypes = allegations.map((a) => a.get('allegation_types')).flatten()
-  allegationsRequiringReports.forEach((allegation) => (
-    reportsRequired =
-      reportsRequired || allAllegationTypes.includes(allegation)
-  ))
-  return reportsRequired
+  return !allAllegationTypes.toSet().intersect(allegationsRequiringReports).isEmpty()
 }
