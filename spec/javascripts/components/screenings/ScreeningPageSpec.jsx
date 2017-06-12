@@ -512,7 +512,7 @@ describe('when referral_submit is not active', () => {
     const component = shallow(<ScreeningPage {...props} />)
     component.find('button[children="Submit"]').simulate('click')
     expect(config.isFeatureActive).toHaveBeenCalledWith('referral_submit')
-    expect(submitScreening).not.toHaveBeenCalledWith('99')
+    expect(submitScreening).not.toHaveBeenCalled()
   })
 })
 
