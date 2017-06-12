@@ -1,4 +1,3 @@
-import ALLEGATION_TYPES from 'AllegationTypes'
 import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
@@ -421,7 +420,14 @@ describe('areCrossReportsRequired', () => {
   })
 
   it('returns true if allegations include an allegation that require cross reports', () => {
-    const allegationsRequiringReports = ALLEGATION_TYPES.filter((type) => type.requiresCrossReport).map((type) => (type.value))
+    const allegationsRequiringReports = [
+      'Severe neglect',
+      'Physical abuse',
+      'Sexual abuse',
+      'Emotional abuse',
+      'Exploitation',
+      'At risk, sibling abused',
+    ]
     allegationsRequiringReports.forEach((allegation) => {
       const allegations = Immutable.fromJS([
         {allegation_types: [allegation]},
@@ -433,7 +439,10 @@ describe('areCrossReportsRequired', () => {
   })
 
   it('returns false if no allegations require cross reports', () => {
-    const allegationsNotRequiringReports = ALLEGATION_TYPES.filter((type) => !type.requiresCrossReport).map((type) => (type.value))
+    const allegationsNotRequiringReports = [
+      'Caretaker absent/incapacity',
+      'General neglect',
+    ]
     allegationsNotRequiringReports.forEach((allegation) => {
       const allegations = Immutable.fromJS([
         {allegation_types: [allegation]},
