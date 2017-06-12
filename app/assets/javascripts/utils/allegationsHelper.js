@@ -10,7 +10,7 @@ function findAllegation(allegations, victimId, perpetratorId) {
 }
 
 function findParticipantsByRole(participants, role) {
-  return participants.filter((participant) => (participant.get('roles')).includes(role))
+  return participants.filter((participant) => participant.get('roles').includes(role))
 }
 
 function buildAllegations(screeningId, participants, allegations, allegationsEdits) {
