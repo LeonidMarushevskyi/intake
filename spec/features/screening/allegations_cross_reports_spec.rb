@@ -31,11 +31,11 @@ feature 'show cross reports' do
         )
       ]
     )
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([], status: 200))
     visit edit_screening_path(id: screening.id)
 
@@ -75,11 +75,11 @@ feature 'show cross reports' do
         )
       ]
     )
-    stub_request(:get, intake_api_screening_url(screening.id))
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_request(
       :get,
-      intake_api_history_of_involvements_url(screening.id)
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([], status: 200))
     visit edit_screening_path(id: screening.id)
 
