@@ -476,11 +476,10 @@ it('renders the submit button', () => {
   expect(component.find('button[children="Submit"]').length).toEqual(1)
 })
 
-describe('when referral_submit is ON', () => {
+describe('when referral_submit is active', () => {
   beforeEach(() => {
-    spyOn(config, 'config').and.returnValue({
-      referral_submit: true,
-    })
+    spyOn(config, 'isFeatureActive')
+    config.isFeatureActive.and.returnValue(true)
   })
 
   it('clicking the submit button submits the screening', () => {
@@ -492,15 +491,15 @@ describe('when referral_submit is ON', () => {
     }
     const component = shallow(<ScreeningPage {...props} />)
     component.find('button[children="Submit"]').simulate('click')
+    expect(config.isFeatureActive).toHaveBeenCalledWith('referral_submit')
     expect(submitScreening).toHaveBeenCalledWith('99')
   })
 })
 
-describe('when referral_submit is OFF', () => {
+describe('when referral_submit is not active', () => {
   beforeEach(() => {
-    spyOn(config, 'config').and.returnValue({
-      referral_submit: false,
-    })
+    spyOn(config, 'isFeatureActive')
+    config.isFeatureActive.and.returnValue(false)
   })
 
   it('clicking the submit button does not submits the screening', () => {
@@ -512,7 +511,8 @@ describe('when referral_submit is OFF', () => {
     }
     const component = shallow(<ScreeningPage {...props} />)
     component.find('button[children="Submit"]').simulate('click')
-    expect(submitScreening).not.toHaveBeenCalledWith('99')
+    expect(config.isFeatureActive).toHaveBeenCalledWith('referral_submit')
+    expect(submitScreening).not.toHaveBeenCalled()
   })
 })
 

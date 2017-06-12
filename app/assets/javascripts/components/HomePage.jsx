@@ -6,6 +6,7 @@ import ScreeningsTable from 'components/screenings/ScreeningsTable'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import * as IntakeConfig from 'config'
 
 export class HomePage extends React.Component {
   constructor() {
@@ -16,7 +17,9 @@ export class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    this.getScreenings()
+    if (IntakeConfig.isFeatureInactive('release_two')) {
+      this.getScreenings()
+    }
   }
 
   createScreening() {
@@ -30,7 +33,10 @@ export class HomePage extends React.Component {
 
   getScreenings() {
     Utils.request('GET', '/api/v1/screenings')
-      .then((jsonResponse) => this.setState({screenings: jsonResponse}))
+      .then((jsonResponse) => {
+        this.setState({screenings: jsonResponse})
+      }
+    )
   }
 
   render() {
@@ -44,7 +50,7 @@ export class HomePage extends React.Component {
           </ul>
         </div>
         <div className='col-md-9'>
-          <ScreeningsTable screenings={this.state.screenings} />
+          { IntakeConfig.isFeatureInactive('release_two') && <ScreeningsTable screenings={this.state.screenings} /> }
         </div>
       </div>
     )

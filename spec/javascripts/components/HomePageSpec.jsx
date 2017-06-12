@@ -3,62 +3,107 @@ import Immutable from 'immutable'
 import React from 'react'
 import {HomePage} from 'components/HomePage'
 import {shallow} from 'enzyme'
-
-const stubRequest = (mockData) => {
-  const screeningIndexSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-  spyOn(Utils, 'request').and.returnValue(screeningIndexSpyObj)
-  screeningIndexSpyObj.then.and.callFake((then) => then(mockData))
-  Utils.request.and.returnValue(screeningIndexSpyObj)
-}
+import * as IntakeConfig from 'config'
 
 describe('HomePage', () => {
   let component
-  let createScreening
-  const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
-  let routerSpy
-  let props
-  beforeEach(() => {
-    const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    promiseSpyObj.then.and.callFake((then) => then())
-    createScreening = jasmine.createSpy('createScreening')
-    createScreening.and.returnValue(promiseSpyObj)
-    routerSpy = jasmine.createSpyObj('routerSpy', ['push'])
-    props = {
-      actions: {createScreening},
-      screening: Immutable.Map({id: '1'}),
-      router: routerSpy,
-    }
-    component = shallow(<HomePage {...props} />)
+  const requiredProps = {
+    actions: {},
+    screening: Immutable.Map(),
+    router: {},
+  }
+
+  describe('when release_two is inactive', () => {
+    beforeEach(() => {
+      spyOn(IntakeConfig, 'isFeatureInactive')
+      IntakeConfig.isFeatureInactive.and.returnValue(true)
+    })
+
+    describe('#componentDidMount', () => {
+      const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
+      let instance
+      beforeEach((done) => {
+        spyOn(Utils, 'request').and.returnValue(Promise.resolve(mockScreenings))
+        instance = shallow(<HomePage {...requiredProps}/>).instance()
+        spyOn(instance, 'setState').and.callFake(done)
+        instance.componentDidMount()
+      })
+
+      it('fetches the screenings', () => {
+        expect(Utils.request).toHaveBeenCalledWith('GET', '/api/v1/screenings')
+      })
+
+      it('sets the screening state with the fetched screenings', () => {
+        expect(instance.setState).toHaveBeenCalledWith({screenings: mockScreenings})
+      })
+    })
+
+    it('renders the create screening link', () => {
+      component = shallow(<HomePage {...requiredProps} />)
+      const createScreeningLink = component.find('Link')
+      expect(createScreeningLink.props().children).toEqual('Start Screening')
+    })
+
+    it('renders the screening index table', () => {
+      component = shallow(<HomePage {...requiredProps} />)
+      expect(component.find('ScreeningsTable').length).toEqual(1)
+    })
+
+    it('renders the screening index table when screenings are present', () => {
+      const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
+      component = shallow(<HomePage {...requiredProps} />)
+      component.setState({screenings: mockScreenings})
+      const table = component.find('ScreeningsTable')
+      expect(table.props().screenings).toEqual(mockScreenings)
+    })
+
+    describe('when a user creates a new screening', () => {
+      let createScreening
+      let router
+      beforeEach((done) => {
+        createScreening = jasmine.createSpy('createScreening')
+        createScreening.and.returnValue(Promise.resolve())
+        router = jasmine.createSpyObj('routerSpy', ['push'])
+        const props = {
+          actions: {createScreening},
+          screening: Immutable.Map({id: '1'}),
+          router,
+        }
+        component = shallow(<HomePage {...props} />)
+        const createScreeningLink = component.find('Link')
+        createScreeningLink.simulate('click')
+        router.push.and.callFake(done)
+      })
+
+      it('sends a POST request to the server and redirects to edit', () => {
+        expect(createScreening).toHaveBeenCalled()
+        expect(router.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
+      })
+    })
   })
 
-  it('gets screenings and sets state when rendered', () => {
-    stubRequest(mockScreenings)
-    const instance = shallow(<HomePage {...props}/>).instance()
-    spyOn(instance, 'setState').and.callThrough()
-    instance.componentDidMount()
-    expect(instance.setState).toHaveBeenCalledWith({screenings: mockScreenings})
-  })
+  describe('when release_two feature is not inactive', () => {
+    beforeEach(() => {
+      spyOn(IntakeConfig, 'isFeatureInactive')
+      IntakeConfig.isFeatureInactive.and.returnValue(false)
+    })
 
-  it('state.screenings are sent to the screenings table', () => {
-    const component = shallow(<HomePage {...props} />)
-    component.setState({screenings: mockScreenings})
-    const table = component.find('ScreeningsTable')
-    expect(table.props().screenings).toEqual(mockScreenings)
-  })
+    it('does not render the screenings table', () => {
+      const component = shallow(<HomePage {...requiredProps} />)
+      const table = component.find('ScreeningsTable')
+      expect(table.length).toEqual(0)
+    })
 
-  it('renders the create screening link', () => {
-    const createScreeningLink = component.find('Link')
-    expect(createScreeningLink.props().children).toEqual('Start Screening')
-  })
+    describe('#componentDidMount', () => {
+      beforeEach(() => {
+        spyOn(Utils, 'request')
+        const instance = shallow(<HomePage {...requiredProps}/>).instance()
+        instance.componentDidMount()
+      })
 
-  it('sends a POST request to the server and redirects to edit', () => {
-    const createScreeningLink = component.find('Link')
-    createScreeningLink.simulate('click')
-    expect(createScreening).toHaveBeenCalled()
-    expect(routerSpy.push).toHaveBeenCalledWith({pathname: '/screenings/1/edit'})
-  })
-
-  it('renders the screening index table', () => {
-    expect(component.find('ScreeningsTable').length).toEqual(1)
+      it('does not fetch the screenings', () => {
+        expect(Utils.request).not.toHaveBeenCalledWith('GET', '/api/v1/screenings')
+      })
+    })
   })
 })
