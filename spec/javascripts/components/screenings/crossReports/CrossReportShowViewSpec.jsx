@@ -45,12 +45,16 @@ describe('CrossReportShowView', () => {
       expect(component.html()).toContain('Licensing')
     })
 
-    it('renders the reported on field', () => {
-      expect(component.find('ShowField[label="Cross Reported on Date"]').html()).toContain('1/15/2017')
+    it('renders the reported on field as required', () => {
+      const field = component.find('ShowField[label="Cross Reported on Date"]')
+      expect(field.html()).toContain('1/15/2017')
+      expect(field.props().required).toEqual(true)
     })
 
-    it('renders the communication method field', () => {
-      expect(component.find('ShowField[label="Communication Method"]').html()).toContain('Electronic Report')
+    it('renders the communication method field as required', () => {
+      const field = component.find('ShowField[label="Communication Method"]')
+      expect(field.html()).toContain('Electronic Report')
+      expect(field.props().required).toEqual(true)
     })
   })
 

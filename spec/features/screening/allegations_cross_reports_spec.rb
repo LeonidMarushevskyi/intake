@@ -37,12 +37,22 @@ feature 'show cross reports' do
       :get,
       host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([], status: 200))
+    stub_request(
+      :get,
+      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
+    ).and_return(json_body([], status: 200))
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
       expect(page.find('label', text: /\ADistrict attorney\z/)[:class]).to include('required')
       expect(page.find('label', text: /\ALaw enforcement\z/)[:class]).to include('required')
       expect(page.find('label', text: 'Law enforcement agency name')[:class]).to include('required')
+      expect(page.find('label', text: 'Cross Reported on Date')[:class]).to include('required')
+      expect(page.find('label', text: 'Communication Method')[:class]).to include('required')
+      click_button 'Cancel'
+    end
+
+    within '#cross-report-card.show' do
       expect(page.find('label', text: 'Cross Reported on Date')[:class]).to include('required')
       expect(page.find('label', text: 'Communication Method')[:class]).to include('required')
     end
