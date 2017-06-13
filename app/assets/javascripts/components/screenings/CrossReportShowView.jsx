@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'components/common/ShowField'
 import {dateFormatter} from 'utils/dateFormatter'
+import _ from 'lodash'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ export default class CrossReportShowView extends React.Component {
 
   render() {
     const crossReports = this.props.crossReports.toJS()
+    const hasCrossReports = !_.isEmpty(crossReports)
     let reportedOn
     let communicationMethod
     const [firstCrossReport] = crossReports
@@ -43,8 +45,8 @@ export default class CrossReportShowView extends React.Component {
           {
             firstCrossReport &&
               <div className='row'>
-                <ShowField gridClassName='col-md-6' label='Cross Reported on Date'>{reportedOn}</ShowField>
-                <ShowField gridClassName='col-md-6' label='Communication Method'>{communicationMethod}</ShowField>
+                <ShowField gridClassName='col-md-6' label='Cross Reported on Date' required={hasCrossReports}>{reportedOn}</ShowField>
+                <ShowField gridClassName='col-md-6' label='Communication Method' required={hasCrossReports}>{communicationMethod}</ShowField>
               </div>
           }
         </div>
