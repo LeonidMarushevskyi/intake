@@ -9,6 +9,15 @@ describe('HistoryCardScreening', () => {
   }
 
   describe('#render', () => {
+    it('renders css id with the screening id', () => {
+      const screening = Immutable.fromJS({
+        ...requiredProps,
+        id: 'ABC123',
+      })
+      const component = shallow(<HistoryCardScreening screening={screening} index={1}/>)
+      expect(component.find('tr#screening-ABC123').exists()).toEqual(true)
+    })
+
     it('renders No Date when neither start nor end date are present', () => {
       const screening = Immutable.fromJS({
         ...requiredProps,

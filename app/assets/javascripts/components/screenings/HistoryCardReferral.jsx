@@ -16,7 +16,7 @@ const HistoryCardReferral = ({referral, index}) => {
   const allegations = referral.get('allegations')
 
   return (
-    <tr key={`referral-${index}`}>
+    <tr key={`referral-${index}`} id={`referral-${referral.get('id')}`}>
       <td>{dateRangeFormatter(referral.toJS())}</td>
       <td>
         <div className='row'>Referral</div>

@@ -4,6 +4,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryCardReferral', () => {
+  it('renders css id with the referral id', () => {
+    const referral = Immutable.fromJS({id: 'ABC123'})
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    expect(component.find('tr#referral-ABC123').exists()).toEqual(true)
+  })
+
   it('renders No Date when neither start nor end date is present', () => {
     const referral = Immutable.fromJS({})
     const component = shallow(<HistoryCardReferral referral={referral} index={1} />)

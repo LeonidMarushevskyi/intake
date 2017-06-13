@@ -4,6 +4,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryCardCase', () => {
+  it('renders css id with the case id', () => {
+    const hoiCase = Immutable.fromJS({id: 'ABC123'})
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    expect(component.find('tr#case-ABC123').exists()).toEqual(true)
+  })
+
   it('renders No Date when neither start nor end date is present', () => {
     const hoiCase = Immutable.fromJS({})
     const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)

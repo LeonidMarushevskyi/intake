@@ -27,7 +27,7 @@ const HistoryCardScreening = ({screening, index}) => {
   const status = screening.get('end_date') ? 'Closed' : 'In Progress'
 
   return (
-    <tr key={`screening-${index}`}>
+    <tr key={`screening-${index}`} id={`screening-${screening.get('id')}`}>
       <td>{dateRangeFormatter(screening.toJS())}</td>
       <td>
         <div className='row'>Screening</div>
