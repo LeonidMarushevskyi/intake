@@ -31,6 +31,11 @@ services:
       dockerfile: docker/test/Dockerfile
     command: bin/ci-javascript
     environment:
+      # Tests must be run in the correct timezone because
+      # of UTC converstion and explicit expectations.
+      # Sincerely,
+      # The Time Lords
+      TZ: US/Pacific
       RAILS_ENV: test
       CI_REPORTS: /reports
       GENERATE_TEST_REPORTS: 'yes'

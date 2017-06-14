@@ -1,4 +1,4 @@
-import {dateFormatter, dateRangeFormatter} from 'utils/dateFormatter'
+import {dateFormatter, dateTimeFormatter, dateRangeFormatter} from 'utils/dateFormatter'
 
 describe('dateFormatter', () => {
   it('returns empty string when passed undefined', () => {
@@ -15,6 +15,24 @@ describe('dateFormatter', () => {
 
   it("displays date in 'MM/DD/YYYY' when passed date in format 'YYYY-MM-DD'", () => {
     expect(dateFormatter('2011-01-21')).toEqual('01/21/2011')
+  })
+})
+
+describe('dateTimeFormatter', () => {
+  it('returns empty string when passed undefined', () => {
+    expect(dateTimeFormatter(undefined)).toEqual('')
+  })
+
+  it('returns empty string when passed null', () => {
+    expect(dateTimeFormatter(null)).toEqual('')
+  })
+
+  it('returns empty string when passed empty string', () => {
+    expect(dateTimeFormatter('')).toEqual('')
+  })
+
+  it("displays date in 'MM/DD/YYYY h:mm A' when passed date in ISO 8601 format", () => {
+    expect(dateTimeFormatter('2011-01-21T16:00:00.000Z')).toEqual('01/21/2011 9:00 AM')
   })
 })
 

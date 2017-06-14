@@ -11,7 +11,7 @@ feature 'cross reports' do
       .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
-    reported_on = Date.today.to_s(:db)
+    reported_on = Date.today
     communication_method = 'Electronic Report'
 
     within '#cross-report-card' do
@@ -21,7 +21,7 @@ feature 'cross reports' do
       find('label', text: /\ALaw enforcement\z/).click
       fill_in 'Law enforcement agency name', with: 'LA Office'
       expect(page).to have_content 'Communication Time and Method'
-      fill_in 'Cross Reported on Date', with: reported_on
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y')
       select communication_method, from: 'Communication Method'
       click_button 'Save'
     end
@@ -34,13 +34,13 @@ feature 'cross reports' do
             hash_including(
               'agency_type' => 'Law enforcement',
               'agency_name' => 'LA Office',
-              'reported_on' => reported_on,
+              'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
               'agency_type' => 'Department of justice',
               'agency_name' => 'Sac Office',
-              'reported_on' => reported_on,
+              'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
           )
@@ -141,7 +141,7 @@ feature 'cross reports' do
       expect(find(:checkbox, 'Department of justice')).to be_checked
       expect(page).to have_field('Department of justice agency name', with: 'Humboldt Office')
       expect(page).to have_field('Communication Method', with: 'Child Abuse Form')
-      expect(page).to have_field('Cross Reported on Date', with: Date.today.to_s(:db))
+      expect(page).to have_field('Cross Reported on Date', with: Date.today.strftime('%m/%d/%Y'))
     end
   end
 
@@ -162,16 +162,16 @@ feature 'cross reports' do
       .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
-    reported_on = Date.today.to_s(:db)
+    reported_on = Date.today
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
       find('label', text: /\ADepartment of justice\z/).click
-      fill_in 'Cross Reported on Date', with: reported_on
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y')
       select communication_method, from: 'Communication Method'
       find('label', text: /\ADepartment of justice\z/).click
       find('label', text: /\ALaw enforcement\z/).click
-      expect(page).to have_field('Cross Reported on Date', with: reported_on)
+      expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
       expect(page).to have_field('Communication Method', with: communication_method)
 
       click_button 'Save'
@@ -185,7 +185,7 @@ feature 'cross reports' do
             hash_including(
               'agency_type' => 'Law enforcement',
               'agency_name' => nil,
-              'reported_on' => reported_on,
+              'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
           )
@@ -201,12 +201,12 @@ feature 'cross reports' do
       .and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
-    reported_on = Date.today.to_s(:db)
+    reported_on = Date.today
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
       find('label', text: /\ADepartment of justice\z/).click
-      fill_in 'Cross Reported on Date', with: reported_on
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y')
       select communication_method, from: 'Communication Method'
       find('label', text: /\ADepartment of justice\z/).click
       click_button 'Save'

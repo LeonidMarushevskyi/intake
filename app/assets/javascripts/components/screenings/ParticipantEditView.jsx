@@ -105,8 +105,9 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-6'
             id='date_of_birth'
             label='Date of birth'
+            hasTime={false}
             value={participant.get('date_of_birth')}
-            onChange={(event) => onChange(['date_of_birth'], event.target.value || null)}
+            onChange={(value) => onChange(['date_of_birth'], value)}
           />
           <SelectField
             gridClassName='col-md-6'

@@ -48,14 +48,14 @@ feature 'screening incident information card' do
 
   scenario 'user edits incident card from screening edit page and saves' do
     within '#incident-information-card.edit' do
-      expect(page).to have_field('Incident Date', with: '2016-08-11')
+      expect(page).to have_field('Incident Date', with: '08/11/2016')
       expect(page).to have_field('Incident County', with: 'colusa')
       expect(page).to have_field('Location Type', with: "Child's Home")
       expect(page).to have_field('Address', with: '123 fake st')
       expect(page).to have_field('City', with: 'Springfield')
       expect(page).to have_field('State', with: 'NY')
       expect(page).to have_field('Zip', with: '12345')
-      fill_in 'Incident Date', with: '2015-10-05'
+      fill_in_datepicker 'Incident Date', with: '10-05-2015'
     end
 
     within '#narrative-card.edit' do

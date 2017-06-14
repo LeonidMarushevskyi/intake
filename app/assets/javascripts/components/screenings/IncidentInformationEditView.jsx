@@ -19,7 +19,8 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           id='incident_date'
           label='Incident Date'
           value={screening.get('incident_date')}
-          onChange={(event) => onChange(['incident_date'], event.target.value)}
+          onChange={(value) => onChange(['incident_date'], value)}
+          hasTime={false}
         />
       </div>
       <div className='row'>

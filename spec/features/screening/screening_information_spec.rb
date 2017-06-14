@@ -27,15 +27,15 @@ feature 'screening information card' do
     within '#screening-information-card.edit' do
       expect(page).to have_field('Title/Name of Screening', with: 'James')
       expect(page).to have_field('Assigned Social Worker', with: 'Lisa')
-      expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
-      expect(page).to have_field('Screening End Date/Time', with: '2016-08-15T11:00:00.000Z')
+      expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:00 AM')
+      expect(page).to have_field('Screening End Date/Time', with: '08/15/2016 4:00 AM')
       expect(page).to have_field('Communication Method', with: 'mail')
       expect(page).to have_content('Save')
       expect(page).to have_content('Cancel')
       fill_in 'Title/Name of Screening', with: 'Cameron'
       fill_in 'Assigned Social Worker', with: 'Mariko'
       select 'Phone', from: 'Communication Method'
-      fill_in 'Screening End Date/Time', with: '2016-08-17T10:00:00.000Z'
+      fill_in_datepicker 'Screening End Date/Time', with: '08/17/2016 3:00 AM'
       click_button 'Save'
     end
 
@@ -61,16 +61,16 @@ feature 'screening information card' do
       fill_in 'Title/Name of Screening', with: 'Bob Loblaw'
       fill_in 'Assigned Social Worker', with: 'George Michael'
       select 'Online', from: 'Communication Method'
-      fill_in 'Screening Start Date/Time', with: '2016-08-19T10:00:00.000Z'
-      fill_in 'Screening End Date/Time', with: '2016-08-24T10:00:00.000Z'
+      fill_in_datepicker 'Screening Start Date/Time', with: '08/19/2016 3:00 AM'
+      fill_in_datepicker 'Screening End Date/Time', with: '08/24/2016 3:00 AM'
       click_button 'Cancel'
     end
 
     within '#screening-information-card.show' do
       expect(page).to have_content('James')
       expect(page).to have_content('Lisa')
-      expect(page).to have_content('08/13/2016 10:00 AM')
-      expect(page).to have_content('08/15/2016 11:00 AM')
+      expect(page).to have_content('08/13/2016 3:00 AM')
+      expect(page).to have_content('08/15/2016 4:00 AM')
       expect(page).to have_content('Mail')
     end
 
@@ -79,8 +79,8 @@ feature 'screening information card' do
     within '#screening-information-card.edit' do
       expect(page).to have_field('Title/Name of Screening', with: 'James')
       expect(page).to have_field('Assigned Social Worker', with: 'Lisa')
-      expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
-      expect(page).to have_field('Screening End Date/Time', with: '2016-08-15T11:00:00.000Z')
+      expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:00 AM')
+      expect(page).to have_field('Screening End Date/Time', with: '08/15/2016 4:00 AM')
       expect(page).to have_field('Communication Method', with: 'mail')
     end
   end

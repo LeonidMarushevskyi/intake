@@ -56,8 +56,8 @@ feature 'Edit Screening' do
       expect(page.find('label', text: 'Communication Method')[:class]).to include('required')
       expect(page).to have_field('Title/Name of Screening', with: 'Little Shop Of Horrors')
       expect(page).to have_field('Assigned Social Worker', with: 'Bob Loblaw')
-      expect(page).to have_field('Screening Start Date/Time', with: '2016-08-13T10:00:00.000Z')
-      expect(page).to have_field('Screening End Date/Time', with: '2016-08-13T11:00:00.000Z')
+      expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:00 AM')
+      expect(page).to have_field('Screening End Date/Time', with: '08/13/2016 4:00 AM')
       expect(page).to have_field('Communication Method', with: 'phone')
       expect(page).to have_content('Save')
       expect(page).to have_content('Cancel')
@@ -69,7 +69,7 @@ feature 'Edit Screening' do
     end
 
     within '#incident-information-card.edit', text: 'Incident Information' do
-      expect(page).to have_field('Incident Date', with: '2016-08-11')
+      expect(page).to have_field('Incident Date', with: '08/11/2016')
       expect(page).to have_field('Incident County', with: 'sacramento')
       expect(page).to have_field('Address', with: '123 Fake St')
       expect(page).to have_field('City', with: 'Faketown')
@@ -195,7 +195,7 @@ feature 'individual card save' do
       stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
-      fill_in 'Incident Date', with: updated_screening[:incident_date]
+      fill_in_datepicker 'Incident Date', with: '02/12/1996'
       click_button 'Save'
       expect(
         a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
@@ -322,7 +322,7 @@ feature 'individual card save' do
         .with(json_body(as_json_without_root_id(existing_screening)))
         .and_return(json_body(existing_screening.to_json))
 
-      fill_in 'Incident Date', with: '1996-02-12'
+      fill_in_datepicker 'Incident Date', with: '02-12-1996'
       fill_in 'Address', with: '33 Whatever Rd'
       fill_in 'City', with: 'Modesto'
       select 'Texas', from: 'State'

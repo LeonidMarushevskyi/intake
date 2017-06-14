@@ -48,8 +48,8 @@ feature 'Show Screening' do
       expect(page.find('label', text: 'Communication Method')[:class]).to include('required')
       expect(page).to have_content 'The Rocky Horror Picture Show'
       expect(page).to have_content 'Bob Loblaw'
-      expect(page).to have_content '8/13/2016 10:00 AM'
-      expect(page).to have_content '8/22/2016 11:00 AM'
+      expect(page).to have_content '8/13/2016 3:00 AM'
+      expect(page).to have_content '8/22/2016 4:00 AM'
       expect(page).to have_content 'Mail'
     end
 

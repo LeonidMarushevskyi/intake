@@ -57,7 +57,7 @@ describe('IncidentInformationEditView', () => {
   })
 
   it('fires the onChange call when a field changes', () => {
-    component.find('#incident_date').simulate('change', {target: {value: '01/21/2006'}})
+    component.find('#incident_date').simulate('change', '01/21/2006')
     expect(props.onChange).toHaveBeenCalledWith(['incident_date'], '01/21/2006')
   })
 

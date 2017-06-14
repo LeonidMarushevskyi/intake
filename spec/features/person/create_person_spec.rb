@@ -6,7 +6,7 @@ feature 'Create Person' do
   scenario 'via the create person link on the home page' do
     person = FactoryGirl.create(
       :person,
-      date_of_birth: '05/29/1990',
+      date_of_birth: '1990-05-29',
       first_name: 'Homer',
       gender: 'male',
       last_name: 'Simpson',
@@ -34,7 +34,7 @@ feature 'Create Person' do
     select 'Male', from: 'Gender'
     fill_in_react_select 'Language(s)', with: 'English'
     fill_in_react_select 'Language(s)', with: 'Farsi'
-    fill_in 'Date of birth', with: '05/29/1990'
+    fill_in_datepicker 'Date of birth', with: '05/29/1990'
     fill_in 'Social security number', with: '123-23-1234'
     find('label', text: 'Asian').click
     select 'Chinese'

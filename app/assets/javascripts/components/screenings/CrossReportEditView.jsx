@@ -129,12 +129,13 @@ export default class CrossReportEditView extends React.Component {
                     gridClassName='col-md-6'
                     id='cross_report_reported_on'
                     label='Cross Reported on Date'
-                    onChange={(event) => {
+                    onChange={(value) => {
                       const updatedCrossReports = this.props.crossReports
-                        .map((crossReport) => crossReport.merge({reported_on: event.target.value}))
+                        .map((crossReport) => crossReport.merge({reported_on: value}))
                       this.props.onChange(['cross_reports'], updatedCrossReports)
-                      this.setState({reportedOn: event.target.value})
+                      this.setState({reportedOn: value})
                     }}
+                    hasTime={false}
                     required
                     value={this.state.reportedOn}
                   />

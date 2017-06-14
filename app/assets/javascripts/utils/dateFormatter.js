@@ -9,6 +9,14 @@ export function dateFormatter(date) {
   }
 }
 
+export function dateTimeFormatter(date) {
+  if (_.isEmpty(date)) {
+    return ''
+  } else {
+    return moment(date).format('MM/DD/YYYY h:mm A')
+  }
+}
+
 export function dateRangeFormatter({start_date, end_date}) {
   return [
     dateFormatter(start_date),

@@ -114,8 +114,9 @@ export class PersonEditPage extends React.Component {
               gridClassName='col-md-6'
               id='date_of_birth'
               label='Date of birth'
+              hasTime={false}
               value={person.get('date_of_birth')}
-              onChange={(event) => this.setField(['date_of_birth'], event.target.value)}
+              onChange={(value) => this.setField(['date_of_birth'], value)}
             />
             <SelectField
               gridClassName='col-md-6'

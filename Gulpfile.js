@@ -54,6 +54,17 @@ var testPack = browserify({
 
 gulp.task('default', ['build-and-version-assets'])
 
+gulp.task('react-widgets-styles', function() {
+  return gulp.src([
+    'node_modules/react-widgets/dist/**/*.css',
+    'node_modules/react-widgets/dist/**/*.woff',
+    'node_modules/react-widgets/dist/**/*.eot',
+    'node_modules/react-widgets/dist/**/*.svg',
+    'node_modules/react-widgets/dist/**/*.ttf',
+  ])
+  .pipe(gulp.dest('tmp/assets/rw'))
+})
+
 gulp.task('compile-scss', function() {
   gulp.src('app/assets/stylesheets/application.scss')
   .pipe(sourcemaps.init())
@@ -115,13 +126,13 @@ var runSequence = require('run-sequence')
 gulp.task('build-and-version-assets', ['clean-build-assets'], function() {
   if(isProduction) {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
+      ['js-vendor', 'js-app', 'compile-scss', 'react-widgets-styles', 'images', 'fonts'],
       ['version-assets'],
       ['translate-versioned-assets']
     )
   } else {
     runSequence(
-      ['js-vendor', 'js-app', 'compile-scss', 'images', 'fonts'],
+      ['js-vendor', 'js-app', 'compile-scss', 'react-widgets-styles', 'images', 'fonts'],
       ['copy-build-assets']
     )
   }
