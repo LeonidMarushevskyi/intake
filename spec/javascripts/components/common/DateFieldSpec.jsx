@@ -68,18 +68,8 @@ describe('DateField', () => {
   })
 
   describe('when required', () => {
-    const props = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      onChange: onChange,
-      required: true,
-      value: 'this is my field value',
-    }
-
     beforeEach(() => {
-      component = shallow(<DateField {...props}/>)
+      component = shallow(<DateField {...props} onChange={onChange} required={true} />)
     })
     it('renders a required date field', () => {
       expect(component.find('label.required').exists()).toEqual(true)
@@ -112,12 +102,7 @@ describe('DateField', () => {
 
   describe('with valid user inputs', () => {
     beforeEach(() => {
-      onChange = jasmine.createSpy('onChange')
       props = {
-        gridClassName: 'myWrapperTest',
-        id: 'myDateFieldId',
-        label: 'this is my label',
-        labelClassName: 'myLabelTest',
         onChange: onChange,
         value: '2017-05-15T16:00:00.000Z',
       }
@@ -138,17 +123,6 @@ describe('DateField', () => {
     })
 
     describe('when value is null, emptystring, or undefined', () => {
-      beforeEach(() => {
-        onChange = jasmine.createSpy('onChange')
-        props = {
-          gridClassName: 'myWrapperTest',
-          id: 'myDateFieldId',
-          label: 'this is my label',
-          labelClassName: 'myLabelTest',
-          onChange: onChange,
-        }
-      })
-
       describe('with time', () => {
         [null, '', undefined].map((value) => {
           it(`with ${value} has a blank as value`, () => {
@@ -171,17 +145,6 @@ describe('DateField', () => {
     })
 
     describe('props going in', () => {
-      beforeEach(() => {
-        onChange = jasmine.createSpy('onChange')
-        props = {
-          gridClassName: 'myWrapperTest',
-          id: 'myDateFieldId',
-          label: 'this is my label',
-          labelClassName: 'myLabelTest',
-          onChange: onChange,
-        }
-      })
-
       it('passes dates from store', () => {
         component = mount(<DateField {...props} hasTime={false} value='1986-03-04' />)
         expect(component.find('Input').props().value).toEqual('03/04/1986')
@@ -267,18 +230,8 @@ describe('DateField', () => {
 
   describe('with custom properties', () => {
     beforeEach(() => {
-      onChange = jasmine.createSpy('onChange')
-      props = {
-        gridClassName: 'myWrapperTest',
-        id: 'myDateFieldId',
-        hasTime: false,
-        label: 'this is my label',
-        labelClassName: 'myLabelTest',
-        onChange: onChange,
-        value: '2017-05-05',
-      }
       component = mount(
-        <DateField {...props}/>
+        <DateField {...props} value={'2017-05-05'} hasTime={false} />
       )
     })
 
