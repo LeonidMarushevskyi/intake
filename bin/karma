@@ -1,6 +1,12 @@
 #!/bin/bash
 bin/gulp build-test-assets
 
+# Tests must be run in the correct timezone because
+# of UTC converstion and explicit expectations.
+# Sincerely,
+# The Time Lords
+export TZ=Etc/GMT+7
+
 if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
   exec ./node_modules/.bin/karma start karma.conf.js --reporters junit,dots,coverage,karma-remap-istanbul $options "$@"
 else

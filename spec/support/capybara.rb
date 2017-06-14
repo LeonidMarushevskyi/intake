@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 require 'capybara/rspec'
-require 'capybara/accessible'
 require 'support/capybara/screenshot'
+require 'capybara/accessible'
+
+# Tests must be run in the correct timezone because
+# of UTC converstion and explicit expectations.
+# Sincerely,
+# The Time Lords
+ENV['TZ'] = 'Etc/GMT+7'
 
 Capybara.default_driver = :accessible_selenium
 Capybara.javascript_driver = Capybara.default_driver
@@ -10,6 +16,49 @@ Capybara.javascript_driver = Capybara.default_driver
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true
 
-if ENV['TEST_ENV_NUMBER'].is_a?(Integer)
-  Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
+Capybara::Accessible::Auditor::Node.class_eval do
+  SELECTORS_TO_IGNORE = <<-IGNORES
+    config.ignoreSelectors('badAriaAttributeValue', '#started_at_input');
+    config.ignoreSelectors('badAriaAttributeValue', '#started_at_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '#cross_report_reported_on_input');
+    config.ignoreSelectors('badAriaAttributeValue', '#cross_report_reported_on_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '#ended_at_input');
+    config.ignoreSelectors('badAriaAttributeValue', '#ended_at_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '#incident_date_input');
+    config.ignoreSelectors('badAriaAttributeValue', '#incident_date_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '#date_of_birth_input');
+    config.ignoreSelectors('badAriaAttributeValue', '#date_of_birth_time_listbox');
+  IGNORES
+
+  def perform_audit_script
+    <<-JAVASCRIPT
+    #{audit_rules}
+        var config = new axs.AuditConfiguration();
+        var severe_rules = #{severe_rules.to_json};
+        var rule;
+        for(rule in severe_rules) {
+          config.setSeverity(severe_rules[rule], axs.constants.Severity.SEVERE);
+        }
+        config.auditRulesToIgnore = #{excluded_rules.to_json};
+        #{SELECTORS_TO_IGNORE}
+        var results = axs.Audit.run(config);
+    JAVASCRIPT
+  end
+end
+
+Capybara::Accessible::Auditor::Driver.class_eval do
+  def perform_audit_script
+    <<-JAVASCRIPT
+    #{audit_rules}
+        var config = new axs.AuditConfiguration();
+        var severe_rules = #{severe_rules.to_json};
+        var rule;
+        for(rule in severe_rules) {
+          config.setSeverity(severe_rules[rule], axs.constants.Severity.SEVERE);
+        }
+        config.auditRulesToIgnore = #{excluded_rules.to_json};
+        #{SELECTORS_TO_IGNORE}
+        var results = axs.Audit.run(config);
+    JAVASCRIPT
+  end
 end
