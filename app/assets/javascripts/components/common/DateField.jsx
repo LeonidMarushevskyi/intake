@@ -17,6 +17,7 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
   }
 
   const format = (hasTime === true) ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
+  const placeholder = (hasTime === true) ? 'MM/DD/YYYY HH:MM AM/PM' : 'MM/DD/YYYY'
 
   const proxyOnChange = (date, _) => {
     if (date === null) {
@@ -36,7 +37,7 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
         format={format}
         id={id}
         onChange={proxyOnChange}
-        placeholder={format}
+        placeholder={placeholder}
         required={required}
         time={hasTime}
       />

@@ -100,7 +100,7 @@ describe('DateField', () => {
     it('adds a default placeholder', () => {
       component = mount(<DateField {...props}/>)
       const dateTimePickerElement = component.find('DateTimePicker')
-      expect(dateTimePickerElement.props().placeholder).toEqual('MM/DD/YYYY h:mm A')
+      expect(dateTimePickerElement.props().placeholder).toEqual('MM/DD/YYYY HH:MM AM/PM')
     })
 
     it('adds a custom placeholder', () => {
