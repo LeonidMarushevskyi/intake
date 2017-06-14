@@ -6,7 +6,7 @@ feature 'Edit Person' do
   let(:person) do
     FactoryGirl.create(
       :person,
-      date_of_birth: '05/29/1990',
+      date_of_birth: '1990-05-29',
       first_name: 'Homer',
       gender: 'male',
       last_name: 'Simpson',
@@ -44,6 +44,7 @@ feature 'Edit Person' do
       expect(page).to have_field('Suffix', with: 'esq')
       expect(page).to have_field('Gender', with: 'male')
       has_react_select_field('Language(s)', with: ['Armenian'])
+      fill_in_datepicker('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Date of birth', with: '05/29/1990')
       expect(page).to have_field('Social security number', with: '123-23-1234')
       expect(page.find('input[value="Asian"]')).to be_checked

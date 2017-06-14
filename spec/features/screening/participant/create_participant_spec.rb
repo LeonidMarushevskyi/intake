@@ -154,7 +154,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
         has_react_select_field('Language(s)', with: marge.languages)
-        expect(page).to have_field('Date of birth', with: marge.date_of_birth)
+        expect(page).to have_field('Date of birth', with: marge_date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
         expect(page).to have_field('City', with: marge.addresses.first.city)
