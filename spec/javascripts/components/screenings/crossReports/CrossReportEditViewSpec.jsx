@@ -113,7 +113,7 @@ describe('CrossReportEditView', () => {
     it("updates cross reports 'reported on' when 'reported on' is changed", () => {
       const reportedOnField = component.find('DateField')
       const newReportedOn = '1999/01/01'
-      reportedOnField.simulate('change', {target: {value: newReportedOn}})
+      reportedOnField.simulate('change', newReportedOn)
       expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
         {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
         {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
@@ -199,7 +199,7 @@ describe('CrossReportEditView', () => {
 
     describe('when user adds a reported on, then de-selects agency', () => {
       beforeEach(() => {
-        component.find('DateField').simulate('change', {target: {value: '2011-05-09'}})
+        component.find('DateField').simulate('change', '2011-05-09')
         component.find('CheckboxField[value="Department of justice"]')
           .simulate('change', {target: {checked: false}})
         component.setProps({crossReports: Immutable.fromJS([])})
@@ -220,7 +220,7 @@ describe('CrossReportEditView', () => {
     describe('when user selects a communication method and reported on, then de-selects agency', () => {
       beforeEach(() => {
         component.find('SelectField').simulate('change', {target: {value: 'Electronic Report'}})
-        component.find('DateField').simulate('change', {target: {value: '2011-05-09'}})
+        component.find('DateField').simulate('change', '2011-05-09')
         component.find('CheckboxField[value="Department of justice"]')
           .simulate('change', {target: {checked: false}})
         component.setProps({crossReports: Immutable.fromJS([])})

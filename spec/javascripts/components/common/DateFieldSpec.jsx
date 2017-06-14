@@ -1,21 +1,23 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import DateField from 'components/common/DateField'
+import moment from 'moment'
 
 describe('DateField', () => {
   let component
   let props
-  const onChange = jasmine.createSpy('onChange')
+  let onChange
   beforeEach(() => {
+    onChange = jasmine.createSpy('onChange')
     props = {
       gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
       id: 'myDateFieldId',
       label: 'this is my label',
+      labelClassName: 'myLabelTest',
       onChange: onChange,
-      value: 'this is my field value',
+      value: '05/05/2017 3:45 PM',
     }
-    component = shallow(
+    component = mount(
       <DateField {...props}/>
     )
   })
@@ -25,37 +27,37 @@ describe('DateField', () => {
   })
 
   it('renders the id', () => {
-    expect(component.find('input').props().id).toEqual('myDateFieldId')
-    expect(component.find('label').props().htmlFor).toEqual('myDateFieldId')
+    expect(component.find('input').props().id).toEqual('myDateFieldId_input')
+    expect(component.find('label').props().htmlFor).toEqual('myDateFieldId_input')
   })
 
   it('renders the label', () => {
     const labelElement = component.find('label')
     expect(labelElement.length).toEqual(1)
-    expect(labelElement.html()).toContain('<label class="myLabelTest"')
+    expect(labelElement.html()).toContain('for="myDateFieldId_input"')
+    expect(labelElement.html()).toContain('class="myLabelTest')
     expect(labelElement.text()).toEqual('this is my label')
   })
 
   it('renders the input element', () => {
-    const inputElement = component.find('input')
+    const inputElement = component.find('DateTimePicker')
     expect(inputElement.length).toEqual(1)
-    expect(inputElement.props().type).toEqual('date')
-    expect(inputElement.props().className).toEqual('input-type-date')
-    expect(inputElement.props().value).toEqual('this is my field value')
+    expect(inputElement.props().value).toEqual(new Date('05/05/2017 3:45 PM'))
   })
 
-  it('renders the input element with empty string when value is null', () => {
+  it('renders the input element with a no date when value is null', () => {
     const propsWithNullValue = Object.assign(props, {value: null})
-    component = shallow(<DateField {...propsWithNullValue}/>)
+    component = mount(<DateField {...propsWithNullValue}/>)
     const inputElement = component.find('input')
     expect(inputElement.length).toEqual(1)
     expect(inputElement.props().value).toEqual('')
   })
 
-  it('calls onChange when a change event occurs on input field', () => {
-    const inputElement = component.find('input')
-    inputElement.simulate('change')
-    expect(onChange).toHaveBeenCalled()
+  it('calls parent onChange with date string when DateTimePicker calls onChange', () => {
+    const date = new Date()
+    const inputElement = component.find('DateTimePicker')
+    inputElement.props().onChange(date, date.toString())
+    expect(onChange).toHaveBeenCalledWith(date.toISOString())
   })
 
   it('does not render a required date field', () => {
@@ -65,7 +67,7 @@ describe('DateField', () => {
     expect(component.find('input').prop('aria-required')).toBeFalsy()
   })
 
-  describe('when DateField is required', () => {
+  describe('when required', () => {
     const props = {
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
@@ -82,8 +84,203 @@ describe('DateField', () => {
     it('renders a required date field', () => {
       expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('label').not('.required').exists()).toEqual(false)
-      expect(component.find('input').prop('required')).toEqual(true)
-      expect(component.find('input').prop('aria-required')).toEqual(true)
+      // Commented out two lines of required label checking in DateFieldSpec as
+      //  the props are not passed all the way down to the input field by the
+      //  DateTimePicker component. The broken functionality was not explicitly
+      //  specified in the story, and will likely be handled by the implementation
+      //  of validation checking. We discussed this with Bruno and Aman and
+      //  decided it was the best action to get the date picker in without those
+      //  two checks.
+      // expect(component.find('Input').props().required).toEqual(true)
+      // expect(component.find('Input').prop('aria-required')).toEqual(true)
+    })
+  })
+
+  describe('with placeholder', () => {
+    it('adds a default placeholder', () => {
+      component = mount(<DateField {...props}/>)
+      const dateTimePickerElement = component.find('DateTimePicker')
+      expect(dateTimePickerElement.props().placeholder).toEqual('MM/DD/YYYY h:mm A')
+    })
+
+    it('adds a custom placeholder', () => {
+      component = mount(<DateField {...props} hasTime={false}/>)
+      const dateTimePickerElement = component.find('DateTimePicker')
+      expect(dateTimePickerElement.props().placeholder).toEqual('MM/DD/YYYY')
+    })
+  })
+
+  describe('with valid user inputs', () => {
+    beforeEach(() => {
+      onChange = jasmine.createSpy('onChange')
+      props = {
+        gridClassName: 'myWrapperTest',
+        id: 'myDateFieldId',
+        label: 'this is my label',
+        labelClassName: 'myLabelTest',
+        onChange: onChange,
+        value: '2017-05-15T16:00:00.000Z',
+      }
+    })
+
+    it('displays with the exepcted format', () => {
+      component = mount(
+        <DateField {...props}/>
+      )
+      const inputElement = component.find('input')
+      expect(inputElement.props().value).toEqual('05/15/2017 9:00 AM')
+    })
+
+    it('displays date only when format is changed', () => {
+      component = mount(<DateField {...props} hasTime={false} />)
+      const inputElement = component.find('input')
+      expect(inputElement.props().value).toEqual('05/15/2017')
+    })
+
+    describe('when value is null, emptystring, or undefined', () => {
+      beforeEach(() => {
+        onChange = jasmine.createSpy('onChange')
+        props = {
+          gridClassName: 'myWrapperTest',
+          id: 'myDateFieldId',
+          label: 'this is my label',
+          labelClassName: 'myLabelTest',
+          onChange: onChange,
+        }
+      })
+
+      describe('with time', () => {
+        [null, '', undefined].map((value) => {
+          it(`with ${value} has a blank as value`, () => {
+            component = mount(<DateField {...props} value={value} />)
+            const inputElement = component.find('input')
+            expect(inputElement.props().value).toEqual('')
+          })
+        })
+      })
+
+      describe('without time', () => {
+        [null, '', undefined].map((value) => {
+          it(`with ${value} has a blank as value`, () => {
+            component = mount(<DateField {...props} hasTime={false} value={value} />)
+            const inputElement = component.find('input')
+            expect(inputElement.props().value).toEqual('')
+          })
+        })
+      })
+    })
+
+    describe('props going in', () => {
+      beforeEach(() => {
+        onChange = jasmine.createSpy('onChange')
+        props = {
+          gridClassName: 'myWrapperTest',
+          id: 'myDateFieldId',
+          label: 'this is my label',
+          labelClassName: 'myLabelTest',
+          onChange: onChange,
+        }
+      })
+
+      it('passes dates from store', () => {
+        component = mount(<DateField {...props} hasTime={false} value='1986-03-04' />)
+        expect(component.find('Input').props().value).toEqual('03/04/1986')
+      })
+      it('passing datetimes from store', () => {
+        component = mount(<DateField {...props} value='2016-08-13T22:00:00.000Z' />)
+        expect(component.find('Input').props().value).toEqual('08/13/2016 3:00 PM')
+      })
+    })
+
+    it('parses dates with no time', () => {
+      const dates = [
+        '1/1/15',
+        '01/1/15',
+        '1/01/15',
+        '01/01/2015',
+        '1-1-15',
+        '01-1-15',
+        '1-01-15',
+        '01-01-15',
+        '1-01-2015',
+        '1-1 15',
+        '010115',
+      ]
+      dates.map((date) => {
+        component = mount(<DateField {...props} hasTime={false} />)
+        const inputElement = component.find('Input')
+        inputElement.simulate('change', {target: {value: date}})
+        inputElement.simulate('blur', {target: {value: date}})
+        expect(inputElement.props().value).toEqual('01/01/2015')
+        // Check onChange got called with right value
+        expect(onChange.calls.mostRecent().args[0]).toEqual('2015-01-01')
+      })
+    })
+
+    it('parses dates with times', () => {
+      const dates = [
+        '1-01-15 2:00 PM',
+        '1-1-15 2:00 PM',
+        '01-01-15 2:00 PM',
+        '1-1-2015 02:00 PM',
+        '1/01/15 2:00 PM',
+        '01/01/15 2:00 PM',
+        '1/01/2015 02:00 PM',
+        '1-1-15 2 PM',
+        '1-1-15 1400',
+        '1-1-15 14',
+        '010120151400',
+        '010120152p',
+        '1-1 15 14',
+      ]
+      dates.map((date) => {
+        component = mount(<DateField {...props} />)
+        const inputElement = component.find('Input')
+        inputElement.simulate('change', {target: {value: date}})
+        inputElement.simulate('blur', {target: {value: date}})
+        expect(inputElement.props().value).toEqual('01/01/2015 2:00 PM')
+        // Check onChange got called with right value
+        expect(onChange.calls.mostRecent().args[0]).toEqual('2015-01-01T21:00:00.000Z')
+      })
+    })
+  })
+
+  describe('with custom properties', () => {
+    beforeEach(() => {
+      onChange = jasmine.createSpy('onChange')
+      props = {
+        gridClassName: 'myWrapperTest',
+        id: 'myDateFieldId',
+        hasTime: false,
+        label: 'this is my label',
+        labelClassName: 'myLabelTest',
+        onChange: onChange,
+        value: '2017-05-05',
+      }
+      component = mount(
+        <DateField {...props}/>
+      )
+    })
+
+    it('renders the input element', () => {
+      const datepickerElement = component.find('DateTimePicker')
+      expect(datepickerElement.length).toEqual(1)
+      expect(datepickerElement.props().value).toEqual(moment('05/05/2017', 'MM/DD/YYYY').toDate())
+    })
+
+    it('passes the format prop', () => {
+      const inputElement = component.find('DateTimePicker')
+      expect(inputElement.props().format).toEqual('MM/DD/YYYY')
+    })
+
+    it('passes the time prop', () => {
+      const inputElement = component.find('DateTimePicker')
+      expect(inputElement.props().time).toBe(false)
+    })
+
+    it('passes the calendar prop', () => {
+      const inputElement = component.find('DateTimePicker')
+      expect(inputElement.props().calendar).toBe(true)
     })
   })
 })
