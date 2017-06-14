@@ -79,7 +79,7 @@ feature 'show allegations' do
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
-          fill_in_react_select(select_field_id, with: ['Exploitation'])
+          fill_in_react_select(select_field_id, with: 'Exploitation')
         end
 
         within table_rows[1] do
@@ -305,7 +305,7 @@ feature 'show allegations' do
     end
 
     within '#allegations-card.card.edit' do
-      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
     end
 
     within '#screening-information-card.card.show' do
@@ -364,7 +364,7 @@ feature 'show allegations' do
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
-          fill_in_react_select(select_field_id, with: ['Exploitation'])
+          fill_in_react_select(select_field_id, with: 'Exploitation')
         end
 
         within table_rows[1] do

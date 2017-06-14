@@ -335,7 +335,7 @@ feature 'edit allegations' do
     visit edit_screening_path(id: screening.id)
 
     within '#allegations-card.card.edit' do
-      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
       click_button 'Cancel'
     end
 
@@ -372,7 +372,7 @@ feature 'edit allegations' do
     visit edit_screening_path(id: screening.id)
 
     within '#allegations-card.card.edit' do
-      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: ['Severe neglect']
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'Severe neglect'
       page.find('.card-header').click
       click_button 'Cancel'
     end
@@ -700,7 +700,7 @@ feature 'edit allegations' do
     visit edit_screening_path(id: screening.id)
 
     within '#allegations-card.card.edit' do
-      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
     end
 
     screening.name = 'Hello'
@@ -752,7 +752,7 @@ feature 'edit allegations' do
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
           has_react_select_field(select_field_id, with: [])
-          fill_in_react_select(select_field_id, with: ['Exploitation'])
+          fill_in_react_select(select_field_id, with: 'Exploitation')
         end
 
         within table_rows[1] do
