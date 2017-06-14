@@ -10,19 +10,21 @@ momentLocalizer(moment)
 
 const DateField = ({gridClassName, labelClassName, id, label, onChange, value, required, hasTime}) => {
   let dateValue
-  if (!_.isEmpty(value)) {
-    if (hasTime) {
-      dateValue = moment(value, ['MM/DD/YYYY h:mm A', moment.ISO_8601]).toDate()
-    } else {
-      dateValue = moment(value, ['YYYY-MM-DD', moment.ISO_8601]).toDate()
-    }
+  if (_.isEmpty(value)) {
+    dateValue = value
+  } else {
+    dateValue = moment(value, ['YYYY-MM-DD', 'MM/DD/YYYY h:mm A', moment.ISO_8601]).toDate()
   }
 
   const format = (hasTime === true) ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
 
   const proxyOnChange = (date, _) => {
-    const dateOrDatetime = (hasTime === true) ? date.toISOString() : moment(date).format('YYYY-MM-DD')
-    onChange(dateOrDatetime)
+    if (date === null) {
+      onChange(null)
+    } else {
+      const dateOrDatetime = (hasTime === true) ? moment(date).toISOString() : moment(date).format('YYYY-MM-DD')
+      onChange(dateOrDatetime)
+    }
   }
   return (
     <div className={gridClassName}>

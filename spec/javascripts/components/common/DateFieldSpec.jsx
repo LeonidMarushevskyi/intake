@@ -192,6 +192,26 @@ describe('DateField', () => {
       })
     })
 
+    it('handles null changes to dateTimes (value deleted)', () => {
+      component = mount(<DateField {...props} />)
+      const inputElement = component.find('Input')
+      inputElement.simulate('change', {target: {value: null}})
+      inputElement.simulate('blur', {target: {value: null}})
+      expect(inputElement.props().value).toEqual('')
+      // Check onChange got called with right value
+      expect(onChange.calls.mostRecent().args[0]).toEqual(null)
+    })
+
+    it('handles null changes to dates (value deleted)', () => {
+      component = mount(<DateField {...props} hasTime={false} />)
+      const inputElement = component.find('Input')
+      inputElement.simulate('change', {target: {value: null}})
+      inputElement.simulate('blur', {target: {value: null}})
+      expect(inputElement.props().value).toEqual('')
+      // Check onChange got called with right value
+      expect(onChange.calls.mostRecent().args[0]).toEqual(null)
+    })
+
     it('parses dates with no time', () => {
       const dates = [
         '1/1/15',
