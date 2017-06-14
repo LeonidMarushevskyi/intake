@@ -12,9 +12,9 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
   let dateValue
   if (!_.isEmpty(value)) {
     if (hasTime) {
-      dateValue = new Date(value)
+      dateValue = moment(value, ['MM/DD/YYYY h:mm A', moment.ISO_8601]).toDate()
     } else {
-      dateValue = moment(value, 'YYYY-MM-DD').toDate()
+      dateValue = moment(value, ['YYYY-MM-DD', moment.ISO_8601]).toDate()
     }
   }
 
