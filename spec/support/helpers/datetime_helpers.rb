@@ -5,8 +5,14 @@ module DateTimeHelpers
     component = page.find(locator)
     component.find('.rw-btn-calendar').click
     component.find(
-      "[id^='cross_report_reported_on_cal_calendar__month'][id$='#{day}']", visible: false
+      "[id*='calendar__month'][id$='#{day}']"
     ).click
+  end
+
+  def mouse_select_timepicker(locator, time)
+    component = page.find(locator)
+    component.find('.rw-btn-time').native.click
+    component.find('.rw-list-option', text: time).click
   end
 end
 
