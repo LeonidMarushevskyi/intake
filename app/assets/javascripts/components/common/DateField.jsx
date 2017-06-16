@@ -8,7 +8,7 @@ import _ from 'lodash'
 
 momentLocalizer(moment)
 
-const DateField = ({gridClassName, labelClassName, id, label, onChange, value, required, hasTime}) => {
+const DateField = ({gridClassName, labelClassName, id, label, onChange, value, required, hasTime, hasCalendar}) => {
   let dateValue
   if (_.isEmpty(value)) {
     dateValue = value
@@ -32,7 +32,7 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
       <label className={ClassNames(labelClassName, {required: required})} htmlFor={`${id}_input`}>{label}</label>
       <DateTimePicker
         aria-required={required}
-        calendar={true}
+        calendar={hasCalendar}
         defaultValue={dateValue}
         format={format}
         id={id}
@@ -47,10 +47,12 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
 
 DateField.defaultProps = {
   hasTime: true,
+  hasCalendar: true,
 }
 
 DateField.propTypes = {
   gridClassName: PropTypes.string,
+  hasCalendar: PropTypes.bool,
   hasTime: PropTypes.bool,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

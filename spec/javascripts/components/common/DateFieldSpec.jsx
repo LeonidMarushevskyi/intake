@@ -116,6 +116,42 @@ describe('DateField', () => {
       expect(inputElement.props().value).toEqual('05/15/2017 9:00 AM')
     })
 
+    describe('with time', () => {
+      it('does display the calendar by default', () => {
+        component = mount(<DateField {...props} />)
+        const inputElement = component.find('DateTimePicker')
+        expect(inputElement.props().calendar).toEqual(true)
+        expect(inputElement.props().format).toEqual('MM/DD/YYYY h:mm A')
+        expect(inputElement.props().placeholder).toEqual('MM/DD/YYYY HH:MM AM/PM')
+      })
+
+      it('does not display the calendar when hasCalendar is false', () => {
+        component = mount(<DateField {...props} hasCalendar={false} />)
+        const inputElement = component.find('DateTimePicker')
+        expect(inputElement.props().calendar).toEqual(false)
+        expect(inputElement.props().format).toEqual('MM/DD/YYYY h:mm A')
+        expect(inputElement.props().placeholder).toEqual('MM/DD/YYYY HH:MM AM/PM')
+      })
+    })
+
+    describe('without time', () => {
+      it('does display the calendar by default', () => {
+        component = mount(<DateField {...props} hasCalendar={false} hasTime={false} />)
+        const inputElement = component.find('DateTimePicker')
+        expect(inputElement.props().calendar).toEqual(false)
+        expect(inputElement.props().format).toEqual('MM/DD/YYYY')
+        expect(inputElement.props().placeholder).toEqual('MM/DD/YYYY')
+      })
+
+      it('does not display the calendar when hasCalendar is false', () => {
+        component = mount(<DateField {...props} hasCalendar={false} hasTime={false} />)
+        const inputElement = component.find('DateTimePicker')
+        expect(inputElement.props().calendar).toEqual(false)
+        expect(inputElement.props().format).toEqual('MM/DD/YYYY')
+        expect(inputElement.props().placeholder).toEqual('MM/DD/YYYY')
+      })
+    })
+
     it('displays date only when format is changed', () => {
       component = mount(<DateField {...props} hasTime={false} />)
       const inputElement = component.find('input')
