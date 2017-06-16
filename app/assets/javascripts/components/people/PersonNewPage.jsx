@@ -107,6 +107,7 @@ export class PersonNewPage extends React.Component {
               id='date_of_birth'
               label='Date of birth'
               hasTime={false}
+              hasCalendar={false}
               onChange={(value) => this.setField(['date_of_birth'], value)}
               value={this.state.person.get('date_of_birth')}
             />
