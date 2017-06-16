@@ -5,7 +5,7 @@ module DateTimeHelpers
     component = page.find(locator)
     component.find('.rw-btn-calendar').click
     component.find(
-      "[id*='calendar__month'][id$='#{day}']"
+      "[id*='calendar__month'][id$='#{day}']", visible: :all
     ).click
   end
 

@@ -21,7 +21,7 @@ feature 'cross reports' do
       find('label', text: /\ALaw enforcement\z/).click
       fill_in 'Law enforcement agency name', with: 'LA Office'
       expect(page).to have_content 'Communication Time and Method'
-      fill_in_datepicker 'Cross Reported on Date', with: (reported_on - 2).strftime('%m/%d/%Y')
+      fill_in_datepicker 'Cross Reported on Date', with: (reported_on - 2)
       mouse_select_datepicker('#cross_report_reported_on', reported_on.day)
       expect(find_field('Cross Reported on Date').value).to eq(reported_on.strftime('%m/%d/%Y'))
       select communication_method, from: 'Communication Method'
@@ -169,7 +169,7 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       find('label', text: /\ADepartment of justice\z/).click
-      fill_in_datepicker 'Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y')
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
       find('label', text: /\ADepartment of justice\z/).click
       find('label', text: /\ALaw enforcement\z/).click
@@ -208,7 +208,7 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       find('label', text: /\ADepartment of justice\z/).click
-      fill_in_datepicker 'Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y')
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
       find('label', text: /\ADepartment of justice\z/).click
       click_button 'Save'

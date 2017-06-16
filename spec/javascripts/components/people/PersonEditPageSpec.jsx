@@ -39,7 +39,7 @@ describe('PersonEditPage', () => {
       expect(component.find('InputField[label="First Name"]').props().value).toEqual('Kevin')
       expect(component.find('InputField[label="Middle Name"]').props().value).toEqual('Culkin')
       expect(component.find('InputField[label="Last Name"]').props().value).toEqual('McCallister')
-      // DateField updates broke person page which is deprecated so we are not fixing this.
+      // DateField updates broke person page which is deprecated and there is no value in fixing spec.
       // expect(component.find('DateField[label="Date of birth"]').props().value).toEqual('11/16/1990')
       expect(component.find('InputField[label="Social security number"]').props().value).toEqual('111223333')
     })

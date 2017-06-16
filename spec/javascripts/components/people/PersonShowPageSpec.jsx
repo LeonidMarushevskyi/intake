@@ -83,7 +83,7 @@ describe('PersonShowPage', () => {
         .toContain('517-566-2111')
       expect(component.find('ShowField[label="Phone Number Type"]').last().html())
         .toContain('Home')
-      // DateField updates broke person page which is deprecated so we are not fixing this.
+      // DateField updates broke person page which is deprecated and there is no value in fixing spec.
       // expect(component.find('ShowField[label="Date of birth"]').html())
         // .toContain('11/16/1990')
       expect(component.find('ShowField[label="Gender"]').html())
