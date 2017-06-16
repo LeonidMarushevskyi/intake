@@ -6,6 +6,7 @@ import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
 import nameFormatter from 'utils/nameFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
+import {dateFormatter} from 'utils/dateFormatter'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
@@ -40,7 +41,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
         </div>
         <div className='col-md-5'>
           <ShowField label='Date of birth'>
-            {participant.get('date_of_birth')}
+            {dateFormatter(participant.get('date_of_birth'))}
           </ShowField>
           <ShowField label='Social security number'>
             {ssnFormatter(participant.get('ssn'))}

@@ -11,7 +11,7 @@ feature 'Show Person' do
       last_name: 'Simpson',
       name_suffix: 'esq',
       gender: 'male',
-      date_of_birth: '05/29/1990',
+      date_of_birth: '1990-05-29',
       ssn: '123-23-1234',
       languages: %w[Turkish Thai Vietnamese],
       races: [

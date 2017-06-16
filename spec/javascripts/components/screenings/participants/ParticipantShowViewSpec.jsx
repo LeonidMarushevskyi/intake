@@ -15,7 +15,7 @@ describe('ParticipantShowView', () => {
       name_suffix: 'iv',
       gender: 'male',
       languages: ['English', 'Arabic'],
-      date_of_birth: '11/16/1990',
+      date_of_birth: '1990-11-16',
       ssn: '111-22-33__',
     })
     onEdit = jasmine.createSpy()
@@ -121,7 +121,7 @@ describe('ParticipantShowView with no name', () => {
       first_name: null,
       last_name: null,
       gender: 'male',
-      date_of_birth: '11/16/1990',
+      date_of_birth: '1990-11-16',
       ssn: '111223333',
     })
     component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
