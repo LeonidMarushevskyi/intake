@@ -116,6 +116,15 @@ describe('DateField', () => {
       expect(inputElement.props().value).toEqual('05/15/2017 9:00 AM')
     })
 
+    it('passes the min and max props down to the DateTimePicker', () => {
+      const min = new Date('2007-06-15')
+      const max = new Date('2008-08-23')
+      component = mount(<DateField {...props} min={min} max={max} />)
+      const inputElement = component.find('DateTimePicker')
+      expect(inputElement.props().max).toBe(max)
+      expect(inputElement.props().min).toBe(min)
+    })
+
     describe('with time', () => {
       it('does display the calendar by default', () => {
         component = mount(<DateField {...props} />)

@@ -8,7 +8,19 @@ import _ from 'lodash'
 
 momentLocalizer(moment)
 
-const DateField = ({gridClassName, labelClassName, id, label, onChange, value, required, hasTime, hasCalendar}) => {
+const DateField = ({
+                    gridClassName,
+                    hasCalendar,
+                    hasTime,
+                    id,
+                    label,
+                    labelClassName,
+                    max,
+                    min,
+                    onChange,
+                    required,
+                    value,
+                  }) => {
   let dateValue
   if (_.isEmpty(value)) {
     dateValue = value
@@ -40,6 +52,8 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
         placeholder={placeholder}
         required={required}
         time={hasTime}
+        max={max}
+        min={min}
       />
     </div>
   )
@@ -57,6 +71,8 @@ DateField.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelClassName: PropTypes.string,
+  max: PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,
