@@ -4,7 +4,23 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 
-const InputField = ({gridClassName, labelClassName, id, label, onBlur, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
+const InputField = ({
+  blurPlaceholder,
+  errors,
+  focusPlaceholder,
+  gridClassName,
+  id,
+  label,
+  labelClassName,
+  maxLength,
+  mask,
+  onBlur,
+  onChange,
+  placeholder,
+  required,
+  type,
+  value,
+}) => {
   let input =
     <input id={id} type={type} placeholder={placeholder}
       value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
@@ -27,9 +43,20 @@ const InputField = ({gridClassName, labelClassName, id, label, onBlur, onChange,
   }
 
   return (
-    <div className={gridClassName}>
-      <label className={ClassNames(labelClassName, {required: required})} htmlFor={id}>{label}</label>
-      {input}
+    <div className={ClassNames(gridClassName, {'input-error': !_.isEmpty(errors)})}>
+      <label className={
+        ClassNames(labelClassName,
+          {required: required},
+          {'input-error-label': !_.isEmpty(errors)}
+        )
+      } htmlFor={id}
+      >{label}</label>
+    {input}
+    {!_.isEmpty(errors) &&
+      errors.map((error, index) =>
+        <span key={index} className='input-error-message'>{error}</span>
+      )
+    }
     </div>
   )
 }
@@ -41,6 +68,7 @@ InputField.defaultProps = {
 
 InputField.propTypes = {
   blurPlaceholder: PropTypes.string,
+  errors: PropTypes.object,
   focusPlaceholder: PropTypes.string,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
@@ -48,7 +76,7 @@ InputField.propTypes = {
   labelClassName: PropTypes.string,
   mask: PropTypes.string,
   maxLength: PropTypes.string,
-  onBlur: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,

@@ -1,4 +1,5 @@
 import React from 'react'
+import Immutable from 'immutable'
 import {mount, shallow} from 'enzyme'
 import InputField from 'components/common/InputField'
 
@@ -202,6 +203,50 @@ describe('InputField', () => {
       expect(component.find('MaskedInput').prop('required')).toEqual(true)
       expect(component.find('MaskedInput').prop('aria-required')).toEqual(true)
       expect(component.find('MaskedInput').props().mask).toEqual('111-11-1111')
+    })
+  })
+
+  describe('when no errors passed', () => {
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
+  describe('when errors are passed', () => {
+    const propsWithErrorMessages = {
+      errors: Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']),
+      fieldKey: 'inputFieldName',
+      gridClassName: 'myWrapperTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      labelClassName: 'myLabelTest',
+      onChange: onChange,
+      validationRules: {inputFieldName: 'required'},
+    }
+    beforeEach(() => {
+      component = mount(<InputField {...propsWithErrorMessages}/>)
+    })
+
+    it('adds an error class to the input wrapper', () => {
+      expect(component.find('.input-error').length).toEqual(1)
+    })
+
+    it('displays an error styled label', () => {
+      expect(component.find('.input-error-label').length).toEqual(1)
+    })
+
+    it('displays error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(2)
+      expect(component.find('.input-error-message').first().text()).toEqual('Please enter an assigned worker.')
+      expect(component.find('.input-error-message').last().text()).toEqual('You have failed this city!')
     })
   })
 })
