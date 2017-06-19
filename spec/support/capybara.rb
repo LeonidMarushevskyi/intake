@@ -18,16 +18,9 @@ Capybara.enable_aria_label = true
 
 Capybara::Accessible::Auditor::Node.class_eval do
   SELECTORS_TO_IGNORE = <<-IGNORES
-    config.ignoreSelectors('badAriaAttributeValue', '#started_at_input');
-    config.ignoreSelectors('badAriaAttributeValue', '#started_at_time_listbox');
-    config.ignoreSelectors('badAriaAttributeValue', '#cross_report_reported_on_input');
-    config.ignoreSelectors('badAriaAttributeValue', '#cross_report_reported_on_time_listbox');
-    config.ignoreSelectors('badAriaAttributeValue', '#ended_at_input');
-    config.ignoreSelectors('badAriaAttributeValue', '#ended_at_time_listbox');
-    config.ignoreSelectors('badAriaAttributeValue', '#incident_date_input');
-    config.ignoreSelectors('badAriaAttributeValue', '#incident_date_time_listbox');
-    config.ignoreSelectors('badAriaAttributeValue', '#date_of_birth_input');
-    config.ignoreSelectors('badAriaAttributeValue', '#date_of_birth_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '[id$=_cal]');
+    config.ignoreSelectors('badAriaAttributeValue', '[id$=_input');
+    config.ignoreSelectors('badAriaAttributeValue', '[id$=_time_listbox');
   IGNORES
 
   def perform_audit_script

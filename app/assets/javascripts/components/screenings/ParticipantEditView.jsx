@@ -106,6 +106,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             id='date_of_birth'
             label='Date of birth'
             hasTime={false}
+            hasCalendar={false}
             value={participant.get('date_of_birth')}
             onChange={(value) => onChange(['date_of_birth'], value)}
           />

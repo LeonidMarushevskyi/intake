@@ -110,11 +110,31 @@ export class PersonEditPage extends React.Component {
              onChange={(phoneNumbers) => this.setField(['phone_numbers'], phoneNumbers)}
            />
           <div className='row'>
+            {/*
+              Are you having problems with this value being unintentionally nulled?
+              Are you sick of constantly saving this form and having DOB mysteriously
+              disappear from the database, even though you never even touched
+              the field?
+
+              Try Setting The Value™!
+
+              Unlike most input fields, this one initializes with a null value and
+              it's parent component doesn't propagate prop updates down to it when
+              the API response comes back. Homeowners around the country are
+              discovering this one weird bug that makes the edit form receive that
+              "change to null" action.
+
+              Call 1-800-IF-THIS-IS-A-PROBLEM-JUST-SET-THIS-FIELD-BECAUSE-THIS-PAGE-IS-GOING-AWAY-ANYWAY.
+
+              One of our cantankerous representitives are standing by, ready to yell at you
+              and tell you to RTFM.
+            */}
             <DateField
               gridClassName='col-md-6'
               id='date_of_birth'
               label='Date of birth'
               hasTime={false}
+              hasCalendar={false}
               value={person.get('date_of_birth')}
               onChange={(value) => this.setField(['date_of_birth'], value)}
             />

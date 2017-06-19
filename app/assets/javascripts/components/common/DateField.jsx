@@ -8,7 +8,19 @@ import _ from 'lodash'
 
 momentLocalizer(moment)
 
-const DateField = ({gridClassName, labelClassName, id, label, onChange, value, required, hasTime}) => {
+const DateField = ({
+                    gridClassName,
+                    hasCalendar,
+                    hasTime,
+                    id,
+                    label,
+                    labelClassName,
+                    max,
+                    min,
+                    onChange,
+                    required,
+                    value,
+                  }) => {
   let dateValue
   if (_.isEmpty(value)) {
     dateValue = value
@@ -32,7 +44,7 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
       <label className={ClassNames(labelClassName, {required: required})} htmlFor={`${id}_input`}>{label}</label>
       <DateTimePicker
         aria-required={required}
-        calendar={true}
+        calendar={hasCalendar}
         defaultValue={dateValue}
         format={format}
         id={id}
@@ -40,6 +52,8 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
         placeholder={placeholder}
         required={required}
         time={hasTime}
+        max={max}
+        min={min}
       />
     </div>
   )
@@ -47,14 +61,18 @@ const DateField = ({gridClassName, labelClassName, id, label, onChange, value, r
 
 DateField.defaultProps = {
   hasTime: true,
+  hasCalendar: true,
 }
 
 DateField.propTypes = {
   gridClassName: PropTypes.string,
+  hasCalendar: PropTypes.bool,
   hasTime: PropTypes.bool,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelClassName: PropTypes.string,
+  max: PropTypes.instanceOf(Date),
+  min: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,

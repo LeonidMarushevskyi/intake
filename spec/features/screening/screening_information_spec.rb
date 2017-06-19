@@ -83,5 +83,10 @@ feature 'screening information card' do
       expect(page).to have_field('Screening End Date/Time', with: '08/15/2016 4:00 AM')
       expect(page).to have_field('Communication Method', with: 'mail')
     end
+
+    within '#screening-information-card.edit' do
+      mouse_select_timepicker('#started_at', '3:30 PM')
+      expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:30 PM')
+    end
   end
 end
