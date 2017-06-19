@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 
-const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
+const InputField = ({gridClassName, labelClassName, id, label, onBlur, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
   let input =
     <input id={id} type={type} placeholder={placeholder}
-      value={value} onChange={onChange} maxLength={maxLength}
+      value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
       aria-required={required} required={required}
     />
 
@@ -17,6 +17,7 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
         placeholder={placeholder} required={required} aria-required={required}
         onBlur={(event) => {
           event.target.placeholder = blurPlaceholder
+          if (!_.isEmpty(onBlur)) onBlur(id, event.target.value)
         }}
         onFocus={(event) => {
           event.target.placeholder = focusPlaceholder
@@ -47,6 +48,7 @@ InputField.propTypes = {
   labelClassName: PropTypes.string,
   mask: PropTypes.string,
   maxLength: PropTypes.string,
+  onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,

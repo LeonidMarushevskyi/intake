@@ -1,10 +1,11 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import InputField from 'components/common/InputField'
 
 describe('InputField', () => {
   let component
   const onChange = jasmine.createSpy('onChange')
+  const onBlur = jasmine.createSpy('onBlur')
   const props = {
     gridClassName: 'myWrapperTest',
     labelClassName: 'myLabelTest',
@@ -12,6 +13,7 @@ describe('InputField', () => {
     label: 'this is my label',
     placeholder: 'This is some placeholder text...',
     onChange: onChange,
+    onBlur: onBlur,
     value: 'this is my field value',
   }
   beforeEach(() => {
@@ -60,6 +62,12 @@ describe('InputField', () => {
     expect(onChange).toHaveBeenCalled()
   })
 
+  it('calls onBlur when a blur event occurs on input field', () => {
+    const inputElement = component.find('input')
+    inputElement.simulate('blur')
+    expect(onBlur).toHaveBeenCalled()
+  })
+
   describe('when mask is NOT passed in', () => {
     const props = {
       gridClassName: 'myWrapperTest',
@@ -79,22 +87,31 @@ describe('InputField', () => {
   })
 
   describe('when mask is passed WITHOUT placeholder props', () => {
+    const blurSpy = jasmine.createSpy('onBlur')
     const propsWithMaskedInput = {
       gridClassName: 'myWrapperTest',
       labelClassName: 'myLabelTest',
       id: 'myInputFieldId',
       label: 'this is my label',
+      onBlur: blurSpy,
       onChange: onChange,
       mask: '111-11-1111',
     }
 
     beforeEach(() => {
-      component = shallow(<InputField {...propsWithMaskedInput}/>)
+      component = mount(<InputField {...propsWithMaskedInput}/>)
     })
     it('renders a MaskedInput field', () => {
       const inputElement = component.find('MaskedInput')
       expect(inputElement.props().mask).toEqual('111-11-1111')
       expect(inputElement.props().placeholder).toEqual(undefined)
+    })
+
+    it('calls onBlur when a blur event occurs on input field', () => {
+      const inputElement = component.find('MaskedInput')
+      const event = {target: {value: null}}
+      inputElement.props().onBlur(event)
+      expect(blurSpy).toHaveBeenCalled()
     })
   })
 

@@ -74,4 +74,20 @@ describe('ScreeningInformationEditView', () => {
       expect(requiredProps.onSave).toHaveBeenCalled()
     })
   })
+
+  describe('onBlur', () => {
+    const blurSpy = jasmine.createSpy('onBlur')
+    const props = {
+      ...requiredProps,
+      onBlur: blurSpy,
+    }
+
+    it('calls onBlur with the field name and value', () => {
+      component = mount(<ScreeningInformationEditView {...props} />)
+      const assigneeField = component.find('#assignee')
+      assigneeField.simulate('focus')
+      assigneeField.simulate('blur')
+      expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    })
+  })
 })
