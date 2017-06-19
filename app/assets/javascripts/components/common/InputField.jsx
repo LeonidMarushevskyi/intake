@@ -51,12 +51,14 @@ const InputField = ({
         )
       } htmlFor={id}
       >{label}</label>
-    {input}
-    {!_.isEmpty(errors) &&
-      errors.map((error, index) =>
-        <span key={index} className='input-error-message'>{error}</span>
-      )
-    }
+      {input}
+      <div>
+      {!_.isEmpty(errors) &&
+        errors.map((error, index) =>
+          <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
+        )
+      }
+      </div>
     </div>
   )
 }
