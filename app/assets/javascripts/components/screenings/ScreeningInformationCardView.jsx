@@ -59,6 +59,7 @@ export default class ScreeningInformationCardView extends React.Component {
       show: {
         onEdit: this.onEdit,
         screening: this.props.screening,
+        errors: errors,
       },
     }
     const ScreeningInformationView = (mode === 'edit') ? ScreeningInformationEditView : ScreeningInformationShowView

@@ -103,12 +103,18 @@ describe('ScreeningInformationCardView', () => {
     beforeEach(() => {
       component = mount(<ScreeningInformationCardView {...props} mode='show' />)
     })
+
     it('renders the show card', () => {
       expect(component.find('ScreeningInformationShowView').length).toEqual(1)
     })
+
     it('displays edit card when edit link is clicked', () => {
       component.find('a[aria-label="Edit screening information"]').simulate('click')
       expect(component.find('ScreeningInformationEditView').length).toEqual(1)
+    })
+
+    it('passes errors from the state', () => {
+      expect(component.find('ScreeningInformationShowView').props().errors).toEqual(Immutable.Map())
     })
   })
 })
