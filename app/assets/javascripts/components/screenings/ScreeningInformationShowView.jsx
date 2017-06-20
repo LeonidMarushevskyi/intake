@@ -5,7 +5,7 @@ import EditLink from 'components/common/EditLink'
 import ShowField from 'components/common/ShowField'
 import {dateTimeFormatter} from 'utils/dateFormatter'
 
-const ScreeningInformationShowView = ({screening, onEdit}) => (
+const ScreeningInformationShowView = ({errors, screening, onEdit}) => (
   <div className='card show double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -16,7 +16,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
         <ShowField gridClassName='col-md-6' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label='Assigned Social Worker' required>
+        <ShowField gridClassName='col-md-6' label='Assigned Social Worker' errors={errors.get('assignee')} required>
           {screening.get('assignee')}
         </ShowField>
       </div>
@@ -38,6 +38,7 @@ const ScreeningInformationShowView = ({screening, onEdit}) => (
 )
 
 ScreeningInformationShowView.propTypes = {
+  errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   screening: PropTypes.object.isRequired,
 }
