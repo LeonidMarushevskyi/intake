@@ -12,12 +12,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
+import {IndexLink, Link} from 'react-router'
 import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {IndexLink, Link} from 'react-router'
-import * as IntakeConfig from 'config'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -290,43 +290,7 @@ export class ScreeningPage extends React.Component {
             screening={mergedScreening}
           />
         }
-        <div className='row'>
-          <div className='centered'>
-            <button
-              className='btn btn-primary'
-              data-toggle='modal'
-              data-target='#submitModal'
-              onClick={(_event) => IntakeConfig.isFeatureActive('referral_submit') && this.props.actions.submitScreening(this.props.params.id)}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-        <div aria-label='submit modal confirmation' className='modal fade' id='submitModal'>
-          <div className='modal-dialog' role='document'>
-            <div className='modal-content'>
-              <div className='modal-body'>
-                <p>
-                  Congratulations! You have completed the process to submit a screening.
-                </p>
-                <p>
-                  This is just a learning environment. If your Decision was to promote to referral,
-                  this does NOT create an actual referral and it will not appear in CWS/CMS.
-                </p>
-              </div>
-              <div className='modal-footer'>
-                <div className='row'>
-                  <div className='centered'>
-                    <a href='/' >
-                      <button className='btn btn-primary' href='/' type='button'>Proceed</button>
-                    </a>
-                    <button aria-label='Close' className='btn btn-default' data-dismiss='modal' type='button'>Cancel</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
         { this.mode === 'show' && this.renderFooterLinks() }
       </div>
     )

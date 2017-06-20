@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'components/screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
-import * as config from 'config'
 
 export const requiredScreeningAttributes = {
   allegations: [],
@@ -505,47 +504,7 @@ describe('ScreeningPage', () => {
 
   it('renders the submit button', () => {
     const component = shallow(<ScreeningPage {...requiredProps} />)
-    expect(component.find('button[children="Submit"]').length).toEqual(1)
-  })
-
-  describe('when referral_submit is active', () => {
-    beforeEach(() => {
-      spyOn(config, 'isFeatureActive')
-      config.isFeatureActive.and.returnValue(true)
-    })
-
-    it('clicking the submit button submits the screening', () => {
-      const submitScreening = jasmine.createSpy('submitScreening')
-      const props = {
-        ...requiredProps,
-        params: {id: '99'},
-        actions: {submitScreening},
-      }
-      const component = shallow(<ScreeningPage {...props} />)
-      component.find('button[children="Submit"]').simulate('click')
-      expect(config.isFeatureActive).toHaveBeenCalledWith('referral_submit')
-      expect(submitScreening).toHaveBeenCalledWith('99')
-    })
-  })
-
-  describe('when referral_submit is not active', () => {
-    beforeEach(() => {
-      spyOn(config, 'isFeatureActive')
-      config.isFeatureActive.and.returnValue(false)
-    })
-
-    it('clicking the submit button does not submits the screening', () => {
-      const submitScreening = jasmine.createSpy('submitScreening')
-      const props = {
-        ...requiredProps,
-        params: {id: '99'},
-        actions: {submitScreening},
-      }
-      const component = shallow(<ScreeningPage {...props} />)
-      component.find('button[children="Submit"]').simulate('click')
-      expect(config.isFeatureActive).toHaveBeenCalledWith('referral_submit')
-      expect(submitScreening).not.toHaveBeenCalled()
-    })
+    expect(component.find('ScreeningSubmitButton').length).toEqual(1)
   })
 
   describe('cardSave', () => {
