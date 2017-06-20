@@ -15,5 +15,9 @@ RUN apt-get install -y nodejs
 ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+
+ADD ./bin/install_phantomjs $APP_HOME/install_phantomjs
+RUN $APP_HOME/install_phantomjs
+
 ENV DISPLAY :1
 ENV BUNDLE_PATH /ruby_gems
