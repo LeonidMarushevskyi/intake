@@ -33,6 +33,7 @@ describe('ScreeningPage', () => {
       actions: {
         fetchScreening: () => Promise.resolve(),
         fetchHistoryOfInvolvements: () => Promise.resolve(),
+        fetchRelationshipsByScreeningId: () => Promise.resolve(),
         saveScreening,
       },
       participants: Immutable.fromJS([victim, perpetrator]),
@@ -66,6 +67,7 @@ describe('ScreeningPage', () => {
         actions: {
           fetchScreening: () => Promise.resolve(),
           fetchHistoryOfInvolvements: () => Promise.resolve(),
+          fetchRelationshipsByScreeningId: () => Promise.resolve(),
           saveScreening,
         },
         participants: Immutable.fromJS([victim, perpetrator]),
