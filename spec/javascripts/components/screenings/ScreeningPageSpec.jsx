@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'components/screenings/ScreeningPage'
@@ -21,6 +22,10 @@ export const requiredProps = {
 }
 
 describe('ScreeningPage', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
+  })
+
   describe('render', () => {
     it('renders the history card', () => {
       const involvements = Immutable.fromJS([{id: 1}, {id: 3}])

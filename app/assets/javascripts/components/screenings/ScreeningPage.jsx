@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
@@ -197,17 +198,42 @@ export class ScreeningPage extends React.Component {
   render() {
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const sortedAllegations = sortedAllegationsList(
-      screening.get('id'),
-      this.props.participants,
-      screening.get('allegations'),
-      this.state.screeningEdits.get('allegations')
-    )
+    const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
+    let sortedAllegations
+    if (releaseTwoInactive) {
+      sortedAllegations = sortedAllegationsList(
+        screening.get('id'),
+        this.props.participants,
+        screening.get('allegations'),
+        this.state.screeningEdits.get('allegations')
+      )
+    }
     return (
       <div>
-        <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
         {
-          loaded &&
+          releaseTwoInactive &&
+            <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
+        }
+        {
+          !releaseTwoInactive &&
+            <div className='card edit double-gap-top' id='snapshot-card'>
+              <div className='card-body'>
+                <div className='row'>
+                  <div className='col-md-12'>
+                    <div className='double-pad-top'>
+                      The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
+                      To start, search by any combination of name, date of birth, or social security number. Click on a person from
+                      the results to add them to the Snapshot, and their basic information and history will automatically appear below.
+                      You can add as many people as you like, and when ready, copy the summary of their history.
+                      You will need to manually paste it into a document or a field in CWS/CMS.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        }
+        {
+          loaded && releaseTwoInactive &&
           <ScreeningInformationCardView
             mode={this.mode}
             onCancel={this.cancelEdit}
@@ -218,7 +244,7 @@ export class ScreeningPage extends React.Component {
         }
         {this.renderParticipantsCard()}
         {
-          loaded &&
+          loaded && releaseTwoInactive &&
           <NarrativeCardView
             mode={this.mode}
             onCancel={this.cancelEdit}
@@ -228,7 +254,7 @@ export class ScreeningPage extends React.Component {
           />
         }
         {
-          loaded &&
+          loaded && releaseTwoInactive &&
           <IncidentInformationCardView
             mode={this.mode}
             onCancel={this.cancelEdit}
@@ -238,7 +264,7 @@ export class ScreeningPage extends React.Component {
           />
         }
         {
-          loaded &&
+          loaded && releaseTwoInactive &&
             <AllegationsCardView
               mode={this.mode}
               onCancel={this.cancelEdit}
@@ -247,14 +273,17 @@ export class ScreeningPage extends React.Component {
               allegations={sortedAllegations}
             />
         }
-        <RelationshipsCard
-          actions={this.props.actions}
-          participants={this.props.participants}
-          relationships={this.props.relationships}
-          screeningId={this.props.params.id}
-        />
         {
-          loaded &&
+          releaseTwoInactive &&
+          <RelationshipsCard
+            actions={this.props.actions}
+            participants={this.props.participants}
+            relationships={this.props.relationships}
+            screeningId={this.props.params.id}
+          />
+        }
+        {
+          loaded && releaseTwoInactive &&
             <WorkerSafetyCardView
               mode={this.mode}
               onCancel={this.cancelEdit}
@@ -270,7 +299,7 @@ export class ScreeningPage extends React.Component {
           participants={this.props.participants}
         />
         {
-          loaded &&
+          loaded && releaseTwoInactive &&
             <CrossReportCardView
               mode={this.mode}
               onCancel={this.cancelEdit}
@@ -281,7 +310,7 @@ export class ScreeningPage extends React.Component {
             />
         }
         {
-          loaded &&
+          loaded && releaseTwoInactive &&
           <DecisionCardView
             mode={this.mode}
             onCancel={this.cancelEdit}

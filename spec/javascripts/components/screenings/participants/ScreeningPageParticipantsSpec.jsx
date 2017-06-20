@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'components/screenings/ScreeningPage'
@@ -5,6 +6,10 @@ import {shallow} from 'enzyme'
 import {requiredProps} from '../ScreeningPageSpec'
 
 describe('ScreeningPage', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
+  })
+
   describe('participants-related functions', () => {
     const promiseObj = jasmine.createSpyObj('promise', ['then'])
     promiseObj.then.and.callFake((thenFunction) => thenFunction())

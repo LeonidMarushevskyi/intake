@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'components/screenings/ScreeningPage'
@@ -5,6 +6,10 @@ import {mount, shallow} from 'enzyme'
 import {requiredProps, requiredScreeningAttributes} from '../ScreeningPageSpec'
 
 describe('ScreeningPage', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
+  })
+
   describe('allegations', () => {
     const victim = {
       id: '1',
