@@ -6,8 +6,8 @@ import * as IntakeConfig from 'config'
 
 describe('ScreeningPage when release two is active', () => {
   beforeEach(() => {
-    spyOn(IntakeConfig, 'isFeatureInactive')
-    IntakeConfig.isFeatureInactive.and.returnValue(false)
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(false)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true)
   })
 
   describe('Edit mode', () => {

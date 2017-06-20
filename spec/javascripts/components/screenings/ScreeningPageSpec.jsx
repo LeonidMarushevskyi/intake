@@ -24,6 +24,7 @@ export const requiredProps = {
 describe('ScreeningPage', () => {
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
   })
 
   describe('render', () => {

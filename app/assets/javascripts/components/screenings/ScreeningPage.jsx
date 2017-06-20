@@ -199,6 +199,7 @@ export class ScreeningPage extends React.Component {
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
+    const releaseTwo = IntakeConfig.isFeatureActive('release_two')
     let sortedAllegations
     if (releaseTwoInactive) {
       sortedAllegations = sortedAllegationsList(
@@ -215,7 +216,7 @@ export class ScreeningPage extends React.Component {
             <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
         }
         {
-          !releaseTwoInactive &&
+          releaseTwo &&
             <div className='card edit double-gap-top' id='snapshot-card'>
               <div className='card-body'>
                 <div className='row'>
