@@ -71,6 +71,18 @@ describe('ScreeningInformationCardView', () => {
           'started_at',
         ]))
       })
+
+      describe('async stuff', () => {
+        beforeEach((done) => {
+          // TODO Figure out a better place to call done for the save function
+          setTimeout(done, 100)
+        })
+
+        it('adds errors to the proper fields on the show display', () => {
+          expect(component.update().html()).toContain('Error 1')
+          expect(component.update().html()).toContain('Error 2')
+        })
+      })
     })
 
     describe('cancel button', () => {
@@ -95,6 +107,11 @@ describe('ScreeningInformationCardView', () => {
         component.setState({mode: 'edit'})
         expect(component.find('ScreeningInformationEditView').props().screening.name)
           .not.toEqual('Cancel this change!')
+      })
+
+      it('adds errors to the proper fields on the show display', () => {
+        expect(component.update().html()).toContain('Error 1')
+        expect(component.update().html()).toContain('Error 2')
       })
     })
   })

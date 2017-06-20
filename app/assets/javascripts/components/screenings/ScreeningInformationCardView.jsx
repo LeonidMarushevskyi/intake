@@ -29,8 +29,9 @@ export default class ScreeningInformationCardView extends React.Component {
   }
 
   onSave() {
+    const errors = this.state.errors.set('assignee', Immutable.List(['Error 1', 'Error 2']))
     return this.props.onSave(this.fields).then(() => {
-      this.setState({mode: 'show'})
+      this.setState({mode: 'show', errors: errors})
     })
   }
 
@@ -41,7 +42,8 @@ export default class ScreeningInformationCardView extends React.Component {
   }
 
   onCancel() {
-    this.setState({mode: 'show'})
+    const errors = this.state.errors.set('assignee', Immutable.List(['Error 1', 'Error 2']))
+    this.setState({mode: 'show', errors: errors})
     this.props.onCancel(this.fields)
   }
 
