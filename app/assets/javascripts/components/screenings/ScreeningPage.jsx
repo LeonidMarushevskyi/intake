@@ -224,7 +224,6 @@ export class ScreeningPage extends React.Component {
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
-            ref='narrativeCard'
             narrative={mergedScreening.get('report_narrative')}
           />
         }
@@ -235,7 +234,6 @@ export class ScreeningPage extends React.Component {
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
-            ref='incidentInformationCard'
             screening={mergedScreening}
           />
         }
@@ -278,7 +276,6 @@ export class ScreeningPage extends React.Component {
               onCancel={this.cancelEdit}
               onSave={this.cardSave}
               onChange={this.setField}
-              ref='crossReportCard'
               areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
               crossReports={mergedScreening.get('cross_reports')}
             />
@@ -290,7 +287,6 @@ export class ScreeningPage extends React.Component {
             onCancel={this.cancelEdit}
             onChange={this.setField}
             onSave={this.cardSave}
-            ref='decisionInformationCard'
             screening={mergedScreening}
           />
         }
