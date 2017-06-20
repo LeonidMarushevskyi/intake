@@ -20,21 +20,48 @@ describe('ScreeningInformationCardView', () => {
       }),
     }
   })
+
+  describe('onBlur', () => {
+    beforeEach(() => {
+      component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
+    })
+
+    it('adds errors after focus is lost', () => {
+      const assigneeInput = component.find('#assignee')
+      assigneeInput.simulate('focus')
+      assigneeInput.simulate('blur')
+      expect(component.update().text()).toContain('Error 1')
+    })
+  })
+
   describe('in edit mode', () => {
     beforeEach(() => {
       component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
     })
+
     it('renders the edit card', () => {
       expect(component.find('ScreeningInformationEditView').length).toEqual(1)
     })
+
+    it('passes onBlur to the child component', () => {
+      expect(component.find('ScreeningInformationEditView').props().onBlur).not.toEqual(undefined)
+      expect(component.find('ScreeningInformationEditView').props().onBlur).toEqual(component.instance().onBlur)
+    })
+
+    it('passes errors from the state', () => {
+      expect(component.find('ScreeningInformationEditView').props().errors).toEqual(Immutable.Map())
+    })
+
     it('renders the save and cancel button', () => {
       expect(component.find('.btn.btn-primary').text()).toEqual('Save')
       expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
     })
+
     describe('save button', () => {
       beforeEach(() => {
         component.find('.btn.btn-primary').simulate('click')
       })
+
       it('saves the correct fields', () => {
         expect(props.onSave).toHaveBeenCalledWith(Immutable.fromJS([
           'assignee',
@@ -45,6 +72,7 @@ describe('ScreeningInformationCardView', () => {
         ]))
       })
     })
+
     describe('cancel button', () => {
       beforeEach(() => {
         component.find('#name').simulate(
@@ -52,6 +80,7 @@ describe('ScreeningInformationCardView', () => {
         )
         component.find('.btn.btn-default').simulate('click')
       })
+
       it('cancels the correct fields', () => {
         expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
           'assignee',
@@ -61,6 +90,7 @@ describe('ScreeningInformationCardView', () => {
           'started_at',
         ]))
       })
+
       it('discards changes on cancel', () => {
         component.setState({mode: 'edit'})
         expect(component.find('ScreeningInformationEditView').props().screening.name)

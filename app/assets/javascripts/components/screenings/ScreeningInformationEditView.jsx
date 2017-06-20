@@ -5,7 +5,7 @@ import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import SelectField from 'components/common/SelectField'
 
-const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, onBlur}) => (
+const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, onBlur, errors}) => (
   <div className='card edit double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -29,6 +29,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           value={screening.get('assignee') || ''}
           onChange={(event) => onChange(['assignee'], event.target.value)}
           onBlur={(event) => onBlur('assignee', event.target.value)}
+          errors={errors.get('assignee')}
         />
       </div>
       <div className='row'>
@@ -72,6 +73,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
 )
 
 ScreeningInformationEditView.propTypes = {
+  errors: PropTypes.object.isRequired,
   onBlur: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

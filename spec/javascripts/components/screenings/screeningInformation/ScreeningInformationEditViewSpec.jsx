@@ -7,6 +7,8 @@ describe('ScreeningInformationEditView', () => {
   let component
 
   const requiredProps = {
+    errors: Immutable.Map(),
+    onBlur: jasmine.createSpy(),
     onChange: jasmine.createSpy(),
     onCancel: jasmine.createSpy(),
     onSave: jasmine.createSpy(),
@@ -88,6 +90,18 @@ describe('ScreeningInformationEditView', () => {
       assigneeField.simulate('focus')
       assigneeField.simulate('blur')
       expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    })
+  })
+
+  describe('errors', () => {
+    const props = {
+      ...requiredProps,
+      errors: Immutable.fromJS({assignee: ['First error', 'Second error'], name: []}),
+    }
+
+    it('passes the appropriate errors to the assignee input', () => {
+      component = shallow(<ScreeningInformationEditView {...props} />)
+      expect(component.find('InputField[id="assignee"]').props().errors.toJS()).toEqual(['First error', 'Second error'])
     })
   })
 })

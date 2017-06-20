@@ -8,8 +8,10 @@ export default class ScreeningInformationCardView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      errors: Immutable.Map(),
       mode: this.props.mode,
     }
+    this.onBlur = this.onBlur.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onCancel = this.onCancel.bind(this)
@@ -32,15 +34,23 @@ export default class ScreeningInformationCardView extends React.Component {
     })
   }
 
+  onBlur(fieldName, _value) {
+    // Validate field with the validation service
+    const errors = this.state.errors.set(fieldName, Immutable.List(['Error 1', 'Error 2']))
+    this.setState({errors: errors})
+  }
+
   onCancel() {
     this.setState({mode: 'show'})
     this.props.onCancel(this.fields)
   }
 
   render() {
-    const {mode} = this.state
+    const {errors, mode} = this.state
     const allprops = {
       edit: {
+        errors: errors,
+        onBlur: this.onBlur,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
