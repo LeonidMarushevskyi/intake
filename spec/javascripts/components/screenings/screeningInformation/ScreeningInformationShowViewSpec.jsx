@@ -18,37 +18,58 @@ describe('ScreeningInformationShowView', () => {
     expect(component.find('.card-header').text()).toContain('Screening Information')
   })
 
-  it('renders the screening show fields', () => {
+  describe('Show fields', () => {
+    let component
     const props = {
-      onEdit: jasmine.createSpy(),
-      screening: Immutable.fromJS({
-        name: 'The Rocky Horror Picture Show',
-        assignee: 'Michael Bluth',
-        started_at: '2016-08-13T10:00:00.000Z',
-        ended_at: '2016-08-22T11:00:00.000Z',
-        communication_method: 'mail',
-        participants: [],
-      }),
+        onEdit: jasmine.createSpy(),
+        screening: Immutable.fromJS({
+          name: 'The Rocky Horror Picture Show',
+          assignee: 'Michael Bluth',
+          started_at: '2016-08-13T10:00:00.000Z',
+          ended_at: '2016-08-22T11:00:00.000Z',
+          communication_method: 'mail',
+          participants: [],
+          errors: Immutable.fromJS({assignee: ['Error 1', 'Error 2']})
+        }),
     }
-    component = shallow(<ScreeningInformationShowView {...props} />)
-    expect(component.find('ShowField').length).toEqual(5)
-    expect(component.find('ShowField[label="Assigned Social Worker"]').props().required)
-      .toEqual(true)
-    expect(component.find('ShowField[label="Screening Start Date/Time"]').props().required)
-      .toEqual(true)
-    expect(component.find('ShowField[label="Communication Method"]').props().required)
-      .toEqual(true)
-    expect(component.find('ShowField[label="Title/Name of Screening"]').html())
-      .toContain('The Rocky Horror Picture Show')
-    expect(component.find('ShowField[label="Assigned Social Worker"]').html())
-      .toContain('Michael Bluth')
-    expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
-      .toContain('08/13/2016 3:00 AM')
-    expect(component.find('ShowField[label="Screening End Date/Time"]').html())
-      .toContain('08/22/2016 4:00 AM')
-    expect(component.find('ShowField[label="Communication Method"]').html())
-      .toContain('Mail')
+
+    beforeEach(() => {
+      component = shallow(<ScreeningInformationShowView {...props} />)
+    })
+
+    it('renders the screening show fields', () => {
+      expect(component.find('ShowField').length).toEqual(5)
+    })
+
+    it('renders name of screening',()=>{
+      const screeningName = component.find('ShowField[label="Title/Name of Screening"]')
+      expect(screeningName.html()).toContain('The Rocky Horror Picture Show')
+    })
+
+    it('renders the screening start date/time', () => {
+      const startDate = component.find('ShowField[label="Screening Start Date/Time"]')
+      expect(startDate.props().required).toEqual(true)
+      expect(startDate.html()).toContain('08/13/2016 3:00 AM')
+    })
+
+    it('renders the screening end date/time', () => {
+      const endDate = component.find('ShowField[label="Screening End Date/Time"]')
+      expect(endDate.html()).toContain('08/22/2016 4:00 AM')
+    })
+
+    it('renders the communication method', () => {
+      const comMethod = component.find('ShowField[label="Communication Method"]')
+      expect(comMethod.props().required).toEqual(true)
+      expect(comMethod.html()).toContain('Mail')
+    })
+
+    it('renders Assigned Social Worker', () => {
+      const socialWorker = component.find('ShowField[label="Assigned Social Worker"]')
+      expect(socialWorker.props().required).toEqual(true)
+      expect(socialWorker.html()).toContain('Michael Bluth')
+    })
   })
+
 
   it('renders the edit link', () => {
     expect(component.find('EditLink').props().ariaLabel).toEqual('Edit screening information')
