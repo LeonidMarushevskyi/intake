@@ -37,6 +37,7 @@ describe('ScreeningPage', () => {
         participants,
       }
       const component = shallow(<ScreeningPage {...props} />)
+      component.setState({loaded: true})
       expect(component.find('HistoryCard').length).toEqual(1)
       expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
       expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
@@ -98,6 +99,7 @@ describe('ScreeningPage', () => {
         relationships: Immutable.fromJS([{id: '123'}]),
       }
       const component = shallow(<ScreeningPage {...props} />)
+      component.setState({loaded: true})
       expect(component.find('RelationshipsCard').length).toEqual(1)
       expect(component.find('RelationshipsCard').props().participants).toEqual(Immutable.fromJS([]))
       expect(component.find('RelationshipsCard').props().relationships).toEqual(props.relationships)
@@ -117,6 +119,7 @@ describe('ScreeningPage', () => {
       expect(safetyCard.props().mode).toEqual('edit')
       expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
+
     it('renders the screening reference', () => {
       const props = {
         ...requiredProps,
@@ -126,6 +129,7 @@ describe('ScreeningPage', () => {
         }),
       }
       const component = shallow(<ScreeningPage {...props} mode='show'/>)
+      component.setState({loaded: true})
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
   })
@@ -480,6 +484,7 @@ describe('ScreeningPage', () => {
             participants,
           }
           component = shallow(<ScreeningPage {...props} />)
+          component.setState({loaded: true})
         })
 
         it('renders the card header', () => {
@@ -510,6 +515,7 @@ describe('ScreeningPage', () => {
 
   it('renders the submit button', () => {
     const component = shallow(<ScreeningPage {...requiredProps} />)
+    component.setState({loaded: true})
     expect(component.find('ScreeningSubmitButton').length).toEqual(1)
   })
 

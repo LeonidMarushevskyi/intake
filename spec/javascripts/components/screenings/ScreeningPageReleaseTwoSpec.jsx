@@ -30,11 +30,13 @@ describe('ScreeningPage when release two is active', () => {
 
     it('renders the snapshot copy', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
       expect(component.text()).toContain('The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.')
     })
 
     it('does not render home and edit links', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
       expect(component.find({to: '/'}).length).toEqual(0)
       expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
     })
@@ -54,6 +56,7 @@ describe('ScreeningPage when release two is active', () => {
         ])
         const props = {...requiredProps, participants}
         component = shallow(<ScreeningPage {...props} />)
+        component.setState({loaded: true})
       })
 
       it('renders the card header', () => {
@@ -89,6 +92,7 @@ describe('ScreeningPage when release two is active', () => {
         participants,
       }
       const component = shallow(<ScreeningPage {...props} />)
+      component.setState({loaded: true})
       expect(component.find('HistoryCard').length).toEqual(1)
       expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
       expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
@@ -104,6 +108,7 @@ describe('ScreeningPage when release two is active', () => {
 
     it('does not render the relations card', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
       expect(component.find('RelationshipsCard').length).toEqual(0)
     })
 
@@ -115,6 +120,7 @@ describe('ScreeningPage when release two is active', () => {
 
     it('does not render the screening heading', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
       expect(component.find('h1').length).toEqual(0)
     })
   })

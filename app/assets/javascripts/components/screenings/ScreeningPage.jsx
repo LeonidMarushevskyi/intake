@@ -209,121 +209,125 @@ export class ScreeningPage extends React.Component {
         this.state.screeningEdits.get('allegations')
       )
     }
-    return (
-      <div>
-        {
-          releaseTwoInactive &&
-            <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
-        }
-        {
-          releaseTwo &&
-            <div className='card edit double-gap-top' id='snapshot-card'>
-              <div className='card-body'>
-                <div className='row'>
-                  <div className='col-md-12'>
-                    <div className='double-pad-top'>
-                      The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
-                      To start, search by any combination of name, date of birth, or social security number. Click on a person from
-                      the results to add them to the Snapshot, and their basic information and history will automatically appear below.
-                      You can add as many people as you like, and when ready, copy the summary of their history.
-                      You will need to manually paste it into a document or a field in CWS/CMS.
+    if (loaded) {
+      return (
+        <div>
+          {
+            releaseTwoInactive &&
+              <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
+          }
+          {
+            releaseTwo &&
+              <div className='card edit double-gap-top' id='snapshot-card'>
+                <div className='card-body'>
+                  <div className='row'>
+                    <div className='col-md-12'>
+                      <div className='double-pad-top'>
+                        The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
+                        To start, search by any combination of name, date of birth, or social security number. Click on a person from
+                        the results to add them to the Snapshot, and their basic information and history will automatically appear below.
+                        You can add as many people as you like, and when ready, copy the summary of their history.
+                        You will need to manually paste it into a document or a field in CWS/CMS.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-        }
-        {
-          loaded && releaseTwoInactive &&
-          <ScreeningInformationCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            screening={mergedScreening}
-          />
-        }
-        {this.renderParticipantsCard()}
-        {
-          loaded && releaseTwoInactive &&
-          <NarrativeCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            narrative={mergedScreening.get('report_narrative')}
-          />
-        }
-        {
-          loaded && releaseTwoInactive &&
-          <IncidentInformationCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            screening={mergedScreening}
-          />
-        }
-        {
-          loaded && releaseTwoInactive &&
-            <AllegationsCardView
+          }
+          {
+            releaseTwoInactive &&
+            <ScreeningInformationCardView
               mode={this.mode}
               onCancel={this.cancelEdit}
-              onSave={this.cardSave}
-              setField={this.setField}
-              allegations={sortedAllegations}
-            />
-        }
-        {
-          releaseTwoInactive &&
-          <RelationshipsCard
-            actions={this.props.actions}
-            participants={this.props.participants}
-            relationships={this.props.relationships}
-            screeningId={this.props.params.id}
-          />
-        }
-        {
-          loaded && releaseTwoInactive &&
-            <WorkerSafetyCardView
-              mode={this.mode}
-              onCancel={this.cancelEdit}
-              onSave={this.cardSave}
               onChange={this.setField}
+              onSave={this.cardSave}
               screening={mergedScreening}
             />
-        }
-        <HistoryCard
-          screeningId={this.props.params.id}
-          actions={this.props.actions}
-          involvements={this.props.involvements}
-          participants={this.props.participants}
-        />
-        {
-          loaded && releaseTwoInactive &&
-            <CrossReportCardView
+          }
+          {this.renderParticipantsCard()}
+          {
+            releaseTwoInactive &&
+            <NarrativeCardView
               mode={this.mode}
               onCancel={this.cancelEdit}
-              onSave={this.cardSave}
               onChange={this.setField}
-              areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
-              crossReports={mergedScreening.get('cross_reports')}
+              onSave={this.cardSave}
+              narrative={mergedScreening.get('report_narrative')}
             />
-        }
-        {
-          loaded && releaseTwoInactive &&
-          <DecisionCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            screening={mergedScreening}
+          }
+          {
+            releaseTwoInactive &&
+            <IncidentInformationCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              screening={mergedScreening}
+            />
+          }
+          {
+            releaseTwoInactive &&
+              <AllegationsCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                setField={this.setField}
+                allegations={sortedAllegations}
+              />
+          }
+          {
+            releaseTwoInactive &&
+            <RelationshipsCard
+              actions={this.props.actions}
+              participants={this.props.participants}
+              relationships={this.props.relationships}
+              screeningId={this.props.params.id}
+            />
+          }
+          {
+            releaseTwoInactive &&
+              <WorkerSafetyCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                onChange={this.setField}
+                screening={mergedScreening}
+              />
+          }
+          <HistoryCard
+            screeningId={this.props.params.id}
+            actions={this.props.actions}
+            involvements={this.props.involvements}
+            participants={this.props.participants}
           />
-        }
-        <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
-        { this.mode === 'show' && this.renderFooterLinks() }
-      </div>
-    )
+          {
+            releaseTwoInactive &&
+              <CrossReportCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                onChange={this.setField}
+                areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
+                crossReports={mergedScreening.get('cross_reports')}
+              />
+          }
+          {
+            releaseTwoInactive &&
+            <DecisionCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              screening={mergedScreening}
+            />
+          }
+          <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+          { this.mode === 'show' && this.renderFooterLinks() }
+        </div>
+      )
+    } else {
+      return (<div />)
+    }
   }
 }
 
