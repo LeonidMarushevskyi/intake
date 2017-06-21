@@ -3,17 +3,20 @@
 require 'rails_helper'
 require 'spec_helper'
 require 'support/factory_girl'
+require 'feature/testing'
 
 feature 'Show Screening' do
-  scenario 'showing existing screening' do
-    address = FactoryGirl.create(
+  let(:address) do
+    FactoryGirl.create(
       :address,
       street_address: '123 fake st',
       city: 'Springfield',
       state: 'NY',
       zip: '12345'
     )
-    existing_screening = FactoryGirl.create(
+  end
+  let(:existing_screening) do
+    FactoryGirl.create(
       :screening,
       additional_information: 'The reasoning for this decision',
       address: address,
@@ -34,7 +37,9 @@ feature 'Show Screening' do
         { agency_type: 'Licensing' }
       ]
     )
+  end
 
+  scenario 'showing existing screening' do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(json_body(existing_screening.to_json))
 
@@ -106,5 +111,21 @@ feature 'Show Screening' do
 
     expect(page).to have_link('Home', href: root_path)
     expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
+  end
+
+  context 'when release two is enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
+    end
+
+    scenario 'view an existing screening returns 404', accessibility: false, js: true do
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
+        .and_return(json_body(existing_screening.to_json))
+      visit screening_path(id: existing_screening.id)
+
+      expect(page.status_code).to_not eq 200
+    end
   end
 end

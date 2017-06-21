@@ -3,6 +3,13 @@ import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
 
 export default class RelationshipsCard extends React.Component {
+  componentDidMount() {
+    const {actions, participants, screeningId} = this.props
+    if (!participants.isEmpty()) {
+      actions.fetchRelationshipsByScreeningId(screeningId)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
     if (participants !== nextProps.participants) {

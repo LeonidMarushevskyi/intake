@@ -6,29 +6,38 @@ require 'spec_helper'
 feature 'History card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
-  scenario 'edit an existing screening' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json))
-    visit edit_screening_path(id: existing_screening.id)
-
-    within '#history-card.card.show.card', text: 'History' do
-      expect(page).to have_css('th', text: 'Date')
-      expect(page).to have_css('th', text: 'Type/Status')
-      expect(page).to have_css('th', text: 'County/Office')
-      expect(page).to have_css('th', text: 'People and Roles')
+  context 'with no history of envolvements' do
+    let(:no_involvements) do
+      {
+        referrals: [],
+        screenings: [],
+        cases: []
+      }
     end
-  end
 
-  scenario 'view an existing screening' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json))
-    visit screening_path(id: existing_screening.id)
+    before do
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
+        .and_return(json_body(existing_screening.to_json))
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
+      ).and_return(json_body(no_involvements.to_json, status: 200))
+    end
 
-    within '#history-card.card.show', text: 'History' do
-      expect(page).to have_css('th', text: 'Date')
-      expect(page).to have_css('th', text: 'Type/Status')
-      expect(page).to have_css('th', text: 'County/Office')
-      expect(page).to have_css('th', text: 'People and Roles')
+    scenario 'while editting an existing screening displays the no HOI copy' do
+      visit edit_screening_path(id: existing_screening.id)
+
+      within '.card', text: 'History' do
+        expect(page).to have_content('Add a person in order to see History of Involvement')
+      end
+    end
+
+    scenario 'while editting an existing screening displays the no HOI copy' do
+      visit screening_path(id: existing_screening.id)
+
+      within '.card', text: 'History' do
+        expect(page).to have_content('Add a person in order to see History of Involvement')
+      end
     end
   end
 

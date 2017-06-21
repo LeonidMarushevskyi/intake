@@ -3,6 +3,9 @@
 require 'capybara/rspec'
 require 'support/capybara/screenshot'
 require 'capybara/accessible'
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist
+Capybara.raise_server_errors = false
 
 # Tests must be run in the correct timezone because
 # of UTC converstion and explicit expectations.
@@ -11,7 +14,6 @@ require 'capybara/accessible'
 ENV['TZ'] = 'Etc/GMT+7'
 
 Capybara.default_driver = :accessible_selenium
-Capybara.javascript_driver = Capybara.default_driver
 
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true

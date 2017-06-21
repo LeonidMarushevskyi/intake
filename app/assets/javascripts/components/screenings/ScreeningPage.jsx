@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
@@ -12,12 +13,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
+import {IndexLink, Link} from 'react-router'
 import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {IndexLink, Link} from 'react-router'
-import * as IntakeConfig from 'config'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -197,143 +198,136 @@ export class ScreeningPage extends React.Component {
   render() {
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const sortedAllegations = sortedAllegationsList(
-      screening.get('id'),
-      this.props.participants,
-      screening.get('allegations'),
-      this.state.screeningEdits.get('allegations')
-    )
-    return (
-      <div>
-        <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
-        {
-          loaded &&
-          <ScreeningInformationCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            screening={mergedScreening}
-          />
-        }
-        {this.renderParticipantsCard()}
-        {
-          loaded &&
-          <NarrativeCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            ref='narrativeCard'
-            narrative={mergedScreening.get('report_narrative')}
-          />
-        }
-        {
-          loaded &&
-          <IncidentInformationCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            ref='incidentInformationCard'
-            screening={mergedScreening}
-          />
-        }
-        {
-          loaded &&
-            <AllegationsCardView
-              mode={this.mode}
-              onCancel={this.cancelEdit}
-              onSave={this.cardSave}
-              setField={this.setField}
-              allegations={sortedAllegations}
-            />
-        }
-        <RelationshipsCard
-          actions={this.props.actions}
-          participants={this.props.participants}
-          relationships={this.props.relationships}
-          screeningId={this.props.params.id}
-        />
-        {
-          loaded &&
-            <WorkerSafetyCardView
-              mode={this.mode}
-              onCancel={this.cancelEdit}
-              onSave={this.cardSave}
-              onChange={this.setField}
-              screening={mergedScreening}
-            />
-        }
-        <HistoryCard
-          screeningId={this.props.params.id}
-          actions={this.props.actions}
-          involvements={this.props.involvements}
-          participants={this.props.participants}
-        />
-        {
-          loaded &&
-            <CrossReportCardView
-              mode={this.mode}
-              onCancel={this.cancelEdit}
-              onSave={this.cardSave}
-              onChange={this.setField}
-              ref='crossReportCard'
-              areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
-              crossReports={mergedScreening.get('cross_reports')}
-            />
-        }
-        {
-          loaded &&
-          <DecisionCardView
-            mode={this.mode}
-            onCancel={this.cancelEdit}
-            onChange={this.setField}
-            onSave={this.cardSave}
-            ref='decisionInformationCard'
-            screening={mergedScreening}
-          />
-        }
-        <div className='row'>
-          <div className='centered'>
-            <button
-              className='btn btn-primary'
-              data-toggle='modal'
-              data-target='#submitModal'
-              onClick={(_event) => IntakeConfig.isFeatureActive('referral_submit') && this.props.actions.submitScreening(this.props.params.id)}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-        <div aria-label='submit modal confirmation' className='modal fade' id='submitModal'>
-          <div className='modal-dialog' role='document'>
-            <div className='modal-content'>
-              <div className='modal-body'>
-                <p>
-                  Congratulations! You have completed the process to submit a screening.
-                </p>
-                <p>
-                  This is just a learning environment. If your Decision was to promote to referral,
-                  this does NOT create an actual referral and it will not appear in CWS/CMS.
-                </p>
-              </div>
-              <div className='modal-footer'>
-                <div className='row'>
-                  <div className='centered'>
-                    <a href='/' >
-                      <button className='btn btn-primary' href='/' type='button'>Proceed</button>
-                    </a>
-                    <button aria-label='Close' className='btn btn-default' data-dismiss='modal' type='button'>Cancel</button>
+    const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
+    const releaseTwo = IntakeConfig.isFeatureActive('release_two')
+    let sortedAllegations
+    if (releaseTwoInactive) {
+      sortedAllegations = sortedAllegationsList(
+        screening.get('id'),
+        this.props.participants,
+        screening.get('allegations'),
+        this.state.screeningEdits.get('allegations')
+      )
+    }
+    if (loaded) {
+      return (
+        <div>
+          {
+            releaseTwoInactive &&
+              <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
+          }
+          {
+            releaseTwo &&
+              <div className='card edit double-gap-top' id='snapshot-card'>
+                <div className='card-body'>
+                  <div className='row'>
+                    <div className='col-md-12'>
+                      <div className='double-pad-top'>
+                        The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
+                        To start, search by any combination of name, date of birth, or social security number. Click on a person from
+                        the results to add them to the Snapshot, and their basic information and history will automatically appear below.
+                        You can add as many people as you like, and when ready, copy the summary of their history.
+                        You will need to manually paste it into a document or a field in CWS/CMS.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+          }
+          {
+            releaseTwoInactive &&
+            <ScreeningInformationCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              screening={mergedScreening}
+            />
+          }
+          {this.renderParticipantsCard()}
+          {
+            releaseTwoInactive &&
+            <NarrativeCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              narrative={mergedScreening.get('report_narrative')}
+            />
+          }
+          {
+            releaseTwoInactive &&
+            <IncidentInformationCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              screening={mergedScreening}
+            />
+          }
+          {
+            releaseTwoInactive &&
+              <AllegationsCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                setField={this.setField}
+                allegations={sortedAllegations}
+              />
+          }
+          {
+            releaseTwoInactive &&
+            <RelationshipsCard
+              actions={this.props.actions}
+              participants={this.props.participants}
+              relationships={this.props.relationships}
+              screeningId={this.props.params.id}
+            />
+          }
+          {
+            releaseTwoInactive &&
+              <WorkerSafetyCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                onChange={this.setField}
+                screening={mergedScreening}
+              />
+          }
+          <HistoryCard
+            screeningId={this.props.params.id}
+            actions={this.props.actions}
+            involvements={this.props.involvements}
+            participants={this.props.participants}
+          />
+          {
+            releaseTwoInactive &&
+              <CrossReportCardView
+                mode={this.mode}
+                onCancel={this.cancelEdit}
+                onSave={this.cardSave}
+                onChange={this.setField}
+                areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
+                crossReports={mergedScreening.get('cross_reports')}
+              />
+          }
+          {
+            releaseTwoInactive &&
+            <DecisionCardView
+              mode={this.mode}
+              onCancel={this.cancelEdit}
+              onChange={this.setField}
+              onSave={this.cardSave}
+              screening={mergedScreening}
+            />
+          }
+          <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+          { this.mode === 'show' && this.renderFooterLinks() }
         </div>
-        { this.mode === 'show' && this.renderFooterLinks() }
-      </div>
-    )
+      )
+    } else {
+      return (<div />)
+    }
   }
 }
 

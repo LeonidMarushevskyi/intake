@@ -8,8 +8,13 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :screenings,
-    only: %i[show edit],
+    only: %i[edit],
     constraints: Routes::InactiveReleaseOneConstraint do
+  end
+
+  resources :screenings,
+    only: %i[show],
+    constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
 
   namespace :api, defaults: { format: :json } do

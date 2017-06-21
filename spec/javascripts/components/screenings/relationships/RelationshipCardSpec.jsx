@@ -1,7 +1,7 @@
 import * as Immutable from 'immutable'
 import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('RelationshipsCard', () => {
   const requiredProps = {
@@ -13,6 +13,40 @@ describe('RelationshipsCard', () => {
   let component
   beforeEach(() => {
     component = shallow(<RelationshipsCard {...requiredProps}/>)
+  })
+
+  describe('#componentDidMount', () => {
+    let fetchRelationshipsByScreeningId
+    beforeEach(() => {
+      fetchRelationshipsByScreeningId = jasmine.createSpy('fetchRelationshipsByScreeningId')
+    })
+
+    describe('when participants are not empty', () => {
+      it('fetch relationships', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchRelationshipsByScreeningId},
+          participants: Immutable.fromJS([
+            {id: 1},
+            {id: 2},
+          ]),
+        }
+        component = mount(<RelationshipsCard {...props}/>)
+        expect(fetchRelationshipsByScreeningId).toHaveBeenCalledWith(props.screeningId)
+      })
+    })
+
+    describe('when participants are empty', () => {
+      it('does not fetch relationships', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchRelationshipsByScreeningId},
+          participants: Immutable.List(),
+        }
+        component = mount(<RelationshipsCard {...props}/>)
+        expect(fetchRelationshipsByScreeningId).not.toHaveBeenCalled()
+      })
+    })
   })
 
   describe('#componentWillReceiveProps', () => {

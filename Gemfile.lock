@@ -71,6 +71,7 @@ GEM
     childprocess (0.6.1)
       ffi (~> 1.0, >= 1.0.11)
     clamp (1.0.1)
+    cliver (0.3.2)
     coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -194,6 +195,10 @@ GEM
       insist
       mustache (= 0.99.8)
       stud
+    poltergeist (1.15.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -388,6 +393,7 @@ DEPENDENCIES
   license_finder
   newrelic_rpm
   parallel_tests
+  poltergeist
   pry
   pry-byebug
   pry-doc

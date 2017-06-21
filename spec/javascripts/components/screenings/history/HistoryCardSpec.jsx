@@ -1,15 +1,50 @@
 import * as Immutable from 'immutable'
 import HistoryCard from 'components/screenings/HistoryCard'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('HistoryCard', () => {
   const requiredProps = {
     actions: {},
-    involvements: Immutable.fromJS({screenings: [], referrals: []}),
+    involvements: Immutable.fromJS({screenings: [], referrals: [], cases: []}),
     participants: Immutable.List(),
     screeningId: '33',
   }
+
+  describe('#componentDidMount', () => {
+    let fetchHistoryOfInvolvements
+
+    beforeEach(() => {
+      fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
+    })
+
+    describe('when participants are not empty', () => {
+      it('fetches history of involvements', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchHistoryOfInvolvements},
+          participants: Immutable.fromJS([
+            {id: 1},
+            {id: 2},
+          ]),
+        }
+        mount(<HistoryCard {...props}/>)
+        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(props.screeningId)
+      })
+    })
+
+    describe('when participants are empty', () => {
+      it('does not fetch history of involvements', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchHistoryOfInvolvements},
+          participants: Immutable.List(),
+        }
+        mount(<HistoryCard {...props}/>)
+        expect(fetchHistoryOfInvolvements).not.toHaveBeenCalled()
+      })
+    })
+  })
 
   describe('#componentWillReceiveProps', () => {
     let component
@@ -54,8 +89,22 @@ describe('HistoryCard', () => {
   })
 
   describe('#render', () => {
-    it('renders history card headings', () => {
+    it("renders 'Add a person...' Copy when no involvements are present", () => {
       const component = shallow(<HistoryCard {...requiredProps}/>)
+      expect(component.find('table').length).toEqual(0)
+      expect(component.text()).toContain('Add a person in order to see History of Involvement')
+    })
+
+    it('does not render table when no involvements are present', () => {
+      const component = shallow(<HistoryCard {...requiredProps}/>)
+      expect(component.find('table').length).toEqual(0)
+    })
+
+    it('renders table headings when there are involvements', () => {
+      const involvements = Immutable.fromJS({screenings: [{}]})
+      const props = {...requiredProps, involvements}
+      const component = shallow(<HistoryCard {...props}/>)
+
       const tr = component.find('thead tr')
       expect(tr.text()).toContain('Date')
       expect(tr.text()).toContain('Type/Status')

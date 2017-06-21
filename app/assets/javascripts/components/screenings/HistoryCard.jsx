@@ -9,6 +9,13 @@ export default class HistoryCard extends React.Component {
     super(props, context)
   }
 
+  componentDidMount() {
+    const {actions, participants, screeningId} = this.props
+    if (!participants.isEmpty()) {
+      actions.fetchHistoryOfInvolvements(screeningId)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
     if (participants !== nextProps.participants) {
@@ -17,9 +24,11 @@ export default class HistoryCard extends React.Component {
   }
 
   render() {
-    const screenings = this.props.involvements.get('screenings')
-    const referrals = this.props.involvements.get('referrals')
-    const cases = this.props.involvements.get('cases')
+    const {involvements} = this.props
+    const screenings = involvements.get('screenings')
+    const referrals = involvements.get('referrals')
+    const cases = involvements.get('cases')
+    const emptyInvolvements = involvements.every((involvement) => involvement.isEmpty())
 
     return (
       <div className='card show double-gap-top' id='history-card'>
@@ -28,35 +37,41 @@ export default class HistoryCard extends React.Component {
         </div>
         <div className='card-body no-pad-top'>
           <div className='row'>
-            <div className='table-responsive'>
-              <table className='table table-hover'>
-                <colgroup>
-                  <col className='col-md-2' />
-                  <col className='col-md-2'/>
-                  <col className='col-md-2' />
-                  <col className='col-md-6'/>
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th scope='col'>Date</th>
-                    <th scope='col'>Type/Status</th>
-                    <th scope='col'>County/Office</th>
-                    <th scope='col'>People and Roles</th>
-                  </tr>
-                </thead>
-                <tbody id='history-of-involvement'>
-                  {screenings && screenings.map((screening, screeningIndex) =>
-                    <HistoryCardScreening screening={screening} index={screeningIndex} key={`screening-${screeningIndex}`} />
-                  )}
-                  {referrals && referrals.map((referral, referralIndex) =>
-                    <HistoryCardReferral referral={referral} index={referralIndex} key={`referral-${referralIndex}`} />
-                  )}
-                  {cases && cases.map((hoiCase, caseIndex) =>
-                    <HistoryCardCase hoiCase={hoiCase} index={caseIndex} key={`case-${caseIndex}`} />
-                  )}
-                </tbody>
-              </table>
-            </div>
+            { emptyInvolvements &&
+              'Add a person in order to see History of Involvement'
+            }
+            {
+              !emptyInvolvements &&
+                <div className='table-responsive'>
+                  <table className='table table-hover'>
+                    <colgroup>
+                      <col className='col-md-2' />
+                      <col className='col-md-2'/>
+                      <col className='col-md-2' />
+                      <col className='col-md-6'/>
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope='col'>Date</th>
+                        <th scope='col'>Type/Status</th>
+                        <th scope='col'>County/Office</th>
+                        <th scope='col'>People and Roles</th>
+                      </tr>
+                    </thead>
+                    <tbody id='history-of-involvement'>
+                      {screenings && screenings.map((screening, screeningIndex) =>
+                        <HistoryCardScreening screening={screening} index={screeningIndex} key={`screening-${screeningIndex}`} />
+                      )}
+                      {referrals && referrals.map((referral, referralIndex) =>
+                        <HistoryCardReferral referral={referral} index={referralIndex} key={`referral-${referralIndex}`} />
+                      )}
+                      {cases && cases.map((hoiCase, caseIndex) =>
+                        <HistoryCardCase hoiCase={hoiCase} index={caseIndex} key={`case-${caseIndex}`} />
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+            }
           </div>
         </div>
       </div>

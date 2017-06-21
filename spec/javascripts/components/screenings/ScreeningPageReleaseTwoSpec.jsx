@@ -1,0 +1,127 @@
+import Immutable from 'immutable'
+import React from 'react'
+import {ScreeningPage} from 'components/screenings/ScreeningPage'
+import {shallow} from 'enzyme'
+import * as IntakeConfig from 'config'
+
+describe('ScreeningPage when release two is active', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(false)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true)
+  })
+
+  describe('Edit mode', () => {
+    const requiredScreeningAttributes = {
+      allegations: [],
+      id: '123456',
+      safety_alerts: [],
+      cross_reports: [],
+    }
+
+    const requiredProps = {
+      actions: {fetchScreening: () => null},
+      params: {id: '1'},
+      participants: Immutable.List(),
+      screening: Immutable.fromJS(requiredScreeningAttributes),
+      involvements: Immutable.fromJS({screenings: []}),
+      relationships: Immutable.List(),
+      mode: 'edit',
+    }
+
+    it('renders the snapshot copy', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.text()).toContain('The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.')
+    })
+
+    it('does not render home and edit links', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find({to: '/'}).length).toEqual(0)
+      expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
+    })
+
+    it('does not render the screening information in edit mode', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('ScreeningInformationCardView').length).toEqual(0)
+    })
+
+    describe('participants card', () => {
+      let component
+      beforeEach(() => {
+        const participants = Immutable.fromJS([
+          {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
+          {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
+        ])
+        const props = {...requiredProps, participants}
+        component = shallow(<ScreeningPage {...props} />)
+        component.setState({loaded: true})
+      })
+
+      it('renders the card header', () => {
+        expect(component.find('#search-card .card-header').text()).toContain('Search')
+      })
+
+      it('renders the search card', () => {
+        expect(component.find('#search-card label').text()).toContain('Search for any person')
+        expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
+      })
+
+      it('renders the autocompleter', () => {
+        expect(component.find('Autocompleter').props().id).toEqual('screening_participants')
+        expect(component.find('Autocompleter').props().onSelect).toEqual(
+          component.instance().createParticipant
+        )
+      })
+
+      it('renders the participants card for each participant', () => {
+        expect(component.find('ParticipantCardView').length).toEqual(2)
+        expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
+          ['edit', 'edit']
+        )
+      })
+    })
+
+    it('renders the history card', () => {
+      const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
+      const participants = Immutable.fromJS([{id: 1}])
+      const props = {
+        ...requiredProps,
+        involvements,
+        participants,
+      }
+      const component = shallow(<ScreeningPage {...props} />)
+      component.setState({loaded: true})
+      expect(component.find('HistoryCard').length).toEqual(1)
+      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
+      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
+      expect(component.find('HistoryCard').props().participants).toEqual(participants)
+      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
+    })
+
+    it('does not render the allegations card', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('AllegationsCardView').length).toEqual(0)
+    })
+
+    it('does not render the relations card', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('RelationshipsCard').length).toEqual(0)
+    })
+
+    it('does not render the worker safety card', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('WorkerSafetyCardView').length).toEqual(0)
+    })
+
+    it('does not render the screening heading', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('h1').length).toEqual(0)
+    })
+  })
+})
