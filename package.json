@@ -4,6 +4,7 @@
     "babel-polyfill": "6.2.0",
     "bootstrap": "^3.3.6",
     "classnames": "^2.2.5",
+    "clipboard-js": "^0.3.3",
     "history": "3.0.0",
     "immutable": "^3.8.1",
     "jquery": "2.1.4",

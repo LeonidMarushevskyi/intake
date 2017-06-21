@@ -3,6 +3,7 @@ import React from 'react'
 import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
 import HistoryCardReferral from 'components/screenings/HistoryCardReferral'
 import HistoryCardCase from 'components/screenings/HistoryCardCase'
+import clipboard from 'clipboard-js'
 
 export default class HistoryCard extends React.Component {
   constructor(props, context) {
@@ -43,7 +44,7 @@ export default class HistoryCard extends React.Component {
             {
               !emptyInvolvements &&
                 <div className='table-responsive'>
-                  <table className='table table-hover'>
+                  <table className='table table-hover' ref={(history) => { this.historyTable = history }} >
                     <colgroup>
                       <col className='col-md-2' />
                       <col className='col-md-2'/>
@@ -73,6 +74,22 @@ export default class HistoryCard extends React.Component {
                 </div>
             }
           </div>
+          { !emptyInvolvements &&
+            <div className='row'>
+              <div className='centered'>
+                <button
+                  onClick={() =>
+                    this.historyTable && clipboard.copy({
+                      'text/plain': this.historyTable.innerText,
+                      'text/html': this.historyTable.outerHTML,
+                    })}
+                  className='btn btn-primary'
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          }
         </div>
       </div>
     )

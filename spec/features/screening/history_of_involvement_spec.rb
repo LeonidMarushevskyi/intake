@@ -204,6 +204,28 @@ feature 'History card' do
       ).and_return(json_body([].to_json, status: 200))
     end
 
+    scenario 'copy button' do
+      visit screening_path(id: existing_screening.id)
+      within '#history-card.card.show', text: 'History' do
+        click_button 'Copy'
+      end
+      #
+      # Capybara has no way of checking the clipboard contents, so we insert a textarea
+      # to this card to paste into and check the value.
+      #
+      js = [
+        'var spec_meta = document.createElement("textarea")',
+        'var label = document.createElement("label")',
+        'label.setAttribute("for", "spec_meta")',
+        'spec_meta.setAttribute("id", "spec_meta")',
+        'document.getElementById("history-card").appendChild(spec_meta)',
+        'document.getElementById("spec_meta").appendChild(label)'
+      ].join(';')
+      page.execute_script js
+      find('#spec_meta').native.send_keys [:control, 'v']
+      expect(find('#spec_meta').value).to eq(first('#history-card table')[:innerText])
+    end
+
     scenario 'viewing a screening' do
       visit screening_path(id: existing_screening.id)
 
