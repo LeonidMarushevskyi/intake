@@ -2,6 +2,7 @@ import * as Immutable from 'immutable'
 import HistoryCard from 'components/screenings/HistoryCard'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
+import clipboard from 'clipboard-js'
 
 describe('HistoryCard', () => {
   const requiredProps = {
@@ -84,6 +85,29 @@ describe('HistoryCard', () => {
 
       it('does not fetch history of involvements', () => {
         expect(fetchHistoryOfInvolvements).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('copy button', () => {
+    const involvements = Immutable.fromJS({screenings: [Immutable.fromJS({id: 1})]})
+    it('does not render if there are no involvements', () => {
+      const component = shallow(<HistoryCard {...requiredProps} />)
+      expect(component.find('button[children="Copy"]').length).toEqual(0)
+    })
+    it('has an onClick callback', () => {
+      const component = shallow(<HistoryCard {...requiredProps} involvements={involvements} />)
+      const copyButton = component.find('button[children="Copy"]')
+      expect(copyButton.props().onClick).toEqual(jasmine.any(Function))
+    })
+    it('calls the clipboard library', () => {
+      const copySpy = spyOn(clipboard, 'copy').and.callThrough()
+      const wrapper = mount(<HistoryCard {...requiredProps} involvements={involvements} />)
+      const resultsTable = wrapper.find('table').node
+      wrapper.find('button[children="Copy"]').simulate('click')
+      expect(copySpy).toHaveBeenCalledWith({
+        'text/plain': resultsTable.innerText,
+        'text/html': resultsTable.outerHTML,
       })
     })
   })

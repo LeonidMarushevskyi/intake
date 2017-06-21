@@ -23,6 +23,7 @@ Capybara::Accessible::Auditor::Node.class_eval do
     config.ignoreSelectors('badAriaAttributeValue', '[id$=_cal]');
     config.ignoreSelectors('badAriaAttributeValue', '[id$=_input');
     config.ignoreSelectors('badAriaAttributeValue', '[id$=_time_listbox');
+    config.ignoreSelectors('badAriaAttributeValue', '[id=spec_meta');
   IGNORES
 
   def perform_audit_script
