@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
+require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_and_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
 
@@ -24,7 +25,11 @@ Rails.application.routes.draw do
         constraints: Routes::InactiveReleaseOneAndTwoConstraint
 
       resources :screenings,
-        only: %i[show create update],
+        only: %i[update],
+        constraints: Routes::InactiveReleaseOneAndTwoConstraint
+
+      resources :screenings,
+        only: %i[show create],
         constraints: Routes::InactiveReleaseOneConstraint do
         member do
           get 'history_of_involvements'
@@ -33,7 +38,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :participants, only: %i[create destroy update]
+      resources :participants, only: %i[create destroy]
+
+      resources :participants, only: %i[update],
+        constraints: Routes::InactiveReleaseTwoConstraint
+
       resource :people, only: [:search] do
         collection do
           get 'search'
