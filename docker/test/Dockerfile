@@ -4,6 +4,9 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
+ADD ./bin/install_phantomjs $APP_HOME/install_phantomjs
+RUN $APP_HOME/install_phantomjs
+
 ENV BUNDLE_PATH /ca_intake/ruby_gems
 
 RUN mkdir /build_artefacts
