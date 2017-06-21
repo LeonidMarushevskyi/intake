@@ -42,7 +42,7 @@ export default class ScreeningInformationCardView extends React.Component {
     this.fieldValidations.map((rules, fieldShortName) => {
       errors[fieldShortName] = Validator.validateField({
         value: this.props.screening.get(fieldShortName),
-        rules
+        rules,
       })
     })
     return Immutable.Map(errors)

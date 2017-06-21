@@ -1,19 +1,18 @@
 import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import _ from 'lodash'
 
 const ShowField = ({gridClassName, labelClassName, label, children, required, errors}) => (
   <div className={gridClassName}>
     <label className={
         ClassNames(labelClassName,
           {required: required},
-          {'input-error-label': !_.isEmpty(errors)}
+          {'input-error-label': (errors && !errors.isEmpty())}
         )
       }>{label}</label>
     <div className='c-gray'>{children}</div>
     <div>
-      {!_.isEmpty(errors) &&
+      {errors && !errors.isEmpty() &&
         errors.map((error, index) =>
           <span key={index} className='input-error-message' role='alert'>{error}</span>
         )

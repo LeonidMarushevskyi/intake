@@ -220,6 +220,29 @@ describe('InputField', () => {
     })
   })
 
+  describe('when an empty list is passed for errors', () => {
+    const propsWithEmptyErrors = {
+      ...props,
+      errors: Immutable.List(),
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...propsWithEmptyErrors}/>)
+    })
+
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
   describe('when errors are passed', () => {
     const propsWithErrorMessages = {
       errors: Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']),

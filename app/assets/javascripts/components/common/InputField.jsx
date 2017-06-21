@@ -43,17 +43,17 @@ const InputField = ({
   }
 
   return (
-    <div className={ClassNames(gridClassName, {'input-error': !_.isEmpty(errors)})}>
+    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
       <label className={
         ClassNames(labelClassName,
           {required: required},
-          {'input-error-label': !_.isEmpty(errors)}
+          {'input-error-label': (errors && !errors.isEmpty())}
         )
       } htmlFor={id}
       >{label}</label>
       {input}
       <div>
-      {!_.isEmpty(errors) &&
+      {errors && !errors.isEmpty() &&
         errors.map((error, index) =>
           <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
         )

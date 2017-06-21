@@ -42,6 +42,25 @@ describe('ShowField', () => {
     })
   })
 
+  describe('when an empty list is passed for errors', () => {
+    const propsWithEmptyErrors = {
+      ...requiredProps,
+      errors: Immutable.List(),
+    }
+
+    beforeEach(() => {
+      component = shallow(<ShowField {...propsWithEmptyErrors}/>)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
   describe('ShowField as required', () => {
     beforeEach(() => {
       const props = {
