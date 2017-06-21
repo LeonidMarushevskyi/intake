@@ -15,22 +15,11 @@ export default class ScreeningInformationCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
 
     this.fieldValidations = Immutable.fromJS({
-      assignee: {
-        friendlyName: 'Assigned Social Worker',
-        rules: ['isRequired'],
-      }, communication_method: {
-        friendlyName: 'Communication Method',
-        rules: [],
-      }, ended_at: {
-        friendlyName: 'Screening End Date/Time',
-        rules: [],
-      }, name: {
-        friendlyName: 'Title/Name of Screening',
-        rules: [],
-      }, started_at: {
-        friendlyName: 'Screening Start Date/Time',
-        rules: [],
-      },
+      assignee: [{rule: 'isRequired', message: 'Please enter an assigned worker.'}],
+      communication_method: [],
+      ended_at: [],
+      name: [],
+      started_at: [],
     })
 
     this.fields = Immutable.List(this.fieldValidations.keys())
@@ -50,11 +39,10 @@ export default class ScreeningInformationCardView extends React.Component {
 
   validateAllFields() {
     const errors = {}
-    this.fieldValidations.map((args, fieldShortName) => {
+    this.fieldValidations.map((rules, fieldShortName) => {
       errors[fieldShortName] = Validator.validateField({
-        friendlyName: args.get('friendlyName'),
         value: this.props.screening.get(fieldShortName),
-        rules: args.get('rules'),
+        rules
       })
     })
     return Immutable.Map(errors)
@@ -72,10 +60,8 @@ export default class ScreeningInformationCardView extends React.Component {
   }
 
   onBlur(fieldName, value) {
-    const friendlyName = this.fieldValidations.get(fieldName).get('friendlyName')
-    const rules = this.fieldValidations.get(fieldName).get('rules')
-
-    const errors = this.state.errors.set(fieldName, Validator.validateField({friendlyName, rules, value}))
+    const rules = this.fieldValidations.get(fieldName)
+    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
     this.setState({errors: errors})
   }
 

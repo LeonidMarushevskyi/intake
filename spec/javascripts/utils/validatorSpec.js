@@ -5,7 +5,6 @@ describe('Validator', () => {
   describe('validateField', () => {
     describe('when there are no arguments', () => {
       const args = {
-        friendlyName: '',
         value: '',
         rules: Immutable.List(),
       }
@@ -23,9 +22,8 @@ describe('Validator', () => {
 
     describe('When there are arguments, but all values are valid', () => {
       const args = {
-        friendlyName: 'Assigned Social Worker',
         value: 'Sally Worker',
-        rules: Immutable.List(['isRequired']),
+        rules: Immutable.fromJS([{rule: 'isRequired', message: 'Give me a social worker'}]),
       }
 
       let validationResult
@@ -41,9 +39,8 @@ describe('Validator', () => {
 
     describe('when there are errors', () => {
       const args = {
-        friendlyName: 'Assigned Social Worker',
         value: '',
-        rules: Immutable.List(['isRequired']),
+        rules: Immutable.fromJS([{rule: 'isRequired', message: 'Give me a social worker'}]),
       }
 
       let validationResult
@@ -57,15 +54,14 @@ describe('Validator', () => {
       })
 
       it('includes fieldName in the returned error message', () => {
-        expect(validationResult.first()).toContain('Social Worker')
+        expect(validationResult.first()).toContain('Give me a social worker')
       })
     })
   })
 
   describe('isRequired', () => {
     const sharedArgs = {
-      friendlyName: 'Assigned Social Worker',
-      rules: Immutable.List(['isRequired']),
+      rules: Immutable.fromJS([{rule: 'isRequired', message: 'Give me a social worker'}]),
     }
 
     it('is not valid when the value is null', () => {
@@ -105,7 +101,7 @@ describe('Validator', () => {
         ...sharedArgs,
         value: '',
       }
-      expect(Validator.validateField(args).first()).toEqual('Assigned Social Worker is required')
+      expect(Validator.validateField(args).first()).toEqual('Give me a social worker')
     })
   })
 })

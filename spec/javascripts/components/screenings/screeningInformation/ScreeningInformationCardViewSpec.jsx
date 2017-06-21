@@ -39,7 +39,7 @@ describe('ScreeningInformationCardView', () => {
       const assigneeInput = component.find('#assignee')
       assigneeInput.simulate('focus')
       assigneeInput.simulate('blur')
-      expect(component.update().text()) .toContain('Assigned Social Worker is required')
+      expect(component.update().text()) .toContain('Please enter an assigned worker.')
     })
   })
 
@@ -182,7 +182,7 @@ describe('ScreeningInformationCardView', () => {
       it('validates the assigned social worker field', () => {
         const errors = component.find('ScreeningInformationShowView').props().errors
         expect(errors.toJS()).toEqual({
-          assignee: ['Assigned Social Worker is required'],
+          assignee: ['Please enter an assigned worker.'],
           communication_method: [],
           ended_at: [],
           name: [],
