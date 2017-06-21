@@ -2,27 +2,36 @@ import React from 'react'
 import Immutable from 'immutable'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import {mount} from 'enzyme'
+import * as Validator from 'utils/validator'
 
 describe('ScreeningInformationCardView', () => {
   let component
-  let props
-  beforeEach(() => {
-    props = {
-      onCancel: jasmine.createSpy('onCancel'),
-      onChange: jasmine.createSpy('onChange'),
-      onSave: jasmine.createSpy().and.returnValue(Promise.resolve()),
-      screening: Immutable.fromJS({
-        name: 'Johnson',
-        assignee: 'Michael Bluth',
-        started_at: '2016-08-13T10:00:00.000Z',
-        ended_at: '2016-08-22T11:00:00.000Z',
-        communication_method: 'mail',
-      }),
-    }
-  })
+
+  const baseProps = {
+    onCancel: jasmine.createSpy('onCancel'),
+    onChange: jasmine.createSpy('onChange'),
+    onSave: jasmine.createSpy('onSave').and.returnValue(Promise.resolve()),
+    screening: Immutable.fromJS({
+      name: 'Johnson',
+      assignee: 'Michael Bluth',
+      started_at: '2016-08-13T10:00:00.000Z',
+      ended_at: '2016-08-22T11:00:00.000Z',
+      communication_method: 'mail',
+    }),
+  }
 
   describe('onBlur', () => {
     beforeEach(() => {
+      const props = {
+        ...baseProps,
+        screening: Immutable.fromJS({
+          name: 'Johnson',
+          assignee: '',
+          started_at: '2016-08-13T10:00:00.000Z',
+          ended_at: '2016-08-22T11:00:00.000Z',
+          communication_method: 'mail',
+        }),
+      }
       component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
     })
 
@@ -30,13 +39,13 @@ describe('ScreeningInformationCardView', () => {
       const assigneeInput = component.find('#assignee')
       assigneeInput.simulate('focus')
       assigneeInput.simulate('blur')
-      expect(component.update().text()).toContain('Error 1')
+      expect(component.update().text()) .toContain('Assigned Social Worker is required')
     })
   })
 
   describe('in edit mode', () => {
     beforeEach(() => {
-      component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
+      component = mount(<ScreeningInformationCardView {...baseProps} mode='edit' />)
     })
 
     it('renders the edit card', () => {
@@ -58,18 +67,25 @@ describe('ScreeningInformationCardView', () => {
     })
 
     describe('save button', () => {
+      let validatorSpy
+
       beforeEach(() => {
+        validatorSpy = spyOn(Validator, 'validateField').and.callThrough()
         component.find('.btn.btn-primary').simulate('click')
       })
 
       it('saves the correct fields', () => {
-        expect(props.onSave).toHaveBeenCalledWith(Immutable.fromJS([
+        expect(baseProps.onSave).toHaveBeenCalled()
+        const args = baseProps.onSave.calls.mostRecent().args[0]
+        const expectedArgs = [
           'assignee',
           'communication_method',
           'ended_at',
           'name',
           'started_at',
-        ]))
+        ]
+        expect(args.toJS()).toEqual(expectedArgs)
+        expect(Immutable.is(args, Immutable.List(expectedArgs))).toEqual(true)
       })
 
       describe('async stuff', () => {
@@ -78,15 +94,17 @@ describe('ScreeningInformationCardView', () => {
           setTimeout(done, 100)
         })
 
-        it('adds errors to the proper fields on the show display', () => {
-          expect(component.update().html()).toContain('Error 1')
-          expect(component.update().html()).toContain('Error 2')
+        it('validates values for the card', () => {
+          expect(validatorSpy).toHaveBeenCalled()
         })
       })
     })
 
     describe('cancel button', () => {
+      let validatorSpy
+
       beforeEach(() => {
+        validatorSpy = spyOn(Validator, 'validateField').and.callThrough()
         component.find('#name').simulate(
           'change', {target: {value: 'Cancel this change!'}}
         )
@@ -94,13 +112,17 @@ describe('ScreeningInformationCardView', () => {
       })
 
       it('cancels the correct fields', () => {
-        expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
+        expect(baseProps.onCancel).toHaveBeenCalled()
+        const args = baseProps.onCancel.calls.mostRecent().args[0]
+        const expectedArgs = [
           'assignee',
           'communication_method',
           'ended_at',
           'name',
           'started_at',
-        ]))
+        ]
+        expect(args.toJS()).toEqual(expectedArgs)
+        expect(Immutable.is(args, Immutable.List(expectedArgs))).toEqual(true)
       })
 
       it('discards changes on cancel', () => {
@@ -109,29 +131,64 @@ describe('ScreeningInformationCardView', () => {
           .not.toEqual('Cancel this change!')
       })
 
-      it('adds errors to the proper fields on the show display', () => {
-        expect(component.update().html()).toContain('Error 1')
-        expect(component.update().html()).toContain('Error 2')
+      it('validates values for the card', () => {
+        expect(validatorSpy).toHaveBeenCalled()
       })
     })
   })
 
   describe('in show mode', () => {
-    beforeEach(() => {
-      component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+    describe('when assigned social worker is present', () => {
+      beforeEach(() => {
+        component = mount(<ScreeningInformationCardView {...baseProps} mode='show' />)
+      })
+
+      it('renders the show card', () => {
+        expect(component.find('ScreeningInformationShowView').length).toEqual(1)
+      })
+
+      it('displays edit card when edit link is clicked', () => {
+        component.find('a[aria-label="Edit screening information"]').simulate('click')
+        expect(component.find('ScreeningInformationEditView').length).toEqual(1)
+      })
+
+      it('passes errors from the state', () => {
+        expect(component.find('ScreeningInformationShowView').props().errors.toJS())
+          .toEqual({
+            assignee: [],
+            communication_method: [],
+            ended_at: [],
+            name: [],
+            started_at: [],
+          })
+      })
     })
 
-    it('renders the show card', () => {
-      expect(component.find('ScreeningInformationShowView').length).toEqual(1)
-    })
+    describe('when assigned social worker is not present', () => {
+      beforeEach(() => {
+        const props = {
+          ...baseProps,
+          screening: Immutable.fromJS({
+            name: 'Johnson',
+            assignee: '',
+            started_at: '2016-08-13T10:00:00.000Z',
+            ended_at: '2016-08-22T11:00:00.000Z',
+            communication_method: 'mail',
+          }),
+        }
+        component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+      })
 
-    it('displays edit card when edit link is clicked', () => {
-      component.find('a[aria-label="Edit screening information"]').simulate('click')
-      expect(component.find('ScreeningInformationEditView').length).toEqual(1)
-    })
-
-    it('passes errors from the state', () => {
-      expect(component.find('ScreeningInformationShowView').props().errors).toEqual(Immutable.Map())
+      it('validates the assigned social worker field', () => {
+        const errors = component.find('ScreeningInformationShowView').props().errors
+        expect(errors.toJS()).toEqual({
+          assignee: ['Assigned Social Worker is required'],
+          communication_method: [],
+          ended_at: [],
+          name: [],
+          started_at: [],
+        })
+      })
     })
   })
 })
