@@ -1,7 +1,7 @@
 import * as Immutable from 'immutable'
 import HistoryCard from 'components/screenings/HistoryCard'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('HistoryCard', () => {
   const requiredProps = {
@@ -10,6 +10,41 @@ describe('HistoryCard', () => {
     participants: Immutable.List(),
     screeningId: '33',
   }
+
+  describe('#componentDidMount', () => {
+    let fetchHistoryOfInvolvements
+
+    beforeEach(() => {
+      fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
+    })
+
+    describe('when participants are not empty', () => {
+      it('fetches history of involvements', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchHistoryOfInvolvements},
+          participants: Immutable.fromJS([
+            {id: 1},
+            {id: 2},
+          ]),
+        }
+        mount(<HistoryCard {...props}/>)
+        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(props.screeningId)
+      })
+    })
+
+    describe('when participants are empty', () => {
+      it('does not fetch history of involvements', () => {
+        const props = {
+          ...requiredProps,
+          actions: {fetchHistoryOfInvolvements},
+          participants: Immutable.List(),
+        }
+        mount(<HistoryCard {...props}/>)
+        expect(fetchHistoryOfInvolvements).not.toHaveBeenCalled()
+      })
+    })
+  })
 
   describe('#componentWillReceiveProps', () => {
     let component
