@@ -34,6 +34,13 @@ describe('ScreeningPage when release two is active', () => {
       expect(component.find('ScreeningSubmitButton').length).toEqual(0)
     })
 
+    it('does not show the create new person button', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('Autocompleter').length).toBe(1)
+      expect(component.find('Autocompleter').props().enableFooter).toEqual(false)
+    })
+
     it('renders the snapshot copy', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
       component.setState({loaded: true})

@@ -154,7 +154,7 @@ export class ScreeningPage extends React.Component {
               <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
               <Autocompleter id='screening_participants'
                 onSelect={this.createParticipant}
-                enableFooter={true}
+                enableFooter={IntakeConfig.isFeatureInactive('release_two')}
               />
             </div>
           </div>
