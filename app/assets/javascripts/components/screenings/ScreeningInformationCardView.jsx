@@ -15,13 +15,19 @@ export default class ScreeningInformationCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
 
     this.fieldValidations = Immutable.fromJS({
-      assignee: [{rule: 'isRequired', message: 'Please enter an assigned worker.'}],
-      communication_method: [{rule: 'isRequired', message: 'Please select a communication method.'}],
-      ended_at: [],
+      assignee: [
+        {rule: 'isRequired', message: 'Please enter an assigned worker.'},
+      ],
+      communication_method: [
+        {rule: 'isRequired', message: 'Please select a communication method.'},
+      ],
+      ended_at: [
+        {rule: 'isNotInTheFuture', message: 'The end date and time cannot be in the future.'},
+      ],
       name: [],
       started_at: [
         {rule: 'isRequired', message: 'Please enter a screening start date.'},
-        {rule: 'isNotInTheFuture', message: 'The start date and time cannot be in the future.'}
+        {rule: 'isNotInTheFuture', message: 'The start date and time cannot be in the future.'},
       ],
     })
 

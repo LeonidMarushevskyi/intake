@@ -57,6 +57,14 @@ describe('ScreeningInformationCardView', () => {
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
       expect(errorProps.toJS()).toEqual(expectedErrors)
     })
+
+    it('adds errors for end date/time being in the future', () => {
+      component.instance().onBlur('ended_at', moment().add(1, 'days').toISOString())
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
+    })
   })
 
   describe('in edit mode', () => {
@@ -231,6 +239,33 @@ describe('ScreeningInformationCardView', () => {
 
       it('validates that start date cannot be in the future', () => {
         expect(errors.get('started_at').toJS()).toContain('The start date and time cannot be in the future.')
+      })
+    })
+
+    describe('when ended_at is in the future', () => {
+      beforeEach(() => {
+        const props = {
+          ...baseProps,
+          screening: Immutable.fromJS({
+            name: 'Johnson',
+            assignee: 'Borris',
+            started_at: '2016-08-22T11:00:00.000Z',
+            ended_at: moment().add(1, 'days').toISOString(),
+            communication_method: 'mail',
+          }),
+        }
+        component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+      })
+
+      it('passes an error message that the end date/time cannot be in the future', () => {
+        const errors = component.find('ScreeningInformationShowView').props().errors
+        expect(errors.toJS()).toEqual({
+          assignee: [],
+          communication_method: [],
+          started_at: [],
+          name: [],
+          ended_at: ['The end date and time cannot be in the future.'],
+        })
       })
     })
   })
