@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'feature/testing'
 
 def filtered_participant_attributes
   %i[
@@ -112,6 +113,20 @@ feature 'Edit Screening' do
     within edit_participant_card_selector(created_participant_unknown.id) do
       within '.card-header' do
         expect(page).to have_content 'Unknown Person'
+      end
+    end
+  end
+
+  context 'release_two enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
+    end
+    it 'hides the create new person button' do
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Marge'
+        expect(page).not_to have_button('Create a new person')
       end
     end
   end
