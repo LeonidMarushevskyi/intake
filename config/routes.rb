@@ -40,7 +40,8 @@ Rails.application.routes.draw do
 
       resources :participants, only: %i[create destroy]
 
-      resources :participants, only: %i[update],
+      resources :participants,
+        only: %i[update],
         constraints: Routes::InactiveReleaseTwoConstraint
 
       resource :people, only: [:search] do
