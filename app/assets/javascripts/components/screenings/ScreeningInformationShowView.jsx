@@ -26,7 +26,7 @@ const ScreeningInformationShowView = ({errors, screening, onEdit}) => (
         <ShowField gridClassName='col-md-6' label='Screening Start Date/Time' errors={errors.get('started_at')} required>
           {dateTimeFormatter(screening.get('started_at'))}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label='Screening End Date/Time'>
+        <ShowField gridClassName='col-md-6' label='Screening End Date/Time' errors={errors.get('ended_at')}>
           {dateTimeFormatter(screening.get('ended_at'))}
         </ShowField>
       </div>

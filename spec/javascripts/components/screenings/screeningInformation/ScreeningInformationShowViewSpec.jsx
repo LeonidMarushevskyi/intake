@@ -45,6 +45,7 @@ describe('ScreeningInformationShowView', () => {
           assignee: ['Error 1', 'Error 2'],
           started_at: ['Error 3', 'Error 4'],
           communication_method: ['My Spider-Sense is tingling.'],
+          ended_at: ['Never give up', 'Never surrender'],
         }),
       }
 
@@ -93,6 +94,11 @@ describe('ScreeningInformationShowView', () => {
       expect(socialWorker.html()).toContain('My Spider-Sense is tingling.')
     })
 
+    it('renders errors for the End Date/Time', () => {
+      const endDate = component.find('ShowField[label="Screening End Date/Time"]')
+      expect(endDate.html()).toContain('Never give up')
+      expect(endDate.html()).toContain('Never surrender')
+    })
   })
 
   describe('Show fields', () => {
