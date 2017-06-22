@@ -257,7 +257,7 @@ describe('InputField', () => {
       validationRules: {inputFieldName: 'required'},
     }
     beforeEach(() => {
-      component = mount(<InputField {...propsWithErrorMessages}/>)
+      component = shallow(<InputField {...propsWithErrorMessages}/>)
     })
 
     it('adds an error class to the input wrapper', () => {
