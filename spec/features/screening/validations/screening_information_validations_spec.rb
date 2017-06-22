@@ -33,13 +33,15 @@ feature 'Screening Information Validations' do
 
     scenario 'user sees an error message if communication method field left unfilled' do
       within '#screening-information-card.edit' do
+        page.find('#name').native.click # Make sure #communication_method isn't the focused element
         expect(page).not_to have_content('Please select a communication method.')
-        page.find('#communication_method').native.click
+        simulate('focus', on: '#communication_method')
         expect(page).not_to have_content('Please select a communication method.')
-        page.find('#name').native.click
+        simulate('blur', on: '#communication_method')
         expect(page).to have_content('Please select a communication method.')
+        simulate('focus', on: '#communication_method')
         select 'Email', from: 'Communication Method'
-        page.find('#name').native.click
+        simulate('blur', on: '#communication_method')
         expect(page).not_to have_content('Please select a communication method.')
       end
     end
@@ -67,7 +69,7 @@ feature 'Screening Information Validations' do
       within '#screening-information-card.edit' do
         expect(page).to have_content('Please enter an assigned worker.')
         fill_in 'Assigned Social Worker', with: 'My Name'
-        page.find('#name').click
+        simulate('blur', on: '#assignee')
         click_button 'Save'
       end
 
@@ -91,16 +93,16 @@ feature 'Screening Information Validations' do
         click_link 'Edit'
       end
 
-      screening.assign_attributes(communication_method: 'Email')
+      screening.assign_attributes(communication_method: 'email')
       stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .with(json_body(as_json_without_root_id(screening)))
         .and_return(json_body(screening.to_json))
 
       within '#screening-information-card.edit' do
         expect(page).to have_content('Please select a communication method.')
-        fill_in 'Assigned Social Worker', with: 'My Name'
         select 'Email', from: 'Communication Method'
-        page.find('#name').click
+        simulate('blur', on: '#communication_method')
+        expect(page).not_to have_content('Please select a communication method.')
         click_button 'Save'
       end
 
