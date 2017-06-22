@@ -116,7 +116,7 @@ describe('HistoryCard', () => {
     it("renders 'Add a person...' Copy when no involvements are present", () => {
       const component = shallow(<HistoryCard {...requiredProps}/>)
       expect(component.find('table').length).toEqual(0)
-      expect(component.text()).toContain('Add a person in order to see History of Involvement')
+      expect(component.text()).toContain('Search for people and add them to see their child welfare history.')
     })
 
     it('does not render table when no involvements are present', () => {
