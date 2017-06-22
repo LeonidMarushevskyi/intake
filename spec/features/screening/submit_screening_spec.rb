@@ -82,6 +82,18 @@ feature 'Submit Screening' do
     end
   end
 
+  context 'when release_two is active' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
+    end
+    scenario 'The user submits and clicks proceed' do
+      visit edit_screening_path(existing_screening.id)
+      expect(page).not_to have_button('Submit')
+    end
+  end
+
   context 'when referral submit is deactivated' do
     around do |example|
       Feature.run_with_deactivated(:referral_submit) do
