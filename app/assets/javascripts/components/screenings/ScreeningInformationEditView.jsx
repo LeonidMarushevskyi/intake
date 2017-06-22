@@ -49,6 +49,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           label='Screening End Date/Time'
           value={screening.get('ended_at')}
           onChange={(value) => onChange(['ended_at'], value)}
+          onBlur={(value) => onBlur('ended_at', value)}
+          errors={errors.get('ended_at')}
         />
         </div>
         <div className='row'>
