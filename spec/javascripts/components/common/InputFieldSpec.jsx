@@ -1,10 +1,12 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import Immutable from 'immutable'
+import {mount, shallow} from 'enzyme'
 import InputField from 'components/common/InputField'
 
 describe('InputField', () => {
   let component
   const onChange = jasmine.createSpy('onChange')
+  const onBlur = jasmine.createSpy('onBlur')
   const props = {
     gridClassName: 'myWrapperTest',
     labelClassName: 'myLabelTest',
@@ -12,6 +14,7 @@ describe('InputField', () => {
     label: 'this is my label',
     placeholder: 'This is some placeholder text...',
     onChange: onChange,
+    onBlur: onBlur,
     value: 'this is my field value',
   }
   beforeEach(() => {
@@ -60,6 +63,12 @@ describe('InputField', () => {
     expect(onChange).toHaveBeenCalled()
   })
 
+  it('calls onBlur when a blur event occurs on input field', () => {
+    const inputElement = component.find('input')
+    inputElement.simulate('blur')
+    expect(onBlur).toHaveBeenCalled()
+  })
+
   describe('when mask is NOT passed in', () => {
     const props = {
       gridClassName: 'myWrapperTest',
@@ -79,38 +88,49 @@ describe('InputField', () => {
   })
 
   describe('when mask is passed WITHOUT placeholder props', () => {
-    const propsWithMaskedInput = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      onChange: onChange,
-      mask: '111-11-1111',
-    }
+    let blurSpy
 
     beforeEach(() => {
-      component = shallow(<InputField {...propsWithMaskedInput}/>)
+      blurSpy = jasmine.createSpy('onBlur')
+      const propsWithMaskedInput = {
+        gridClassName: 'myWrapperTest',
+        labelClassName: 'myLabelTest',
+        id: 'myInputFieldId',
+        label: 'this is my label',
+        onBlur: blurSpy,
+        onChange: onChange,
+        mask: '111-11-1111',
+      }
+
+      component = mount(<InputField {...propsWithMaskedInput}/>)
     })
+
     it('renders a MaskedInput field', () => {
       const inputElement = component.find('MaskedInput')
       expect(inputElement.props().mask).toEqual('111-11-1111')
       expect(inputElement.props().placeholder).toEqual(undefined)
     })
+
+    it('calls onBlur when a blur event occurs on input field', () => {
+      const inputElement = component.find('MaskedInput')
+      const event = {target: {value: null}}
+      inputElement.props().onBlur(event)
+      expect(blurSpy).toHaveBeenCalled()
+    })
   })
 
   describe('when mask is passed WITH placeholder props', () => {
-    const propsWithMaskedInput = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      onChange: onChange,
-      mask: '111-11-1111',
-      blurPlaceholder: 'I feel lonely :( ',
-      focusPlaceholder: 'I like attention :) ',
-    }
-
     beforeEach(() => {
+      const propsWithMaskedInput = {
+        gridClassName: 'myWrapperTest',
+        labelClassName: 'myLabelTest',
+        id: 'myInputFieldId',
+        label: 'this is my label',
+        onChange: onChange,
+        mask: '111-11-1111',
+        blurPlaceholder: 'I feel lonely :( ',
+        focusPlaceholder: 'I like attention :) ',
+      }
       component = shallow(<InputField {...propsWithMaskedInput}/>)
     })
 
@@ -185,6 +205,73 @@ describe('InputField', () => {
       expect(component.find('MaskedInput').prop('required')).toEqual(true)
       expect(component.find('MaskedInput').prop('aria-required')).toEqual(true)
       expect(component.find('MaskedInput').props().mask).toEqual('111-11-1111')
+    })
+  })
+
+  describe('when no errors passed', () => {
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
+  describe('when an empty list is passed for errors', () => {
+    const propsWithEmptyErrors = {
+      ...props,
+      errors: Immutable.List(),
+    }
+
+    beforeEach(() => {
+      component = shallow(<InputField {...propsWithEmptyErrors}/>)
+    })
+
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
+  describe('when errors are passed', () => {
+    const propsWithErrorMessages = {
+      errors: Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']),
+      fieldKey: 'inputFieldName',
+      gridClassName: 'myWrapperTest',
+      id: 'myInputFieldId',
+      label: 'this is my label',
+      labelClassName: 'myLabelTest',
+      onChange: onChange,
+      validationRules: {inputFieldName: 'required'},
+    }
+    beforeEach(() => {
+      component = mount(<InputField {...propsWithErrorMessages}/>)
+    })
+
+    it('adds an error class to the input wrapper', () => {
+      expect(component.find('.input-error').length).toEqual(1)
+    })
+
+    it('displays an error styled label', () => {
+      expect(component.find('.input-error-label').length).toEqual(1)
+    })
+
+    it('displays error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(2)
+      expect(component.find('.input-error-message').first().text()).toEqual('Please enter an assigned worker.')
+      expect(component.find('.input-error-message').last().text()).toEqual('You have failed this city!')
     })
   })
 })

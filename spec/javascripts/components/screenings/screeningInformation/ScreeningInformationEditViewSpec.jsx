@@ -5,23 +5,27 @@ import {shallow, mount} from 'enzyme'
 
 describe('ScreeningInformationEditView', () => {
   let component
+
+  const requiredProps = {
+    errors: Immutable.Map(),
+    onBlur: jasmine.createSpy(),
+    onChange: jasmine.createSpy(),
+    onCancel: jasmine.createSpy(),
+    onSave: jasmine.createSpy(),
+    onEdit: jasmine.createSpy(),
+    screening: Immutable.fromJS({
+      name: 'The Rocky Horror Picture Show',
+      assignee: 'Michael Bluth',
+      started_at: '2016-08-13T10:00:00.000Z',
+      ended_at: '2016-08-22T11:00:00.000Z',
+      communication_method: 'mail',
+      participants: [],
+    }),
+  }
+
   describe('render', () => {
     beforeEach(() => {
-      const props = {
-        onChange: jasmine.createSpy(),
-        onCancel: jasmine.createSpy(),
-        onSave: jasmine.createSpy(),
-        onEdit: jasmine.createSpy(),
-        screening: Immutable.fromJS({
-          name: 'The Rocky Horror Picture Show',
-          assignee: 'Michael Bluth',
-          started_at: '2016-08-13T10:00:00.000Z',
-          ended_at: '2016-08-22T11:00:00.000Z',
-          communication_method: 'mail',
-          participants: [],
-        }),
-      }
-      component = shallow(<ScreeningInformationEditView {...props} />)
+      component = shallow(<ScreeningInformationEditView {...requiredProps} />)
     })
 
     it('renders the card header', () => {
@@ -57,55 +61,47 @@ describe('ScreeningInformationEditView', () => {
   })
 
   describe('onChange', () => {
-    let props
-    beforeEach(() => {
-      props = {
-        onChange: jasmine.createSpy(),
-        onCancel: jasmine.createSpy(),
-        onSave: jasmine.createSpy(),
-        onEdit: jasmine.createSpy(),
-        screening: Immutable.fromJS({
-          name: 'The Rocky Horror Picture Show',
-          assignee: 'Michael Bluth',
-          started_at: '2016-08-13T10:00:00.000Z',
-          ended_at: '2016-08-22T11:00:00.000Z',
-          communication_method: 'mail',
-          participants: [],
-        }),
-      }
-      component = mount(<ScreeningInformationEditView {...props} />)
-    })
-
     it('fires the call the onChange function when a field changes', () => {
+      component = mount(<ScreeningInformationEditView {...requiredProps} />)
       const comMethodSelect = component.find('#screening-information-card select')
       comMethodSelect.simulate('change', {target: {value: 'fax'}})
-      expect(props.onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
+      expect(requiredProps.onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
     })
   })
 
   describe('onSave', () => {
-    let props
-    beforeEach(() => {
-      props = {
-        onChange: jasmine.createSpy(),
-        onCancel: jasmine.createSpy(),
-        onSave: jasmine.createSpy(),
-        onEdit: jasmine.createSpy(),
-        screening: Immutable.fromJS({
-          name: 'The Rocky Horror Picture Show',
-          assignee: 'Michael Bluth',
-          started_at: '2016-08-13T10:00:00.000Z',
-          ended_at: '2016-08-22T11:00:00.000Z',
-          communication_method: 'mail',
-          participants: [],
-        }),
-      }
-      component = mount(<ScreeningInformationEditView {...props} />)
-    })
-
     it('fires the onSave function when save clicks', () => {
+      component = mount(<ScreeningInformationEditView {...requiredProps} />)
       component.find('.btn.btn-primary').simulate('click')
-      expect(props.onSave).toHaveBeenCalled()
+      expect(requiredProps.onSave).toHaveBeenCalled()
+    })
+  })
+
+  describe('onBlur', () => {
+    const blurSpy = jasmine.createSpy('onBlur')
+    const props = {
+      ...requiredProps,
+      onBlur: blurSpy,
+    }
+
+    it('calls onBlur with the field name and value', () => {
+      component = mount(<ScreeningInformationEditView {...props} />)
+      const assigneeField = component.find('#assignee')
+      assigneeField.simulate('focus')
+      assigneeField.simulate('blur')
+      expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    })
+  })
+
+  describe('errors', () => {
+    const props = {
+      ...requiredProps,
+      errors: Immutable.fromJS({assignee: ['First error', 'Second error'], name: []}),
+    }
+
+    it('passes the appropriate errors to the assignee input', () => {
+      component = shallow(<ScreeningInformationEditView {...props} />)
+      expect(component.find('InputField[id="assignee"]').props().errors.toJS()).toEqual(['First error', 'Second error'])
     })
   })
 })

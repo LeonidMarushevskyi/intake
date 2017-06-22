@@ -3,23 +3,49 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
+import * as Validator from 'utils/validator'
 
 export default class ScreeningInformationCardView extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      mode: this.props.mode,
-    }
+
+    this.onBlur = this.onBlur.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onCancel = this.onCancel.bind(this)
-    this.fields = Immutable.fromJS([
-      'assignee',
-      'communication_method',
-      'ended_at',
-      'name',
-      'started_at',
-    ])
+
+    this.fieldValidations = Immutable.fromJS({
+      assignee: [{rule: 'isRequired', message: 'Please enter an assigned worker.'}],
+      communication_method: [],
+      ended_at: [],
+      name: [],
+      started_at: [],
+    })
+
+    this.fields = Immutable.List(this.fieldValidations.keys())
+
+    let errors
+    if (this.props.mode === 'show') {
+      errors = this.validateAllFields()
+    } else {
+      errors = Immutable.Map()
+    }
+
+    this.state = {
+      errors: errors,
+      mode: this.props.mode,
+    }
+  }
+
+  validateAllFields() {
+    const errors = {}
+    this.fieldValidations.map((rules, fieldShortName) => {
+      errors[fieldShortName] = Validator.validateField({
+        value: this.props.screening.get(fieldShortName),
+        rules,
+      })
+    })
+    return Immutable.Map(errors)
   }
 
   onEdit() {
@@ -27,20 +53,30 @@ export default class ScreeningInformationCardView extends React.Component {
   }
 
   onSave() {
+    const errors = this.validateAllFields()
     return this.props.onSave(this.fields).then(() => {
-      this.setState({mode: 'show'})
+      this.setState({mode: 'show', errors: errors})
     })
   }
 
+  onBlur(fieldName, value) {
+    const rules = this.fieldValidations.get(fieldName)
+    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
+    this.setState({errors: errors})
+  }
+
   onCancel() {
-    this.setState({mode: 'show'})
+    const errors = this.validateAllFields()
+    this.setState({mode: 'show', errors: errors})
     this.props.onCancel(this.fields)
   }
 
   render() {
-    const {mode} = this.state
+    const {errors, mode} = this.state
     const allprops = {
       edit: {
+        errors: errors,
+        onBlur: this.onBlur,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
@@ -49,6 +85,7 @@ export default class ScreeningInformationCardView extends React.Component {
       show: {
         onEdit: this.onEdit,
         screening: this.props.screening,
+        errors: errors,
       },
     }
     const ScreeningInformationView = (mode === 'edit') ? ScreeningInformationEditView : ScreeningInformationShowView

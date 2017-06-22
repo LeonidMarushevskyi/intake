@@ -4,10 +4,26 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import _ from 'lodash'
 
-const InputField = ({gridClassName, labelClassName, id, label, onChange, value, placeholder, type, maxLength, mask, blurPlaceholder, focusPlaceholder, required}) => {
+const InputField = ({
+  blurPlaceholder,
+  errors,
+  focusPlaceholder,
+  gridClassName,
+  id,
+  label,
+  labelClassName,
+  maxLength,
+  mask,
+  onBlur,
+  onChange,
+  placeholder,
+  required,
+  type,
+  value,
+}) => {
   let input =
     <input id={id} type={type} placeholder={placeholder}
-      value={value} onChange={onChange} maxLength={maxLength}
+      value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
       aria-required={required} required={required}
     />
 
@@ -17,6 +33,7 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
         placeholder={placeholder} required={required} aria-required={required}
         onBlur={(event) => {
           event.target.placeholder = blurPlaceholder
+          if (!_.isEmpty(onBlur)) onBlur(id, event.target.value)
         }}
         onFocus={(event) => {
           event.target.placeholder = focusPlaceholder
@@ -26,9 +43,22 @@ const InputField = ({gridClassName, labelClassName, id, label, onChange, value, 
   }
 
   return (
-    <div className={gridClassName}>
-      <label className={ClassNames(labelClassName, {required: required})} htmlFor={id}>{label}</label>
+    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
+      <label className={
+        ClassNames(labelClassName,
+          {required: required},
+          {'input-error-label': (errors && !errors.isEmpty())}
+        )
+      } htmlFor={id}
+      >{label}</label>
       {input}
+      <div>
+      {errors && !errors.isEmpty() &&
+        errors.map((error, index) =>
+          <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
+        )
+      }
+      </div>
     </div>
   )
 }
@@ -40,6 +70,7 @@ InputField.defaultProps = {
 
 InputField.propTypes = {
   blurPlaceholder: PropTypes.string,
+  errors: PropTypes.object,
   focusPlaceholder: PropTypes.string,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
@@ -47,6 +78,7 @@ InputField.propTypes = {
   labelClassName: PropTypes.string,
   mask: PropTypes.string,
   maxLength: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   required: PropTypes.bool,

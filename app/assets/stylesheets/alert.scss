@@ -3,3 +3,62 @@
 // - Alerts - //
 
 /////////////////////////////////////////
+
+.input-error {
+  position: relative;
+
+  input {
+    border: .1rem solid $red;
+    width: calc(100% +1.9rem);
+  }
+
+  textarea {
+    border: .1rem solid $red;
+    width: calc(100% +1.9rem);
+  }
+
+  select {
+    border: .1rem solid $red;
+    width: calc(100% +1.9rem);
+  }
+
+  label {
+    margin-top: 0;
+  }
+
+  .input-inline {
+    border: .1rem solid $light-grey;
+    width: inherit;
+  }
+
+  .input-inline-error {
+    border: .1rem solid $red;
+  }
+}
+
+.input-error-label {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: $normal-weight;
+}
+
+.input-error-message {
+  color: $red;
+  display: block;
+  font-size: 1.5rem;
+  padding-top: 1rem;
+}
+
+.input-error-message:first-child::before {
+  content: '\f071';
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  padding-right: .5rem;
+  text-decoration: inherit;
+}
+
+.input-error-message:not(:first-child) {
+  padding-left: 2rem;
+}
+

@@ -32,56 +32,6 @@ select:focus {
   box-shadow: 0 0 3px $medium-blue, 0 0 7px $medium-blue;
 }
 
-.input-error {
-  margin-top: 3rem;
-  padding-bottom: .8rem;
-  padding-top: .8rem;
-  position: relative;
-
-  input {
-    border: 3px solid $red;
-    width: calc(100% +1.9rem);
-  }
-
-  textarea {
-    border: 3px solid $red;
-    width: calc(100% +1.9ream);
-  }
-
-  select {
-    border: 3px solid $red;
-    width: calc(100% +1.9rem);
-  }
-
-  label {
-    margin-top: 0;
-  }
-
-  .input-inline {
-    border: 1px solid $light-grey;
-    width: inherit;
-  }
-
-  .input-inline-error {
-    border: 3px solid $red;
-  }
-}
-
-.input-error-label {
-  display: block;
-  font-size: 1.7rem;
-  font-weight: $bold-weight;
-}
-
-.input-error-message {
-  color: $red;
-  display: block;
-  font-size: 1.7rem;
-  font-weight: $bold-weight;
-  padding-bottom: 3px;
-  padding-top: 3px;
-}
-
 label {
   color: $dark-blue;
   display: block;
