@@ -106,8 +106,9 @@ describe('SelectField', () => {
       expect(component.find('.input-error-label').length).toEqual(0)
     })
 
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
+    it('renders ErrorMessages but with no errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
     })
   })
 
@@ -129,8 +130,9 @@ describe('SelectField', () => {
       expect(component.find('.input-error-label').length).toEqual(0)
     })
 
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
+    it('renders ErrorMessages and pass it an empty list of errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List())
     })
   })
 
@@ -152,10 +154,9 @@ describe('SelectField', () => {
       expect(component.find('.input-error-label').length).toEqual(1)
     })
 
-    it('displays error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(2)
-      expect(component.find('.input-error-message').first().text()).toEqual('Please choose wisely.')
-      expect(component.find('.input-error-message').last().text()).toEqual('Stick to the plan!')
+    it('renders ErrorMessages and pass it errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List(['Please choose wisely.', 'Stick to the plan!']))
     })
   })
 })

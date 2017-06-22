@@ -1,4 +1,5 @@
 import ClassNames from 'classnames'
+import ErrorMessages from 'components/common/ErrorMessages'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -11,13 +12,7 @@ const ShowField = ({gridClassName, labelClassName, label, children, required, er
         )
       }>{label}</label>
     <div className='c-gray'>{children}</div>
-    <div>
-      {errors && !errors.isEmpty() &&
-        errors.map((error, index) =>
-          <span key={index} className='input-error-message' role='alert'>{error}</span>
-        )
-      }
-    </div>
+    <ErrorMessages errors={errors}/>
   </div>
 )
 

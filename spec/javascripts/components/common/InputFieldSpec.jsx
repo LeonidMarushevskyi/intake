@@ -217,8 +217,9 @@ describe('InputField', () => {
       expect(component.find('.input-error-label').length).toEqual(0)
     })
 
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
+    it('renders ErrorMessages but with no errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
     })
   })
 
@@ -240,8 +241,9 @@ describe('InputField', () => {
       expect(component.find('.input-error-label').length).toEqual(0)
     })
 
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
+    it('renders ErrorMessages and pass it an empty list of errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List())
     })
   })
 
@@ -269,9 +271,9 @@ describe('InputField', () => {
     })
 
     it('displays error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(2)
-      expect(component.find('.input-error-message').first().text()).toEqual('Please enter an assigned worker.')
-      expect(component.find('.input-error-message').last().text()).toEqual('You have failed this city!')
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors)
+        .toEqual(Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']))
     })
   })
 })

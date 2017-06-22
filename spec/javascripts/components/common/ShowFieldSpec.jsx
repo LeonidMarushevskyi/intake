@@ -36,28 +36,13 @@ describe('ShowField', () => {
       expect(valueElement.text()).toEqual('This is the show field value')
     })
 
-    it('does not render errors', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
-      expect(component.find('.input-error-label').length).toEqual(0)
-    })
-  })
-
-  describe('when an empty list is passed for errors', () => {
-    const propsWithEmptyErrors = {
-      ...requiredProps,
-      errors: Immutable.List(),
-    }
-
-    beforeEach(() => {
-      component = shallow(<ShowField {...propsWithEmptyErrors}/>)
-    })
-
     it('does not render the label as if it has an error', () => {
       expect(component.find('.input-error-label').length).toEqual(0)
     })
 
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
+    it('renders ErrorMessages but with no errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
     })
   })
 
@@ -92,10 +77,9 @@ describe('ShowField', () => {
       expect(component.find('.input-error-label').length).toEqual(1)
     })
 
-    it('renders errors', () => {
-      expect(component.find('.input-error-message').length).toEqual(2)
-      expect(component.text()).toContain('Error 1')
-      expect(component.text()).toContain('Error 2')
+    it('renders ErrorMessages and pass it errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List(['Error 1', 'Error 2']))
     })
   })
 })

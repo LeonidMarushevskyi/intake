@@ -1,23 +1,18 @@
 import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ErrorMessages from 'components/common/ErrorMessages'
 
 const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, onBlur, children, required, errors}) => (
-    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-      <label className={
-        ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})
-      } htmlFor={id}
-      >{label}</label>
+  <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
+    <label className={
+      ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})
+    } htmlFor={id}
+    >{label}</label>
     <select id={id} value={value || ''} onChange={onChange} onBlur={onBlur}
       aria-required={required} required={required}
     >{children}</select>
-    <div>
-      {errors && !errors.isEmpty() &&
-        errors.map((error, index) =>
-          <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
-        )
-      }
-    </div>
+    <ErrorMessages id={id} errors={errors}/>
   </div>
 )
 

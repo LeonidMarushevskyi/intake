@@ -1,4 +1,5 @@
 import ClassNames from 'classnames'
+import ErrorMessages from 'components/common/ErrorMessages'
 import MaskedInput from 'react-maskedinput'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -52,13 +53,7 @@ const InputField = ({
       } htmlFor={id}
       >{label}</label>
       {input}
-      <div>
-      {errors && !errors.isEmpty() &&
-        errors.map((error, index) =>
-          <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
-        )
-      }
-      </div>
+      <ErrorMessages id={id} errors={errors}/>
     </div>
   )
 }
