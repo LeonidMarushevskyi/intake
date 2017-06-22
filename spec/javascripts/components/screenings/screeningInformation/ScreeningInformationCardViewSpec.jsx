@@ -164,7 +164,8 @@ describe('ScreeningInformationCardView', () => {
       })
     })
 
-    describe('when assigned social worker is not present', () => {
+    describe('when required fields are not populated', () => {
+      let errors
       beforeEach(() => {
         const props = {
           ...baseProps,
@@ -173,21 +174,19 @@ describe('ScreeningInformationCardView', () => {
             assignee: '',
             started_at: '2016-08-13T10:00:00.000Z',
             ended_at: '2016-08-22T11:00:00.000Z',
-            communication_method: 'mail',
+            communication_method: '',
           }),
         }
         component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+        errors = component.find('ScreeningInformationShowView').props().errors
       })
 
       it('validates the assigned social worker field', () => {
-        const errors = component.find('ScreeningInformationShowView').props().errors
-        expect(errors.toJS()).toEqual({
-          assignee: ['Please enter an assigned worker.'],
-          communication_method: [],
-          ended_at: [],
-          name: [],
-          started_at: [],
-        })
+        expect(errors.get('assignee').toJS()).toContain('Please enter an assigned worker.')
+      })
+
+      it('validates the communication method field', () => {
+        expect(errors.get('communication_method').toJS()).toContain('Please select a communication method.')
       })
     })
   })
