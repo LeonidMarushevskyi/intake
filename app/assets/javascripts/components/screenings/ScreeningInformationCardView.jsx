@@ -19,7 +19,7 @@ export default class ScreeningInformationCardView extends React.Component {
       communication_method: [{rule: 'isRequired', message: 'Please select a communication method.'}],
       ended_at: [],
       name: [],
-      started_at: [],
+      started_at: [{rule: 'isRequired', message: 'Please enter a screening start date.'}],
     })
 
     this.fields = Immutable.List(this.fieldValidations.keys())
