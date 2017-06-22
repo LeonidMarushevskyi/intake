@@ -321,7 +321,10 @@ export class ScreeningPage extends React.Component {
               screening={mergedScreening}
             />
           }
-          <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+          {
+            releaseTwoInactive &&
+            <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+          }
           { this.mode === 'show' && this.renderFooterLinks() }
         </div>
       )
