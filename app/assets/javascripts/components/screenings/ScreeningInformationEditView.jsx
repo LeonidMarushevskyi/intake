@@ -57,6 +57,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
             required
             value={screening.get('communication_method')}
             onChange={(event) => onChange(['communication_method'], event.target.value || null)}
+            onBlur={(event) => onBlur('communication_method', event.target.value)}
             errors={errors.get('communication_method')}
           >
             <option key='' />

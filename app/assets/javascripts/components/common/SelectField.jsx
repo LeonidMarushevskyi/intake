@@ -2,13 +2,13 @@ import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, children, required, errors}) => (
+const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, onBlur, children, required, errors}) => (
     <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
       <label className={
         ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})
       } htmlFor={id}
       >{label}</label>
-    <select id={id} value={value || ''} onChange={onChange}
+    <select id={id} value={value || ''} onChange={onChange} onBlur={onBlur}
       aria-required={required} required={required}
     >{children}</select>
     <div>
@@ -31,6 +31,7 @@ SelectField.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelClassName: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,

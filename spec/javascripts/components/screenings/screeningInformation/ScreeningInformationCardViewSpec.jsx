@@ -29,17 +29,24 @@ describe('ScreeningInformationCardView', () => {
           assignee: '',
           started_at: '2016-08-13T10:00:00.000Z',
           ended_at: '2016-08-22T11:00:00.000Z',
-          communication_method: 'mail',
+          communication_method: '',
         }),
       }
       component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
     })
 
-    it('adds errors after focus is lost', () => {
+    it('validates assigned social worker field after focus is lost', () => {
       const assigneeInput = component.find('#assignee')
       assigneeInput.simulate('focus')
       assigneeInput.simulate('blur')
-      expect(component.update().text()) .toContain('Please enter an assigned worker.')
+      expect(component.update().text()).toContain('Please enter an assigned worker.')
+    })
+
+    it('validates communication method field after focus is lost', () => {
+      const communicationInput = component.find('#communication_method')
+      communicationInput.simulate('focus')
+      communicationInput.simulate('blur')
+      expect(component.update().text()).toContain('Please select a communication method.')
     })
   })
 

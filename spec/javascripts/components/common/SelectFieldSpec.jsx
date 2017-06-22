@@ -7,6 +7,7 @@ describe('SelectField', () => {
   let component
   let props
   const onChange = jasmine.createSpy('onChange')
+  const onBlur = jasmine.createSpy('onBlur')
   beforeEach(() => {
     props = {
       children: [],
@@ -16,6 +17,7 @@ describe('SelectField', () => {
       label: 'this is my label',
       value: 'this-is-my-value',
       onChange: onChange,
+      onBlur: onBlur,
     }
     component = shallow(
       <SelectField {...props}><option/></SelectField>
@@ -57,6 +59,12 @@ describe('SelectField', () => {
     const selectElement = component.find('select')
     selectElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
+  })
+
+  it('calls onBlur when a blur event occurs on select field', () => {
+    const selectElement = component.find('select')
+    selectElement.simulate('blur')
+    expect(onBlur).toHaveBeenCalled()
   })
 
   it('does not render a required select field', () => {

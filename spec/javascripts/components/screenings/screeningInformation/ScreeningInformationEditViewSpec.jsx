@@ -84,12 +84,21 @@ describe('ScreeningInformationEditView', () => {
       onBlur: blurSpy,
     }
 
-    it('calls onBlur with the field name and value', () => {
+    it('calls onBlur with assignee field gets out of focus', () => {
       component = mount(<ScreeningInformationEditView {...props} />)
       const assigneeField = component.find('#assignee')
       assigneeField.simulate('focus')
       assigneeField.simulate('blur')
       expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    })
+
+    it('calls onBlur when communication method field gets out of focus', () => {
+      component = mount(<ScreeningInformationEditView {...props} />)
+      const communicationField = component.find({id: 'communication_method'})
+      expect(communicationField.props().onBlur).not.toEqual(undefined)
+      communicationField.simulate('focus')
+      communicationField.simulate('blur')
+      expect(blurSpy).toHaveBeenCalledWith('communication_method', 'mail')
     })
   })
 
