@@ -29,44 +29,44 @@ describe('ScreeningInformationShowView', () => {
   })
 
   describe('when the screening values are null', () => {
-    const screening = Immutable.fromJS({
-      assignee: null,
-      name: null,
-      started_at: null,
-      ended_at: null,
-      communication_method: null,
-    })
-
-    const props = {
-      ...requiredProps,
-      screening,
-    }
-
     beforeEach(() => {
+      const screening = Immutable.fromJS({
+        assignee: null,
+        name: null,
+        started_at: null,
+        ended_at: null,
+        communication_method: null,
+      })
+
+      const props = {
+        ...requiredProps,
+        screening,
+      }
+
       component = shallow(<ScreeningInformationShowView {...props} />)
     })
 
-    it('Renders no screening name', () => {
+    it('renders no screening name', () => {
       expect(component.find('ShowField[label="Title/Name of Screening"]').html())
         .toContain('<div class="c-gray"></div>')
     })
 
-    it('Renders no social worker', () => {
+    it('renders no social worker', () => {
       expect(component.find('ShowField[label="Assigned Social Worker"]').html())
         .toContain('<div class="c-gray"></div>')
     })
 
-    it('Renders no start date/time', () => {
+    it('renders no start date/time', () => {
       expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
         .toContain('<div class="c-gray"></div>')
     })
 
-    it('Renders no end date/time', () => {
+    it('renders no end date/time', () => {
       expect(component.find('ShowField[label="Screening End Date/Time"]').html())
       .toContain('<div class="c-gray"></div>')
     })
 
-    it('Renders no communication method', () => {
+    it('renders no communication method', () => {
       expect(component.find('ShowField[label="Communication Method"]').html())
       .toContain('<div class="c-gray"></div>')
     })

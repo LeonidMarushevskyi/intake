@@ -61,7 +61,7 @@ describe('ShowField', () => {
     })
   })
 
-  describe('ShowField as required', () => {
+  describe('when field is required', () => {
     beforeEach(() => {
       const props = {
         ...requiredProps,

@@ -88,20 +88,24 @@ describe('InputField', () => {
   })
 
   describe('when mask is passed WITHOUT placeholder props', () => {
-    const blurSpy = jasmine.createSpy('onBlur')
-    const propsWithMaskedInput = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      onBlur: blurSpy,
-      onChange: onChange,
-      mask: '111-11-1111',
-    }
+    let blurSpy
+
 
     beforeEach(() => {
+      blurSpy = jasmine.createSpy('onBlur')
+      const propsWithMaskedInput = {
+        gridClassName: 'myWrapperTest',
+        labelClassName: 'myLabelTest',
+        id: 'myInputFieldId',
+        label: 'this is my label',
+        onBlur: blurSpy,
+        onChange: onChange,
+        mask: '111-11-1111',
+      }
+
       component = mount(<InputField {...propsWithMaskedInput}/>)
     })
+
     it('renders a MaskedInput field', () => {
       const inputElement = component.find('MaskedInput')
       expect(inputElement.props().mask).toEqual('111-11-1111')
@@ -117,18 +121,17 @@ describe('InputField', () => {
   })
 
   describe('when mask is passed WITH placeholder props', () => {
-    const propsWithMaskedInput = {
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      onChange: onChange,
-      mask: '111-11-1111',
-      blurPlaceholder: 'I feel lonely :( ',
-      focusPlaceholder: 'I like attention :) ',
-    }
-
     beforeEach(() => {
+      const propsWithMaskedInput = {
+        gridClassName: 'myWrapperTest',
+        labelClassName: 'myLabelTest',
+        id: 'myInputFieldId',
+        label: 'this is my label',
+        onChange: onChange,
+        mask: '111-11-1111',
+        blurPlaceholder: 'I feel lonely :( ',
+        focusPlaceholder: 'I like attention :) ',
+      }
       component = shallow(<InputField {...propsWithMaskedInput}/>)
     })
 
