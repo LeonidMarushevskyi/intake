@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'feature/testing'
 
 feature 'Delete Participant' do
   let(:participant) do
@@ -59,5 +60,35 @@ feature 'Delete Participant' do
       a_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
     ).to have_been_made
     expect(page).to_not have_css(show_participant_card_selector(participant.id))
+  end
+
+  context 'when release two is enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
+    end
+
+    scenario 'removing a participant from an existing screening' do
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+        .and_return(json_body(screening.to_json, status: 200))
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
+      ).and_return(json_body([].to_json, status: 200))
+      stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+        .and_return(json_body(nil, status: 204))
+
+      visit edit_screening_path(id: screening.id)
+      within show_participant_card_selector(participant.id) do
+        within '.card-header' do
+          click_button 'Delete participant'
+        end
+      end
+      expect(
+        a_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+      ).to have_been_made
+      expect(page).to_not have_css(edit_participant_card_selector(participant.id))
+    end
   end
 end

@@ -1,9 +1,10 @@
+import * as IntakeConfig from 'config'
 import EditLink from 'components/common/EditLink'
 import GENDERS from 'Genders'
 import PropTypes from 'prop-types'
 import React from 'react'
-import US_STATE from 'USState'
 import ShowField from 'components/common/ShowField'
+import US_STATE from 'USState'
 import nameFormatter from 'utils/nameFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
@@ -18,8 +19,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
       >
         <i className='fa fa-times' />
       </button>
-
-      <EditLink ariaLabel='Edit participant' onClick={onEdit} />
+      { IntakeConfig.isFeatureInactive('release_two') && <EditLink ariaLabel='Edit participant' onClick={onEdit} /> }
     </div>
     <div className='card-body'>
       <div className='row'>

@@ -178,7 +178,7 @@ export class ScreeningPage extends React.Component {
               onChange={this.setParticipantField}
               onSave={this.saveParticipant}
               participant={participant}
-              mode={this.mode}
+              mode={IntakeConfig.isFeatureInactive('release_two') ? this.mode : 'show'}
             />
             )
         }

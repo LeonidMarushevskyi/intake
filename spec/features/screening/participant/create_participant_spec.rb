@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'feature/testing'
 
 def filtered_participant_attributes
   %i[
@@ -163,6 +164,54 @@ feature 'Edit Screening' do
         expect(page).to have_field('Address Type', with: marge.addresses.first.type)
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
+      end
+    end
+  end
+
+  context 'when release two is enabled' do
+    around do |example|
+      Feature.run_with_activated(:release_two) do
+        example.run
+      end
+    end
+
+    scenario 'creating a participant from search adds participant in show mode' do
+      marge_attributes = build_participant_from_person_and_screening(marge, existing_screening)
+      participant_marge = FactoryGirl.build(:participant, marge_attributes)
+      created_participant_marge = FactoryGirl.create(:participant, participant_marge.as_json)
+      stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+        .and_return(json_body(created_participant_marge.to_json, status: 201))
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Marge'
+        find('li', text: 'Marge Simpson').click
+      end
+
+      expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+        .with(json_body(participant_marge.to_json(except: :id)))).to have_been_made
+
+      within show_participant_card_selector(created_participant_marge.id) do
+        within '.card-header' do
+          expect(page).to have_content('Marge Simpson')
+          expect(page).to_not have_link 'Edit participant'
+          expect(page).to have_button 'Delete participant'
+        end
+
+        within '.card-body' do
+          expect(page).to have_content(marge.first_name)
+          expect(page).to have_content(marge.last_name)
+          expect(page).to have_content(marge.phone_numbers.first.number)
+          expect(page).to have_content(marge.phone_numbers.first.type)
+          expect(page).to have_content(marge.gender.capitalize)
+          expect(page).to have_content(marge.languages.join(', '))
+          expect(page).to have_content(Date.parse(marge.date_of_birth).strftime('%m/%d/%Y'))
+          expect(page).to have_content(marge.ssn)
+          expect(page).to have_content(marge.addresses.first.street_address)
+          expect(page).to have_content(marge.addresses.first.city)
+          expect(page).to have_content('New York')
+          expect(page).to have_content(marge.addresses.first.zip)
+          expect(page).to have_content(marge.addresses.first.type)
+        end
       end
     end
   end
