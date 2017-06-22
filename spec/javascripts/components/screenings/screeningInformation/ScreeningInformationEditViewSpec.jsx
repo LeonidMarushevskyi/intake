@@ -109,14 +109,19 @@ describe('ScreeningInformationEditView', () => {
         {
           assignee: ['First error', 'Second error'],
           communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+          started_at: ['My error', 'My other error'],
+          name: [],
         }),
     }
 
-    it('passes the appropriate errors to the assignee input', () => {
+    it('passes the appropriate errors to the fields', () => {
       component = shallow(<ScreeningInformationEditView {...props} />)
-      expect(component.find('InputField[id="assignee"]').props().errors.toJS()).toEqual(['First error', 'Second error'])
+      expect(component.find('InputField[id="assignee"]').props().errors.toJS())
+        .toEqual(['First error', 'Second error'])
       expect(component.find('SelectField[id="communication_method"]').props().errors.toJS())
         .toEqual(['Stick to the plan!', 'An error occured while displaying the previous error'])
+      expect(component.find('DateField[label="Screening Start Date/Time"]').props().errors.toJS())
+        .toEqual(['My error', 'My other error'])
     })
   })
 })
