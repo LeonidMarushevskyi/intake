@@ -57,6 +57,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
             required
             value={screening.get('communication_method')}
             onChange={(event) => onChange(['communication_method'], event.target.value || null)}
+            errors={errors.get('communication_method')}
           >
             <option key='' />
             {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}

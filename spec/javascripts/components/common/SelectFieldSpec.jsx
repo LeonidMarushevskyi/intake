@@ -1,4 +1,5 @@
 import React from 'react'
+import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import SelectField from 'components/common/SelectField'
 
@@ -85,6 +86,68 @@ describe('SelectField', () => {
       expect(component.find('label').not('.required').exists()).toEqual(false)
       expect(component.find('select').prop('required')).toEqual(true)
       expect(component.find('select').prop('aria-required')).toEqual(true)
+    })
+  })
+
+  describe('when no errors passed', () => {
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
+  describe('when an empty list is passed for errors', () => {
+    const propsWithEmptyErrors = {
+      ...props,
+      errors: Immutable.List(),
+    }
+
+    beforeEach(() => {
+      component = shallow(<SelectField {...propsWithEmptyErrors}/>)
+    })
+
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('does not render error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(0)
+    })
+  })
+
+  describe('when errors are passed', () => {
+    const propsWithErrorMessages = {
+      ...props,
+      errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
+      validationRules: {inputFieldName: 'required'},
+    }
+    beforeEach(() => {
+      component = shallow(<SelectField {...propsWithErrorMessages}/>)
+    })
+
+    it('adds an error class to the input wrapper', () => {
+      expect(component.find('.input-error').length).toEqual(1)
+    })
+
+    it('displays an error styled label', () => {
+      expect(component.find('.input-error-label').length).toEqual(1)
+    })
+
+    it('displays error messages', () => {
+      expect(component.find('.input-error-message').length).toEqual(2)
+      expect(component.find('.input-error-message').first().text()).toEqual('Please choose wisely.')
+      expect(component.find('.input-error-message').last().text()).toEqual('Stick to the plan!')
     })
   })
 })
