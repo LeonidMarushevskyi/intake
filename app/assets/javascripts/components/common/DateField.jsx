@@ -9,6 +9,7 @@ import _ from 'lodash'
 momentLocalizer(moment)
 
 const DateField = ({
+                    errors,
                     gridClassName,
                     hasCalendar,
                     hasTime,
@@ -40,8 +41,13 @@ const DateField = ({
     }
   }
   return (
-    <div className={gridClassName}>
-      <label className={ClassNames(labelClassName, {required: required})} htmlFor={`${id}_input`}>{label}</label>
+    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
+      <label
+        className={ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})}
+        htmlFor={`${id}_input`}
+      >
+        {label}
+      </label>
       <DateTimePicker
         aria-required={required}
         calendar={hasCalendar}
@@ -55,6 +61,13 @@ const DateField = ({
         max={max}
         min={min}
       />
+      <div>
+        {errors && !errors.isEmpty() &&
+          errors.map((error, index) =>
+            <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
+            )
+        }
+      </div>
     </div>
   )
 }
@@ -65,6 +78,7 @@ DateField.defaultProps = {
 }
 
 DateField.propTypes = {
+  errors: PropTypes.object,
   gridClassName: PropTypes.string,
   hasCalendar: PropTypes.bool,
   hasTime: PropTypes.bool,
