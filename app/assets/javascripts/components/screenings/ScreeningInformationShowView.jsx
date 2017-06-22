@@ -16,7 +16,9 @@ const ScreeningInformationShowView = ({errors, screening, onEdit}) => (
         <ShowField gridClassName='col-md-6' label='Title/Name of Screening'>
           {screening.get('name')}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label='Assigned Social Worker' errors={errors.get('assignee')} required>
+        <ShowField gridClassName='col-md-6' label='Assigned Social Worker'
+          errors={errors.get('assignee')} required
+        >
           {screening.get('assignee')}
         </ShowField>
       </div>
@@ -29,7 +31,9 @@ const ScreeningInformationShowView = ({errors, screening, onEdit}) => (
         </ShowField>
       </div>
       <div className='row double-gap-top'>
-        <ShowField gridClassName='col-md-6' label='Communication Method' required>
+        <ShowField gridClassName='col-md-6' label='Communication Method'
+          errors={errors.get('communication_method')} required
+        >
           {COMMUNICATION_METHOD[screening.get('communication_method')]}
         </ShowField>
       </div>
