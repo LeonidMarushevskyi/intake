@@ -40,6 +40,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           required
           value={screening.get('started_at')}
           onChange={(value) => onChange(['started_at'], value)}
+          onBlur={(value) => onBlur('started_at', value)}
           errors={errors.get('started_at')}
         />
         <DateField

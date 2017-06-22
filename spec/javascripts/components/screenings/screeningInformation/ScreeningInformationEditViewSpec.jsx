@@ -78,27 +78,37 @@ describe('ScreeningInformationEditView', () => {
   })
 
   describe('onBlur', () => {
-    const blurSpy = jasmine.createSpy('onBlur')
-    const props = {
-      ...requiredProps,
-      onBlur: blurSpy,
-    }
+    let blurSpy
 
-    it('calls onBlur with assignee field gets out of focus', () => {
-      component = mount(<ScreeningInformationEditView {...props} />)
-      const assigneeField = component.find('#assignee')
-      assigneeField.simulate('focus')
-      assigneeField.simulate('blur')
-      expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    beforeEach(() => {
+      blurSpy = jasmine.createSpy('onBlur')
+      const props = {
+        ...requiredProps,
+        onBlur: blurSpy,
+      }
+
+      component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
-    it('calls onBlur when communication method field gets out of focus', () => {
-      component = mount(<ScreeningInformationEditView {...props} />)
-      const communicationField = component.find({id: 'communication_method'})
-      expect(communicationField.props().onBlur).not.toEqual(undefined)
-      communicationField.simulate('focus')
-      communicationField.simulate('blur')
-      expect(blurSpy).toHaveBeenCalledWith('communication_method', 'mail')
+    it('calls onBlur for the social worker with the field name and value', () => {
+      const socialWorker = requiredProps.screening.get('assignee')
+      const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
+      assigneeField.props().onBlur({target: {value: socialWorker}})
+      expect(blurSpy).toHaveBeenCalledWith('assignee', socialWorker)
+    })
+
+    it('calls onBlur for the start date with the field name and value', () => {
+      const dateValue = requiredProps.screening.get('started_at')
+      const startDate = component.find('DateField[label="Screening Start Date/Time"]')
+      startDate.props().onBlur(dateValue)
+      expect(blurSpy).toHaveBeenCalledWith('started_at', dateValue)
+    })
+
+    it('calls onBlur for the communication method with the field name and value', () => {
+      const commMethodValue = requiredProps.screening.get('communication_method')
+      const commMethodField = component.find('SelectField[label="Communication Method"]')
+      commMethodField.props().onBlur({target: {value: commMethodValue}})
+      expect(blurSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
     })
   })
 
