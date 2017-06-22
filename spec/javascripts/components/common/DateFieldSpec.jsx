@@ -68,6 +68,34 @@ describe('DateField', () => {
     expect(component.find('input').prop('aria-required')).toBeFalsy()
   })
 
+  it('can render properly without an onBlur prop', () => {
+    const dateTimePicker = component.find('DateTimePicker')
+    expect(() => { dateTimePicker.props().onBlur({target: {value: ''}}) })
+      .not.toThrow(new TypeError('onBlur is not a function'))
+  })
+
+  describe('when passed an onBlur function', () => {
+    let onBlur
+
+    beforeEach(() => {
+      onBlur = jasmine.createSpy('onBlur')
+      component = mount(<DateField {...props} onBlur={onBlur} />)
+    })
+
+    it('calls the passed function with a value', () => {
+      const date = '12/31/1999 12:59 PM'
+      const dateTimePicker = component.find('DateTimePicker')
+      dateTimePicker.props().onBlur({target: {value: date}})
+      expect(onBlur).toHaveBeenCalledWith(moment(date, 'MM/DD/YYYY h:mm A').toISOString())
+    })
+
+    it('calls the passed function with null if the value is empty', () => {
+      const dateTimePicker = component.find('DateTimePicker')
+      dateTimePicker.props().onBlur({target: {value: ''}})
+      expect(onBlur).toHaveBeenCalledWith(null)
+    })
+  })
+
   describe('when required', () => {
     beforeEach(() => {
       component = shallow(<DateField {...props} onChange={onChange} required={true} />)
