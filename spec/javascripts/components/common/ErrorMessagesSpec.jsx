@@ -3,16 +3,15 @@ import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import ErrorMessages from 'components/common/ErrorMessages'
 
-describe('ErrorMessages', () => {
+fdescribe('ErrorMessages', () => {
   let component
-  const requiredProps = {id: 'myInputFieldId'}
 
   describe('when no errors are passed', () => {
     beforeEach(() => {
-      component = shallow(<ErrorMessages {...requiredProps}/>)
+      component = shallow(<ErrorMessages id={'myInputFieldId'}/>)
     })
 
-    it('does not explode', () => {
+    it('renders the div wrapper', () => {
       expect(component.find('div').exists()).toEqual(true)
     })
 
@@ -22,25 +21,19 @@ describe('ErrorMessages', () => {
   })
 
   describe('when an empty list is passed for errors', () => {
-    const props = {...requiredProps, errors: Immutable.List()}
-    beforeEach(() => {
-      component = shallow(<ErrorMessages {...props}/>)
-    })
-
-    it('does not explode', () => {
-      expect(component.find('div').exists()).toEqual(true)
-    })
+    const props = {id: 'myInputFieldId', errors: Immutable.List()}
 
     it('does not render error messages', () => {
+      component = shallow(<ErrorMessages {...props}/>)
       expect(component.find('.input-error-message').exists()).toEqual(false)
     })
   })
 
   describe('when there are errors', () => {
-    const errorProp = {errors: Immutable.fromJS(['You have failed this city', 'Stick to the plan!'])}
+    const errors = Immutable.fromJS(['You have failed this city', 'Stick to the plan!'])
     describe('when id is passed', () => {
       beforeEach(() => {
-        const props = {...requiredProps, ...errorProp}
+        const props = {id: 'myInputFieldId', errors}
         component = shallow(<ErrorMessages {...props}/>)
       })
 
@@ -61,7 +54,7 @@ describe('ErrorMessages', () => {
 
     describe('when id is not passed', () => {
       beforeEach(() => {
-        component = shallow(<ErrorMessages {...errorProp}/>)
+        component = shallow(<ErrorMessages errors={errors}/>)
       })
 
       it('does not add an aria-describedby prop', () => {
