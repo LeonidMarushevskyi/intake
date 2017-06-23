@@ -30,7 +30,7 @@ const DateField = ({
 
   let dateValue
   if (_.isEmpty(value)) {
-    dateValue = value
+    dateValue = null
   } else {
     dateValue = parseDate(value).toDate()
   }

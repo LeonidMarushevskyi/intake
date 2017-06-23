@@ -3,13 +3,17 @@ import {shallow} from 'enzyme'
 import CheckboxField from 'components/common/CheckboxField'
 
 describe('CheckboxField', () => {
-  const onChange = jasmine.createSpy('onChange')
+  let onChange
+  let component
   const props = {
     id: 'myCheckboxFieldId',
     value: 'this-is-my-value',
-    onChange: onChange,
   }
-  let component = shallow(<CheckboxField {...props} />)
+  beforeEach(() => {
+    onChange = jasmine.createSpy('onChange')
+    props.onChange = onChange
+    component = shallow(<CheckboxField {...props} />)
+  })
 
   describe('with no flags set', () => {
     it('renders the id', () => {
@@ -37,7 +41,6 @@ describe('CheckboxField', () => {
   })
 
   it('calls onChange when a change event occurs on checkbox field', () => {
-    component = shallow(<CheckboxField {...props} />)
     const selectElement = component.find('input')
     selectElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
@@ -45,22 +48,19 @@ describe('CheckboxField', () => {
 
   describe('when flag props are set', () => {
     it('renders with required prop', () => {
-      const propsWithRequired = {props, required: true}
-      component = shallow(<CheckboxField {...propsWithRequired} />)
+      component = shallow(<CheckboxField {...props} required/>)
       expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
     })
 
     it('renders with disable prop', () => {
-      const propsWithDisabled = {props, disabled: true}
-      component = shallow(<CheckboxField {...propsWithDisabled} />)
+      component = shallow(<CheckboxField {...props} disabled/>)
       expect(component.find('input').props().disabled).toEqual(true)
     })
 
     it('renders with checked prop', () => {
-      const propsWithChecked = {props, checked: true}
-      component = shallow(<CheckboxField {...propsWithChecked} />)
+      component = shallow(<CheckboxField {...props} checked/>)
       expect(component.find('input').props().checked).toEqual(true)
     })
   })

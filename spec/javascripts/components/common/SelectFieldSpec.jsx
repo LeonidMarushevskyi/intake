@@ -5,22 +5,21 @@ import SelectField from 'components/common/SelectField'
 
 describe('SelectField', () => {
   let component
-  let props
+  const props = {
+    children: [],
+    gridClassName: 'myWrapperTest',
+    labelClassName: 'myLabelTest',
+    id: 'myDateFieldId',
+    label: 'this is my label',
+    value: 'this-is-my-value',
+  }
   let onChange
   let onBlur
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     onBlur = jasmine.createSpy('onBlur')
-    props = {
-      children: [],
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      value: 'this-is-my-value',
-      onChange: onChange,
-      onBlur: onBlur,
-    }
+    props.onChange = onChange
+    props.onBlur = onBlur
     component = shallow(
       <SelectField {...props}><option/></SelectField>
     )
@@ -77,23 +76,21 @@ describe('SelectField', () => {
   })
 
   describe('when SelectField is required', () => {
-    const props = {
-      children: [],
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      required: true,
-      value: 'this-is-my-value',
-      onChange: onChange,
-    }
-
-    beforeEach(() => {
-      component = shallow(<SelectField {...props}/>)
-    })
     it('renders a required select field', () => {
       expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('label').not('.required').exists()).toEqual(false)
+      onChange = jasmine.createSpy('onChange')
+      const props = {
+        children: [],
+        gridClassName: 'myWrapperTest',
+        labelClassName: 'myLabelTest',
+        id: 'myDateFieldId',
+        label: 'this is my label',
+        required: true,
+        value: 'this-is-my-value',
+        onChange: onChange,
+      }
+      component = shallow(<SelectField {...props}/>)
       expect(component.find('select').prop('required')).toEqual(true)
       expect(component.find('select').prop('aria-required')).toEqual(true)
     })
@@ -115,12 +112,12 @@ describe('SelectField', () => {
   })
 
   describe('when an empty list is passed for errors', () => {
-    const propsWithEmptyErrors = {
-      ...props,
-      errors: Immutable.List(),
-    }
-
     beforeEach(() => {
+      const propsWithEmptyErrors = {
+        ...props,
+        errors: Immutable.List(),
+        onChange: jasmine.createSpy('onChange'),
+      }
       component = shallow(<SelectField {...propsWithEmptyErrors}/>)
     })
 
@@ -139,12 +136,13 @@ describe('SelectField', () => {
   })
 
   describe('when errors are passed', () => {
-    const propsWithErrorMessages = {
-      ...props,
-      errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
-      validationRules: {inputFieldName: 'required'},
-    }
     beforeEach(() => {
+      const propsWithErrorMessages = {
+        ...props,
+        errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
+        validationRules: {inputFieldName: 'required'},
+        onChange: jasmine.createSpy('onChange'),
+      }
       component = shallow(<SelectField {...propsWithErrorMessages}/>)
     })
 

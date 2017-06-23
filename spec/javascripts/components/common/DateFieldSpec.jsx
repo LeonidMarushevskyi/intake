@@ -6,21 +6,19 @@ import Immutable from 'immutable'
 
 describe('DateField', () => {
   let component
-  let props
   let onChange
+  const props = {
+    gridClassName: 'myWrapperTest',
+    id: 'myDateFieldId',
+    label: 'this is my label',
+    labelClassName: 'myLabelTest',
+    value: '05/05/2017 3:45 PM',
+  }
+
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
-    props = {
-      gridClassName: 'myWrapperTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      labelClassName: 'myLabelTest',
-      onChange: onChange,
-      value: '05/05/2017 3:45 PM',
-    }
-    component = mount(
-      <DateField {...props}/>
-    )
+    props.onChange = onChange
+    component = mount(<DateField {...props}/>)
   })
 
   it('renders the wrapperClass', () => {
@@ -79,7 +77,8 @@ describe('DateField', () => {
 
     beforeEach(() => {
       onBlur = jasmine.createSpy('onBlur')
-      component = mount(<DateField {...props} onBlur={onBlur} />)
+      props.onBlur = onBlur
+      component = mount(<DateField {...props}/>)
     })
 
     it('calls the passed function with a value', () => {
@@ -97,10 +96,8 @@ describe('DateField', () => {
   })
 
   describe('when required', () => {
-    beforeEach(() => {
-      component = shallow(<DateField {...props} onChange={onChange} required={true} />)
-    })
     it('renders a required date field', () => {
+      component = shallow(<DateField {...props} required={true} />)
       expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('label').not('.required').exists()).toEqual(false)
       // Commented out two lines of required label checking in DateFieldSpec as
@@ -139,13 +136,10 @@ describe('DateField', () => {
 
   describe('with valid user inputs', () => {
     beforeEach(() => {
-      props = {
-        onChange: onChange,
-        value: '2017-05-15T16:00:00.000Z',
-      }
+      props.value = '2017-05-15T16:00:00.000Z'
     })
 
-    it('displays with the exepcted format', () => {
+    it('displays with the expected format', () => {
       component = mount(
         <DateField {...props}/>
       )
