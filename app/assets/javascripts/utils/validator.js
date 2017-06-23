@@ -1,5 +1,6 @@
 import Immutable from 'immutable'
 import _ from 'lodash'
+import moment from 'moment'
 
 const isRequired = (value, errorMessage) => {
   if (_.isEmpty(value) || _.isEmpty(value.trim())) {
@@ -9,8 +10,18 @@ const isRequired = (value, errorMessage) => {
   }
 }
 
+const isNotInTheFuture = (value, errorMessage) => {
+  const now = moment().toISOString()
+  if (value > now) {
+    return errorMessage
+  } else {
+    return undefined
+  }
+}
+
 const VALIDATORS = Immutable.fromJS({
   isRequired: isRequired,
+  isNotInTheFuture: isNotInTheFuture,
 })
 
 export function validateField({value, rules}) {
