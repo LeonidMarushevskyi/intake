@@ -28,6 +28,11 @@ export default class ScreeningInformationCardView extends React.Component {
       started_at: [
         {rule: 'isRequired', message: 'Please enter a screening start date.'},
         {rule: 'isNotInTheFuture', message: 'The start date and time cannot be in the future.'},
+        {
+          rule: 'isBeforeOtherDate',
+          message: 'The start date and time must be before the end date and time.',
+          otherValue: () => (this.props.screening.get('ended_at')),
+        },
       ],
     })
 
