@@ -5,10 +5,12 @@ import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment'
 import momentLocalizer from 'react-widgets/lib/localizers/moment'
 import _ from 'lodash'
+import ErrorMessages from 'components/common/ErrorMessages'
 
 momentLocalizer(moment)
 
 const DateField = ({
+                    errors,
                     gridClassName,
                     hasCalendar,
                     hasTime,
@@ -17,15 +19,20 @@ const DateField = ({
                     labelClassName,
                     max,
                     min,
+                    onBlur,
                     onChange,
                     required,
                     value,
                   }) => {
+  const parseDate = (date) => (
+    moment(date, ['YYYY-MM-DD', 'MM/DD/YYYY h:mm A', moment.ISO_8601])
+  )
+
   let dateValue
   if (_.isEmpty(value)) {
     dateValue = value
   } else {
-    dateValue = moment(value, ['YYYY-MM-DD', 'MM/DD/YYYY h:mm A', moment.ISO_8601]).toDate()
+    dateValue = parseDate(value).toDate()
   }
 
   const format = (hasTime === true) ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
@@ -35,19 +42,37 @@ const DateField = ({
     if (date === null) {
       onChange(null)
     } else {
-      const dateOrDatetime = (hasTime === true) ? moment(date).toISOString() : moment(date).format('YYYY-MM-DD')
+      const dateOrDatetime = (hasTime === true) ? parseDate(date).toISOString() : parseDate(date).format('YYYY-MM-DD')
       onChange(dateOrDatetime)
     }
   }
+
+  const proxyOnBlur = (event) => {
+    if (onBlur) {
+      const rawDate = event.target.value
+      if (_.isEmpty(rawDate)) {
+        onBlur(null)
+      } else {
+        onBlur(parseDate(rawDate).toISOString())
+      }
+    }
+  }
+
   return (
-    <div className={gridClassName}>
-      <label className={ClassNames(labelClassName, {required: required})} htmlFor={`${id}_input`}>{label}</label>
+    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
+      <label
+        className={ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})}
+        htmlFor={`${id}_input`}
+      >
+        {label}
+      </label>
       <DateTimePicker
         aria-required={required}
         calendar={hasCalendar}
         defaultValue={dateValue}
         format={format}
         id={id}
+        onBlur={proxyOnBlur}
         onChange={proxyOnChange}
         placeholder={placeholder}
         required={required}
@@ -55,6 +80,7 @@ const DateField = ({
         max={max}
         min={min}
       />
+      <ErrorMessages errors={errors}/>
     </div>
   )
 }
@@ -65,6 +91,7 @@ DateField.defaultProps = {
 }
 
 DateField.propTypes = {
+  errors: PropTypes.object,
   gridClassName: PropTypes.string,
   hasCalendar: PropTypes.bool,
   hasTime: PropTypes.bool,
@@ -73,6 +100,7 @@ DateField.propTypes = {
   labelClassName: PropTypes.string,
   max: PropTypes.instanceOf(Date),
   min: PropTypes.instanceOf(Date),
+  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string,

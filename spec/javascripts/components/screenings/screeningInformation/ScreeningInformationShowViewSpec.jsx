@@ -41,6 +41,12 @@ describe('ScreeningInformationShowView', () => {
       const props = {
         ...requiredProps,
         screening,
+        errors: Immutable.fromJS({
+          assignee: ['Error 1', 'Error 2'],
+          started_at: ['Error 3', 'Error 4'],
+          communication_method: ['My Spider-Sense is tingling.'],
+          ended_at: ['Never give up', 'Never surrender'],
+        }),
       }
 
       component = shallow(<ScreeningInformationShowView {...props} />)
@@ -70,15 +76,34 @@ describe('ScreeningInformationShowView', () => {
       expect(component.find('ShowField[label="Communication Method"]').html())
       .toContain('<div class="c-gray"></div>')
     })
+
+    it('renders errors for the Assigned Social Worker', () => {
+      const socialWorker = component.find('ShowField[label="Assigned Social Worker"]')
+      expect(socialWorker.html()).toContain('Error 1')
+      expect(socialWorker.html()).toContain('Error 2')
+    })
+
+    it('renders errors for the Start Date/Time', () => {
+      const startDate = component.find('ShowField[label="Screening Start Date/Time"]')
+      expect(startDate.html()).toContain('Error 3')
+      expect(startDate.html()).toContain('Error 4')
+    })
+
+    it('renders errors for Communication Method', () => {
+      const commMethod = component.find('ShowField[label="Communication Method"]')
+      expect(commMethod.html()).toContain('My Spider-Sense is tingling.')
+    })
+
+    it('renders errors for the End Date/Time', () => {
+      const endDate = component.find('ShowField[label="Screening End Date/Time"]')
+      expect(endDate.html()).toContain('Never give up')
+      expect(endDate.html()).toContain('Never surrender')
+    })
   })
 
   describe('Show fields', () => {
     const props = {
       ...requiredProps,
-      errors: Immutable.fromJS({
-        assignee: ['Error 1', 'Error 2'],
-        communication_method: ['My Spider-Sense is tingling.'],
-      }),
       screening: Immutable.fromJS({
         name: 'The Rocky Horror Picture Show',
         assignee: 'Michael Bluth',
@@ -123,17 +148,6 @@ describe('ScreeningInformationShowView', () => {
       const socialWorker = component.find('ShowField[label="Assigned Social Worker"]')
       expect(socialWorker.props().required).toEqual(true)
       expect(socialWorker.html()).toContain('Michael Bluth')
-    })
-
-    it('renders errors for the Assigned Social Worker', () => {
-      const socialWorker = component.find('ShowField[label="Assigned Social Worker"]')
-      expect(socialWorker.html()).toContain('Error 1')
-      expect(socialWorker.html()).toContain('Error 2')
-    })
-
-    it('renders errors for Communication Method', () => {
-      const socialWorker = component.find('ShowField[label="Communication Method"]')
-      expect(socialWorker.html()).toContain('My Spider-Sense is tingling.')
     })
   })
 })

@@ -1,8 +1,9 @@
 import React from 'react'
 import Immutable from 'immutable'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import * as Validator from 'utils/validator'
+import moment from 'moment'
 
 describe('ScreeningInformationCardView', () => {
   let component
@@ -22,31 +23,47 @@ describe('ScreeningInformationCardView', () => {
 
   describe('onBlur', () => {
     beforeEach(() => {
-      const props = {
-        ...baseProps,
-        screening: Immutable.fromJS({
-          name: 'Johnson',
-          assignee: '',
-          started_at: '2016-08-13T10:00:00.000Z',
-          ended_at: '2016-08-22T11:00:00.000Z',
-          communication_method: '',
-        }),
-      }
-      component = mount(<ScreeningInformationCardView {...props} mode='edit' />)
+      component = shallow(<ScreeningInformationCardView {...baseProps} mode='edit' />)
     })
 
-    it('validates assigned social worker field after focus is lost', () => {
-      const assigneeInput = component.find('#assignee')
-      assigneeInput.simulate('focus')
-      assigneeInput.simulate('blur')
-      expect(component.update().text()).toContain('Please enter an assigned worker.')
+    it('adds errors for communication menthod', () => {
+      component.instance().onBlur('communication_method', '')
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {communication_method: ['Please select a communication method.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
     })
 
-    it('validates communication method field after focus is lost', () => {
-      const communicationInput = component.find('#communication_method')
-      communicationInput.simulate('focus')
-      communicationInput.simulate('blur')
-      expect(component.update().text()).toContain('Please select a communication method.')
+    it('adds errors for assigned social worker', () => {
+      component.instance().onBlur('assignee', '')
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {assignee: ['Please enter an assigned worker.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
+    })
+
+    it('adds errors for start date/time being required', () => {
+      component.instance().onBlur('started_at', null)
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {started_at: ['Please enter a screening start date.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
+    })
+
+    it('adds errors for start date/time being in the future', () => {
+      component.instance().onBlur('started_at', moment().add(1, 'days').toISOString())
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {started_at: ['The start date and time cannot be in the future.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
+    })
+
+    it('adds errors for end date/time being in the future', () => {
+      component.instance().onBlur('ended_at', moment().add(1, 'days').toISOString())
+      const errorProps = component.update().find('ScreeningInformationEditView').props().errors
+      const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
+      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
+      expect(errorProps.toJS()).toEqual(expectedErrors)
     })
   })
 
@@ -171,15 +188,16 @@ describe('ScreeningInformationCardView', () => {
       })
     })
 
-    describe('when required fields are not populated', () => {
+    describe('when required values are not present', () => {
       let errors
+
       beforeEach(() => {
         const props = {
           ...baseProps,
           screening: Immutable.fromJS({
             name: 'Johnson',
             assignee: '',
-            started_at: '2016-08-13T10:00:00.000Z',
+            started_at: '',
             ended_at: '2016-08-22T11:00:00.000Z',
             communication_method: '',
           }),
@@ -188,12 +206,66 @@ describe('ScreeningInformationCardView', () => {
         errors = component.find('ScreeningInformationShowView').props().errors
       })
 
-      it('validates the assigned social worker field', () => {
+      it('validates the presence of the assigned social worker field', () => {
         expect(errors.get('assignee').toJS()).toContain('Please enter an assigned worker.')
       })
 
-      it('validates the communication method field', () => {
+      it('validates the presence of the communication method field', () => {
         expect(errors.get('communication_method').toJS()).toContain('Please select a communication method.')
+      })
+
+      it('validates the presence of the start date field', () => {
+        expect(errors.get('started_at').toJS()).toContain('Please enter a screening start date.')
+      })
+    })
+
+    describe('when started_at is in the future', () => {
+      let errors
+
+      beforeEach(() => {
+        const props = {
+          ...baseProps,
+          screening: Immutable.fromJS({
+            name: 'Johnson',
+            assignee: 'Borris',
+            started_at: moment().add(1, 'days').toISOString(),
+            ended_at: '2016-08-22T11:00:00.000Z',
+            communication_method: 'mail',
+          }),
+        }
+        component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+        errors = component.find('ScreeningInformationShowView').props().errors
+      })
+
+      it('validates that start date cannot be in the future', () => {
+        expect(errors.get('started_at').toJS()).toContain('The start date and time cannot be in the future.')
+      })
+    })
+
+    describe('when ended_at is in the future', () => {
+      beforeEach(() => {
+        const props = {
+          ...baseProps,
+          screening: Immutable.fromJS({
+            name: 'Johnson',
+            assignee: 'Borris',
+            started_at: '2016-08-22T11:00:00.000Z',
+            ended_at: moment().add(1, 'days').toISOString(),
+            communication_method: 'mail',
+          }),
+        }
+        component = mount(<ScreeningInformationCardView {...props} mode='show' />)
+      })
+
+      it('passes an error message that the end date/time cannot be in the future', () => {
+        const errors = component.find('ScreeningInformationShowView').props().errors
+        expect(errors.toJS()).toEqual({
+          assignee: [],
+          communication_method: [],
+          started_at: [],
+          name: [],
+          ended_at: ['The end date and time cannot be in the future.'],
+        })
       })
     })
   })

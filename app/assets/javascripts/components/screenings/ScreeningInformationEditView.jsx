@@ -40,6 +40,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           required
           value={screening.get('started_at')}
           onChange={(value) => onChange(['started_at'], value)}
+          onBlur={(value) => onBlur('started_at', value)}
+          errors={errors.get('started_at')}
         />
         <DateField
           gridClassName='col-md-6'
@@ -47,6 +49,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           label='Screening End Date/Time'
           value={screening.get('ended_at')}
           onChange={(value) => onChange(['ended_at'], value)}
+          onBlur={(value) => onBlur('ended_at', value)}
+          errors={errors.get('ended_at')}
         />
         </div>
         <div className='row'>

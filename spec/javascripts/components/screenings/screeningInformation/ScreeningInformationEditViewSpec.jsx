@@ -78,45 +78,69 @@ describe('ScreeningInformationEditView', () => {
   })
 
   describe('onBlur', () => {
-    const blurSpy = jasmine.createSpy('onBlur')
-    const props = {
-      ...requiredProps,
-      onBlur: blurSpy,
-    }
+    let blurSpy
 
-    it('calls onBlur with assignee field gets out of focus', () => {
-      component = mount(<ScreeningInformationEditView {...props} />)
-      const assigneeField = component.find('#assignee')
-      assigneeField.simulate('focus')
-      assigneeField.simulate('blur')
-      expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
+    beforeEach(() => {
+      blurSpy = jasmine.createSpy('onBlur')
+      const props = {
+        ...requiredProps,
+        onBlur: blurSpy,
+      }
+
+      component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
-    it('calls onBlur when communication method field gets out of focus', () => {
-      component = mount(<ScreeningInformationEditView {...props} />)
-      const communicationField = component.find({id: 'communication_method'})
-      expect(communicationField.props().onBlur).not.toEqual(undefined)
-      communicationField.simulate('focus')
-      communicationField.simulate('blur')
-      expect(blurSpy).toHaveBeenCalledWith('communication_method', 'mail')
+    it('calls onBlur for the social worker with the field name and value', () => {
+      const socialWorker = requiredProps.screening.get('assignee')
+      const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
+      assigneeField.props().onBlur({target: {value: socialWorker}})
+      expect(blurSpy).toHaveBeenCalledWith('assignee', socialWorker)
+    })
+
+    it('calls onBlur for the start date with the field name and value', () => {
+      const dateValue = requiredProps.screening.get('started_at')
+      const startDate = component.find('DateField[label="Screening Start Date/Time"]')
+      startDate.props().onBlur(dateValue)
+      expect(blurSpy).toHaveBeenCalledWith('started_at', dateValue)
+    })
+
+    it('calls onBlur for the communication method with the field name and value', () => {
+      const commMethodValue = requiredProps.screening.get('communication_method')
+      const commMethodField = component.find('SelectField[label="Communication Method"]')
+      commMethodField.props().onBlur({target: {value: commMethodValue}})
+      expect(blurSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
+    })
+
+    it('calls onBlur for the end date with the field name and value', () => {
+      const dateValue = requiredProps.screening.get('ended_at')
+      const endDate = component.find('DateField[label="Screening End Date/Time"]')
+      endDate.props().onBlur(dateValue)
+      expect(blurSpy).toHaveBeenCalledWith('ended_at', dateValue)
     })
   })
 
   describe('errors', () => {
     const props = {
       ...requiredProps,
-      errors: Immutable.fromJS(
-        {
-          assignee: ['First error', 'Second error'],
-          communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
-        }),
+      errors: Immutable.fromJS({
+        assignee: ['First error', 'Second error'],
+        communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+        started_at: ['My error', 'My other error'],
+        ended_at: ['More errors'],
+        name: [],
+      }),
     }
 
-    it('passes the appropriate errors to the assignee input', () => {
+    it('passes the appropriate errors to the fields', () => {
       component = shallow(<ScreeningInformationEditView {...props} />)
-      expect(component.find('InputField[id="assignee"]').props().errors.toJS()).toEqual(['First error', 'Second error'])
+      expect(component.find('InputField[id="assignee"]').props().errors.toJS())
+        .toEqual(['First error', 'Second error'])
       expect(component.find('SelectField[id="communication_method"]').props().errors.toJS())
         .toEqual(['Stick to the plan!', 'An error occured while displaying the previous error'])
+      expect(component.find('DateField[label="Screening Start Date/Time"]').props().errors.toJS())
+        .toEqual(['My error', 'My other error'])
+      expect(component.find('DateField[label="Screening End Date/Time"]').props().errors.toJS())
+        .toEqual(['More errors'])
     })
   })
 })
