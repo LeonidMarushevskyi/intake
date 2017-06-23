@@ -6,9 +6,11 @@ import SelectField from 'components/common/SelectField'
 describe('SelectField', () => {
   let component
   let props
-  const onChange = jasmine.createSpy('onChange')
-  const onBlur = jasmine.createSpy('onBlur')
+  let onChange
+  let onBlur
   beforeEach(() => {
+    onChange = jasmine.createSpy('onChange')
+    onBlur = jasmine.createSpy('onBlur')
     props = {
       children: [],
       gridClassName: 'myWrapperTest',
