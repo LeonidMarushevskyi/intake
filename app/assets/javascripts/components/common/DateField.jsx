@@ -5,6 +5,7 @@ import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment'
 import momentLocalizer from 'react-widgets/lib/localizers/moment'
 import _ from 'lodash'
+import ErrorMessages from 'components/common/ErrorMessages'
 
 momentLocalizer(moment)
 
@@ -79,13 +80,7 @@ const DateField = ({
         max={max}
         min={min}
       />
-      <div>
-        {errors && !errors.isEmpty() &&
-          errors.map((error, index) =>
-            <span key={index} className='input-error-message' role='alert' aria-describedby={id}>{error}</span>
-            )
-        }
-      </div>
+      <ErrorMessages errors={errors}/>
     </div>
   )
 }

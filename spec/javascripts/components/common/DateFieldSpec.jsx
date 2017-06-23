@@ -129,43 +129,11 @@ describe('DateField', () => {
     })
   })
 
-  describe('when an empty list is passed for errors', () => {
-    beforeEach(() => {
-      component = shallow(<DateField {...props} errors={Immutable.List()} />)
-    })
-
-    it('does not display any errors', () => {
-      expect(component.find('.input-error').length).toEqual(0)
-    })
-
-    it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
-    })
-
-    it('does not render error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(0)
-    })
-  })
-
   describe('when errors exist', () => {
-    const errors = Immutable.List(['Error 1', 'Error 2'])
-
-    beforeEach(() => {
+    it('sends the erorrs to the error component', () => {
+      const errors = Immutable.List(['Error 1', 'Error 2'])
       component = shallow(<DateField {...props} errors={errors} />)
-    })
-
-    it('adds an error class to the input wrapper', () => {
-      expect(component.find('.input-error').length).toEqual(1)
-    })
-
-    it('displays an error styled label', () => {
-      expect(component.find('.input-error-label').length).toEqual(1)
-    })
-
-    it('displays error messages', () => {
-      expect(component.find('.input-error-message').length).toEqual(2)
-      expect(component.find('.input-error-message').first().text()).toEqual('Error 1')
-      expect(component.find('.input-error-message').last().text()).toEqual('Error 2')
+      expect(component.find('ErrorMessages').props().errors).toEqual(errors)
     })
   })
 
