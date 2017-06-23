@@ -20,28 +20,29 @@ feature 'Screening Information Validations' do
 
     scenario 'user sees an error message if social worker field left unfilled' do
       within '#screening-information-card.edit' do
+        page.find('.card-body').native.click
         expect(page).not_to have_content('Please enter an assigned worker.')
-        page.find('#assignee').native.click
+        js_simulate('focus', on: '#assignee')
         expect(page).not_to have_content('Please enter an assigned worker.')
-        page.find('#name').native.click
+        js_simulate('blur', on: '#assignee')
         expect(page).to have_content('Please enter an assigned worker.')
         fill_in 'Assigned Social Worker', with: 'My Name'
-        page.find('#name').native.click
+        js_simulate('blur', on: '#assignee')
         expect(page).not_to have_content('Please enter an assigned worker.')
       end
     end
 
     scenario 'user sees an error message if communication method field left unfilled' do
       within '#screening-information-card.edit' do
-        page.find('#name').native.click # Make sure #communication_method isn't the focused element
+        page.find('.card-body').native.click
         expect(page).not_to have_content('Please select a communication method.')
-        simulate('focus', on: '#communication_method')
+        js_simulate('focus', on: '#communication_method')
         expect(page).not_to have_content('Please select a communication method.')
-        simulate('blur', on: '#communication_method')
+        js_simulate('blur', on: '#communication_method')
         expect(page).to have_content('Please select a communication method.')
-        simulate('focus', on: '#communication_method')
+        js_simulate('focus', on: '#communication_method')
         select 'Email', from: 'Communication Method'
-        simulate('blur', on: '#communication_method')
+        js_simulate('blur', on: '#communication_method')
         expect(page).not_to have_content('Please select a communication method.')
       end
     end
@@ -69,7 +70,7 @@ feature 'Screening Information Validations' do
       within '#screening-information-card.edit' do
         expect(page).to have_content('Please enter an assigned worker.')
         fill_in 'Assigned Social Worker', with: 'My Name'
-        simulate('blur', on: '#assignee')
+        js_simulate('blur', on: '#assignee')
         click_button 'Save'
       end
 
@@ -101,7 +102,7 @@ feature 'Screening Information Validations' do
       within '#screening-information-card.edit' do
         expect(page).to have_content('Please select a communication method.')
         select 'Email', from: 'Communication Method'
-        simulate('blur', on: '#communication_method')
+        js_simulate('blur', on: '#communication_method')
         expect(page).not_to have_content('Please select a communication method.')
         click_button 'Save'
       end
