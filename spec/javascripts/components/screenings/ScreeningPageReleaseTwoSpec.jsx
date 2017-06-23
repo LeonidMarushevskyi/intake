@@ -88,11 +88,11 @@ describe('ScreeningPage when release two is active', () => {
         )
       })
 
-      it('renders the participants card for each participant', () => {
+      it('renders the participants card for each participant in show mode', () => {
         expect(component.find('ParticipantCardView').length).toEqual(2)
-        expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
-          ['edit', 'edit']
-        )
+        expect(component.find('ParticipantCardView').nodes.every(
+          (ele) => ele.props.mode === 'show')
+        ).toEqual(true)
       })
     })
 

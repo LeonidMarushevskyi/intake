@@ -39,7 +39,7 @@ export default class HistoryCard extends React.Component {
         <div className='card-body no-pad-top'>
           <div className='row'>
             { emptyInvolvements &&
-              'Add a person in order to see History of Involvement'
+              'Search for people and add them to see their child welfare history.'
             }
             {
               !emptyInvolvements &&

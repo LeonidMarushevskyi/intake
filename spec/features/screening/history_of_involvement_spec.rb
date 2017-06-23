@@ -28,7 +28,7 @@ feature 'History card' do
       visit edit_screening_path(id: existing_screening.id)
 
       within '.card', text: 'History' do
-        expect(page).to have_content('Add a person in order to see History of Involvement')
+        expect(page).to have_content('Search for people and add them to see their')
       end
     end
 
@@ -36,7 +36,7 @@ feature 'History card' do
       visit screening_path(id: existing_screening.id)
 
       within '.card', text: 'History' do
-        expect(page).to have_content('Add a person in order to see History of Involvement')
+        expect(page).to have_content('Search for people and add them to see their')
       end
     end
   end
