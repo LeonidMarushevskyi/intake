@@ -1,5 +1,6 @@
 import ClassNames from 'classnames'
 import ErrorMessages from 'components/common/ErrorMessages'
+import FieldLabel from 'components/common/FieldLabel'
 import MaskedInput from 'react-maskedinput'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -45,13 +46,9 @@ const InputField = ({
 
   return (
     <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-      <label className={
-        ClassNames(labelClassName,
-          {required: required},
-          {'input-error-label': (errors && !errors.isEmpty())}
-        )
-      } htmlFor={id}
-      >{label}</label>
+      <FieldLabel classes={[labelClassName]} id={id} label={label} required={required}
+        hasError={errors && !errors.isEmpty()}
+      />
       {input}
       <ErrorMessages id={id} errors={errors}/>
     </div>

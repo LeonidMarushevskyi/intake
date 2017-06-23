@@ -5,6 +5,7 @@ import InputField from 'components/common/InputField'
 
 describe('InputField', () => {
   let component
+  let fieldLabel
   const onChange = jasmine.createSpy('onChange')
   const onBlur = jasmine.createSpy('onBlur')
   const props = {
@@ -19,6 +20,7 @@ describe('InputField', () => {
   }
   beforeEach(() => {
     component = shallow(<InputField {...props}/>)
+    fieldLabel = component.find('FieldLabel')
   })
 
   it('renders the wrapperClass', () => {
@@ -27,14 +29,12 @@ describe('InputField', () => {
 
   it('renders the id', () => {
     expect(component.find('input').props().id).toEqual('myInputFieldId')
-    expect(component.find('label').props().htmlFor).toEqual('myInputFieldId')
+    expect(fieldLabel.props().id).toEqual('myInputFieldId')
   })
 
   it('renders the label', () => {
-    const labelElement = component.find('label')
-    expect(labelElement.length).toEqual(1)
-    expect(labelElement.html()).toContain('<label class="myLabelTest"')
-    expect(labelElement.text()).toEqual('this is my label')
+    expect(fieldLabel.props().label).toEqual('this is my label')
+    expect(fieldLabel.props().classes).toContain('myLabelTest')
   })
 
   it('renders the input placeholder', () => {
@@ -160,7 +160,7 @@ describe('InputField', () => {
     })
     it('renders an input field', () => {
       expect(component.find('label.required').exists()).toEqual(false)
-      expect(component.find('label').not('.required').exists()).toEqual(true)
+      expect(component.find('FieldLabel').props().required).toBeFalsy()
     })
   })
 
@@ -178,8 +178,7 @@ describe('InputField', () => {
       component = shallow(<InputField {...props}/>)
     })
     it('renders a required input field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('FieldLabel').props().required).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
     })
@@ -200,8 +199,7 @@ describe('InputField', () => {
       component = shallow(<InputField {...propsWithMaskedInput}/>)
     })
     it('renders a required MaskedInput field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('FieldLabel').props().required).toEqual(true)
       expect(component.find('MaskedInput').prop('required')).toEqual(true)
       expect(component.find('MaskedInput').prop('aria-required')).toEqual(true)
       expect(component.find('MaskedInput').props().mask).toEqual('111-11-1111')
@@ -214,7 +212,7 @@ describe('InputField', () => {
     })
 
     it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
+      expect(component.find('FieldLabel').props().hasError).toBeFalsy()
     })
 
     it('renders ErrorMessages but with no errors', () => {
@@ -238,7 +236,7 @@ describe('InputField', () => {
     })
 
     it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
+      expect(component.find('FieldLabel').props().hasError).toBeFalsy()
     })
 
     it('renders ErrorMessages and pass it an empty list of errors', () => {
@@ -267,7 +265,7 @@ describe('InputField', () => {
     })
 
     it('displays an error styled label', () => {
-      expect(component.find('.input-error-label').length).toEqual(1)
+      expect(component.find('FieldLabel').props().hasError).toEqual(true)
     })
 
     it('displays error messages', () => {

@@ -1,16 +1,13 @@
-import ClassNames from 'classnames'
 import ErrorMessages from 'components/common/ErrorMessages'
+import FieldLabel from 'components/common/FieldLabel'
 import PropTypes from 'prop-types'
 import React from 'react'
 
 const ShowField = ({gridClassName, labelClassName, label, children, required, errors}) => (
   <div className={gridClassName}>
-    <label className={
-        ClassNames(labelClassName,
-          {required: required},
-          {'input-error-label': (errors && !errors.isEmpty())}
-        )
-      }>{label}</label>
+    <FieldLabel label={label} classes={[labelClassName]}
+      hasError={errors && !errors.isEmpty()} required={required}
+    />
     <div className='c-gray'>{children}</div>
     <ErrorMessages errors={errors}/>
   </div>

@@ -1,11 +1,12 @@
 import ClassNames from 'classnames'
+import ErrorMessages from 'components/common/ErrorMessages'
+import FieldLabel from 'components/common/FieldLabel'
 import React from 'react'
 import PropTypes from 'prop-types'
 import DateTimePicker from 'react-widgets/lib/DateTimePicker'
 import moment from 'moment'
 import momentLocalizer from 'react-widgets/lib/localizers/moment'
 import _ from 'lodash'
-import ErrorMessages from 'components/common/ErrorMessages'
 
 momentLocalizer(moment)
 
@@ -60,12 +61,9 @@ const DateField = ({
 
   return (
     <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-      <label
-        className={ClassNames(labelClassName, {required: required}, {'input-error-label': (errors && !errors.isEmpty())})}
-        htmlFor={`${id}_input`}
-      >
-        {label}
-      </label>
+      <FieldLabel id={`${id}_input`} label={label} classes={[labelClassName]}
+        required={required} hasError={errors && !errors.isEmpty()}
+      />
       <DateTimePicker
         aria-required={required}
         calendar={hasCalendar}

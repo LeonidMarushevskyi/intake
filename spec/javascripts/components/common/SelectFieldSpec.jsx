@@ -5,6 +5,7 @@ import SelectField from 'components/common/SelectField'
 
 describe('SelectField', () => {
   let component
+  let fieldLabel
   const props = {
     children: [],
     gridClassName: 'myWrapperTest',
@@ -23,6 +24,7 @@ describe('SelectField', () => {
     component = shallow(
       <SelectField {...props}><option/></SelectField>
     )
+    fieldLabel = component.find('FieldLabel')
   })
 
   it('renders the wrapperClass', () => {
@@ -31,14 +33,12 @@ describe('SelectField', () => {
 
   it('renders the id', () => {
     expect(component.find('select').props().id).toEqual('myDateFieldId')
-    expect(component.find('label').props().htmlFor).toEqual('myDateFieldId')
+    expect(fieldLabel.props().id).toEqual('myDateFieldId')
   })
 
   it('renders the label', () => {
-    const labelElement = component.find('label')
-    expect(labelElement.length).toEqual(1)
-    expect(labelElement.html()).toContain('<label class="myLabelTest"')
-    expect(labelElement.text()).toEqual('this is my label')
+    expect(fieldLabel.props().label).toEqual('this is my label')
+    expect(fieldLabel.props().classes).toContain('myLabelTest')
   })
 
   it('renders the select element and children', () => {
@@ -69,16 +69,13 @@ describe('SelectField', () => {
   })
 
   it('does not render a required select field', () => {
-    expect(component.find('label.required').exists()).toEqual(false)
-    expect(component.find('label').not('.required').exists()).toEqual(true)
+    expect(fieldLabel.props().required).toBeFalsy()
     expect(component.find('select').prop('required')).toBeFalsy()
     expect(component.find('select').prop('aria-required')).toBeFalsy()
   })
 
   describe('when SelectField is required', () => {
     it('renders a required select field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
       onChange = jasmine.createSpy('onChange')
       const props = {
         children: [],
@@ -91,6 +88,7 @@ describe('SelectField', () => {
         onChange: onChange,
       }
       component = shallow(<SelectField {...props}/>)
+      expect(component.find('FieldLabel').props().required).toEqual(true)
       expect(component.find('select').prop('required')).toEqual(true)
       expect(component.find('select').prop('aria-required')).toEqual(true)
     })
@@ -102,7 +100,7 @@ describe('SelectField', () => {
     })
 
     it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
+      expect(fieldLabel.props().hasError).toBeFalsy()
     })
 
     it('renders ErrorMessages but with no errors', () => {
@@ -126,7 +124,7 @@ describe('SelectField', () => {
     })
 
     it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
+      expect(component.find('FieldLabel').props().hasError).toBeFalsy()
     })
 
     it('renders ErrorMessages and pass it an empty list of errors', () => {
@@ -151,7 +149,7 @@ describe('SelectField', () => {
     })
 
     it('displays an error styled label', () => {
-      expect(component.find('.input-error-label').length).toEqual(1)
+      expect(component.find('FieldLabel').props().hasError).toEqual(true)
     })
 
     it('renders ErrorMessages and pass it errors', () => {
