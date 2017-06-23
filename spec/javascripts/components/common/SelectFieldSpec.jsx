@@ -1,12 +1,16 @@
 import React from 'react'
+import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import SelectField from 'components/common/SelectField'
 
 describe('SelectField', () => {
   let component
   let props
-  const onChange = jasmine.createSpy('onChange')
+  let onChange
+  let onBlur
   beforeEach(() => {
+    onChange = jasmine.createSpy('onChange')
+    onBlur = jasmine.createSpy('onBlur')
     props = {
       children: [],
       gridClassName: 'myWrapperTest',
@@ -15,6 +19,7 @@ describe('SelectField', () => {
       label: 'this is my label',
       value: 'this-is-my-value',
       onChange: onChange,
+      onBlur: onBlur,
     }
     component = shallow(
       <SelectField {...props}><option/></SelectField>
@@ -58,6 +63,12 @@ describe('SelectField', () => {
     expect(onChange).toHaveBeenCalled()
   })
 
+  it('calls onBlur when a blur event occurs on select field', () => {
+    const selectElement = component.find('select')
+    selectElement.simulate('blur')
+    expect(onBlur).toHaveBeenCalled()
+  })
+
   it('does not render a required select field', () => {
     expect(component.find('label.required').exists()).toEqual(false)
     expect(component.find('label').not('.required').exists()).toEqual(true)
@@ -85,6 +96,69 @@ describe('SelectField', () => {
       expect(component.find('label').not('.required').exists()).toEqual(false)
       expect(component.find('select').prop('required')).toEqual(true)
       expect(component.find('select').prop('aria-required')).toEqual(true)
+    })
+  })
+
+  describe('when no errors passed', () => {
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('renders ErrorMessages but with no errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
+    })
+  })
+
+  describe('when an empty list is passed for errors', () => {
+    const propsWithEmptyErrors = {
+      ...props,
+      errors: Immutable.List(),
+    }
+
+    beforeEach(() => {
+      component = shallow(<SelectField {...propsWithEmptyErrors}/>)
+    })
+
+    it('does not display any errors', () => {
+      expect(component.find('.input-error').length).toEqual(0)
+    })
+
+    it('does not render the label as if it has an error', () => {
+      expect(component.find('.input-error-label').length).toEqual(0)
+    })
+
+    it('renders ErrorMessages and pass it an empty list of errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List())
+    })
+  })
+
+  describe('when errors are passed', () => {
+    const propsWithErrorMessages = {
+      ...props,
+      errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
+      validationRules: {inputFieldName: 'required'},
+    }
+    beforeEach(() => {
+      component = shallow(<SelectField {...propsWithErrorMessages}/>)
+    })
+
+    it('adds an error class to the input wrapper', () => {
+      expect(component.find('.input-error').length).toEqual(1)
+    })
+
+    it('displays an error styled label', () => {
+      expect(component.find('.input-error-label').length).toEqual(1)
+    })
+
+    it('renders ErrorMessages and pass it errors', () => {
+      expect(component.find('ErrorMessages').exists()).toEqual(true)
+      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List(['Please choose wisely.', 'Stick to the plan!']))
     })
   })
 })

@@ -171,8 +171,8 @@ feature 'Edit Screening' do
         within '.card-body' do
           expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
           fill_in 'Social security number', with: 12
-          expect(active_element['id']).to eq("participant-#{homer.id}-ssn")
-          expect(active_element['placeholder']).to eq('___-__-____')
+          expect(focused_native_element['id']).to eq("participant-#{homer.id}-ssn")
+          expect(focused_native_element['placeholder']).to eq('___-__-____')
           fill_in 'First Name', with: 'Change Focus'
           expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
           click_button 'Save'
@@ -436,9 +436,5 @@ feature 'Edit Screening' do
         has_react_select_field('Role', with: ['Non-mandated Reporter'])
       end
     end
-  end
-
-  def active_element
-    page.evaluate_script('document.activeElement')
   end
 end

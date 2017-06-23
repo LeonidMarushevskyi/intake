@@ -84,24 +84,39 @@ describe('ScreeningInformationEditView', () => {
       onBlur: blurSpy,
     }
 
-    it('calls onBlur with the field name and value', () => {
+    it('calls onBlur with assignee field gets out of focus', () => {
       component = mount(<ScreeningInformationEditView {...props} />)
       const assigneeField = component.find('#assignee')
       assigneeField.simulate('focus')
       assigneeField.simulate('blur')
       expect(blurSpy).toHaveBeenCalledWith('assignee', 'Michael Bluth')
     })
+
+    it('calls onBlur when communication method field gets out of focus', () => {
+      component = mount(<ScreeningInformationEditView {...props} />)
+      const communicationField = component.find({id: 'communication_method'})
+      expect(communicationField.props().onBlur).not.toEqual(undefined)
+      communicationField.simulate('focus')
+      communicationField.simulate('blur')
+      expect(blurSpy).toHaveBeenCalledWith('communication_method', 'mail')
+    })
   })
 
   describe('errors', () => {
     const props = {
       ...requiredProps,
-      errors: Immutable.fromJS({assignee: ['First error', 'Second error'], name: []}),
+      errors: Immutable.fromJS(
+        {
+          assignee: ['First error', 'Second error'],
+          communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+        }),
     }
 
     it('passes the appropriate errors to the assignee input', () => {
       component = shallow(<ScreeningInformationEditView {...props} />)
       expect(component.find('InputField[id="assignee"]').props().errors.toJS()).toEqual(['First error', 'Second error'])
+      expect(component.find('SelectField[id="communication_method"]').props().errors.toJS())
+        .toEqual(['Stick to the plan!', 'An error occured while displaying the previous error'])
     })
   })
 })

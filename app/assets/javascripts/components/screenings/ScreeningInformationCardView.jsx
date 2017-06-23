@@ -16,7 +16,7 @@ export default class ScreeningInformationCardView extends React.Component {
 
     this.fieldValidations = Immutable.fromJS({
       assignee: [{rule: 'isRequired', message: 'Please enter an assigned worker.'}],
-      communication_method: [],
+      communication_method: [{rule: 'isRequired', message: 'Please select a communication method.'}],
       ended_at: [],
       name: [],
       started_at: [],
