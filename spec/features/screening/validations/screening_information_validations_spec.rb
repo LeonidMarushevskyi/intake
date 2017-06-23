@@ -135,11 +135,11 @@ feature 'Screening Information Validations' do
 
       within '#screening-information-card.edit' do
         expect(page).not_to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: 5.days.from_now, blur: false
+        fill_in_datepicker 'Screening Start Date/Time', with: 20.years.from_now, blur: false
         expect(page).not_to have_content(error_message)
         page.find('#name').native.click
         expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: 5.days.ago, blur: true
+        fill_in_datepicker 'Screening Start Date/Time', with: 20.years.ago, blur: true
         expect(page).not_to have_content(error_message)
       end
     end
@@ -149,11 +149,11 @@ feature 'Screening Information Validations' do
 
       within '#screening-information-card.edit' do
         expect(page).not_to have_content(error_message)
-        fill_in_datepicker 'Screening End Date/Time', with: 5.days.from_now, blur: false
+        fill_in_datepicker 'Screening End Date/Time', with: 20.years.from_now, blur: false
         expect(page).not_to have_content(error_message)
         page.find('#name').native.click
         expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening End Date/Time', with: 5.days.ago, blur: true
+        fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago, blur: true
         expect(page).not_to have_content(error_message)
       end
     end
@@ -194,7 +194,7 @@ feature 'Screening Information Validations' do
 
     context 'With a screening saved with invalid dates' do
       let(:screening) do
-        FactoryGirl.create(:screening, started_at: 5.days.from_now, ended_at: 10.days.from_now)
+        FactoryGirl.create(:screening, started_at: 20.years.from_now, ended_at: 30.years.from_now)
       end
 
       scenario 'user saves information card with start date in the future and then fixes it' do
@@ -214,7 +214,7 @@ feature 'Screening Information Validations' do
           click_link 'Edit'
         end
 
-        valid_date = 5.days.ago
+        valid_date = 20.years.ago
         screening.assign_attributes(started_at: valid_date.iso8601)
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .and_return(json_body(screening.to_json))
@@ -247,7 +247,7 @@ feature 'Screening Information Validations' do
           click_link 'Edit'
         end
 
-        valid_date = 5.days.ago
+        valid_date = 20.years.ago
         screening.assign_attributes(ended_at: valid_date)
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .and_return(json_body(screening.to_json))
