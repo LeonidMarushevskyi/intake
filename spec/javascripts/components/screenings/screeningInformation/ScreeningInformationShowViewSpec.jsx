@@ -90,8 +90,8 @@ describe('ScreeningInformationShowView', () => {
     })
 
     it('renders errors for Communication Method', () => {
-      const socialWorker = component.find('ShowField[label="Communication Method"]')
-      expect(socialWorker.html()).toContain('My Spider-Sense is tingling.')
+      const commMethod = component.find('ShowField[label="Communication Method"]')
+      expect(commMethod.html()).toContain('My Spider-Sense is tingling.')
     })
 
     it('renders errors for the End Date/Time', () => {
