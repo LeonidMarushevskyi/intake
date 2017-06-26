@@ -236,9 +236,35 @@ feature 'Screening Information Validations' do
     end
 
     scenario 'user sees error messages for required fields page load' do
-      within '#screening-information-card.show' do
-        expect(page).to have_content('Please enter an assigned worker.')
-        expect(page).to have_content('Please select a communication method.')
+      card_name = 'screening-information'
+      show_view_should_have_error(card_name, 'Please enter an assigned worker.')
+      show_view_should_have_error(card_name, 'Please select a communication method.')
+      show_view_should_have_error(card_name, 'Please enter a screening start date.')
+    end
+
+    context 'for a screening that has a saved dates in the future' do
+      let(:screening) do
+        FactoryGirl.create :screening, started_at: 5.years.from_now, ended_at: 10.years.from_now
+      end
+
+      scenario 'user sees error messages for required fields page load' do
+        card_name = 'screening-information'
+        show_view_should_have_error(card_name, 'The start date and time cannot be in the future.')
+        show_view_should_have_error(card_name, 'The end date and time cannot be in the future.')
+      end
+    end
+
+    context 'for a screening saved with the start date after the end date' do
+      let(:screening) do
+        FactoryGirl.create :screening, started_at: 5.years.ago, ended_at: 10.years.ago
+      end
+
+      scenario 'user sees error messages for required fields page load' do
+        card_name = 'screening-information'
+        show_view_should_have_error(
+          card_name,
+          'The start date and time must be before the end date and time.'
+        )
       end
     end
   end
