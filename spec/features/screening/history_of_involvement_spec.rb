@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'spec_helper'
+require 'feature/testing'
 
 feature 'History card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
@@ -435,6 +436,103 @@ feature 'History card' do
             expect(page).to have_content('Focus Child: fChild2 fc2Last')
             expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
             expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
+          end
+        end
+      end
+    end
+
+    context 'release two is enabled' do
+      around do |example|
+        Feature.run_with_activated(:release_two) do
+          example.run
+        end
+      end
+
+      scenario 'editing a screening displays HOI without screenings' do
+        visit edit_screening_path(id: existing_screening.id)
+
+        expect(
+          a_request(
+            :get,
+            host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
+          )
+        ).to have_been_made
+
+        within '#history-card.card.show', text: 'History' do
+          within 'tbody#history-of-involvement' do
+            rows = page.all('#history-of-involvement > tr')
+            expect(page).to have_no_content('Screening (In Progress)')
+            expect(page).to have_no_content('Screening (Closed)')
+
+            within rows[0] do
+              expect(page).to have_content('11/14/2016 - 12/14/2016')
+              expect(page).to have_content('Referral (Closed - Immediate)')
+              expect(page).to have_content('Madera')
+
+              within 'table' do
+                allegation_rows = page.all('tr')
+
+                within allegation_rows[0] do
+                  expect(page).to have_content('Victim')
+                  expect(page).to have_content('Perpetrator')
+                  expect(page).to have_content('Allegation(s) & Disposition')
+                end
+
+                within allegation_rows[1] do
+                  expect(page).to have_content('Victim1 v1LastName')
+                  expect(page).to have_content('Perpetrator1 p1LastName')
+                  expect(page).to have_content('General Neglect (Entered in Error)')
+                end
+              end
+
+              expect(page).to have_content('Reporter: Reporter1 r1LastName')
+              expect(page).to have_content('Worker: Social1 s1LastName')
+            end
+
+            within rows[1] do
+              expect(page).to have_content('05/06/2016')
+              expect(page).to have_content('Referral (Open)')
+              expect(page).to have_content('San Francisco')
+
+              within 'table' do
+                allegation_rows = page.all('tr')
+
+                within allegation_rows[0] do
+                  expect(page).to have_content('Victim')
+                  expect(page).to have_content('Perpetrator')
+                  expect(page).to have_content('Allegation(s) & Disposition')
+                end
+
+                within allegation_rows[1] do
+                  expect(page).to have_content('Victim2 v2LastName')
+                  expect(page).to have_content('Perpetrator2 p2LastName')
+                  expect(page).to have_content('Severe Neglect (Confirmed)')
+                end
+              end
+
+              expect(page).to have_content('Reporter: Reporter2 r2LastName')
+              expect(page).to have_content('Worker: Social2 s2LastName')
+            end
+
+            within rows[2] do
+              expect(page).to have_content('01/01/2016 - 11/01/2016')
+              expect(page).to have_content('Case (Closed - Family Reunification)')
+              expect(page).to have_content('El Dorado')
+              expect(page).to have_content('Focus Child: fChild1 fc1Last')
+              expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
+              expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
+            end
+
+            within rows[3] do
+              expect(page).to have_content('02/03/2016')
+              expect(page).to have_no_content('-')
+              expect(page).to have_content('Case')
+              expect(page).to have_content('Open')
+              expect(page).to have_content('Plumas')
+              expect(page).to have_content('Focus Child: fChild2 fc2Last')
+              expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
+              expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
+            end
           end
         end
       end
