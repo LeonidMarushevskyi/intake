@@ -496,11 +496,27 @@ describe('ScreeningPage', () => {
           expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
         })
 
-        it('renders the autocompleter', () => {
-          expect(component.find('Autocompleter').props().id).toEqual('screening_participants')
-          expect(component.find('Autocompleter').props().onSelect).toEqual(
-            component.instance().createParticipant
-          )
+        describe('autocompleter', () => {
+          let autocompleter
+          beforeEach(() => {
+            autocompleter = component.find('Autocompleter')
+          })
+          it('is rendered', () => {
+            expect(autocompleter.length).toBe(1)
+          })
+          it('is passed an id', () => {
+            expect(autocompleter.props().id).toEqual('screening_participants')
+          })
+          it('is pass the correct onSelect callback', () => {
+            expect(autocompleter.props().onSelect).toEqual(
+              component.instance().createParticipant
+            )
+          })
+          it('is passed a footer component', () => {
+            const footer = autocompleter.props().footer
+            expect(footer.type.name).toEqual('CreateUnknownParticipant')
+            expect(footer.props.saveCallback).toEqual(component.instance().createParticipant)
+          })
         })
 
         it('renders the participants card for each participant', () => {

@@ -2,6 +2,7 @@ import * as IntakeConfig from 'config'
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Autocompleter from 'components/common/Autocompleter'
+import CreateUnknownParticipant from 'components/screenings/CreateUnknownParticipant'
 import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import HistoryCard from 'components/screenings/HistoryCard'
@@ -154,7 +155,10 @@ export class ScreeningPage extends React.Component {
               <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
               <Autocompleter id='screening_participants'
                 onSelect={this.createParticipant}
-                enableFooter={IntakeConfig.isFeatureInactive('release_two')}
+                footer={
+                  IntakeConfig.isFeatureInactive('release_two') &&
+                  <CreateUnknownParticipant saveCallback={this.createParticipant}/>
+                  }
               />
             </div>
           </div>
