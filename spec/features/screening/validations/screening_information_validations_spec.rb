@@ -19,9 +19,9 @@ feature 'Screening Information Validations' do
     end
 
     context 'social worker field' do
-      scenario 'displays errors if a user does not enter a social worker' do
-        error_message = 'Please enter an assigned worker.'
+      let(:error_message) { 'Please enter an assigned worker.' }
 
+      scenario 'displays errors if a user does not enter a social worker' do
         within '#screening-information-card.edit' do
           page.find('.card-body').native.click
           expect(page).not_to have_content(error_message)
@@ -36,8 +36,6 @@ feature 'Screening Information Validations' do
       end
 
       scenario 'show card displays errors until user adds a social worker' do
-        error_message = 'Please enter an assigned worker.'
-
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .with(json_body(as_json_without_root_id(screening)))
           .and_return(json_body(screening.to_json))
@@ -58,7 +56,7 @@ feature 'Screening Information Validations' do
           .and_return(json_body(screening.to_json))
 
         within '#screening-information-card.edit' do
-          expect(page).to have_content('Please enter an assigned worker.')
+          expect(page).to have_content(error_message)
           fill_in 'Assigned Social Worker', with: 'My Name'
           js_simulate('blur', on: '#assignee')
           click_button 'Save'
@@ -71,9 +69,9 @@ feature 'Screening Information Validations' do
     end
 
     context 'communication method field' do
-      scenario 'displays errors if a user does not enter a communication method' do
-        error_message = 'Please select a communication method.'
+      let(:error_message) { 'Please select a communication method.' }
 
+      scenario 'displays errors if a user does not enter a communication method' do
         within '#screening-information-card.edit' do
           page.find('.card-body').native.click
           expect(page).not_to have_content(error_message)
@@ -89,8 +87,6 @@ feature 'Screening Information Validations' do
       end
 
       scenario 'show card displays errors until user adds a communication method' do
-        error_message = 'Please select a communication method.'
-
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .with(json_body(as_json_without_root_id(screening)))
           .and_return(json_body(screening.to_json))
@@ -125,9 +121,9 @@ feature 'Screening Information Validations' do
     end
 
     context 'end date field' do
-      scenario 'displays an error if the date is in the future' do
-        error_message = 'The end date and time cannot be in the future.'
+      let(:error_message) { 'The end date and time cannot be in the future.' }
 
+      scenario 'displays an error if the date is in the future' do
         within '#screening-information-card.edit' do
           expect(page).not_to have_content(error_message)
           fill_in_datepicker 'Screening End Date/Time', with: 20.years.from_now, blur: false
@@ -139,14 +135,12 @@ feature 'Screening Information Validations' do
         end
       end
 
-      context 'with a screening saved with end date in the past' do
+      context 'with a screening saved with end date in the future' do
         let(:screening) do
           FactoryGirl.create(:screening, ended_at: 30.years.from_now)
         end
 
         scenario 'show card shows errors until the date is in the future' do
-          error_message = 'The end date and time cannot be in the future.'
-
           stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
             .with(json_body(as_json_without_root_id(screening)))
             .and_return(json_body(screening.to_json))
@@ -258,12 +252,12 @@ feature 'Screening Information Validations' do
         end
       end
 
-      context 'with a screening saved with start date in the past' do
+      context 'with a screening saved with start date in the future' do
         let(:screening) do
           FactoryGirl.create(:screening, started_at: 20.years.from_now)
         end
 
-        scenario 'show card shows errors until the date is in the future' do
+        scenario 'show card shows errors until the date is in the past' do
           error_message = 'The start date and time cannot be in the future.'
 
           stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -302,7 +296,7 @@ feature 'Screening Information Validations' do
           FactoryGirl.create(:screening, started_at: 10.years.ago, ended_at: 20.years.ago)
         end
 
-        scenario 'show card shows errors until the date is in the future' do
+        scenario 'show card shows errors until the start date is before the end date' do
           error_message = 'The start date and time must be before the end date and time.'
 
           stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))

@@ -51,8 +51,8 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('adds errors for end date/time being in the future', () => {
-      const date = moment().add(2, 'days').toISOString()
-      component.instance().onBlur('ended_at', date)
+      const futureDate = moment().add(2, 'days').toISOString()
+      component.instance().onBlur('ended_at', futureDate)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)

@@ -143,6 +143,18 @@ describe('Validator', () => {
       expect(Validator.validateField(args).count()).toEqual(0)
     })
 
+    it('is valid when the value is one milisecond less than to the current time', () => {
+      const stubbedDate = '5999-01-01T01:01:01.001Z'
+      spyOn(moment.prototype, 'toISOString').and.returnValue(stubbedDate)
+
+      const args = {
+        ...sharedArgs,
+        value: moment(stubbedDate).subtract(1, 'milliseconds'),
+      }
+
+      expect(Validator.validateField(args).count()).toEqual(0)
+    })
+
     it('is valid when the value is an empty string', () => {
       const args = {
         ...sharedArgs,
@@ -192,9 +204,9 @@ describe('Validator', () => {
         rules: Immutable.fromJS([{
           rule: 'isBeforeOtherDate',
           message: 'Get it together',
-          otherValue: () => (moment('1999-01-01').toISOString()),
+          otherValue: () => ('1999-01-01T01:01:01.001Z'),
         }]),
-        value: moment('1999-06-01').toISOString(),
+        value: '1999-01-01T01:01:01.002Z',
       }
 
       expect(Validator.validateField(args).count()).toEqual(1)
@@ -218,9 +230,9 @@ describe('Validator', () => {
         rules: Immutable.fromJS([{
           rule: 'isBeforeOtherDate',
           message: 'Get it together',
-          otherValue: () => (moment('1999-06-01').toISOString()),
+          otherValue: () => '1999-01-01T01:01:01.002Z',
         }]),
-        value: moment('1999-01-01').toISOString(),
+        value: '1999-01-01T01:01:01.001Z',
       }
 
       expect(Validator.validateField(args).count()).toEqual(0)
