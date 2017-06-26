@@ -42,9 +42,19 @@ describe('<Autocompleter />', () => {
   })
 
   describe('#onSuggestionSelected', () => {
+    let onSelect
+    let component
+    beforeEach(() => {
+      onSelect = jasmine.createSpy('onSelectSpy')
+      component = shallow(<Autocompleter onSelect={onSelect} />)
+    })
+    describe('selection is a component', () => {
+      it('skips onSelect for component selections', () => {
+        component.instance().onSuggestionSelected(null, {suggestion: <p>Test Footer</p>})
+        expect(onSelect).not.toHaveBeenCalled()
+      })
+    })
     it('clears the search Text and adds the suggestion', () => {
-      const onSelect = jasmine.createSpy('onSelectSpy')
-      const component = shallow(<Autocompleter onSelect={onSelect} />)
       const suggestion = {id: '1', first_name: 'Bart'}
       component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
       expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
@@ -72,20 +82,15 @@ describe('<Autocompleter />', () => {
   })
 
   describe('with footer', () => {
+    let component
     beforeEach(() => {
       stubSuggestions([])
+      component = mount(<Autocompleter footer={<p>Test Footer</p>} />)
     })
 
-    const component = mount(<Autocompleter enableFooter={true} />)
     describe('is closed', () => {
-      it('has aria-expanded of false', () => {
-        expect(component.find('input').props()['aria-expanded']).toBe(false)
-      })
-      it('does not have the force-open class', () => {
-        expect(component.find('.force-open').length).toBe(0)
-      })
-      it('its state is closed', () => {
-        expect(component.state('isAutocompleterFocused')).toBe(false)
+      it('has no footer displayed', () => {
+        expect(component.html()).not.toContain('Test Footer')
       })
     })
     describe('is open', () => {
@@ -93,14 +98,8 @@ describe('<Autocompleter />', () => {
         component.find('input').simulate('focus')
         component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
       })
-      it('has aria-expanded of false', () => {
-        expect(component.find('input').props()['aria-expanded']).toBe(true)
-      })
-      it('does not have the force-open class', () => {
-        expect(component.find('.force-open').length).toBe(1)
-      })
-      it('its state is closed', () => {
-        expect(component.state('isAutocompleterFocused')).toBe(true)
+      it('renders the footer', () => {
+        expect(component.html()).toContain('Test Footer')
       })
     })
   })
@@ -272,6 +271,18 @@ describe('<Autocompleter />', () => {
 
   describe('#renderSuggestion', () => {
     let component
+
+    it('can render a component', () => {
+      component = mount(<Autocompleter />)
+      expect(component.instance().renderSuggestion(<p>render me</p>).props.children).toEqual('render me')
+      expect(component.instance().renderSuggestion({
+        id: '1',
+        first_name: 'Selma',
+        addresses: [],
+        phone_numbers: [],
+      }).props.firstName).toEqual('Selma')
+    })
+
     it('renders the PersonSuggestion view', () => {
       component = mount(<Autocompleter />)
       const result = [{
