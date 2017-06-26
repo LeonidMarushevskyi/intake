@@ -8,18 +8,15 @@
   position: relative;
 
   input {
-    border: .1rem solid $red;
-    width: calc(100% +1.9rem);
+    @extend %error-border;
   }
 
   textarea {
-    border: .1rem solid $red;
-    width: calc(100% +1.9rem);
+    @extend %error-border;
   }
 
   select {
-    border: .1rem solid $red;
-    width: calc(100% +1.9rem);
+    @extend %error-border;
   }
 
   label {
@@ -29,10 +26,6 @@
   .input-inline {
     border: .1rem solid $light-grey;
     width: inherit;
-  }
-
-  .input-inline-error {
-    border: .1rem solid $red;
   }
 }
 

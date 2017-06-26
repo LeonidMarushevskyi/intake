@@ -61,4 +61,14 @@ $small-border-radius: 1px;
 $base-border-radius: 2px;
 $large-border-radius: 3px;
 
+/////////////////////////////////////////
+
+// - Border Error Styling - //
+
+/////////////////////////////////////////
+
+%error-border {
+  border: .1rem solid $red;
+  width: calc(100% +1.9rem);
+}
 
