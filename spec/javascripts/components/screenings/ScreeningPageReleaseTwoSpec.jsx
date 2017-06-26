@@ -38,7 +38,7 @@ describe('ScreeningPage when release two is active', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
       component.setState({loaded: true})
       expect(component.find('Autocompleter').length).toBe(1)
-      expect(component.find('Autocompleter').props().enableFooter).toEqual(false)
+      expect(component.find('Autocompleter').props().footer).toEqual(false)
     })
 
     it('renders the snapshot copy', () => {

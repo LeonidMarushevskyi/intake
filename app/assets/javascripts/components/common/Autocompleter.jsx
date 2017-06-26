@@ -1,5 +1,4 @@
 import * as Utils from 'utils/http'
-import CreateUnknownParticipant from 'components/screenings/CreateUnknownParticipant'
 import PersonSuggestion from 'components/common/PersonSuggestion'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
@@ -15,8 +14,6 @@ export default class Autocompleter extends React.Component {
       isLoading: false,
       isAutocompleterFocused: false,
     }
-    this.onAutocompleterFocus = this.onAutocompleterFocus.bind(this)
-    this.onAutocompleterBlur = this.onAutocompleterBlur.bind(this)
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
@@ -47,7 +44,10 @@ export default class Autocompleter extends React.Component {
   onSuggestionSelected(event, {suggestion}) {
     this.onSuggestionsClearRequested()
     this.setState({value: ''})
-    this.props.onSelect(suggestion)
+    if (!suggestion.props) {
+      // Assume footer components handle their own clicks.
+      this.props.onSelect(suggestion)
+    }
   }
 
   onSuggestionsClearRequested() {
@@ -113,60 +113,40 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestion(suggestion) {
-    return (
-      <PersonSuggestion
-        {...this.mapPersonSearchAttributes(suggestion)}
-      />
-    )
-  }
-
-  showWithoutSuggestions(state) {
-    const minimumCharsForSearch = 2
-    return state.value.trimLeft().length >= minimumCharsForSearch && (state.isAutocompleterFocused)
+    if (suggestion.props && suggestion.type) {
+      // It's a component and we let React render it
+      return suggestion
+    } else {
+      // It's a real result
+      return (
+        <PersonSuggestion
+          {...this.mapPersonSearchAttributes(suggestion)}
+        />
+      )
+    }
   }
 
   renderSuggestionsContainer(properties) {
     const children = properties.children
-    if (this.showWithoutSuggestions(this.state)) {
-      properties.className += ' force-open'
-    }
     return (
       <div {...properties}>
         {children}
-        {
-          this.props.enableFooter &&
-          <CreateUnknownParticipant saveCallback={this.onSuggestionSelected.bind(this)} />
-        }
       </div>
     )
   }
 
-  onAutocompleterFocus() {
-    this.setState({isAutocompleterFocused: true})
-  }
-
-  onAutocompleterBlur(e) {
-    const focusLeavingAutocompleter = !(
-      e.relatedTarget && e.relatedTarget.attributes['data-autosuggest']
-    )
-    if (focusLeavingAutocompleter) {
-      this.setState({isAutocompleterFocused: false})
-    }
-  }
-
+  /*eslint no-magic-numbers: ["error", { "ignore": [1] }]*/
   render() {
     const {value, suggestions} = this.state
+    if (this.props.footer && suggestions[suggestions.length - 1] !== this.props.footer) {
+      suggestions.push(this.props.footer)
+    }
     const inputProps = {
       id: this.props.id,
       value,
       onChange: this.onChange,
-      'aria-expanded': this.showWithoutSuggestions(this.state),
     }
     return (
-      <div
-        onFocus={this.onAutocompleterFocus}
-        onBlur={this.onAutocompleterBlur}
-      >
       <ReactAutosuggest
         suggestions={suggestions}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
@@ -178,15 +158,21 @@ export default class Autocompleter extends React.Component {
         inputProps={inputProps}
         renderSuggestionsContainer={this.renderSuggestionsContainer}
       />
-    </div>
     )
   }
 }
 
 Autocompleter.propTypes = {
-  enableFooter: PropTypes.bool,
+  footer: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.bool,
+  ]),
   id: PropTypes.string,
   onSelect: PropTypes.func,
-  shouldForceOpen: PropTypes.func,
 }
+
+Autocompleter.defaultProps = {
+  footer: false,
+}
+
 Autocompleter.displayName = 'Autocompleter'
