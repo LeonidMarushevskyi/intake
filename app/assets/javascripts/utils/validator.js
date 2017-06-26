@@ -19,18 +19,27 @@ const isNotInTheFuture = (value, errorMessage) => {
   }
 }
 
+const isBeforeOtherDate = (value, errorMessage, otherValue) => {
+  if (value && otherValue() && value >= otherValue()) {
+    return errorMessage
+  }
+  return undefined
+}
+
 const VALIDATORS = Immutable.fromJS({
   isRequired: isRequired,
   isNotInTheFuture: isNotInTheFuture,
+  isBeforeOtherDate: isBeforeOtherDate,
 })
 
 export function validateField({value, rules}) {
   const errorMessages = rules.map((ruleOptions) => {
     const ruleName = ruleOptions.get('rule')
     const errorMessage = ruleOptions.get('message')
+    const otherValue = ruleOptions.get('otherValue')
 
     const validation = VALIDATORS.get(ruleName)
-    return validation(value, errorMessage)
+    return validation(value, errorMessage, otherValue)
   })
   return errorMessages.filterNot((message) => message === undefined)
 }

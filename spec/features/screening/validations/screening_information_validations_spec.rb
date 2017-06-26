@@ -18,188 +18,24 @@ feature 'Screening Information Validations' do
       page.evaluate_script('window.location.reload()')
     end
 
-    scenario 'user sees an error message if social worker field left unfilled' do
-      error_message = 'Please enter an assigned worker.'
-      within '#screening-information-card.edit' do
-        page.find('.card-body').native.click
-        expect(page).not_to have_content(error_message)
-        js_simulate('focus', on: '#assignee')
-        expect(page).not_to have_content(error_message)
-        js_simulate('blur', on: '#assignee')
-        expect(page).to have_content(error_message)
-        fill_in 'Assigned Social Worker', with: 'My Name'
-        js_simulate('blur', on: '#assignee')
-        expect(page).not_to have_content(error_message)
-      end
-    end
+    context 'social worker field' do
+      let(:error_message) { 'Please enter an assigned worker.' }
 
-    scenario 'user sees an error message if communication method field left unfilled' do
-      within '#screening-information-card.edit' do
-        page.find('.card-body').native.click
-        expect(page).not_to have_content('Please select a communication method.')
-        js_simulate('focus', on: '#communication_method')
-        expect(page).not_to have_content('Please select a communication method.')
-        js_simulate('blur', on: '#communication_method')
-        expect(page).to have_content('Please select a communication method.')
-        js_simulate('focus', on: '#communication_method')
-        select 'Email', from: 'Communication Method'
-        js_simulate('blur', on: '#communication_method')
-        expect(page).not_to have_content('Please select a communication method.')
-      end
-    end
-
-    scenario 'user saves information card without a communication method and then select one' do
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content('Please select a communication method.')
-        click_button 'Save'
+      scenario 'displays errors if a user does not enter a social worker' do
+        within '#screening-information-card.edit' do
+          page.find('.card-body').native.click
+          expect(page).not_to have_content(error_message)
+          js_simulate('focus', on: '#assignee')
+          expect(page).not_to have_content(error_message)
+          js_simulate('blur', on: '#assignee')
+          expect(page).to have_content(error_message)
+          fill_in 'Assigned Social Worker', with: 'My Name'
+          js_simulate('blur', on: '#assignee')
+          expect(page).not_to have_content(error_message)
+        end
       end
 
-      within '#screening-information-card.show' do
-        expect(page).to have_content('Please select a communication method.')
-        click_link 'Edit'
-      end
-
-      screening.assign_attributes(communication_method: 'email')
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).to have_content('Please select a communication method.')
-        select 'Email', from: 'Communication Method'
-        js_simulate('blur', on: '#communication_method')
-        expect(page).not_to have_content('Please select a communication method.')
-        click_button 'Save'
-      end
-
-      within '#screening-information-card.show' do
-        expect(page).not_to have_content('Please select a communication method.')
-      end
-    end
-
-    scenario 'user saves information card without social worker and then adds one' do
-      error_message = 'Please enter an assigned worker.'
-
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content(error_message)
-        click_button 'Save'
-      end
-
-      within '#screening-information-card.show' do
-        expect(page).to have_content(error_message)
-        click_link 'Edit'
-      end
-
-      screening.assign_attributes(assignee: 'My Name')
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).to have_content('Please enter an assigned worker.')
-        fill_in 'Assigned Social Worker', with: 'My Name'
-        js_simulate('blur', on: '#assignee')
-        click_button 'Save'
-      end
-
-      within '#screening-information-card.show' do
-        expect(page).to_not have_content(error_message)
-      end
-    end
-
-    scenario 'user sees that the start date is required' do
-      error_message = 'Please enter a screening start date.'
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content(error_message)
-        page.find('#started_at').native.click
-        expect(page).not_to have_content(error_message)
-        page.find('#name').native.click
-        expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
-        page.find('#name').native.click
-        expect(page).not_to have_content(error_message)
-      end
-    end
-
-    scenario 'user sees that the start date cannot be in the future' do
-      error_message = 'The start date and time cannot be in the future.'
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: 20.years.from_now, blur: false
-        expect(page).not_to have_content(error_message)
-        page.find('#name').native.click
-        expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: 20.years.ago, blur: true
-        expect(page).not_to have_content(error_message)
-      end
-    end
-
-    scenario 'user sees that the end date cannot be in the future' do
-      error_message = 'The end date and time cannot be in the future.'
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content(error_message)
-        fill_in_datepicker 'Screening End Date/Time', with: 20.years.from_now, blur: false
-        expect(page).not_to have_content(error_message)
-        page.find('#name').native.click
-        expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago, blur: true
-        expect(page).not_to have_content(error_message)
-      end
-    end
-
-    scenario 'user saves information card without start date and then adds one' do
-      error_message = 'Please enter a screening start date.'
-
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).not_to have_content(error_message)
-        click_button 'Save'
-      end
-
-      within '#screening-information-card.show' do
-        expect(page).to have_content(error_message)
-        click_link 'Edit'
-      end
-
-      screening.assign_attributes(started_at: '2016-08-17T10:00:00.000Z')
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(json_body(as_json_without_root_id(screening)))
-        .and_return(json_body(screening.to_json))
-
-      within '#screening-information-card.edit' do
-        expect(page).to have_content(error_message)
-        fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
-        page.find('#name').click
-        click_button 'Save'
-      end
-
-      within '#screening-information-card.show' do
-        expect(page).to_not have_content(error_message)
-      end
-    end
-
-    context 'With a screening saved with invalid dates' do
-      let(:screening) do
-        FactoryGirl.create(:screening, started_at: 20.years.from_now, ended_at: 30.years.from_now)
-      end
-
-      scenario 'user saves information card with start date in the future and then fixes it' do
-        error_message = 'The start date and time cannot be in the future.'
-
+      scenario 'show card displays errors until user adds a social worker' do
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .with(json_body(as_json_without_root_id(screening)))
           .and_return(json_body(screening.to_json))
@@ -214,14 +50,15 @@ feature 'Screening Information Validations' do
           click_link 'Edit'
         end
 
-        valid_date = 20.years.ago
-        screening.assign_attributes(started_at: valid_date.iso8601)
+        screening.assign_attributes(assignee: 'My Name')
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(json_body(as_json_without_root_id(screening)))
           .and_return(json_body(screening.to_json))
 
         within '#screening-information-card.edit' do
           expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: valid_date
+          fill_in 'Assigned Social Worker', with: 'My Name'
+          js_simulate('blur', on: '#assignee')
           click_button 'Save'
         end
 
@@ -229,9 +66,160 @@ feature 'Screening Information Validations' do
           expect(page).to_not have_content(error_message)
         end
       end
+    end
 
-      scenario 'user saves information card with end date in the future and then fixes it' do
-        error_message = 'The end date and time cannot be in the future.'
+    context 'communication method field' do
+      let(:error_message) { 'Please select a communication method.' }
+
+      scenario 'displays errors if a user does not enter a communication method' do
+        within '#screening-information-card.edit' do
+          page.find('.card-body').native.click
+          expect(page).not_to have_content(error_message)
+          js_simulate('focus', on: '#communication_method')
+          expect(page).not_to have_content(error_message)
+          js_simulate('blur', on: '#communication_method')
+          expect(page).to have_content(error_message)
+          js_simulate('focus', on: '#communication_method')
+          select 'Email', from: 'Communication Method'
+          js_simulate('blur', on: '#communication_method')
+          expect(page).not_to have_content(error_message)
+        end
+      end
+
+      scenario 'show card displays errors until user adds a communication method' do
+        stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(json_body(as_json_without_root_id(screening)))
+          .and_return(json_body(screening.to_json))
+
+        within '#screening-information-card.edit' do
+          expect(page).not_to have_content(error_message)
+          click_button 'Save'
+        end
+
+        within '#screening-information-card.show' do
+          expect(page).to have_content(error_message)
+          click_link 'Edit'
+        end
+
+        screening.assign_attributes(communication_method: 'email')
+        stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(json_body(as_json_without_root_id(screening)))
+          .and_return(json_body(screening.to_json))
+
+        within '#screening-information-card.edit' do
+          expect(page).to have_content(error_message)
+          select 'Email', from: 'Communication Method'
+          js_simulate('blur', on: '#communication_method')
+          expect(page).not_to have_content(error_message)
+          click_button 'Save'
+        end
+
+        within '#screening-information-card.show' do
+          expect(page).not_to have_content(error_message)
+        end
+      end
+    end
+
+    context 'end date field' do
+      let(:error_message) { 'The end date and time cannot be in the future.' }
+
+      scenario 'displays an error if the date is in the future' do
+        within '#screening-information-card.edit' do
+          expect(page).not_to have_content(error_message)
+          fill_in_datepicker 'Screening End Date/Time', with: 20.years.from_now, blur: false
+          expect(page).not_to have_content(error_message)
+          page.find('#name').native.click
+          expect(page).to have_content(error_message)
+          fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago, blur: true
+          expect(page).not_to have_content(error_message)
+        end
+      end
+
+      context 'with a screening saved with end date in the future' do
+        let(:screening) do
+          FactoryGirl.create(:screening, ended_at: 30.years.from_now)
+        end
+
+        scenario 'show card shows errors until the date is in the future' do
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .with(json_body(as_json_without_root_id(screening)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).not_to have_content(error_message)
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to have_content(error_message)
+            click_link 'Edit'
+          end
+
+          valid_date = 20.years.ago
+          screening.assign_attributes(ended_at: valid_date.iso8601)
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).to have_content(error_message)
+            fill_in_datepicker 'Screening End Date/Time', with: valid_date
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to_not have_content(error_message)
+          end
+        end
+      end
+    end
+
+    context 'start date field' do
+      scenario 'displays an error if the user does not enter a start date' do
+        error_message = 'Please enter a screening start date.'
+
+        within '#screening-information-card.edit' do
+          expect(page).not_to have_content(error_message)
+          page.find('#started_at').native.click
+          expect(page).not_to have_content(error_message)
+          page.find('#name').native.click
+          expect(page).to have_content(error_message)
+          fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
+          page.find('#name').native.click
+          expect(page).not_to have_content(error_message)
+        end
+      end
+
+      scenario 'displays an error if the user enters a start date in the future' do
+        error_message = 'The start date and time cannot be in the future.'
+
+        within '#screening-information-card.edit' do
+          expect(page).not_to have_content(error_message)
+          fill_in_datepicker 'Screening Start Date/Time', with: 20.years.from_now, blur: false
+          expect(page).not_to have_content(error_message)
+          page.find('#name').native.click
+          expect(page).to have_content(error_message)
+          fill_in_datepicker 'Screening Start Date/Time', with: 20.years.ago, blur: true
+          expect(page).not_to have_content(error_message)
+        end
+      end
+
+      scenario 'displays an error if the user enters a start date that is after the end date' do
+        error_message = 'The start date and time must be before the end date and time.'
+
+        within '#screening-information-card.edit' do
+          fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago
+          expect(page).not_to have_content(error_message)
+          fill_in_datepicker 'Screening Start Date/Time', with: 10.years.ago, blur: false
+          expect(page).not_to have_content(error_message)
+          page.find('#name').native.click
+          expect(page).to have_content(error_message)
+          fill_in_datepicker 'Screening Start Date/Time', with: 30.years.ago, blur: true
+          expect(page).not_to have_content(error_message)
+        end
+      end
+
+      scenario 'show card displays errors until user enters a start date' do
+        error_message = 'Please enter a screening start date.'
 
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
           .with(json_body(as_json_without_root_id(screening)))
@@ -247,20 +235,98 @@ feature 'Screening Information Validations' do
           click_link 'Edit'
         end
 
-        valid_date = 20.years.ago
-        screening.assign_attributes(ended_at: valid_date)
+        screening.assign_attributes(started_at: '2016-08-17T10:00:00.000Z')
         stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(json_body(as_json_without_root_id(screening)))
           .and_return(json_body(screening.to_json))
 
         within '#screening-information-card.edit' do
           expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening End Date/Time', with: valid_date
+          fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
           page.find('#name').click
           click_button 'Save'
         end
 
         within '#screening-information-card.show' do
           expect(page).to_not have_content(error_message)
+        end
+      end
+
+      context 'with a screening saved with start date in the future' do
+        let(:screening) do
+          FactoryGirl.create(:screening, started_at: 20.years.from_now)
+        end
+
+        scenario 'show card shows errors until the date is in the past' do
+          error_message = 'The start date and time cannot be in the future.'
+
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .with(json_body(as_json_without_root_id(screening)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).not_to have_content(error_message)
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to have_content(error_message)
+            click_link 'Edit'
+          end
+
+          valid_date = 20.years.ago
+          screening.assign_attributes(started_at: valid_date.iso8601)
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).to have_content(error_message)
+            fill_in_datepicker 'Screening Start Date/Time', with: valid_date
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to_not have_content(error_message)
+          end
+        end
+      end
+
+      context 'With a screening saved with start dates after the end date' do
+        let(:screening) do
+          FactoryGirl.create(:screening, started_at: 10.years.ago, ended_at: 20.years.ago)
+        end
+
+        scenario 'show card shows errors until the start date is before the end date' do
+          error_message = 'The start date and time must be before the end date and time.'
+
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .with(json_body(as_json_without_root_id(screening)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).not_to have_content(error_message)
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to have_content(error_message)
+            click_link 'Edit'
+          end
+
+          valid_date = 30.years.ago
+          screening.assign_attributes(started_at: valid_date.iso8601)
+          stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+            .and_return(json_body(screening.to_json))
+
+          within '#screening-information-card.edit' do
+            expect(page).to have_content(error_message)
+            fill_in_datepicker 'Screening Start Date/Time', with: valid_date
+            click_button 'Save'
+          end
+
+          within '#screening-information-card.show' do
+            expect(page).to_not have_content(error_message)
+          end
         end
       end
     end
