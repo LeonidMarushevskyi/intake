@@ -5,7 +5,7 @@ const CreateUnknownParticipant = ({saveCallback}) => (
   <div className='col-md-12'>
     <button className='btn btn-default btn-block'
       aria-label='Create a new person'
-      onClick={(e) => saveCallback(e, {suggestion: {id: null}})}
+      onClick={() => saveCallback({id: null})}
       data-autosuggest='true'
     >
       <i className='fa fa-plus' /> Create a new person

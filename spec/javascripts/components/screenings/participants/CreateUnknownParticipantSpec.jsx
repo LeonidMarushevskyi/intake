@@ -7,7 +7,7 @@ describe('CreateUnknownParticipant', () => {
   let saveCallback
 
   beforeEach(() => {
-    saveCallback = jasmine.createSpy()
+    saveCallback = jasmine.createSpy('saveCallback')
     component = shallow(
       <CreateUnknownParticipant
         saveCallback={saveCallback}
@@ -22,6 +22,7 @@ describe('CreateUnknownParticipant', () => {
   it('calls saveCallback when the button is clicked', () => {
     const button = component.find('button')
     button.simulate('click')
-    expect(saveCallback).toHaveBeenCalledWith(undefined, {suggestion: {id: null}})
+    expect(saveCallback).toHaveBeenCalledWith({id: null})
+    expect(saveCallback.calls.count()).toEqual(1)
   })
 })
