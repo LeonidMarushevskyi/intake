@@ -9,6 +9,23 @@ feature 'Screening Information Validations' do
   let(:card_name) { 'screening-information' }
 
   # rubocop:disable Metrics/AbcSize
+  def validate_message_as_user_interacts_with_date_field(
+    error_message:,
+    field:,
+    invalid_value:,
+    valid_value:
+  )
+    within '#screening-information-card.edit' do
+      expect(page).not_to have_content(error_message)
+      fill_in_datepicker field, with: invalid_value, blur: false
+      expect(page).not_to have_content(error_message)
+      page.first('*').click
+      expect(page).to have_content(error_message)
+      fill_in_datepicker field, with: valid_value, blur: true
+      expect(page).not_to have_content(error_message)
+    end
+  end
+
   def validate_message_as_user_interacts_with_card(error_message:, screening_updates:)
     edit_view_should_not_have_error(card_name, error_message)
     stub_screening_put_request_with_anything(screening)
@@ -102,15 +119,12 @@ feature 'Screening Information Validations' do
       let(:error_message) { 'The end date and time cannot be in the future.' }
 
       scenario 'displays an error if the date is in the future' do
-        within '#screening-information-card.edit' do
-          expect(page).not_to have_content(error_message)
-          fill_in_datepicker 'Screening End Date/Time', with: 20.years.from_now, blur: false
-          expect(page).not_to have_content(error_message)
-          page.find('#name').native.click
-          expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago, blur: true
-          expect(page).not_to have_content(error_message)
-        end
+        validate_message_as_user_interacts_with_date_field(
+          field: 'Screening End Date/Time',
+          error_message: error_message,
+          invalid_value: 20.years.from_now,
+          valid_value: 20.years.ago
+        )
       end
 
       context 'with a screening saved with end date in the future' do
@@ -134,47 +148,21 @@ feature 'Screening Information Validations' do
 
     context 'start date field' do
       scenario 'displays an error if the user does not enter a start date' do
-        error_message = 'Please enter a screening start date.'
-
-        within '#screening-information-card.edit' do
-          expect(page).not_to have_content(error_message)
-          page.find('#started_at').native.click
-          expect(page).not_to have_content(error_message)
-          page.find('#name').native.click
-          expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
-          page.find('#name').native.click
-          expect(page).not_to have_content(error_message)
-        end
+        validate_message_as_user_interacts_with_date_field(
+          field: 'Screening Start Date/Time',
+          error_message: 'Please enter a screening start date.',
+          invalid_value: '',
+          valid_value: 20.years.ago
+        )
       end
 
       scenario 'displays an error if the user enters a start date in the future' do
-        error_message = 'The start date and time cannot be in the future.'
-
-        within '#screening-information-card.edit' do
-          expect(page).not_to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: 20.years.from_now, blur: false
-          expect(page).not_to have_content(error_message)
-          page.find('#name').native.click
-          expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: 20.years.ago, blur: true
-          expect(page).not_to have_content(error_message)
-        end
-      end
-
-      scenario 'displays an error if the user enters a start date that is after the end date' do
-        error_message = 'The start date and time must be before the end date and time.'
-
-        within '#screening-information-card.edit' do
-          fill_in_datepicker 'Screening End Date/Time', with: 20.years.ago
-          expect(page).not_to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: 10.years.ago, blur: false
-          expect(page).not_to have_content(error_message)
-          page.find('#name').native.click
-          expect(page).to have_content(error_message)
-          fill_in_datepicker 'Screening Start Date/Time', with: 30.years.ago, blur: true
-          expect(page).not_to have_content(error_message)
-        end
+        validate_message_as_user_interacts_with_date_field(
+          field: 'Screening Start Date/Time',
+          error_message: 'The start date and time cannot be in the future.',
+          invalid_value: 20.years.from_now,
+          valid_value: 20.years.ago
+        )
       end
 
       scenario 'show card displays errors until user enters a start date' do
@@ -185,6 +173,19 @@ feature 'Screening Information Validations' do
           within '#screening-information-card.edit' do
             fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
           end
+        end
+      end
+
+      context 'with a screening that also has an end date' do
+        let(:screening) { FactoryGirl.create :screening, ended_at: 10.years.ago }
+
+        scenario 'displays an error if the user enters a start date that is after the end date' do
+          validate_message_as_user_interacts_with_date_field(
+            field: 'Screening Start Date/Time',
+            error_message: 'The start date and time must be before the end date and time.',
+            invalid_value: 5.years.ago,
+            valid_value: 15.years.ago
+          )
         end
       end
 
