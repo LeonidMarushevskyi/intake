@@ -1,4 +1,3 @@
-import FieldLabel from 'components/common/FieldLabel'
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -13,7 +12,7 @@ const CheckboxField = ({id, value, checked, disabled, onChange, required}) => (
       aria-required={required}
       onChange={onChange}
     />
-    <FieldLabel required={required} id={id} label={value} />
+    <label className={required && 'required'} htmlFor={id}>{value}</label>
   </div>
 )
 

@@ -1,6 +1,4 @@
-import ClassNames from 'classnames'
-import ErrorMessages from 'components/common/ErrorMessages'
-import FieldLabel from 'components/common/FieldLabel'
+import FormField from 'components/common/FormField'
 import React from 'react'
 import PropTypes from 'prop-types'
 import DateTimePicker from 'react-widgets/lib/DateTimePicker'
@@ -60,10 +58,9 @@ const DateField = ({
   }
 
   return (
-    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-      <FieldLabel id={`${id}_input`} label={label} classes={[labelClassName]}
-        required={required} hasError={errors && !errors.isEmpty()}
-      />
+    <FormField id={`${id}_input`} label={label} gridClassName={gridClassName} labelClassName={labelClassName}
+      required={required} errors={errors}
+    >
       <DateTimePicker
         aria-required={required}
         calendar={hasCalendar}
@@ -78,8 +75,7 @@ const DateField = ({
         max={max}
         min={min}
       />
-      <ErrorMessages errors={errors}/>
-    </div>
+    </FormField>
   )
 }
 

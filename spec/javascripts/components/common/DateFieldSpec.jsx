@@ -7,7 +7,7 @@ import Immutable from 'immutable'
 describe('DateField', () => {
   let component
   let onChange
-  let fieldLabel
+  let formField
   const props = {
     gridClassName: 'myWrapperTest',
     id: 'myDateFieldId',
@@ -20,21 +20,19 @@ describe('DateField', () => {
     onChange = jasmine.createSpy('onChange')
     props.onChange = onChange
     component = mount(<DateField {...props}/>)
-    fieldLabel = component.find('FieldLabel')
+    formField = component.find('FormField')
   })
 
-  it('renders the wrapperClass', () => {
-    expect(component.html()).toContain('class="myWrapperTest"')
+  it('passes props to the FormField', () => {
+    expect(formField.props().labelClassName).toEqual('myLabelTest')
+    expect(formField.props().gridClassName).toEqual('myWrapperTest')
+    expect(formField.props().id).toEqual('myDateFieldId_input')
+    expect(formField.props().label).toEqual('this is my label')
+    expect(formField.find('DateTimePicker').exists()).toEqual(true)
   })
 
   it('renders the id', () => {
     expect(component.find('input').props().id).toEqual('myDateFieldId_input')
-    expect(fieldLabel.props().id).toEqual('myDateFieldId_input')
-  })
-
-  it('renders the label', () => {
-    expect(fieldLabel.props().label).toEqual('this is my label')
-    expect(fieldLabel.props().classes).toContain('myLabelTest')
   })
 
   it('renders the input element', () => {
@@ -59,9 +57,9 @@ describe('DateField', () => {
   })
 
   it('does not render a required date field', () => {
-    expect(fieldLabel.props().required).toBeFalsy()
-    expect(component.find('input').prop('required')).toBeFalsy()
-    expect(component.find('input').prop('aria-required')).toBeFalsy()
+    expect(formField.props().required).toEqual(undefined)
+    expect(component.find('input').prop('required')).toEqual(undefined)
+    expect(component.find('input').prop('aria-required')).toEqual(undefined)
   })
 
   it('can render properly without an onBlur prop', () => {
@@ -96,7 +94,7 @@ describe('DateField', () => {
   describe('when required', () => {
     it('renders a required date field', () => {
       component = shallow(<DateField {...props} required/>)
-      expect(component.find('FieldLabel').props().required).toEqual(true)
+      expect(component.find('FormField').props().required).toEqual(true)
       // Commented out two lines of required label checking in DateFieldSpec as
       //  the props are not passed all the way down to the input field by the
       //  DateTimePicker component. The broken functionality was not explicitly
@@ -124,11 +122,11 @@ describe('DateField', () => {
   })
 
   describe('when errors exist', () => {
-    it('sends the erorrs to the error component', () => {
+    it('sends the erorrs to FormField', () => {
       const errors = Immutable.List(['Error 1', 'Error 2'])
       component = shallow(<DateField {...props} errors={errors} />)
-      expect(component.find('ErrorMessages').props().errors).toEqual(errors)
-      expect(component.find('FieldLabel').props().hasError).toEqual(true)
+      expect(component.find('FormField').props().errors)
+        .toEqual(Immutable.List(['Error 1', 'Error 2']))
     })
   })
 
@@ -218,7 +216,7 @@ describe('DateField', () => {
       })
     })
 
-    describe('props going in', () => {
+    describe('when date datetime is passed', () => {
       it('passes dates from store', () => {
         component = mount(<DateField {...props} hasTime={false} value='1986-03-04' />)
         expect(component.find('Input').props().value).toEqual('03/04/1986')

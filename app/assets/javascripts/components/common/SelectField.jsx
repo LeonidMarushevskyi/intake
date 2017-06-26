@@ -1,24 +1,22 @@
-import ClassNames from 'classnames'
-import ErrorMessages from 'components/common/ErrorMessages'
-import FieldLabel from 'components/common/FieldLabel'
+import FormField from 'components/common/FormField'
 import PropTypes from 'prop-types'
 import React from 'react'
 
 const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, onBlur, children, required, errors}) => (
-  <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-    <FieldLabel id={id} label={label} classes={[labelClassName]}
-      hasError={errors && !errors.isEmpty()} required={required}
-    />
+  <FormField id={id} label={label} labelClassName={labelClassName} gridClassName={gridClassName}
+    errors={errors} required={required}
+  >
     <select id={id} value={value || ''} onChange={onChange} onBlur={onBlur}
       aria-required={required} required={required}
-    >{children}</select>
-    <ErrorMessages id={id} errors={errors}/>
-  </div>
+    >
+      {children}
+    </select>
+  </FormField>
 )
 
 SelectField.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.array,
+    PropTypes.arrayOf(PropTypes.node),
     PropTypes.object,
   ]).isRequired,
   errors: PropTypes.object,

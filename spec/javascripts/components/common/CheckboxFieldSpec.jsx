@@ -18,26 +18,26 @@ describe('CheckboxField', () => {
   describe('with no flags set', () => {
     it('renders the id', () => {
       expect(component.find('input').props().id).toEqual('myCheckboxFieldId')
-      expect(component.find('FieldLabel').props().id).toEqual('myCheckboxFieldId')
+      expect(component.find('label[htmlFor="myCheckboxFieldId"]').exists()).toEqual(true)
     })
 
     it('renders the value', () => {
       expect(component.find('input').props().value).toEqual('this-is-my-value')
-      expect(component.find('FieldLabel').props().label).toEqual('this-is-my-value')
+      expect(component.find('label').text()).toEqual('this-is-my-value')
     })
 
     it('renders with NO checked prop', () => {
-      expect(component.find('input').props().checked).toBeFalsy()
+      expect(component.find('input').props().checked).toEqual(undefined)
     })
 
     it('renders with NO disable prop', () => {
-      expect(component.find('input').props().disabled).toBeFalsy()
+      expect(component.find('input').props().disabled).toEqual(undefined)
     })
 
     it('renders with NO required prop', () => {
-      expect(component.find('FieldLabel').props().required).toBeFalsy()
-      expect(component.find('input').prop('required')).toBeFalsy()
-      expect(component.find('input').prop('aria-required')).toBeFalsy()
+      expect(component.find('label.required').exists()).toEqual(false)
+      expect(component.find('input').prop('required')).toEqual(undefined)
+      expect(component.find('input').prop('aria-required')).toEqual(undefined)
     })
   })
 
@@ -50,7 +50,7 @@ describe('CheckboxField', () => {
   describe('when flag props are set', () => {
     it('renders with required prop', () => {
       component = shallow(<CheckboxField {...props} required/>)
-      expect(component.find('FieldLabel').props().required).toEqual(true)
+      expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
     })
