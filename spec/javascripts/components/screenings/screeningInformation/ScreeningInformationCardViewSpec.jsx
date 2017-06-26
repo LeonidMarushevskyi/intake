@@ -113,6 +113,10 @@ describe('ScreeningInformationCardView', () => {
       component = mount(<ScreeningInformationCardView {...baseProps} mode='edit' />)
     })
 
+    it('does not have errors when all values are valid', () => {
+      expect(component.find('ScreeningInformationEditView').props().errors).toEqual(Immutable.Map())
+    })
+
     it('renders the edit card', () => {
       expect(component.find('ScreeningInformationEditView').length).toEqual(1)
     })
