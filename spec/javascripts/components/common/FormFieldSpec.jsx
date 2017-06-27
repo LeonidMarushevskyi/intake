@@ -6,8 +6,8 @@ import FormField from 'components/common/FormField'
 describe('FormField', () => {
   let component
 
-  describe('when no props are passed', () => {
-    it('renders a lebel with a div wrapper', () => {
+  describe('when only required props are passed', () => {
+    it('renders a label with a div wrapper', () => {
       const props = {
         children: <div>Italy</div>,
         label: 'L1',
@@ -22,14 +22,14 @@ describe('FormField', () => {
     const props = {
       children: <br/>,
       label: 'Do not judge a component by its label',
-      labelClassName: 'working-class object-oriendted-class',
+      labelClassName: 'working-class object-oriented-class',
       gridClassName: 'giggidy',
     }
 
     it('renders the label inside the grid wrapper with the classes', () => {
       component = shallow(<FormField {...props}/>)
       expect(component.find('div.giggidy').find('label').props()
-        .className).toEqual('working-class object-oriendted-class')
+        .className).toEqual('working-class object-oriented-class')
     })
   })
 
@@ -37,7 +37,7 @@ describe('FormField', () => {
     const props = {
       children: <h1>Child</h1>,
       label: 'Do not judge a component by its label',
-      labelClassName: 'working-class object-oriendted-class',
+      labelClassName: 'working-class object-oriented-class',
       gridClassName: 'giggidy',
     }
 
@@ -54,7 +54,7 @@ describe('FormField', () => {
     const props = {
       children: <br/>,
       label: 'Do not judge a component by its label',
-      gridClassName: 'working-class object-oriendted-class',
+      gridClassName: 'working-class object-oriented-class',
       labelClassName: 'trouble-maker',
       errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
     }
@@ -62,10 +62,10 @@ describe('FormField', () => {
     it('renders label and its wrapper with error classes', () => {
       component = shallow(<FormField {...props}/>)
       expect(component.find('label.trouble-maker.input-error-label').parent().props()
-        .className).toEqual('working-class object-oriendted-class input-error')
+        .className).toEqual('working-class object-oriented-class input-error')
     })
 
-    it('renders ErrorMessages and pass it errors', () => {
+    it('renders ErrorMessages and passes it errors', () => {
       component = shallow(<FormField {...props}/>)
       expect(component.find('ErrorMessages').props().errors)
         .toEqual(Immutable.List(['Please choose wisely.', 'Stick to the plan!']))
@@ -86,7 +86,7 @@ describe('FormField', () => {
     const props = {
       children: <br/>,
       label: 'Do not judge a component by its label',
-      gridClassName: 'working-class object-oriendted-class',
+      gridClassName: 'working-class object-oriented-class',
       labelClassName: 'trouble-maker',
     }
 

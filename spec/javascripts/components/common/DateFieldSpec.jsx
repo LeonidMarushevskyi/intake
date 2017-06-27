@@ -122,7 +122,7 @@ describe('DateField', () => {
   })
 
   describe('when errors exist', () => {
-    it('sends the erorrs to FormField', () => {
+    it('sends the errors to FormField', () => {
       const errors = Immutable.List(['Error 1', 'Error 2'])
       component = shallow(<DateField {...props} errors={errors} />)
       expect(component.find('FormField').props().errors)
@@ -216,7 +216,7 @@ describe('DateField', () => {
       })
     })
 
-    describe('when date datetime is passed', () => {
+    describe('when date is passed', () => {
       it('passes dates from store', () => {
         component = mount(<DateField {...props} hasTime={false} value='1986-03-04' />)
         expect(component.find('Input').props().value).toEqual('03/04/1986')

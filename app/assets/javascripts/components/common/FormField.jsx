@@ -4,9 +4,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const FormField = ({children, errors, gridClassName, labelClassName, id, label, required}) => {
-  const hasError = errors && !errors.isEmpty()
-  const gridClassNames = ClassNames(gridClassName, {'input-error': hasError})
-  const labelClassNames = ClassNames(labelClassName, {'input-error-label': hasError}, {required: required})
+  const hasErrors = errors && !errors.isEmpty()
+  const gridClassNames = ClassNames(gridClassName, {'input-error': hasErrors})
+  const labelClassNames =
+    ClassNames(labelClassName, {'input-error-label': hasErrors}, {required: required})
   return (
     <div className={gridClassNames}>
       <label htmlFor={id} className={labelClassNames}>
