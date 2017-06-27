@@ -8,7 +8,7 @@ feature 'Screening Information Validations' do
   let(:screening) { FactoryGirl.create(:screening) }
   let(:card_name) { 'screening-information' }
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def validate_message_as_user_interacts_with_date_field(
     error_message:,
     field:,
@@ -28,7 +28,7 @@ feature 'Screening Information Validations' do
 
   def validate_message_as_user_interacts_with_card(error_message:, screening_updates:)
     should_not_have_content error_message, inside: "##{card_name}-card.edit"
-    stub_screening_put_request_with_anything(screening)
+    stub_screening_put_request_with_anything_and_return screening
     save_card(card_name)
 
     should_have_content error_message, inside: "##{card_name}-card.show"
@@ -38,7 +38,10 @@ feature 'Screening Information Validations' do
 
     yield # make field valid to clear errors
 
-    stub_screening_put_request_with_anything(screening, with_updated_attributes: screening_updates)
+    stub_screening_put_request_with_anything_and_return(
+      screening,
+      with_updated_attributes: screening_updates
+    )
     save_card(card_name)
     should_not_have_content error_message, inside: "##{card_name}-card.show"
   end
