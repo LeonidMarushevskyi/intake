@@ -68,7 +68,6 @@ feature 'Screening Information Validations' do
           blur_field
           expect(page).to have_content(error_message)
           fill_in 'Assigned Social Worker', with: 'My Name'
-          blur_field
           expect(page).not_to have_content(error_message)
         end
       end
@@ -80,7 +79,6 @@ feature 'Screening Information Validations' do
         ) do
           within '#screening-information-card.edit' do
             fill_in 'Assigned Social Worker', with: 'My Name'
-            blur_field
           end
         end
       end
@@ -97,7 +95,6 @@ feature 'Screening Information Validations' do
           blur_field
           expect(page).to have_content(error_message)
           select 'Email', from: 'Communication Method'
-          blur_field
           expect(page).not_to have_content(error_message)
         end
       end
@@ -109,7 +106,6 @@ feature 'Screening Information Validations' do
         ) do
           within '#screening-information-card.edit' do
             select 'Email', from: 'Communication Method'
-            blur_field
           end
         end
       end
@@ -123,7 +119,7 @@ feature 'Screening Information Validations' do
           field: 'Screening End Date/Time',
           error_message: error_message,
           invalid_value: 20.years.from_now,
-          valid_value: 20.years.ago
+          valid_value: Time.now
         )
       end
 
@@ -131,15 +127,14 @@ feature 'Screening Information Validations' do
         let(:screening) do
           FactoryGirl.create(:screening, ended_at: 30.years.from_now)
         end
-        let(:valid_date) { 20.years.ago.iso8601 }
 
-        scenario 'show card shows errors until the date is in the future' do
+        scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
             error_message: error_message,
-            screening_updates: { ended_at: valid_date }
+            screening_updates: { ended_at: Time.now.iso8601 }
           ) do
-            within '#screening-information-card.edit' do
-              fill_in_datepicker 'Screening End Date/Time', with: valid_date
+            within '#ended_at' do
+              mouse_select_today
             end
           end
         end
@@ -168,10 +163,10 @@ feature 'Screening Information Validations' do
       scenario 'show card displays errors until user enters a start date' do
         validate_message_as_user_interacts_with_card(
           error_message: 'Please enter a screening start date.',
-          screening_updates: { communication_method: 'email' }
+          screening_updates: { started_at: Time.now.iso8601 }
         ) do
-          within '#screening-information-card.edit' do
-            fill_in_datepicker 'Screening Start Date/Time', with: '08/17/2016 3:00 AM'
+          within '#started_at' do
+            mouse_select_today
           end
         end
       end
@@ -194,14 +189,13 @@ feature 'Screening Information Validations' do
           FactoryGirl.create(:screening, started_at: 20.years.from_now)
         end
 
-        scenario 'show card shows errors until the date is in the past' do
-          valid_date = 20.years.ago
+        scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
             error_message: 'The start date and time cannot be in the future.',
-            screening_updates: { started_at: valid_date.iso8601 }
+            screening_updates: { started_at: Time.now.iso8601 }
           ) do
-            within '#screening-information-card.edit' do
-              fill_in_datepicker 'Screening Start Date/Time', with: valid_date
+            within '#started_at' do
+              mouse_select_today
             end
           end
         end
