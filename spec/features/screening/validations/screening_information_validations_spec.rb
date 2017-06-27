@@ -19,7 +19,7 @@ feature 'Screening Information Validations' do
       expect(page).not_to have_content(error_message)
       fill_in_datepicker field, with: invalid_value, blur: false
       expect(page).not_to have_content(error_message)
-      page.first('*').click
+      blur_field
       expect(page).to have_content(error_message)
       fill_in_datepicker field, with: valid_value, blur: true
       expect(page).not_to have_content(error_message)
@@ -59,14 +59,13 @@ feature 'Screening Information Validations' do
 
       scenario 'displays errors if a user does not enter a social worker' do
         within '#screening-information-card.edit' do
-          page.find('.card-body').native.click
           expect(page).not_to have_content(error_message)
-          js_simulate('focus', on: '#assignee')
+          fill_in 'Assigned Social Worker', with: ''
           expect(page).not_to have_content(error_message)
-          js_simulate('blur', on: '#assignee')
+          blur_field
           expect(page).to have_content(error_message)
           fill_in 'Assigned Social Worker', with: 'My Name'
-          js_simulate('blur', on: '#assignee')
+          blur_field
           expect(page).not_to have_content(error_message)
         end
       end
@@ -78,7 +77,7 @@ feature 'Screening Information Validations' do
         ) do
           within '#screening-information-card.edit' do
             fill_in 'Assigned Social Worker', with: 'My Name'
-            page.first('*').click
+            blur_field
           end
         end
       end
@@ -89,15 +88,13 @@ feature 'Screening Information Validations' do
 
       scenario 'displays errors if a user does not enter a communication method' do
         within '#screening-information-card.edit' do
-          page.find('.card-body').native.click
           expect(page).not_to have_content(error_message)
-          js_simulate('focus', on: '#communication_method')
+          select '', from: 'Communication Method'
           expect(page).not_to have_content(error_message)
-          js_simulate('blur', on: '#communication_method')
+          blur_field
           expect(page).to have_content(error_message)
-          js_simulate('focus', on: '#communication_method')
           select 'Email', from: 'Communication Method'
-          js_simulate('blur', on: '#communication_method')
+          blur_field
           expect(page).not_to have_content(error_message)
         end
       end
@@ -109,7 +106,7 @@ feature 'Screening Information Validations' do
         ) do
           within '#screening-information-card.edit' do
             select 'Email', from: 'Communication Method'
-            page.first('*').click
+            blur_field
           end
         end
       end

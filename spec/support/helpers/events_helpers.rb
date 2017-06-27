@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module EventsHelpers
-  def js_simulate(event, on:)
-    execute_script("$('#{on}').trigger('#{event}')")
+   def focused_native_element
+    evaluate_script('document.activeElement')
   end
 
-  def focused_native_element
-    evaluate_script('document.activeElement')
+  def blur_field
+    page.first('*').click
   end
 end
 
