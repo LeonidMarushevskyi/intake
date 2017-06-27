@@ -6,38 +6,33 @@ import Immutable from 'immutable'
 
 describe('DateField', () => {
   let component
-  let props
   let onChange
+  let formField
+  const props = {
+    gridClassName: 'myWrapperTest',
+    id: 'myDateFieldId',
+    label: 'this is my label',
+    labelClassName: 'myLabelTest',
+    value: '05/05/2017 3:45 PM',
+  }
+
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
-    props = {
-      gridClassName: 'myWrapperTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      labelClassName: 'myLabelTest',
-      onChange: onChange,
-      value: '05/05/2017 3:45 PM',
-    }
-    component = mount(
-      <DateField {...props}/>
-    )
+    props.onChange = onChange
+    component = mount(<DateField {...props}/>)
+    formField = component.find('FormField')
   })
 
-  it('renders the wrapperClass', () => {
-    expect(component.html()).toContain('class="myWrapperTest"')
+  it('passes props to the FormField', () => {
+    expect(formField.props().labelClassName).toEqual('myLabelTest')
+    expect(formField.props().gridClassName).toEqual('myWrapperTest')
+    expect(formField.props().id).toEqual('myDateFieldId_input')
+    expect(formField.props().label).toEqual('this is my label')
+    expect(formField.find('DateTimePicker').exists()).toEqual(true)
   })
 
   it('renders the id', () => {
     expect(component.find('input').props().id).toEqual('myDateFieldId_input')
-    expect(component.find('label').props().htmlFor).toEqual('myDateFieldId_input')
-  })
-
-  it('renders the label', () => {
-    const labelElement = component.find('label')
-    expect(labelElement.length).toEqual(1)
-    expect(labelElement.html()).toContain('for="myDateFieldId_input"')
-    expect(labelElement.html()).toContain('class="myLabelTest')
-    expect(labelElement.text()).toEqual('this is my label')
   })
 
   it('renders the input element', () => {
@@ -62,10 +57,9 @@ describe('DateField', () => {
   })
 
   it('does not render a required date field', () => {
-    expect(component.find('label.required').exists()).toEqual(false)
-    expect(component.find('label').not('.required').exists()).toEqual(true)
-    expect(component.find('input').prop('required')).toBeFalsy()
-    expect(component.find('input').prop('aria-required')).toBeFalsy()
+    expect(formField.props().required).toEqual(undefined)
+    expect(component.find('input').prop('required')).toEqual(undefined)
+    expect(component.find('input').prop('aria-required')).toEqual(undefined)
   })
 
   it('can render properly without an onBlur prop', () => {
@@ -79,7 +73,8 @@ describe('DateField', () => {
 
     beforeEach(() => {
       onBlur = jasmine.createSpy('onBlur')
-      component = mount(<DateField {...props} onBlur={onBlur} />)
+      props.onBlur = onBlur
+      component = mount(<DateField {...props}/>)
     })
 
     it('calls the passed function with a value', () => {
@@ -97,12 +92,9 @@ describe('DateField', () => {
   })
 
   describe('when required', () => {
-    beforeEach(() => {
-      component = shallow(<DateField {...props} onChange={onChange} required={true} />)
-    })
     it('renders a required date field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
+      component = shallow(<DateField {...props} required/>)
+      expect(component.find('FormField').props().required).toEqual(true)
       // Commented out two lines of required label checking in DateFieldSpec as
       //  the props are not passed all the way down to the input field by the
       //  DateTimePicker component. The broken functionality was not explicitly
@@ -130,22 +122,20 @@ describe('DateField', () => {
   })
 
   describe('when errors exist', () => {
-    it('sends the erorrs to the error component', () => {
+    it('sends the errors to FormField', () => {
       const errors = Immutable.List(['Error 1', 'Error 2'])
       component = shallow(<DateField {...props} errors={errors} />)
-      expect(component.find('ErrorMessages').props().errors).toEqual(errors)
+      expect(component.find('FormField').props().errors)
+        .toEqual(Immutable.List(['Error 1', 'Error 2']))
     })
   })
 
   describe('with valid user inputs', () => {
     beforeEach(() => {
-      props = {
-        onChange: onChange,
-        value: '2017-05-15T16:00:00.000Z',
-      }
+      props.value = '2017-05-15T16:00:00.000Z'
     })
 
-    it('displays with the exepcted format', () => {
+    it('displays with the expected format', () => {
       component = mount(
         <DateField {...props}/>
       )
@@ -226,7 +216,7 @@ describe('DateField', () => {
       })
     })
 
-    describe('props going in', () => {
+    describe('when date is passed', () => {
       it('passes dates from store', () => {
         component = mount(<DateField {...props} hasTime={false} value='1986-03-04' />)
         expect(component.find('Input').props().value).toEqual('03/04/1986')

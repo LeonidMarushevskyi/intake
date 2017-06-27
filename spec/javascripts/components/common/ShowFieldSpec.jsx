@@ -5,6 +5,7 @@ import Immutable from 'immutable'
 
 describe('ShowField', () => {
   let component
+  let formField
 
   const requiredProps = {
     gridClassName: 'myWrapperTest',
@@ -12,75 +13,36 @@ describe('ShowField', () => {
     label: 'this is my label',
   }
 
-  describe('without required flag or errors', () => {
-    beforeEach(() => {
-      component = shallow(
-        <ShowField {...requiredProps}>This is the show field value</ShowField>
-      )
-    })
-
-    it('renders the wrapperClass', () => {
-      expect(component.html()).toContain('class="myWrapperTest"')
-    })
-
-    it('renders the label', () => {
-      const labelElement = component.find('label')
-      expect(labelElement.length).toEqual(1)
-      expect(component.find('label.myLabelTest').not('.required').exists()).toEqual(true)
-      expect(labelElement.text()).toEqual('this is my label')
-    })
-
-    it('renders the show field value', () => {
-      const valueElement = component.find('div[className="c-gray"]')
-      expect(valueElement.length).toEqual(1)
-      expect(valueElement.text()).toEqual('This is the show field value')
-    })
-
-    it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
-    })
-
-    it('renders ErrorMessages but with no errors', () => {
-      expect(component.find('ErrorMessages').exists()).toEqual(true)
-      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
-    })
+  beforeEach(() => {
+    component = shallow(
+      <ShowField {...requiredProps}>This is the show field value</ShowField>
+    )
+    formField = component.find('FormField')
   })
 
-  describe('when field is required', () => {
-    beforeEach(() => {
-      const props = {
-        ...requiredProps,
-        required: true,
-      }
-      component = shallow(
-        <ShowField {...props}>This is the show field value</ShowField>
-      )
-    })
-
-    it('renders the label as required', () => {
-      expect(component.find('label.required.myLabelTest').exists()).toEqual(true)
-    })
+  it('passes props to the FormField', () => {
+    expect(formField.props().labelClassName).toEqual('myLabelTest')
+    expect(formField.props().gridClassName).toEqual('myWrapperTest')
+    expect(formField.props().label).toEqual('this is my label')
+    expect(formField.childAt(0).node.type).toEqual('div')
   })
 
-  describe('when ShowField has errors', () => {
-    beforeEach(() => {
-      const props = {
-        ...requiredProps,
-        errors: Immutable.List(['Error 1', 'Error 2']),
-      }
-      component = shallow(
-        <ShowField {...props}>This is the show field value</ShowField>
-      )
-    })
+  it('renders the show field value', () => {
+    expect(component.find('div.c-gray').text()).toEqual('This is the show field value')
+  })
+})
 
-    it('renders the label as an error label', () => {
-      expect(component.find('.input-error-label').length).toEqual(1)
-    })
-
-    it('renders ErrorMessages and pass it errors', () => {
-      expect(component.find('ErrorMessages').exists()).toEqual(true)
-      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List(['Error 1', 'Error 2']))
-    })
+describe('when field is required and has errors', () => {
+  it('renders the label as required', () => {
+    const props = {
+      label: 'this is my label',
+      required: true,
+      errors: Immutable.List(['Error 1', 'Error 2']),
+    }
+    const component = shallow(<ShowField {...props} >show field value</ShowField>)
+    const formField = component.find('FormField')
+    expect(formField.props().required).toEqual(true)
+    expect(formField.props().errors).toEqual(Immutable.List(['Error 1', 'Error 2']))
   })
 })
 

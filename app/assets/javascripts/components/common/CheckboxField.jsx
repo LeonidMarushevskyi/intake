@@ -12,7 +12,7 @@ const CheckboxField = ({id, value, checked, disabled, onChange, required}) => (
       aria-required={required}
       onChange={onChange}
     />
-    <label className={required ? 'required' : ''} htmlFor={id}>{value}</label>
+    <label className={required && 'required'} htmlFor={id}>{value}</label>
   </div>
 )
 

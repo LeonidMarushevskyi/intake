@@ -1,5 +1,4 @@
-import ClassNames from 'classnames'
-import ErrorMessages from 'components/common/ErrorMessages'
+import FormField from 'components/common/FormField'
 import MaskedInput from 'react-maskedinput'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -22,6 +21,15 @@ const InputField = ({
   type,
   value,
 }) => {
+  const formFieldProps = {
+    errors: errors,
+    gridClassName: gridClassName,
+    id: id,
+    label: label,
+    labelClassName: labelClassName,
+    required: required,
+  }
+
   let input =
     <input id={id} type={type} placeholder={placeholder}
       value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
@@ -44,17 +52,9 @@ const InputField = ({
   }
 
   return (
-    <div className={ClassNames(gridClassName, {'input-error': (errors && !errors.isEmpty())})}>
-      <label className={
-        ClassNames(labelClassName,
-          {required: required},
-          {'input-error-label': (errors && !errors.isEmpty())}
-        )
-      } htmlFor={id}
-      >{label}</label>
+    <FormField {...formFieldProps}>
       {input}
-      <ErrorMessages id={id} errors={errors}/>
-    </div>
+    </FormField>
   )
 }
 

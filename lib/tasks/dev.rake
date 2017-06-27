@@ -1,26 +1,33 @@
 # frozen_string_literal: true
 
+def run_commands(commands)
+  commands.each { |command| system(command) }
+end
+
 namespace :docker do
   desc 'Runs docker-compose down, up, and all migrations'
   task :reup do
-    steps = [
+    run_commands [
       'docker-compose down',
       'docker-compose up -d',
       'docker-compose exec api bundle exec rake db:migrate',
       'docker-compose exec api bundle exec rake db:test:prepare',
       'docker-compose exec api bundle exec rake search:migrate'
     ]
-    steps.each { |step| system(step) }
   end
-
   desc 'Cleans docker of old dangling containers & images'
   task :clean do
-    steps = [
+    run_commands [
       'docker rm $(docker ps -q -f status=exited)',
       'docker rmi $(docker images -q -f dangling=true)',
       'docker volume rm $(docker volume ls -qf dangling=true)'
     ]
-    steps.each { |step| system(step) }
+  end
+  namespace :machine do
+    desc 'Restarts and activates intake docker-machine'
+    task :restart do
+      system 'docker-machine restart intake && eval $(docker-machine env intake)'
+    end
   end
 end
 

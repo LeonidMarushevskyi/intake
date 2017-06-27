@@ -1,10 +1,10 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {mount, shallow} from 'enzyme'
 import InputField from 'components/common/InputField'
 
 describe('InputField', () => {
   let component
+  let formField
   const onChange = jasmine.createSpy('onChange')
   const onBlur = jasmine.createSpy('onBlur')
   const props = {
@@ -19,22 +19,15 @@ describe('InputField', () => {
   }
   beforeEach(() => {
     component = shallow(<InputField {...props}/>)
+    formField = component.find('FormField')
   })
 
-  it('renders the wrapperClass', () => {
-    expect(component.html()).toContain('class="myWrapperTest"')
-  })
-
-  it('renders the id', () => {
-    expect(component.find('input').props().id).toEqual('myInputFieldId')
-    expect(component.find('label').props().htmlFor).toEqual('myInputFieldId')
-  })
-
-  it('renders the label', () => {
-    const labelElement = component.find('label')
-    expect(labelElement.length).toEqual(1)
-    expect(labelElement.html()).toContain('<label class="myLabelTest"')
-    expect(labelElement.text()).toEqual('this is my label')
+  it('passes props to the FormField', () => {
+    expect(formField.props().labelClassName).toEqual('myLabelTest')
+    expect(formField.props().gridClassName).toEqual('myWrapperTest')
+    expect(formField.props().id).toEqual('myInputFieldId')
+    expect(formField.props().label).toEqual('this is my label')
+    expect(formField.childAt(0).node.type).toEqual('input')
   })
 
   it('renders the input placeholder', () => {
@@ -160,7 +153,7 @@ describe('InputField', () => {
     })
     it('renders an input field', () => {
       expect(component.find('label.required').exists()).toEqual(false)
-      expect(component.find('label').not('.required').exists()).toEqual(true)
+      expect(component.find('FormField').props().required).toEqual(undefined)
     })
   })
 
@@ -178,8 +171,7 @@ describe('InputField', () => {
       component = shallow(<InputField {...props}/>)
     })
     it('renders a required input field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('FormField').props().required).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
     })
@@ -200,80 +192,10 @@ describe('InputField', () => {
       component = shallow(<InputField {...propsWithMaskedInput}/>)
     })
     it('renders a required MaskedInput field', () => {
-      expect(component.find('label.required').exists()).toEqual(true)
-      expect(component.find('label').not('.required').exists()).toEqual(false)
+      expect(component.find('FormField').props().required).toEqual(true)
       expect(component.find('MaskedInput').prop('required')).toEqual(true)
       expect(component.find('MaskedInput').prop('aria-required')).toEqual(true)
       expect(component.find('MaskedInput').props().mask).toEqual('111-11-1111')
-    })
-  })
-
-  describe('when no errors passed', () => {
-    it('does not display any errors', () => {
-      expect(component.find('.input-error').length).toEqual(0)
-    })
-
-    it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
-    })
-
-    it('renders ErrorMessages but with no errors', () => {
-      expect(component.find('ErrorMessages').exists()).toEqual(true)
-      expect(component.find('ErrorMessages').props().errors).toEqual(undefined)
-    })
-  })
-
-  describe('when an empty list is passed for errors', () => {
-    const propsWithEmptyErrors = {
-      ...props,
-      errors: Immutable.List(),
-    }
-
-    beforeEach(() => {
-      component = shallow(<InputField {...propsWithEmptyErrors}/>)
-    })
-
-    it('does not display any errors', () => {
-      expect(component.find('.input-error').length).toEqual(0)
-    })
-
-    it('does not render the label as if it has an error', () => {
-      expect(component.find('.input-error-label').length).toEqual(0)
-    })
-
-    it('renders ErrorMessages and pass it an empty list of errors', () => {
-      expect(component.find('ErrorMessages').exists()).toEqual(true)
-      expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.List())
-    })
-  })
-
-  describe('when errors are passed', () => {
-    const propsWithErrorMessages = {
-      errors: Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']),
-      fieldKey: 'inputFieldName',
-      gridClassName: 'myWrapperTest',
-      id: 'myInputFieldId',
-      label: 'this is my label',
-      labelClassName: 'myLabelTest',
-      onChange: onChange,
-      validationRules: {inputFieldName: 'required'},
-    }
-    beforeEach(() => {
-      component = shallow(<InputField {...propsWithErrorMessages}/>)
-    })
-
-    it('adds an error class to the input wrapper', () => {
-      expect(component.find('.input-error').length).toEqual(1)
-    })
-
-    it('displays an error styled label', () => {
-      expect(component.find('.input-error-label').length).toEqual(1)
-    })
-
-    it('displays error messages', () => {
-      expect(component.find('ErrorMessages').exists()).toEqual(true)
-      expect(component.find('ErrorMessages').props().errors)
-        .toEqual(Immutable.List(['Please enter an assigned worker.', 'You have failed this city!']))
     })
   })
 })
