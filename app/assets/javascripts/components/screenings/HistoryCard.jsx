@@ -1,8 +1,9 @@
+import * as IntakeConfig from 'config'
+import HistoryCardCase from 'components/screenings/HistoryCardCase'
+import HistoryCardReferral from 'components/screenings/HistoryCardReferral'
+import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
 import PropTypes from 'prop-types'
 import React from 'react'
-import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
-import HistoryCardReferral from 'components/screenings/HistoryCardReferral'
-import HistoryCardCase from 'components/screenings/HistoryCardCase'
 import clipboard from 'clipboard-js'
 
 export default class HistoryCard extends React.Component {
@@ -60,7 +61,7 @@ export default class HistoryCard extends React.Component {
                       </tr>
                     </thead>
                     <tbody id='history-of-involvement'>
-                      {screenings && screenings.map((screening, screeningIndex) =>
+                      {IntakeConfig.isFeatureInactive('release_two') && screenings && screenings.map((screening, screeningIndex) =>
                         <HistoryCardScreening screening={screening} index={screeningIndex} key={`screening-${screeningIndex}`} />
                       )}
                       {referrals && referrals.map((referral, referralIndex) =>
