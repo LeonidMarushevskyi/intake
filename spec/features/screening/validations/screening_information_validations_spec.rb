@@ -27,20 +27,20 @@ feature 'Screening Information Validations' do
   end
 
   def validate_message_as_user_interacts_with_card(error_message:, screening_updates:)
-    edit_view_should_not_have_error(card_name, error_message)
+    should_not_have_content error_message, inside: "##{card_name}-card.edit"
     stub_screening_put_request_with_anything(screening)
     save_card(card_name)
 
-    show_view_should_have_error(card_name, error_message)
+    should_have_content error_message, inside: "##{card_name}-card.show"
     edit_card(card_name)
 
-    edit_view_should_have_error(card_name, error_message)
+    should_have_content error_message, inside: "##{card_name}-card.edit"
 
     yield # make field valid to clear errors
 
     stub_screening_put_request_with_anything(screening, with_updated_attributes: screening_updates)
     save_card(card_name)
-    show_view_should_not_have_error(card_name, error_message)
+    should_not_have_content error_message, inside: "##{card_name}-card.show"
   end
 
   context 'On the edit page' do
@@ -225,6 +225,7 @@ feature 'Screening Information Validations' do
   end
 
   context 'On the show page' do
+    let(:show_card) { "##{card_name}-card.show" }
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
@@ -233,10 +234,9 @@ feature 'Screening Information Validations' do
     end
 
     scenario 'user sees error messages for required fields page load' do
-      card_name = 'screening-information'
-      show_view_should_have_error(card_name, 'Please enter an assigned worker.')
-      show_view_should_have_error(card_name, 'Please select a communication method.')
-      show_view_should_have_error(card_name, 'Please enter a screening start date.')
+      should_have_content 'Please enter an assigned worker.', inside: show_card
+      should_have_content 'Please select a communication method.', inside: show_card
+      should_have_content 'Please enter a screening start date.', inside: show_card
     end
 
     context 'for a screening that has a saved dates in the future' do
@@ -245,9 +245,8 @@ feature 'Screening Information Validations' do
       end
 
       scenario 'user sees error messages for required fields page load' do
-        card_name = 'screening-information'
-        show_view_should_have_error(card_name, 'The start date and time cannot be in the future.')
-        show_view_should_have_error(card_name, 'The end date and time cannot be in the future.')
+        should_have_content 'The start date and time cannot be in the future.', inside: show_card
+        should_have_content 'The end date and time cannot be in the future.', inside: show_card
       end
     end
 
@@ -257,10 +256,9 @@ feature 'Screening Information Validations' do
       end
 
       scenario 'user sees error messages for required fields page load' do
-        card_name = 'screening-information'
-        show_view_should_have_error(
-          card_name,
-          'The start date and time must be before the end date and time.'
+        should_have_content(
+          'The start date and time must be before the end date and time.',
+          inside: show_card
         )
       end
     end

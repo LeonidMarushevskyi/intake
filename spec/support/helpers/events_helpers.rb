@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EventsHelpers
-   def focused_native_element
+  def focused_native_element
     evaluate_script('document.activeElement')
   end
 
