@@ -48,7 +48,7 @@ services:
       service: db
   elasticsearch:
     extends:
-      file: ../intake_api_prototype/docker-compose.common.yml
+      file: ../intake_api_prototype/docker-compose.yml
       service: elasticsearch
   redis:
     image: 'redis:3.0'
