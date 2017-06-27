@@ -1,4 +1,6 @@
 version: '2'
+# 6/23/2017 - version 3.x does not support extends yet.
+# - https://docs.docker.com/compose/extends/#extending-services
 services:
   ca_intake:
     build: .
@@ -45,7 +47,9 @@ services:
       file: ../intake_api_prototype/docker-compose.common.yml
       service: db
   elasticsearch:
-    image: 'elasticsearch:2.4'
+    extends:
+      file: ../intake_api_prototype/docker-compose.common.yml
+      service: elasticsearch
   redis:
     image: 'redis:3.0'
     ports:
