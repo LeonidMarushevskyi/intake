@@ -9,7 +9,7 @@ export default class ScreeningInformationCardView extends React.Component {
   constructor(props) {
     super(props)
 
-    this.onBlur = this.onBlur.bind(this)
+    this.validate = this.validate.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onCancel = this.onCancel.bind(this)
@@ -73,7 +73,7 @@ export default class ScreeningInformationCardView extends React.Component {
     })
   }
 
-  onBlur(fieldName, value) {
+  validate(fieldName, value) {
     const rules = this.fieldValidations.get(fieldName)
     const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
     this.setState({errors: errors})
@@ -90,7 +90,7 @@ export default class ScreeningInformationCardView extends React.Component {
     const allprops = {
       edit: {
         errors: errors,
-        onBlur: this.onBlur,
+        validate: this.validate,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
