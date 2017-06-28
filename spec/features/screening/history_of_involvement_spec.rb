@@ -223,7 +223,7 @@ feature 'History card' do
         'document.getElementById("spec_meta").appendChild(label)'
       ].join(';')
       page.execute_script js
-      find('#spec_meta').native.send_keys [:control, 'v']
+      find('#spec_meta').send_keys [:control, 'v']
       expect(find('#spec_meta').value).to eq(first('#history-card table')[:innerText])
     end
 
