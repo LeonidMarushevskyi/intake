@@ -60,6 +60,15 @@ describe('ScreeningPage when release two is active', () => {
       expect(component.find('ScreeningInformationCardView').length).toEqual(0)
     })
 
+    it('does render a start over button', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      const button = component.find('button')
+      expect(button.length).toEqual(1)
+      expect(button.text()).toEqual('Start Over')
+      expect(button.props().href).toEqual('/')
+    })
+
     describe('participants card', () => {
       let component
       beforeEach(() => {

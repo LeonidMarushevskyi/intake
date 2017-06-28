@@ -329,6 +329,16 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
           }
+          {
+            releaseTwo &&
+            <div className='row double-gap-top'>
+              <div className='centered'>
+                <a href='/' >
+                  <button className='btn btn-primary' href='/' type='button'>Start Over</button>
+                </a>
+              </div>
+            </div>
+          }
           { this.mode === 'show' && this.renderFooterLinks() }
         </div>
       )

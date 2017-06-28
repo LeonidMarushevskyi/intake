@@ -193,6 +193,10 @@ feature 'Edit Screening' do
       expect(page).to_not have_css('.card', text: 'Worker Safety')
       expect(page).to_not have_css('.card', text: 'Cross Report')
       expect(page).to_not have_css('.card', text: 'Decision')
+
+      expect(page).to have_content 'Start Over'
+      click_button 'Start Over'
+      expect(page.current_url).to have_content(root_path)
     end
   end
 end
