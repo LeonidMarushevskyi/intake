@@ -4,6 +4,7 @@ import Genders from 'Genders'
 import NAME_SUFFIXES from 'NameSuffixes'
 import Immutable from 'immutable'
 import InputField from 'components/common/InputField'
+import MaskedInputField from 'components/common/MaskedInputField'
 import LANGUAGES from 'Languages'
 import PhoneNumbersEditView from 'components/people/PhoneNumbersEditView'
 import PropTypes from 'prop-types'
@@ -139,7 +140,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             </div>
           </div>
         <div className='row'>
-          <InputField
+          <MaskedInputField
             gridClassName='col-md-6'
             id={`participant-${participant.get('id')}-ssn`}
             label='Social security number'

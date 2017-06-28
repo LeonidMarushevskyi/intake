@@ -118,9 +118,9 @@ describe('ParticipantEditView', () => {
         .toEqual('2016-12-31')
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
-      expect(component.find('InputField[label="Social security number"]').props().placeholder)
+      expect(component.find('MaskedInputField[label="Social security number"]').props().placeholder)
         .toEqual('')
-      expect(component.find('InputField[label="Social security number"]').props().value)
+      expect(component.find('MaskedInputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
     })
 
@@ -154,7 +154,7 @@ describe('ParticipantEditView', () => {
       component.find('#participant-199-ssn').simulate('change', {target: {value: '123-756-075'}})
       cancelButton.simulate('click')
       expect(onCancel).toHaveBeenCalled()
-      expect(component.find('InputField[label="Social security number"]').props().value)
+      expect(component.find('MaskedInputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
     })
 
@@ -352,7 +352,7 @@ describe('ParticipantEditView', () => {
       })
       component = shallow(<ParticipantEditView participant={participant} />)
 
-      expect(component.find('InputField[label="Social security number"]').props().mask)
+      expect(component.find('MaskedInputField[label="Social security number"]').props().mask)
         .toEqual('111-11-1111')
     })
   })
