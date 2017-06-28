@@ -21,17 +21,20 @@ test:
 	${INFO} "Pulling latest images..."
 	@ docker-compose $(TEST_ARGS) pull
 	${INFO} "Building images..."
-	@ docker-compose $(TEST_ARGS) build --pull rspec_test
-	@ docker-compose $(TEST_ARGS) build lint javascript_test
+	@ docker-compose $(TEST_ARGS) build --pull rspec_test &
+	@ docker-compose $(TEST_ARGS) build lint &
+	@ docker-compose $(TEST_ARGS) build javascript_test &
+	@ wait
+	${INFO} "Running lint..."
+	@ docker-compose $(TEST_ARGS) up lint
+	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q lint):/reports/. reports
+	@ $(call check_exit_code,$(TEST_ARGS),lint)
 	${INFO} "Running tests..."
 	@ docker-compose $(TEST_ARGS) up rspec_test
 	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q rspec_test):/reports/. reports
-	@ docker-compose $(TEST_ARGS) up lint
-	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q lint):/reports/. reports
 	@ docker-compose $(TEST_ARGS) up javascript_test
 	@ docker cp $$(docker-compose $(TEST_ARGS) ps -q javascript_test):/reports/. reports
 	@ $(call check_exit_code,$(TEST_ARGS),rspec_test)
-	@ $(call check_exit_code,$(TEST_ARGS),lint)
 	@ $(call check_exit_code,$(TEST_ARGS),javascript_test)
 	${INFO} "Testing complete"
 
@@ -47,10 +50,11 @@ build:
 
 release:
 	${INFO} "Pulling latest images..."
-	@ docker-compose $(RELEASE_ARGS) pull
+	@ docker-compose $(RELEASE_ARGS) pull &
 	${INFO} "Building images..."
-	@ docker-compose $(RELEASE_ARGS) build app
-	@ docker-compose $(RELEASE_ARGS) build --pull nginx
+	@ docker-compose $(RELEASE_ARGS) build app &
+	@ docker-compose $(RELEASE_ARGS) build --pull nginx &
+	@ wait
 	${INFO} "Release image build complete..."
 	${INFO} "Starting application..."
 	@ docker-compose $(RELEASE_ARGS) up -d nginx
