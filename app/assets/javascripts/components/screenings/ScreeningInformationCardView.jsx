@@ -9,7 +9,8 @@ export default class ScreeningInformationCardView extends React.Component {
   constructor(props) {
     super(props)
 
-    this.validate = this.validate.bind(this)
+    this.validateOnChange = this.validateOnChange.bind(this)
+    this.validateOneField = this.validateOneField.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onCancel = this.onCancel.bind(this)
@@ -62,6 +63,20 @@ export default class ScreeningInformationCardView extends React.Component {
     return Immutable.Map(errors)
   }
 
+  validateOnChange(fieldName, value) {
+    const errors = this.state.errors.get(fieldName)
+    if (errors && !errors.isEmpty()) {
+      this.validateOneField(fieldName, value)
+    }
+    this.props.onChange([fieldName], value)
+  }
+
+  validateOneField(fieldName, value) {
+    const rules = this.fieldValidations.get(fieldName)
+    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
+    this.setState({errors: errors})
+  }
+
   onEdit() {
     this.setState({mode: 'edit'})
   }
@@ -71,12 +86,6 @@ export default class ScreeningInformationCardView extends React.Component {
     return this.props.onSave(this.fields).then(() => {
       this.setState({mode: 'show', errors: errors})
     })
-  }
-
-  validate(fieldName, value) {
-    const rules = this.fieldValidations.get(fieldName)
-    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
-    this.setState({errors: errors})
   }
 
   onCancel() {
@@ -90,7 +99,8 @@ export default class ScreeningInformationCardView extends React.Component {
     const allprops = {
       edit: {
         errors: errors,
-        validate: this.validate,
+        validateOnChange: this.validateOnChange,
+        validateOneField: this.validateOneField,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,

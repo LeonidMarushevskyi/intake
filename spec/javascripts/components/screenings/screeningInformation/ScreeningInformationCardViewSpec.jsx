@@ -21,13 +21,40 @@ describe('ScreeningInformationCardView', () => {
     }),
   }
 
-  describe('validate', () => {
+  describe('validateOnChange', () => {
+    let onChange
+
     beforeEach(() => {
+      onChange = jasmine.createSpy('onChange')
+      baseProps.onCancel = jasmine.createSpy()
+      baseProps.onChange = onChange
+      baseProps.onSave = jasmine.createSpy()
+      component = shallow(<ScreeningInformationCardView {...baseProps} mode='edit' />)
+    })
+
+    it('validates if errors are present on the field', () => {
+      const oldErrors = Immutable.fromJS({communication_method: ['Devs need physical space!!!']})
+      const newErrors = Immutable.fromJS({communication_method: ['Please select a communication method.']})
+      component.setState({errors: oldErrors})
+      expect(Immutable.is(component.state('errors'), oldErrors)).toEqual(true)
+      component.instance().validateOnChange('communication_method', '')
+      expect(Immutable.is(component.state('errors'), newErrors)).toEqual(true)
+    })
+    it('does not validate if there are no errors on the field', () => {
+      expect(Immutable.is(component.state('errors'), Immutable.Map())).toEqual(true)
+      component.instance().validateOnChange('communication_method', '')
+      expect(Immutable.is(component.state('errors'), Immutable.Map())).toEqual(true)
+    })
+    it('calls onChange', () => {
+      component.instance().validateOnChange('communication_method', '')
+      expect(onChange).toHaveBeenCalledWith(['communication_method'], '')
+    })
+  })
       component = shallow(<ScreeningInformationCardView {...baseProps} mode='edit' />)
     })
 
     it('adds errors for communication method being required', () => {
-      component.instance().validate('communication_method', '')
+      component.instance().validateOneField('communication_method', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {communication_method: ['Please select a communication method.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -35,7 +62,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('adds errors for assigned social worker being required', () => {
-      component.instance().validate('assignee', '')
+      component.instance().validateOneField('assignee', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {assignee: ['Please enter an assigned worker.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -43,7 +70,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('adds errors for start date/time being required', () => {
-      component.instance().validate('started_at', null)
+      component.instance().validateOneField('started_at', null)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {started_at: ['Please enter a screening start date.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -52,7 +79,7 @@ describe('ScreeningInformationCardView', () => {
 
     it('adds errors for end date/time being in the future', () => {
       const futureDate = moment().add(2, 'days').toISOString()
-      component.instance().validate('ended_at', futureDate)
+      component.instance().validateOneField('ended_at', futureDate)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -75,7 +102,7 @@ describe('ScreeningInformationCardView', () => {
 
       it('adds errors for start date/time being in the future', () => {
         const date = ended_at.subtract(2, 'days').toISOString()
-        component.instance().onBlur('started_at', date)
+        component.instance().validateOneField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time cannot be in the future.']}
         expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -99,7 +126,7 @@ describe('ScreeningInformationCardView', () => {
 
       it('adds errors for the started_at field', () => {
         const date = ended_at.add(2, 'days').toISOString()
-        component.instance().onBlur('started_at', date)
+        component.instance().validateOneField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time must be before the end date and time.']}
         expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -122,8 +149,8 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('passes validate to the child component', () => {
-      expect(component.find('ScreeningInformationEditView').props().validate).not.toEqual(undefined)
-      expect(component.find('ScreeningInformationEditView').props().validate).toEqual(component.instance().validate)
+      expect(component.find('ScreeningInformationEditView').props().validateOneField).not.toEqual(undefined)
+      expect(component.find('ScreeningInformationEditView').props().validateOneField).toEqual(component.instance().validateOneField)
     })
 
     it('passes errors from the state', () => {
