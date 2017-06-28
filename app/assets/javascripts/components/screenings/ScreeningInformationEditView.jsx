@@ -5,7 +5,7 @@ import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
 import SelectField from 'components/common/SelectField'
 
-const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, onBlur, errors}) => (
+const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, validateOneField, validateOnChange, errors}) => (
   <div className='card edit double-gap-top' id='screening-information-card'>
     <div className='card-header'>
       <span>Screening Information</span>
@@ -27,8 +27,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           required
           placeholder='Enter the name of the worker screening report'
           value={screening.get('assignee') || ''}
-          onChange={(event) => onChange(['assignee'], event.target.value)}
-          onBlur={(event) => onBlur('assignee', event.target.value)}
+          onChange={(event) => validateOnChange('assignee', event.target.value)}
+          onBlur={(event) => validateOneField('assignee', event.target.value)}
           errors={errors.get('assignee')}
         />
       </div>
@@ -39,8 +39,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           label='Screening Start Date/Time'
           required
           value={screening.get('started_at')}
-          onChange={(value) => onChange(['started_at'], value)}
-          onBlur={(value) => onBlur('started_at', value)}
+          onChange={(value) => validateOnChange('started_at', value)}
+          onBlur={(value) => validateOneField('started_at', value)}
           errors={errors.get('started_at')}
         />
         <DateField
@@ -48,25 +48,25 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
           id='ended_at'
           label='Screening End Date/Time'
           value={screening.get('ended_at')}
-          onChange={(value) => onChange(['ended_at'], value)}
-          onBlur={(value) => onBlur('ended_at', value)}
+          onChange={(value) => validateOnChange('ended_at', value)}
+          onBlur={(value) => validateOneField('ended_at', value)}
           errors={errors.get('ended_at')}
         />
-        </div>
-        <div className='row'>
-          <SelectField
-            gridClassName='col-md-6'
-            id='communication_method'
-            label='Communication Method'
-            required
-            value={screening.get('communication_method')}
-            onChange={(event) => onChange(['communication_method'], event.target.value || null)}
-            onBlur={(event) => onBlur('communication_method', event.target.value)}
-            errors={errors.get('communication_method')}
-          >
-            <option key='' />
-            {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
-          </SelectField>
+      </div>
+      <div className='row'>
+        <SelectField
+          gridClassName='col-md-6'
+          id='communication_method'
+          label='Communication Method'
+          required
+          value={screening.get('communication_method')}
+          onChange={(event) => validateOnChange('communication_method', event.target.value || null)}
+          onBlur={(event) => validateOneField('communication_method', event.target.value)}
+          errors={errors.get('communication_method')}
+        >
+          <option key='' />
+          {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
+        </SelectField>
       </div>
       <div className='row'>
         <div className='centered'>
@@ -80,10 +80,11 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, on
 
 ScreeningInformationEditView.propTypes = {
   errors: PropTypes.object.isRequired,
-  onBlur: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   screening: PropTypes.object.isRequired,
+  validateOnChange: PropTypes.func.isRequired,
+  validateOneField: PropTypes.func.isRequired,
 }
 export default ScreeningInformationEditView

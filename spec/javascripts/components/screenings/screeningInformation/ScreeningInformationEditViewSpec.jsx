@@ -8,11 +8,6 @@ describe('ScreeningInformationEditView', () => {
 
   const requiredProps = {
     errors: Immutable.Map(),
-    onBlur: jasmine.createSpy(),
-    onChange: jasmine.createSpy(),
-    onCancel: jasmine.createSpy(),
-    onSave: jasmine.createSpy(),
-    onEdit: jasmine.createSpy(),
     screening: Immutable.fromJS({
       name: 'The Rocky Horror Picture Show',
       assignee: 'Michael Bluth',
@@ -22,6 +17,16 @@ describe('ScreeningInformationEditView', () => {
       participants: [],
     }),
   }
+
+  beforeEach(() => {
+    requiredProps.validateOneField = jasmine.createSpy('validateOneField')
+    requiredProps.validateOnChange = jasmine.createSpy('validateOnChange')
+    requiredProps.onChange = jasmine.createSpy('onChange')
+    requiredProps.onCancel = jasmine.createSpy('onCancel')
+    requiredProps.onSave = jasmine.createSpy('onSave')
+    requiredProps.onEdit = jasmine.createSpy('onEdit')
+    component = mount(<ScreeningInformationEditView {...requiredProps} />)
+  })
 
   describe('render', () => {
     beforeEach(() => {
@@ -60,78 +65,137 @@ describe('ScreeningInformationEditView', () => {
     })
   })
 
-  describe('onChange', () => {
-    it('fires the call the onChange function when a field changes', () => {
-      component = mount(<ScreeningInformationEditView {...requiredProps} />)
+  describe('validateOnChange', () => {
+    it('fires the call the validateOnChange function when a field changes', () => {
       const comMethodSelect = component.find('#screening-information-card select')
       comMethodSelect.simulate('change', {target: {value: 'fax'}})
-      expect(requiredProps.onChange).toHaveBeenCalledWith(['communication_method'], 'fax')
+      expect(requiredProps.validateOnChange).toHaveBeenCalledWith('communication_method', 'fax')
+    })
+  })
+
+  describe('onChange', () => {
+    it('fires the call the onChange function when a field changes', () => {
+      const nameInput = component.find('input#name')
+      nameInput.simulate('change', {target: {value: 'do not validate me'}})
+      expect(requiredProps.onChange).toHaveBeenCalledWith(['name'], 'do not validate me')
     })
   })
 
   describe('onSave', () => {
     it('fires the onSave function when save clicks', () => {
-      component = mount(<ScreeningInformationEditView {...requiredProps} />)
       component.find('.btn.btn-primary').simulate('click')
       expect(requiredProps.onSave).toHaveBeenCalled()
     })
   })
 
-  describe('onBlur', () => {
-    let blurSpy
+  describe('when a required field loses focus', () => {
+    let validateOneFieldSpy
 
     beforeEach(() => {
-      blurSpy = jasmine.createSpy('onBlur')
+      validateOneFieldSpy = jasmine.createSpy('validateOneField')
       const props = {
         ...requiredProps,
-        onBlur: blurSpy,
+        validateOneField: validateOneFieldSpy,
+        errors: Immutable.fromJS({
+          assignee: ['First error', 'Second error'],
+          communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+          started_at: ['My error', 'My other error'],
+          ended_at: ['More errors'],
+          name: [],
+        }),
       }
-
       component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
-    it('calls onBlur for the social worker with the field name and value', () => {
+    it('calls validateOneField for the social worker with the field name and value', () => {
       const socialWorker = requiredProps.screening.get('assignee')
       const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
       assigneeField.props().onBlur({target: {value: socialWorker}})
-      expect(blurSpy).toHaveBeenCalledWith('assignee', socialWorker)
+      expect(validateOneFieldSpy).toHaveBeenCalledWith('assignee', socialWorker)
     })
 
-    it('calls onBlur for the start date with the field name and value', () => {
+    it('calls validateOneField for the start date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('started_at')
       const startDate = component.find('DateField[label="Screening Start Date/Time"]')
       startDate.props().onBlur(dateValue)
-      expect(blurSpy).toHaveBeenCalledWith('started_at', dateValue)
+      expect(validateOneFieldSpy).toHaveBeenCalledWith('started_at', dateValue)
     })
 
-    it('calls onBlur for the communication method with the field name and value', () => {
+    it('calls validateOneField for the communication method with the field name and value', () => {
       const commMethodValue = requiredProps.screening.get('communication_method')
       const commMethodField = component.find('SelectField[label="Communication Method"]')
       commMethodField.props().onBlur({target: {value: commMethodValue}})
-      expect(blurSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
+      expect(validateOneFieldSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
     })
 
-    it('calls onBlur for the end date with the field name and value', () => {
+    it('calls validateOneField for the end date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('ended_at')
       const endDate = component.find('DateField[label="Screening End Date/Time"]')
       endDate.props().onBlur(dateValue)
-      expect(blurSpy).toHaveBeenCalledWith('ended_at', dateValue)
+      expect(validateOneFieldSpy).toHaveBeenCalledWith('ended_at', dateValue)
+    })
+  })
+
+  describe('when a required field gets changed', () => {
+    let validateOnChangeSpy
+
+    beforeEach(() => {
+      validateOnChangeSpy = jasmine.createSpy('validateOnChange')
+      const props = {
+        ...requiredProps,
+        validateOnChange: validateOnChangeSpy,
+        errors: Immutable.fromJS({
+          assignee: ['First error', 'Second error'],
+          communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+          started_at: ['My error', 'My other error'],
+          ended_at: ['More errors'],
+          name: [],
+        }),
+      }
+      component = shallow(<ScreeningInformationEditView {...props} />)
+    })
+
+    it('calls validateOneField for the social worker with the field name and value', () => {
+      const socialWorker = requiredProps.screening.get('assignee')
+      const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
+      assigneeField.props().onChange({target: {value: socialWorker}})
+      expect(validateOnChangeSpy).toHaveBeenCalledWith('assignee', socialWorker)
+    })
+
+    it('calls validateOneField for the start date with the field name and value', () => {
+      const dateValue = requiredProps.screening.get('started_at')
+      const startDate = component.find('DateField[label="Screening Start Date/Time"]')
+      startDate.props().onChange(dateValue)
+      expect(validateOnChangeSpy).toHaveBeenCalledWith('started_at', dateValue)
+    })
+
+    it('calls validateOneField for the communication method with the field name and value', () => {
+      const commMethodValue = requiredProps.screening.get('communication_method')
+      const commMethodField = component.find('SelectField[label="Communication Method"]')
+      commMethodField.props().onChange({target: {value: commMethodValue}})
+      expect(validateOnChangeSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
+    })
+
+    it('calls validateOneField for the end date with the field name and value', () => {
+      const dateValue = requiredProps.screening.get('ended_at')
+      const endDate = component.find('DateField[label="Screening End Date/Time"]')
+      endDate.props().onChange(dateValue)
+      expect(validateOnChangeSpy).toHaveBeenCalledWith('ended_at', dateValue)
     })
   })
 
   describe('errors', () => {
-    const props = {
-      ...requiredProps,
-      errors: Immutable.fromJS({
-        assignee: ['First error', 'Second error'],
-        communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
-        started_at: ['My error', 'My other error'],
-        ended_at: ['More errors'],
-        name: [],
-      }),
-    }
-
     it('passes the appropriate errors to the fields', () => {
+      const props = {
+        ...requiredProps,
+        errors: Immutable.fromJS({
+          assignee: ['First error', 'Second error'],
+          communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
+          started_at: ['My error', 'My other error'],
+          ended_at: ['More errors'],
+          name: [],
+        }),
+      }
       component = shallow(<ScreeningInformationEditView {...props} />)
       expect(component.find('InputField[id="assignee"]').props().errors.toJS())
         .toEqual(['First error', 'Second error'])

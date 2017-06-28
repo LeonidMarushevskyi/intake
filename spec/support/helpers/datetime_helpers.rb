@@ -3,17 +3,24 @@
 module DateTimeHelpers
   def mouse_select_datepicker(locator, date)
     zero_indexed_month = date.month - 1
-    component = page.find(locator)
-    component.find('.rw-btn-calendar').click
-    component.find(
-      "[id$='cal_calendar__month_#{zero_indexed_month}-#{date.day}']", visible: :all
-    ).click
+    within locator do
+      find('.rw-btn-calendar').click
+      find("[id$='cal_calendar__month_#{zero_indexed_month}-#{date.day}']").click
+    end
   end
 
-  def mouse_select_timepicker(locator, time)
-    component = page.find(locator)
-    component.find('.rw-btn-time').native.click
-    component.find('.rw-list-option', text: time).click
+  def select_time_from_timepicker(locator, time)
+    within locator do
+      find('.rw-btn-time').native.click
+      find('.rw-list-option', text: /\A#{time.strip}\z/).click
+    end
+  end
+
+  def select_today_from_calendar(locator)
+    within locator do
+      find('.rw-btn-calendar').native.click
+      find('button', text: Time.now.strftime('%B %d, %Y')).native.click
+    end
   end
 end
 
