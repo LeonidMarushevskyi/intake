@@ -38,6 +38,8 @@ feature 'Screening Information Validations' do
 
     yield # make field valid to clear errors
 
+    should_not_have_content error_message, inside: "##{card_name}-card.edit"
+
     stub_screening_put_request_with_anything_and_return(
       screening,
       with_updated_attributes: screening_updates
@@ -119,7 +121,7 @@ feature 'Screening Information Validations' do
           field: 'Screening End Date/Time',
           error_message: error_message,
           invalid_value: 20.years.from_now,
-          valid_value: Time.now
+          valid_value: 20.years.ago
         )
       end
 
@@ -127,11 +129,12 @@ feature 'Screening Information Validations' do
         let(:screening) do
           FactoryGirl.create(:screening, ended_at: 30.years.from_now)
         end
+        let(:valid_date) { 20.years.ago.iso8601 }
 
         scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
             error_message: error_message,
-            screening_updates: { ended_at: Time.now.iso8601 }
+            screening_updates: { ended_at: valid_date }
           ) do
             select_today_from_calendar '#ended_at'
           end
@@ -161,7 +164,7 @@ feature 'Screening Information Validations' do
       scenario 'show card displays errors until user enters a start date' do
         validate_message_as_user_interacts_with_card(
           error_message: 'Please enter a screening start date.',
-          screening_updates: { started_at: Time.now.iso8601 }
+          screening_updates: { started_at: '08/17/2016 3:00 AM' }
         ) { select_today_from_calendar '#started_at' }
       end
 
@@ -186,7 +189,7 @@ feature 'Screening Information Validations' do
         scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
             error_message: 'The start date and time cannot be in the future.',
-            screening_updates: { started_at: Time.now.iso8601 }
+            screening_updates: { started_at: 20.years.ago }
           ) { select_today_from_calendar '#started_at' }
         end
       end
