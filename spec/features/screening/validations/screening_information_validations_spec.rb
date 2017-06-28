@@ -133,9 +133,7 @@ feature 'Screening Information Validations' do
             error_message: error_message,
             screening_updates: { ended_at: Time.now.iso8601 }
           ) do
-            within '#ended_at' do
-              mouse_select_today
-            end
+            select_today_from_calendar '#ended_at'
           end
         end
       end
@@ -164,11 +162,7 @@ feature 'Screening Information Validations' do
         validate_message_as_user_interacts_with_card(
           error_message: 'Please enter a screening start date.',
           screening_updates: { started_at: Time.now.iso8601 }
-        ) do
-          within '#started_at' do
-            mouse_select_today
-          end
-        end
+        ) { select_today_from_calendar '#started_at' }
       end
 
       context 'with a screening that also has an end date' do
@@ -193,11 +187,7 @@ feature 'Screening Information Validations' do
           validate_message_as_user_interacts_with_card(
             error_message: 'The start date and time cannot be in the future.',
             screening_updates: { started_at: Time.now.iso8601 }
-          ) do
-            within '#started_at' do
-              mouse_select_today
-            end
-          end
+          ) { select_today_from_calendar '#started_at' }
         end
       end
 

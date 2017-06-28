@@ -85,7 +85,7 @@ feature 'screening information card' do
     end
 
     within '#screening-information-card.edit' do
-      mouse_select_timepicker('#started_at', '3:30 PM')
+      select_time_from_timepicker('#started_at', '3:30 PM')
       expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:30 PM')
     end
   end
