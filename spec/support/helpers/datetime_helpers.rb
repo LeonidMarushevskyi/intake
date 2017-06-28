@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module DateTimeHelpers
-  def mouse_select_datepicker(locator, day)
+  def mouse_select_datepicker(locator, date)
+    zero_indexed_month = date.month - 1
     component = page.find(locator)
     component.find('.rw-btn-calendar').click
     component.find(
-      "[id*='calendar__month'][id$='#{day}']", visible: :all
+      "[id$='cal_calendar__month_#{zero_indexed_month}-#{date.day}']", visible: :all
     ).click
   end
 
