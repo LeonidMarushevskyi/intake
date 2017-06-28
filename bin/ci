@@ -1,2 +1,2 @@
 #!/bin/bash
-RAILS_ENV=test bin/gulp && bundle exec rake spec
+RAILS_ENV=test bin/gulp && bundle exec parallel_rspec spec
