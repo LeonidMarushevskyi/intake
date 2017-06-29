@@ -92,18 +92,10 @@
     "react/jsx-closing-bracket-location": [2, "tag-aligned"],
     "react/jsx-curly-spacing": [2, "never"],
     "react/jsx-indent-props": [2, 2],
-    "react/jsx-no-duplicate-props": [2],
-    "react/jsx-no-undef": [2],
     "react/sort-prop-types": [2],
-    "react/jsx-uses-react": 1,
-    "react/jsx-uses-vars": 1,
     "react/no-danger": [2],
     "react/no-did-mount-set-state": [2],
     "react/no-did-update-set-state": [2],
-    "react/no-direct-mutation-state": [2],
-    "react/no-unknown-property": [2],
-    "react/prop-types": [2],
-    "react/react-in-jsx-scope": [2],
     "react/self-closing-comp": [2],
     "react/sort-comp": [2],
     "require-yield": [2],
@@ -133,5 +125,5 @@
     "ecmaVersion": 6,
     "sourceType": "module",
   },
-  "extends": "eslint:recommended"
+  "extends": ["eslint:recommended", "plugin:react/recommended"]
 }
