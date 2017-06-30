@@ -94,7 +94,10 @@ feature 'History card' do
               victim_first_name: 'Victim1',
               victim_last_name: 'v1LastName'
             }
-          ]
+          ],
+          legacy_descriptor: {
+            legacy_ui_id: '0853-2115-5670-6000802'
+          }
         },
         {
           start_date: '2016-05-06',
@@ -116,7 +119,10 @@ feature 'History card' do
               victim_first_name: 'Victim2',
               victim_last_name: 'v2LastName'
             }
-          ]
+          ],
+          legacy_descriptor: {
+            legacy_ui_id: '0202-9769-1248-2000283'
+          }
         }
       ]
     end
@@ -148,6 +154,9 @@ feature 'History card' do
           assigned_social_worker: {
             last_name: 'sw1LastName',
             first_name: 'SocialWorker1'
+          },
+          legacy_descriptor: {
+            legacy_ui_id: '0393-5909-1798-6027230'
           }
         },
         {
@@ -173,6 +182,9 @@ feature 'History card' do
           assigned_social_worker: {
             last_name: 'sw2LastName',
             first_name: 'SocialWorker2'
+          },
+          legacy_descriptor: {
+            legacy_ui_id: '0208-9997-9274-0000863'
           }
         }
       ]
@@ -256,7 +268,9 @@ feature 'History card' do
 
           within rows[2] do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
-            expect(page).to have_content('Referral (Closed - Immediate)')
+            expect(page).to have_content('Referral')
+            expect(page).to have_content('0853-2115-5670-6000802')
+            expect(page).to have_content('(Closed - Immediate)')
             expect(page).to have_content('Madera')
 
             within 'table' do
@@ -281,7 +295,9 @@ feature 'History card' do
 
           within rows[3] do
             expect(page).to have_content('05/06/2016')
-            expect(page).to have_content('Referral (Open)')
+            expect(page).to have_content('Referral')
+            expect(page).to have_content('0202-9769-1248-2000283')
+            expect(page).to have_content('(Open)')
             expect(page).to have_content('San Francisco')
 
             within 'table' do
@@ -306,7 +322,9 @@ feature 'History card' do
 
           within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
-            expect(page).to have_content('Case (Closed - Family Reunification)')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('0393-5909-1798-6027230')
+            expect(page).to have_content('(Closed - Family Reunification)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
@@ -315,8 +333,9 @@ feature 'History card' do
 
           within rows[5] do
             expect(page).to have_content('02/03/2016')
-            expect(page).to have_no_content('-')
+            expect(page).to have_no_content('2016 -')
             expect(page).to have_content('Case')
+            expect(page).to have_content('0208-9997-9274-0000863')
             expect(page).to have_content('Open')
             expect(page).to have_content('Plumas')
             expect(page).to have_content('Focus Child: fChild2 fc2Last')
@@ -370,7 +389,9 @@ feature 'History card' do
 
           within rows[2] do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
-            expect(page).to have_content('Referral (Closed - Immediate)')
+            expect(page).to have_content('Referral')
+            expect(page).to have_content('0853-2115-5670-6000802')
+            expect(page).to have_content('(Closed - Immediate)')
             expect(page).to have_content('Madera')
 
             within 'table' do
@@ -395,7 +416,9 @@ feature 'History card' do
 
           within rows[3] do
             expect(page).to have_content('05/06/2016')
-            expect(page).to have_content('Referral (Open)')
+            expect(page).to have_content('Referral')
+            expect(page).to have_content('0202-9769-1248-2000283')
+            expect(page).to have_content('(Open)')
             expect(page).to have_content('San Francisco')
 
             within 'table' do
@@ -420,7 +443,9 @@ feature 'History card' do
 
           within rows[4] do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
-            expect(page).to have_content('Case (Closed - Family Reunification)')
+            expect(page).to have_content('Case')
+            expect(page).to have_content('0393-5909-1798-6027230')
+            expect(page).to have_content('(Closed - Family Reunification)')
             expect(page).to have_content('El Dorado')
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
@@ -429,8 +454,9 @@ feature 'History card' do
 
           within rows[5] do
             expect(page).to have_content('02/03/2016')
-            expect(page).to have_no_content('-')
+            expect(page).to have_no_content('2016 -')
             expect(page).to have_content('Case')
+            expect(page).to have_content('0208-9997-9274-0000863')
             expect(page).to have_content('Open')
             expect(page).to have_content('Plumas')
             expect(page).to have_content('Focus Child: fChild2 fc2Last')
@@ -466,7 +492,9 @@ feature 'History card' do
 
             within rows[0] do
               expect(page).to have_content('11/14/2016 - 12/14/2016')
-              expect(page).to have_content('Referral (Closed - Immediate)')
+              expect(page).to have_content('Referral')
+              expect(page).to have_content('0853-2115-5670-6000802')
+              expect(page).to have_content('(Closed - Immediate)')
               expect(page).to have_content('Madera')
 
               within 'table' do
@@ -491,7 +519,9 @@ feature 'History card' do
 
             within rows[1] do
               expect(page).to have_content('05/06/2016')
-              expect(page).to have_content('Referral (Open)')
+              expect(page).to have_content('Referral')
+              expect(page).to have_content('0202-9769-1248-2000283')
+              expect(page).to have_content('(Open)')
               expect(page).to have_content('San Francisco')
 
               within 'table' do
@@ -516,7 +546,9 @@ feature 'History card' do
 
             within rows[2] do
               expect(page).to have_content('01/01/2016 - 11/01/2016')
-              expect(page).to have_content('Case (Closed - Family Reunification)')
+              expect(page).to have_content('Case')
+              expect(page).to have_content('0393-5909-1798-6027230')
+              expect(page).to have_content('(Closed - Family Reunification)')
               expect(page).to have_content('El Dorado')
               expect(page).to have_content('Focus Child: fChild1 fc1Last')
               expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
@@ -525,8 +557,9 @@ feature 'History card' do
 
             within rows[3] do
               expect(page).to have_content('02/03/2016')
-              expect(page).to have_no_content('-')
+              expect(page).to have_no_content('2016 -')
               expect(page).to have_content('Case')
+              expect(page).to have_content('0208-9997-9274-0000863')
               expect(page).to have_content('Open')
               expect(page).to have_content('Plumas')
               expect(page).to have_content('Focus Child: fChild2 fc2Last')
