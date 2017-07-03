@@ -13,6 +13,7 @@ import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import selectOptions from 'utils/selectHelper'
 import nameFormatter from 'utils/nameFormatter'
+import legacySourceFormatter from 'utils/legacySourceFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'RoleType'
 
 const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}) => {
@@ -35,23 +36,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     })
   }
 
-  const legacyTable = participant.get('legacy_friendly_table')
-  const legacyId = participant.get('legacy_friendly_id')
-  const legacySourceStringParts = []
-
-  if (legacyTable) {
-    legacySourceStringParts.push(legacyTable)
-  }
-
-  if (legacyId) {
-    legacySourceStringParts.push(`ID ${legacyId}`)
-  }
-
-  if (legacyTable || legacyId) {
-    legacySourceStringParts.push('in CWS-CMS')
-  }
-
-  const legacySourceString = legacySourceStringParts.join(' ')
+  const legacySourceString = legacySourceFormatter(participant)
 
   return (
     <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>

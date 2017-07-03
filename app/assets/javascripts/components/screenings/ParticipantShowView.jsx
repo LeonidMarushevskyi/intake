@@ -6,27 +6,12 @@ import React from 'react'
 import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import nameFormatter from 'utils/nameFormatter'
+import legacySourceFormatter from 'utils/legacySourceFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => {
-  const legacyTable = participant.get('legacy_friendly_table')
-  const legacyId = participant.get('legacy_friendly_id')
-  const legacySourceStringParts = []
-
-  if (legacyTable) {
-    legacySourceStringParts.push(legacyTable)
-  }
-
-  if (legacyId) {
-    legacySourceStringParts.push(`ID ${legacyId}`)
-  }
-
-  if (legacyTable || legacyId) {
-    legacySourceStringParts.push('in CWS-CMS')
-  }
-
-  const legacySourceString = legacySourceStringParts.join(' ')
+  const legacySourceString = legacySourceFormatter(participant)
 
   return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
