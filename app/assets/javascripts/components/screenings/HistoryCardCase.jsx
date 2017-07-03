@@ -12,6 +12,8 @@ const HistoryCardCase = ({hoiCase, index}) => {
 
   const incidentCounty = hoiCase.get('county_name')
   const assignee = hoiCase.get('assigned_social_worker')
+  const legacyDescriptor = hoiCase.get('legacy_descriptor')
+  const caseId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
 
   const focusChild = hoiCase.get('focus_child')
 
@@ -26,6 +28,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
       <td>{dateRangeFormatter(hoiCase.toJS())}</td>
       <td>
         <div className='row'>Case</div>
+        <div className='row'>{caseId}</div>
         <div className='row'>{`(${status})`}</div>
       </td>
       <td>{incidentCounty}</td>

@@ -48,6 +48,16 @@ describe('HistoryCardCase', () => {
     expect(cells.at(0).text()).toEqual('08/13/2016 - 09/25/2016')
   })
 
+  it('displays the case id', () => {
+    const hoiCase = Immutable.fromJS({
+      legacy_descriptor: {legacy_ui_id: '1234-1234-1234-1234567'},
+    })
+
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Case1234-1234-1234-1234567(Open)')
+  })
+
   it('displays a status of Open if there is no end date', () => {
     const hoiCase = Immutable.fromJS({
       start_date: '2016-08-13',
