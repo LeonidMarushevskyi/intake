@@ -20,6 +20,8 @@ feature 'Show Screening' do
     :participant,
     middle_name: 'Jay',
     name_suffix: 'esq',
+    legacy_friendly_id: '123-456-789',
+    legacy_friendly_table: 'Client',
     ssn: '123-__-____',
     addresses: [address],
     phone_numbers: [phone_number]
@@ -51,6 +53,7 @@ feature 'Show Screening' do
       end
 
       within '.card-body' do
+        expect(page).to have_content('Client ID 123-456-789 in CWS-CMS')
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )

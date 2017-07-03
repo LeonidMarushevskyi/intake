@@ -29,6 +29,39 @@ describe('ParticipantShowView', () => {
       expect(component.find('.card-header').text()).toContain('Kevin Home Alone McCallister IV')
     })
 
+    it('renders the participant legacy id and table', () => {
+      const participant = Immutable.fromJS({
+        id: '200',
+        first_name: 'Kevin',
+        middle_name: 'Home Alone',
+        legacy_friendly_id: '123-456-789',
+        legacy_friendly_table: 'Client',
+      })
+      const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
+      expect(component.text()).toContain('Client ID 123-456-789 in CWS-CMS')
+    })
+
+    it('renders the participant legacy table when there is no id', () => {
+      const participant = Immutable.fromJS({
+        id: '200',
+        first_name: 'Kevin',
+        middle_name: 'Home Alone',
+        legacy_friendly_table: 'Client',
+      })
+      const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
+      expect(component.text()).toContain('Client in CWS-CMS')
+    })
+
+    it('renders properly when there is no legacy id nor legacy table', () => {
+      const participant = Immutable.fromJS({
+        id: '200',
+        first_name: 'Kevin',
+        middle_name: 'Home Alone',
+      })
+      const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
+      expect(component.text()).not.toContain('in CWS-CMS')
+    })
+
     it('renders the delete link', () => {
       const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
       expect(component.find('.fa-times').length).toEqual(1)

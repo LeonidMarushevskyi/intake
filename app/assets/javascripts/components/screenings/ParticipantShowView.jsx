@@ -9,7 +9,26 @@ import nameFormatter from 'utils/nameFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
 
-const ParticipantShowView = ({participant, onDelete, onEdit}) => (
+const ParticipantShowView = ({participant, onDelete, onEdit}) => {
+  const legacyTable = participant.get('legacy_friendly_table')
+  const legacyId = participant.get('legacy_friendly_id')
+  const legacySourceStringParts = []
+
+  if (legacyTable) {
+    legacySourceStringParts.push(legacyTable)
+  }
+
+  if (legacyId) {
+    legacySourceStringParts.push(`ID ${legacyId}`)
+  }
+
+  if (legacyTable || legacyId) {
+    legacySourceStringParts.push('in CWS-CMS')
+  }
+
+  const legacySourceString = legacySourceStringParts.join(' ')
+
+  return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
       <span>{nameFormatter(participant)}</span>
@@ -26,40 +45,49 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
         <div className='col-md-2'>
           <img src='/assets/default-profile.svg' />
         </div>
-        <div className='col-md-5'>
-          <ShowField label='Name'>
-            {nameFormatter(participant)}
-          </ShowField>
-          <ShowField label='Gender'>
-            {GENDERS[participant.get('gender')]}
-          </ShowField>
-        </div>
-        <div className='col-md-5'>
-          <ShowField label='Language(s)'>
-            {(participant.get('languages') || []).join(', ')}
-          </ShowField>
-        </div>
-        <div className='col-md-5'>
-          <ShowField label='Date of birth'>
-            {dateFormatter(participant.get('date_of_birth'))}
-          </ShowField>
-          <ShowField label='Social security number'>
-            {ssnFormatter(participant.get('ssn'))}
-          </ShowField>
+        <div className='col-md-10'>
+          {legacySourceString !== '' && <div className='row'>
+          <div className='col-md-12'>
+            <span>{legacySourceString}</span>
+          </div>
+        </div>}
+        <div className='row'>
+          <div className='col-md-5'>
+            <ShowField label='Name'>
+              {nameFormatter(participant)}
+            </ShowField>
+            <ShowField label='Gender'>
+              {GENDERS[participant.get('gender')]}
+            </ShowField>
+          </div>
+          <div className='col-md-5'>
+            <ShowField label='Language(s)'>
+              {(participant.get('languages') || []).join(', ')}
+            </ShowField>
+          </div>
+          <div className='col-md-5'>
+            <ShowField label='Date of birth'>
+              {dateFormatter(participant.get('date_of_birth'))}
+            </ShowField>
+            <ShowField label='Social security number'>
+              {ssnFormatter(participant.get('ssn'))}
+            </ShowField>
+          </div>
         </div>
       </div>
-      <div>
-        {
-          participant.get('phone_numbers') && participant.get('phone_numbers').map((phoneNumber, index) => (
-            <div key={index}>
-              <div className='row gap-top' id={`phone-number-${phoneNumber.get('id')}`}>
-                <ShowField gridClassName='col-md-6' label='Phone Number'>
-                  {phoneNumber.get('number')}
-                </ShowField>
-                <ShowField gridClassName='col-md-6' label='Phone Number Type'>
-                  {phoneNumber.get('type')}
-                </ShowField>
-              </div>
+    </div>
+    <div>
+      {
+        participant.get('phone_numbers') && participant.get('phone_numbers').map((phoneNumber, index) => (
+          <div key={index}>
+            <div className='row gap-top' id={`phone-number-${phoneNumber.get('id')}`}>
+            <ShowField gridClassName='col-md-6' label='Phone Number'>
+              {phoneNumber.get('number')}
+            </ShowField>
+            <ShowField gridClassName='col-md-6' label='Phone Number Type'>
+              {phoneNumber.get('type')}
+            </ShowField>
+          </div>
             </div>
           ))
         }
@@ -93,7 +121,8 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => (
       </div>
     </div>
   </div>
-)
+  )
+}
 
 ParticipantShowView.propTypes = {
   onDelete: PropTypes.func,
