@@ -14,12 +14,15 @@ def filtered_participant_attributes
   ]
 end
 
+# rubocop:disable Metrics/MethodLength
 def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
   ).merge(
     legacy_id: person.id,
     legacy_source_table: person.legacy_source_table,
+    legacy_friendly_id: person.legacy_descriptor[:legacy_ui_id],
+    legacy_friendly_table: person.legacy_descriptor[:legacy_table_description],
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
@@ -53,6 +56,10 @@ feature 'Edit Screening' do
     FactoryGirl.create(
       :person_search,
       legacy_source_table: 'CLIENT_T',
+      legacy_descriptor: {
+        legacy_ui_id: '123-456-789',
+        legacy_table_description: 'Client'
+      },
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
@@ -94,7 +101,9 @@ feature 'Edit Screening' do
     new_participant_request = {
       screening_id: existing_screening.id,
       legacy_id: nil,
-      legacy_source_table: nil
+      legacy_source_table: nil,
+      legacy_friendly_id: nil,
+      legacy_friendly_table: nil
     }
 
     stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
