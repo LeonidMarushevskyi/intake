@@ -331,6 +331,8 @@ describe('<Autocompleter />', () => {
         lastName: 'Simpson',
         middleName: 'Jacqueline',
         nameSuffix: 'md',
+        legacyFriendlyId: undefined,
+        legacyFriendlyTable: undefined,
         gender: 'female',
         languages: ['French', 'Italian'],
         races: [
