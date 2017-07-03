@@ -19,7 +19,7 @@ module DateTimeHelpers
   def select_today_from_calendar(locator)
     within locator do
       find('.rw-btn-calendar').native.click
-      find('button', text: Time.now.strftime('%B %d, %Y')).native.click
+      find('button', text: Time.now.strftime('%B %-d, %Y')).native.click
     end
   end
 end
