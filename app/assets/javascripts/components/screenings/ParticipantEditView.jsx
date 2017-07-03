@@ -35,6 +35,24 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     })
   }
 
+  const legacyTable = participant.get('legacy_friendly_table')
+  const legacyId = participant.get('legacy_friendly_id')
+  const legacySourceStringParts = []
+
+  if (legacyTable) {
+    legacySourceStringParts.push(legacyTable)
+  }
+
+  if (legacyId) {
+    legacySourceStringParts.push(`ID ${legacyId}`)
+  }
+
+  if (legacyTable || legacyId) {
+    legacySourceStringParts.push('in CWS-CMS')
+  }
+
+  const legacySourceString = legacySourceStringParts.join(' ')
+
   return (
     <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
       <div className='card-header'>
@@ -47,6 +65,11 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
         </button>
       </div>
       <div className='card-body'>
+        {legacySourceString !== '' && <div className='row'>
+          <div className='col-md-12'>
+            <span>{legacySourceString}</span>
+          </div>
+        </div>}
         <div className='row'>
           <InputField
             gridClassName='col-md-3'
