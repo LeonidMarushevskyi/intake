@@ -14,12 +14,15 @@ const HistoryCardReferral = ({referral, index}) => {
   const reporter = referral.get('reporter')
   const assignee = referral.get('assigned_social_worker')
   const allegations = referral.get('allegations')
+  const legacyDescriptor = referral.get('legacy_descriptor')
+  const referralId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
 
   return (
     <tr key={`referral-${index}`} id={`referral-${referral.get('id')}`}>
       <td>{dateRangeFormatter(referral.toJS())}</td>
       <td>
         <div className='row'>Referral</div>
+        <div className='row'>{referralId}</div>
         <div className='row'>{`(${status})`}</div>
       </td>
       <td>{incidentCounty}</td>
