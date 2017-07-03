@@ -64,7 +64,7 @@ export default class Autocompleter extends React.Component {
 
   mapPersonSearchAttributes(suggestion) {
     const {
-      middle_name, name_suffix,
+      middle_name, name_suffix, legacy_descriptor,
       gender, languages, races, ethnicity,
       addresses, phone_numbers, highlight,
     } = suggestion
@@ -92,6 +92,8 @@ export default class Autocompleter extends React.Component {
       lastName: highlightedText('last_name', suggestion, highlight),
       middleName: middle_name,
       nameSuffix: name_suffix,
+      legacyFriendlyId: legacy_descriptor && legacy_descriptor.legacy_ui_id,
+      legacyFriendlyTable: legacy_descriptor && legacy_descriptor.legacy_table_description,
       gender: gender,
       languages: languages,
       races: races,

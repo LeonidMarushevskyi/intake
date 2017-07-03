@@ -9,6 +9,18 @@ describe('PersonSuggestion', () => {
     expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
   })
 
+  it('renders legacy source table and id', () => {
+    const props = {legacyFriendlyId: '123-456-789', legacyFriendlyTable: 'Client'}
+    const component = shallow(<PersonSuggestion {...props} />)
+    expect(component.html()).toContain('<span>Client ID 123-456-789 in CWS-CMS</span>')
+  })
+
+  it('renders just the legacy table if no id exists', () => {
+    const props = {legacyFriendlyTable: 'Client'}
+    const component = shallow(<PersonSuggestion {...props} />)
+    expect(component.html()).toContain('<span>Client in CWS-CMS</span>')
+  })
+
   it('renders html sanitized first, last name, middle name and suffix', () => {
     const props = {firstName: '<h3>Bart</h3>', lastName: '<strong>Simpson</strong>', middleName: 'Jacqueline', nameSuffix: 'md'}
     const component = shallow(<PersonSuggestion {...props} />)

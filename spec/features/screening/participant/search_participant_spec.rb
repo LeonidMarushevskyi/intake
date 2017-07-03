@@ -153,6 +153,28 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
+    scenario 'results include information about the legacy source information for a person' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        legacy_descriptor: { legacy_ui_id: '123-456-789', legacy_table_description: 'Client' }
+      )
+      %w[M Ma Mar Marg].each do |search_text|
+        stub_request(
+          :get,
+          host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+        ).and_return(json_body([marge].to_json, status: 200))
+      end
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Marg'
+      end
+
+      within '.react-autosuggest__suggestions-list' do
+        expect(page).to have_content 'Client ID 123-456-789 in CWS-CMS'
+      end
+    end
+
     scenario 'person without phone_numbers' do
       person_with_out_phone_numbers = person.as_json.except('phone_numbers')
       %w[Ma Mar Marg Marge].each do |search_text|

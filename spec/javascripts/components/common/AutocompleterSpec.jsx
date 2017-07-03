@@ -163,6 +163,10 @@ describe('<Autocompleter />', () => {
           number: '994-907-6774',
           type: 'Home',
         }],
+        legacy_descriptor: {
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client',
+        },
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
       expect(attributes.firstName).toEqual('Bart')
@@ -170,6 +174,8 @@ describe('<Autocompleter />', () => {
       expect(attributes.middleName).toEqual('Jacqueline')
       expect(attributes.nameSuffix).toEqual('md')
       expect(attributes.gender).toEqual('female')
+      expect(attributes.legacyFriendlyId).toEqual('123-456-789')
+      expect(attributes.legacyFriendlyTable).toEqual('Client')
       expect(attributes.languages).toEqual(['French', 'Italian'])
       expect(attributes.races).toEqual([
         {race: 'White', race_detail: 'European'},

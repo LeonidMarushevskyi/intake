@@ -25,6 +25,10 @@ describe PersonSearch do
         },
         highlight: {
           first_name: '<em>Hom</em>er'
+        },
+        legacy_descriptor: {
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client'
         }
       }.with_indifferent_access
       expect(described_class.new(attributes).as_json).to eq({
@@ -47,6 +51,10 @@ describe PersonSearch do
         },
         highlight: {
           first_name: '<em>Hom</em>er'
+        },
+        legacy_descriptor: {
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client'
         }
       }.with_indifferent_access)
     end
