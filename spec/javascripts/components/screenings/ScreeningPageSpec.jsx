@@ -22,9 +22,12 @@ export const requiredProps = {
 }
 
 describe('ScreeningPage', () => {
+  const basePath = '/intake'
+
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
+    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
   })
 
   describe('render', () => {
@@ -322,7 +325,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the home and edit link', () => {
-        const homeLink = component.find({to: '/'})
+        const homeLink = component.find({to: basePath})
         const editLink = component.find({to: '/screenings/1/edit'})
         expect(homeLink.html()).toContain('Home')
         expect(editLink.html()).toContain('Edit')

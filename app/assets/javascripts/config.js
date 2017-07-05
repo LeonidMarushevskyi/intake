@@ -13,3 +13,7 @@ export function isFeatureInactive(feature) {
 export function jsClipboardSupported() {
   return window.clipboardData === undefined
 }
+
+export function basePath() {
+  return config().base_path
+}
