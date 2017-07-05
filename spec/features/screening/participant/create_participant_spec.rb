@@ -14,7 +14,6 @@ def filtered_participant_attributes
   ]
 end
 
-# rubocop:disable Metrics/MethodLength
 def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
