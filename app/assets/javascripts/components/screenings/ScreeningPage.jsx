@@ -201,7 +201,7 @@ export class ScreeningPage extends React.Component {
   renderFooterLinks() {
     return (
       <div>
-        <IndexLink to='/' className='gap-right'>Home</IndexLink>
+        <IndexLink to={IntakeConfig.basePath()} className='gap-right'>Home</IndexLink>
         <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>
       </div>
     )
@@ -341,8 +341,8 @@ export class ScreeningPage extends React.Component {
             releaseTwo &&
             <div className='row double-gap-top'>
               <div className='centered'>
-                <a href='/' >
-                  <button className='btn btn-primary' href='/' type='button'>Start Over</button>
+                <a href={IntakeConfig.basePath()} >
+                  <button className='btn btn-primary' href={IntakeConfig.basePath()} type='button'>Start Over</button>
                 </a>
               </div>
             </div>

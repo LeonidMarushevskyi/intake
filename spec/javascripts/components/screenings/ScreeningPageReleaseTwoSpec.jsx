@@ -5,9 +5,12 @@ import {shallow} from 'enzyme'
 import * as IntakeConfig from 'config'
 
 describe('ScreeningPage when release two is active', () => {
+  const basePath = '/base-path'
+
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(false)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true)
+    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
   })
 
   describe('Edit mode', () => {
@@ -50,7 +53,7 @@ describe('ScreeningPage when release two is active', () => {
     it('does not render home and edit links', () => {
       const component = shallow(<ScreeningPage {...requiredProps} />)
       component.setState({loaded: true})
-      expect(component.find({to: '/'}).length).toEqual(0)
+      expect(component.find('IndexLink').length).toEqual(0)
       expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
     })
 
@@ -66,7 +69,7 @@ describe('ScreeningPage when release two is active', () => {
       const button = component.find('button')
       expect(button.length).toEqual(1)
       expect(button.text()).toEqual('Start Over')
-      expect(button.props().href).toEqual('/')
+      expect(button.props().href).toEqual(basePath)
     })
 
     describe('participants card', () => {
