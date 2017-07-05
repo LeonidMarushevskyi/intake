@@ -101,8 +101,16 @@ export class ScreeningPage extends React.Component {
   }
 
   createParticipant(person) {
+    const legacy_friendly_id = person.legacy_descriptor && person.legacy_descriptor.legacy_ui_id
+    const legacy_friendly_table = person.legacy_descriptor && person.legacy_descriptor.legacy_table_description
     const {params} = this.props
-    const participant = Object.assign({}, person, {screening_id: params.id, legacy_id: person.id, id: null})
+    const participant = Object.assign({}, person, {
+      screening_id: params.id,
+      legacy_id: person.id,
+      id: null,
+      legacy_friendly_id: legacy_friendly_id,
+      legacy_friendly_table: legacy_friendly_table,
+    })
     this.props.actions.createParticipant(participant)
   }
 

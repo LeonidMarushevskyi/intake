@@ -13,6 +13,7 @@ import Select from 'react-select'
 import SelectField from 'components/common/SelectField'
 import selectOptions from 'utils/selectHelper'
 import nameFormatter from 'utils/nameFormatter'
+import legacySourceFormatter from 'utils/legacySourceFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'RoleType'
 
 const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}) => {
@@ -35,6 +36,8 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     })
   }
 
+  const legacySourceString = legacySourceFormatter(participant.toJS())
+
   return (
     <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
       <div className='card-header'>
@@ -47,6 +50,11 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
         </button>
       </div>
       <div className='card-body'>
+        {legacySourceString !== '' && <div className='row'>
+          <div className='col-md-12'>
+            <span>{legacySourceString}</span>
+          </div>
+        </div>}
         <div className='row'>
           <InputField
             gridClassName='col-md-3'

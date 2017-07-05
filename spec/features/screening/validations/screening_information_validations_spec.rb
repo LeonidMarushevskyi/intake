@@ -8,7 +8,6 @@ feature 'Screening Information Validations' do
   let(:screening) { FactoryGirl.create(:screening) }
   let(:card_name) { 'screening-information' }
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def validate_message_as_user_interacts_with_date_field(
     error_message:,
     field:,

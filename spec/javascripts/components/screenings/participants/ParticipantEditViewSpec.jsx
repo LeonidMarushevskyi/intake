@@ -25,6 +25,8 @@ describe('ParticipantEditView', () => {
         middle_name: 'Marie',
         last_name: 'Simpson',
         name_suffix: 'phd',
+        legacy_friendly_id: '123-456-789',
+        legacy_friendly_table: 'Client',
         date_of_birth: '2016-12-31',
         gender: 'female',
         languages: [],
@@ -44,6 +46,35 @@ describe('ParticipantEditView', () => {
     it('renders a participant edit view card', () => {
       expect(component.find('.card.edit').length).toEqual(1)
       expect(component.find('#participants-card-199').length).toEqual(1)
+    })
+
+    it('renders the participant legacy id and table', () => {
+      expect(component.text()).toContain('Client ID 123-456-789 in CWS-CMS')
+    })
+
+    it('renders the participant legacy table when there is no id', () => {
+      const participant = Immutable.fromJS({
+        id: participantId,
+        first_name: 'Lisa',
+        last_name: 'Simpson',
+        legacy_friendly_table: 'Client',
+        languages: [],
+        roles: [],
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+      expect(component.text()).toContain('Client in CWS-CMS')
+    })
+
+    it('renders properly when there is no legacy id nor legacy table', () => {
+      const participant = Immutable.fromJS({
+        id: participantId,
+        first_name: 'Lisa',
+        last_name: 'Simpson',
+        languages: [],
+        roles: [],
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+      expect(component.text()).not.toContain('in CWS-CMS')
     })
 
     it('renders the participant header correctly when first name is null', () => {

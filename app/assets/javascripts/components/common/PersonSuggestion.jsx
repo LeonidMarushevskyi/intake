@@ -6,6 +6,7 @@ import NAME_SUFFIXES from 'NameSuffixes'
 import PropTypes from 'prop-types'
 import React from 'react'
 import PhoneNumberInfo from 'components/common/PhoneNumberInfo'
+import legacySourceFormatter from 'utils/legacySourceFormatter'
 import sanitizeHtml from 'sanitize-html'
 
 const PersonSuggestion = ({
@@ -19,7 +20,12 @@ const PersonSuggestion = ({
     },
   })
 
-  const idString = `ID ${legacyFriendlyId} `
+  const legacySourceString = legacySourceFormatter(
+    {
+      legacy_friendly_table: legacyFriendlyTable,
+      legacy_friendly_id: legacyFriendlyId,
+    }
+  )
 
   return (
     <div className='row'>
@@ -30,7 +36,7 @@ const PersonSuggestion = ({
         <div className='row'>
           <div className='col-md-12'>
             <strong {...sanitizedField(fullName)} /><br/>
-            <span>{`${legacyFriendlyTable} ${legacyFriendlyId ? idString : '' }in CWS-CMS`}</span>
+            <span>{legacySourceString}</span>
           </div>
         </div>
         <div className='row'>

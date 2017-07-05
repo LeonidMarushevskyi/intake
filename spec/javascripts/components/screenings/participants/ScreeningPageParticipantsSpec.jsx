@@ -79,8 +79,19 @@ describe('ScreeningPage', () => {
     })
 
     describe('createParticipant', () => {
-      const person = {id: '3'}
-      const participant = {id: null, screening_id: props.params.id, legacy_id: person.id}
+      const legacy_descriptor = {
+        legacy_ui_id: '123-456-789',
+        legacy_table_description: 'Client',
+      }
+      const person = {id: '3', legacy_descriptor: legacy_descriptor}
+      const participant = {
+        id: null,
+        legacy_descriptor: legacy_descriptor,
+        screening_id: props.params.id,
+        legacy_id: person.id,
+        legacy_friendly_id: '123-456-789',
+        legacy_friendly_table: 'Client',
+      }
 
       it('calls the createParticipant action', () => {
         component.instance().createParticipant(person)

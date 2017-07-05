@@ -31,6 +31,8 @@ feature 'Edit Screening' do
       middle_name: 'Jacqueline',
       last_name: 'Simpson',
       name_suffix: 'sr',
+      legacy_friendly_id: '123-456-789',
+      legacy_friendly_table: 'Client',
       gender: 'female',
       ssn: old_ssn,
       languages: ['Armenian'],
@@ -83,6 +85,7 @@ feature 'Edit Screening' do
       end
 
       within '.card-body' do
+        expect(page).to have_content('Client ID 123-456-789 in CWS-CMS')
         expect(page).to have_selector("#address-#{marge_address.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Middle Name', with: marge.middle_name)
