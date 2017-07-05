@@ -11,7 +11,7 @@ import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => {
-  const legacySourceString = legacySourceFormatter(participant)
+  const legacySourceString = legacySourceFormatter(participant.toJS())
 
   return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>

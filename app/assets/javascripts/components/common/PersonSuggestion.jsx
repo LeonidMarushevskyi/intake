@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import AddressInfo from 'components/common/AddressInfo'
 import AgeInfo from 'components/common/AgeInfo'
 import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
@@ -22,10 +21,10 @@ const PersonSuggestion = ({
   })
 
   const legacySourceString = legacySourceFormatter(
-    Immutable.Map({
+    {
       legacy_friendly_table: legacyFriendlyTable,
       legacy_friendly_id: legacyFriendlyId,
-    })
+    }
   )
 
   return (

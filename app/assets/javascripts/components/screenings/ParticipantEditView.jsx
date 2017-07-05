@@ -36,7 +36,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     })
   }
 
-  const legacySourceString = legacySourceFormatter(participant)
+  const legacySourceString = legacySourceFormatter(participant.toJS())
 
   return (
     <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
