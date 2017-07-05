@@ -48,6 +48,16 @@ describe('HistoryCardReferral', () => {
     expect(cells.at(0).text()).toEqual('08/13/2016 - 09/23/2016')
   })
 
+  it('renders the referral id', () => {
+    const referral = Immutable.fromJS({
+      legacy_descriptor: {legacy_ui_id: '1234-1234-1234-1234567'},
+    })
+
+    const component = shallow(<HistoryCardReferral referral={referral} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Referral1234-1234-1234-1234567(Open)')
+  })
+
   it('renders the referral status as In Progress when there is no end_date', () => {
     const referral = Immutable.fromJS({
       start_date: '2016-08-13',
