@@ -1,4 +1,4 @@
-import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported} from 'config'
+import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath} from 'config'
 
 describe('intake config', () => {
   let windowOrg
@@ -67,6 +67,18 @@ describe('intake config', () => {
       it('returns true', () => {
         expect(isFeatureInactive('enabled_feature')).toEqual(true)
       })
+    })
+  })
+
+  describe('.basePath', () => {
+    const basePathString = '/base-path-test'
+
+    beforeEach(() => {
+      window.org = Object.freeze({intake: {config: {base_path: basePathString}}})
+    })
+
+    it('returns the proper base path', () => {
+      expect(basePath()).toEqual(basePathString)
     })
   })
 })
