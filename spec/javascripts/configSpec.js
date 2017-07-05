@@ -1,4 +1,4 @@
-import {isFeatureActive, isFeatureInactive, config} from 'config'
+import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported} from 'config'
 
 describe('intake config', () => {
   let windowOrg
@@ -12,6 +12,17 @@ describe('intake config', () => {
 
     it('references window org intake config', () => {
       expect(config()).toEqual({test_config: true})
+    })
+  })
+
+  describe('.jsClipboardSupported', () => {
+    it('true when clipboardData (IE specific) is absent', () => {
+      window.clipboardData = {} // We can only spyOn methods that already exist
+      expect(jsClipboardSupported()).toEqual(false)
+      delete window.clipboardData
+    })
+    it('is true when clipboardData is missing', () => {
+      expect(jsClipboardSupported()).toEqual(true)
     })
   })
 
