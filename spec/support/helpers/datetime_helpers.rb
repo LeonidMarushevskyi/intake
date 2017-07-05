@@ -5,7 +5,7 @@ module DateTimeHelpers
     zero_indexed_month = date.month - 1
     within locator do
       find('.rw-btn-calendar').click
-      find("[id$='cal_calendar__month_#{zero_indexed_month}-#{date.day}']").click
+      find("[id$='cal_calendar__month_#{zero_indexed_month}-#{date.day}']", visible: true).click
     end
   end
 

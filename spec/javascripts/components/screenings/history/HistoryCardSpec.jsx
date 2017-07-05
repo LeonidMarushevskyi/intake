@@ -4,6 +4,7 @@ import HistoryCard from 'components/screenings/HistoryCard'
 import React from 'react'
 import clipboard from 'clipboard-js'
 import {shallow, mount} from 'enzyme'
+import * as config from 'config'
 
 describe('HistoryCard', () => {
   const requiredProps = {
@@ -188,6 +189,14 @@ describe('HistoryCard', () => {
 
       describe('copy button', () => {
         const involvements = Immutable.fromJS({screenings: [Immutable.fromJS({id: 1})]})
+        it('shows help text instead of copybutton', () => {
+          spyOn(config, 'jsClipboardSupported').and.returnValue(false)
+          const component = shallow(<HistoryCard {...requiredProps} involvements={involvements} />)
+          expect(component.find('button[children="Copy"]').length).toEqual(0)
+          expect(component.text()).toContain(
+            'To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".'
+          )
+        })
         it('does not render if there are no involvements', () => {
           const component = shallow(<HistoryCard {...requiredProps} />)
           expect(component.find('button[children="Copy"]').length).toEqual(0)
@@ -202,6 +211,9 @@ describe('HistoryCard', () => {
           const wrapper = mount(<HistoryCard {...requiredProps} involvements={involvements} />)
           const resultsTable = wrapper.find('table').node
           wrapper.find('button[children="Copy"]').simulate('click')
+          expect(wrapper.text()).not.toContain(
+            'To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".'
+          )
           expect(copySpy).toHaveBeenCalledWith({
             'text/plain': resultsTable.innerText,
             'text/html': resultsTable.outerHTML,

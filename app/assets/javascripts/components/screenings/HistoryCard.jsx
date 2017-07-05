@@ -5,6 +5,7 @@ import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
 import PropTypes from 'prop-types'
 import React from 'react'
 import clipboard from 'clipboard-js'
+import {jsClipboardSupported} from 'config'
 
 export default class HistoryCard extends React.Component {
   constructor(props, context) {
@@ -78,16 +79,21 @@ export default class HistoryCard extends React.Component {
           { !emptyInvolvements &&
             <div className='row'>
               <div className='centered'>
-                <button
-                  onClick={() =>
-                    this.historyTable && clipboard.copy({
-                      'text/plain': this.historyTable.innerText,
-                      'text/html': this.historyTable.outerHTML,
-                    })}
-                  className='btn btn-primary'
-                >
-                  Copy
-                </button>
+                { jsClipboardSupported() &&
+                  <button
+                    onClick={() =>
+                      this.historyTable && clipboard.copy({
+                        'text/plain': this.historyTable.innerText,
+                        'text/html': this.historyTable.outerHTML,
+                      })}
+                    className='btn btn-primary'
+                  >
+                    Copy
+                  </button>
+                }
+                { !jsClipboardSupported() &&
+                  <p>To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".</p>
+                }
               </div>
             </div>
           }

@@ -9,3 +9,7 @@ export function isFeatureActive(feature) {
 export function isFeatureInactive(feature) {
   return !isFeatureActive(feature)
 }
+
+export function jsClipboardSupported() {
+  return window.clipboardData === undefined
+}
