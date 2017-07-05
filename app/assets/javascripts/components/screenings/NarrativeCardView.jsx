@@ -36,13 +36,13 @@ export default class NarrativeCardView extends React.Component {
     const {mode} = this.state
     const allProps = {
       edit: {
-        narrative: this.props.narrative,
+        screening: this.props.screening,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,
       },
       show: {
-        narrative: this.props.narrative,
+        screening: this.props.screening,
         onEdit: this.onEdit,
       },
     }
@@ -54,8 +54,8 @@ export default class NarrativeCardView extends React.Component {
 
 NarrativeCardView.propTypes = {
   mode: PropTypes.oneOf(['edit', 'show']),
-  narrative: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }

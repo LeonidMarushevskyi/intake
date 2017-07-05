@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => (
+const NarrativeEditView = ({screening, onCancel, onSave, onChange}) => (
   <div className='card edit double-gap-top' id='narrative-card'>
     <div className='card-header'>
       <span>Narrative</span>
@@ -13,7 +13,7 @@ const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => (
           <textarea
             id='report_narrative'
             onChange={(event) => onChange(['report_narrative'], event.target.value || null)}
-            required value={narrative || ''}
+            required value={screening.get('report_narrative') || ''}
           />
         </div>
       </div>
@@ -28,9 +28,9 @@ const NarrativeEditView = ({narrative, onCancel, onSave, onChange}) => (
 )
 
 NarrativeEditView.propTypes = {
-  narrative: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default NarrativeEditView

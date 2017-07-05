@@ -264,7 +264,7 @@ export class ScreeningPage extends React.Component {
               onCancel={this.cancelEdit}
               onChange={this.setField}
               onSave={this.cardSave}
-              narrative={mergedScreening.get('report_narrative')}
+              screening={mergedScreening}
             />
           }
           {

@@ -1,4 +1,5 @@
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import Immutable from 'immutable'
 import React from 'react'
 import {mount} from 'enzyme'
 
@@ -7,8 +8,12 @@ describe('NarrativeEditView', () => {
   let onCancel
   let onChange
   let onSave
+  let screening
 
   beforeEach(() => {
+    screening = Immutable.fromJS({
+      report_narrative: 'some narrative',
+    })
     onCancel = jasmine.createSpy('onCancel')
     onSave = jasmine.createSpy('onSave')
     onChange = jasmine.createSpy('onChange')
@@ -17,7 +22,7 @@ describe('NarrativeEditView', () => {
         onCancel={onCancel}
         onChange={onChange}
         onSave={onSave}
-        narrative={'some narrative'}
+        screening={screening}
       />
     )
   })

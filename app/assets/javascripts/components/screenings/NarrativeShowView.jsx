@@ -3,7 +3,7 @@ import ShowField from 'components/common/ShowField'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const NarrativeShowView = ({narrative, onEdit}) => (
+const NarrativeShowView = ({screening, onEdit}) => (
   <div className='card show double-gap-top' id='narrative-card'>
     <div className='card-header'>
       <span>Narrative</span>
@@ -12,7 +12,7 @@ const NarrativeShowView = ({narrative, onEdit}) => (
     <div className='card-body'>
       <div className='row'>
         <ShowField gridClassName='col-md-12' label='Report Narrative' required>
-          {narrative}
+          {screening.get('report_narrative')}
         </ShowField>
       </div>
     </div>
@@ -20,7 +20,7 @@ const NarrativeShowView = ({narrative, onEdit}) => (
 )
 
 NarrativeShowView.propTypes = {
-  narrative: PropTypes.string,
   onEdit: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }
 export default NarrativeShowView

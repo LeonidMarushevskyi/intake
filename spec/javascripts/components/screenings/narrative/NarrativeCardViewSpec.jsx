@@ -6,8 +6,11 @@ import {mount} from 'enzyme'
 describe('NarrativeCardView', () => {
   let component
   const onSave = jasmine.createSpy('onSave')
+  const screening = Immutable.fromJS({
+    report_narrative: 'This is my narrative',
+  })
   const props = {
-    narrative: 'This is my narrative',
+    screening: screening,
     onSave: onSave,
     onCancel: jasmine.createSpy('onCancel'),
     onEdit: jasmine.createSpy('onEdit'),
@@ -25,7 +28,7 @@ describe('NarrativeCardView', () => {
 
       it('renders the edit view', () => {
         expect(component.find('NarrativeEditView').length).toEqual(1)
-        expect(component.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
+        expect(component.find('NarrativeEditView').props().screening).toEqual(screening)
       })
 
       describe("when 'Cancel' is clicked", () => {
@@ -35,11 +38,11 @@ describe('NarrativeCardView', () => {
         })
 
         it('the narrative show view is rendered', () => {
-          expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
+          expect(component.find('NarrativeShowView').props().screening).toEqual(screening)
         })
 
         it('the edit view does not retain canceled changes', () => {
-          expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
+          expect(component.find('NarrativeShowView').props().screening).toEqual(screening)
         })
       })
 
@@ -56,7 +59,7 @@ describe('NarrativeCardView', () => {
             editLink.simulate('click')
           })
           it('the narrative edit view is rendered with the original narrative', () => {
-            expect(component.find('NarrativeEditView').props().narrative).toEqual('This is my narrative')
+            expect(component.find('NarrativeEditView').props().screening).toEqual(screening)
           })
         })
 
@@ -84,7 +87,7 @@ describe('NarrativeCardView', () => {
 
       it('renders the show view', () => {
         expect(component.find('NarrativeShowView').length).toEqual(1)
-        expect(component.find('NarrativeShowView').props().narrative).toEqual('This is my narrative')
+        expect(component.find('NarrativeShowView').props().screening).toEqual(screening)
       })
 
       describe("and a user clicks 'Edit narrative'", () => {
