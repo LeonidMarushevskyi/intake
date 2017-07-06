@@ -23,4 +23,5 @@ class Participant
   attribute :languages, Array
   attribute :races, Array
   attribute :ethnicity, Ethnicity, default: ->(_person, _attribute) { Ethnicity.new }
+  attribute :legacy_descriptor, LegacyDescriptor
 end
