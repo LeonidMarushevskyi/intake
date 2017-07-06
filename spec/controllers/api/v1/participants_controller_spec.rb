@@ -36,6 +36,14 @@ describe Api::V1::ParticipantsController do
         ],
         legacy_id: '2',
         legacy_source_table: 'CLIENT_T',
+        legacy_descriptor: {
+          id: '1',
+          legacy_id: '8dCC54DWFdsDF24',
+          legacy_last_updated: '2010-10-01T22:26:42.000Z',
+          legacy_table_description: 'Client',
+          legacy_table_name: 'CLIENT_T',
+          legacy_ui_id: '0947-1946-9435-0081454'
+        },
         screening_id: '1',
         ssn: '123-23-1234',
         languages: %w[French Farsi]
