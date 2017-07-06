@@ -92,7 +92,7 @@ export default class HistoryCard extends React.Component {
                   </button>
                 }
                 { !jsClipboardSupported() &&
-                  <p>To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".</p>
+                  <p>To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select "Copy."</p>
                 }
               </div>
             </div>

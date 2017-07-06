@@ -194,7 +194,7 @@ describe('HistoryCard', () => {
           const component = shallow(<HistoryCard {...requiredProps} involvements={involvements} />)
           expect(component.find('button[children="Copy"]').length).toEqual(0)
           expect(component.text()).toContain(
-            'To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".'
+            'To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select "Copy."'
           )
         })
         it('does not render if there are no involvements', () => {
@@ -212,7 +212,7 @@ describe('HistoryCard', () => {
           const resultsTable = wrapper.find('table').node
           wrapper.find('button[children="Copy"]').simulate('click')
           expect(wrapper.text()).not.toContain(
-            'To copy the history to your clipboard, select the above history table, click the right button of your mouse and select "Copy".'
+            'To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select "Copy."'
           )
           expect(copySpy).toHaveBeenCalledWith({
             'text/plain': resultsTable.innerText,
