@@ -3,17 +3,34 @@ import NarrativeEditView from 'components/screenings/NarrativeEditView'
 import NarrativeShowView from 'components/screenings/NarrativeShowView'
 import PropTypes from 'prop-types'
 import React from 'react'
+import * as Validator from 'utils/validator'
 
 export default class NarrativeCardView extends React.Component {
   constructor(props, context) {
     super(props, context)
+    this.onBlur = this.onBlur.bind(this)
+    this.onCancel = this.onCancel.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.onEdit = this.onEdit.bind(this)
+    this.onSave = this.onSave.bind(this)
+    this.validateField = this.validateField.bind(this)
+    this.fieldValidations = Immutable.fromJS({
+      report_narrative: [
+        {rule: 'isRequired', message: 'Please enter a narrative.'},
+      ],
+    })
+
+    this.fields = Immutable.List(this.fieldValidations.keys())
+
+    let errors = Immutable.Map()
+    if (this.props.mode === 'show') {
+      errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+    }
+
     this.state = {
+      errors: errors,
       mode: this.props.mode,
     }
-    this.onEdit = this.onEdit.bind(this)
-    this.onCancel = this.onCancel.bind(this)
-    this.onSave = this.onSave.bind(this)
-    this.fields = Immutable.fromJS(['report_narrative'])
   }
 
   onEdit(event) {
@@ -22,26 +39,58 @@ export default class NarrativeCardView extends React.Component {
   }
 
   onCancel() {
-    this.setState({mode: 'show'})
+    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+    this.setState({mode: 'show', errors: errors})
     this.props.onCancel(this.fields)
   }
 
+  validateField(fieldName, value) {
+    // Only one field in this card at this time so we cheat and validate all one of them.
+    return Validator.validateAllFields({
+      screening: Immutable.fromJS({[fieldName]: value}),
+      fieldValidations: this.fieldValidations,
+    })
+  }
+
+  onChange(fieldSeq, value, callback) {
+    fieldSeq.map((fieldName) => {
+      const errors = this.state.errors.get(fieldName)
+      if (errors && !errors.isEmpty()) {
+        this.setState({errors: this.validateField(fieldName, value)})
+      }
+    })
+    this.props.onChange(fieldSeq, value, callback)
+  }
+
+  onBlur(event) {
+    this.setState({
+      errors: Validator.validateAllFields({
+        screening: Immutable.fromJS({report_narrative: event.target.value}),
+        fieldValidations: this.fieldValidations,
+      }),
+    })
+  }
+
   onSave() {
+    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
     return this.props.onSave(this.fields).then(() => {
-      this.setState({mode: 'show'})
+      this.setState({mode: 'show', errors: errors})
     })
   }
 
   render() {
-    const {mode} = this.state
+    const {errors, mode} = this.state
     const allProps = {
       edit: {
+        errors: errors,
         screening: this.props.screening,
+        onBlur: this.onBlur,
         onCancel: this.onCancel,
-        onChange: this.props.onChange,
+        onChange: this.onChange,
         onSave: this.onSave,
       },
       show: {
+        errors: errors,
         screening: this.props.screening,
         onEdit: this.onEdit,
       },
