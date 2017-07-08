@@ -46,4 +46,19 @@ describe('NarrativeShowView', () => {
       expect(onEdit).toHaveBeenCalled()
     })
   })
+
+  describe('with INVALID data', () => {
+    const errors = Immutable.fromJS({report_narrative: ['That is not a report narrative, this is a report narrative']})
+    beforeEach(() => {
+      screening = Immutable.fromJS({
+        report_narrative: 'some narrative',
+      })
+      onEdit = jasmine.createSpy()
+      component = shallow(<NarrativeShowView screening={screening} errors={errors} onEdit={onEdit} />)
+    })
+
+    it('renders the narrative show field', () => {
+      expect(component.find('ShowField').html()).toContain(errors.get('report_narrative').first())
+    })
+  })
 })
