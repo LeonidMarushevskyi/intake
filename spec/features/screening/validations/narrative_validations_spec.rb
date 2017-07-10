@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'support/factory_girl'
 
 feature 'Narrative Card Validations' do
-  let(:screening) { FactoryGirl.create(:screening) }
+  let(:screening) { FactoryGirl.create(:screening, report_narrative: '') }
   let(:error_message) { 'Please enter a narrative.' }
 
   context 'on the edit page' do
@@ -14,20 +14,27 @@ feature 'Narrative Card Validations' do
         .and_return(json_body(screening.to_json, status: 200))
     end
 
-    scenario 'displays no error on initial load' do
+    def visit_edit_screening
+      # TODO: remove this once we can consistently have a fresh page for these specs
+      page.evaluate_script('window.location.reload()')
+
       visit edit_screening_path(id: screening.id)
+    end
+
+    scenario 'displays no error on initial load' do
+      visit_edit_screening
       should_not_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'displays error on blur' do
-      visit edit_screening_path(id: screening.id)
+      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'removes error on change' do
-      visit edit_screening_path(id: screening.id)
+      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
@@ -36,7 +43,7 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'shows error on save page' do
-      visit edit_screening_path(id: screening.id)
+      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
@@ -45,7 +52,7 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'shows no error when filled in' do
-      visit edit_screening_path(id: screening.id)
+      visit_edit_screening
       fill_in 'Report Narrative', with: 'This has been filled in.'
       blur_field
       should_not_have_content error_message, inside: '#narrative-card .card-body'
