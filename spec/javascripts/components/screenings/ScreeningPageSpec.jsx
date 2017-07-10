@@ -387,9 +387,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the narrative card after screening is loaded', () => {
-        expect(component.find('NarrativeCardView').props().narrative).toEqual(
-          'this is a narrative report'
-        )
+        expect(component.find('NarrativeCardView').props().screening).toEqual(props.screening)
         expect(component.find('NarrativeCardView').props().mode).toEqual('show')
       })
     })

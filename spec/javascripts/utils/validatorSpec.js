@@ -60,6 +60,37 @@ describe('Validator', () => {
     })
   })
 
+  describe('validateAllFields', () => {
+    let fieldValidations
+    let screening
+
+    describe('when there are no arguments', () => {
+      it('returns an empty errors map', () => {
+        expect(Validator.validateAllFields({screening: Immutable.Map(), fieldValidations: Immutable.Map()})).toEqual(Immutable.Map())
+      })
+    })
+
+    describe('when there are values that are valid', () => {
+      it('returns an empty errors map', () => {
+        screening = Immutable.fromJS({some_field: 'is filled in'})
+        fieldValidations = Immutable.fromJS({some_field: [
+          {rule: 'isRequired', message: 'Please enter a narrative.'},
+        ]})
+        expect(Validator.validateAllFields({screening: screening, fieldValidations: fieldValidations}).get('some_field').toJS()).toEqual([])
+      })
+    })
+
+    describe('when there are NOT values that are valid', () => {
+      it('returns an errors map', () => {
+        screening = Immutable.fromJS({some_field: ''})
+        fieldValidations = Immutable.fromJS({some_field: [
+          {rule: 'isRequired', message: 'Please enter a field.'},
+        ]})
+        expect(Validator.validateAllFields({screening: screening, fieldValidations: fieldValidations}).get('some_field').toJS()).toContain('Please enter a field.')
+      })
+    })
+  })
+
   describe('isRequired', () => {
     const sharedArgs = {
       rules: Immutable.fromJS([{rule: 'isRequired', message: 'Give me a social worker'}]),

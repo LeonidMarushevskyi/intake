@@ -19,7 +19,7 @@ describe('ScreeningInformationEditView', () => {
   }
 
   beforeEach(() => {
-    requiredProps.validateOneField = jasmine.createSpy('validateOneField')
+    requiredProps.validateField = jasmine.createSpy('validateField')
     requiredProps.validateOnChange = jasmine.createSpy('validateOnChange')
     requiredProps.onChange = jasmine.createSpy('onChange')
     requiredProps.onCancel = jasmine.createSpy('onCancel')
@@ -89,13 +89,13 @@ describe('ScreeningInformationEditView', () => {
   })
 
   describe('when a required field loses focus', () => {
-    let validateOneFieldSpy
+    let validateFieldSpy
 
     beforeEach(() => {
-      validateOneFieldSpy = jasmine.createSpy('validateOneField')
+      validateFieldSpy = jasmine.createSpy('validateField')
       const props = {
         ...requiredProps,
-        validateOneField: validateOneFieldSpy,
+        validateField: validateFieldSpy,
         errors: Immutable.fromJS({
           assignee: ['First error', 'Second error'],
           communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
@@ -107,32 +107,32 @@ describe('ScreeningInformationEditView', () => {
       component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
-    it('calls validateOneField for the social worker with the field name and value', () => {
+    it('calls validateField for the social worker with the field name and value', () => {
       const socialWorker = requiredProps.screening.get('assignee')
       const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
       assigneeField.props().onBlur({target: {value: socialWorker}})
-      expect(validateOneFieldSpy).toHaveBeenCalledWith('assignee', socialWorker)
+      expect(validateFieldSpy).toHaveBeenCalledWith('assignee', socialWorker)
     })
 
-    it('calls validateOneField for the start date with the field name and value', () => {
+    it('calls validateField for the start date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('started_at')
       const startDate = component.find('DateField[label="Screening Start Date/Time"]')
       startDate.props().onBlur(dateValue)
-      expect(validateOneFieldSpy).toHaveBeenCalledWith('started_at', dateValue)
+      expect(validateFieldSpy).toHaveBeenCalledWith('started_at', dateValue)
     })
 
-    it('calls validateOneField for the communication method with the field name and value', () => {
+    it('calls validateField for the communication method with the field name and value', () => {
       const commMethodValue = requiredProps.screening.get('communication_method')
       const commMethodField = component.find('SelectField[label="Communication Method"]')
       commMethodField.props().onBlur({target: {value: commMethodValue}})
-      expect(validateOneFieldSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
+      expect(validateFieldSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
     })
 
-    it('calls validateOneField for the end date with the field name and value', () => {
+    it('calls validateField for the end date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('ended_at')
       const endDate = component.find('DateField[label="Screening End Date/Time"]')
       endDate.props().onBlur(dateValue)
-      expect(validateOneFieldSpy).toHaveBeenCalledWith('ended_at', dateValue)
+      expect(validateFieldSpy).toHaveBeenCalledWith('ended_at', dateValue)
     })
   })
 
@@ -155,28 +155,28 @@ describe('ScreeningInformationEditView', () => {
       component = shallow(<ScreeningInformationEditView {...props} />)
     })
 
-    it('calls validateOneField for the social worker with the field name and value', () => {
+    it('calls validateField for the social worker with the field name and value', () => {
       const socialWorker = requiredProps.screening.get('assignee')
       const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
       assigneeField.props().onChange({target: {value: socialWorker}})
       expect(validateOnChangeSpy).toHaveBeenCalledWith('assignee', socialWorker)
     })
 
-    it('calls validateOneField for the start date with the field name and value', () => {
+    it('calls validateField for the start date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('started_at')
       const startDate = component.find('DateField[label="Screening Start Date/Time"]')
       startDate.props().onChange(dateValue)
       expect(validateOnChangeSpy).toHaveBeenCalledWith('started_at', dateValue)
     })
 
-    it('calls validateOneField for the communication method with the field name and value', () => {
+    it('calls validateField for the communication method with the field name and value', () => {
       const commMethodValue = requiredProps.screening.get('communication_method')
       const commMethodField = component.find('SelectField[label="Communication Method"]')
       commMethodField.props().onChange({target: {value: commMethodValue}})
       expect(validateOnChangeSpy).toHaveBeenCalledWith('communication_method', commMethodValue)
     })
 
-    it('calls validateOneField for the end date with the field name and value', () => {
+    it('calls validateField for the end date with the field name and value', () => {
       const dateValue = requiredProps.screening.get('ended_at')
       const endDate = component.find('DateField[label="Screening End Date/Time"]')
       endDate.props().onChange(dateValue)

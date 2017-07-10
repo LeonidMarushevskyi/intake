@@ -48,13 +48,13 @@ describe('ScreeningInformationCardView', () => {
     })
   })
 
-  describe('validateOneField', () => {
+  describe('validateField', () => {
     beforeEach(() => {
       component = shallow(<ScreeningInformationCardView {...baseProps} mode='edit' />)
     })
 
     it('adds errors for communication method being required', () => {
-      component.instance().validateOneField('communication_method', '')
+      component.instance().validateField('communication_method', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {communication_method: ['Please select a communication method.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -62,7 +62,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('adds errors for assigned social worker being required', () => {
-      component.instance().validateOneField('assignee', '')
+      component.instance().validateField('assignee', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {assignee: ['Please enter an assigned worker.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -70,7 +70,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('adds errors for start date/time being required', () => {
-      component.instance().validateOneField('started_at', null)
+      component.instance().validateField('started_at', null)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {started_at: ['Please enter a screening start date.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -79,7 +79,7 @@ describe('ScreeningInformationCardView', () => {
 
     it('adds errors for end date/time being in the future', () => {
       const futureDate = moment().add(2, 'days').toISOString()
-      component.instance().validateOneField('ended_at', futureDate)
+      component.instance().validateField('ended_at', futureDate)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
       expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -97,7 +97,7 @@ describe('ScreeningInformationCardView', () => {
         }
         component = shallow(<ScreeningInformationCardView {...props} mode='edit' />)
         const date = ended_at.subtract(2, 'days').toISOString()
-        component.instance().validateOneField('started_at', date)
+        component.instance().validateField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time cannot be in the future.']}
         expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -116,7 +116,7 @@ describe('ScreeningInformationCardView', () => {
         }
         component = shallow(<ScreeningInformationCardView {...props} mode='edit' />)
         const date = ended_at.add(2, 'days').toISOString()
-        component.instance().validateOneField('started_at', date)
+        component.instance().validateField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time must be before the end date and time.']}
         expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
@@ -139,8 +139,8 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('passes validate to the child component', () => {
-      expect(component.find('ScreeningInformationEditView').props().validateOneField).not.toEqual(undefined)
-      expect(component.find('ScreeningInformationEditView').props().validateOneField).toEqual(component.instance().validateOneField)
+      expect(component.find('ScreeningInformationEditView').props().validateField).not.toEqual(undefined)
+      expect(component.find('ScreeningInformationEditView').props().validateField).toEqual(component.instance().validateField)
     })
 
     it('passes errors from the state', () => {
@@ -156,7 +156,7 @@ describe('ScreeningInformationCardView', () => {
       let validatorSpy
 
       beforeEach(() => {
-        validatorSpy = spyOn(Validator, 'validateField').and.callThrough()
+        validatorSpy = spyOn(Validator, 'validateAllFields').and.callThrough()
         component.find('.btn.btn-primary').simulate('click')
       })
 
@@ -190,7 +190,7 @@ describe('ScreeningInformationCardView', () => {
       let validatorSpy
 
       beforeEach(() => {
-        validatorSpy = spyOn(Validator, 'validateField').and.callThrough()
+        validatorSpy = spyOn(Validator, 'validateAllFields').and.callThrough()
         component.find('#name').simulate(
           'change', {target: {value: 'Cancel this change!'}}
         )

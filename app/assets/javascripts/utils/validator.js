@@ -43,3 +43,14 @@ export function validateField({value, rules}) {
   })
   return errorMessages.filterNot((message) => message === undefined)
 }
+
+export function validateAllFields({screening, fieldValidations}) {
+  const errors = {}
+  fieldValidations.map((rules, fieldShortName) => {
+    errors[fieldShortName] = validateField({
+      value: screening.get(fieldShortName),
+      rules,
+    })
+  })
+  return Immutable.Map(errors)
+}
