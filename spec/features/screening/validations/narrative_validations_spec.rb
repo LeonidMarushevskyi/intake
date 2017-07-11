@@ -13,10 +13,10 @@ feature 'Narrative Card Validations' do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
 
+      visit edit_screening_path(id: screening.id)
+
       # TODO: remove this once we can consistently have a fresh page for these specs
       page.evaluate_script('window.location.reload()')
-
-      visit edit_screening_path(id: screening.id)
     end
 
     scenario 'displays no error on initial load' do
