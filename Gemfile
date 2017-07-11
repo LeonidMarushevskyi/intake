@@ -16,7 +16,9 @@ gem 'virtus'
 group :development, :test do
   gem 'factory_girl_rails', require: false
   gem 'ffaker'
-  gem 'fpm'
+  gem 'fpm',
+    git: 'https://github.com/jordansissel/fpm.git',
+    ref: '488863b3211572ba5488b6f3956aa365d847a48b'
   gem 'haml-lint'
   gem 'i18n-tasks'
   gem 'parallel_tests'
