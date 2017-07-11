@@ -10,7 +10,7 @@ module.exports = function(config) {
       'public/assets/vendor.js',
       'public/assets/application-test.js',
     ],
-    exclude: [ ],
+    exclude: [],
     preprocessors: {
       'public/assets/application-test.js': ['coverage', 'sourcemap'],
     },
@@ -25,7 +25,7 @@ module.exports = function(config) {
         html: `${process.env.CI_REPORTS}/coverage/js`,
       },
       subdir: (browser) => {
-        return browser.toLowerCase().split(' ')[0]
+        return browser.toLowerCase().split(' ').first()
       },
     },
     junitReporter: {
@@ -45,8 +45,8 @@ module.exports = function(config) {
     customLaunchers: {
       Chrome_no_sandbox: {
         base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
+        flags: ['--no-sandbox'],
+      },
     },
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,

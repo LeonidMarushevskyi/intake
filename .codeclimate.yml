@@ -27,6 +27,7 @@ ratings:
   - "**.jsx"
 exclude_paths:
 - Gulpfile.js
+- karam.conf.js
 - config/
 - db/
 - spec/
