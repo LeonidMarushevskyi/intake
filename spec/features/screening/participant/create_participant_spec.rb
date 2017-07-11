@@ -18,6 +18,7 @@ def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
   ).merge(
+    legacy_descriptor: person.legacy_descriptor,
     legacy_id: person.id,
     legacy_source_table: person.legacy_source_table,
     legacy_friendly_id: person.legacy_descriptor[:legacy_ui_id],
@@ -55,16 +56,13 @@ feature 'Edit Screening' do
     FactoryGirl.create(
       :person_search,
       legacy_source_table: 'CLIENT_T',
-      legacy_descriptor: {
-        legacy_ui_id: '123-456-789',
-        legacy_table_description: 'Client'
-      },
       date_of_birth: marge_date_of_birth.to_s(:db),
       first_name: 'Marge',
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
       languages: %w[French Italian],
+      legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
@@ -152,7 +150,6 @@ feature 'Edit Screening' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
       find('li', text: 'Marge Simpson').click
     end
-
     expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
       .with(json_body(participant_marge.to_json(except: :id)))).to have_been_made
 

@@ -22,6 +22,14 @@ module Api
         :screening_id,
         :ssn,
         addresses: %i[id legacy_id legacy_source_table street_address city state zip type],
+        legacy_descriptor: %i[
+          id
+          legacy_id
+          legacy_last_updated
+          legacy_table_description
+          legacy_table_name
+          legacy_ui_id
+        ],
         phone_numbers: %i[id number type],
         roles: [],
         languages: []

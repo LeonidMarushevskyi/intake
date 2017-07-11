@@ -16,8 +16,11 @@ feature 'Show Screening' do
     :phone_number
   )
 
+  date_of_birth = rand(100..1000).weeks.ago
+
   existing_participant = FactoryGirl.create(
     :participant,
+    date_of_birth: date_of_birth.to_s(:db),
     middle_name: 'Jay',
     name_suffix: 'esq',
     legacy_friendly_id: '123-456-789',
@@ -61,7 +64,7 @@ feature 'Show Screening' do
         expect(page).to have_content(phone_number.type)
         expect(page).to have_content(existing_participant.gender.capitalize)
         expect(page).to have_content(existing_participant.languages.join(', '))
-        expect(page).to have_content(existing_participant.date_of_birth.strftime('%m/%d/%Y'))
+        expect(page).to have_content(date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_content('123-  -    ')
         expect(page).to have_content(address.street_address)
         expect(page).to have_content(address.city)

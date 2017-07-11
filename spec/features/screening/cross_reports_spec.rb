@@ -21,8 +21,7 @@ feature 'cross reports' do
       find('label', text: /\ALaw enforcement\z/).click
       fill_in 'Law enforcement agency name', with: 'LA Office'
       expect(page).to have_content 'Communication Time and Method'
-      fill_in_datepicker 'Cross Reported on Date', with: (reported_on - 2)
-      mouse_select_datepicker('#cross_report_reported_on', reported_on)
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on
       expect(find_field('Cross Reported on Date').value).to eq(reported_on.strftime('%m/%d/%Y'))
       select communication_method, from: 'Communication Method'
       click_button 'Save'

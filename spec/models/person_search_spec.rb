@@ -4,6 +4,13 @@ require 'rails_helper'
 
 describe PersonSearch do
   describe 'as_json' do
+    let(:legacy_descriptor) do
+      FactoryGirl.create(
+        :legacy_descriptor,
+        legacy_table_description: 'Definitely on purpose!'
+      ).as_json
+    end
+
     it 'returns the attributes of a person as a hash' do
       attributes = {
         id: '1',
@@ -26,10 +33,7 @@ describe PersonSearch do
         highlight: {
           first_name: '<em>Hom</em>er'
         },
-        legacy_descriptor: {
-          legacy_ui_id: '123-456-789',
-          legacy_table_description: 'Client'
-        }
+        legacy_descriptor: legacy_descriptor
       }.with_indifferent_access
       expect(described_class.new(attributes).as_json).to eq({
         id: '1',
@@ -52,10 +56,9 @@ describe PersonSearch do
         highlight: {
           first_name: '<em>Hom</em>er'
         },
-        legacy_descriptor: {
-          legacy_ui_id: '123-456-789',
-          legacy_table_description: 'Client'
-        }
+        legacy_descriptor: legacy_descriptor.merge(
+          legacy_table_description: 'Definitely on purpose!'
+        )
       }.with_indifferent_access)
     end
   end

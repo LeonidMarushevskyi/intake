@@ -4,6 +4,8 @@ require 'rails_helper'
 
 describe Participant do
   describe 'as_json' do
+    let(:legacy_descriptor) { FactoryGirl.create(:legacy_descriptor).as_json }
+
     it 'returns the attributes of a participant as a hash' do
       attributes = {
         id: '1',
@@ -32,6 +34,7 @@ describe Participant do
           }
         ],
         languages: %w[English Farsi],
+        legacy_descriptor: legacy_descriptor,
         races: %w[White Asian],
         legacy_id: '1',
         legacy_source_table: 'CLIENT_T',
@@ -68,6 +71,7 @@ describe Participant do
             type: 'Home'
           )],
           languages: %w[English Farsi],
+          legacy_descriptor: legacy_descriptor,
           races: %w[White Asian],
           ethnicity: a_hash_including(
             hispanic_latino_origin: 'Yes',
