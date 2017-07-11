@@ -12,9 +12,7 @@ feature 'Narrative Card Validations' do
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
-    end
 
-    def visit_edit_screening
       # TODO: remove this once we can consistently have a fresh page for these specs
       page.evaluate_script('window.location.reload()')
 
@@ -22,19 +20,16 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'displays no error on initial load' do
-      visit_edit_screening
       should_not_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'displays error on blur' do
-      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'removes error on change' do
-      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
@@ -43,7 +38,6 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'shows error on save page' do
-      visit_edit_screening
       fill_in 'Report Narrative', with: ''
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
@@ -52,7 +46,6 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'shows no error when filled in' do
-      visit_edit_screening
       fill_in 'Report Narrative', with: 'This has been filled in.'
       blur_field
       should_not_have_content error_message, inside: '#narrative-card .card-body'

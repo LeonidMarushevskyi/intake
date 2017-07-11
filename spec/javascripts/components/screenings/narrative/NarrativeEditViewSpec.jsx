@@ -81,7 +81,7 @@ describe('NarrativeEditView', () => {
   describe('with INVALID data', () => {
     let errors
     beforeEach(() => {
-      errors = Immutable.fromJS({report_narrative: ['That is not a report narrative, this is a report narrative']})
+      errors = Immutable.fromJS({report_narrative: ['Please enter a narrative.']})
       screening = Immutable.fromJS({
         report_narrative: '',
       })
@@ -101,8 +101,12 @@ describe('NarrativeEditView', () => {
       )
     })
 
+    it('passes the error props correctly', () => {
+      expect(component.find('FormField').props().errors).toEqual(errors.get('report_narrative'))
+    })
+
     it('renders the narrative error', () => {
-      expect(component.find('FormField').html()).toContain(errors.get('report_narrative').first())
+      expect(component.find('FormField').html()).toContain('Please enter a narrative.')
     })
   })
 })

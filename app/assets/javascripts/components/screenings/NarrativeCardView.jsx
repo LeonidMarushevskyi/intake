@@ -45,18 +45,16 @@ export default class NarrativeCardView extends React.Component {
   }
 
   validateField(fieldName, value) {
-    // Only one field in this card at this time so we cheat and validate all one of them.
-    return Validator.validateAllFields({
-      screening: Immutable.fromJS({[fieldName]: value}),
-      fieldValidations: this.fieldValidations,
-    })
+    const rules = this.fieldValidations.get(fieldName)
+    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
+    this.setState({errors: errors})
   }
 
   onChange(fieldSeq, value, callback) {
     fieldSeq.map((fieldName) => {
       const errors = this.state.errors.get(fieldName)
       if (errors && !errors.isEmpty()) {
-        this.setState({errors: this.validateField(fieldName, value)})
+        this.validateField(fieldName, value)
       }
     })
     this.props.onChange(fieldSeq, value, callback)
