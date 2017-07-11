@@ -26,6 +26,7 @@ ratings:
   - "**.js"
   - "**.jsx"
 exclude_paths:
+- Gulpfile.js
 - config/
 - db/
 - spec/
