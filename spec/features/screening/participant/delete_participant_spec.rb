@@ -5,17 +5,7 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'Delete Participant' do
-  let(:participant) do
-    FactoryGirl.create(
-      :participant,
-      date_of_birth: 15.years.ago.to_date.to_s(:db),
-      first_name: 'Marge',
-      gender: 'female',
-      last_name: 'Simpson',
-      ssn: '123-23-1234',
-      legacy_id: 1
-    )
-  end
+  let(:participant) { FactoryGirl.create(:participant) }
   let(:screening) { FactoryGirl.create(:screening, participants: [participant]) }
 
   scenario 'removing a participant from an existing screening in edit mode' do

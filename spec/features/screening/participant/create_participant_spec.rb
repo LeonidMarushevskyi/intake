@@ -18,11 +18,9 @@ def build_participant_from_person_and_screening(person, screening)
   person.as_json(
     only: filtered_participant_attributes
   ).merge(
-    legacy_descriptor: person.legacy_descriptor,
     legacy_id: person.id,
     legacy_source_table: person.legacy_source_table,
-    legacy_friendly_id: person.legacy_descriptor[:legacy_ui_id],
-    legacy_friendly_table: person.legacy_descriptor[:legacy_table_description],
+    legacy_descriptor: person.legacy_descriptor,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
@@ -99,8 +97,7 @@ feature 'Edit Screening' do
       screening_id: existing_screening.id,
       legacy_id: nil,
       legacy_source_table: nil,
-      legacy_friendly_id: nil,
-      legacy_friendly_table: nil
+      legacy_descriptor: nil
     }
 
     stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))

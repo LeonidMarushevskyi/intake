@@ -199,9 +199,7 @@ feature 'History card' do
     end
 
     before do
-      lana = FactoryGirl.create(:participant, first_name: 'Lana', legacy_id: 2)
-      archer = FactoryGirl.create(:participant, first_name: 'Archer', legacy_id: 1)
-      existing_screening.participants = [lana, archer]
+      existing_screening.participants = [FactoryGirl.create(:participant)]
 
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
