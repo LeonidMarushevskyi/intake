@@ -53,6 +53,11 @@ FactoryGirl.define do
       ].sample
     end
 
+    trait :complete do
+      middle_name { Faker::Name.middle_name }
+      name_suffix { Faker::Name.name_suffix }
+    end
+
     trait :unpopulated do
       first_name { nil }
       last_name { nil }
@@ -72,6 +77,22 @@ FactoryGirl.define do
 
     trait :perpetrator do
       roles { ['Perpetrator'] }
+    end
+
+    trait :with_legacy_descriptor do
+      legacy_descriptor factory: :legacy_descriptor
+    end
+
+    trait :with_complete_address do
+      after(:create) do |participant|
+        participant.addresses = create_list(:address, 1, :complete)
+      end
+    end
+
+    trait :with_complete_phone_number do
+      after(:build) do |participant|
+        participant.phone_numbers = create_list(:phone_number, 1)
+      end
     end
   end
 end

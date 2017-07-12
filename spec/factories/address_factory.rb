@@ -12,5 +12,13 @@ FactoryGirl.define do
       legacy_id { FFaker::Guid.guid }
       legacy_source_table { 'ADDR_T' }
     end
+
+    trait :complete do
+      street_address { FFaker::Address.street_address }
+      city { FFaker::Address.city }
+      state { FFaker::AddressUS.state_abbr }
+      zip { FFaker::AddressUS.zip_code }
+      type { %w[Home School Work Placement Homeless Other].sample }
+    end
   end
 end

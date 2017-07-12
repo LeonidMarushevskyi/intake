@@ -6,64 +6,24 @@ require 'spec_helper'
 feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
-  let(:marge_address) do
-    FactoryGirl.create(
-      :address,
-      street_address: '123 Fake St',
-      city: 'Springfield',
-      state: 'NY',
-      zip: '12345',
-      type: 'Home'
-    )
-  end
   let(:marge_roles) { %w[Victim Perpetrator] }
-  let(:marge_phone_number) do
-    FactoryGirl.create(
-      :phone_number
-    )
-  end
   let(:marge) do
     FactoryGirl.create(
       :participant,
-      legacy_id: 1,
-      date_of_birth: '1999-09-14',
-      first_name: 'Marge',
+      :with_complete_address,
+      :with_complete_phone_number,
+      :with_legacy_descriptor,
       middle_name: 'Jacqueline',
-      last_name: 'Simpson',
       name_suffix: 'sr',
-      legacy_friendly_id: '123-456-789',
-      legacy_friendly_table: 'Client',
-      gender: 'female',
       ssn: old_ssn,
-      languages: ['Armenian'],
-      addresses: [marge_address],
-      phone_numbers: [marge_phone_number],
       roles: marge_roles
     )
   end
-  let(:homer_address) do
-    FactoryGirl.create(
-      :address,
-      street_address: '1234 Nowhere Ln',
-      city: 'Springfield',
-      state: 'IL',
-      zip: '98675',
-      type: 'Work'
-    )
+  let(:marge_formatted_name) do
+    name_suffix = marge.name_suffix.capitalize
+    "#{marge.first_name} #{marge.middle_name} #{marge.last_name}, #{name_suffix}"
   end
-  let(:homer) do
-    FactoryGirl.create(
-      :participant,
-      legacy_id: 2,
-      date_of_birth: 25.years.ago.to_date.to_s(:db),
-      first_name: 'Homer',
-      gender: 'male',
-      last_name: 'Simpson',
-      ssn: nil,
-      addresses: [homer_address],
-      roles: ['Reporter']
-    )
-  end
+  let(:homer) { FactoryGirl.create(:participant, :with_complete_address, ssn: nil) }
   let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
 
   before do
@@ -80,13 +40,12 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
-        expect(page).to have_content 'Marge Jacqueline Simpson, Sr'
+        expect(page).to have_content marge_formatted_name
         expect(page).to have_button 'Delete participant'
       end
 
       within '.card-body' do
-        expect(page).to have_content('Client ID 123-456-789 in CWS-CMS')
-        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Middle Name', with: marge.middle_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
@@ -99,7 +58,8 @@ feature 'Edit Screening' do
         # DOB fields are correctly namespaced by participant ID. Feel free to make this more
         # specific once that's done.
         expect(page).not_to have_selector('.rw-select')
-        expect(page).to have_field('Date of birth', with: '09/14/1999')
+        dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
+        expect(page).to have_field('Date of birth', with: dob)
         expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
         expect(page).to have_field('City', with: marge.addresses.first.city)
@@ -140,7 +100,7 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
-        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
@@ -273,7 +233,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
         expect(page).to have_field('City', with: marge.addresses.first.city)
         expect(page).to have_field('State', with: marge.addresses.first.state)
@@ -303,7 +263,7 @@ feature 'Edit Screening' do
 
     within show_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{marge_address.id}")
+        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
@@ -315,11 +275,11 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        within "#address-#{marge_address.id}" do
+        within "#address-#{marge.addresses.first.id}" do
           click_link 'Delete address'
         end
 
-        expect(page).to_not have_selector("#address-#{marge_address.id}")
+        expect(page).to_not have_selector("#address-#{marge.addresses.first.id}")
       end
     end
 
@@ -347,7 +307,7 @@ feature 'Edit Screening' do
       within('.col-md-6', text: 'Language(s)') do
         fill_in_react_select 'Language(s)', with: 'English'
         fill_in_react_select 'Language(s)', with: 'Farsi'
-        remove_react_select_option('Language(s)', 'Armenian')
+        remove_react_select_option('Language(s)', marge.languages.first)
       end
       marge.languages = %w[English Farsi]
       stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
@@ -393,7 +353,7 @@ feature 'Edit Screening' do
       click_button 'Cancel'
     end
 
-    expect(page).to have_content 'Marge Jacqueline Simpson, Sr'
+    expect(page).to have_content marge_formatted_name
     expect(page).to have_link 'Edit participant'
     expect(page).to have_content old_ssn
   end
