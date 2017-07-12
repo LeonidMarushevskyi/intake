@@ -72,7 +72,6 @@ feature 'Edit Screening' do
   end
 
   before do
-    Timecop.travel(Time.parse('2016-12-28 17:01 PST').utc)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
       .and_return(json_body(existing_screening.to_json, status: 200))
     %w[Ma Mar Marg Marge].each do |search_text|
