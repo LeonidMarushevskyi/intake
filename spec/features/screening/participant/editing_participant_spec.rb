@@ -12,7 +12,6 @@ feature 'Edit Screening' do
       :participant,
       :with_complete_address,
       :with_complete_phone_number,
-      :with_legacy_descriptor,
       middle_name: 'Jacqueline',
       name_suffix: 'sr',
       ssn: old_ssn,
@@ -37,7 +36,6 @@ feature 'Edit Screening' do
 
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do
     visit edit_screening_path(id: screening.id)
-
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
         expect(page).to have_content marge_formatted_name
@@ -45,6 +43,9 @@ feature 'Edit Screening' do
       end
 
       within '.card-body' do
+        table_description = marge.legacy_descriptor.legacy_table_description
+        ui_id = marge.legacy_descriptor.legacy_ui_id
+        expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
         expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Middle Name', with: marge.middle_name)
