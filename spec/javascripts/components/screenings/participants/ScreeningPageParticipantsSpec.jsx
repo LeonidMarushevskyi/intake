@@ -89,8 +89,6 @@ describe('ScreeningPage', () => {
         legacy_descriptor: legacy_descriptor,
         screening_id: props.params.id,
         legacy_id: person.id,
-        legacy_friendly_id: '123-456-789',
-        legacy_friendly_table: 'Client',
       }
 
       it('calls the createParticipant action', () => {

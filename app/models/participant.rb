@@ -12,8 +12,6 @@ class Participant
   attribute :middle_name
   attribute :ssn
   attribute :name_suffix
-  attribute :legacy_friendly_id
-  attribute :legacy_friendly_table
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]
   attribute :legacy_id

@@ -174,8 +174,10 @@ describe('<Autocompleter />', () => {
       expect(attributes.middleName).toEqual('Jacqueline')
       expect(attributes.nameSuffix).toEqual('md')
       expect(attributes.gender).toEqual('female')
-      expect(attributes.legacyFriendlyId).toEqual('123-456-789')
-      expect(attributes.legacyFriendlyTable).toEqual('Client')
+      expect(attributes.legacyDescriptor).toEqual({
+        legacy_ui_id: '123-456-789',
+        legacy_table_description: 'Client',
+      })
       expect(attributes.languages).toEqual(['French', 'Italian'])
       expect(attributes.races).toEqual([
         {race: 'White', race_detail: 'European'},
@@ -321,6 +323,7 @@ describe('<Autocompleter />', () => {
           number: '994-907-6774',
           type: 'Home',
         }],
+        legacy_descriptor: {},
       }]
       stubSuggestions(result)
 
@@ -331,8 +334,7 @@ describe('<Autocompleter />', () => {
         lastName: 'Simpson',
         middleName: 'Jacqueline',
         nameSuffix: 'md',
-        legacyFriendlyId: undefined,
-        legacyFriendlyTable: undefined,
+        legacyDescriptor: {},
         gender: 'female',
         languages: ['French', 'Italian'],
         races: [

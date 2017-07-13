@@ -10,6 +10,12 @@ describe('ParticipantEditView', () => {
   let onCancel
   let onSave
 
+  const requiredParticipantProps = {
+    roles: [],
+    legacy_descriptor: {},
+    languages: [],
+  }
+
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     onCancel = jasmine.createSpy('onCancel')
@@ -25,13 +31,15 @@ describe('ParticipantEditView', () => {
         middle_name: 'Marie',
         last_name: 'Simpson',
         name_suffix: 'phd',
-        legacy_friendly_id: '123-456-789',
-        legacy_friendly_table: 'Client',
         date_of_birth: '2016-12-31',
         gender: 'female',
         languages: [],
         ssn: 'ssn-1',
         roles: [],
+        legacy_descriptor: {
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client',
+        },
       })
       component = shallow(
         <ParticipantEditView
@@ -54,12 +62,13 @@ describe('ParticipantEditView', () => {
 
     it('renders the participant legacy table when there is no id', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: participantId,
         first_name: 'Lisa',
         last_name: 'Simpson',
-        legacy_friendly_table: 'Client',
-        languages: [],
-        roles: [],
+        legacy_descriptor: {
+          legacy_table_description: 'Client',
+        },
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.text()).toContain('Client in CWS-CMS')
@@ -67,11 +76,11 @@ describe('ParticipantEditView', () => {
 
     it('renders properly when there is no legacy id nor legacy table', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: participantId,
         first_name: 'Lisa',
         last_name: 'Simpson',
-        languages: [],
-        roles: [],
+        legacy_descriptor: {},
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.text()).not.toContain('in CWS-CMS')
@@ -79,11 +88,10 @@ describe('ParticipantEditView', () => {
 
     it('renders the participant header correctly when first name is null', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: null,
         last_name: 'Simpson',
-        languages: [],
-        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('(Unknown first name) Simpson')
@@ -91,11 +99,10 @@ describe('ParticipantEditView', () => {
 
     it('renders the participant header correctly when last name is null', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: 'Lisa',
         last_name: null,
-        languages: [],
-        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Lisa (Unknown last name)')
@@ -103,11 +110,10 @@ describe('ParticipantEditView', () => {
 
     it('renders the participant header correctly when first and last names are null', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: null,
         last_name: null,
-        languages: [],
-        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header span').text()).toEqual('Unknown Person')
@@ -119,14 +125,13 @@ describe('ParticipantEditView', () => {
 
     it('renders the participant header with no name when first and last name is null', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: null,
         last_name: null,
         date_of_birth: '2016-12-31',
         gender: 'female',
-        languages: [],
         ssn: 'ssn-1',
-        roles: [],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('.card-header')).not.toContain('<span></span>')
@@ -191,14 +196,13 @@ describe('ParticipantEditView', () => {
 
     it('calls the onDelete function when delete link is clicked', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
-        languages: [],
         ssn: 'ssn-1',
-        roles: [],
       })
 
       const onDelete = jasmine.createSpy('onDelete')
@@ -238,8 +242,8 @@ describe('ParticipantEditView', () => {
 
       participantId = '199'
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: participantId,
-        languages: [],
         roles: [],
       })
       component = shallow(
@@ -282,8 +286,8 @@ describe('ParticipantEditView', () => {
 
         participantId = '199'
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: participantId,
-          languages: [],
           roles: ['Mandated Reporter'],
         })
         component = shallow(
@@ -311,15 +315,14 @@ describe('ParticipantEditView', () => {
   describe('addresses', () => {
     beforeEach(() => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
-        languages: [],
         ssn: 'ssn-1',
         addresses: [{}],
-        roles: [],
       })
       component = mount(
         <ParticipantEditView
@@ -350,15 +353,14 @@ describe('ParticipantEditView', () => {
   describe('phone numbers', () => {
     it('renders a phone number in edit view', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
-        languages: [],
         ssn: 'ssn-1',
         addresses: [{}],
-        roles: [],
         phone_numbers: [{}],
       })
       component = shallow(<ParticipantEditView participant={participant} />)
@@ -370,15 +372,14 @@ describe('ParticipantEditView', () => {
   describe('social security number (ssn)', () => {
     it('renders ssn in edit view', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '199',
         first_name: 'Lisa',
         last_name: 'Simpson',
         date_of_birth: '2016-12-31',
         gender: 'female',
-        languages: [],
         ssn: '123456789',
         addresses: [{}],
-        roles: [],
         phone_numbers: [{}],
       })
       component = shallow(<ParticipantEditView participant={participant} />)

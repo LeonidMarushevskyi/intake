@@ -10,13 +10,13 @@ describe('PersonSuggestion', () => {
   })
 
   it('renders legacy source table and id', () => {
-    const props = {legacyFriendlyId: '123-456-789', legacyFriendlyTable: 'Client'}
+    const props = {legacyDescriptor: {legacy_ui_id: '123-456-789', legacy_table_description: 'Client'}}
     const component = shallow(<PersonSuggestion {...props} />)
     expect(component.html()).toContain('<span>Client ID 123-456-789 in CWS-CMS</span>')
   })
 
   it('renders just the legacy table if no id exists', () => {
-    const props = {legacyFriendlyTable: 'Client'}
+    const props = {legacyDescriptor: {legacy_table_description: 'Client'}}
     const component = shallow(<PersonSuggestion {...props} />)
     expect(component.html()).toContain('<span>Client in CWS-CMS</span>')
   })

@@ -33,7 +33,6 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-junit-formatter'
   gem 'scss_lint'
-  gem 'timecop'
 end
 
 group :development do

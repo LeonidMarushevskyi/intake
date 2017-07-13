@@ -13,6 +13,7 @@ FactoryGirl.define do
     gender { %w[male female].sample }
     ssn { FFaker::SSN.ssn }
     date_of_birth { Faker::Date.between(30.years.ago, 25.years.ago).to_s(:db) }
+    legacy_descriptor factory: :legacy_descriptor
 
     languages do
       [
@@ -53,6 +54,11 @@ FactoryGirl.define do
       ].sample
     end
 
+    trait :complete do
+      middle_name { Faker::Name.middle_name }
+      name_suffix { Faker::Name.name_suffix }
+    end
+
     trait :unpopulated do
       first_name { nil }
       last_name { nil }
@@ -60,6 +66,7 @@ FactoryGirl.define do
       ssn { nil }
       date_of_birth { nil }
       languages { [] }
+      legacy_descriptor nil
     end
 
     trait :reporter do
@@ -72,6 +79,18 @@ FactoryGirl.define do
 
     trait :perpetrator do
       roles { ['Perpetrator'] }
+    end
+
+    trait :with_complete_address do
+      after(:create) do |participant|
+        participant.addresses = create_list(:address, 1, :complete)
+      end
+    end
+
+    trait :with_complete_phone_number do
+      after(:build) do |participant|
+        participant.phone_numbers = create_list(:phone_number, 1)
+      end
     end
   end
 end

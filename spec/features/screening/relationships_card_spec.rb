@@ -83,24 +83,6 @@ feature 'Relationship card' do
         }
       ]
     end
-    let(:marge) do
-      FactoryGirl.create(
-        :person_search,
-        date_of_birth: 5.years.ago.to_s(:db),
-        first_name: 'Marge',
-        gender: 'female',
-        last_name: 'Simpson',
-        ssn: '123-23-1234',
-        languages: %w[French Italian],
-        addresses: [],
-        phone_numbers: [],
-        races: [
-          { race: 'White', race_detail: 'European' },
-          { race: 'American Indian or Alaska Native' }
-        ],
-        ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
-      )
-    end
 
     before do
       stub_request(
@@ -113,6 +95,10 @@ feature 'Relationship card' do
           ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
         )
       ).and_return(json_body(relationships.to_json, status: 200))
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_history_of_involvements_path(participants_screening.id))
+      ).and_return(json_body([].to_json, status: 200))
     end
 
     scenario 'viewing a screening' do
@@ -188,19 +174,13 @@ feature 'Relationship card' do
         end
       end
 
-      scenario 'adding a new person updates relationships' do
+      scenario 'adding a new person fetches new relationships' do
         visit edit_screening_path(id: participants_screening.id)
         new_participant = FactoryGirl.create(
           :participant, :unpopulated,
           screening_id: participants_screening.id
         )
         new_participant_request = { screening_id: participants_screening.id, legacy_id: nil }
-
-        %w[Ma Mar Marg Marge].each do |search_text|
-          stub_request(
-            :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
-          ).and_return(json_body([marge].to_json, status: 200))
-        end
 
         stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
           .with(body: new_participant.as_json(except: :id).merge(new_participant_request))
@@ -236,8 +216,12 @@ feature 'Relationship card' do
           )
         ).and_return(json_body(new_relationships.to_json, status: 200))
 
+        stub_request(
+          :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: 'ma'))
+        ).and_return(json_body([].to_json, status: 200))
+
         within '#search-card', text: 'Search' do
-          fill_in_autocompleter 'Search for any person', with: 'Marge'
+          fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true
           find('.btn', text: /Create a new person/).click
           expect(page).not_to have_content('Create a new person')
         end

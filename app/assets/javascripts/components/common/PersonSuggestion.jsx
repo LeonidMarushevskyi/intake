@@ -11,7 +11,7 @@ import sanitizeHtml from 'sanitize-html'
 
 const PersonSuggestion = ({
   firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races,
-  ethnicity, ssn, address, phoneNumber, legacyFriendlyId, legacyFriendlyTable,
+  ethnicity, ssn, address, phoneNumber, legacyDescriptor,
 }) => {
   const fullName = [firstName, middleName, lastName, NAME_SUFFIXES[nameSuffix]].filter(Boolean).join(' ')
   const sanitizedField = (field) => ({
@@ -20,12 +20,7 @@ const PersonSuggestion = ({
     },
   })
 
-  const legacySourceString = legacySourceFormatter(
-    {
-      legacy_friendly_table: legacyFriendlyTable,
-      legacy_friendly_id: legacyFriendlyId,
-    }
-  )
+  const legacySourceString = legacySourceFormatter(legacyDescriptor || {})
 
   return (
     <div className='row'>
@@ -69,8 +64,7 @@ PersonSuggestion.propTypes = {
   gender: PropTypes.string,
   languages: PropTypes.array,
   lastName: PropTypes.string,
-  legacyFriendlyId: PropTypes.string,
-  legacyFriendlyTable: PropTypes.string,
+  legacyDescriptor: PropTypes.object,
   middleName: PropTypes.string,
   nameSuffix: PropTypes.string,
   phoneNumber: PropTypes.object,

@@ -1,15 +1,15 @@
-export default function legacySourceFormatter({legacy_friendly_table, legacy_friendly_id}) {
+export default function legacySourceFormatter({legacy_table_description, legacy_ui_id}) {
   const legacySourceStringParts = []
 
-  if (legacy_friendly_table) {
-    legacySourceStringParts.push(legacy_friendly_table)
+  if (legacy_table_description) {
+    legacySourceStringParts.push(legacy_table_description)
   }
 
-  if (legacy_friendly_id) {
-    legacySourceStringParts.push(`ID ${legacy_friendly_id}`)
+  if (legacy_ui_id) {
+    legacySourceStringParts.push(`ID ${legacy_ui_id}`)
   }
 
-  if (legacy_friendly_table || legacy_friendly_id) {
+  if (legacy_table_description || legacy_ui_id) {
     legacySourceStringParts.push('in CWS-CMS')
   }
 

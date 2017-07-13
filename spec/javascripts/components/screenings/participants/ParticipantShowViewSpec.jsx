@@ -5,13 +5,17 @@ import {shallow} from 'enzyme'
 import * as IntakeConfig from 'config'
 
 describe('ParticipantShowView', () => {
+  const requiredParticipantProps = {
+    legacy_descriptor: {},
+  }
+
   describe('when release two is inactive', () => {
     beforeEach(() => {
       spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
     })
 
     it('renders a participant show view card', () => {
-      const participant = Immutable.fromJS({id: '200'})
+      const participant = Immutable.fromJS({...requiredParticipantProps, id: '200'})
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
       expect(component.find('.card.show').length).toEqual(1)
       expect(component.find('#participants-card-200').length).toEqual(1)
@@ -19,6 +23,7 @@ describe('ParticipantShowView', () => {
 
     it('renders the participants full name', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
@@ -34,8 +39,10 @@ describe('ParticipantShowView', () => {
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
-        legacy_friendly_id: '123-456-789',
-        legacy_friendly_table: 'Client',
+        legacy_descriptor: {
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client',
+        },
       })
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
       expect(component.text()).toContain('Client ID 123-456-789 in CWS-CMS')
@@ -46,7 +53,9 @@ describe('ParticipantShowView', () => {
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
-        legacy_friendly_table: 'Client',
+        legacy_descriptor: {
+          legacy_table_description: 'Client',
+        },
       })
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
       expect(component.text()).toContain('Client in CWS-CMS')
@@ -57,28 +66,30 @@ describe('ParticipantShowView', () => {
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
+        legacy_descriptor: {},
       })
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
       expect(component.text()).not.toContain('in CWS-CMS')
     })
 
     it('renders the delete link', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('.fa-times').length).toEqual(1)
     })
 
     it('renders the edit link', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('EditLink').props().ariaLabel).toEqual('Edit participant')
     })
 
     it('renders the default avatar', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('img').props().src).toEqual('/assets/default-profile.svg')
     })
 
     it('renders the participant show fields', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
@@ -105,14 +116,14 @@ describe('ParticipantShowView', () => {
 
     it('calls the onEdit function when edit link is clicked', () => {
       const onEdit = jasmine.createSpy()
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={onEdit}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={onEdit}/>)
       component.find('EditLink').simulate('click')
       expect(onEdit).toHaveBeenCalled()
     })
 
     it('calls the onDelete function when delete link is clicked', () => {
       const onDelete = jasmine.createSpy('onDelete')
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => {}} onDelete={onDelete}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => {}} onDelete={onDelete}/>)
       component.find('.delete-button').simulate('click')
       expect(onDelete).toHaveBeenCalled()
     })
@@ -120,6 +131,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has a partial name', () => {
       it('renders the participant header correctly with null last name', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: 'Kevin',
           last_name: null,
@@ -130,6 +142,7 @@ describe('ParticipantShowView', () => {
 
       it('renders the participant header correctly with null first name', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: null,
           last_name: 'McAllister',
@@ -140,6 +153,7 @@ describe('ParticipantShowView', () => {
 
       it('renders the participant name show fields', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: 'Kevin',
           last_name: null,
@@ -152,6 +166,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has no name', () => {
       it('does not render when not present', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: null,
           last_name: null,
@@ -167,6 +182,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has addresses', () => {
       it('renders participant with address', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '5',
           addresses: [{
             id: '1',
@@ -194,6 +210,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has phone numbers', () => {
       it('renders the participant with phone numbers', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '7',
           phone_numbers: [{
             id: '3',
@@ -216,7 +233,7 @@ describe('ParticipantShowView', () => {
     })
 
     it('renders a participant show view card', () => {
-      const participant = Immutable.fromJS({id: '200'})
+      const participant = Immutable.fromJS({...requiredParticipantProps, id: '200'})
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
       expect(component.find('.card.show').length).toEqual(1)
       expect(component.find('#participants-card-200').length).toEqual(1)
@@ -224,6 +241,7 @@ describe('ParticipantShowView', () => {
 
     it('renders the participants full name', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
@@ -235,22 +253,23 @@ describe('ParticipantShowView', () => {
     })
 
     it('renders the delete link', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('.fa-times').length).toEqual(1)
     })
 
     it('does not render the edit link', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('EditLink').length).toEqual(0)
     })
 
     it('renders the default avatar', () => {
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => null}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
       expect(component.find('img').props().src).toEqual('/assets/default-profile.svg')
     })
 
     it('renders the participant show fields', () => {
       const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
         id: '200',
         first_name: 'Kevin',
         middle_name: 'Home Alone',
@@ -277,7 +296,7 @@ describe('ParticipantShowView', () => {
 
     it('calls the onDelete function when delete link is clicked', () => {
       const onDelete = jasmine.createSpy('onDelete')
-      const component = shallow(<ParticipantShowView participant={Immutable.Map()} onEdit={() => {}} onDelete={onDelete}/>)
+      const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => {}} onDelete={onDelete}/>)
       component.find('.delete-button').simulate('click')
       expect(onDelete).toHaveBeenCalled()
     })
@@ -285,6 +304,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has a partial name', () => {
       it('renders the participant header correctly with null last name', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: 'Kevin',
           last_name: null,
@@ -295,6 +315,7 @@ describe('ParticipantShowView', () => {
 
       it('renders the participant header correctly with null first name', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: null,
           last_name: 'McAllister',
@@ -305,6 +326,7 @@ describe('ParticipantShowView', () => {
 
       it('renders the participant name show fields', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: 'Kevin',
           last_name: null,
@@ -317,6 +339,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has no name', () => {
       it('does not render when not present', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '200',
           first_name: null,
           last_name: null,
@@ -332,6 +355,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has addresses', () => {
       it('renders participant with address', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '5',
           addresses: [{
             id: '1',
@@ -359,6 +383,7 @@ describe('ParticipantShowView', () => {
     describe('when participant has phone numbers', () => {
       it('renders the participant with phone numbers', () => {
         const participant = Immutable.fromJS({
+          ...requiredParticipantProps,
           id: '7',
           phone_numbers: [{
             id: '3',
