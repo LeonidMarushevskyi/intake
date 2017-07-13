@@ -348,7 +348,6 @@ GEM
     thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.0.6)
-    timecop (0.8.1)
     tins (1.13.2)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
@@ -418,7 +417,6 @@ DEPENDENCIES
   selenium-webdriver (= 2.53.1)
   simplecov
   spring
-  timecop
   virtus
   web-console (~> 3.5)
   webmock
