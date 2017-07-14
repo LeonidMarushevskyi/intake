@@ -204,6 +204,11 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
+    const cardActions = {
+      onCancel: this.cancelEdit,
+      onChange: this.setField,
+      onSave: this.cardSave,
+    }
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
@@ -245,10 +250,8 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <ScreeningInformationCardView
+              {...cardActions}
               mode={this.mode}
-              onCancel={this.cancelEdit}
-              onChange={this.setField}
-              onSave={this.cardSave}
               screening={mergedScreening}
             />
           }
@@ -256,31 +259,25 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <NarrativeCardView
+              {...cardActions}
               mode={this.mode}
-              onCancel={this.cancelEdit}
-              onChange={this.setField}
-              onSave={this.cardSave}
               screening={mergedScreening}
             />
           }
           {
             releaseTwoInactive &&
             <IncidentInformationCardView
+              {...cardActions}
               mode={this.mode}
-              onCancel={this.cancelEdit}
-              onChange={this.setField}
-              onSave={this.cardSave}
               screening={mergedScreening}
             />
           }
           {
             releaseTwoInactive &&
               <AllegationsCardView
-                mode={this.mode}
-                onCancel={this.cancelEdit}
-                onSave={this.cardSave}
-                onChange={this.setField}
                 allegations={sortedAllegations}
+                {...cardActions}
+                mode={this.mode}
               />
           }
           {
@@ -295,37 +292,31 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <WorkerSafetyCardView
+                {...cardActions}
                 mode={this.mode}
-                onCancel={this.cancelEdit}
-                onSave={this.cardSave}
-                onChange={this.setField}
                 screening={mergedScreening}
               />
           }
           <HistoryCard
-            screeningId={this.props.params.id}
             actions={this.props.actions}
             involvements={this.props.involvements}
             participants={this.props.participants}
+            screeningId={this.props.params.id}
           />
           {
             releaseTwoInactive &&
               <CrossReportCardView
-                mode={this.mode}
-                onCancel={this.cancelEdit}
-                onSave={this.cardSave}
-                onChange={this.setField}
                 areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
+                {...cardActions}
                 crossReports={mergedScreening.get('cross_reports')}
+                mode={this.mode}
               />
           }
           {
             releaseTwoInactive &&
             <DecisionCardView
+              {...cardActions}
               mode={this.mode}
-              onCancel={this.cancelEdit}
-              onChange={this.setField}
-              onSave={this.cardSave}
               screening={mergedScreening}
             />
           }

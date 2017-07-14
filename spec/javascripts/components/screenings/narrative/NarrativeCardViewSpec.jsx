@@ -5,25 +5,22 @@ import {mount} from 'enzyme'
 
 describe('NarrativeCardView', () => {
   let component
-  const onSave = jasmine.createSpy('onSave')
-  const onChange = jasmine.createSpy('onChange')
-  const screening = Immutable.fromJS({
-    report_narrative: 'This is my narrative',
-  })
-  const props = {
-    screening: screening,
-    onSave: onSave,
-    onCancel: jasmine.createSpy('onCancel'),
-    onEdit: jasmine.createSpy('onEdit'),
-    onChange: onChange,
-  }
+  const screening = Immutable.fromJS({report_narrative: 'This is my narrative'})
+  const props = {screening: screening}
   const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+
+  beforeEach(() => {
+    props.onSave = jasmine.createSpy('onSave')
+    props.onChange = jasmine.createSpy('onChange')
+    props.onCancel = jasmine.createSpy('onCancel')
+    props.onEdit = jasmine.createSpy('onEdit')
+  })
 
   describe('render', () => {
     describe('when the mode is set to edit', () => {
       beforeEach(() => {
         promiseObj.then.and.callFake((thenFunction) => thenFunction())
-        onSave.and.returnValue(promiseObj)
+        props.onSave.and.returnValue(promiseObj)
         component = mount(<NarrativeCardView {...props} mode='edit'/>)
       })
 
@@ -89,8 +86,8 @@ describe('NarrativeCardView', () => {
           })
 
           it('calls the props onSave', () => {
-            expect(onSave.calls.mostRecent().args[0]).toContain('report_narrative')
-            expect(Immutable.is(onSave.calls.mostRecent().args[0], Immutable.fromJS(['report_narrative']))).toEqual(true)
+            expect(Immutable.is(props.onSave.calls.mostRecent().args[0],
+              Immutable.fromJS(['report_narrative']))).toEqual(true)
           })
 
           it('the narrative show view is rendered', () => {
@@ -136,13 +133,13 @@ describe('NarrativeCardView', () => {
           component.setState({errors: oldErrors})
           component.find('textarea').simulate('change', {target: {value: '   '}})
           expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
-          expect(onChange).toHaveBeenCalledWith(['report_narrative'], '   ', undefined)
+          expect(props.onChange).toHaveBeenCalledWith(['report_narrative'], '   ', undefined)
         })
 
         it('does not validate if there are no errors on the field', () => {
           component.find('textarea').simulate('change', {target: {value: ''}})
           expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative')).toEqual(undefined)
-          expect(onChange).toHaveBeenCalledWith(['report_narrative'], null, undefined)
+          expect(props.onChange).toHaveBeenCalledWith(['report_narrative'], null, undefined)
         })
       })
 

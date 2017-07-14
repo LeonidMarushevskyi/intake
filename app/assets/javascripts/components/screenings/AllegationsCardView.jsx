@@ -60,6 +60,6 @@ AllegationsCardView.propTypes = {
   allegations: PropTypes.object.isRequired,
   mode: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 }

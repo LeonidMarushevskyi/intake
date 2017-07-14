@@ -5,19 +5,20 @@ import {shallow, mount} from 'enzyme'
 
 describe('WorkerSafetyCardView', () => {
   let component
-
-  const promiseSpy = jasmine.createSpyObj('promiseSpyObj', ['then'])
-
   const props = {
-    onEdit: jasmine.createSpy('onEdit'),
-    onCancel: jasmine.createSpy('onCancel'),
-    onChange: jasmine.createSpy('onChange'),
     screening: Immutable.fromJS({
       safety_alerts: ['Gang Affiliation or Gang Activity'],
       safety_information: 'Info',
     }),
-    onSave: jasmine.createSpy('onSave').and.returnValue(promiseSpy),
   }
+
+  beforeEach(() => {
+    const promiseSpy = jasmine.createSpyObj('promiseSpyObj', ['then'])
+    props.onCancel = jasmine.createSpy('onCancel')
+    props.onChange = jasmine.createSpy('onChange')
+    props.onEdit = jasmine.createSpy('onEdit')
+    props.onSave = jasmine.createSpy('onSave').and.returnValue(promiseSpy)
+  })
 
   describe('when mode is set to show', () => {
     beforeEach(() => {

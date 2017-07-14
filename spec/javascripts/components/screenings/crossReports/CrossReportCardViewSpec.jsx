@@ -5,18 +5,21 @@ import {mount} from 'enzyme'
 
 describe('CrossReportCardView', () => {
   let component
+  let promiseObj
   const props = {
-    onCancel: jasmine.createSpy(),
-    onChange: jasmine.createSpy(),
-    onEdit: jasmine.createSpy(),
-    onSave: jasmine.createSpy(),
     areCrossReportsRequired: true,
     crossReports: Immutable.fromJS([
       {agency_type: 'District attorney', agency_name: 'SCDA Office'},
       {agency_type: 'Department of justice'},
     ]),
   }
-  const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+  beforeEach(() => {
+    props.onEdit = jasmine.createSpy()
+    promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+    props.onCancel = jasmine.createSpy()
+    props.onChange = jasmine.createSpy()
+    props.onSave = jasmine.createSpy()
+  })
 
   describe('render', () => {
     describe('when mode is set to edit', () => {
@@ -59,7 +62,7 @@ describe('CrossReportCardView', () => {
           expect(props.onSave).toHaveBeenCalled()
         })
 
-        it('the cross report show view is rendered', () => {
+        it('renders the cross report show view', () => {
           expect(component.find('CrossReportShowView').length).toEqual(1)
         })
       })
