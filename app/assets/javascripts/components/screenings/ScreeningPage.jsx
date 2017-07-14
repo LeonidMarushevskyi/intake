@@ -279,7 +279,7 @@ export class ScreeningPage extends React.Component {
                 mode={this.mode}
                 onCancel={this.cancelEdit}
                 onSave={this.cardSave}
-                setField={this.setField}
+                onChange={this.setField}
                 allegations={sortedAllegations}
               />
           }

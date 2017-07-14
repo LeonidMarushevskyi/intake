@@ -9,7 +9,6 @@ describe('AllegationsCardView', () => {
     allegations: allegations,
     mode: 'edit',
     onSave: () => null,
-    setField: () => null,
     onChange: () => null,
     onCancel: () => null,
   }
@@ -70,11 +69,11 @@ describe('AllegationsCardView', () => {
   describe('#onChange', () => {
     it('calls onChange from props with the appropriate values', () => {
       const allegationTypes = Immutable.List(['General Neglect'])
-      const setField = jasmine.createSpy('setField')
-      const component = shallow(<AllegationsCardView {...requiredProps} setField={setField} />)
+      const onChange = jasmine.createSpy('onChange')
+      const component = shallow(<AllegationsCardView {...requiredProps} onChange={onChange} />)
       component.instance().onChange('123', '456', allegationTypes)
 
-      const callParams = setField.calls.argsFor(0)
+      const callParams = onChange.calls.argsFor(0)
       const fieldSeq = callParams[0]
       const actualAllegationTypes = callParams[1]
       expect(fieldSeq).toEqual(['allegations', '123', '456'])
