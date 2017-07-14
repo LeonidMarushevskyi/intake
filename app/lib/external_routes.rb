@@ -50,5 +50,9 @@ class ExternalRoutes
     def intake_api_relationships_by_screening_path(id)
       "/api/v1/screenings/#{id}/relationships"
     end
+
+    def intake_api_user_info_path(token)
+      "/api/v1/security/#{token}/details"
+    end
   end
 end

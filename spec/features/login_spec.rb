@@ -27,6 +27,7 @@ feature 'login' do
   scenario 'user provides valid security token', accessibility: false do
     Feature.run_with_activated(:authentication) do
       stub_request(:get, auth_validation_url).and_return(status: 200)
+      stub_request(:get, ExternalRoutes.intake_api_user_info_path(token)).and_return(status:200, {})
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
       expect(page.current_url).to_not have_content auth_login_url
