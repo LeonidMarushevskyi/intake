@@ -343,31 +343,23 @@ describe('ScreeningPage', () => {
         )
       })
 
+      it('renders the participants card for each participant', () => {
+        expect(component.find('ParticipantCardView').length).toEqual(2)
+        expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
+          ['show', 'show']
+        )
+      })
+
+      it('renders the narrative card after screening is loaded', () => {
+        expect(component.find('NarrativeCardView').props()).toEqual(
+          jasmine.objectContaining({...cardActions, mode: 'show'})
+        )
+      })
+
       it('renders the incident information show card', () => {
         expect(component.find('IncidentInformationCardView').props()).toEqual(
           jasmine.objectContaining({...cardActions, mode: 'show'})
         )
-      })
-
-      it('renders the decision show card', () => {
-        expect(component.find('DecisionCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
-        )
-      })
-
-      it('renders the cross report show card', () => {
-        expect(component.find('CrossReportCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
-        )
-      })
-
-      it('renders the history card', () => {
-        expect(component.find('HistoryCard').props()).toEqual(jasmine.objectContaining({
-          actions: props.actions,
-          involvements: props.involvements,
-          participants: props.participants,
-          screeningId: props.params.id,
-        }))
       })
 
       it('renders the allegations card', () => {
@@ -394,15 +386,23 @@ describe('ScreeningPage', () => {
         )
       })
 
-      it('renders the participants card for each participant', () => {
-        expect(component.find('ParticipantCardView').length).toEqual(2)
-        expect(component.find('ParticipantCardView').nodes.map((ele) => ele.props.mode)).toEqual(
-          ['show', 'show']
+      it('renders the history card', () => {
+        expect(component.find('HistoryCard').props()).toEqual(jasmine.objectContaining({
+          actions: props.actions,
+          involvements: props.involvements,
+          participants: props.participants,
+          screeningId: props.params.id,
+        }))
+      })
+
+      it('renders the cross report show card', () => {
+        expect(component.find('CrossReportCardView').props()).toEqual(
+          jasmine.objectContaining({...cardActions, mode: 'show'})
         )
       })
 
-      it('renders the narrative card after screening is loaded', () => {
-        expect(component.find('NarrativeCardView').props()).toEqual(
+      it('renders the decision show card', () => {
+        expect(component.find('DecisionCardView').props()).toEqual(
           jasmine.objectContaining({...cardActions, mode: 'show'})
         )
       })
