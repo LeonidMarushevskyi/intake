@@ -37,13 +37,19 @@ describe SecurityRepository do
     end
 
     context 'when provided with a valid security token' do
-      before do
-        stub_request(:get, 'http://www.example.com/authn/validate?token=123')
-          .and_return(status: 200)
+      let(:auth_artifact) do
+        {
+          auth_info: 'auth stuff'
+        }
       end
 
-      it 'returns true' do
-        expect(described_class.token_valid?(token)).to be true
+      before do
+        stub_request(:get, 'http://www.example.com/authn/validate?token=123')
+          .and_return(json_body(auth_artifact.to_json, status: 200))
+      end
+
+      it 'returns an authorization artifact' do
+        expect(described_class.token_valid?(token)).to eq auth_artifact.to_json
       end
     end
 

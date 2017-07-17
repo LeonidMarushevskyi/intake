@@ -4,7 +4,9 @@
 # to the security API
 class SecurityRepository
   def self.token_valid?(token)
-    token.present? && Faraday.get(token_validation_url(token)).status == 200
+    return unless token.present?
+    auth_artifact = Faraday.get(token_validation_url(token))
+    auth_artifact.status == 200 && auth_artifact.body
   end
 
   def self.login_url(callback)
