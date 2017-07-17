@@ -17,8 +17,14 @@ class ApplicationController < ActionController::Base # :nodoc:
     session.delete(:security_token) if security_token
     return if session[:security_token]
 
-    if SecurityRepository.token_valid?(security_token)
+    process_token(security_token)
+  end
+
+  def process_token(security_token)
+    auth_artifact = SecurityRepository.token_valid?(security_token)
+    if auth_artifact
       session[:security_token] = security_token
+      session[:user_details] = JSON.parse auth_artifact unless auth_artifact.empty?
     else
       redirect_to SecurityRepository.login_url(request.original_url)
     end
