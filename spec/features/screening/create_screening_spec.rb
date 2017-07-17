@@ -46,43 +46,152 @@ feature 'Create Screening' do
   end
 
   context 'when authentication is enabled' do
+    let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
+
     around do |example|
-      Feature.run_with_activated(:authentication) do
-        example.run
+      with_config(
+        authentication_base_url: 'http://www.example.com',
+        base_path: '/'
+      ) do
+        Feature.run_with_activated(:authentication) do
+          example.run
+        end
       end
     end
 
-    scenario 'via start screening link' do
-      allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-      new_screening = FactoryGirl.create(
-        :screening,
-        reference: 'DQJIYK',
-        safety_alerts: [],
-        safety_information: nil,
-        address: nil
-      )
-      stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
-        .with(body: as_json_without_root_id(new_screening))
-        .and_return(json_body(new_screening.to_json, status: 201))
+    context 'user has full name' do
+      let(:user_details) do
+        {
+          first_name: 'Joe',
+          last_name: 'Cool',
+          middle_initial: 'B',
+          county: 'Sonoma',
+          staff_id: '1234'
+        }
+      end
+      let(:session) do
+        { user_details: user_details }
+      end
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
-        .and_return(json_body([].to_json, status: 200))
+      scenario 'via start screening link' do
+        user_name_display = 'Joe B. Cool - Sonoma'
+        allow(LUID).to receive(:generate).and_return(['DQJIYK'])
+        new_screening = FactoryGirl.create(
+          :screening,
+          reference: 'DQJIYK',
+          safety_alerts: [],
+          safety_information: nil,
+          address: nil,
+          assignee: user_name_display
+        )
+        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+          .with(body: as_json_without_root_id(new_screening))
+          .and_return(json_body(new_screening.to_json, status: 201))
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+          .and_return(json_body([].to_json, status: 200))
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
-        .and_return(json_body(new_screening.to_json, status: 200))
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+          .and_return(json_body(new_screening.to_json, status: 200))
 
-      visit root_path
-      click_link 'Start Screening'
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body(user_details.to_json, status: 200))
 
-      expect(
-        a_request(
-          :post, host_url(ExternalRoutes.intake_api_screenings_path)
-        ).with(body: as_json_without_root_id(new_screening))
-      ).to have_been_made
+        visit root_path(token: 123)
+        click_link 'Start Screening'
 
-      expect(page).to have_content('Edit Screening #DQJIYK')
+        expect(page).to have_content('Edit Screening #DQJIYK')
+        expect(page).to have_field(
+          'Assigned Social Worker',
+          with: user_name_display,
+          disabled: true
+        )
+      end
+    end
+
+    context 'user has first and last name' do
+      let(:user_details) do
+        {
+          first_name: 'Joe',
+          last_name: 'Cool',
+          middle_initial: '',
+          county: 'Sonoma',
+          staff_id: '1234'
+        }
+      end
+      let(:session) do
+        { user_details: user_details }
+      end
+
+      scenario 'via start screening link' do
+        user_name_display = 'Joe Cool - Sonoma'
+        allow(LUID).to receive(:generate).and_return(['DQJIYK'])
+        new_screening = FactoryGirl.create(
+          :screening,
+          reference: 'DQJIYK',
+          safety_alerts: [],
+          safety_information: nil,
+          address: nil,
+          assignee: user_name_display
+        )
+        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+          .with(body: as_json_without_root_id(new_screening))
+          .and_return(json_body(new_screening.to_json, status: 201))
+
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+          .and_return(json_body([].to_json, status: 200))
+
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+          .and_return(json_body(new_screening.to_json, status: 200))
+
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body(user_details.to_json, status: 200))
+
+        visit root_path(token: 123)
+        click_link 'Start Screening'
+
+        expect(page).to have_content('Edit Screening #DQJIYK')
+        expect(page).to have_field('Assigned Social Worker', with: user_name_display)
+      end
+    end
+
+    context 'no user information' do
+      let(:session) do {
+        token: 123,
+        user_details: nil
+      }
+      end
+
+      scenario 'via start screening link' do
+        user_name_display = ''
+        allow(LUID).to receive(:generate).and_return(['DQJIYK'])
+        new_screening = FactoryGirl.create(
+          :screening,
+          reference: 'DQJIYK',
+          safety_alerts: [],
+          safety_information: nil,
+          address: nil,
+          assignee: user_name_display
+        )
+        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+          .with(body: as_json_without_root_id(new_screening))
+          .and_return(json_body(new_screening.to_json, status: 201))
+
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+          .and_return(json_body([].to_json, status: 200))
+
+        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+          .and_return(json_body(new_screening.to_json, status: 200))
+
+        stub_request(:get, auth_validation_url)
+          .and_return(status: 200)
+
+        visit root_path(token: 123)
+        click_link 'Start Screening'
+
+        expect(page).to have_content('Edit Screening #DQJIYK')
+        expect(page).to have_field('Assigned Social Worker', with: user_name_display)
+      end
     end
   end
 
