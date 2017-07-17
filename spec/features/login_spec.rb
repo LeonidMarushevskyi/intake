@@ -6,6 +6,18 @@ require 'feature/testing'
 feature 'login' do
   let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
   let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
+  let(:screening_url) { 'http://api:3000/api/v1/screenings' }
+  let(:auth_artifact) do
+    {
+      first_name: 'Joe',
+      last_name: 'Cool',
+      middle_initial: 'B',
+      county: 'Sonoma',
+      staff_id: '1234'
+    }
+  end
+  let(:screening_results) { [{ id: '1' }, { id: '2' }] }
+  let(:screening_response) { double(:screening_response, body: screening_results) }
 
   around do |example|
     with_config(
@@ -25,9 +37,12 @@ feature 'login' do
   end
 
   scenario 'user provides valid security token', accessibility: false do
+    stub_request(:get, screening_url)
+      .and_return(screening_response)
+
     Feature.run_with_activated(:authentication) do
-      stub_request(:get, auth_validation_url).and_return(status: 200)
-      stub_request(:get, ExternalRoutes.intake_api_user_info_path(token)).and_return(status:200, {})
+      stub_request(:get, auth_validation_url)
+        .and_return(json_body(auth_artifact.to_json, status: 200))
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
       expect(page.current_url).to_not have_content auth_login_url
@@ -46,6 +61,8 @@ feature 'login' do
 
   scenario 'user has already logged in', accessibility: false do
     Feature.run_with_activated(:authentication) do
+      stub_request(:get, screening_url)
+        .and_return(screening_response)
       stub_request(:get, auth_validation_url).and_return(status: 200)
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
