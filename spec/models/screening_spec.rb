@@ -28,6 +28,7 @@ describe Screening do
         safety_information: 'bad and scary',
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
+        staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
         staff_id: 'abcd',
         address: {
@@ -97,6 +98,7 @@ describe Screening do
         safety_information: 'bad and scary',
         screening_decision: 'promote_to_referral',
         screening_decision_detail: '3 days',
+        staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
         staff_id: 'abcd',
         cross_reports: array_including(

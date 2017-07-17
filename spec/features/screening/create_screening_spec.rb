@@ -59,7 +59,7 @@ feature 'Create Screening' do
       end
     end
 
-    context 'user has full name' do
+    context 'user has full name and staffID' do
       let(:user_details) do
         {
           first_name: 'Joe',
@@ -82,8 +82,10 @@ feature 'Create Screening' do
           safety_alerts: [],
           safety_information: nil,
           address: nil,
-          assignee: user_name_display
+          assignee: user_name_display,
+          staff_id: '1234'
         )
+
         stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
@@ -156,10 +158,11 @@ feature 'Create Screening' do
     end
 
     context 'no user information' do
-      let(:session) do {
-        token: 123,
-        user_details: nil
-      }
+      let(:session) do
+        {
+          token: 123,
+          user_details: nil
+        }
       end
 
       scenario 'via start screening link' do

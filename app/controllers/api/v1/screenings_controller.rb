@@ -48,7 +48,9 @@ module Api
       def create
         new_screening = Screening.new(
           reference: LUID.generate.first,
-          assignee: build_assignee_name(session))
+          assignee: build_assignee_name(session),
+          staff_id: session[:staff_id]
+        )
         screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening
       end
