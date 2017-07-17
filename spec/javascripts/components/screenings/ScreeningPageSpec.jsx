@@ -301,7 +301,7 @@ describe('ScreeningPage', () => {
     describe('render', () => {
       let component
       let props
-      let cardActions
+      let cardCallbacks
 
       beforeEach(() => {
         props = {
@@ -323,7 +323,7 @@ describe('ScreeningPage', () => {
 
         component = shallow(<ScreeningPage {...props} />)
         component.setState({loaded: true})
-        cardActions = {
+        cardCallbacks = {
           onCancel: component.instance().cancelEdit,
           onChange: component.instance().setField,
           onSave: component.instance().cardSave,
@@ -339,7 +339,7 @@ describe('ScreeningPage', () => {
 
       it('renders the screening information show card', () => {
         expect(component.find('ScreeningInformationCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
 
@@ -352,20 +352,20 @@ describe('ScreeningPage', () => {
 
       it('renders the narrative card after screening is loaded', () => {
         expect(component.find('NarrativeCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
 
       it('renders the incident information show card', () => {
         expect(component.find('IncidentInformationCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
 
       it('renders the allegations card', () => {
         const allegationsCard = component.find('AllegationsCardView')
         expect(allegationsCard.props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show', allegations: Immutable.List()})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show', allegations: Immutable.List()})
         )
       })
 
@@ -382,7 +382,7 @@ describe('ScreeningPage', () => {
         const safetyCard = component.find('WorkerSafetyCardView')
         expect(safetyCard.length).toEqual(1)
         expect(safetyCard.props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
 
@@ -397,13 +397,13 @@ describe('ScreeningPage', () => {
 
       it('renders the cross report show card', () => {
         expect(component.find('CrossReportCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
 
       it('renders the decision show card', () => {
         expect(component.find('DecisionCardView').props()).toEqual(
-          jasmine.objectContaining({...cardActions, mode: 'show'})
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
         )
       })
     })

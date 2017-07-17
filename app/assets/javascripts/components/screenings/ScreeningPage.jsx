@@ -204,7 +204,7 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const cardActions = {
+    const cardCallbacks = {
       onCancel: this.cancelEdit,
       onChange: this.setField,
       onSave: this.cardSave,
@@ -250,7 +250,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <ScreeningInformationCardView
-              {...cardActions}
+              {...cardCallbacks}
               mode={this.mode}
               screening={mergedScreening}
             />
@@ -259,7 +259,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <NarrativeCardView
-              {...cardActions}
+              {...cardCallbacks}
               mode={this.mode}
               screening={mergedScreening}
             />
@@ -267,7 +267,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <IncidentInformationCardView
-              {...cardActions}
+              {...cardCallbacks}
               mode={this.mode}
               screening={mergedScreening}
             />
@@ -276,7 +276,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <AllegationsCardView
                 allegations={sortedAllegations}
-                {...cardActions}
+                {...cardCallbacks}
                 mode={this.mode}
               />
           }
@@ -292,7 +292,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <WorkerSafetyCardView
-                {...cardActions}
+                {...cardCallbacks}
                 mode={this.mode}
                 screening={mergedScreening}
               />
@@ -307,7 +307,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <CrossReportCardView
                 areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
-                {...cardActions}
+                {...cardCallbacks}
                 crossReports={mergedScreening.get('cross_reports')}
                 mode={this.mode}
               />
@@ -315,7 +315,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <DecisionCardView
-              {...cardActions}
+              {...cardCallbacks}
               mode={this.mode}
               screening={mergedScreening}
             />
