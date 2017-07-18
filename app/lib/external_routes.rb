@@ -51,8 +51,8 @@ class ExternalRoutes
       "/api/v1/screenings/#{id}/relationships"
     end
 
-    def intake_api_user_info_path(token)
-      "/api/v1/security/#{token}/details"
+    def intake_api_staff_path(id)
+      "/api/v1/staff/#{id}"
     end
   end
 end
