@@ -35,6 +35,12 @@ describe ApplicationController do
     end
 
     context 'when authentication is enabled' do
+      let(:auth_artifact) do
+        { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
+      end
+      let(:user_info) do
+        { 'first_name' => 'Joe', 'last_name' => 'Cool' }
+      end
       before do
         allow(Feature).to receive(:active?)
           .with(:authentication).and_return(true)
@@ -50,10 +56,19 @@ describe ApplicationController do
 
       context 'when authenticated and a new token is provided' do
         let(:new_security_token) { 'new_token' }
+        let(:new_auth_artifact) do
+          { 'user' => 'user1', 'roles' => %w[role3 role4], 'staffId' => 'def' }
+        end
+        let(:new_user_info) do
+          { 'first_name' => 'Red', 'last_name' => 'Baron' }
+        end
         before do
           expect(SecurityRepository).to receive(:token_valid?)
             .with(new_security_token)
-            .and_return(true)
+            .and_return(new_auth_artifact.to_json)
+          expect(StaffRepository).to receive(:find)
+            .with(new_security_token, 'def')
+            .and_return(new_user_info)
         end
 
         it 'replaces the current token' do
@@ -63,6 +78,7 @@ describe ApplicationController do
             params: { token: new_security_token }
 
           expect(session[:security_token]).to eq(new_security_token)
+          expect(session[:user_info]).to eq(new_user_info)
         end
       end
 
@@ -84,12 +100,16 @@ describe ApplicationController do
         before do
           expect(SecurityRepository).to receive(:token_valid?)
             .with(security_token)
-            .and_return(true)
+            .and_return(auth_artifact.to_json)
+          expect(StaffRepository).to receive(:find)
+            .with(security_token, 'abc')
+            .and_return(user_info.to_json)
         end
 
         it 'sets session security token' do
           process :custom, method: :get, params: { token: security_token }
           expect(session[:security_token]).to eq security_token
+          expect(session[:user_info]).to eq user_info
         end
       end
     end

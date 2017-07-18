@@ -24,7 +24,10 @@ class ApplicationController < ActionController::Base # :nodoc:
     auth_artifact = SecurityRepository.token_valid?(security_token)
     if auth_artifact
       session[:security_token] = security_token
-      session[:user_details] = JSON.parse auth_artifact unless auth_artifact.empty?
+      return if auth_artifact.empty?
+      staff_id = JSON.parse(auth_artifact)['staffId']
+      return unless staff_id
+      session[:user_info] = StaffRepository.find(security_token, staff_id)
     else
       redirect_to SecurityRepository.login_url(request.original_url)
     end
