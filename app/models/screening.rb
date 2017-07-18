@@ -21,6 +21,7 @@ class Screening # :nodoc:
   attribute :screening_decision
   attribute :screening_decision_detail
   attribute :started_at
+  attribute :staff_id
 
   attribute :address, Address
   attribute :assignee, String
