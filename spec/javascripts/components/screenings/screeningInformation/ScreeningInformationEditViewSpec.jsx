@@ -59,6 +59,23 @@ describe('ScreeningInformationEditView', () => {
         .toEqual(true)
     })
 
+    it('Has the proper options for comunication method', () => {
+      const commMethodOptions = [
+        {position: 1, selectValue: 'email', displayText: 'Email'},
+        {position: 2, selectValue: 'fax', displayText: 'Fax'},
+        {position: 3, selectValue: 'in_person', displayText: 'In Person'},
+        {position: 4, selectValue: 'mail', displayText: 'Mail'},
+        {position: 5, selectValue: 'online', displayText: 'Online'},
+        {position: 6, selectValue: 'phone', displayText: 'Phone'},
+      ]
+      const commMethod = component.find('SelectField[label="Communication Method"]')
+      commMethodOptions.forEach((option) => {
+        const relevantOption = commMethod.children().at(option.position)
+        expect(relevantOption.props().value).toEqual(option.selectValue)
+        expect(relevantOption.text()).toEqual(option.displayText)
+      })
+    })
+
     it('renders the save and cancel button', () => {
       expect(component.find('.btn.btn-primary').text()).toEqual('Save')
       expect(component.find('.btn.btn-default').text()).toEqual('Cancel')
