@@ -38,7 +38,7 @@ describe ApplicationController do
       let(:auth_artifact) do
         { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
       end
-      let(:user_info) do
+      let(:user_details) do
         { 'first_name' => 'Joe', 'last_name' => 'Cool' }
       end
       before do
@@ -59,7 +59,7 @@ describe ApplicationController do
         let(:new_auth_artifact) do
           { 'user' => 'user1', 'roles' => %w[role3 role4], 'staffId' => 'def' }
         end
-        let(:new_user_info) do
+        let(:new_user_details) do
           { 'first_name' => 'Red', 'last_name' => 'Baron' }
         end
         before do
@@ -68,7 +68,7 @@ describe ApplicationController do
             .and_return(new_auth_artifact.to_json)
           expect(StaffRepository).to receive(:find)
             .with(new_security_token, 'def')
-            .and_return(new_user_info)
+            .and_return(new_user_details)
         end
 
         it 'replaces the current token' do
@@ -78,11 +78,11 @@ describe ApplicationController do
             params: { token: new_security_token }
 
           expect(session[:security_token]).to eq(new_security_token)
-          expect(session[:user_info]).to eq(new_user_info)
+          expect(session[:user_details]).to eq(new_user_details)
         end
       end
 
-      context 'when not authenticated without valid security token' do
+      context 'when not authenticated and not provided valid security token' do
         before do
           allow(SecurityRepository).to receive(:token_valid?).and_return(false)
           allow(Rails.configuration).to receive(:intake)
@@ -95,7 +95,7 @@ describe ApplicationController do
         end
       end
 
-      context 'when not authenticated with valid security token' do
+      context 'when not authenticated but provided valid security token' do
         let(:security_token) { 'my_secure_token' }
         before do
           expect(SecurityRepository).to receive(:token_valid?)
@@ -103,13 +103,13 @@ describe ApplicationController do
             .and_return(auth_artifact.to_json)
           expect(StaffRepository).to receive(:find)
             .with(security_token, 'abc')
-            .and_return(user_info.to_json)
+            .and_return(user_details)
         end
 
         it 'sets session security token' do
           process :custom, method: :get, params: { token: security_token }
           expect(session[:security_token]).to eq security_token
-          expect(session[:user_info]).to eq user_info
+          expect(session[:user_details]).to eq user_details
         end
       end
     end

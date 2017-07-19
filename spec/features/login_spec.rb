@@ -6,18 +6,13 @@ require 'feature/testing'
 feature 'login' do
   let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
   let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
-  let(:screening_url) { 'http://api:3000/api/v1/screenings' }
   let(:auth_artifact) do
-    {
-      first_name: 'Joe',
-      last_name: 'Cool',
-      middle_initial: 'B',
-      county: 'Sonoma',
-      staff_id: '1234'
-    }
+    { staffId: '1234' }
+  end
+  let(:staff_info) do
+    { first_name: 'Joe', last_name: 'Cool' }
   end
   let(:screening_results) { [{ id: '1' }, { id: '2' }] }
-  let(:screening_response) { double(:screening_response, body: screening_results) }
 
   around do |example|
     with_config(
@@ -36,17 +31,37 @@ feature 'login' do
     end
   end
 
-  scenario 'user provides valid security token', accessibility: false do
-    stub_request(:get, screening_url)
-      .and_return(screening_response)
+  context 'user provides valid security token', accessibility: false do
+    let(:staff_url) { host_url(ExternalRoutes.intake_api_staff_path(1234)) }
+    before do
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body(screening_results, status: 200))
+    end
 
-    Feature.run_with_activated(:authentication) do
-      stub_request(:get, auth_validation_url)
-        .and_return(json_body(auth_artifact.to_json, status: 200))
-      visit root_path(token: 123)
-      expect(a_request(:get, auth_validation_url)).to have_been_made
-      expect(page.current_url).to_not have_content auth_login_url
-      expect(page).to have_current_path(root_path(token: 123))
+    scenario 'and verification provides staff_id' do
+      Feature.run_with_activated(:authentication) do
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body(auth_artifact.to_json, status: 200))
+        stub_request(:get, staff_url)
+          .and_return(json_body(staff_info.to_json, status: 200))
+        visit root_path(token: 123)
+        expect(a_request(:get, auth_validation_url)).to have_been_made
+        expect(a_request(:get, staff_url)).to have_been_made
+        expect(page.current_url).to_not have_content auth_login_url
+        expect(page).to have_current_path(root_path(token: 123))
+      end
+    end
+
+    scenario 'and verification does not provide staff_id' do
+      Feature.run_with_activated(:authentication) do
+        stub_request(:get, auth_validation_url)
+          .and_return(status: 200)
+        visit root_path(token: 123)
+        expect(a_request(:get, auth_validation_url)).to have_been_made
+        expect(a_request(:get, staff_url)).to_not have_been_made
+        expect(page.current_url).to_not have_content auth_login_url
+        expect(page).to have_current_path(root_path(token: 123))
+      end
     end
   end
 
@@ -61,13 +76,15 @@ feature 'login' do
 
   scenario 'user has already logged in', accessibility: false do
     Feature.run_with_activated(:authentication) do
-      stub_request(:get, screening_url)
-        .and_return(screening_response)
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body(screening_results, status: 200))
       stub_request(:get, auth_validation_url).and_return(status: 200)
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
       WebMock.reset!
 
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body(screening_results, status: 200))
       visit root_path
       expect(a_request(:get, %r{http://www.example.com})).to_not have_been_made
       expect(page).to have_current_path(root_path)
@@ -81,6 +98,8 @@ feature 'login' do
         .and_return(json_body(screening.to_json, status: 200))
       stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([].to_json, status: 200))
+      stub_request(:get, auth_validation_url)
+        .and_return(json_body(auth_artifact.to_json, status: 200))
 
       bobs_token = 'BOBS_TOKEN'
       in_browser(:bob) do
