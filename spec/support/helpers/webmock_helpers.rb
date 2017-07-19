@@ -19,7 +19,9 @@ module WebmockHelpers
   end
 
   def host_url(path)
-    "#{Rails.application.config.intake[:api_url]}#{path}"
+    base_path = Rails.application.config.intake[:api_url].sub(%r{/$}, '')
+    specific_path = path.sub(%r{^/}, '')
+    "#{base_path}/#{specific_path}"
   end
 end
 
