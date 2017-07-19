@@ -4,8 +4,12 @@ require 'rails_helper'
 
 describe Api::V1::ScreeningsController do
   let(:security_token) { 'security_token' }
+  let(:user_details) { FactoryGirl.build(:staff, id: '123') }
   let(:session) do
-    { security_token => security_token }
+    {
+      'security_token' => security_token,
+      'user_details' => user_details
+    }
   end
 
   describe '#create' do
@@ -13,8 +17,9 @@ describe Api::V1::ScreeningsController do
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
       screening = double(:screening)
+      assignee = "#{user_details.first_name} #{user_details.last_name} - #{user_details.county}"
       expect(Screening).to receive(:new)
-        .with(reference: '123ABC').and_return(screening)
+        .with(reference: '123ABC', assignee: assignee, staff_id: '123').and_return(screening)
       expect(ScreeningRepository).to receive(:create)
         .with(security_token, screening)
         .and_return(created_screening)

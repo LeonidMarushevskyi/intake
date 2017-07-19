@@ -30,7 +30,6 @@ describe Screening do
         screening_decision_detail: '3 days',
         staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
-        staff_id: 'abcd',
         address: {
           id: '1',
           street_address: '123 Fake St',
@@ -100,7 +99,6 @@ describe Screening do
         screening_decision_detail: '3 days',
         staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
-        staff_id: 'abcd',
         cross_reports: array_including(
           a_hash_including(
             agency_type: 'District attorney',
