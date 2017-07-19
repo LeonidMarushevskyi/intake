@@ -81,27 +81,33 @@ feature 'home page' do
     end
 
     scenario 'includes a list of saved screenings' do
-      screening1 = FactoryGirl.create(
-        :screening,
+      screening1 = {
+        id: '1',
         name: 'Little Shop of Horrors',
         reference: 'H9S83',
         started_at: '2016-08-11T18:24:22.157Z',
-        screening_decision: 'screen_out'
-      )
-      screening2 = FactoryGirl.create(
-        :screening,
+        screening_decision: 'screen_out',
+        screening_decision_detail: nil,
+        assignee: nil
+      }
+      screening2 = {
+        id: '2',
         name: 'The Shining',
         reference: 'DF90W5',
         started_at: '2016-08-12T18:24:22.157Z',
-        screening_decision: 'promote_to_referral'
-      )
-      screening3 = FactoryGirl.create(
-        :screening,
+        screening_decision: 'promote_to_referral',
+        screening_decision_detail: nil,
+        assignee: nil
+      }
+      screening3 = {
+        id: '3',
         name: 'It Follows',
         reference: 'Q7W0B6',
         started_at: '2016-08-17T18:24:22.157Z',
-        screening_decision: 'differential_response'
-      )
+        screening_decision: 'differential_response',
+        screening_decision_detail: nil,
+        assignee: nil
+      }
       stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([screening1, screening2, screening3].to_json, status: 200))
 
