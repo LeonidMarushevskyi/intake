@@ -44,6 +44,7 @@ feature 'show cross reports' do
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
+      expect(page).to have_content('must be cross-reported to law enforcement')
       expect(page.find('label', text: /\ADistrict attorney\z/)[:class]).to include('required')
       expect(page.find('label', text: /\ALaw enforcement\z/)[:class]).to include('required')
       expect(page.find('label', text: 'Law enforcement agency name')[:class]).to include('required')
@@ -94,6 +95,7 @@ feature 'show cross reports' do
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
+      expect(page).to_not have_content('must be cross-reported to law enforcement')
       expect(page.find('label', text: /\ADistrict attorney\z/)[:class]).to_not include('required')
       expect(page.find('label', text: /\ALaw enforcement\z/)[:class]).to_not include('required')
       expect(page.find('label', text: 'Law enforcement agency name')[:class]).to include('required')
