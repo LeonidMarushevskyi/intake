@@ -23,7 +23,7 @@ export default class AllegationsCardView extends React.Component {
   }
 
   onChange(victimId, perpetratorId, allegationTypes) {
-    this.props.setField(['allegations', victimId, perpetratorId], allegationTypes)
+    this.props.onChange(['allegations', victimId, perpetratorId], allegationTypes)
   }
 
   onEdit() {
@@ -60,6 +60,6 @@ AllegationsCardView.propTypes = {
   allegations: PropTypes.object.isRequired,
   mode: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  setField: PropTypes.func.isRequired,
 }

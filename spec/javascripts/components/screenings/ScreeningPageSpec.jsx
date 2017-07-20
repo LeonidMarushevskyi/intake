@@ -301,6 +301,7 @@ describe('ScreeningPage', () => {
     describe('render', () => {
       let component
       let props
+      let cardCallbacks
 
       beforeEach(() => {
         props = {
@@ -322,6 +323,11 @@ describe('ScreeningPage', () => {
 
         component = shallow(<ScreeningPage {...props} />)
         component.setState({loaded: true})
+        cardCallbacks = {
+          onCancel: component.instance().cancelEdit,
+          onChange: component.instance().setField,
+          onSave: component.instance().cardSave,
+        }
       })
 
       it('renders the home and edit link', () => {
@@ -332,51 +338,9 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the screening information show card', () => {
-        expect(component.find('ScreeningInformationCardView').props().mode).toEqual('show')
-      })
-
-      it('renders the incident information show card', () => {
-        expect(component.find('IncidentInformationCardView').props().mode).toEqual('show')
-      })
-
-      it('renders the decision show card', () => {
-        expect(component.find('DecisionCardView').props().mode).toEqual('show')
-      })
-
-      it('renders the cross report show card', () => {
-        expect(component.find('CrossReportCardView').props().mode).toEqual('show')
-      })
-
-      it('renders the history card', () => {
-        expect(component.find('HistoryCard').length).toEqual(1)
-        expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
-        expect(component.find('HistoryCard').props().involvements).toEqual(props.involvements)
-        expect(component.find('HistoryCard').props().participants).toEqual(props.participants)
-        expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
-      })
-
-      it('renders the allegations card', () => {
-        const allegationsCard = component.find('AllegationsCardView')
-        expect(allegationsCard.length).toEqual(1)
-        expect(allegationsCard.props().allegations).toEqual(Immutable.List())
-        expect(allegationsCard.props().mode).toEqual('show')
-        expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
-      })
-
-      it('renders the relationships card', () => {
-        const relationshipsCard = component.find('RelationshipsCard')
-        expect(relationshipsCard.length).toEqual(1)
-        expect(relationshipsCard.props().participants).toEqual(props.participants)
-        expect(relationshipsCard.props().relationships).toEqual(props.relationships)
-        expect(relationshipsCard.props().screeningId).toEqual(props.params.id)
-        expect(relationshipsCard.props().actions).toEqual(props.actions)
-      })
-
-      it('renders the worker safety card', () => {
-        const safetyCard = component.find('WorkerSafetyCardView')
-        expect(safetyCard.length).toEqual(1)
-        expect(safetyCard.props().mode).toEqual('show')
-        expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
+        expect(component.find('ScreeningInformationCardView').props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
       })
 
       it('renders the participants card for each participant', () => {
@@ -387,8 +351,60 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the narrative card after screening is loaded', () => {
-        expect(component.find('NarrativeCardView').props().screening).toEqual(props.screening)
-        expect(component.find('NarrativeCardView').props().mode).toEqual('show')
+        expect(component.find('NarrativeCardView').props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
+      })
+
+      it('renders the incident information show card', () => {
+        expect(component.find('IncidentInformationCardView').props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
+      })
+
+      it('renders the allegations card', () => {
+        const allegationsCard = component.find('AllegationsCardView')
+        expect(allegationsCard.props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show', allegations: Immutable.List()})
+        )
+      })
+
+      it('renders the relationships card', () => {
+        expect(component.find('RelationshipsCard').props()).toEqual(jasmine.objectContaining({
+          actions: props.actions,
+          participants: props.participants,
+          relationships: props.relationships,
+          screeningId: props.params.id,
+        }))
+      })
+
+      it('renders the worker safety card', () => {
+        const safetyCard = component.find('WorkerSafetyCardView')
+        expect(safetyCard.length).toEqual(1)
+        expect(safetyCard.props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
+      })
+
+      it('renders the history card', () => {
+        expect(component.find('HistoryCard').props()).toEqual(jasmine.objectContaining({
+          actions: props.actions,
+          involvements: props.involvements,
+          participants: props.participants,
+          screeningId: props.params.id,
+        }))
+      })
+
+      it('renders the cross report show card', () => {
+        expect(component.find('CrossReportCardView').props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
+      })
+
+      it('renders the decision show card', () => {
+        expect(component.find('DecisionCardView').props()).toEqual(
+          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+        )
       })
     })
   })
@@ -469,8 +485,6 @@ describe('ScreeningPage', () => {
         const component = shallow(<ScreeningPage {...props} />)
         component.setState({loaded: true})
         expect(component.find('ScreeningInformationCardView').length).toEqual(1)
-        expect(component.find('ScreeningInformationCardView').props().screening).toEqual(screening)
-        expect(component.find('ScreeningInformationCardView').props().onChange).toEqual(component.instance().setField)
       })
 
       describe('participants card', () => {

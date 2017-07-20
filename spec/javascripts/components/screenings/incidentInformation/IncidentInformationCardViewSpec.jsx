@@ -5,11 +5,8 @@ import {mount} from 'enzyme'
 
 describe('IncidentInformationCardView', () => {
   let component
+  let promiseObj
   const props = {
-    onCancel: jasmine.createSpy(),
-    onChange: jasmine.createSpy(),
-    onEdit: jasmine.createSpy(),
-    onSave: jasmine.createSpy('onSave'),
     screening: Immutable.fromJS({
       incident_date: '2006-01-21',
       incident_county: 'alpine',
@@ -22,7 +19,14 @@ describe('IncidentInformationCardView', () => {
       location_type: 'Juvenile Detention',
     }),
   }
-  const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+
+  beforeEach(() => {
+    props.onCancel = jasmine.createSpy('onCancel')
+    props.onChange = jasmine.createSpy('onChange')
+    props.onSave = jasmine.createSpy('onSave')
+    props.onEdit = jasmine.createSpy('onEdit')
+    promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+  })
 
   describe('render', () => {
     describe('when mode is set to edit', () => {
