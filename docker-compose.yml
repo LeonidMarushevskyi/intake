@@ -37,7 +37,6 @@ services:
       AUTHENTICATION_URL: 'http://www.example.com/'
       AUTHENTICATION: 'false'
       SEARCH_URL: 'http://api-a.cocina.trn01.cwds.io'
-      PEOPLE_SEARCH_PATH: '/api/v1/dora/people/_search'
     tty: true
     stdin_open: true
   db:
