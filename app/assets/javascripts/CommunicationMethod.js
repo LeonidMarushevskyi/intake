@@ -3,7 +3,6 @@ const COMMUNICATION_METHOD = Object.freeze({
   fax: 'Fax',
   in_person: 'In Person',
   mail: 'Mail',
-  online: 'Online',
   phone: 'Phone',
 })
 

@@ -65,8 +65,7 @@ describe('ScreeningInformationEditView', () => {
         {position: 2, selectValue: 'fax', displayText: 'Fax'},
         {position: 3, selectValue: 'in_person', displayText: 'In Person'},
         {position: 4, selectValue: 'mail', displayText: 'Mail'},
-        {position: 5, selectValue: 'online', displayText: 'Online'},
-        {position: 6, selectValue: 'phone', displayText: 'Phone'},
+        {position: 5, selectValue: 'phone', displayText: 'Phone'},
       ]
       const commMethod = component.find('SelectField[label="Communication Method"]')
       commMethodOptions.forEach((option) => {
