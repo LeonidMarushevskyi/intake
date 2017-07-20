@@ -33,12 +33,22 @@ describe('CrossReportEditView', () => {
         .toBeTruthy()
     })
 
+    it('renders a help message when cross reports are required', () => {
+      expect(component.find('HelpMessage').exists()).toEqual(true)
+      expect(component.find('HelpMessage').html()).toContain('Any report that includes allegations')
+    })
+
     it('does not mark labels required when not required', () => {
       component.setProps({areCrossReportsRequired: false})
       expect(component.find('CheckboxField[value="District attorney"]').props().required)
         .toBeFalsy()
       expect(component.find('CheckboxField[value="Law enforcement"]').props().required)
         .toBeFalsy()
+    })
+
+    it('does not render a help message when cross reports are not required', () => {
+      component.setProps({areCrossReportsRequired: false})
+      expect(component.find('HelpMessage').exists()).toEqual(false)
     })
   })
 
