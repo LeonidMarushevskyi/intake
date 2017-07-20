@@ -13,6 +13,7 @@ gem 'rails', '~> 5.1'
 gem 'redis-rails'
 gem 'responders'
 gem 'virtus'
+gem 'webpacker'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false

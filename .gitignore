@@ -20,3 +20,7 @@ node_modules
 public/assets/
 
 **/.DS_Store
+
+binstubs/
+/public/packs
+/node_modules
