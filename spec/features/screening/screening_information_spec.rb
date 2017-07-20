@@ -60,7 +60,7 @@ feature 'screening information card' do
     within '#screening-information-card.edit' do
       fill_in 'Title/Name of Screening', with: 'Bob Loblaw'
       fill_in 'Assigned Social Worker', with: 'George Michael'
-      select 'Online', from: 'Communication Method'
+      select 'In Person', from: 'Communication Method'
       fill_in_datepicker 'Screening Start Date/Time', with: '08/19/2016 3:00 AM'
       fill_in_datepicker 'Screening End Date/Time', with: '08/24/2016 3:00 AM'
       click_button 'Cancel'
