@@ -55,3 +55,31 @@
   padding-left: 2rem;
 }
 
+.alert-message {
+  background-color: $white-smoke;
+  display: table;
+  margin-top: $base-spacing;
+  width: 100%;
+
+  .alert-icon {
+    display: table-cell;
+    font-size: $large-font;
+    padding: $half-spacing $base-spacing;
+    text-align: center;
+    vertical-align: middle;
+    width: 5.4rem;
+  }
+
+  .alert-text {
+    display: table-cell;
+    margin-left: $base-spacing;
+    padding: $base-spacing;
+  }
+}
+
+.info-message {
+  .alert-icon {
+    background-color: $medium-blue;
+    color: $white;
+  }
+}
