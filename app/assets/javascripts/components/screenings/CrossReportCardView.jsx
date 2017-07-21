@@ -3,6 +3,8 @@ import CrossReportShowView from 'components/screenings/CrossReportShowView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
+import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'CrossReport'
+import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'CrossReport'
 
 export default class CrossReportCardView extends React.Component {
   constructor(props) {
@@ -40,12 +42,13 @@ export default class CrossReportCardView extends React.Component {
   }
 
   infoMessage() {
-    const infoMessage = 'Any report that includes allegations (except General Neglect or Caretaker Absence) must be cross-reported to law enforcement and the district attorney.'
     if (this.props.areCrossReportsRequired) {
-      if (this.crossReportsInclude('District attorney') && this.crossReportsInclude('Law enforcement')) {
+      if (Immutable.List(CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS).every((agencyType) =>
+        this.crossReportsInclude(agencyType)
+      )) {
         return null
       } else {
-        return infoMessage
+        return ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE
       }
     } else {
       return null
