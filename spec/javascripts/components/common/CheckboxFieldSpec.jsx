@@ -1,18 +1,32 @@
 import React from 'react'
+import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import CheckboxField from 'components/common/CheckboxField'
 
 describe('CheckboxField', () => {
   let onChange
+  let onBlur
   let component
+  let formField
   const props = {
+    errors: Immutable.Map(),
     id: 'myCheckboxFieldId',
     value: 'this-is-my-value',
   }
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
+    onBlur = jasmine.createSpy('onBlur')
     props.onChange = onChange
+    props.onBlur = onBlur
     component = shallow(<CheckboxField {...props} />)
+  })
+
+  it('passes id to the ErrorMessages', () => {
+    expect(component.find('ErrorMessages').props().id).toEqual('myCheckboxFieldId')
+  })
+
+  it('passes errors to the ErrorMessages', () => {
+    expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.Map())
   })
 
   describe('with no flags set', () => {
@@ -45,6 +59,12 @@ describe('CheckboxField', () => {
     const selectElement = component.find('input')
     selectElement.simulate('change')
     expect(onChange).toHaveBeenCalled()
+  })
+
+  it('calls onBlur when a blur event occurs on checkbox field', () => {
+    const selectElement = component.find('input')
+    selectElement.simulate('blur')
+    expect(onBlur).toHaveBeenCalled()
   })
 
   describe('when flag props are set', () => {
