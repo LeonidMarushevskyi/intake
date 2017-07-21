@@ -20,7 +20,8 @@ namespace :docker do # rubocop:disable BlockLength
     run_commands [
       'docker rm $(docker ps -q -f status=exited)',
       'docker rmi $(docker images -q -f dangling=true)',
-      'docker volume rm $(docker volume ls -qf dangling=true)'
+      'docker volume rm $(docker volume ls -qf dangling=true)',
+      'docker network rm $(docker network ls -q)'
     ]
   end
   desc 'Destroys and rebuilds docker containers, volumes, and images'
@@ -29,6 +30,7 @@ namespace :docker do # rubocop:disable BlockLength
       'docker ps -aq | xargs docker rm -fv',
       'docker images -qa | xargs docker rmi -f',
       'docker volume ls -q | xargs docker volume rm',
+      'docker network ls -q | xargs docker network rm',
       'docker-compose pull --parallel',
       'docker-compose build'
     ]

@@ -4,26 +4,72 @@ require 'rails_helper'
 
 describe Api::V1::ScreeningsController do
   let(:security_token) { 'security_token' }
+  let(:staff) { FactoryGirl.build(:staff, id: '123') }
   let(:session) do
-    { security_token => security_token }
+    {
+      'security_token' => security_token,
+      'user_details' => staff
+    }
   end
 
   describe '#create' do
     let(:created_screening) { double(:screening, id: '1') }
+    let(:blank_screening) { double(:screening) }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      screening = double(:screening)
-      expect(Screening).to receive(:new)
-        .with(reference: '123ABC').and_return(screening)
       expect(ScreeningRepository).to receive(:create)
-        .with(security_token, screening)
+        .with(security_token, blank_screening)
         .and_return(created_screening)
     end
 
     it 'creates and renders screening as json' do
+      assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
+      expect(Screening).to receive(:new)
+        .with(reference: '123ABC', assignee: assignee, staff_id: '123').and_return(blank_screening)
+
       process :create, method: :post, session: session
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq(created_screening.as_json)
+    end
+
+    describe 'setting assignee' do
+      it 'leaves assignee and staff_id as nil if user_details is not set' do
+        session = { 'security_token' => security_token }
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC', assignee: nil, staff_id: nil).and_return(blank_screening)
+        process :create, method: :post, session: session
+        expect(response).to be_successful
+      end
+
+      describe 'when user_details is set' do
+        it 'formats assignee as first mi. last - county if all exist' do
+          staff = FactoryGirl.build(:staff, middle_initial: 'Q', id: '456')
+          assignee = "#{staff.first_name} Q. #{staff.last_name} - #{staff.county}"
+          session = {
+            'security_token' => security_token,
+            'user_details' => staff
+          }
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, staff_id: '456')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
+          expect(response).to be_successful
+        end
+
+        it 'formats assignee as first last - county if no middle initial' do
+          staff = FactoryGirl.build(:staff, id: '789')
+          assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
+          session = {
+            'security_token' => security_token,
+            'user_details' => staff
+          }
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, staff_id: '789')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
+          expect(response).to be_successful
+        end
+      end
     end
   end
 

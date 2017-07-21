@@ -19,6 +19,7 @@ describe('InputField', () => {
     errors: Immutable.Map(),
     required: false,
     maxLength: '125',
+    disabled: false,
   }
 
   beforeEach(() => {
@@ -40,6 +41,7 @@ describe('InputField', () => {
       expect(formField.props().errors).toEqual(Immutable.Map())
       expect(formField.props().required).toEqual(false)
       expect(formField.childAt(0).node.type).toEqual('input')
+      expect(formField.props().disabled).toEqual(false)
     })
 
     it('renders the input placeholder', () => {
@@ -100,6 +102,17 @@ describe('InputField', () => {
       expect(component.find('FormField').props().required).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
+    })
+  })
+
+  describe('when it is disabled', () => {
+    beforeEach(() => {
+      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} disabled/>)
+    })
+
+    it('renders a disabled input field', () => {
+      expect(component.find('FormField').props().disabled).toEqual(true)
+      expect(component.find('input').prop('disabled')).toEqual(true)
     })
   })
 })

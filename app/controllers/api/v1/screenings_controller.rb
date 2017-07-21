@@ -46,7 +46,11 @@ module Api
       ].freeze
 
       def create
-        new_screening = Screening.new(reference: LUID.generate.first)
+        new_screening = Screening.new(
+          reference: LUID.generate.first,
+          assignee: build_assignee_name(session),
+          staff_id: build_staff_id(session)
+        )
         screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening
       end
@@ -89,6 +93,27 @@ module Api
 
       def screening_params
         params.require(:screening).permit(*PERMITTED_PARAMS)
+      end
+
+      def build_staff_id(session)
+        user_details = session[:user_details]
+        return nil unless user_details
+
+        user_details.id
+      end
+
+      def build_assignee_name(session)
+        user_details = session[:user_details]
+        return nil unless user_details
+
+        middle_initial = user_details['middle_initial']
+
+        assignee_name = user_details.first_name
+        assignee_name << " #{middle_initial}." unless middle_initial.blank?
+        assignee_name << " #{user_details.last_name}"
+        assignee_name << " - #{user_details.county}"
+
+        assignee_name.strip
       end
     end
   end

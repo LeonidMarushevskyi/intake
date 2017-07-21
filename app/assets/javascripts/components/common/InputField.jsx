@@ -15,8 +15,10 @@ const InputField = ({
   required,
   type,
   value,
+  disabled,
 }) => {
   const formFieldProps = {
+    disabled: disabled,
     errors: errors,
     gridClassName: gridClassName,
     id: id,
@@ -29,7 +31,7 @@ const InputField = ({
     <FormField {...formFieldProps}>
       <input id={id} type={type} placeholder={placeholder}
         value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
-        aria-required={required} required={required}
+        aria-required={required} required={required} disabled={disabled}
       />
     </FormField>
   )
@@ -41,6 +43,7 @@ InputField.defaultProps = {
 }
 
 InputField.propTypes = {
+  disabled: PropTypes.bool,
   errors: PropTypes.object,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
