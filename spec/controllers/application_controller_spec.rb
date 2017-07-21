@@ -57,7 +57,7 @@ describe ApplicationController do
           { 'first_name' => 'Red', 'last_name' => 'Baron' }
         end
         before do
-          expect(SecurityRepository).to receive(:token_valid?)
+          expect(SecurityRepository).to receive(:auth_artifact_for_token)
             .with(new_security_token)
             .and_return(new_auth_artifact.to_json)
           expect(StaffRepository).to receive(:find)
@@ -78,7 +78,7 @@ describe ApplicationController do
 
       context 'when not authenticated and not provided valid security token' do
         before do
-          allow(SecurityRepository).to receive(:token_valid?).and_return(false)
+          allow(SecurityRepository).to receive(:auth_artifact_for_token).and_return(false)
           allow(Rails.configuration).to receive(:intake)
             .and_return(authentication_login_url: 'http://authentication_url/authn/login?callback=')
         end
@@ -95,7 +95,7 @@ describe ApplicationController do
 
         let(:security_token) { 'my_secure_token' }
         before do
-          expect(SecurityRepository).to receive(:token_valid?)
+          expect(SecurityRepository).to receive(:auth_artifact_for_token)
             .with(security_token)
             .and_return(auth_artifact.to_json)
           expect(StaffRepository).to receive(:find)

@@ -3,10 +3,10 @@
 # SecurityRepository is responsible for managing calls
 # to the security API
 class SecurityRepository
-  def self.token_valid?(token)
+  def self.auth_artifact_for_token(token)
     return unless token.present?
     auth_artifact = Faraday.get(token_validation_url(token))
-    auth_artifact.status == 200 && auth_artifact.body
+    auth_artifact.body if auth_artifact.status == 200
   end
 
   def self.login_url(callback)

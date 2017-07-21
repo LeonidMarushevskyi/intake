@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base # :nodoc:
   end
 
   def process_token(security_token)
-    auth_artifact = SecurityRepository.token_valid?(security_token)
+    auth_artifact = SecurityRepository.auth_artifact_for_token(security_token)
     if auth_artifact
       session[:security_token] = security_token
       return if auth_artifact.empty?
