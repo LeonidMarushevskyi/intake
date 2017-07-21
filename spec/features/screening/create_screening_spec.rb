@@ -60,7 +60,7 @@ feature 'Create Screening' do
       end
     end
 
-    context 'user has full name and staffID' do
+    context 'user has full name and staff Id' do
       let(:user_details) do
         {
           first_name: 'Joe',

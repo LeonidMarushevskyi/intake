@@ -6,6 +6,6 @@ FactoryGirl.define do
 
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    county { ['Sacramento', 'Los Angeles', 'Alpine'] }
+    county { ['Sacramento', 'Los Angeles', 'Alpine'].sample }
   end
 end

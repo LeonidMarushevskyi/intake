@@ -35,12 +35,6 @@ describe ApplicationController do
     end
 
     context 'when authentication is enabled' do
-      let(:auth_artifact) do
-        { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
-      end
-      let(:user_details) do
-        { 'first_name' => 'Joe', 'last_name' => 'Cool' }
-      end
       before do
         allow(Feature).to receive(:active?)
           .with(:authentication).and_return(true)
@@ -96,6 +90,9 @@ describe ApplicationController do
       end
 
       context 'when not authenticated but provided valid security token' do
+        auth_artifact = { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
+        user_details = { 'first_name' => 'Joe', 'last_name' => 'Cool' }
+
         let(:security_token) { 'my_secure_token' }
         before do
           expect(SecurityRepository).to receive(:token_valid?)
