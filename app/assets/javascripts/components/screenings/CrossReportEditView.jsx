@@ -1,7 +1,7 @@
 import CheckboxField from 'components/common/CheckboxField'
 import DateField from 'components/common/DateField'
-import HelpMessage from 'components/common/HelpMessage'
 import Immutable from 'immutable'
+import InfoMessage from 'components/common/InfoMessage'
 import InputField from 'components/common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -108,14 +108,14 @@ export default class CrossReportEditView extends React.Component {
     const halfIndex = 2
     const hasCrossReport = !this.props.crossReports.isEmpty()
     const crossReportData = this.crossReportData()
-    const helpMessageText = 'Any report that includes allegations (except General Neglect or Caretaker Absence) must be cross-reported to law enforcement and the district attorney.'
+    const infoMessageText = 'Any report that includes allegations (except General Neglect or Caretaker Absence) must be cross-reported to law enforcement and the district attorney.'
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
         <div className='card-header'>
           <span>Cross Report</span>
         </div>
         <div className='card-body no-pad-top'>
-          { this.props.areCrossReportsRequired && <HelpMessage message={helpMessageText} /> }
+          { this.props.areCrossReportsRequired && <InfoMessage message={infoMessageText} /> }
           <div className='row col-md-12'>
             <label>This report has cross reported to:</label>
           </div>

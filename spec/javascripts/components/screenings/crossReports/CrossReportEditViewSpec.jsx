@@ -33,9 +33,9 @@ describe('CrossReportEditView', () => {
         .toBeTruthy()
     })
 
-    it('renders a help message when cross reports are required', () => {
-      expect(component.find('HelpMessage').exists()).toEqual(true)
-      expect(component.find('HelpMessage').html()).toContain('Any report that includes allegations')
+    it('renders an info message when cross reports are required', () => {
+      expect(component.find('InfoMessage').exists()).toEqual(true)
+      expect(component.find('InfoMessage').html()).toContain('Any report that includes allegations')
     })
 
     it('does not mark labels required when not required', () => {
@@ -46,9 +46,9 @@ describe('CrossReportEditView', () => {
         .toBeFalsy()
     })
 
-    it('does not render a help message when cross reports are not required', () => {
+    it('does not render an info message when cross reports are not required', () => {
       component.setProps({areCrossReportsRequired: false})
-      expect(component.find('HelpMessage').exists()).toEqual(false)
+      expect(component.find('InfoMessage').exists()).toEqual(false)
     })
   })
 
