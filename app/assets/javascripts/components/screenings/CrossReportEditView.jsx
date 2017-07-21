@@ -108,14 +108,13 @@ export default class CrossReportEditView extends React.Component {
     const halfIndex = 2
     const hasCrossReport = !this.props.crossReports.isEmpty()
     const crossReportData = this.crossReportData()
-    const infoMessageText = 'Any report that includes allegations (except General Neglect or Caretaker Absence) must be cross-reported to law enforcement and the district attorney.'
     return (
       <div className='card edit double-gap-top' id='cross-report-card'>
         <div className='card-header'>
           <span>Cross Report</span>
         </div>
         <div className='card-body no-pad-top'>
-          { this.props.areCrossReportsRequired && <InfoMessage message={infoMessageText} /> }
+          { this.props.infoMessage && <InfoMessage message={this.props.infoMessage} /> }
           <div className='row col-md-12'>
             <label>This report has cross reported to:</label>
           </div>
@@ -176,6 +175,7 @@ export default class CrossReportEditView extends React.Component {
 CrossReportEditView.propTypes = {
   areCrossReportsRequired: PropTypes.bool,
   crossReports: PropTypes.object,
+  infoMessage: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

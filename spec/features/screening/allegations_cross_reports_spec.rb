@@ -103,4 +103,58 @@ feature 'show cross reports' do
       expect(page.find('label', text: 'Communication Method')[:class]).to include('required')
     end
   end
+
+  scenario 'when allegations are required and user selects and unselects cross report options' do
+    perpetrator = FactoryGirl.create(
+      :participant,
+      :perpetrator
+    )
+    victim = FactoryGirl.create(
+      :participant,
+      :victim
+    )
+    screening = FactoryGirl.create(
+      :screening,
+      id: 1,
+      participants: [perpetrator, victim],
+      allegations: [{
+        screening_id: 1,
+        perpetrator_id: perpetrator.id,
+        victim_id: victim.id,
+        allegation_types: ['Severe neglect']
+      }],
+      cross_reports: []
+    )
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+    stub_request(
+      :get,
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
+    ).and_return(json_body([], status: 200))
+    stub_request(
+      :get,
+      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
+    ).and_return(json_body([], status: 200))
+    visit edit_screening_path(id: screening.id)
+
+    within '#cross-report-card.edit' do
+      expect(page).to have_content('must be cross-reported to law enforcement')
+      find('label', text: /\ADistrict attorney\z/).click
+      expect(page).to have_content('must be cross-reported to law enforcement')
+      find('label', text: /\ALaw enforcement\z/).click
+      expect(page).to_not have_content('must be cross-reported to law enforcement')
+    end
+
+    screening.cross_reports << { agency_type: 'Disctrict attorney' }
+    screening.cross_reports << { agency_type: 'Law enforcement' }
+    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+    within '#cross-report-card.edit' do
+      click_button 'Save'
+    end
+
+    within '#cross-report-card.show' do
+      expect(page).to_not have_content('must be cross-reported to law enforcement')
+    end
+  end
 end

@@ -32,12 +32,34 @@ export default class CrossReportCardView extends React.Component {
     })
   }
 
+  crossReportsInclude(agencyType) {
+    const present = this.props.crossReports.some((crossReport) =>
+      crossReport.get('agency_type') === agencyType
+    )
+    return present
+  }
+
+  infoMessage() {
+    const infoMessage = 'Any report that includes allegations (except General Neglect or Caretaker Absence) must be cross-reported to law enforcement and the district attorney.'
+    if (this.props.areCrossReportsRequired) {
+      if (this.crossReportsInclude('District attorney') && this.crossReportsInclude('Law enforcement')) {
+        return null
+      } else {
+        return infoMessage
+      }
+    } else {
+      return null
+    }
+  }
+
   render() {
     const {mode} = this.state
+    const infoMessage = this.infoMessage()
     const allprops = {
       edit: {
         areCrossReportsRequired: this.props.areCrossReportsRequired,
         crossReports: this.props.crossReports,
+        infoMessage: infoMessage,
         onChange: this.props.onChange,
         onSave: this.onSave,
         onCancel: this.onCancel,

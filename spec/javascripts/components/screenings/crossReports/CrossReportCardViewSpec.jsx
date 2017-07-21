@@ -1,7 +1,7 @@
 import CrossReportCardView from 'components/screenings/CrossReportCardView'
 import Immutable from 'immutable'
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('CrossReportCardView', () => {
   let component
@@ -19,6 +19,85 @@ describe('CrossReportCardView', () => {
     props.onCancel = jasmine.createSpy()
     props.onChange = jasmine.createSpy()
     props.onSave = jasmine.createSpy()
+  })
+
+  describe('crossReportsInclude', () => {
+    it('returns true if cross reports includes the agency type passed', () => {
+      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}])
+      const component = shallow(<CrossReportCardView {...props} mode='show' crossReports={crossReports} />)
+      expect(component.instance().crossReportsInclude('District attorney')).toEqual(true)
+    })
+
+    it('returns false if cross reports do not include the agency type passed', () => {
+      const crossReports = Immutable.fromJS([{agency_type: 'Disctrict attorney'}])
+      const component = shallow(<CrossReportCardView {...props} mode='show' crossReports={crossReports} />)
+      expect(component.instance().crossReportsInclude('Law enforcement')).toEqual(false)
+    })
+  })
+
+  describe('infoMessage', () => {
+    it('returns null when cross reports are not required', () => {
+      const component = shallow(
+        <CrossReportCardView
+          {...props}
+          mode='show'
+          areCrossReportsRequired={false}
+        />
+      )
+      expect(component.instance().infoMessage()).toEqual(null)
+    })
+
+    it('returns a message when cross reports are required and none have been selected', () => {
+      const crossReports = Immutable.List()
+      const component = shallow(
+        <CrossReportCardView
+          {...props}
+          mode='show'
+          crossReports={crossReports}
+          areCrossReportsRequired={true}
+        />
+      )
+      expect(component.instance().infoMessage()).toContain('Any report that includes allegations')
+    })
+
+    it('returns a message when cross reports are required but district attorney has not been selected', () => {
+      const crossReports = Immutable.fromJS([{agency_type: 'Law enforcement'}])
+      const component = shallow(
+        <CrossReportCardView
+          {...props}
+          mode='show'
+          crossReports={crossReports}
+          areCrossReportsRequired={true}
+        />
+      )
+      expect(component.instance().infoMessage()).toContain('Any report that includes allegations')
+    })
+
+    it('returns a message when cross reports are required but law enforcement has not been selected', () => {
+      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}])
+      const component = shallow(
+        <CrossReportCardView
+          {...props}
+          mode='show'
+          crossReports={crossReports}
+          areCrossReportsRequired={true}
+        />
+      )
+      expect(component.instance().infoMessage()).toContain('Any report that includes allegations')
+    })
+
+    it('returns a message when cross reports are required, and law enforcement and D.A. have both been selected', () => {
+      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}, {agency_type: 'Law enforcement'}])
+      const component = shallow(
+        <CrossReportCardView
+          {...props}
+          mode='show'
+          crossReports={crossReports}
+          areCrossReportsRequired={true}
+        />
+      )
+      expect(component.instance().infoMessage()).toEqual(null)
+    })
   })
 
   describe('render', () => {
