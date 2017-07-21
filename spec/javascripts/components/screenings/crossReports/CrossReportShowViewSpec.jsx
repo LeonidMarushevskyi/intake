@@ -12,6 +12,18 @@ describe('CrossReportShowView', () => {
     component = shallow(<CrossReportShowView crossReports={Immutable.List()} onEdit={onEdit} />)
   })
 
+  describe('Info messages', () => {
+    it('renders an info message when passed', () => {
+      component.setProps({infoMessage: 'Help me, Obi-Wan Kenobi!'})
+      expect(component.find('InfoMessage').exists()).toEqual(true)
+      expect(component.find('InfoMessage').html()).toContain('Help me, Obi-Wan Kenobi!')
+    })
+
+    it('does not render an info message when none are present', () => {
+      expect(component.find('InfoMessage').exists()).toEqual(false)
+    })
+  })
+
   it('renders the card header', () => {
     expect(component.find('.card.show .card-header').text()).toContain('Cross Report')
   })

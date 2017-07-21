@@ -65,8 +65,9 @@ export default class CrossReportCardView extends React.Component {
         onCancel: this.onCancel,
       },
       show: {
-        onEdit: this.onEdit,
         crossReports: this.props.crossReports,
+        infoMessage: infoMessage,
+        onEdit: this.onEdit,
       },
     }
     const CrossReportView = (mode === 'edit') ? CrossReportEditView : CrossReportShowView
