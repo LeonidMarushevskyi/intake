@@ -9,22 +9,30 @@
 
 console.log('Hello World from base intake webpacker application.js')
 
-import PropTypes from 'prop-types'
-import React from 'react'
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <div>
-        {this.props.children}
-      </div>
-    )
-  }
+import ReactDOM from 'react-dom'
+import configureStore from 'store/configureStore'
+import routes from 'common/routes'
+import {Provider} from 'react-redux'
+
+import Autocompleter from 'common/Autocompleter'
+
+const store = configureStore()
+if (document.getElementById('app')) {
+  ReactDOM.render(
+    <Provider store={store}>
+    {routes}
+    </Provider>,
+    document.getElementById('app')
+  )
 }
 
-App.propTypes = {
-  children: PropTypes.object.isRequired,
+if (document.getElementById('app-release-one')) {
+  ReactDOM.render(
+    <div>
+      <label className='no-gap' htmlFor='people'>People</label>
+      <Autocompleter id='people' />
+    </div>,
+    document.getElementById('app-release-one')
+  )
 }
-
-
-import HomePage from 'HomePage'
