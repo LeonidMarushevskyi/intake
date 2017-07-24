@@ -5,7 +5,6 @@ development:
     release_two: false
     authentication: false
     centralized_sessions: true
-    people_search_tpt: false
     referral_submit: false
 
 test:
@@ -14,7 +13,6 @@ test:
     release_two: false
     authentication: false
     centralized_sessions: true
-    people_search_tpt: false
     referral_submit: false
 
 production:
@@ -23,5 +21,4 @@ production:
     release_two: <%= ENV.fetch('RELEASE_TWO', false) %>
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
-    people_search_tpt: <%= ENV.fetch('PEOPLE_SEARCH_TPT', false) %>
     referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>

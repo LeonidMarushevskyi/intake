@@ -217,7 +217,7 @@ feature 'Relationship card' do
         ).and_return(json_body(new_relationships.to_json, status: 200))
 
         stub_request(
-          :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: 'ma'))
+          :get, host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'ma'))
         ).and_return(json_body([].to_json, status: 200))
 
         within '#search-card', text: 'Search' do
