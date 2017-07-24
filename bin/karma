@@ -1,5 +1,5 @@
 #!/bin/bash
-bin/gulp build-test-assets
+#bin/gulp build-test-assets
 
 # Tests must be run in the correct timezone because
 # of UTC converstion and explicit expectations.

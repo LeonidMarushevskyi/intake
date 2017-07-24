@@ -6,10 +6,11 @@
 //
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
+import 'jquery'
+import 'common/jquery-helpers'
 
-console.log('Hello World from base intake webpacker application.js')
-
-
+import 'bootstrap'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from 'store/configureStore'
 import routes from 'common/routes'

@@ -7,36 +7,37 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'public/assets/vendor.js',
-      'public/assets/application-test.js',
+      {pattern: '/test/javascript/tests.webpack.js', watched: true}
     ],
-    exclude: [],
+    exclude: [
+      './../node_modules/'
+    ],
     preprocessors: {
-      'public/assets/application-test.js': ['coverage', 'sourcemap'],
+      'test/javascript/tests.webpack.js': ['webpack', 'sourcemap']
     },
     coverageReporter: {
       type: 'in-memory',
     },
-    remapIstanbulReporter: {
-      remapOptions: {
-        exclude: /node_modules/,
-      },
-      reports: {
-        html: `${process.env.CI_REPORTS}/coverage/js`,
-      },
-      subdir: (browser) => {
-        return browser.toLowerCase().split(' ').first()
-      },
-    },
-    junitReporter: {
-      outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
-      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
-      suite: '', // suite will become the package name attribute in xml testsuite element
-      useBrowserName: true, // add browser name to report and classes names
-      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
-      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
-      properties: {}, // key value pair of properties to add to the <properties> section of the report
-    },
+    // remapIstanbulReporter: {
+    //   remapOptions: {
+    //     exclude: /node_modules/,
+    //   },
+    //   reports: {
+    //     html: `${process.env.CI_REPORTS}/coverage/js`,
+    //   },
+    //   subdir: (browser) => {
+    //     return browser.toLowerCase().split(' ').first()
+    //   },
+    // },
+    // junitReporter: {
+    //   outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
+    //   outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
+    //   suite: '', // suite will become the package name attribute in xml testsuite element
+    //   useBrowserName: true, // add browser name to report and classes names
+    //   nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
+    //   classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
+    //   properties: {}, // key value pair of properties to add to the <properties> section of the report
+    // },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -51,5 +52,22 @@ module.exports = function(config) {
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,
     singleRun: true,
+    webpackMiddleware: {
+      // webpack-dev-middleware configuration
+      // i. e.
+      stats: 'errors-only'
+    },
+    webpack: {
+      // devtool: 'inline-source-map'
+    },
+    plugins: [
+      'karma-sourcemap-loader',
+      'karma-htmlfile-reporter',
+      'karma-jasmine',
+      'karma-coverage',
+      'karma-chrome-launcher',
+      'karma-webpack',
+      'istanbul-instrumenter-loader'
+    ]
   })
 }
