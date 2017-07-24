@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base # :nodoc:
     auth_artifact = SecurityRepository.auth_artifact_for_token(security_token)
     if auth_artifact
       session[:security_token] = security_token
-      return if auth_artifact.empty?
+      return unless json?(auth_artifact)
       staff_id = JSON.parse(auth_artifact)['staffId']
       return unless staff_id
       session[:user_details] = StaffRepository.find(security_token, staff_id)
@@ -47,5 +47,12 @@ class ApplicationController < ActionController::Base # :nodoc:
     response.headers['Expires'] = '0'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1'
+  end
+
+  def json?(json_candidate)
+    JSON.parse(json_candidate)
+    true
+  rescue
+    false
   end
 end
