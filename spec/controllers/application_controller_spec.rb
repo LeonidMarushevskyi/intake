@@ -95,7 +95,7 @@ describe ApplicationController do
         end
 
         context 'when provided valid security token but non-json auth_artifact' do
-          auth_artifact = 'guest'
+          let(:auth_artifact) { 'guest' }
 
           let(:security_token) { 'my_secure_token' }
           before do
@@ -111,9 +111,27 @@ describe ApplicationController do
           end
         end
 
+        context 'when provided valid security token but nil auth_artifact' do
+          let(:security_token) { 'my_secure_token' }
+          before do
+            expect(SecurityRepository).to receive(:auth_artifact_for_token)
+              .with(security_token)
+              .and_return(nil)
+          end
+
+          it 'does not set session security token as it is unconfirmed' do
+            process :custom, method: :get, params: { token: security_token }
+            expect(session).not_to have_key(:security_token)
+            expect(session).not_to have_key(:user_details)
+          end
+        end
+
         context 'when provided valid security token and auth_artifact' do
-          auth_artifact = { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
-          user_details = { 'first_name' => 'Joe', 'last_name' => 'Cool' }
+          let(:auth_artifact) do
+            { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
+          end
+
+          let(:user_details) { { 'first_name' => 'Joe', 'last_name' => 'Cool' } }
 
           let(:security_token) { 'my_secure_token' }
           before do
