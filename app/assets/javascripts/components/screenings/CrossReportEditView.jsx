@@ -1,6 +1,7 @@
 import CheckboxField from 'components/common/CheckboxField'
 import DateField from 'components/common/DateField'
 import Immutable from 'immutable'
+import InfoMessage from 'components/common/InfoMessage'
 import InputField from 'components/common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -113,6 +114,7 @@ export default class CrossReportEditView extends React.Component {
           <span>Cross Report</span>
         </div>
         <div className='card-body no-pad-top'>
+          { this.props.infoMessage && <InfoMessage message={this.props.infoMessage} /> }
           <div className='row col-md-12'>
             <label>This report has cross reported to:</label>
           </div>
@@ -173,6 +175,7 @@ export default class CrossReportEditView extends React.Component {
 CrossReportEditView.propTypes = {
   areCrossReportsRequired: PropTypes.bool,
   crossReports: PropTypes.object,
+  infoMessage: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

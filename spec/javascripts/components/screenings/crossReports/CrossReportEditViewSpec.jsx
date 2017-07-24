@@ -25,6 +25,18 @@ describe('CrossReportEditView', () => {
     expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
 
+  describe('Info messages', () => {
+    it('renders an info message when passed', () => {
+      component.setProps({infoMessage: 'Help me, Obi-Wan Kenobi!'})
+      expect(component.find('InfoMessage').exists()).toEqual(true)
+      expect(component.find('InfoMessage').html()).toContain('Help me, Obi-Wan Kenobi!')
+    })
+
+    it('does not render an info message when none are present', () => {
+      expect(component.find('InfoMessage').exists()).toEqual(false)
+    })
+  })
+
   describe('Interaction with Allegations Card', () => {
     it('marks labels as required', () => {
       expect(component.find('CheckboxField[value="District attorney"]').props().required)

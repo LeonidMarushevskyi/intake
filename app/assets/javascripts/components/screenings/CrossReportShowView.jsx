@@ -1,9 +1,10 @@
 import EditLink from 'components/common/EditLink'
+import InfoMessage from 'components/common/InfoMessage'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'components/common/ShowField'
-import {dateFormatter} from 'utils/dateFormatter'
 import _ from 'lodash'
+import {dateFormatter} from 'utils/dateFormatter'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -27,6 +28,7 @@ export default class CrossReportShowView extends React.Component {
           <EditLink ariaLabel='Edit cross report' onClick={this.props.onEdit} />
         </div>
         <div className='card-body'>
+          { this.props.infoMessage && <InfoMessage message={this.props.infoMessage} /> }
           <div className='row'>
             <ShowField gridClassName='col-md-12' label='This report has cross reported to:'>
               {
@@ -57,5 +59,6 @@ export default class CrossReportShowView extends React.Component {
 
 CrossReportShowView.propTypes = {
   crossReports: PropTypes.object,
+  infoMessage: PropTypes.string,
   onEdit: PropTypes.func.isRequired,
 }
