@@ -36,7 +36,7 @@ services:
     environment:
       AUTHENTICATION_URL: 'http://www.example.com/'
       AUTHENTICATION: 'false'
-      SEARCH_URL: 'http://api-a.cocina.trn01.cwds.io'
+      SEARCH_URL: 'https://web.preint.cwds.io'
     tty: true
     stdin_open: true
   db:
