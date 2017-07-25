@@ -11,10 +11,6 @@ class ExternalRoutes
       '/api/v1/people'
     end
 
-    def intake_api_people_search_path(param)
-      "/api/v1/people_search?#{param.to_param}"
-    end
-
     def intake_api_people_search_v2_path(param)
       "/api/v2/people_search?#{param.to_param}"
     end

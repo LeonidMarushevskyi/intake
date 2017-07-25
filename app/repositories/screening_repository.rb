@@ -40,7 +40,7 @@ class ScreeningRepository
       :get
     )
     response.body.map do |result_attributes|
-      Screening.new(result_attributes)
+      ScreeningSearch.new(result_attributes)
     end
   end
 

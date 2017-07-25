@@ -77,7 +77,7 @@ feature 'Edit Screening' do
     %w[Ma Mar Marg Marge].each do |search_text|
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
       ).and_return(json_body([marge].to_json, status: 200))
     end
     stub_request(
