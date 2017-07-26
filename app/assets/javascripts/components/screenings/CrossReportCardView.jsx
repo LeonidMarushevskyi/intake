@@ -246,12 +246,10 @@ export default class CrossReportCardView extends React.Component {
         isAgencyRequired: this.isAgencyRequired,
         crossReports: this.props.crossReports,
         infoMessage: infoMessage,
-        onChange: this.props.onChange,
         onSave: this.onSave,
         onBlur: this.onEvent,
         onCancel: this.onCancel,
         onChange: this.onChange,
-        onSave: this.onSave,
       },
       show: {
         errors: errors,

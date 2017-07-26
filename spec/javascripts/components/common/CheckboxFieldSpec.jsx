@@ -7,7 +7,6 @@ describe('CheckboxField', () => {
   let onChange
   let onBlur
   let component
-  let formField
   const props = {
     errors: Immutable.Map(),
     id: 'myCheckboxFieldId',

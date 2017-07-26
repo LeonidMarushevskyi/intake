@@ -10,7 +10,7 @@ const CheckboxField = ({
   disabled,
   onChange,
   onBlur,
-  required
+  required,
 }) => (
   <div>
     <input type='checkbox'
@@ -29,13 +29,12 @@ const CheckboxField = ({
 )
 
 CheckboxField.propTypes = {
-  errors: PropTypes.object,
-  id: PropTypes.string.isRequired,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
+  errors: PropTypes.object,
   id: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string.isRequired,
 }
