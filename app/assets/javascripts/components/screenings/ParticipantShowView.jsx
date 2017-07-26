@@ -80,8 +80,10 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
       </div>
       <div>
         {
-          participant.get('addresses') && participant.get('addresses').map((address, index) => (
-            <div key={index}>
+          participant.get('addresses') && participant.get('addresses').map((address, index) => {
+            const state = US_STATE.find((state) => state.code === address.get('state'))
+            return (
+              <div key={index}>
               <div className='row gap-top' id={`address-${address.get('id')}`}>
                 <ShowField gridClassName='col-md-6' label='Address'>
                   {address.get('street_address')}
@@ -92,7 +94,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
               </div>
               <div className='row'>
                 <ShowField gridClassName='col-md-4' label='State'>
-                  {US_STATE[address.get('state')]}
+                  {state ? state.name : ''}
                 </ShowField>
                 <ShowField gridClassName='col-md-2' label='Zip'>
                   {address.get('zip')}
@@ -102,7 +104,8 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
                 </ShowField>
               </div>
             </div>
-            ))
+            )
+          })
         }
       </div>
     </div>
