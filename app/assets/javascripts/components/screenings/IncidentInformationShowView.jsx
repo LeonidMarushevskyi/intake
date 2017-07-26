@@ -8,6 +8,8 @@ import {dateFormatter} from 'utils/dateFormatter'
 
 const IncidentInformationShowView = ({screening, onEdit}) => {
   const incidentDate = dateFormatter(screening.get('incident_date'))
+  const state = US_STATE.find((item) => item.code === screening.getIn(['address', 'state']))
+
   return (
     <div className='card show double-gap-top' id='incident-information-card'>
       <div className='card-header'>
@@ -35,7 +37,7 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
         </div>
         <div className='row'>
           <ShowField gridClassName='col-md-6' label='State'>
-            {US_STATE[screening.getIn(['address', 'state'])]}
+            {state ? state.name : ''}
           </ShowField>
           <ShowField gridClassName='col-md-6' label='Zip'>
             {screening.getIn(['address', 'zip'])}

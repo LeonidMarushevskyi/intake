@@ -80,8 +80,9 @@ export class PersonShowPage extends React.Component {
           </div>
           <div>
             {
-              person.get('addresses') && person.get('addresses').map((address) => (
-                <div key={address.get('id')}>
+              person.get('addresses') && person.get('addresses').map((address) => {
+                const state = US_STATE.find((item) => item.code === address.get('state'))
+                return (<div key={address.get('id')}>
                   <div className='row gap-top'>
                     <ShowField gridClassName='col-md-6' label='Address'>
                       {address.get('street_address')}
@@ -92,7 +93,7 @@ export class PersonShowPage extends React.Component {
                   </div>
                   <div className='row'>
                     <ShowField gridClassName='col-md-4' label='State'>
-                      {US_STATE[address.get('state')]}
+                      {state ? state.name : ''}
                     </ShowField>
                     <ShowField gridClassName='col-md-2' label='Zip'>
                       {address.get('zip')}
@@ -102,7 +103,8 @@ export class PersonShowPage extends React.Component {
                     </ShowField>
                   </div>
                 </div>
-                ))
+                )
+              })
             }
           </div>
           <div className='row gap-top'>
