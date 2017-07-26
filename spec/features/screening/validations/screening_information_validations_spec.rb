@@ -6,7 +6,6 @@ require 'support/factory_girl'
 
 feature 'Screening Information Validations' do
   let(:screening) { FactoryGirl.create(:screening) }
-  let(:card_name) { 'screening-information' }
 
   def validate_message_as_user_interacts_with_date_field(
     error_message:,
@@ -25,37 +24,9 @@ feature 'Screening Information Validations' do
     end
   end
 
-  def validate_message_as_user_interacts_with_card(error_message:, screening_updates:)
-    should_not_have_content error_message, inside: "##{card_name}-card.edit"
-    stub_screening_put_request_with_anything_and_return screening
-    save_card(card_name)
-
-    should_have_content error_message, inside: "##{card_name}-card.show"
-    edit_card(card_name)
-
-    should_have_content error_message, inside: "##{card_name}-card.edit"
-
-    yield # make field valid to clear errors
-
-    should_not_have_content error_message, inside: "##{card_name}-card.edit"
-
-    stub_screening_put_request_with_anything_and_return(
-      screening,
-      with_updated_attributes: screening_updates
-    )
-    save_card(card_name)
-    should_not_have_content error_message, inside: "##{card_name}-card.show"
-  end
-
   context 'On the edit page' do
     before do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .and_return(json_body(screening.to_json, status: 200))
-
-      visit edit_screening_path(id: screening.id)
-
-      # TODO: remove this once we can consistently have a fresh page for these specs
-      page.evaluate_script('window.location.reload()')
+      stub_and_visit_edit_screening(screening)
     end
 
     context 'social worker field' do
@@ -75,6 +46,8 @@ feature 'Screening Information Validations' do
 
       scenario 'show card displays errors until user adds a social worker' do
         validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'screening-information',
           error_message: error_message,
           screening_updates: { assignee: 'My Name' }
         ) do
@@ -102,6 +75,8 @@ feature 'Screening Information Validations' do
 
       scenario 'show card displays errors until user adds a communication method' do
         validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'screening-information',
           error_message: error_message,
           screening_updates: { communication_method: 'email' }
         ) do
@@ -132,6 +107,8 @@ feature 'Screening Information Validations' do
 
         scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
+            invalid_screening: screening,
+            card_name: 'screening-information',
             error_message: error_message,
             screening_updates: { ended_at: valid_date }
           ) do
@@ -162,6 +139,8 @@ feature 'Screening Information Validations' do
 
       scenario 'show card displays errors until user enters a start date' do
         validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'screening-information',
           error_message: 'Please enter a screening start date.',
           screening_updates: { started_at: '08/17/2016 3:00 AM' }
         ) { select_today_from_calendar '#started_at' }
@@ -187,6 +166,8 @@ feature 'Screening Information Validations' do
 
         scenario 'show card shows errors until the date is not in the future' do
           validate_message_as_user_interacts_with_card(
+            invalid_screening: screening,
+            card_name: 'screening-information',
             error_message: 'The start date and time cannot be in the future.',
             screening_updates: { started_at: 20.years.ago }
           ) { select_today_from_calendar '#started_at' }
@@ -201,6 +182,8 @@ feature 'Screening Information Validations' do
         scenario 'show card shows errors until the start date is before the end date' do
           valid_date = 30.years.ago
           validate_message_as_user_interacts_with_card(
+            invalid_screening: screening,
+            card_name: 'screening-information',
             error_message: 'The start date and time must be before the end date and time.',
             screening_updates: { started_at: valid_date.iso8601 }
           ) do
@@ -214,7 +197,7 @@ feature 'Screening Information Validations' do
   end
 
   context 'On the show page' do
-    let(:show_card) { "##{card_name}-card.show" }
+    let(:show_card) { '#screening-information-card.show' }
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
