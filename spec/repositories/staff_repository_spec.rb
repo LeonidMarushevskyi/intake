@@ -8,7 +8,7 @@ describe StaffRepository do
   describe '.find' do
     let(:staff_id) { '66' }
     let(:response) do
-      double(:response, body: { 'id' => staff_id, 'first_name' => 'Existing Staff' })
+      double(:response, body: { 'staff_id' => staff_id, 'first_name' => 'Existing Staff' })
     end
 
     before do
@@ -19,7 +19,7 @@ describe StaffRepository do
 
     it 'returns the existing staff person' do
       existing_staff = described_class.find(security_token, staff_id)
-      expect(existing_staff.id).to eq(staff_id)
+      expect(existing_staff.staff_id).to eq(staff_id)
       expect(existing_staff.first_name).to eq('Existing Staff')
     end
   end

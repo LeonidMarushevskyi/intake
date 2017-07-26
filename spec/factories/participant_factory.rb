@@ -30,7 +30,7 @@ FactoryGirl.define do
         'Hawaiian',
         'Hebrew',
         'Hmong',
-        'Ilacano',
+        'Ilocano',
         'Indochinese',
         'Italian',
         'Japanese',
