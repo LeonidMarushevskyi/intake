@@ -63,7 +63,7 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
             onChange={(event) => onChange(['address', 'state'], event.target.value || null)}
           >
             <option key='' />
-            {US_STATE.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}
+            {US_STATE.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
           </SelectField>
           <InputField
             gridClassName='col-md-6'

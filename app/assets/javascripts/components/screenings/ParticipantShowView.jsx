@@ -81,7 +81,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
       <div>
         {
           participant.get('addresses') && participant.get('addresses').map((address, index) => {
-            const state = US_STATE.find((item) => item.code === address.get('state'))
+            const state = US_STATE.find((state) => state.code === address.get('state'))
             return (
               <div key={index}>
               <div className='row gap-top' id={`address-${address.get('id')}`}>

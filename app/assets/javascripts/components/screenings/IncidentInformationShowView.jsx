@@ -8,7 +8,7 @@ import {dateFormatter} from 'utils/dateFormatter'
 
 const IncidentInformationShowView = ({screening, onEdit}) => {
   const incidentDate = dateFormatter(screening.get('incident_date'))
-  const state = US_STATE.find((item) => item.code === screening.getIn(['address', 'state']))
+  const state = US_STATE.find((state) => state.code === screening.getIn(['address', 'state']))
 
   return (
     <div className='card show double-gap-top' id='incident-information-card'>

@@ -81,7 +81,7 @@ export class PersonShowPage extends React.Component {
           <div>
             {
               person.get('addresses') && person.get('addresses').map((address) => {
-                const state = US_STATE.find((item) => item.code === address.get('state'))
+                const state = US_STATE.find((state) => state.code === address.get('state'))
                 return (<div key={address.get('id')}>
                   <div className='row gap-top'>
                     <ShowField gridClassName='col-md-6' label='Address'>
