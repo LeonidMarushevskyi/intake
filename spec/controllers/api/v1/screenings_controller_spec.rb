@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Api::V1::ScreeningsController do
   let(:security_token) { 'security_token' }
-  let(:staff) { FactoryGirl.build(:staff, id: '123') }
+  let(:staff) { FactoryGirl.build(:staff, staff_id: '123') }
   let(:session) do
     {
       'security_token' => security_token,
@@ -43,7 +43,7 @@ describe Api::V1::ScreeningsController do
 
       describe 'when user_details is set' do
         it 'formats assignee as first mi. last - county if all exist' do
-          staff = FactoryGirl.build(:staff, middle_initial: 'Q', id: '456')
+          staff = FactoryGirl.build(:staff, middle_initial: 'Q', staff_id: '456')
           assignee = "#{staff.first_name} Q. #{staff.last_name} - #{staff.county}"
           session = {
             'security_token' => security_token,
@@ -57,7 +57,7 @@ describe Api::V1::ScreeningsController do
         end
 
         it 'formats assignee as first last - county if no middle initial' do
-          staff = FactoryGirl.build(:staff, id: '789')
+          staff = FactoryGirl.build(:staff, staff_id: '789')
           assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
           session = {
             'security_token' => security_token,

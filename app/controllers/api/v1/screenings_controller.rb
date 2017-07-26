@@ -20,6 +20,7 @@ module Api
         :safety_information,
         :screening_decision,
         :screening_decision_detail,
+        :staff_id,
         :started_at,
         cross_reports: %i[
           id
@@ -99,7 +100,7 @@ module Api
         user_details = session[:user_details]
         return nil unless user_details
 
-        user_details.id
+        user_details.staff_id
       end
 
       def build_assignee_name(session)

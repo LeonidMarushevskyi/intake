@@ -4,7 +4,7 @@
 class Staff
   include Virtus.model
 
-  attribute :id
+  attribute :staff_id
   attribute :first_name
   attribute :last_name
   attribute :middle_initial

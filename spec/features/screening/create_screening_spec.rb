@@ -67,7 +67,7 @@ feature 'Create Screening' do
           middle_initial: 'B',
           last_name: 'Cool',
           county: 'Mendocino',
-          id: '1234'
+          staff_id: '1234'
         }
       end
       let(:auth_details) { { staffId: '1234' } }
@@ -119,7 +119,7 @@ feature 'Create Screening' do
           first_name: 'Joe',
           last_name: 'Cool',
           county: 'Mendocino',
-          id: '1234'
+          staff_id: '1234'
         }
       end
       let(:auth_details) { { staffId: '1234' } }
