@@ -305,6 +305,7 @@ feature 'individual card save' do
       10.times do
         doj_input.send_keys [:backspace]
       end
+      blur_field
       expect(page).to have_field('Department of justice agency name', with: '')
     end
 
