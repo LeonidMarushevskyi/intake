@@ -49,6 +49,7 @@ const COUNTIES = Object.freeze({
   solano: 'Solano',
   sonoma: 'Sonoma',
   stanislaus: 'Stanislaus',
+  state_of_california: 'State of California',
   sutter: 'Sutter',
   tehama: 'Tehama',
   trinity: 'Trinity',

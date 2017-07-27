@@ -15,14 +15,6 @@ describe ExternalRoutes do
     end
   end
 
-  describe '.intake_api_people_search_path' do
-    it 'returns /api/v1/people_search' do
-      expect(described_class.intake_api_people_search_path(search_term: 123)).to eq(
-        '/api/v1/people_search?search_term=123'
-      )
-    end
-  end
-
   describe '.intake_api_people_search_v2_path' do
     it 'returns /api/v2/people_search' do
       expect(described_class.intake_api_people_search_v2_path(search_term: 123)).to eq(
@@ -84,6 +76,12 @@ describe ExternalRoutes do
       expect(described_class.intake_api_relationships_by_screening_path(12)).to eq(
         '/api/v1/screenings/12/relationships'
       )
+    end
+  end
+
+  describe '.intake_api_staff_path' do
+    it 'returns /api/v1/staff/:id' do
+      expect(described_class.intake_api_staff_path(24)).to eq('/api/v1/staff/24')
     end
   end
 end

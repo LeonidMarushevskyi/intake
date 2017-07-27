@@ -12,10 +12,12 @@ describe('CrossReportEditView', () => {
         {agency_type: 'District attorney', agency_name: 'SCDA Office'},
         {agency_type: 'Department of justice'},
       ]),
+      errors: Immutable.fromJS({}),
+      onBlur: jasmine.createSpy(),
       onChange: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
-      areCrossReportsRequired: true,
+      isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
     }
     component = shallow(<CrossReportEditView {...props}/>)
   })
@@ -25,8 +27,53 @@ describe('CrossReportEditView', () => {
     expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
 
+  describe('Info messages', () => {
+    it('renders an info message when passed', () => {
+      component.setProps({infoMessage: 'Help me, Obi-Wan Kenobi!'})
+      expect(component.find('InfoMessage').exists()).toEqual(true)
+      expect(component.find('InfoMessage').html()).toContain('Help me, Obi-Wan Kenobi!')
+    })
+
+    it('does not render an info message when none are present', () => {
+      expect(component.find('InfoMessage').exists()).toEqual(false)
+    })
+  })
+  describe('updatedCrossReports', () => {
+    it('returns an updated crossReports when agency_name and value are passed', () => {
+      expect(component.instance().updatedCrossReports(null, 'communication_method', 'Email').toJS()).toEqual([
+        {agency_type: 'District attorney', agency_name: 'SCDA Office', communication_method: 'Email'},
+        {agency_type: 'Department of justice', communication_method: 'Email'},
+      ])
+    })
+    it('returns an updated crossReports with agency added when value is true', () => {
+      expect(component.instance().updatedCrossReports('Law enforcement', 'agency_type', true).toJS()).toEqual([
+        {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+        {agency_type: 'Department of justice'},
+        {
+          agency_type: 'Law enforcement',
+          agency_name: null,
+          reported_on: undefined,
+          communication_method: undefined,
+        },
+      ])
+    })
+    it('returns an updated crossReports with agency removed when value is false', () => {
+      expect(component.instance().updatedCrossReports('Department of justice', 'agency_type', false).toJS()).toEqual([
+        {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+      ])
+    })
+    it('returns an updated crossReports when communication_method and value are passed', () => {
+      expect(component.instance().updatedCrossReports('District attorney', 'agency_name', '').toJS()).toEqual([
+        {agency_type: 'District attorney', agency_name: null},
+        {agency_type: 'Department of justice'},
+      ])
+    })
+  })
+
   describe('Interaction with Allegations Card', () => {
     it('marks labels as required', () => {
+      const isAgencyRequiredSpy = jasmine.createSpy('isAgencyRequired').and.returnValue(true)
+      component.setProps({isAgencyRequired: isAgencyRequiredSpy})
       expect(component.find('CheckboxField[value="District attorney"]').props().required)
         .toBeTruthy()
       expect(component.find('CheckboxField[value="Law enforcement"]').props().required)
@@ -34,25 +81,12 @@ describe('CrossReportEditView', () => {
     })
 
     it('does not mark labels required when not required', () => {
-      component.setProps({areCrossReportsRequired: false})
+      const isAgencyRequiredSpy = jasmine.createSpy('isAgencyRequired').and.returnValue(false)
+      component.setProps({isAgencyRequired: isAgencyRequiredSpy})
       expect(component.find('CheckboxField[value="District attorney"]').props().required)
         .toBeFalsy()
       expect(component.find('CheckboxField[value="Law enforcement"]').props().required)
         .toBeFalsy()
-    })
-  })
-
-  describe('isAgencyRequired', () => {
-    it('returns true if the agency is required and cross reporting is required', () => {
-      expect(component.instance().isAgencyRequired('District attorney', true)).toEqual(true)
-    })
-
-    it('returns false if an agency is not required even if cross reporting is required', () => {
-      expect(component.instance().isAgencyRequired('Licensing', true)).toEqual(false)
-    })
-
-    it('returns false if cross reporting is not required', () => {
-      expect(component.instance().isAgencyRequired('District attorney', false)).toEqual(false)
     })
   })
 
@@ -85,11 +119,14 @@ describe('CrossReportEditView', () => {
   describe('when an agency is selected', () => {
     beforeEach(() => {
       props = {
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         crossReports: Immutable.fromJS([
           {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
           {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
         ]),
-        onChange: jasmine.createSpy(),
+        errors: Immutable.fromJS({communication_method: ['Please select cross-report communication method.']}),
+        onBlur: jasmine.createSpy('onBlur'),
+        onChange: jasmine.createSpy('onChange'),
         onSave: () => null,
         onCancel: () => null,
       }
@@ -114,9 +151,10 @@ describe('CrossReportEditView', () => {
       const reportedOnField = component.find('DateField')
       const newReportedOn = '1999/01/01'
       reportedOnField.simulate('change', newReportedOn)
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
-        {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
+          {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
+          {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
       ])
     })
 
@@ -124,9 +162,10 @@ describe('CrossReportEditView', () => {
       const communicationMethodField = component.find('SelectField')
       const newCommunicationMethod = 'Electronic Report'
       communicationMethodField.simulate('change', {target: {value: newCommunicationMethod}})
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
-        {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
-        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
+          {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+          {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
       ])
     })
 
@@ -134,7 +173,7 @@ describe('CrossReportEditView', () => {
       const checkbox = component.find('CheckboxField[value="District attorney"]')
       checkbox.simulate('change', {target: {checked: true}})
       expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
         {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
         {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
         {agency_type: 'District attorney', agency_name: null, reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
@@ -145,7 +184,7 @@ describe('CrossReportEditView', () => {
       const uncheck = component.find('CheckboxField[value="Department of justice"]')
       uncheck.simulate('change', {target: {checked: false}})
       expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
         {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
       ])
     })
@@ -154,7 +193,7 @@ describe('CrossReportEditView', () => {
       const input = component.find('InputField[label="Department of justice agency name"]')
       input.simulate('change', {target: {value: 'DoJ Office'}})
       expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[1].toJS()).toEqual([
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
         {agency_type: 'Department of justice', agency_name: 'DoJ Office', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
         {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
       ])
@@ -164,12 +203,15 @@ describe('CrossReportEditView', () => {
   describe('caching communication and date data when an agency is selected', () => {
     beforeEach(() => {
       props = {
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         crossReports: Immutable.fromJS([{
           agency_type: 'Department of justice',
           agency_name: null,
           reported_on: null,
           communication_method: null,
         }]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy('onBlur'),
         onChange: jasmine.createSpy('onChange'),
         onSave: () => null,
         onCancel: () => null,
@@ -188,7 +230,7 @@ describe('CrossReportEditView', () => {
       it('adds agency with cached communication method when user selects an agency', () => {
         component.find('CheckboxField[value="Law enforcement"]')
           .simulate('change', {target: {checked: true}})
-        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+        expect(props.onChange.calls.mostRecent().args[0].toJS()).toEqual([{
           agency_type: 'Law enforcement',
           agency_name: null,
           reported_on: null,
@@ -208,7 +250,7 @@ describe('CrossReportEditView', () => {
       it('adds agency with cached reported on when user selects an agency', () => {
         component.find('CheckboxField[value="Law enforcement"]')
           .simulate('change', {target: {checked: true}})
-        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+        expect(props.onChange.calls.mostRecent().args[0].toJS()).toEqual([{
           agency_type: 'Law enforcement',
           agency_name: null,
           reported_on: '2011-05-09',
@@ -229,7 +271,7 @@ describe('CrossReportEditView', () => {
       it('adds agency with cached communication method and reported on when user selects an agency', () => {
         component.find('CheckboxField[value="Law enforcement"]')
           .simulate('change', {target: {checked: true}})
-        expect(props.onChange.calls.mostRecent().args[1].toJS()).toEqual([{
+        expect(props.onChange.calls.mostRecent().args[0].toJS()).toEqual([{
           agency_type: 'Law enforcement',
           agency_name: null,
           reported_on: '2011-05-09',
@@ -242,7 +284,10 @@ describe('CrossReportEditView', () => {
   describe('when no agency is selected', () => {
     beforeEach(() => {
       props = {
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         crossReports: Immutable.fromJS([]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy(),
         onChange: () => null,
         onSave: () => null,
         onCancel: () => null,

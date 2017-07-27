@@ -50,6 +50,17 @@ describe('ScreeningInformationEditView', () => {
         .toEqual('mail')
     })
 
+    it('does not disable assigned social worker if no staff_id', () => {
+      expect(component.find('InputField[label="Assigned Social Worker"]').props().disabled)
+        .toBeFalsy()
+    })
+
+    it('disables assigned social worker if has staff_id', () => {
+      component = shallow(<ScreeningInformationEditView {...requiredProps} screening={Immutable.fromJS({assignee: 'Michael Bluth', staff_id: '123'})} />)
+      expect(component.find('InputField[label="Assigned Social Worker"]').props().disabled)
+        .toEqual(true)
+    })
+
     it('renders the required input fields as required', () => {
       expect(component.find('InputField[label="Assigned Social Worker"]').props().required)
         .toEqual(true)

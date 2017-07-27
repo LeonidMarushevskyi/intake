@@ -30,6 +30,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
           onChange={(event) => validateOnChange('assignee', event.target.value)}
           onBlur={(event) => validateField('assignee', event.target.value)}
           errors={errors.get('assignee')}
+          disabled={Boolean(screening.get('staff_id'))}
         />
       </div>
       <div className='row'>

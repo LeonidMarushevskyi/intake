@@ -30,7 +30,7 @@ feature 'home page' do
 
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
-          :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+          :get, host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -41,12 +41,13 @@ feature 'home page' do
       fill_in_autocompleter 'People', with: 'Marge'
 
       expect(
-        a_request(:get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: 'M')))
+        a_request(:get, host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'M')))
       ).to_not have_been_made
       %w[Ma Mar Marg Marge].each do |search_text|
         expect(
           a_request(
-            :get, host_url(ExternalRoutes.intake_api_people_search_path(search_term: search_text))
+            :get,
+            host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
           )
         ).to have_been_made
       end
@@ -81,29 +82,31 @@ feature 'home page' do
     end
 
     scenario 'includes a list of saved screenings' do
-      screening1 = FactoryGirl.create(
-        :screening,
-        name: 'Little Shop of Horrors',
-        reference: 'H9S83',
-        started_at: '2016-08-11T18:24:22.157Z',
-        screening_decision: 'screen_out'
-      )
-      screening2 = FactoryGirl.create(
-        :screening,
-        name: 'The Shining',
-        reference: 'DF90W5',
-        started_at: '2016-08-12T18:24:22.157Z',
-        screening_decision: 'promote_to_referral'
-      )
-      screening3 = FactoryGirl.create(
-        :screening,
-        name: 'It Follows',
-        reference: 'Q7W0B6',
-        started_at: '2016-08-17T18:24:22.157Z',
-        screening_decision: 'differential_response'
-      )
+      screenings = [
+        FactoryGirl.create(
+          :screening_search,
+          name: 'Little Shop of Horrors',
+          reference: 'H9S83',
+          started_at: '2016-08-11T18:24:22.157Z',
+          screening_decision: 'screen_out'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          name: 'The Shining',
+          reference: 'DF90W5',
+          started_at: '2016-08-12T18:24:22.157Z',
+          screening_decision: 'promote_to_referral'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          name: 'It Follows',
+          reference: 'Q7W0B6',
+          started_at: '2016-08-17T18:24:22.157Z',
+          screening_decision: 'differential_response'
+        )
+      ]
       stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
-        .and_return(json_body([screening1, screening2, screening3].to_json, status: 200))
+        .and_return(json_body(screenings.to_json, status: 200))
 
       visit root_path
       within 'thead' do
@@ -116,17 +119,17 @@ feature 'home page' do
         expect(page).to have_css('tr', count: 3)
         rows = all('tr')
         within rows[0] do
-          expect(page).to have_content('H9S83')
+          expect(page).to have_content('Little Shop of Horrors - H9S83')
           expect(page).to have_content('08/11/2016')
           expect(page).to have_content('Screen out')
         end
         within rows[1] do
-          expect(page).to have_content('DF90W5')
+          expect(page).to have_content('The Shining - DF90W5')
           expect(page).to have_content('08/12/2016')
           expect(page).to have_content('Promote to referral')
         end
         within rows[2] do
-          expect(page).to have_content('Q7W0B6')
+          expect(page).to have_content('It Follows - Q7W0B6')
           expect(page).to have_content('08/17/2016')
           expect(page).to have_content('Differential response')
         end

@@ -96,6 +96,14 @@ describe('Validator', () => {
       rules: Immutable.fromJS([{rule: 'isRequired', message: 'Give me a social worker'}]),
     }
 
+    it('is not valid when the value is false', () => {
+      const args = {
+        ...sharedArgs,
+        value: false,
+      }
+      expect(Validator.validateField(args).count()).toEqual(1)
+    })
+
     it('is not valid when the value is null', () => {
       const args = {
         ...sharedArgs,
@@ -120,6 +128,14 @@ describe('Validator', () => {
       expect(Validator.validateField(args).count()).toEqual(1)
     })
 
+    it('is valid when the value is true', () => {
+      const args = {
+        ...sharedArgs,
+        value: true,
+      }
+      expect(Validator.validateField(args).count()).toEqual(0)
+    })
+
     it('is valid when the value contains at least one non-whitespace character', () => {
       const args = {
         ...sharedArgs,
@@ -134,6 +150,39 @@ describe('Validator', () => {
         value: '',
       }
       expect(Validator.validateField(args).first()).toEqual('Give me a social worker')
+    })
+  })
+
+  describe('isRequiredIf', () => {
+    const sharedArgs = {
+      rules: Immutable.fromJS([{rule: 'isRequiredIf', message: 'Give me an agency name', condition: () => true}]),
+    }
+
+    describe('when condition is met', () => {
+      it('is not valid if the value is empty', () => {
+        expect(Validator.validateField(sharedArgs).count()).toEqual(1)
+      })
+
+      it('is valid if the value is not empty', () => {
+        const args = {
+          ...sharedArgs,
+          value: 'Abc',
+        }
+        expect(Validator.validateField(args).count()).toEqual(0)
+      })
+
+      it('returns an error message if value is invalid', () => {
+        expect(Validator.validateField(sharedArgs).first()).toEqual('Give me an agency name')
+      })
+    })
+
+    describe('when condition is not met', () => {
+      it('is valid even if the value is empty or undefined', () => {
+        const args = {
+          rules: Immutable.fromJS([{rule: 'isRequiredIf', message: 'Give me an agency name', condition: () => false}]),
+        }
+        expect(Validator.validateField(args).count()).toEqual(0)
+      })
     })
   })
 

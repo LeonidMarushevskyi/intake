@@ -29,7 +29,7 @@ describe SecurityRepository do
     end
   end
 
-  describe '.token_valid?' do
+  describe '.auth_artifact_for_token' do
     let(:token) { '123' }
     before do
       allow(Rails.configuration).to receive(:intake)
@@ -37,13 +37,19 @@ describe SecurityRepository do
     end
 
     context 'when provided with a valid security token' do
-      before do
-        stub_request(:get, 'http://www.example.com/authn/validate?token=123')
-          .and_return(status: 200)
+      let(:auth_artifact) do
+        {
+          auth_info: 'auth stuff'
+        }
       end
 
-      it 'returns true' do
-        expect(described_class.token_valid?(token)).to be true
+      before do
+        stub_request(:get, 'http://www.example.com/authn/validate?token=123')
+          .and_return(json_body(auth_artifact.to_json, status: 200))
+      end
+
+      it 'returns an authorization artifact' do
+        expect(described_class.auth_artifact_for_token(token)).to eq auth_artifact.to_json
       end
     end
 
@@ -53,8 +59,8 @@ describe SecurityRepository do
           .and_return(status: 401)
       end
 
-      it 'returns false' do
-        expect(described_class.token_valid?(token)).to be false
+      it 'returns nil if status is not 200' do
+        expect(described_class.auth_artifact_for_token(token)).to be nil
       end
     end
   end
