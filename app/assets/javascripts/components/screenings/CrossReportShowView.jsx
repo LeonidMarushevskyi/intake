@@ -15,6 +15,7 @@ export default class CrossReportShowView extends React.Component {
   render() {
     const crossReports = this.props.crossReports.toJS()
     const hasCrossReports = !_.isEmpty(crossReports)
+    const agencyTypeErrors = this.props.errors.toSet().flatMap((item) => item.get('agency_type'))
     const reportedOnErrors = this.props.errors.toSet().flatMap((item) => item.get('reported_on'))
     const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method'))
     let reportedOn
@@ -33,7 +34,7 @@ export default class CrossReportShowView extends React.Component {
         <div className='card-body'>
           { this.props.infoMessage && <InfoMessage message={this.props.infoMessage} /> }
           <div className='row'>
-            <ShowField gridClassName='col-md-12' label='This report has cross reported to:'>
+            <ShowField gridClassName='col-md-12' label='This report has cross reported to:' errors={agencyTypeErrors}>
               {
                 crossReports &&
                   <ul className='unstyled-list'>
