@@ -6,7 +6,6 @@ import React from 'react'
 import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'CrossReport'
 import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'CrossReport'
 import * as Validator from 'utils/validator'
-import _ from 'lodash'
 import {AGENCY_TYPES} from 'CrossReport'
 
 export default class CrossReportCardView extends React.Component {
@@ -121,12 +120,11 @@ export default class CrossReportCardView extends React.Component {
 
   isAgencyChecked(agencyType) {
     const result = this.props.crossReports.find((report) => report.get('agency_type') === agencyType)
-    return !_.isEmpty(result)
+    return Boolean(result)
   }
 
   isAgencyRequired(agencyType) {
-    const potentiallyRequiredAgencies = Immutable.fromJS(['District attorney', 'Law enforcement'])
-    return potentiallyRequiredAgencies.includes(agencyType) && this.props.areCrossReportsRequired
+    return CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.includes(agencyType) && this.props.areCrossReportsRequired
   }
 
   onEdit(event) {
