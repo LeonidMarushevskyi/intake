@@ -220,7 +220,7 @@ export default class CrossReportCardView extends React.Component {
     return present
   }
 
-  infoMessage() {
+  alertInfoMessage() {
     if (this.props.areCrossReportsRequired) {
       if (Immutable.List(CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS).every((agencyType) =>
         this.crossReportsInclude(agencyType)
@@ -236,14 +236,14 @@ export default class CrossReportCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    const infoMessage = this.infoMessage()
+    const alertInfoMessage = this.alertInfoMessage()
     const errors = this.state.errors
     const allprops = {
       edit: {
         errors: errors,
         isAgencyRequired: this.isAgencyRequired,
         crossReports: this.props.crossReports,
-        infoMessage: infoMessage,
+        alertInfoMessage: alertInfoMessage,
         onSave: this.onSave,
         onBlur: this.onEvent,
         onCancel: this.onCancel,
@@ -253,7 +253,7 @@ export default class CrossReportCardView extends React.Component {
         errors: errors,
         onEdit: this.onEdit,
         crossReports: this.props.crossReports,
-        infoMessage: infoMessage,
+        alertInfoMessage: alertInfoMessage,
       },
     }
     const CrossReportView = (mode === 'edit') ? CrossReportEditView : CrossReportShowView

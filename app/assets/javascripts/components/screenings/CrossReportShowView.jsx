@@ -1,5 +1,5 @@
 import EditLink from 'components/common/EditLink'
-import InfoMessage from 'components/common/InfoMessage'
+import AlertInfoMessage from 'components/common/AlertInfoMessage'
 import ErrorMessages from 'components/common/ErrorMessages'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -32,7 +32,7 @@ export default class CrossReportShowView extends React.Component {
           <EditLink ariaLabel='Edit cross report' onClick={this.props.onEdit} />
         </div>
         <div className='card-body'>
-          { this.props.infoMessage && <InfoMessage message={this.props.infoMessage} /> }
+          { this.props.alertInfoMessage && <AlertInfoMessage message={this.props.alertInfoMessage} /> }
           <div className='row'>
             <ShowField gridClassName='col-md-12' label='This report has cross reported to:' errors={agencyTypeErrors}>
               {
@@ -81,8 +81,8 @@ export default class CrossReportShowView extends React.Component {
 }
 
 CrossReportShowView.propTypes = {
+  alertInfoMessage: PropTypes.string,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
-  infoMessage: PropTypes.string,
   onEdit: PropTypes.func.isRequired,
 }

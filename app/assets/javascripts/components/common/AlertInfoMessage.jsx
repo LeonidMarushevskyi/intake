@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const InfoMessage = ({message}) => (
+const AlertInfoMessage = ({message}) => (
   <div className='row'>
     <div className='col-md-12'>
       <div className='alert-message info-message'>
@@ -16,8 +16,8 @@ const InfoMessage = ({message}) => (
   </div>
 )
 
-InfoMessage.propTypes = {
+AlertInfoMessage.propTypes = {
   message: PropTypes.string,
 }
 
-export default InfoMessage
+export default AlertInfoMessage
