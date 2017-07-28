@@ -17,15 +17,15 @@ describe('CrossReportShowView', () => {
     component = shallow(<CrossReportShowView {...props} />)
   })
 
-  describe('Info messages', () => {
-    it('renders an info message when passed', () => {
-      component.setProps({infoMessage: 'Help me, Obi-Wan Kenobi!'})
-      expect(component.find('InfoMessage').exists()).toEqual(true)
-      expect(component.find('InfoMessage').html()).toContain('Help me, Obi-Wan Kenobi!')
+  describe('Alert info messages', () => {
+    it('renders an alert info message when passed', () => {
+      component.setProps({alertInfoMessage: 'Help me, Obi-Wan Kenobi!'})
+      expect(component.find('AlertInfoMessage').exists()).toEqual(true)
+      expect(component.find('AlertInfoMessage').html()).toContain('Help me, Obi-Wan Kenobi!')
     })
 
-    it('does not render an info message when none are present', () => {
-      expect(component.find('InfoMessage').exists()).toEqual(false)
+    it('does not render an alert info message when none are present', () => {
+      expect(component.find('AlertInfoMessage').exists()).toEqual(false)
     })
   })
 

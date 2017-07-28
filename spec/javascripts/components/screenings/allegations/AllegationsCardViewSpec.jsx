@@ -15,6 +15,7 @@ describe('AllegationsCardView', () => {
 
   const requiredProps = {
     allegations: Immutable.List(),
+    areAllegationsRequired: false,
     mode: 'edit',
   }
 
@@ -81,6 +82,43 @@ describe('AllegationsCardView', () => {
       expect(fieldSeq).toEqual(['allegations', '123', '456'])
       expect(actualAllegationTypes.toJS()).toEqual(allegationTypes.toJS())
       expect(Immutable.is(actualAllegationTypes, allegationTypes)).toEqual(true)
+    })
+  })
+
+  describe('alertErrorMessage', () => {
+    it('returns null when allegations are not required', () => {
+      const props = {
+        ...requiredProps,
+        areAllegationsRequired: false,
+      }
+      const component = shallow(<AllegationsCardView {...props}/>)
+      expect(component.instance().alertErrorMessage()).toEqual(null)
+    })
+
+    it('returns null when allegation are required but valid allegations exist', () => {
+      const props = {
+        ...requiredProps,
+        areAllegationsRequired: true,
+        allegations: Immutable.fromJS([{
+          id: 1,
+          allegation_types: ['exploitation'],
+        }]),
+      }
+      const component = shallow(<AllegationsCardView {...props}/>)
+      expect(component.instance().alertErrorMessage()).toEqual(null)
+    })
+
+    it('returns a message when allegations are required and no allegations are valid', () => {
+      const props = {
+        ...requiredProps,
+        areAllegationsRequired: true,
+        allegations: Immutable.fromJS([{
+          id: 1,
+          allegation_types: [],
+        }]),
+      }
+      const component = shallow(<AllegationsCardView {...props}/>)
+      expect(component.instance().alertErrorMessage()).toContain('must include at least one allegation.')
     })
   })
 

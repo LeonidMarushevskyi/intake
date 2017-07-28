@@ -1,11 +1,11 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import InfoMessage from 'components/common/InfoMessage'
+import AlertInfoMessage from 'components/common/AlertInfoMessage'
 
-describe('InfoMessage', () => {
+describe('AlertInfoMessage', () => {
   it('renders the message text passed to it', () => {
     const messageText = 'Help me Obi-Wan Kenobi'
-    const component = shallow(<InfoMessage message={messageText} />)
+    const component = shallow(<AlertInfoMessage message={messageText} />)
     expect(component.text()).toEqual(messageText)
   })
 })

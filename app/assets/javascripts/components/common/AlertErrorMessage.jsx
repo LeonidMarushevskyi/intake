@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const InfoMessage = ({message}) => (
+const AlertErrorMessage = ({message}) => (
   <div className='row'>
     <div className='col-md-12'>
-      <div className='alert-message info-message'>
+      <div className='alert-message error-message' role='alert'>
         <div className='alert-icon'>
-          <i className='fa fa-info-circle' />
+          <i className='fa fa-warning' />
         </div>
         <div className='alert-text'>
           {message}
@@ -16,8 +16,8 @@ const InfoMessage = ({message}) => (
   </div>
 )
 
-InfoMessage.propTypes = {
+AlertErrorMessage.propTypes = {
   message: PropTypes.string,
 }
 
-export default InfoMessage
+export default AlertErrorMessage

@@ -83,3 +83,10 @@
     color: $white;
   }
 }
+
+.error-message {
+  .alert-icon {
+    background-color: $red;
+    color: $white;
+  }
+}

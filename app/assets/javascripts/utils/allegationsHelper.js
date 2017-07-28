@@ -106,3 +106,7 @@ export function areCrossReportsRequired(allegations) {
   const allAllegationTypes = allegations.map((a) => a.get('allegation_types')).flatten()
   return !allAllegationTypes.toSet().intersect(allegationsRequiringReports).isEmpty()
 }
+
+export function areAllegationsRequired({screening_decision}) {
+  return screening_decision === 'promote_to_referral'
+}

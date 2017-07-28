@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationRow from 'components/screenings/AllegationRow'
+import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
-const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
+const AllegationsEditView = ({allegations, onSave, onCancel, onChange, alertErrorMessage}) => {
   const groupedAllegations = (allegations) => (
     allegations.groupBy((allegation) => allegation.get('victim'))
   )
@@ -28,6 +29,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
         <span>Allegations</span>
       </div>
       <div className='card-body no-pad-top'>
+        { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
         <div className='row'>
           <div className='col-md-12'>
             <table className='table table-hover'>
@@ -65,6 +67,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange}) => {
 }
 
 AllegationsEditView.propTypes = {
+  alertErrorMessage: PropTypes.string,
   allegations: PropTypes.object.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
