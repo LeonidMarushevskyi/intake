@@ -3,7 +3,14 @@ import React from 'react'
 import AllegationRow from 'components/screenings/AllegationRow'
 import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
-const AllegationsEditView = ({allegations, onSave, onCancel, onChange, alertErrorMessage}) => {
+const AllegationsEditView = ({
+  allegations,
+  onSave,
+  onCancel,
+  onChange,
+  alertErrorMessage,
+  areAllegationsRequired,
+}) => {
   const groupedAllegations = (allegations) => (
     allegations.groupBy((allegation) => allegation.get('victim'))
   )
@@ -37,7 +44,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange, alertErro
                 <tr>
                   <th scope='col'>Alleged Victim/Children</th>
                   <th scope='col'>Alleged Perpetrator</th>
-                  <th scope='col'>Allegation(s)</th>
+                  <th scope='col'>Allegation(s){areAllegationsRequired && ' (Required)'}</th>
                 </tr>
               </thead>
               <tbody>
@@ -69,6 +76,7 @@ const AllegationsEditView = ({allegations, onSave, onCancel, onChange, alertErro
 AllegationsEditView.propTypes = {
   alertErrorMessage: PropTypes.string,
   allegations: PropTypes.object.isRequired,
+  areAllegationsRequired: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

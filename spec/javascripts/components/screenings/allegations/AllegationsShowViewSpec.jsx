@@ -7,6 +7,7 @@ describe('AllegationsShowView', () => {
   const requiredProps = {
     allegations: Immutable.List(),
     onEdit: () => {},
+    areAllegationsRequired: false,
   }
 
   it('renders allegations show view headings', () => {
@@ -14,6 +15,13 @@ describe('AllegationsShowView', () => {
     expect(component.text()).toContain('Alleged Victim/Children')
     expect(component.text()).toContain('Alleged Perpetrator')
     expect(component.text()).toContain('Allegation(s)')
+    expect(component.find('tr').text()).not.toContain('(Required)')
+  })
+
+  it('Adds required to the card heading when allegations are required', () => {
+    const props = {...requiredProps, areAllegationsRequired: true}
+    const component = shallow(<AllegationsShowView {...props} />)
+    expect(component.find('tr').text()).toContain('Allegation(s) (Required)')
   })
 
   it('renders rows for allegations, with allegation types in alphabetical order', () => {

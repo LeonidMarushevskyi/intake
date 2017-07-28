@@ -58,6 +58,7 @@ export default class AllegationsCardView extends React.Component {
     const props = {
       alertErrorMessage: this.alertErrorMessage(),
       allegations: allegations,
+      areAllegationsRequired: this.props.areAllegationsRequired,
       onCancel: this.onCancel,
       onEdit: this.onEdit,
       onSave: this.onSave,

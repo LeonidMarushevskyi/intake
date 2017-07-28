@@ -140,6 +140,11 @@ describe('AllegationsCardView', () => {
       expect(renderedAllegations.toJS()).toEqual(expectedAllegations)
       expect(Immutable.is(renderedAllegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
     })
+
+    it('knows whether or not allegations are required', () => {
+      component = shallow(<AllegationsCardView {...requiredProps} />)
+      expect(component.find('AllegationsShowView').props().areAllegationsRequired).toEqual(false)
+    })
   })
 
   describe('edit mode', () => {
@@ -162,6 +167,11 @@ describe('AllegationsCardView', () => {
     it('passes onChange to the edit card', () => {
       component = shallow(<AllegationsCardView {...requiredProps} />)
       expect(component.find('AllegationsEditView').props().onChange).toEqual(component.instance().onChange)
+    })
+
+    it('knows whether or not allegations are required', () => {
+      component = shallow(<AllegationsCardView {...requiredProps} />)
+      expect(component.find('AllegationsEditView').props().areAllegationsRequired).toEqual(false)
     })
   })
 })
