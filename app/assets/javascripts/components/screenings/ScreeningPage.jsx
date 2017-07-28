@@ -17,7 +17,7 @@ import ScreeningInformationCardView from 'components/screenings/ScreeningInforma
 import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
-import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
+import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations, areAllegationsRequired} from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -276,6 +276,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <AllegationsCardView
                 allegations={sortedAllegations}
+                areAllegationsRequired={areAllegationsRequired(mergedScreening.toJS())}
                 {...cardCallbacks}
                 mode={this.mode}
               />

@@ -15,6 +15,7 @@ describe('AllegationsCardView', () => {
 
   const requiredProps = {
     allegations: Immutable.List(),
+    areAllegationsRequired: false,
     mode: 'edit',
   }
 

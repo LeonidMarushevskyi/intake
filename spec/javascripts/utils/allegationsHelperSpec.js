@@ -1,4 +1,4 @@
-import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations} from 'utils/allegationsHelper'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
 describe('sortedAllegationsList', () => {
@@ -11,7 +11,7 @@ describe('sortedAllegationsList', () => {
     const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([archer, malory, cyril])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
@@ -27,7 +27,7 @@ describe('sortedAllegationsList', () => {
     const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([archer, malory, cyril])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
@@ -43,7 +43,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([malory, cyril, archer])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
@@ -59,7 +59,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([malory, cyril, archer])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
@@ -75,7 +75,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([malory, cyril, archer])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
@@ -91,7 +91,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([cyril, archer, malory])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: cyril.id, perpetrator: cyril},
@@ -107,7 +107,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
 
     const participants = Immutable.fromJS([cyril, archer, malory])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
@@ -123,7 +123,7 @@ describe('sortedAllegationsList', () => {
     const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([archer, malory, cyril])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
@@ -139,7 +139,7 @@ describe('sortedAllegationsList', () => {
     const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([archer, malory, cyril])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
@@ -155,7 +155,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([malory, cyril, archer])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
@@ -171,7 +171,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([malory, cyril, archer])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
@@ -187,7 +187,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([malory, archer, cyril])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: cyril.id, perpetrator: cyril},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: malory.id, victim: malory, perpetrator_id: archer.id, perpetrator: archer},
@@ -203,7 +203,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([cyril, archer, malory])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: archer.id, perpetrator: archer},
@@ -219,7 +219,7 @@ describe('sortedAllegationsList', () => {
     const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
 
     const participants = Immutable.fromJS([cyril, archer, malory])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: archer.id, perpetrator: archer},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: cyril.id, victim: cyril, perpetrator_id: malory.id, perpetrator: malory},
@@ -241,7 +241,7 @@ describe('buildNewAllegations', () => {
   it('returns combinations of victims and perpetrators', () => {
     const participants = Immutable.fromJS([archer, malory, cyril, lana, pam])
     const allegations = Immutable.List()
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
@@ -255,7 +255,7 @@ describe('buildNewAllegations', () => {
   })
 
   it('returns an empty list when there are no victims or perpetrators', () => {
-    expect(sortedAllegationsList(screeningId, Immutable.List(), Immutable.List())).toEqual(
+    expect(AllegationsHelper.sortedAllegationsList(screeningId, Immutable.List(), Immutable.List())).toEqual(
       Immutable.List()
     )
   })
@@ -267,7 +267,7 @@ describe('buildNewAllegations', () => {
       {id: '456', screening_id: '3', victim_id: '6', perpetrator_id: '1'},
       {id: '789', screening_id: '3', victim_id: '6', perpetrator_id: '2'},
     ])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: '789', screening_id: screeningId, allegation_types: [], victim_id: pam.id, victim: pam, perpetrator_id: malory.id, perpetrator: malory},
@@ -285,7 +285,7 @@ describe('buildNewAllegations', () => {
       {id: '456', screening_id: '3', victim_id: '6', perpetrator_id: '1'},
       {id: '789', screening_id: '3', victim_id: '6', perpetrator_id: '2'},
     ])
-    const result = sortedAllegationsList(screeningId, participants, allegations)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
       {id: null, screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: lana.id, perpetrator: lana},
@@ -304,7 +304,7 @@ describe('buildNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2'},
     ])
-    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: [], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])
@@ -318,7 +318,7 @@ describe('buildNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2', allegation_types: ['General neglect']},
     ])
-    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: ['General neglect'], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])
@@ -332,7 +332,7 @@ describe('buildNewAllegations', () => {
     const allegations = Immutable.fromJS([
       {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2'},
     ])
-    const result = sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
+    const result = AllegationsHelper.sortedAllegationsList(screeningId, participants, allegations, allegationsEdits)
     const expectedResult = Immutable.fromJS([
       {id: '123', screening_id: screeningId, allegation_types: ['General neglect'], victim_id: archer.id, victim: archer, perpetrator_id: malory.id, perpetrator: malory},
     ])
@@ -346,7 +346,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2'})
     const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     const expectedAllegations = Immutable.fromJS({1: {3: ['General neglect']}})
     expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
     expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
@@ -356,7 +356,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: []})
     const allegations = null
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     expect(returnedAllegations.toJS()).toEqual({})
     expect(Immutable.is(returnedAllegations, Immutable.Map())).toEqual(true)
   })
@@ -365,7 +365,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: []})
     const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     const expectedAllegations = Immutable.fromJS({1: {3: ['General neglect']}})
     expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
     expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
@@ -375,7 +375,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: ['Victim']})
     const allegations = Immutable.fromJS({2: {3: ['General neglect']}, 1: {3: ['General neglect']}})
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     expect(returnedAllegations.toJS()).toEqual(allegations.toJS())
     expect(Immutable.is(returnedAllegations, allegations)).toEqual(true)
   })
@@ -384,7 +384,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: []})
     const allegations = Immutable.fromJS({3: {2: ['General neglect'], 1: ['General neglect']}})
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     const expectedAllegations = Immutable.fromJS({3: {1: ['General neglect']}})
     expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
     expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
@@ -394,7 +394,7 @@ describe('removeInvalidAllegations', () => {
     const participant = Immutable.fromJS({id: '2', roles: ['Perpetrator']})
     const allegations = Immutable.fromJS({3: {2: ['General neglect'], 1: ['General neglect']}})
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     expect(returnedAllegations.toJS()).toEqual(allegations.toJS())
     expect(Immutable.is(returnedAllegations, allegations)).toEqual(true)
   })
@@ -406,7 +406,7 @@ describe('removeInvalidAllegations', () => {
       2: {4: ['General neglect']},
     })
 
-    const returnedAllegations = removeInvalidAllegations(participant, allegations)
+    const returnedAllegations = AllegationsHelper.removeInvalidAllegations(participant, allegations)
     const expectedAllegations = Immutable.fromJS({3: {1: ['General neglect']}})
     expect(returnedAllegations.toJS()).toEqual(expectedAllegations.toJS())
     expect(Immutable.is(returnedAllegations, expectedAllegations)).toEqual(true)
@@ -415,7 +415,7 @@ describe('removeInvalidAllegations', () => {
 
 describe('areCrossReportsRequired', () => {
   it('does not explode if allegations do not exist', () => {
-    const result = areCrossReportsRequired()
+    const result = AllegationsHelper.areCrossReportsRequired()
     expect(result).toEqual(false)
   })
 
@@ -433,7 +433,7 @@ describe('areCrossReportsRequired', () => {
         {allegation_types: [allegation]},
       ])
 
-      const result = areCrossReportsRequired(allegations)
+      const result = AllegationsHelper.areCrossReportsRequired(allegations)
       expect(result).toEqual(true)
     })
   })
@@ -448,7 +448,7 @@ describe('areCrossReportsRequired', () => {
         {allegation_types: [allegation]},
       ])
 
-      const result = areCrossReportsRequired(allegations)
+      const result = AllegationsHelper.areCrossReportsRequired(allegations)
       expect(result).toEqual(false)
     })
   })
@@ -458,7 +458,24 @@ describe('areCrossReportsRequired', () => {
       {allegation_types: ['General neglect', 'Severe neglect']},
     ])
 
-    const result = areCrossReportsRequired(allegations)
+    const result = AllegationsHelper.areCrossReportsRequired(allegations)
     expect(result).toEqual(true)
+  })
+})
+
+describe('areAllegationsRequired', () => {
+  it('returns true when screening decision is null', () => {
+    const screening = {}
+    expect(AllegationsHelper.areAllegationsRequired(screening)).toEqual(false)
+  })
+
+  it('returns true when screening decision is a value other than promote to referral', () => {
+    const screening = {screening_decision: 'differential_response'}
+    expect(AllegationsHelper.areAllegationsRequired(screening)).toEqual(false)
+  })
+
+  it('returns true when screening decision is promote to referral', () => {
+    const screening = {screening_decision: 'promote_to_referral'}
+    expect(AllegationsHelper.areAllegationsRequired(screening)).toEqual(true)
   })
 })

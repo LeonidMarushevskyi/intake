@@ -58,6 +58,7 @@ export default class AllegationsCardView extends React.Component {
 
 AllegationsCardView.propTypes = {
   allegations: PropTypes.object.isRequired,
+  areAllegationsRequired: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
