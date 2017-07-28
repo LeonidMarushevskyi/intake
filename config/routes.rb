@@ -62,6 +62,5 @@ Rails.application.routes.draw do
 
   resources :version, only: :index
 
-  get "/pages/*id" => 'pages#show', as: :page, format: false
-  
+  get '/pages/*id' => 'pages#show', as: :page, format: false
 end

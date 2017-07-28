@@ -13,5 +13,4 @@ feature 'static pages' do
     visit page_path('conditions_of_use')
     expect(page).to have_text('Conditions of Use')
   end
-
 end
