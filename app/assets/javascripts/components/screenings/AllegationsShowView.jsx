@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import EditLink from 'components/common/EditLink'
 import nameFormatter from 'utils/nameFormatter'
+import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
-const AllegationsShowView = ({allegations, onEdit}) => (
+const AllegationsShowView = ({allegations, onEdit, alertErrorMessage}) => (
   <div className='card show double-gap-top' id='allegations-card'>
     <div className='card-header'>
       <span>Allegations</span>
@@ -16,6 +17,7 @@ const AllegationsShowView = ({allegations, onEdit}) => (
       />
     </div>
     <div className='card-body no-pad-top'>
+      { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
       <div className='row'>
         <div className='table-responsive'>
           <table className='table table-hover'>
@@ -46,6 +48,7 @@ const AllegationsShowView = ({allegations, onEdit}) => (
 )
 
 AllegationsShowView.propTypes = {
+  alertErrorMessage: PropTypes.string,
   allegations: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
 }

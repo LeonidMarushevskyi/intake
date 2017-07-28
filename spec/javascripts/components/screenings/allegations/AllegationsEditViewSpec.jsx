@@ -103,4 +103,18 @@ describe('AllegationsEditView', () => {
     expect(allegationRowProps.onChange).toEqual(onChange)
     expect(allegationRowProps.allegationTypes).toEqual(Immutable.List())
   })
+
+  describe('Error alert message', () => {
+    it('renders an alert error message when passed', () => {
+      const props = {...requiredProps, alertErrorMessage: 'Help! Help! I am being repressed!'}
+      const component = shallow(<AllegationsEditView {...props} />)
+      expect(component.find('AlertErrorMessage').exists()).toEqual(true)
+      expect(component.find('AlertErrorMessage').html()).toContain('Help! Help! I am being repressed!')
+    })
+
+    it('does not render an alert error message when none are present', () => {
+      const component = shallow(<AllegationsEditView {...requiredProps} />)
+      expect(component.find('AlertErrorMessage').exists()).toEqual(false)
+    })
+  })
 })
