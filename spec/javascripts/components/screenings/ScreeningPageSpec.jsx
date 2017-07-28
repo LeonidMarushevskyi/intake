@@ -48,7 +48,7 @@ describe('ScreeningPage', () => {
       expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
     })
 
-    fit('renders the allegations card and specifies if allegations are required', () => {
+    it('renders the allegations card and specifies if allegations are required', () => {
       const props = {
         ...requiredProps,
         allegations: Immutable.List(),

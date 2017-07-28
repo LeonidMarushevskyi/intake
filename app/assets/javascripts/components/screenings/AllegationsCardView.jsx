@@ -35,6 +35,18 @@ export default class AllegationsCardView extends React.Component {
     this.setState({mode: 'show'})
   }
 
+  alertErrorMessage() {
+    if (this.props.areAllegationsRequired) {
+      if (this.props.allegations.some((allegation) => !allegation.get('allegation_types').isEmpty())) {
+        return null
+      } else {
+        return 'Any report that is promoted for referral must include at least one allegation.'
+      }
+    } else {
+      return null
+    }
+  }
+
   render() {
     const {mode} = this.state
     let allegations
@@ -44,6 +56,7 @@ export default class AllegationsCardView extends React.Component {
       allegations = this.props.allegations.filter((allegation) => allegation.get('id'))
     }
     const props = {
+      alertErrorMessage: this.alertErrorMessage(),
       allegations: allegations,
       onCancel: this.onCancel,
       onEdit: this.onEdit,
