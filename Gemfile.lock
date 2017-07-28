@@ -139,6 +139,7 @@ GEM
       sysexits (~> 1.1)
     hashdiff (0.3.2)
     headless (2.3.1)
+    high_voltage (3.0.0)
     highline (1.7.8)
     html2haml (2.1.0)
       erubis (~> 2.7.0)
@@ -392,6 +393,7 @@ DEPENDENCIES
   haml-lint
   haml-rails
   headless (= 2.3.1)
+  high_voltage
   i18n-tasks
   license_finder
   newrelic_rpm
