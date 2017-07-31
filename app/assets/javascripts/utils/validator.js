@@ -32,11 +32,20 @@ const isBeforeOtherDate = ({value, errorMessage, otherValue}) => {
   return undefined
 }
 
+const isInvalidIf = ({value, condition, errorMessage}) => {
+  if (condition(value)) {
+    return errorMessage
+  } else {
+    return undefined
+  }
+}
+
 const VALIDATORS = Immutable.fromJS({
   isRequired: isRequired,
   isRequiredIf: isRequiredIf,
   isNotInTheFuture: isNotInTheFuture,
   isBeforeOtherDate: isBeforeOtherDate,
+  isInvalidIf: isInvalidIf,
 })
 
 export function validateField({value, rules}) {
