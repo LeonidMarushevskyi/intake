@@ -4,7 +4,6 @@ import ErrorMessages from 'common/ErrorMessages'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'common/ShowField'
-import {dateFormatter} from 'utils/dateFormatter'
 import _ from 'lodash'
 import {dateFormatter} from 'utils/dateFormatter'
 

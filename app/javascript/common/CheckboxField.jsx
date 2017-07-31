@@ -1,4 +1,4 @@
-import ErrorMessages from 'components/common/ErrorMessages'
+import ErrorMessages from 'common/ErrorMessages'
 import PropTypes from 'prop-types'
 import React from 'react'
 

@@ -4,9 +4,9 @@ import CrossReportShowView from 'screenings/CrossReportShowView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import {AGENCY_TYPES} from 'CrossReport'
-import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'CrossReport'
-import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'CrossReport'
+import {AGENCY_TYPES} from 'enums/CrossReport'
+import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'enums/CrossReport'
+import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'enums/CrossReport'
 
 export default class CrossReportCardView extends React.Component {
   constructor(props) {
