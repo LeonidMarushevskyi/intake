@@ -17,7 +17,7 @@ import ScreeningInformationCardView from 'components/screenings/ScreeningInforma
 import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
-import {areCrossReportsRequired, sortedAllegationsList, removeInvalidAllegations, areAllegationsRequired} from 'utils/allegationsHelper'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -73,7 +73,7 @@ export class ScreeningPage extends React.Component {
   cardSave(fieldList) {
     let screening
     if (fieldList.includes('allegations')) {
-      const allegations = sortedAllegationsList(
+      const allegations = AllegationsHelper.sortedAllegationsList(
         this.props.screening.get('id'),
         this.props.participants,
         this.props.screening.get('allegations'),
@@ -118,7 +118,7 @@ export class ScreeningPage extends React.Component {
     return this.props.actions.saveParticipant(participant.toJS())
       .then(() => {
         this.props.actions.fetchScreening(this.props.params.id)
-        this.setField(['allegations'], removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations')))
+        this.setField(['allegations'], AllegationsHelper.removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations')))
       })
   }
 
@@ -215,7 +215,7 @@ export class ScreeningPage extends React.Component {
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
     let sortedAllegations
     if (releaseTwoInactive) {
-      sortedAllegations = sortedAllegationsList(
+      sortedAllegations = AllegationsHelper.sortedAllegationsList(
         screening.get('id'),
         this.props.participants,
         screening.get('allegations'),
@@ -276,7 +276,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <AllegationsCardView
                 allegations={sortedAllegations}
-                areAllegationsRequired={areAllegationsRequired(mergedScreening.toJS())}
+                areAllegationsRequired={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
                 {...cardCallbacks}
                 mode={this.mode}
               />
@@ -307,7 +307,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <CrossReportCardView
-                areCrossReportsRequired={areCrossReportsRequired(sortedAllegations)}
+                areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 crossReports={mergedScreening.get('cross_reports')}
                 mode={this.mode}
@@ -317,6 +317,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <DecisionCardView
               {...cardCallbacks}
+              areValidAllegationsPresent={AllegationsHelper.areValidAllegationsPresent(sortedAllegations)}
               mode={this.mode}
               screening={mergedScreening}
             />

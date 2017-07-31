@@ -6,7 +6,7 @@ import SCREENING_DECISION from 'ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 import SelectField from 'components/common/SelectField'
 
-const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
+const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, validateField}) => {
   const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
   const decisionLabel = (() => (
     (Boolean(decisionOptions) && decisionOptions.label) || ''
@@ -30,9 +30,11 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
             <SelectField
               id='screening_decision'
               label= 'Screening Decision'
+              errors={errors.get('screening_decision')}
               required
               value={screening.get('screening_decision')}
               onChange={(event) => onChangeDecision(event)}
+              onBlur={(event) => validateField('screening_decision', event.target.value)}
             >
               <option key='' />
               {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
@@ -88,10 +90,12 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
 }
 
 DecisionEditView.propTypes = {
+  errors: PropTypes.object.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   screening: PropTypes.object.isRequired,
+  validateField: PropTypes.func.isRequired,
 }
 
 export default DecisionEditView

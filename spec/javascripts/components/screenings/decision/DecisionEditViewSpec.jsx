@@ -7,6 +7,7 @@ import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 
 describe('conditional decision options', () => {
   let component
+
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
     const props = {
@@ -17,6 +18,7 @@ describe('conditional decision options', () => {
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
       }),
+      errors: Immutable.fromJS({screening_decision: []}),
     }
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = mount(<DecisionEditView {...props} />)
@@ -31,6 +33,7 @@ describe('conditional decision options', () => {
     expect(component.find('#decisionDetail').props().maxLength).toEqual('64')
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
+
   it('renders input for Information to child welfare services', () => {
     component.setProps({screening: Immutable.fromJS({
       screening_decision: 'information_to_child_welfare_services',
@@ -40,6 +43,7 @@ describe('conditional decision options', () => {
     expect(component.find('#decisionDetail').props().maxLength).toEqual('64')
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Staff name')
   })
+
   it('renders options for Promote to referral', () => {
     const options = component.find('#decisionDetail').find('option')
     const optionList = Object.keys(SCREENING_DECISION_OPTIONS.promote_to_referral.values).map((key) => (
@@ -54,6 +58,7 @@ describe('conditional decision options', () => {
     expect(component.find('#decisionDetail').props().required).toEqual(true)
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Response time')
   })
+
   it('renders options for Screen out', () => {
     component.setProps({screening: Immutable.fromJS({
       screening_decision: 'screen_out',
@@ -93,6 +98,7 @@ describe('conditional decision options', () => {
 describe('DecisionEditView', () => {
   let component
   let props
+
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
     props = {
@@ -104,6 +110,7 @@ describe('DecisionEditView', () => {
         additional_information: 'more info',
         screening_decision_detail: 'Name of the service',
       }),
+      errors: Immutable.fromJS({screening_decision: []}),
     }
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = shallow(<DecisionEditView {...props} />)
@@ -111,6 +118,10 @@ describe('DecisionEditView', () => {
 
   it('renders the card header', () => {
     expect(component.find('.card-header').text()).toEqual('Decision')
+  })
+
+  it('renders errors for screening_decision', () => {
+    expect(component.find('#screening_decision').props().errors).toEqual(Immutable.List())
   })
 
   it('renders the report narrative label as required', () => {
@@ -137,6 +148,7 @@ describe('DecisionEditView', () => {
         screening_decision: 'screen_out',
         screening_decision_detail: 'Consultation',
       }),
+      errors: Immutable.fromJS({screening_decision: []}),
     }
     component = shallow(<DecisionEditView {...props} />)
     expect(component.find('SelectField[label="Category"]').length).toEqual(1)
