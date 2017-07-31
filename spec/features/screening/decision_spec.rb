@@ -57,6 +57,11 @@ feature 'decision card' do
       expect(page).to have_field('Staff name', with: '')
       select 'Differential response', from: 'Screening Decision'
       expect(page).to have_field('Service name', with: '')
+      expect(page).to have_content('SDM Hotline Tool')
+      expect(page).to have_content(
+        'Determine Decision and Response Time by using Structured Decision Making'
+      )
+      expect(page).to have_content('Complete SDM')
     end
   end
 
@@ -92,6 +97,13 @@ feature 'decision card' do
       a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
     ).to have_been_made
+    within '#decision-card.show' do
+      expect(page).to have_content('SDM Hotline Tool')
+      expect(page).to have_content(
+        'Determine Decision and Response Time by using Structured Decision Making'
+      )
+      expect(page).to have_content('Complete SDM')
+    end
   end
 
   scenario 'user edits information details and click cancel' do
@@ -117,6 +129,20 @@ feature 'decision card' do
       expect(page).to have_field('Screening Decision', with: 'promote_to_referral')
       expect(page).to have_field('Response time', with: '3_days')
       expect(page).to have_field('Additional information', with: 'this is why it is')
+    end
+  end
+
+  scenario 'navigate to SDM on new window' do
+    within '#decision-card.edit' do
+      link_from_edit = find_link('Complete SDM')
+      expect(link_from_edit[:href]).to eq 'https://ca.sdmdata.org/'
+      expect(link_from_edit[:target]).to eq '_blank'
+      click_button 'Cancel'
+    end
+    within '#decision-card.show' do
+      link_from_show = find_link('Complete SDM')
+      expect(link_from_show[:href]).to eq 'https://ca.sdmdata.org/'
+      expect(link_from_show[:target]).to eq '_blank'
     end
   end
 end

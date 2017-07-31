@@ -50,5 +50,9 @@ class ExternalRoutes
     def intake_api_staff_path(id)
       "/api/v1/staff/#{id}"
     end
+
+    def sdm_path
+      'https://ca.sdmdata.org'
+    end
   end
 end
