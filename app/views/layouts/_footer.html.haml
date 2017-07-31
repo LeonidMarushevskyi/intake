@@ -1,5 +1,5 @@
 .col-12-xs.text-center
   %span
-    = link_to 'Privacy', page_path('privacy')
+    = link_to 'Privacy Policy', page_path('privacy', script_name: Rails.configuration.intake[:base_path])
   %span
-    = link_to 'Conditions of use', page_path('conditions_of_use')
+    = link_to 'Conditions of use', page_path('conditions_of_use', script_name: Rails.configuration.intake[:base_path])
