@@ -10,14 +10,10 @@ module.exports = function(config) {
     basePath: './',
     frameworks: ['jasmine'],
     files: [
-      //{pattern: './../app/javascript/**/*.js', watched: true},
-      //{pattern: './../public/packs-test/**/*.js', watched: false},
-      {pattern: './../spec/karma_tests.js', watched: false},
+      {pattern: './../public/packs-test/**/*.js', watched: false},
     ],
     preprocessors: {
-      //'./../spec/**/*Spec.js': ['webpack', 'babel'],
-      //'./../public/packs-test/**/*.js': ['webpack'],
-      './../spec/karma_tests.js': ['webpack'],
+      './../public/packs-test/**/*.js': ['webpack'],
     },
     exclude: [
       './../node_modules/'
