@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import InputField from 'components/common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -41,7 +42,7 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
             <div>
               <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
               <div className='col-md-3'>
-                <a href='https://ca.sdmdata.org' target='_blank' id='complete_sdm'>Complete SDM</a>
+                <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
               </div>
             </div>
           </div>

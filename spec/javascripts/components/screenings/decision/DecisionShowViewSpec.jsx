@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import DecisionShowView from 'components/screenings/DecisionShowView'
@@ -8,7 +9,9 @@ describe('DecisionShowView', () => {
   let onEdit
 
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
     onEdit = jasmine.createSpy()
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = shallow(<DecisionShowView screening={Immutable.fromJS({})} onEdit={onEdit} />)
   })
 

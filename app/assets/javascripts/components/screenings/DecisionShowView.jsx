@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
@@ -37,7 +38,7 @@ const DecisionShowView = ({screening, onEdit}) => {
           <div>
             <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
             <div className='col-md-3'>
-              <a href='https://ca.sdmdata.org' target='_blank' id='complete_sdm'>Complete SDM</a>
+              <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
             </div>
           </div>
         </div>

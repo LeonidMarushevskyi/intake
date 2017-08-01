@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import DecisionEditView from 'components/screenings/DecisionEditView'
@@ -7,6 +8,7 @@ import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 describe('conditional decision options', () => {
   let component
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
     const props = {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
@@ -16,6 +18,7 @@ describe('conditional decision options', () => {
         screening_decision_detail: 'immediate',
       }),
     }
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = mount(<DecisionEditView {...props} />)
   })
 
@@ -91,6 +94,7 @@ describe('DecisionEditView', () => {
   let component
   let props
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
     props = {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
@@ -101,6 +105,7 @@ describe('DecisionEditView', () => {
         screening_decision_detail: 'Name of the service',
       }),
     }
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = shallow(<DecisionEditView {...props} />)
   })
 
