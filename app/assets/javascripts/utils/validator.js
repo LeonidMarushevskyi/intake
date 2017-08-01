@@ -1,7 +1,6 @@
 import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
-import VALIDATIONS from 'ValidationRules'
 
 const isRequired = ({value, errorMessage}) => {
   if ((_.isEmpty(value) || _.isEmpty(value.trim())) && value !== true) {
@@ -33,20 +32,11 @@ const isBeforeOtherDate = ({value, errorMessage, otherValue}) => {
   return undefined
 }
 
-const isInvalidIf = ({value, condition, errorMessage}) => {
-  if (condition(value)) {
-    return errorMessage
-  } else {
-    return undefined
-  }
-}
-
 const VALIDATORS = Immutable.fromJS({
   isRequired: isRequired,
   isRequiredIf: isRequiredIf,
   isNotInTheFuture: isNotInTheFuture,
   isBeforeOtherDate: isBeforeOtherDate,
-  isInvalidIf: isInvalidIf,
 })
 
 export function validateField({value, rules}) {
@@ -79,13 +69,3 @@ export function validateAllFields({screening, fieldValidations}) {
   return Immutable.Map(errors)
 }
 
-export function validateScreening({screening}) {
-  const errors = {}
-  VALIDATIONS.map((cardValidations, cardName) => (
-    errors[cardName] = validateAllFields({
-      screening: screening,
-      fieldValidations: cardValidations,
-    })
-  ))
-  return Immutable.Map(errors)
-}

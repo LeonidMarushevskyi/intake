@@ -3,15 +3,6 @@ import * as Validator from 'utils/validator'
 import moment from 'moment'
 
 describe('Validator', () => {
-  describe('validateScreening', () => {
-    it('returns an errors object keyed with the card names', () => {
-      const screening = Immutable.fromJS({screening_decision: 'promote_to_referral'})
-      const errors = Validator.validateScreening({screening: screening})
-      expect(errors.keySeq().includes('decision_card')).toEqual(true)
-      expect(errors.get('decision_card').keySeq().includes('screening_decision')).toEqual(true)
-    })
-  })
-
   describe('validateField', () => {
     describe('when there are no arguments', () => {
       const args = {
@@ -435,49 +426,6 @@ describe('Validator', () => {
 
         expect(Validator.validateField(args).count()).toEqual(0)
       })
-    })
-  })
-
-  describe('isInvalidIf', () => {
-    it('returns undefined when the condition passed evaluates to false', () => {
-      const args = {
-        value: '',
-        rules: Immutable.fromJS([{
-          rule: 'isInvalidIf',
-          condition: () => (3 === 4),
-          message: 'Values must be equal',
-        }]),
-      }
-      const result = Validator.validateField(args)
-      expect(result.count()).toEqual(0)
-    })
-
-    it('returns the error message when the condition passed evaluates to true', () => {
-      const args = {
-        value: '',
-        rules: Immutable.fromJS([{
-          rule: 'isInvalidIf',
-          condition: () => (`${4}` === '4'),
-          message: 'Values must be equal',
-        }]),
-      }
-      const result = Validator.validateField(args)
-      expect(result.count()).toEqual(1)
-      expect(result.first()).toEqual('Values must be equal')
-    })
-
-    it('passes the value as an argument to the callback', () => {
-      const args = {
-        value: 4,
-        rules: Immutable.fromJS([{
-          rule: 'isInvalidIf',
-          condition: (value) => (value === 4),
-          message: 'Values must be equal',
-        }]),
-      }
-      const result = Validator.validateField(args)
-      expect(result.count()).toEqual(1)
-      expect(result.first()).toEqual('Values must be equal')
     })
   })
 })

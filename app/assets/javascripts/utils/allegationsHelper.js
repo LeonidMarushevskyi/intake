@@ -111,6 +111,3 @@ export function areAllegationsRequired({screening_decision}) {
   return screening_decision === 'promote_to_referral'
 }
 
-export function areValidAllegationsPresent(allegations) {
-  return allegations.some((allegation) => !allegation.get('allegation_types').isEmpty())
-}

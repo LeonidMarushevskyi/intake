@@ -480,22 +480,3 @@ describe('areAllegationsRequired', () => {
   })
 })
 
-describe('areValidAllegationsPresent', () => {
-  it('returns true if any allegations have a type', () => {
-    const allegations = Immutable.fromJS([
-      {allegation_types: []},
-      {allegation_types: ['exploitation']},
-    ])
-
-    expect(AllegationsHelper.areValidAllegationsPresent(allegations)).toEqual(true)
-  })
-
-  it('returns false if no allegations have a type', () => {
-    const allegations = Immutable.fromJS([
-      {allegation_types: []},
-      {allegation_types: []},
-    ])
-
-    expect(AllegationsHelper.areValidAllegationsPresent(allegations)).toEqual(false)
-  })
-})

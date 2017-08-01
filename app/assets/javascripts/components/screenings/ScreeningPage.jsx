@@ -20,7 +20,7 @@ import {IndexLink, Link} from 'react-router'
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as Validator from 'utils/validator'
+import ScreeningValidator from 'ScreeningValidator'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -212,10 +212,11 @@ export class ScreeningPage extends React.Component {
     }
     const {screening, loaded} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const cardErrors = Validator.validateScreening({screening: mergedScreening})
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
+
     let sortedAllegations
+    let cardErrors
     if (releaseTwoInactive) {
       sortedAllegations = AllegationsHelper.sortedAllegationsList(
         screening.get('id'),
@@ -223,7 +224,13 @@ export class ScreeningPage extends React.Component {
         screening.get('allegations'),
         this.state.screeningEdits.get('allegations')
       )
+      const screeningValidator = new ScreeningValidator({
+        screening: mergedScreening,
+        allegations: sortedAllegations,
+      })
+      cardErrors = screeningValidator.validateScreening()
     }
+
     if (loaded) {
       return (
         <div>
