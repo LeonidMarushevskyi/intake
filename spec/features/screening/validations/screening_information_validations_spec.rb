@@ -203,7 +203,7 @@ feature 'Screening Information Validations' do
         FactoryGirl.create :screening, started_at: 5.years.from_now, ended_at: 10.years.from_now
       end
 
-      scenario 'user sees error messages for required fields page load' do
+      scenario 'user sees error messages for dates being in the future on page load' do
         should_have_content 'The start date and time cannot be in the future.', inside: show_card
         should_have_content 'The end date and time cannot be in the future.', inside: show_card
       end
@@ -214,7 +214,7 @@ feature 'Screening Information Validations' do
         FactoryGirl.create :screening, started_at: 5.years.ago, ended_at: 10.years.ago
       end
 
-      scenario 'user sees error messages for required fields page load' do
+      scenario 'user sees error messages for start date being after end date page load' do
         should_have_content(
           'The start date and time must be before the end date and time.',
           inside: show_card
