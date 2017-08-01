@@ -23,7 +23,7 @@ describe('PersonShowPage', () => {
             city: 'Winnetka',
             state: 'IL',
             zip: '60093',
-            type: 'Placement',
+            type: 'Work',
           },
           {
             id: '2',
@@ -101,7 +101,7 @@ describe('PersonShowPage', () => {
       expect(component.find('ShowField[label="Zip"]').first().html())
         .toContain('60093')
       expect(component.find('ShowField[label="Address Type"]').first().html())
-        .toContain('Placement')
+        .toContain('Work')
       expect(component.find('ShowField[label="Address"]').last().html())
         .toContain('123 Capital Mall')
       expect(component.find('ShowField[label="City"]').last().html())

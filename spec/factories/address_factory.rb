@@ -18,7 +18,19 @@ FactoryGirl.define do
       city { FFaker::Address.city }
       state { FFaker::AddressUS.state_abbr }
       zip { FFaker::AddressUS.zip_code }
-      type { %w[Home School Work Placement Homeless Other].sample }
+      type do
+        [
+          'Common',
+          'Day Care',
+          'Home',
+          'Homeless',
+          'Other',
+          'Penal Institution',
+          'Permanent Mailing Address',
+          'Residence 2',
+          'Work'
+        ].sample
+      end
     end
   end
 end

@@ -11,7 +11,7 @@ feature 'Create Address' do
       state: 'NY',
       street_address: '123 fake st',
       zip: '55555',
-      type: 'Placement'
+      type: 'Work'
     )
     address2 = FactoryGirl.create(
       :address,
@@ -42,7 +42,7 @@ feature 'Create Address' do
       fill_in 'City', with: 'Springfield'
       select 'New York', from: 'State'
       fill_in 'Zip', with: '55555'
-      select 'Placement', from: 'Address Type'
+      select 'Work', from: 'Address Type'
     end
 
     click_button 'Add new address'

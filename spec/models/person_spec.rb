@@ -21,7 +21,7 @@ describe Person do
             city: 'Springfield',
             state: 'NY',
             zip: '12345',
-            type: 'Placement'
+            type: 'Work'
           },
           {
             id: '3',
@@ -58,7 +58,7 @@ describe Person do
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
-          type: 'Placement',
+          type: 'Work',
           legacy_id: nil,
           legacy_source_table: nil
         }, {
