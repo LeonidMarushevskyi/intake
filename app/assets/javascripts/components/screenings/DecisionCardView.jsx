@@ -12,7 +12,7 @@ export default class DecisionCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
-    this.validateField = this.validateField.bind(this)
+    this.onBlur = this.onBlur.bind(this)
 
     this.fields = Immutable.fromJS(['screening_decision_detail', 'screening_decision', 'additional_information'])
     this.fieldValidations = Immutable.fromJS({
@@ -24,16 +24,19 @@ export default class DecisionCardView extends React.Component {
       }],
     })
 
-    let errors
+    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+
+    let displayErrorsFor
     if (this.props.mode === 'show') {
-      errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+      displayErrorsFor = this.fields
     } else {
-      errors = Immutable.Map()
+      displayErrorsFor = Immutable.List()
     }
 
     this.state = {
       errors: errors,
       mode: this.props.mode,
+      displayErrorsFor: displayErrorsFor,
     }
   }
 
@@ -53,14 +56,21 @@ export default class DecisionCardView extends React.Component {
     })
   }
 
-  validateField(fieldName, value) {
-    const rules = this.fieldValidations.get(fieldName)
-    const errors = this.state.errors.set(fieldName, Validator.validateField({rules, value}))
-    this.setState({errors: errors})
+  onBlur(fieldName) {
+    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+    const displayErrorsFor = this.state.displayErrorsFor.push(fieldName)
+    this.setState({errors: errors, displayErrorsFor: displayErrorsFor})
+  }
+
+  filteredErrors() {
+    return this.state.errors.filter((_value, key) => (
+      this.state.displayErrorsFor.includes(key)
+    ))
   }
 
   render() {
-    const {mode, errors} = this.state
+    const {mode} = this.state
+    const errors = this.filteredErrors()
     const allProps = {
       edit: {
         errors: errors,
@@ -68,7 +78,7 @@ export default class DecisionCardView extends React.Component {
         onChange: this.props.onChange,
         onSave: this.onSave,
         screening: this.props.screening,
-        validateField: this.validateField,
+        onBlur: this.onBlur,
       },
       show: {
         errors: errors,

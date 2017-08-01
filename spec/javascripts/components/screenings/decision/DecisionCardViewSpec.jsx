@@ -3,6 +3,7 @@ import React from 'react'
 import Immutable from 'immutable'
 import DecisionCardView from 'components/screenings/DecisionCardView'
 import {mount, shallow} from 'enzyme'
+import * as Validator from 'utils/validator'
 
 describe('DecisionCardView', () => {
   let component
@@ -102,31 +103,30 @@ describe('DecisionCardView', () => {
     })
   })
 
-  describe('validateField', () => {
+  describe('onBlur', () => {
     beforeEach(() => {
       props.screening = props.screening.set('screening_decision', 'differential_response')
     })
 
-    describe('when valid allegations are present', () => {
-      it('does not add errors for screening decision when it is promote_to_referral', () => {
-        const component = shallow(<DecisionCardView {...props} areValidAllegationsPresent={true} mode={'edit'}/>)
-        component.instance().validateField('screening_decision', 'promote_to_referral')
-        const errorProps = component.update().find('DecisionEditView').props().errors
-        const expectedErrors = {screening_decision: []}
-        expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-        expect(errorProps.toJS()).toEqual(expectedErrors)
-      })
+    it('adds the proper field to the list of fields to display errors for', () => {
+      const validatorSpy = spyOn(Validator, 'validateAllFields').and.returnValue(Immutable.Map())
+      const component = shallow(<DecisionCardView {...props} mode={'edit'}/>)
+      component.instance().onBlur('screening_decision')
+      expect(validatorSpy).toHaveBeenCalled()
+      expect(component.state().displayErrorsFor.toJS()).toEqual(['screening_decision'])
     })
+  })
 
-    describe('when valid allegations are not present', () => {
-      it('adds errors for screening decision when it is promote_to_referral', () => {
-        const component = shallow(<DecisionCardView {...props} areValidAllegationsPresent={false} mode={'edit'}/>)
-        component.instance().validateField('screening_decision', 'promote_to_referral')
-        const errorProps = component.update().find('DecisionEditView').props().errors
-        const expectedErrors = {screening_decision: ['Please enter at least one allegation to promote to referral.']}
-        expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-        expect(errorProps.toJS()).toEqual(expectedErrors)
+  describe('filteredErrors', () => {
+    it('only returns errors for fields that are in the displayErrorFor list', () => {
+      const component = shallow(<DecisionCardView {...props} mode={'edit'}/>)
+      component.setState({
+        errors: Immutable.fromJS({foo: ['foo error'], bar: ['bar error']}),
+        displayErrorsFor: Immutable.List(['foo']),
       })
+      const errors = component.instance().filteredErrors()
+      expect(errors.toJS()).toEqual({foo: ['foo error']})
+      expect(Immutable.is(errors, Immutable.fromJS({foo: ['foo error']}))).toEqual(true)
     })
   })
 })

@@ -14,6 +14,7 @@ describe('conditional decision options', () => {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
+      onBlur: jasmine.createSpy(),
       screening: Immutable.fromJS({
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
@@ -105,6 +106,7 @@ describe('DecisionEditView', () => {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
+      onBlur: jasmine.createSpy(),
       screening: Immutable.fromJS({
         screening_decision: 'differential_response',
         additional_information: 'more info',
@@ -144,6 +146,7 @@ describe('DecisionEditView', () => {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
+      onBlur: jasmine.createSpy(),
       screening: Immutable.fromJS({
         screening_decision: 'screen_out',
         screening_decision_detail: 'Consultation',
