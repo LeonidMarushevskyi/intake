@@ -95,6 +95,11 @@ describe('DecisionCardView', () => {
       component.find('a[aria-label="Edit decision card"]').simulate('click')
       expect(component.find('DecisionEditView').length).toEqual(1)
     })
+
+    it('passes errors from the state', () => {
+      expect(component.find('DecisionShowView').props().errors.toJS())
+        .toEqual({screening_decision: []})
+    })
   })
 
   describe('validateField', () => {

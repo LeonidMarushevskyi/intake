@@ -24,8 +24,15 @@ export default class DecisionCardView extends React.Component {
       }],
     })
 
+    let errors
+    if (this.props.mode === 'show') {
+      errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
+    } else {
+      errors = Immutable.Map()
+    }
+
     this.state = {
-      errors: Immutable.Map(),
+      errors: errors,
       mode: this.props.mode,
     }
   }
