@@ -138,6 +138,14 @@ describe('DecisionEditView', () => {
     expect(component.find('InputField[label="Service name"]').length).toEqual(0)
   })
 
+  it('renders the SDM link', () => {
+    const sdm_link = component.find('#complete_sdm')
+    expect(component.text()).toContain('SDM Hotline Tool')
+    expect(component.text()).toContain('Determine Decision and Response Time by using Structured Decision Making')
+    expect(sdm_link.prop('href')).toEqual('https://ca.sdmdata.org')
+    expect(sdm_link.prop('target')).toEqual('_blank')
+  })
+
   it('renders the save button', () => {
     expect(component.find('.btn.btn-primary').text()).toEqual('Save')
   })

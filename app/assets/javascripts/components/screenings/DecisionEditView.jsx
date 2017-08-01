@@ -36,6 +36,17 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
             <option key='' />
             {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
           </SelectField>
+          <div>
+            <div className='col-md-6'>SDM Hotline Tool</div>
+            <div>
+              <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
+              <div className='col-md-3'>
+                <a href='https://ca.sdmdata.org' target='_blank' id='complete_sdm'>Complete SDM</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='row'>
           { decisionOptions && decisionOptions.type === 'select' &&
             <SelectField
               gridClassName='col-md-6'
