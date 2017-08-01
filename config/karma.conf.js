@@ -10,10 +10,10 @@ module.exports = function(config) {
     basePath: './',
     frameworks: ['jasmine'],
     files: [
-      {pattern: './../public/packs-test/**/*.js', watched: false},
+      './../public/packs-test/main.js',
     ],
     preprocessors: {
-      './../public/packs-test/**/*.js': ['webpack'],
+      './../public/packs-test/main.js': ['webpack'],
     },
     exclude: [
       './../node_modules/'
@@ -22,16 +22,12 @@ module.exports = function(config) {
       // log console output in our test console
       captureConsole: true
     },
-    reporters: ['progress', 'coverage'],
-    // coverageReporter: {
-    //   type: 'in-memory',
-    // },
+    reporters: [ 'coverage', 'dots'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    // browsers: ['Chrome_no_sandbox', 'Firefox'],
-    browsers: ['Chrome_no_sandbox'],
+    browsers: ['Chrome_no_sandbox', 'Firefox'],
     customLaunchers: {
       Chrome_no_sandbox: {
         base: 'Chrome',
@@ -41,7 +37,7 @@ module.exports = function(config) {
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,
     singleRun: true,
-    //concurrency: Infinity,
+    concurrency: Infinity,
     webpackMiddleware: {
       // webpack-dev-middleware configuration
       // i. e.
@@ -57,15 +53,5 @@ module.exports = function(config) {
         'react/lib/ExecutionEnvironment': true
       }
     },
-    // plugins: [
-    //   'karma-sourcemap-loader',
-    //   'karma-htmlfile-reporter',
-    //   'karma-jasmine',
-    //   'karma-coverage',
-    //   'karma-chrome-launcher',
-    //   'karma-firefox-launcher',
-    //   'karma-webpack',
-    //   'istanbul-instrumenter-loader'
-    // ]
   })
 }

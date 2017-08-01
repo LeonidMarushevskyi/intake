@@ -7,8 +7,6 @@ const { basename, dirname, join, relative, resolve } = require('path')
 module.exports = merge(sharedConfig, {
   entry: './spec/karma_tests.js',
   output: {
-    // client assets are output to dist/test/
-    path: join(output.path, 'test'),
     publicPath: undefined // no assets CDN
   },
   externals: {

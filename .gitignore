@@ -22,5 +22,6 @@ public/assets/
 **/.DS_Store
 
 binstubs/
+/public/packs-test
 /public/packs
 /node_modules
