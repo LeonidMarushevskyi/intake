@@ -1,4 +1,4 @@
-import AgeInfo from 'components/common/AgeInfo'
+import AgeInfo from 'common/AgeInfo'
 import React from 'react'
 import moment from 'moment'
 import {shallow} from 'enzyme'

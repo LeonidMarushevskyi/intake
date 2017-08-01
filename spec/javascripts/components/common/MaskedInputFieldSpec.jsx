@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
-import MaskedInputField from 'components/common/MaskedInputField'
+import MaskedInputField from 'common/MaskedInputField'
 
 describe('MaskedInputField', () => {
   let component

@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
-import ParticipantShowView from 'components/screenings/ParticipantShowView'
+import ParticipantShowView from 'screenings/ParticipantShowView'
 import React from 'react'
 import {shallow} from 'enzyme'
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 
 describe('ParticipantShowView', () => {
   const requiredParticipantProps = {

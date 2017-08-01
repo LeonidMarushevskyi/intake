@@ -1,4 +1,4 @@
-import GenderRaceAndEthnicity from 'components/common/GenderRaceAndEthnicity'
+import GenderRaceAndEthnicity from 'common/GenderRaceAndEthnicity'
 import React from 'react'
 import {shallow} from 'enzyme'
 

@@ -1,6 +1,6 @@
-import * as config from 'config'
+import * as config from 'common/config'
 import React from 'react'
-import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
+import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import {shallow} from 'enzyme'
 
 describe('ScreeningSubmitButton', () => {

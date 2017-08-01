@@ -1,4 +1,4 @@
-import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
+import WorkerSafetyShowView from 'screenings/WorkerSafetyShowView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'

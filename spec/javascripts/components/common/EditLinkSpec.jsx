@@ -1,5 +1,5 @@
 import React from 'react'
-import EditLink from 'components/common/EditLink'
+import EditLink from 'common/EditLink'
 import {shallow} from 'enzyme'
 
 describe('EditLink', () => {

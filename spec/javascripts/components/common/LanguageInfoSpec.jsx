@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import LanguageInfo from 'components/common/LanguageInfo'
+import LanguageInfo from 'common/LanguageInfo'
 
 describe('languages', () => {
   it('renders when present', () => {

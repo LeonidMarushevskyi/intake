@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import NarrativeCardView from 'components/screenings/NarrativeCardView'
+import NarrativeCardView from 'screenings/NarrativeCardView'
 import React from 'react'
 import {mount} from 'enzyme'
 

@@ -1,4 +1,4 @@
-import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
+import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow, mount} from 'enzyme'

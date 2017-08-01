@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import AlertErrorMessage from 'components/common/AlertErrorMessage'
+import AlertErrorMessage from 'common/AlertErrorMessage'
 
 describe('AlertErrorMessage', () => {
   it('renders the message text passed to it', () => {

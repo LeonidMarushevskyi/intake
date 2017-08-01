@@ -1,5 +1,5 @@
 import * as Utils from 'utils/http'
-import Autocompleter from 'components/common/Autocompleter'
+import Autocompleter from 'common/Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'

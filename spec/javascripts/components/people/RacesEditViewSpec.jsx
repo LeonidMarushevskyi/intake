@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import RacesEditView from 'components/people/RacesEditView'
+import RacesEditView from 'people/RacesEditView'
 import React from 'react'
 import {shallow} from 'enzyme'
 

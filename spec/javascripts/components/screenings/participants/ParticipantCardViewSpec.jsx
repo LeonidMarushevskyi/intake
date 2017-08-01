@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import ParticipantCardView from 'components/screenings/ParticipantCardView'
+import ParticipantCardView from 'screenings/ParticipantCardView'
 import React from 'react'
 import {shallow} from 'enzyme'
 

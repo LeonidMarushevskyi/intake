@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
+import ScreeningInformationEditView from 'screenings/ScreeningInformationEditView'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 

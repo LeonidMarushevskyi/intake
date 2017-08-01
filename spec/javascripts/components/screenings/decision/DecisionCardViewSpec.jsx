@@ -1,8 +1,8 @@
 import * as IntakeConfig from 'config'
 import React from 'react'
 import Immutable from 'immutable'
-import DecisionCardView from 'components/screenings/DecisionCardView'
-import {mount, shallow} from 'enzyme'
+import DecisionCardView from 'screenings/DecisionCardView'
+import {mount} from 'enzyme'
 
 describe('DecisionCardView', () => {
   let component
@@ -120,4 +120,3 @@ describe('DecisionCardView', () => {
     })
   })
 })
-

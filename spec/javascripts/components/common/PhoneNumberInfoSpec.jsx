@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import PhoneNumberInfo from 'components/common/PhoneNumberInfo'
+import PhoneNumberInfo from 'common/PhoneNumberInfo'
 
 describe('phone numbers', () => {
   it('renders when present', () => {

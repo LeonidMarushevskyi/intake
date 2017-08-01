@@ -1,5 +1,5 @@
 import React from 'react'
-import AllegationRow from 'components/screenings/AllegationRow'
+import AllegationRow from 'screenings/AllegationRow'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 

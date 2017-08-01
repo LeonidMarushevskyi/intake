@@ -1,9 +1,9 @@
 import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
-import DecisionEditView from 'components/screenings/DecisionEditView'
+import DecisionEditView from 'screenings/DecisionEditView'
 import {shallow, mount} from 'enzyme'
-import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
+import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 
 describe('conditional decision options', () => {
   let component

@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import ShowField from 'components/common/ShowField'
+import ShowField from 'common/ShowField'
 import Immutable from 'immutable'
 
 describe('ShowField', () => {

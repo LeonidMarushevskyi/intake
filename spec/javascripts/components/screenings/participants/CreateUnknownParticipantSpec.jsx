@@ -1,4 +1,4 @@
-import CreateUnknownParticipant from 'components/screenings/CreateUnknownParticipant'
+import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
 import React from 'react'
 import {shallow} from 'enzyme'
 
