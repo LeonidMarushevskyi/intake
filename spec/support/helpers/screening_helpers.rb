@@ -59,6 +59,20 @@ module ScreeningHelpers
     ).and_return(json_body([].to_json, status: 200))
   end
 
+  def validate_message_as_user_interacts_with_date_field(
+    card_name:, error_message:, field:, invalid_value:, valid_value:
+  )
+    within "##{card_name}-card.edit" do
+      expect(page).not_to have_content(error_message)
+      fill_in_datepicker field, with: invalid_value, blur: false
+      expect(page).not_to have_content(error_message)
+      blur_field
+      expect(page).to have_content(error_message)
+      fill_in_datepicker field, with: valid_value, blur: true
+      expect(page).not_to have_content(error_message)
+    end
+  end
+
   def stub_and_visit_edit_screening(screening)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
