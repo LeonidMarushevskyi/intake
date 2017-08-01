@@ -28,9 +28,9 @@ module CaIntake # :nodoc:
     URL
 
     config.intake = {
-      'base_path': ENV.fetch('BASE_PATH', '/'),
-      'authentication_base_url': ENV.fetch('AUTHENTICATION_URL', ''),
-      'authentication_login_url': authentication_login_url,
+      base_path: ENV.fetch('BASE_PATH', '/'),
+      authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
+      authentication_login_url: authentication_login_url,
       api_url: ENV.fetch('API_URL', nil)
     }
   end
