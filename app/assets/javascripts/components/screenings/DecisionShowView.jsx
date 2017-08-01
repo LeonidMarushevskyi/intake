@@ -32,6 +32,17 @@ const DecisionShowView = ({screening, onEdit}) => {
         <ShowField gridClassName='col-md-6' label='Screening Decision' required>
           {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
         </ShowField>
+        <div>
+          <div className='col-md-6'>SDM Hotline Tool</div>
+          <div>
+            <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
+            <div className='col-md-3'>
+              <a href='https://ca.sdmdata.org' target='_blank' id='complete_sdm'>Complete SDM</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='row'>
         <ShowField gridClassName='col-md-6' label={decisionDetailLabel} required={decisionDetailLabel === 'Response time'}>
           {decisionDetailText}
         </ShowField>
