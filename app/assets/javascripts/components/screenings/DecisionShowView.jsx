@@ -6,7 +6,7 @@ import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 import ShowField from 'components/common/ShowField'
 import EditLink from 'components/common/EditLink'
 
-const DecisionShowView = ({screening, onEdit}) => {
+const DecisionShowView = ({screening, onEdit, errors}) => {
   const decisionDetailLabel = (() => {
     const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
     return (decisionOptions && decisionOptions.label) || ''
@@ -31,7 +31,7 @@ const DecisionShowView = ({screening, onEdit}) => {
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-6'>
-          <ShowField label='Screening Decision' required>
+          <ShowField label='Screening Decision' errors={errors.get('screening_decision')} required>
             {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
           </ShowField>
           <ShowField label={decisionDetailLabel} required={decisionDetailLabel === 'Response time'}>
@@ -53,6 +53,7 @@ const DecisionShowView = ({screening, onEdit}) => {
 }
 
 DecisionShowView.propTypes = {
+  errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   screening: PropTypes.object.isRequired,
 }

@@ -7,12 +7,19 @@ import {shallow} from 'enzyme'
 describe('DecisionShowView', () => {
   let component
   let onEdit
+  const errors = Immutable.fromJS({screening_decision: []})
 
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
     onEdit = jasmine.createSpy()
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
-    component = shallow(<DecisionShowView screening={Immutable.fromJS({})} onEdit={onEdit} />)
+    component = shallow(
+      <DecisionShowView
+        screening={Immutable.fromJS({})}
+        onEdit={onEdit}
+        errors={errors}
+      />
+    )
   })
 
   it('renders the card header', () => {
@@ -45,13 +52,17 @@ describe('DecisionShowView', () => {
     })
   })
 
+  it('renders errors passed for screening decision', () => {
+    expect(component.find('ShowField[label="Screening Decision"]').props().errors).toEqual(Immutable.List())
+  })
+
   it('renders the show fields with text input decision_detail', () => {
     const screening = Immutable.fromJS({
       additional_information: 'the decision is decided',
       screening_decision: 'differential_response',
       screening_decision_detail: 'Some character string',
     })
-    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField').length).toEqual(3)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Differential response')
@@ -69,7 +80,7 @@ describe('DecisionShowView', () => {
       screening_decision: 'screen_out',
       screening_decision_detail: 'consultation',
     })
-    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField').length).toEqual(3)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Screen out')
@@ -85,7 +96,7 @@ describe('DecisionShowView', () => {
     const screening = Immutable.fromJS({
       screening_decision: 'information_to_child_welfare_services',
     })
-    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Information to child welfare services')
     expect(component.find('ShowField[label="Staff name"]').props().labelClassName)
@@ -96,7 +107,7 @@ describe('DecisionShowView', () => {
     const screening = Immutable.fromJS({
       screening_decision: 'promote_to_referral',
     })
-    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Promote to referral')
     expect(component.find('ShowField[label="Response time"]').props().required)
@@ -109,7 +120,7 @@ describe('DecisionShowView', () => {
       screening_decision: null,
       additional_information: null,
     })
-    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField').length).toEqual(3)
     expect(component.find('ShowField[label="Screening Decision"]').html())
       .toContain('<div class="c-gray"></div>')
