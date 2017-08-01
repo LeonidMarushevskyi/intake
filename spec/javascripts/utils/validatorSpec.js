@@ -3,6 +3,15 @@ import * as Validator from 'utils/validator'
 import moment from 'moment'
 
 describe('Validator', () => {
+  describe('validateScreening', () => {
+    it('returns an errors object keyed with the card names', () => {
+      const screening = Immutable.fromJS({screening_decision: 'promote_to_referral'})
+      const errors = Validator.validateScreening({screening: screening})
+      expect(errors.keySeq().includes('decision_card')).toEqual(true)
+      expect(errors.get('decision_card').keySeq().includes('screening_decision')).toEqual(true)
+    })
+  })
+
   describe('validateField', () => {
     describe('when there are no arguments', () => {
       const args = {

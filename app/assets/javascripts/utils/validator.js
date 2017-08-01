@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
+import VALIDATIONS from 'ValidationRules'
 
 const isRequired = ({value, errorMessage}) => {
   if ((_.isEmpty(value) || _.isEmpty(value.trim())) && value !== true) {
@@ -75,5 +76,16 @@ export function validateAllFields({screening, fieldValidations}) {
       rules,
     })
   })
+  return Immutable.Map(errors)
+}
+
+export function validateScreening({screening}) {
+  const errors = {}
+  VALIDATIONS.map((cardValidations, cardName) => (
+    errors[cardName] = validateAllFields({
+      screening: screening,
+      fieldValidations: cardValidations,
+    })
+  ))
   return Immutable.Map(errors)
 }

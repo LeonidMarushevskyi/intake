@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import DecisionEditView from 'components/screenings/DecisionEditView'
 import DecisionShowView from 'components/screenings/DecisionShowView'
-import * as Validator from 'utils/validator'
 
 export default class DecisionCardView extends React.Component {
   constructor(props) {
@@ -15,16 +14,6 @@ export default class DecisionCardView extends React.Component {
     this.onBlur = this.onBlur.bind(this)
 
     this.fields = Immutable.fromJS(['screening_decision_detail', 'screening_decision', 'additional_information'])
-    this.fieldValidations = Immutable.fromJS({
-      screening_decision: [{
-        rule: 'isInvalidIf',
-        condition: (value) => (
-          value === 'promote_to_referral' && !this.props.areValidAllegationsPresent
-        ), message: 'Please enter at least one allegation to promote to referral.',
-      }],
-    })
-
-    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
 
     let displayErrorsFor
     if (this.props.mode === 'show') {
@@ -34,7 +23,6 @@ export default class DecisionCardView extends React.Component {
     }
 
     this.state = {
-      errors: errors,
       mode: this.props.mode,
       displayErrorsFor: displayErrorsFor,
     }
@@ -57,13 +45,12 @@ export default class DecisionCardView extends React.Component {
   }
 
   onBlur(fieldName) {
-    const errors = Validator.validateAllFields({screening: this.props.screening, fieldValidations: this.fieldValidations})
     const displayErrorsFor = this.state.displayErrorsFor.push(fieldName)
-    this.setState({errors: errors, displayErrorsFor: displayErrorsFor})
+    this.setState({displayErrorsFor: displayErrorsFor})
   }
 
   filteredErrors() {
-    return this.state.errors.filter((_value, key) => (
+    return this.props.errors.filter((_value, key) => (
       this.state.displayErrorsFor.includes(key)
     ))
   }
@@ -93,7 +80,7 @@ export default class DecisionCardView extends React.Component {
 }
 
 DecisionCardView.propTypes = {
-  areValidAllegationsPresent: PropTypes.bool.isRequired,
+  errors: PropTypes.object.isRequired,
   mode: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
