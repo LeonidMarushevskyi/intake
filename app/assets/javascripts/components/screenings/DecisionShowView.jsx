@@ -30,28 +30,22 @@ const DecisionShowView = ({screening, onEdit}) => {
     </div>
     <div className='card-body'>
       <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Screening Decision' required>
-          {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
-        </ShowField>
-        <div>
-          <div className='col-md-6'>SDM Hotline Tool</div>
-          <div>
-            <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
-            <div className='col-md-3'>
-              <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
-            </div>
-          </div>
+        <div className='col-md-6'>
+          <ShowField label='Screening Decision' required>
+            {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
+          </ShowField>
+          <ShowField label={decisionDetailLabel} required={decisionDetailLabel === 'Response time'}>
+            {decisionDetailText}
+          </ShowField>
+          <ShowField label='Additional information'>
+            {screening.get('additional_information')}
+          </ShowField>
         </div>
-      </div>
-      <div className='row'>
-        <ShowField gridClassName='col-md-6' label={decisionDetailLabel} required={decisionDetailLabel === 'Response time'}>
-          {decisionDetailText}
-        </ShowField>
-      </div>
-      <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Additional information'>
-          {screening.get('additional_information')}
-        </ShowField>
+        <div className='col-md-6'>
+          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
+          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
+          <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
+        </div>
       </div>
     </div>
   </div>

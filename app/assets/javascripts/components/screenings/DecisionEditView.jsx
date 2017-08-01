@@ -26,63 +26,54 @@ const DecisionEditView = ({screening, onCancel, onSave, onChange}) => {
       </div>
       <div className='card-body'>
         <div className='row'>
-          <SelectField
-            gridClassName='col-md-6'
-            id='screening_decision'
-            label= 'Screening Decision'
-            required
-            value={screening.get('screening_decision')}
-            onChange={(event) => onChangeDecision(event)}
-          >
-            <option key='' />
-            {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
-          </SelectField>
-          <div>
-            <div className='col-md-6'>SDM Hotline Tool</div>
-            <div>
-              <div className='col-md-3'>Determine Decision and Response Time by using Structured Decision Making.</div>
-              <div className='col-md-3'>
-                <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row'>
-          { decisionOptions && decisionOptions.type === 'select' &&
+          <div className='col-md-6'>
             <SelectField
-              gridClassName='col-md-6'
-              id='decisionDetail'
-              label={decisionLabel}
-              required={isRequired}
-              value={screening.getIn(['screening_decision_detail'])}
-              onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+              id='screening_decision'
+              label= 'Screening Decision'
+              required
+              value={screening.get('screening_decision')}
+              onChange={(event) => onChangeDecision(event)}
             >
               <option key='' />
-              {Object.keys(decisionOptions.values).map((value) => (
-                <option key={value} value={value}>{decisionOptions.values[value]}</option>)
-              )}
+              {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}
             </SelectField>
-            }
-            { decisionOptions && decisionOptions.type === 'text' &&
-              <InputField
-                gridClassName='col-md-6'
+            { decisionOptions && decisionOptions.type === 'select' &&
+              <SelectField
                 id='decisionDetail'
                 label={decisionLabel}
                 required={isRequired}
-                value={screening.getIn(['screening_decision_detail']) || ''}
+                value={screening.getIn(['screening_decision_detail'])}
                 onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
-                maxLength='64'
-              />
+              >
+                <option key='' />
+                {Object.keys(decisionOptions.values).map((value) => (
+                  <option key={value} value={value}>{decisionOptions.values[value]}</option>)
+                )}
+              </SelectField>
               }
-        </div>
-        <div className='row'>
-          <div className='col-md-12'>
+              { decisionOptions && decisionOptions.type === 'text' &&
+                <InputField
+                  id='decisionDetail'
+                  label={decisionLabel}
+                  required={isRequired}
+                  value={screening.getIn(['screening_decision_detail']) || ''}
+                  onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                  maxLength='64'
+                />
+              }
+          <div>
             <label htmlFor='additional_information'>Additional information</label>
             <textarea
               id='additional_information'
               onChange={(event) => onChange(['additional_information'], event.target.value || null)}
               value={screening.get('additional_information') || ''}
             />
+          </div>
+          </div>
+          <div className='col-md-6'>
+            <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
+            <div>Determine Decision and Response Time by using Structured Decision Making.</div>
+            <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
           </div>
         </div>
         <div className='row'>
