@@ -1,4 +1,4 @@
-import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath} from 'config'
+import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath, sdmPath} from 'config'
 
 describe('intake config', () => {
   let windowOrg
@@ -79,6 +79,18 @@ describe('intake config', () => {
 
     it('returns the proper base path', () => {
       expect(basePath()).toEqual(basePathString)
+    })
+  })
+
+  describe('.sdmPath', () => {
+    const sdmPathString = '/sdm-path-test'
+
+    beforeEach(() => {
+      window.org = Object.freeze({intake: {config: {sdm_path: sdmPathString}}})
+    })
+
+    it('returns the proper base path', () => {
+      expect(sdmPath()).toEqual(sdmPathString)
     })
   })
 })
