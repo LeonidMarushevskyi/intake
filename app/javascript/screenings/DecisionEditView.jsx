@@ -1,9 +1,5 @@
-<<<<<<< HEAD:app/javascript/packs/screenings/DecisionEditView.jsx
-import * as IntakeConfig from 'config'
-import InputField from 'components/common/InputField'
-=======
+import * as IntakeConfig from 'common/config'
 import InputField from 'common/InputField'
->>>>>>> wip w00p:app/javascript/screenings/DecisionEditView.jsx
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'enums/ScreeningDecision'

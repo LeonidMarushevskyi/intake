@@ -1,4 +1,4 @@
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 import EditLink from 'common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'

@@ -1,4 +1,4 @@
-import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath, sdmPath} from 'config'
+import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath, sdmPath} from 'common/config'
 
 describe('intake config', () => {
   let windowOrg

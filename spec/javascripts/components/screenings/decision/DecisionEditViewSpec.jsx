@@ -1,4 +1,4 @@
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 import Immutable from 'immutable'
 import React from 'react'
 import DecisionEditView from 'screenings/DecisionEditView'
