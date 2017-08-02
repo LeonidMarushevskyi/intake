@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import VALIDATIONS from 'ValidationRules'
+import VALIDATIONS from 'screenings/ValidationRules'
 import _ from 'lodash'
 import moment from 'moment'
 

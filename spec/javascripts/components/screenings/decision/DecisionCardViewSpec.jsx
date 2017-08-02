@@ -2,7 +2,7 @@ import * as IntakeConfig from 'common/config'
 import React from 'react'
 import Immutable from 'immutable'
 import DecisionCardView from 'screenings/DecisionCardView'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 
 describe('DecisionCardView', () => {
   let component
