@@ -126,6 +126,11 @@ describe('DecisionEditView', () => {
     expect(component.find('#screening_decision').props().errors).toEqual(Immutable.List())
   })
 
+  it('calls onBlur with the proper field name for screening decision', () => {
+    component.find('#screening_decision').simulate('blur')
+    expect(props.onBlur).toHaveBeenCalledWith('screening_decision')
+  })
+
   it('renders the report narrative label as required', () => {
     expect(component.find('SelectField[label="Screening Decision"]').props().required)
       .toEqual(true)
