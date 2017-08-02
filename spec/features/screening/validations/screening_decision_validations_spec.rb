@@ -33,6 +33,19 @@ feature 'Screening Decision Validations' do
     context 'Screening decision is set to nil on page load' do
       let(:screening_decision) { nil }
 
+      scenario 'card displays errors until user adds a screening decision' do
+        validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'decision',
+          error_message: 'Please enter a decision',
+          screening_updates: { screening_decision: 'screen_out' }
+        ) do
+          within '#decision-card.edit' do
+            select 'Screen out', from: 'Screening Decision'
+          end
+        end
+      end
+
       scenario 'Selecting promote to referral decision requires allegations' do
         within '#decision-card.edit' do
           expect(page).not_to have_content(error_message)
