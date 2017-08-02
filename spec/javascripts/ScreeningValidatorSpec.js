@@ -1,5 +1,6 @@
 import Immutable from 'immutable'
 import ScreeningValidator from 'ScreeningValidator'
+import moment from 'moment'
 
 describe('ScreeningValidator', () => {
   describe('validateScreening', () => {
@@ -274,6 +275,61 @@ describe('ScreeningValidator', () => {
       }
       const validator = new ScreeningValidator({})
       expect(validator.isInvalidIf(args)).toEqual(message)
+    })
+  })
+
+  describe('isNotInTheFuture', () => {
+    const message = 'You are not a time traveler'
+    const sharedArgs = {
+      errorMessage: message,
+    }
+
+    it('is not valid when the value is in the future', () => {
+      const tomorrow = moment().add(1, 'days').toISOString()
+      const args = {...sharedArgs, value: tomorrow}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(message)
+    })
+
+    it('is valid when the value is in the past', () => {
+      const args = {...sharedArgs, value: moment().toISOString()}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(undefined)
+    })
+
+    it('is valid when the value is equal to the current time', () => {
+      const stubbedDate = '5999-01-01T01:01:01.001Z'
+      spyOn(moment.prototype, 'toISOString').and.returnValue(stubbedDate)
+      const args = {...sharedArgs, value: stubbedDate}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(undefined)
+    })
+
+    it('is valid when the value is one milisecond less than to the current time', () => {
+      const stubbedDate = '5999-01-01T01:01:01.001Z'
+      spyOn(moment.prototype, 'toISOString').and.returnValue(stubbedDate)
+      const args = {...sharedArgs, value: moment(stubbedDate).subtract(1, 'milliseconds')}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(undefined)
+    })
+
+    it('is valid when the value is an empty string', () => {
+      const args = {...sharedArgs, value: ''}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(undefined)
+    })
+
+    it('is valid when the value is null', () => {
+      const args = {...sharedArgs, value: null}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(undefined)
+    })
+
+    it('includes the proper error message when the value is invalid', () => {
+      const tomorrow = moment().add(1, 'days').toISOString()
+      const args = {...sharedArgs, value: tomorrow}
+      const validator = new ScreeningValidator({})
+      expect(validator.isNotInTheFuture(args)).toEqual(message)
     })
   })
 })

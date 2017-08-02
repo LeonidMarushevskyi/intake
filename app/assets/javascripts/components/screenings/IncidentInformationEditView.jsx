@@ -7,7 +7,7 @@ import React from 'react'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 
-const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) => (
+const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onChange, errors}) => (
   <div className='card edit double-gap-top' id='incident-information-card'>
     <div className='card-header'>
       <span>Incident Information</span>
@@ -19,7 +19,9 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
           id='incident_date'
           label='Incident Date'
           value={screening.get('incident_date')}
+          errors={errors.get('incident_date')}
           onChange={(value) => onChange(['incident_date'], value)}
+          onBlur={() => onBlur('incident_date')}
           hasTime={false}
         />
       </div>
@@ -102,6 +104,8 @@ const IncidentInformationEditView = ({screening, onCancel, onSave, onChange}) =>
 )
 
 IncidentInformationEditView.propTypes = {
+  errors: PropTypes.object.isRequired,
+  onBlur: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

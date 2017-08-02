@@ -6,7 +6,7 @@ import ShowField from 'components/common/ShowField'
 import US_STATE from 'USState'
 import {dateFormatter} from 'utils/dateFormatter'
 
-const IncidentInformationShowView = ({screening, onEdit}) => {
+const IncidentInformationShowView = ({screening, onEdit, errors}) => {
   const incidentDate = dateFormatter(screening.get('incident_date'))
   const state = US_STATE.find((state) => state.code === screening.getIn(['address', 'state']))
 
@@ -18,7 +18,7 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
       </div>
       <div className='card-body'>
         <div className='row'>
-          <ShowField gridClassName='col-md-6' label='Incident Date'>
+          <ShowField gridClassName='col-md-6' label='Incident Date' errors={errors.get('incident_date')}>
             {incidentDate}
           </ShowField>
         </div>
@@ -54,6 +54,7 @@ const IncidentInformationShowView = ({screening, onEdit}) => {
 }
 
 IncidentInformationShowView.propTypes = {
+  errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,
   screening: PropTypes.object.isRequired,
 }

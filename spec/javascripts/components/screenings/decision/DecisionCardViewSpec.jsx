@@ -102,10 +102,6 @@ describe('DecisionCardView', () => {
   })
 
   describe('onBlur', () => {
-    beforeEach(() => {
-      props.screening = props.screening.set('screening_decision', 'differential_response')
-    })
-
     it('adds the proper field to the list of fields to display errors for', () => {
       const component = shallow(<DecisionCardView {...props} mode={'edit'}/>)
       component.instance().onBlur('screening_decision')

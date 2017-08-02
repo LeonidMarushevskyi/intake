@@ -1,12 +1,14 @@
 import Immutable from 'immutable'
 import VALIDATIONS from 'ValidationRules'
 import _ from 'lodash'
+import moment from 'moment'
 
 class ScreeningValidator {
   constructor({screening, allegations}) {
     this.screening = screening
     this.allegations = allegations
     this.VALIDATORS = Immutable.fromJS({
+      isNotInTheFuture: this.isNotInTheFuture.bind(this),
       isRequired: this.isRequired.bind(this),
       isRequiredIf: this.isRequiredIf.bind(this),
       isInvalidIf: this.isInvalidIf.bind(this),
@@ -15,6 +17,15 @@ class ScreeningValidator {
 
   areValidAllegationsPresent() {
     return this.allegations.some((allegation) => !allegation.get('allegation_types').isEmpty())
+  }
+
+  isNotInTheFuture({value, errorMessage}) {
+    const now = moment().toISOString()
+    if (value > now) {
+      return errorMessage
+    } else {
+      return undefined
+    }
   }
 
   isRequired({value, errorMessage}) {

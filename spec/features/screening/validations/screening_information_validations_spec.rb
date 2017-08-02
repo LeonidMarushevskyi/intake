@@ -7,23 +7,6 @@ require 'support/factory_girl'
 feature 'Screening Information Validations' do
   let(:screening) { FactoryGirl.create(:screening) }
 
-  def validate_message_as_user_interacts_with_date_field(
-    error_message:,
-    field:,
-    invalid_value:,
-    valid_value:
-  )
-    within '#screening-information-card.edit' do
-      expect(page).not_to have_content(error_message)
-      fill_in_datepicker field, with: invalid_value, blur: false
-      expect(page).not_to have_content(error_message)
-      blur_field
-      expect(page).to have_content(error_message)
-      fill_in_datepicker field, with: valid_value, blur: true
-      expect(page).not_to have_content(error_message)
-    end
-  end
-
   context 'On the edit page' do
     before do
       stub_and_visit_edit_screening(screening)
@@ -92,6 +75,7 @@ feature 'Screening Information Validations' do
 
       scenario 'displays an error if the date is in the future' do
         validate_message_as_user_interacts_with_date_field(
+          card_name: 'screening-information',
           field: 'Screening End Date/Time',
           error_message: error_message,
           invalid_value: 20.years.from_now,
@@ -121,6 +105,7 @@ feature 'Screening Information Validations' do
     context 'start date field' do
       scenario 'displays an error if the user does not enter a start date' do
         validate_message_as_user_interacts_with_date_field(
+          card_name: 'screening-information',
           field: 'Screening Start Date/Time',
           error_message: 'Please enter a screening start date.',
           invalid_value: '',
@@ -130,6 +115,7 @@ feature 'Screening Information Validations' do
 
       scenario 'displays an error if the user enters a start date in the future' do
         validate_message_as_user_interacts_with_date_field(
+          card_name: 'screening-information',
           field: 'Screening Start Date/Time',
           error_message: 'The start date and time cannot be in the future.',
           invalid_value: 20.years.from_now,
@@ -151,6 +137,7 @@ feature 'Screening Information Validations' do
 
         scenario 'displays an error if the user enters a start date that is after the end date' do
           validate_message_as_user_interacts_with_date_field(
+            card_name: 'screening-information',
             field: 'Screening Start Date/Time',
             error_message: 'The start date and time must be before the end date and time.',
             invalid_value: 5.years.ago,
@@ -216,7 +203,7 @@ feature 'Screening Information Validations' do
         FactoryGirl.create :screening, started_at: 5.years.from_now, ended_at: 10.years.from_now
       end
 
-      scenario 'user sees error messages for required fields page load' do
+      scenario 'user sees error messages for dates being in the future on page load' do
         should_have_content 'The start date and time cannot be in the future.', inside: show_card
         should_have_content 'The end date and time cannot be in the future.', inside: show_card
       end
@@ -227,7 +214,7 @@ feature 'Screening Information Validations' do
         FactoryGirl.create :screening, started_at: 5.years.ago, ended_at: 10.years.ago
       end
 
-      scenario 'user sees error messages for required fields page load' do
+      scenario 'user sees error messages for start date being after end date page load' do
         should_have_content(
           'The start date and time must be before the end date and time.',
           inside: show_card

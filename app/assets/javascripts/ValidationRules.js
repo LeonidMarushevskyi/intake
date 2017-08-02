@@ -20,6 +20,12 @@ const VALIDATIONS = Object.freeze({
       message: 'Please enter a response time',
     }],
   },
+  incident_information_card: {
+    incident_date: [{
+      rule: 'isNotInTheFuture',
+      message: 'The incident date and time cannot be in the future.',
+    }],
+  },
 })
 
 export default Immutable.fromJS(VALIDATIONS)

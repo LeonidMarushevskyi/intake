@@ -277,6 +277,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <IncidentInformationCardView
               {...cardCallbacks}
+              errors={cardErrors.get('incident_information_card') || Immutable.List()}
               mode={this.mode}
               screening={mergedScreening}
             />
