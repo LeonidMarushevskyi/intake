@@ -22,6 +22,7 @@ feature 'decision card' do
   end
 
   scenario 'initial configuration' do
+    new_window = nil
     within '#decision-card.edit' do
       expect(page).to have_select('Screening Decision', options: [
                                     '',
@@ -62,6 +63,11 @@ feature 'decision card' do
         'Determine Decision and Response Time by using Structured Decision Making'
       )
       expect(page).to have_content('Complete SDM')
+      change_href('complete_sdm', 'localhost:3000/test')
+      new_window = window_opened_by { click_link 'Complete SDM' }
+    end
+    within_window new_window do
+      expect(current_path).to eq '3000/test'
     end
   end
 
