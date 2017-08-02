@@ -12,17 +12,13 @@ module.exports = function(config) {
     files: [
       './../public/packs-test/main.js',
     ],
-    preprocessors: {
-      './../public/packs-test/main.js': ['webpack'],
-    },
     exclude: [
       './../node_modules/'
     ],
     client: {
-      // log console output in our test console
       captureConsole: true
     },
-    reporters: [ 'coverage', 'dots'],
+    reporters: ['dots'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -38,19 +34,24 @@ module.exports = function(config) {
     browserNoActivityTimeout: 30000,
     singleRun: true,
     concurrency: Infinity,
-    webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only'
-    },
-    webpack: {
-      devtool: 'inline-source-map',
-      module: webpackConfig.module,
-      externals: {
-        'react/addons': true,
-        'react/lib/ReactContext': true,
-        'react-addons-test-utils': true,
-        'react/lib/ExecutionEnvironment': true
+    junitReporter: {
+      outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
+      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
+      suite: '', // suite will become the package name attribute in xml testsuite element
+      useBrowserName: true, // add browser name to report and classes names
+      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
+      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
+      properties: {}, // key value pair of properties to add to the <properties> section of the report
+    }
+    coverageIstanbulReporter: {
+      reports: ['html'],
+      fixWebpackSourcePaths: true,
+      'report-config': {
+        html: {
+            reports: {
+              html: `${process.env.CI_REPORTS}/coverage/js`,
+            },
+        }
       }
     },
   })

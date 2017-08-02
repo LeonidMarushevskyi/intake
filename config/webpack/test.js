@@ -14,5 +14,5 @@ module.exports = merge(sharedConfig, {
     'react/lib/ReactContext': 'react/lib/ReactContext',
     'react/lib/ExecutionEnvironment': 'react/lib/ExecutionEnvironment',
   },
-  devtool: 'inline-source-map', // sourcemap support
+  devtool: 'inline-source-map',
 })

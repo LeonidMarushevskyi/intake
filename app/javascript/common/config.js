@@ -1,5 +1,3 @@
-console.log('config loaded')
-
 export function config() {
   return window.org.intake.config
 }
