@@ -9,7 +9,13 @@ describe('IncidentInformationShowView', () => {
 
   beforeEach(() => {
     onEdit = jasmine.createSpy()
-    component = shallow(<IncidentInformationShowView screening={Immutable.fromJS({})} onEdit={onEdit} />)
+    component = shallow(
+      <IncidentInformationShowView
+        screening={Immutable.fromJS({})}
+        onEdit={onEdit}
+        errors={Immutable.List()}
+      />
+    )
   })
 
   it('renders the card header', () => {
@@ -42,7 +48,13 @@ describe('IncidentInformationShowView', () => {
       location_type: 'Juvenile Detention',
     })
 
-    const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(
+      <IncidentInformationShowView
+        screening={screening}
+        onEdit={onEdit}
+        errors={Immutable.List()}
+      />
+    )
     expect(component.find('ShowField').length).toEqual(7)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('01/21/2006')
@@ -72,7 +84,13 @@ describe('IncidentInformationShowView', () => {
       },
       location_type: null,
     })
-    const component = shallow(<IncidentInformationShowView screening={screening} onEdit={onEdit}/>)
+    const component = shallow(
+      <IncidentInformationShowView
+        screening={screening}
+        onEdit={onEdit}
+        errors={Immutable.List()}
+      />
+    )
     expect(component.find('ShowField').length).toEqual(7)
     expect(component.find('ShowField[label="Incident Date"]').html())
       .toContain('<div class="c-gray"></div>')

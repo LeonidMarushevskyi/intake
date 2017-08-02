@@ -23,6 +23,7 @@ describe('IncidentInformationEditView', () => {
         },
         location_type: 'Juvenile Detention',
       }),
+      errors: Immutable.List(),
     }
     component = shallow(<IncidentInformationEditView {...props} />)
   })

@@ -1,7 +1,7 @@
 import IncidentInformationCardView from 'components/screenings/IncidentInformationCardView'
 import Immutable from 'immutable'
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('IncidentInformationCardView', () => {
   let component
@@ -18,6 +18,7 @@ describe('IncidentInformationCardView', () => {
       },
       location_type: 'Juvenile Detention',
     }),
+    errors: Immutable.List(),
   }
 
   beforeEach(() => {
@@ -38,6 +39,10 @@ describe('IncidentInformationCardView', () => {
 
       it('renders the incident edit card', () => {
         expect(component.find('IncidentInformationEditView').length).toEqual(1)
+      })
+
+      it('passes errors to the edit view', () => {
+        expect(component.find('IncidentInformationEditView').props().errors).toEqual(Immutable.List())
       })
 
       describe('when a user clicks Cancel', () => {
@@ -64,6 +69,11 @@ describe('IncidentInformationCardView', () => {
         it('the incident information show view is rendered', () => {
           expect(component.find('IncidentInformationShowView').length).toEqual(1)
         })
+
+        it('sets displayErrorsFor to all of the fields', () => {
+          expect(component.update().state().displayErrorsFor.toJS())
+            .toEqual(['address', 'incident_county', 'incident_date', 'location_type'])
+        })
       })
     })
 
@@ -73,6 +83,10 @@ describe('IncidentInformationCardView', () => {
       })
       it('renders the incident show card', () => {
         expect(component.find('IncidentInformationShowView').length).toEqual(1)
+      })
+
+      it('passes errors to the edit view', () => {
+        expect(component.find('IncidentInformationShowView').props().errors).toEqual(Immutable.List())
       })
 
       describe('when the user clicks edit link', () => {
@@ -85,6 +99,25 @@ describe('IncidentInformationCardView', () => {
           expect(component.find('IncidentInformationEditView').length).toEqual(1)
         })
       })
+    })
+  })
+
+  describe('onBlur', () => {
+    it('adds the proper field to the list of fields to display errors for', () => {
+      const component = shallow(<IncidentInformationCardView {...props} mode={'edit'}/>)
+      component.instance().onBlur('incident_date')
+      expect(component.state().displayErrorsFor.toJS()).toEqual(['incident_date'])
+    })
+  })
+
+  describe('filteredErrors', () => {
+    it('only returns errors for fields that are in the displayErrorFor list', () => {
+      const errorProps = Immutable.fromJS({foo: ['foo error'], bar: ['bar error']})
+      const component = shallow(<IncidentInformationCardView {...props} mode={'edit'} errors={errorProps}/>)
+      component.setState({displayErrorsFor: Immutable.List(['foo'])})
+      const errors = component.instance().filteredErrors()
+      expect(errors.toJS()).toEqual({foo: ['foo error']})
+      expect(Immutable.is(errors, Immutable.fromJS({foo: ['foo error']}))).toEqual(true)
     })
   })
 })
