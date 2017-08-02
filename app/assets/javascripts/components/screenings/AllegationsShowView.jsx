@@ -4,7 +4,7 @@ import EditLink from 'components/common/EditLink'
 import nameFormatter from 'utils/nameFormatter'
 import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
-const AllegationsShowView = ({allegations, onEdit, alertErrorMessage, areAllegationsRequired}) => (
+const AllegationsShowView = ({allegations, onEdit, alertErrorMessage, required}) => (
   <div className='card show double-gap-top' id='allegations-card'>
     <div className='card-header'>
       <span>Allegations</span>
@@ -25,7 +25,7 @@ const AllegationsShowView = ({allegations, onEdit, alertErrorMessage, areAllegat
               <tr>
                 <th scope='col'>Alleged Victim/Children</th>
                 <th scope='col'>Alleged Perpetrator</th>
-                <th scope='col'>Allegation(s){areAllegationsRequired && ' (Required)'}</th>
+                <th scope='col'>Allegation(s){required && ' (Required)'}</th>
               </tr>
             </thead>
             <tbody>
@@ -50,8 +50,8 @@ const AllegationsShowView = ({allegations, onEdit, alertErrorMessage, areAllegat
 AllegationsShowView.propTypes = {
   alertErrorMessage: PropTypes.string,
   allegations: PropTypes.object.isRequired,
-  areAllegationsRequired: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
+  required: PropTypes.bool.isRequired,
 }
 
 export default AllegationsShowView

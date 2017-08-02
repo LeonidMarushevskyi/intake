@@ -63,7 +63,7 @@ describe('ScreeningPage', () => {
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
       expect(allegationsCard.props().mode).toEqual('edit')
       expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
-      expect(allegationsCard.props().areAllegationsRequired).toEqual(false)
+      expect(allegationsCard.props().required).toEqual(false)
     })
 
     it('renders to Cross Report Card and specifies if cross reporting is required', () => {

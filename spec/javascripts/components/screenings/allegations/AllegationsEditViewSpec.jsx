@@ -9,7 +9,7 @@ describe('AllegationsEditView', () => {
     onCancel: () => {},
     onSave: () => {},
     onChange: () => {},
-    areAllegationsRequired: false,
+    required: false,
   }
 
   it('renders allegations card view headings', () => {
@@ -21,7 +21,7 @@ describe('AllegationsEditView', () => {
   })
 
   it('Adds required to the card heading when allegations are required', () => {
-    const props = {...requiredProps, areAllegationsRequired: true}
+    const props = {...requiredProps, required: true}
     const component = shallow(<AllegationsEditView {...props} />)
     expect(component.find('tr').text()).toContain('Allegation(s) (Required)')
   })

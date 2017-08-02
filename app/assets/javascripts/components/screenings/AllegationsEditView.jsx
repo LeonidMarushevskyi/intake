@@ -9,7 +9,7 @@ const AllegationsEditView = ({
   onCancel,
   onChange,
   alertErrorMessage,
-  areAllegationsRequired,
+  required,
 }) => {
   const groupedAllegations = (allegations) => (
     allegations.groupBy((allegation) => allegation.get('victim'))
@@ -44,7 +44,7 @@ const AllegationsEditView = ({
                 <tr>
                   <th scope='col'>Alleged Victim/Children</th>
                   <th scope='col'>Alleged Perpetrator</th>
-                  <th scope='col'>Allegation(s){areAllegationsRequired && ' (Required)'}</th>
+                  <th scope='col'>Allegation(s){required && ' (Required)'}</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,10 +76,10 @@ const AllegationsEditView = ({
 AllegationsEditView.propTypes = {
   alertErrorMessage: PropTypes.string,
   allegations: PropTypes.object.isRequired,
-  areAllegationsRequired: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  required: PropTypes.bool.isRequired,
 }
 
 export default AllegationsEditView

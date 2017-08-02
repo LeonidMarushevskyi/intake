@@ -15,7 +15,7 @@ describe('AllegationsCardView', () => {
 
   const requiredProps = {
     allegations: Immutable.List(),
-    areAllegationsRequired: false,
+    required: false,
     mode: 'edit',
   }
 
@@ -89,7 +89,7 @@ describe('AllegationsCardView', () => {
     it('returns null when allegations are not required', () => {
       const props = {
         ...requiredProps,
-        areAllegationsRequired: false,
+        required: false,
       }
       const component = shallow(<AllegationsCardView {...props}/>)
       expect(component.instance().alertErrorMessage()).toEqual(null)
@@ -98,7 +98,7 @@ describe('AllegationsCardView', () => {
     it('returns null when allegation are required but valid allegations exist', () => {
       const props = {
         ...requiredProps,
-        areAllegationsRequired: true,
+        required: true,
         allegations: Immutable.fromJS([{
           id: 1,
           allegation_types: ['exploitation'],
@@ -111,7 +111,7 @@ describe('AllegationsCardView', () => {
     it('returns a message when allegations are required and no allegations are valid', () => {
       const props = {
         ...requiredProps,
-        areAllegationsRequired: true,
+        required: true,
         allegations: Immutable.fromJS([{
           id: 1,
           allegation_types: [],
@@ -143,7 +143,7 @@ describe('AllegationsCardView', () => {
 
     it('knows whether or not allegations are required', () => {
       component = shallow(<AllegationsCardView {...requiredProps} />)
-      expect(component.find('AllegationsShowView').props().areAllegationsRequired).toEqual(false)
+      expect(component.find('AllegationsShowView').props().required).toEqual(false)
     })
   })
 
@@ -171,7 +171,7 @@ describe('AllegationsCardView', () => {
 
     it('knows whether or not allegations are required', () => {
       component = shallow(<AllegationsCardView {...requiredProps} />)
-      expect(component.find('AllegationsEditView').props().areAllegationsRequired).toEqual(false)
+      expect(component.find('AllegationsEditView').props().required).toEqual(false)
     })
   })
 })

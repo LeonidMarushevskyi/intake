@@ -285,7 +285,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <AllegationsCardView
                 allegations={sortedAllegations}
-                areAllegationsRequired={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
+                required={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
                 {...cardCallbacks}
                 mode={this.mode}
               />

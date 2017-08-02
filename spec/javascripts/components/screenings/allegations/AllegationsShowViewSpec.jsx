@@ -7,7 +7,7 @@ describe('AllegationsShowView', () => {
   const requiredProps = {
     allegations: Immutable.List(),
     onEdit: () => {},
-    areAllegationsRequired: false,
+    required: false,
   }
 
   it('renders allegations show view headings', () => {
@@ -19,7 +19,7 @@ describe('AllegationsShowView', () => {
   })
 
   it('Adds required to the card heading when allegations are required', () => {
-    const props = {...requiredProps, areAllegationsRequired: true}
+    const props = {...requiredProps, required: true}
     const component = shallow(<AllegationsShowView {...props} />)
     expect(component.find('tr').text()).toContain('Allegation(s) (Required)')
   })

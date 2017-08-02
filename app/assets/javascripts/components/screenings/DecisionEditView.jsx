@@ -34,7 +34,7 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
               required
               value={screening.get('screening_decision')}
               onChange={(event) => onChangeDecision(event)}
-              onBlur={(_event) => onBlur('screening_decision')}
+              onBlur={() => onBlur('screening_decision')}
             >
               <option key='' />
               {Object.keys(SCREENING_DECISION).map((item) => <option key={item} value={item}>{SCREENING_DECISION[item]}</option>)}

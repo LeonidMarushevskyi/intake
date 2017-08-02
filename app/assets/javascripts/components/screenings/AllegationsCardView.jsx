@@ -36,7 +36,7 @@ export default class AllegationsCardView extends React.Component {
   }
 
   alertErrorMessage() {
-    if (this.props.areAllegationsRequired) {
+    if (this.props.required) {
       if (this.props.allegations.some((allegation) => !allegation.get('allegation_types').isEmpty())) {
         return null
       } else {
@@ -58,7 +58,7 @@ export default class AllegationsCardView extends React.Component {
     const props = {
       alertErrorMessage: this.alertErrorMessage(),
       allegations: allegations,
-      areAllegationsRequired: this.props.areAllegationsRequired,
+      required: this.props.required,
       onCancel: this.onCancel,
       onEdit: this.onEdit,
       onSave: this.onSave,
@@ -72,9 +72,9 @@ export default class AllegationsCardView extends React.Component {
 
 AllegationsCardView.propTypes = {
   allegations: PropTypes.object.isRequired,
-  areAllegationsRequired: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  required: PropTypes.bool.isRequired,
 }
