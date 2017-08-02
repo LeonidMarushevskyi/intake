@@ -75,6 +75,7 @@ feature 'Screening Decision Validations' do
       scenario 'Adding and removing allegations shows or hides error message' do
         within '#decision-card.edit' do
           select 'Promote to referral', from: 'Screening Decision'
+          blur_field
           expect(page).to have_content(error_message)
         end
 
