@@ -10,7 +10,7 @@ describe('AddressEditView', () => {
     city: 'SpringField',
     state: 'NY',
     zip: '12345',
-    type: 'Placement',
+    type: 'Work',
     onChange: onChange,
   }
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('AddressEditView', () => {
   })
 
   it('renders address type as a select field', () => {
-    expect(component.find('SelectField[label="Address Type"]').props().value).toEqual('Placement')
+    expect(component.find('SelectField[label="Address Type"]').props().value).toEqual('Work')
   })
 
   it('calls onChange when  street address field has changed', () => {

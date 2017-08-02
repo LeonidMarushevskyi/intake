@@ -11,7 +11,7 @@ describe Address do
         city: 'NY',
         state: 'NY',
         zip: '11222',
-        type: 'Placement'
+        type: 'Work'
       }.with_indifferent_access
       expect(
         described_class.new(attributes).as_json.with_indifferent_access
@@ -21,7 +21,7 @@ describe Address do
         city: 'NY',
         state: 'NY',
         zip: '11222',
-        type: 'Placement'
+        type: 'Work'
       }.with_indifferent_access)
     end
   end

@@ -12,7 +12,7 @@ describe('AddressesEditView', () => {
         city: 'Springfield',
         state: 'NY',
         zip: '12345',
-        type: 'Placement',
+        type: 'Work',
       }])
     onChangeaddressSpy = jasmine.createSpy('onChange')
     component = shallow(
@@ -30,7 +30,7 @@ describe('AddressesEditView', () => {
       expect(component.find('AddressEditView').props().city).toEqual('Springfield')
       expect(component.find('AddressEditView').props().state).toEqual('NY')
       expect(component.find('AddressEditView').props().zip).toEqual('12345')
-      expect(component.find('AddressEditView').props().type).toEqual('Placement')
+      expect(component.find('AddressEditView').props().type).toEqual('Work')
     })
 
     it('calls onChange when the address field changes', () => {
@@ -42,7 +42,7 @@ describe('AddressesEditView', () => {
           city: 'Springfield',
           state: 'NY',
           zip: '56789',
-          type: 'Placement',
+          type: 'Work',
         },
       ])
     })
@@ -56,7 +56,7 @@ describe('AddressesEditView', () => {
           city: 'Springfield',
           state: 'NY',
           zip: '12345',
-          type: 'Placement',
+          type: 'Work',
         },
         {
           street_address: null,

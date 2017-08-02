@@ -8,7 +8,7 @@ feature 'Edit Address' do
     state: 'NY',
     street_address: '123 fake st',
     zip: '12345',
-    type: 'Placement'
+    type: 'Work'
   )
   let(:person) do
     FactoryGirl.create(
@@ -36,7 +36,7 @@ feature 'Edit Address' do
       expect(page).to have_field('City', with: 'Springfield')
       expect(page).to have_field('State', with: 'NY')
       expect(page).to have_field('Zip', with: '12345')
-      expect(page).to have_field('Address Type', with: 'Placement')
+      expect(page).to have_field('Address Type', with: 'Work')
     end
   end
 

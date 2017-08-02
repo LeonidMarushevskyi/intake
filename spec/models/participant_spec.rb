@@ -23,7 +23,7 @@ describe Participant do
             city: 'Bangalore',
             state: 'CA',
             zip: '51500',
-            type: 'Placement'
+            type: 'Work'
           }
         ],
         phone_numbers: [
@@ -63,7 +63,7 @@ describe Participant do
             city: 'Bangalore',
             state: 'CA',
             zip: '51500',
-            type: 'Placement'
+            type: 'Work'
           )],
           phone_numbers: [a_hash_including(
             id: '6',

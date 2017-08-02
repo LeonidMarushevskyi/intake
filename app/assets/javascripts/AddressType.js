@@ -1,10 +1,13 @@
 const ADDRESS_TYPE = Object.freeze([
+  'Common',
+  'Day Care',
   'Home',
-  'School',
-  'Work',
-  'Placement',
   'Homeless',
   'Other',
+  'Penal Institution',
+  'Permanent Mailing Address',
+  'Residence 2',
+  'Work',
 ])
 
 export default ADDRESS_TYPE

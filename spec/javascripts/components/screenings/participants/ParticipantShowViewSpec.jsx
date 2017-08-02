@@ -190,7 +190,7 @@ describe('ParticipantShowView', () => {
             city: 'Winnetka',
             state: 'IL',
             zip: '60093',
-            type: 'Placement',
+            type: 'Work',
           }],
         })
         const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
@@ -203,7 +203,7 @@ describe('ParticipantShowView', () => {
         expect(component.find('ShowField[label="Zip"]').html())
           .toContain('60093')
         expect(component.find('ShowField[label="Address Type"]').html())
-          .toContain('Placement')
+          .toContain('Work')
       })
     })
 
@@ -363,7 +363,7 @@ describe('ParticipantShowView', () => {
             city: 'Winnetka',
             state: 'IL',
             zip: '60093',
-            type: 'Placement',
+            type: 'Work',
           }],
         })
         const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
@@ -376,7 +376,7 @@ describe('ParticipantShowView', () => {
         expect(component.find('ShowField[label="Zip"]').html())
           .toContain('60093')
         expect(component.find('ShowField[label="Address Type"]').html())
-          .toContain('Placement')
+          .toContain('Work')
       })
     })
 

@@ -11,7 +11,7 @@ feature 'Show Person' do
       state: 'NY',
       street_address: '123 fake st',
       zip: '12345',
-      type: 'Placement'
+      type: 'Work'
     )
     address2 = FactoryGirl.create(
       :address,
@@ -37,7 +37,7 @@ feature 'Show Person' do
     expect(page).to have_content('Springfield')
     expect(page).to have_content('New York')
     expect(page).to have_content('12345')
-    expect(page).to have_content('Placement')
+    expect(page).to have_content('Work')
     expect(page).to have_content('123 capital Mall')
     expect(page).to have_content('Sacramento')
     expect(page).to have_content('California')
