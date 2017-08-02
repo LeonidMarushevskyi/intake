@@ -75,6 +75,7 @@ feature 'Screening Decision Validations' do
       scenario 'Adding and removing allegations shows or hides error message' do
         within '#decision-card.edit' do
           select 'Promote to referral', from: 'Screening Decision'
+          expect(page).to have_content(error_message)
         end
 
         within '#allegations-card.edit' do
@@ -127,7 +128,7 @@ feature 'Screening Decision Validations' do
     context 'Screening decision is already set to promote to referral' do
       let(:screening_decision) { 'promote_to_referral' }
 
-      scenario 'User does not see error messages on page load' do
+      scenario 'User sees error messages on page load' do
         within '#decision-card.show' do
           expect(page).to have_content(error_message)
         end
