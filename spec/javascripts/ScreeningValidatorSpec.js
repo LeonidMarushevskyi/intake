@@ -102,6 +102,12 @@ describe('ScreeningValidator', () => {
   })
 
   describe('areValidAllegationsPresent', () => {
+    it('returns false when allegations is an empty list', () => {
+      const allegations = Immutable.List()
+      const validator = new ScreeningValidator({allegations: allegations})
+      expect(validator.areValidAllegationsPresent()).toEqual(false)
+    })
+
     it('returns true when at least one allegation has a type', () => {
       const allegations = Immutable.fromJS([
         {allegation_types: []},
