@@ -65,6 +65,7 @@ export default class IncidentInformationCardView extends React.Component {
     const allProps = {
       edit: {
         errors: errors,
+        onBlur: this.onBlur,
         onCancel: this.onCancel,
         onChange: this.props.onChange,
         onSave: this.onSave,

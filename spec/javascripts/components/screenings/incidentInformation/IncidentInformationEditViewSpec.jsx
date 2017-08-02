@@ -11,6 +11,7 @@ describe('IncidentInformationEditView', () => {
       onChange: jasmine.createSpy(),
       onCancel: jasmine.createSpy(),
       onSave: jasmine.createSpy(),
+      onBlur: jasmine.createSpy(),
       screening: Immutable.fromJS({
         incident_date: '2006-01-21',
         incident_county: 'alpine',
@@ -23,7 +24,7 @@ describe('IncidentInformationEditView', () => {
         },
         location_type: 'Juvenile Detention',
       }),
-      errors: Immutable.List(),
+      errors: Immutable.fromJS({incident_date: []}),
     }
     component = shallow(<IncidentInformationEditView {...props} />)
   })
@@ -47,6 +48,17 @@ describe('IncidentInformationEditView', () => {
       .toEqual('CA')
     expect(component.find('SelectField[label="Location Type"]').props().value)
       .toEqual('Juvenile Detention')
+  })
+
+  it('passes errors to incident date', () => {
+    const incidentDate = component.find('DateField[label="Incident Date"]')
+    expect(incidentDate.props().errors).toEqual(Immutable.List())
+  })
+
+  it('calls onBlur with the proper field name when incident date is blurred', () => {
+    const incidentDate = component.find('DateField[label="Incident Date"]')
+    incidentDate.simulate('blur')
+    expect(props.onBlur).toHaveBeenCalledWith('incident_date')
   })
 
   it('renders the save button', () => {

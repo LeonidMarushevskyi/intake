@@ -13,7 +13,7 @@ describe('IncidentInformationShowView', () => {
       <IncidentInformationShowView
         screening={Immutable.fromJS({})}
         onEdit={onEdit}
-        errors={Immutable.List()}
+        errors={Immutable.fromJS({incident_date: []})}
       />
     )
   })
@@ -24,6 +24,10 @@ describe('IncidentInformationShowView', () => {
 
   it('renders the edit link', () => {
     expect(component.find('EditLink').props().ariaLabel).toEqual('Edit incident information')
+  })
+
+  it('renders errors passed for incident date', () => {
+    expect(component.find('ShowField[label="Incident Date"]').props().errors).toEqual(Immutable.List())
   })
 
   describe('clicking the edit link', () => {

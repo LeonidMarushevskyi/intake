@@ -18,7 +18,7 @@ const IncidentInformationShowView = ({screening, onEdit, errors}) => {
       </div>
       <div className='card-body'>
         <div className='row'>
-          <ShowField gridClassName='col-md-6' label='Incident Date'>
+          <ShowField gridClassName='col-md-6' label='Incident Date' errors={errors.get('incident_date')}>
             {incidentDate}
           </ShowField>
         </div>
