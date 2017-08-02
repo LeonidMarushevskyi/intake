@@ -34,7 +34,11 @@ const DecisionShowView = ({screening, onEdit, errors}) => {
           <ShowField label='Screening Decision' errors={errors.get('screening_decision')} required>
             {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
           </ShowField>
-          <ShowField label={decisionDetailLabel} required={decisionDetailLabel === 'Response time'}>
+          <ShowField
+            label={decisionDetailLabel}
+            required={decisionDetailLabel === 'Response time'}
+            errors={errors.get('screening_decision_detail')}
+          >
             {decisionDetailText}
           </ShowField>
           <ShowField label='Additional information'>

@@ -33,6 +33,19 @@ feature 'Screening Decision Validations' do
     context 'Screening decision is set to nil on page load' do
       let(:screening_decision) { nil }
 
+      scenario 'card displays errors until user adds a screening decision' do
+        validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'decision',
+          error_message: 'Please enter a decision',
+          screening_updates: { screening_decision: 'screen_out' }
+        ) do
+          within '#decision-card.edit' do
+            select 'Screen out', from: 'Screening Decision'
+          end
+        end
+      end
+
       scenario 'Selecting promote to referral decision requires allegations' do
         within '#decision-card.edit' do
           expect(page).not_to have_content(error_message)
@@ -106,6 +119,19 @@ feature 'Screening Decision Validations' do
           select 'Promote to referral', from: 'Screening Decision'
           blur_field
           expect(page).to have_content(error_message)
+        end
+      end
+
+      scenario 'card displays errors until user selects a response time' do
+        validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'decision',
+          error_message: 'Please enter a response time',
+          screening_updates: { screening_decision_detail: '3_days' }
+        ) do
+          within '#decision-card.edit' do
+            select '3 days', from: 'Response time'
+          end
         end
       end
     end

@@ -40,7 +40,7 @@ export default class DecisionCardView extends React.Component {
 
   onSave() {
     return this.props.onSave(this.fields).then(() => {
-      this.setState({mode: 'show'})
+      this.setState({mode: 'show', displayErrorsFor: this.fields})
     })
   }
 
