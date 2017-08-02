@@ -24,4 +24,5 @@ public/assets/
 binstubs/
 /public/packs-test
 /public/packs
+/coverage
 /node_modules
