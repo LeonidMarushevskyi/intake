@@ -45,11 +45,39 @@ module ScreeningHelpers
     should_not_have_content error_message, inside: "##{card_name}-card.show"
   end
 
+  def stub_empty_relationships_for_screening(screening)
+    stub_request(
+      :get,
+      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
+    ).and_return(json_body([].to_json, status: 200))
+  end
+
+  def stub_empty_history_for_screening(screening)
+    stub_request(
+      :get,
+      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
+    ).and_return(json_body([].to_json, status: 200))
+  end
+
   def stub_and_visit_edit_screening(screening)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
 
     visit edit_screening_path(id: screening.id)
+
+    # TODO: remove this once we can consistently have a fresh page for these specs
+    page.evaluate_script('window.location.reload()')
+  end
+
+  def stub_and_visit_show_screening(screening)
+    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
+
+    visit screening_path(id: screening.id)
 
     # TODO: remove this once we can consistently have a fresh page for these specs
     page.evaluate_script('window.location.reload()')

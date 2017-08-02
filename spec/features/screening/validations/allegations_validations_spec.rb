@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Allegations Validations' do
-  scenario 'loading screening with participants generates possible allegations' do
+  scenario 'User sees that allegations are required when decision is promote to referral' do
     perpetrator = FactoryGirl.create(:participant, :perpetrator)
     victim = FactoryGirl.create(:participant, :victim)
     screening = FactoryGirl.create(

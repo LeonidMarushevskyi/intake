@@ -68,3 +68,4 @@ export function validateAllFields({screening, fieldValidations}) {
   })
   return Immutable.Map(errors)
 }
+

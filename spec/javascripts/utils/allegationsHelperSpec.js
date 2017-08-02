@@ -479,3 +479,4 @@ describe('areAllegationsRequired', () => {
     expect(AllegationsHelper.areAllegationsRequired(screening)).toEqual(true)
   })
 })
+

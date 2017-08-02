@@ -9,6 +9,7 @@ describe('AllegationsEditView', () => {
     onCancel: () => {},
     onSave: () => {},
     onChange: () => {},
+    required: false,
   }
 
   it('renders allegations card view headings', () => {
@@ -16,6 +17,13 @@ describe('AllegationsEditView', () => {
     expect(component.find('tr').text()).toContain('Alleged Victim/Children')
     expect(component.find('tr').text()).toContain('Alleged Perpetrator')
     expect(component.find('tr').text()).toContain('Allegation(s)')
+    expect(component.find('tr').text()).not.toContain('(Required)')
+  })
+
+  it('Adds required to the card heading when allegations are required', () => {
+    const props = {...requiredProps, required: true}
+    const component = shallow(<AllegationsEditView {...props} />)
+    expect(component.find('tr').text()).toContain('Allegation(s) (Required)')
   })
 
   it('renders alleged vicitms/perpetrators', () => {

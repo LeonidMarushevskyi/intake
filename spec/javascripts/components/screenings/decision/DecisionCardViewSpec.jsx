@@ -2,7 +2,7 @@ import * as IntakeConfig from 'config'
 import React from 'react'
 import Immutable from 'immutable'
 import DecisionCardView from 'components/screenings/DecisionCardView'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 
 describe('DecisionCardView', () => {
   let component
@@ -19,6 +19,7 @@ describe('DecisionCardView', () => {
         screening_decision: 'differential_response',
         additional_information: 'the decision is taken',
       }),
+      errors: Immutable.Map(),
     }
   })
   describe('in edit mode', () => {
@@ -93,6 +94,33 @@ describe('DecisionCardView', () => {
     it('displays edit card when edit link is clicked', () => {
       component.find('a[aria-label="Edit decision card"]').simulate('click')
       expect(component.find('DecisionEditView').length).toEqual(1)
+    })
+
+    it('passes errors from the state', () => {
+      expect(component.find('DecisionShowView').props().errors).toEqual(Immutable.Map())
+    })
+  })
+
+  describe('onBlur', () => {
+    beforeEach(() => {
+      props.screening = props.screening.set('screening_decision', 'differential_response')
+    })
+
+    it('adds the proper field to the list of fields to display errors for', () => {
+      const component = shallow(<DecisionCardView {...props} mode={'edit'}/>)
+      component.instance().onBlur('screening_decision')
+      expect(component.state().displayErrorsFor.toJS()).toEqual(['screening_decision'])
+    })
+  })
+
+  describe('filteredErrors', () => {
+    it('only returns errors for fields that are in the displayErrorFor list', () => {
+      const errorProps = Immutable.fromJS({foo: ['foo error'], bar: ['bar error']})
+      const component = shallow(<DecisionCardView {...props} mode={'edit'} errors={errorProps}/>)
+      component.setState({displayErrorsFor: Immutable.List(['foo'])})
+      const errors = component.instance().filteredErrors()
+      expect(errors.toJS()).toEqual({foo: ['foo error']})
+      expect(Immutable.is(errors, Immutable.fromJS({foo: ['foo error']}))).toEqual(true)
     })
   })
 })
