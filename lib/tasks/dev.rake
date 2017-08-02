@@ -11,7 +11,8 @@ namespace :docker do # rubocop:disable BlockLength
       'docker-compose down',
       'docker-compose up -d',
       'docker-compose exec api bundle exec rake db:migrate',
-      'docker-compose exec api bundle exec rake db:test:prepare'
+      'docker-compose exec api bundle exec rake db:test:prepare',
+      'docker-compose restart api'
     ]
   end
   desc 'Cleans docker of old dangling containers & images'
