@@ -43,9 +43,11 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
               <SelectField
                 id='decisionDetail'
                 label={decisionLabel}
+                errors={errors.get('screening_decision_detail')}
                 required={isRequired}
                 value={screening.getIn(['screening_decision_detail'])}
                 onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                onBlur={() => onBlur('screening_decision_detail')}
               >
                 <option key='' />
                 {Object.keys(decisionOptions.values).map((value) => (
@@ -57,9 +59,11 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                 <InputField
                   id='decisionDetail'
                   label={decisionLabel}
+                  errors={errors.get('screening_decision_detail')}
                   required={isRequired}
                   value={screening.getIn(['screening_decision_detail']) || ''}
                   onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                  onBlur={() => onBlur('screening_decision_detail')}
                   maxLength='64'
                 />
               }

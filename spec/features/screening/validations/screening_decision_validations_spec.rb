@@ -121,6 +121,19 @@ feature 'Screening Decision Validations' do
           expect(page).to have_content(error_message)
         end
       end
+
+      scenario 'card displays errors until user selects a response time' do
+        validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'decision',
+          error_message: 'Please enter a response time',
+          screening_updates: { screening_decision_detail: '3_days' }
+        ) do
+          within '#decision-card.edit' do
+            select '3 days', from: 'Response time'
+          end
+        end
+      end
     end
   end
 

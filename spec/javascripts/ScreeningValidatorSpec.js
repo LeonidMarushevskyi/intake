@@ -191,6 +191,52 @@ describe('ScreeningValidator', () => {
     })
   })
 
+  describe('isRequiredIf', () => {
+    const message = 'Give me an agency name'
+    const sharedArgs = {
+      errorMessage: message,
+      condition: () => true,
+    }
+
+    describe('when condition is met', () => {
+      it('returns the error message if the value is empty', () => {
+        const validator = new ScreeningValidator({})
+        expect(validator.isRequiredIf(sharedArgs)).toEqual(message)
+      })
+
+      it('is valid if the value is not empty', () => {
+        const args = {
+          ...sharedArgs,
+          value: 'Abc',
+        }
+        const validator = new ScreeningValidator({})
+        expect(validator.isRequiredIf(args)).toEqual(undefined)
+      })
+    })
+
+    describe('when condition is not met', () => {
+      it('is valid even if the value is empty or undefined', () => {
+        const args = {
+          ...sharedArgs,
+          condition: () => false,
+        }
+        const validator = new ScreeningValidator({})
+        expect(validator.isRequiredIf(args)).toEqual(undefined)
+      })
+    })
+
+    describe('when condition is dependent on values in the validator', () => {
+      it('passes the value and validator to the condition', () => {
+        const args = {
+          ...sharedArgs,
+          condition: (value, validator) => (value === validator.allegations),
+        }
+        const validator = new ScreeningValidator({})
+        expect(validator.isRequiredIf(args)).toEqual(message)
+      })
+    })
+  })
+
   describe('isInvalidIf', () => {
     it('returns undefined when the condition passed evaluates to false', () => {
       const args = {

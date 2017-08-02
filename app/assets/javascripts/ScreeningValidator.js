@@ -8,6 +8,7 @@ class ScreeningValidator {
     this.allegations = allegations
     this.VALIDATORS = Immutable.fromJS({
       isRequired: this.isRequired.bind(this),
+      isRequiredIf: this.isRequiredIf.bind(this),
       isInvalidIf: this.isInvalidIf.bind(this),
     })
   }
@@ -19,6 +20,13 @@ class ScreeningValidator {
   isRequired({value, errorMessage}) {
     if ((_.isEmpty(value) || _.isEmpty(value.trim())) && value !== true) {
       return errorMessage
+    }
+    return undefined
+  }
+
+  isRequiredIf({value, errorMessage, condition}) {
+    if (condition(value, this)) {
+      return this.isRequired({value, errorMessage})
     }
     return undefined
   }

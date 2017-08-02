@@ -7,6 +7,7 @@ import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 
 describe('conditional decision options', () => {
   let component
+  const errors = Immutable.fromJS({screening_decision: [], screening_decision_detail: []})
 
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
@@ -19,7 +20,7 @@ describe('conditional decision options', () => {
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
       }),
-      errors: Immutable.fromJS({screening_decision: []}),
+      errors: errors,
     }
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = mount(<DecisionEditView {...props} />)
@@ -99,6 +100,7 @@ describe('conditional decision options', () => {
 describe('DecisionEditView', () => {
   let component
   let props
+  const errors = Immutable.fromJS({screening_decision: [], screening_decision_detail: []})
 
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
@@ -112,7 +114,7 @@ describe('DecisionEditView', () => {
         additional_information: 'more info',
         screening_decision_detail: 'Name of the service',
       }),
-      errors: Immutable.fromJS({screening_decision: []}),
+      errors: errors,
     }
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = shallow(<DecisionEditView {...props} />)
@@ -126,9 +128,18 @@ describe('DecisionEditView', () => {
     expect(component.find('#screening_decision').props().errors).toEqual(Immutable.List())
   })
 
+  it('renders errors for screening_decision_detail', () => {
+    expect(component.find('#decisionDetail').props().errors).toEqual(Immutable.List())
+  })
+
   it('calls onBlur with the proper field name for screening decision', () => {
     component.find('#screening_decision').simulate('blur')
     expect(props.onBlur).toHaveBeenCalledWith('screening_decision')
+  })
+
+  it('calls onBlur with the proper field name for screening decision detail', () => {
+    component.find('#decisionDetail').simulate('blur')
+    expect(props.onBlur).toHaveBeenCalledWith('screening_decision_detail')
   })
 
   it('renders the report narrative label as required', () => {
@@ -156,10 +167,14 @@ describe('DecisionEditView', () => {
         screening_decision: 'screen_out',
         screening_decision_detail: 'Consultation',
       }),
-      errors: Immutable.fromJS({screening_decision: []}),
+      errors: errors,
     }
     component = shallow(<DecisionEditView {...props} />)
-    expect(component.find('SelectField[label="Category"]').length).toEqual(1)
+    const selectField = component.find('SelectField[label="Category"]')
+    selectField.simulate('blur')
+    expect(props.onBlur).toHaveBeenCalledWith('screening_decision_detail')
+    expect(selectField.props().errors).toEqual(Immutable.List())
+    expect(selectField.length).toEqual(1)
     expect(component.find('InputField[label="Service name"]').length).toEqual(0)
   })
 

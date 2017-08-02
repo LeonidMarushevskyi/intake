@@ -12,6 +12,13 @@ const VALIDATIONS = Object.freeze({
       rule: 'isRequired',
       message: 'Please enter a decision',
     }],
+    screening_decision_detail: [{
+      rule: 'isRequiredIf',
+      condition: (_value, validator) => (
+        validator.screening.get('screening_decision') === 'promote_to_referral'
+      ),
+      message: 'Please enter a response time',
+    }],
   },
 })
 
