@@ -6,7 +6,6 @@ const LANGUAGES = Object.freeze([
   'Cantonese',
   'English',
   'Farsi',
-  'Filipino',
   'French',
   'German',
   'Hawaiian',

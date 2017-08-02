@@ -24,7 +24,6 @@ FactoryGirl.define do
         'Cantonese',
         'English',
         'Farsi',
-        'Filipino',
         'French',
         'German',
         'Hawaiian',
