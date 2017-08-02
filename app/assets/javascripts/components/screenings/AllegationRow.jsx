@@ -1,4 +1,4 @@
-import ALLEGATION_TYPES from 'AllegationTypes'
+import {ALLEGATION_TYPES} from 'AllegationTypes'
 import React from 'react'
 import PropTypes from 'prop-types'
 import nameFormatter from 'utils/nameFormatter'

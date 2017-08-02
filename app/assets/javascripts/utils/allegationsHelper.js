@@ -1,4 +1,4 @@
-import ALLEGATION_TYPES from 'AllegationTypes'
+import {ALLEGATION_TYPES} from 'AllegationTypes'
 import Immutable from 'immutable'
 import _ from 'lodash'
 
