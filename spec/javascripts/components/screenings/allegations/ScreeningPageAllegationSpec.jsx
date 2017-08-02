@@ -7,9 +7,11 @@ import {requiredProps, requiredScreeningAttributes} from '../ScreeningPageSpec'
 
 describe('ScreeningPage', () => {
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(IntakeConfig, 'basePath').and.returnValue('/')
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
   describe('allegations', () => {

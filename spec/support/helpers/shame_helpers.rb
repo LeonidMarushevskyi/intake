@@ -29,6 +29,10 @@ module ShameHelpers
       date_object
     end
   end
+
+  def change_href(link_id, new_href)
+    execute_script "document.getElementById('#{link_id}').href='#{new_href}'"
+  end
 end
 
 RSpec.configure do |config|

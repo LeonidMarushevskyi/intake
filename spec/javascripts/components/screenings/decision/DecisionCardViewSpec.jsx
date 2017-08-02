@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import React from 'react'
 import Immutable from 'immutable'
 import DecisionCardView from 'components/screenings/DecisionCardView'
@@ -7,6 +8,8 @@ describe('DecisionCardView', () => {
   let component
   let props
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     props = {
       onCancel: jasmine.createSpy('onCancel'),
       onChange: jasmine.createSpy('onChange'),

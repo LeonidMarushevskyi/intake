@@ -23,11 +23,13 @@ export const requiredProps = {
 
 describe('ScreeningPage', () => {
   const basePath = '/intake'
+  const sdmPath = 'https://ca.sdmdata.org'
 
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
   describe('render', () => {

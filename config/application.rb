@@ -11,6 +11,7 @@ require 'action_mailer/railtie'
 require 'action_view/railtie'
 require 'action_cable/engine'
 require 'rails/test_unit/railtie'
+require_relative '../app/lib/external_routes'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -28,10 +29,11 @@ module CaIntake # :nodoc:
     URL
 
     config.intake = {
-      'base_path': ENV.fetch('BASE_PATH', '/'),
-      'authentication_base_url': ENV.fetch('AUTHENTICATION_URL', ''),
-      'authentication_login_url': authentication_login_url,
-      api_url: ENV.fetch('API_URL', nil)
+      base_path: ENV.fetch('BASE_PATH', '/'),
+      authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
+      authentication_login_url: authentication_login_url,
+      api_url: ENV.fetch('API_URL', nil),
+      sdm_path: ExternalRoutes.sdm_path
     }
   end
 end

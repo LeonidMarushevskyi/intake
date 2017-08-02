@@ -1,3 +1,4 @@
+import * as IntakeConfig from 'config'
 import Immutable from 'immutable'
 import React from 'react'
 import DecisionShowView from 'components/screenings/DecisionShowView'
@@ -8,7 +9,9 @@ describe('DecisionShowView', () => {
   let onEdit
 
   beforeEach(() => {
+    const sdmPath = 'https://ca.sdmdata.org'
     onEdit = jasmine.createSpy()
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
     component = shallow(<DecisionShowView screening={Immutable.fromJS({})} onEdit={onEdit} />)
   })
 
@@ -19,6 +22,14 @@ describe('DecisionShowView', () => {
   it('renders the report narrative label as required', () => {
     expect(component.find('ShowField[label="Screening Decision"]').props().required)
       .toEqual(true)
+  })
+
+  it('renders the SDM link', () => {
+    const sdm_link = component.find('#complete_sdm')
+    expect(component.text()).toContain('SDM Hotline Tool')
+    expect(component.text()).toContain('Determine Decision and Response Time by using Structured Decision Making')
+    expect(sdm_link.prop('href')).toEqual('https://ca.sdmdata.org')
+    expect(sdm_link.prop('target')).toEqual('_blank')
   })
 
   it('renders the edit link', () => {
