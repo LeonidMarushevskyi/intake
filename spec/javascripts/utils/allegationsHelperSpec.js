@@ -99,7 +99,7 @@ describe('hasNotAtRiskableAllegation', () => {
         first_name: 'bob',
         last_name: 'smith',
       },
-      allegation_types: ['Exploitation', 'Emotional abuse', 'At risk, sibling abused'],
+      allegation_types: ['At risk, sibling abused'],
     })
     expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(false)
   })

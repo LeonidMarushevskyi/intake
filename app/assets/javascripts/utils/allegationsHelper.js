@@ -1,4 +1,4 @@
-import {ALLEGATION_TYPES, NOT_AT_RISKABLE_ALLEGATION_TYPES} from 'AllegationTypes'
+import {ALLEGATION_TYPES} from 'AllegationTypes'
 import Immutable from 'immutable'
 import _ from 'lodash'
 
@@ -8,7 +8,7 @@ export function hasAtRiskAllegation(allegation) {
 
 export function hasAtRiskableAllegation(allegation) {
   return !allegation.get('allegation_types').filterNot((type) =>
-    NOT_AT_RISKABLE_ALLEGATION_TYPES.includes(type)
+    type === 'At risk, sibling abused'
   ).isEmpty()
 }
 

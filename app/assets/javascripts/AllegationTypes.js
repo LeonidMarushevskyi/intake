@@ -8,9 +8,3 @@ export const ALLEGATION_TYPES = Object.freeze([
   {value: 'Exploitation', requiresCrossReport: true},
   {value: 'At risk, sibling abused', requiresCrossReport: true},
 ])
-
-export const NOT_AT_RISKABLE_ALLEGATION_TYPES = Object.freeze([
-  'Emotional abuse',
-  'Exploitation',
-  'At risk, sibling abused',
-])
