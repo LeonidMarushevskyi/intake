@@ -15,10 +15,12 @@ describe('PhoneNumberField', () => {
   })
 
   it('renders the phone number field', () => {
-    expect(component.find('InputField').props().value).toEqual('222-222-2222')
-    expect(component.find('InputField').props().type).toEqual('tel')
-    expect(component.find('InputField').props().placeholder).toEqual('Ex: 910-435-3223')
-    expect(component.find('InputField').props().label).toEqual('Phone Number')
+    const numberField = component.find('InputField')
+    expect(numberField.props().value).toEqual('222-222-2222')
+    expect(numberField.props().type).toEqual('tel')
+    expect(numberField.props().placeholder).toEqual('Ex: 910-435-3223')
+    expect(numberField.props().label).toEqual('Phone Number')
+    expect(numberField.props().maxLength).toEqual('13')
   })
 
   it('renders the phone number type field', () => {
