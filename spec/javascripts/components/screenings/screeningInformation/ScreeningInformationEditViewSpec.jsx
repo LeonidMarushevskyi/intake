@@ -38,13 +38,15 @@ describe('ScreeningInformationEditView', () => {
     })
 
     it('renders the name of screening field', () => {
-      expect(component.find('InputField[label="Title/Name of Screening"]').props().value)
-        .toEqual('The Rocky Horror Picture Show')
+      const titleField = component.find('InputField[label="Title/Name of Screening"]')
+      expect(titleField.props().value).toEqual('The Rocky Horror Picture Show')
+      expect(titleField.props().maxLength).toEqual('64')
     })
 
     it('renders the assigned social worker field', () => {
-      expect(component.find('InputField[label="Assigned Social Worker"]').props().value)
-        .toEqual('Michael Bluth')
+      const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
+      expect(assigneeField.props().value).toEqual('Michael Bluth')
+      expect(assigneeField.props().maxLength).toEqual('64')
     })
 
     it('renders the screening start time field', () => {

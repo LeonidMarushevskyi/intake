@@ -16,21 +16,23 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
           gridClassName='col-md-6'
           id='name'
           label='Title/Name of Screening'
+          maxLength='64'
+          onChange={(event) => onChange(['name'], event.target.value)}
           placeholder='Enter name of the screening'
           value={screening.get('name') || ''}
-          onChange={(event) => onChange(['name'], event.target.value)}
         />
         <InputField
+          disabled={Boolean(screening.get('staff_id'))}
+          errors={errors.get('assignee')}
           gridClassName='col-md-6'
           id='assignee'
           label='Assigned Social Worker'
-          required
-          placeholder='Enter the name of the worker screening report'
-          value={screening.get('assignee') || ''}
-          onChange={(event) => validateOnChange('assignee', event.target.value)}
+          maxLength='64'
           onBlur={(event) => validateField('assignee', event.target.value)}
-          errors={errors.get('assignee')}
-          disabled={Boolean(screening.get('staff_id'))}
+          onChange={(event) => validateOnChange('assignee', event.target.value)}
+          placeholder='Enter the name of the worker screening report'
+          required
+          value={screening.get('assignee') || ''}
         />
       </div>
       <div className='row'>
