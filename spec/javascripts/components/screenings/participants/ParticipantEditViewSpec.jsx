@@ -141,19 +141,37 @@ describe('ParticipantEditView', () => {
       expect(component.find('.fa-times').length).toEqual(1)
     })
 
-    it('renders the input fields', () => {
+    it('renders the first name field', () => {
       expect(component.find('InputField[label="First Name"]').props().value)
         .toEqual('Lisa')
+    })
+
+    it('renders the middle name field', () => {
       expect(component.find('InputField[label="Middle Name"]').props().value)
         .toEqual('Marie')
+    })
+
+    it('renders the last name field', () => {
       expect(component.find('InputField[label="Last Name"]').props().value)
         .toEqual('Simpson')
+    })
+
+    it('renders the suffix field', () => {
       expect(component.find('SelectField[label="Suffix"]').props().value)
         .toEqual('phd')
+    })
+
+    it('renders the DoB field', () => {
       expect(component.find('DateField[label="Date of birth"]').props().value)
         .toEqual('2016-12-31')
+    })
+
+    it('renders the gender field', () => {
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
+    })
+
+    it('renders the SSN field', () => {
       expect(component.find('MaskedInputField[label="Social security number"]').props().placeholder)
         .toEqual('')
       expect(component.find('MaskedInputField[label="Social security number"]').props().value)
