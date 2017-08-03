@@ -33,19 +33,37 @@ describe('IncidentInformationEditView', () => {
     expect(component.find('.card-header').text()).toEqual('Incident Information')
   })
 
-  it('renders the input fields', () => {
+  it('renders the Incident date field', () => {
     expect(component.find('DateField[label="Incident Date"]').props().value)
       .toEqual('2006-01-21')
+ })
+
+  it('renders the incident county field', () => {
     expect(component.find('SelectField[label="Incident County"]').props().value)
       .toEqual('alpine')
+  })
+
+  it('renders the address field', () => {
     expect(component.find('InputField[label="Address"]').props().value)
       .toEqual('1500 7th St')
+  })
+
+  it('renders the city field', () => {
     expect(component.find('InputField[label="City"]').props().value)
       .toEqual('Sacramento')
+  })
+
+  it('renders the zip field', () => {
     expect(component.find('InputField[label="Zip"]').props().value)
       .toEqual('95814')
+  })
+
+  it('renders the state field', () => {
     expect(component.find('SelectField[label="State"]').props().value)
       .toEqual('CA')
+  })
+
+  it('renders the location type field', () => {
     expect(component.find('SelectField[label="Location Type"]').props().value)
       .toEqual('Juvenile Detention')
   })
