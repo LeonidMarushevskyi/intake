@@ -11,6 +11,7 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
         gridClassName='col-md-6'
         id='street_address'
         label='Address'
+        maxLength='128'
         onChange={(event) => onChange('street_address', event.target.value)}
         value={streetAddress}
       />
@@ -18,6 +19,7 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
         gridClassName='col-md-6'
         id='city'
         label='City'
+        maxLength='64'
         onChange={(event) => onChange('city', event.target.value)}
         value={city}
       />
@@ -35,6 +37,7 @@ const AddressEditView = ({streetAddress, city, state, zip, type, onChange}) => (
         gridClassName='col-md-2'
         id='zip'
         label='Zip'
+        maxLength='10'
         onChange={(event) => onChange('zip', event.target.value)}
         value={zip}
       />

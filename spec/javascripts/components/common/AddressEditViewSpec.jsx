@@ -18,15 +18,21 @@ describe('AddressEditView', () => {
   })
 
   it('renders the street address as input field', () => {
-    expect(component.find('InputField[label="Address"]').props().value).toEqual('123 fake street')
+    const addressField = component.find('InputField[label="Address"]')
+    expect(addressField.props().value).toEqual('123 fake street')
+    expect(addressField.props().maxLength).toEqual('128')
   })
 
   it('renders address city as a input field', () => {
-    expect(component.find('InputField[label="City"]').props().value).toEqual('SpringField')
+    const cityField = component.find('InputField[label="City"]')
+    expect(cityField.props().value).toEqual('SpringField')
+    expect(cityField.props().maxLength).toEqual('64')
   })
 
   it('renders address zip as a input field', () => {
-    expect(component.find('InputField[label="Zip"]').props().value).toEqual('12345')
+    const zipField = component.find('InputField[label="Zip"]')
+    expect(zipField.props().value).toEqual('12345')
+    expect(zipField.props().maxLength).toEqual('10')
   })
 
   it('renders address state as a select field', () => {

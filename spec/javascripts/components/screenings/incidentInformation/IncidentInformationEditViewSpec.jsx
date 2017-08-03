@@ -44,18 +44,21 @@ describe('IncidentInformationEditView', () => {
   })
 
   it('renders the address field', () => {
-    expect(component.find('InputField[label="Address"]').props().value)
-      .toEqual('1500 7th St')
+    const addressField = component.find('InputField[label="Address"]')
+    expect(addressField.props().value).toEqual('1500 7th St')
+    expect(addressField.props().maxLength).toEqual('128')
   })
 
   it('renders the city field', () => {
-    expect(component.find('InputField[label="City"]').props().value)
-      .toEqual('Sacramento')
+    const cityField = component.find('InputField[label="City"]')
+    expect(cityField.props().value).toEqual('Sacramento')
+    expect(cityField.props().maxLength).toEqual('64')
   })
 
   it('renders the zip field', () => {
-    expect(component.find('InputField[label="Zip"]').props().value)
-      .toEqual('95814')
+    const zipField = component.find('InputField[label="Zip"]')
+    expect(zipField.props().value).toEqual('95814')
+    expect(zipField.props().maxLength).toEqual('10')
   })
 
   it('renders the state field', () => {

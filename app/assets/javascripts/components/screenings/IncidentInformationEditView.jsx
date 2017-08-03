@@ -45,15 +45,17 @@ const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onCha
             gridClassName='col-md-6'
             id='street_address'
             label='Address'
-            value={screening.getIn(['address', 'street_address']) || ''}
+            maxLength='128'
             onChange={(event) => onChange(['address', 'street_address'], event.target.value)}
+            value={screening.getIn(['address', 'street_address']) || ''}
           />
           <InputField
             gridClassName='col-md-6'
             id='city'
             label= 'City'
-            value={screening.getIn(['address', 'city']) || ''}
+            maxLength='64'
             onChange={(event) => onChange(['address', 'city'], event.target.value)}
+            value={screening.getIn(['address', 'city']) || ''}
           />
         </div>
         <div className='row'>
@@ -71,8 +73,9 @@ const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onCha
             gridClassName='col-md-6'
             id='zip'
             label='Zip'
-            value={screening.getIn(['address', 'zip']) || ''}
+            maxLength='10'
             onChange={(event) => onChange(['address', 'zip'], event.target.value)}
+            value={screening.getIn(['address', 'zip']) || ''}
           />
         </div>
       </fieldset>
