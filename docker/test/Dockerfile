@@ -17,4 +17,4 @@ RUN chmod +x /usr/local/bin/build.sh
 
 COPY . ./
 RUN bundle install -j24
-RUN npm install --spin=false
+RUN yarn

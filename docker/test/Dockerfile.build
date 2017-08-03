@@ -13,7 +13,7 @@ COPY Gemfile Gemfile.lock ./
 COPY package.json ./
 
 RUN bundle install -j24
-RUN npm install --spin=false
+RUN yarn
 
 COPY scripts/build.sh /usr/local/bin/build.sh
 RUN chmod +x /usr/local/bin/build.sh
