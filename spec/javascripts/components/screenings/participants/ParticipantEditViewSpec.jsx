@@ -142,18 +142,21 @@ describe('ParticipantEditView', () => {
     })
 
     it('renders the first name field', () => {
-      expect(component.find('InputField[label="First Name"]').props().value)
-        .toEqual('Lisa')
+      const firstNameField = component.find('InputField[label="First Name"]')
+      expect(firstNameField.props().value).toEqual('Lisa')
+      expect(firstNameField.props().maxLength).toEqual('64')
     })
 
     it('renders the middle name field', () => {
-      expect(component.find('InputField[label="Middle Name"]').props().value)
-        .toEqual('Marie')
+      const middleNameField = component.find('InputField[label="Middle Name"]')
+      expect(middleNameField.props().value).toEqual('Marie')
+      expect(middleNameField.props().maxLength).toEqual('64')
     })
 
     it('renders the last name field', () => {
-      expect(component.find('InputField[label="Last Name"]').props().value)
-        .toEqual('Simpson')
+      const lastNameField = component.find('InputField[label="Last Name"]')
+      expect(lastNameField.props().value).toEqual('Simpson')
+      expect(lastNameField.props().maxLength).toEqual('64')
     })
 
     it('renders the suffix field', () => {
