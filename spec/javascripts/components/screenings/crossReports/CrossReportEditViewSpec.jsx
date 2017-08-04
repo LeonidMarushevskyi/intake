@@ -308,6 +308,50 @@ describe('CrossReportEditView', () => {
     })
   })
 
+  describe('when all agencies are selected', () => {
+    beforeEach(() => {
+      props = {
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+        crossReports: Immutable.fromJS([
+          {agency_type: 'District attorney'},
+          {agency_type: 'Law enforcement'},
+          {agency_type: 'Department of justice'},
+          {agency_type: 'Licensing'}
+        ]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy(),
+        onChange: () => null,
+        onSave: () => null,
+        onCancel: () => null,
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+
+    it('renders DA agency field', () => {
+      const DAField = component.find('InputField[id="District_attorney-agency-name"]')
+      expect(DAField.props().value).toEqual('')
+      expect(DAField.props().maxLength).toEqual('128')
+    })
+
+    it('renders law enforcement agency field', () => {
+      const lawEnforcementAgencyField = component.find('InputField[id="Law_enforcement-agency-name"]')
+      expect(lawEnforcementAgencyField.props().value).toEqual('')
+      expect(lawEnforcementAgencyField.props().maxLength).toEqual('128')
+    })
+
+    it('renders DoJ agency field', () => {
+      const dojField = component.find('InputField[id="Department_of_justice-agency-name"]')
+      expect(dojField.props().value).toEqual('')
+      expect(dojField.props().maxLength).toEqual('128')
+    })
+
+    it('renders Licensing agency field', () => {
+      const licensingAgencyField = component.find('InputField[id="Licensing-agency-name"]')
+      expect(licensingAgencyField.props().value).toEqual('')
+      expect(licensingAgencyField.props().maxLength).toEqual('128')
+    })
+  })
+
   it('preselect cross report details passed to props', () => {
     expect(component.find('CheckboxField[value="District attorney"]').props().checked).toEqual(true)
     expect(component.find('CheckboxField[value="Department of justice"]').props().checked).toEqual(true)
