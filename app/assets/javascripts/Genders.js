@@ -1,7 +1,7 @@
 const GENDERS = Object.freeze({
   male: 'Male',
   female: 'Female',
-  other: 'Other',
+  unknown: 'Unknown',
 })
 
 export default GENDERS
