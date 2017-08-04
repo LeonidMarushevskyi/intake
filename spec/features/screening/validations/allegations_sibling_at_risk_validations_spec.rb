@@ -14,8 +14,7 @@ feature 'Allegations Sibling At Risk Validations' do
   let(:screening) do
     FactoryGirl.create(
       :screening,
-      participants: [perpetrator, perpetrator2, victim, victim2],
-      screening_decision: 'promote_to_referral'
+      participants: [perpetrator, perpetrator2, victim, victim2]
     )
   end
 

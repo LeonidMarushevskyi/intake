@@ -72,7 +72,7 @@ describe('hasNotAtRiskableAllegation', () => {
     expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(true)
   })
 
-  it('returns flase when allegation has no allegation types', () => {
+  it('returns false when allegation has no allegation types', () => {
     const allegation = Immutable.fromJS({
       id: 1,
       victim: {
@@ -88,7 +88,7 @@ describe('hasNotAtRiskableAllegation', () => {
     expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(false)
   })
 
-  it('returns flase when allegation has only the not at riskable allegation types', () => {
+  it('returns false when allegation has only the not at riskable allegation types', () => {
     const allegation = Immutable.fromJS({
       id: 1,
       victim: {
@@ -105,7 +105,7 @@ describe('hasNotAtRiskableAllegation', () => {
   })
 })
 
-describe('findOtherAllegationsForAtRisk', () => {
+describe('findComplementaryAllegationsForAtRisk', () => {
   it('returns empty list of allegations if same perp, different vic, but not riskable allegation', () => {
     const allegations = Immutable.fromJS([
       {
@@ -127,7 +127,7 @@ describe('findOtherAllegationsForAtRisk', () => {
         allegation_types: ['Exploitation'],
       },
     ])
-    const actual_allegations = AllegationsHelper.findOtherAllegationsForAtRisk(allegations.first(), allegations.rest())
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
     expect(actual_allegations.toJS()).toEqual([])
     expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
   })
@@ -153,7 +153,7 @@ describe('findOtherAllegationsForAtRisk', () => {
         allegation_types: ['Exploitation'],
       },
     ])
-    const actual_allegations = AllegationsHelper.findOtherAllegationsForAtRisk(allegations.first(), allegations.rest())
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
     expect(actual_allegations.toJS()).toEqual([])
     expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
   })
@@ -182,7 +182,7 @@ describe('findOtherAllegationsForAtRisk', () => {
     const expected_allegations = Immutable.fromJS([
       allegations.get(1),
     ])
-    const actual_allegations = AllegationsHelper.findOtherAllegationsForAtRisk(allegations.first(), allegations.rest())
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
     expect(actual_allegations.toJS()).toEqual(expected_allegations.toJS())
     expect(Immutable.is(actual_allegations, expected_allegations)).toEqual(true)
   })
@@ -196,13 +196,13 @@ describe('findOtherAllegationsForAtRisk', () => {
         allegation_types: ['At risk, sibling abused', 'General neglect'],
       },
     ])
-    const actual_allegations = AllegationsHelper.findOtherAllegationsForAtRisk(allegations.first(), allegations.rest())
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
     expect(actual_allegations.toJS()).toEqual([])
     expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
   })
 })
 
-describe('isSiblingAtRiskRequired', () => {
+describe('siblingAtRiskHasRequiredComplementaryAllegations', () => {
   it('returns true when allegation has two types', () => {
     const allegations = Immutable.fromJS([{
       id: 1,
@@ -210,7 +210,7 @@ describe('isSiblingAtRiskRequired', () => {
       perpetrator_id: 'cba321',
       allegation_types: ['Physical abuse', 'At risk, sibling abused'],
     }])
-    expect(AllegationsHelper.isSiblingAtRiskRequired(allegations)).toBe(true)
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
   })
 
   it('returns true when all have at risk but only one has an other allegation type', () => {
@@ -228,7 +228,7 @@ describe('isSiblingAtRiskRequired', () => {
         allegation_types: ['At risk, sibling abused'],
       },
     ])
-    expect(AllegationsHelper.isSiblingAtRiskRequired(allegations)).toBe(true)
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
   })
 
   it('returns false with two allegations that have two types', () => {
@@ -246,7 +246,7 @@ describe('isSiblingAtRiskRequired', () => {
         allegation_types: ['Physical abuse', 'At risk, sibling abused'],
       },
     ])
-    expect(AllegationsHelper.isSiblingAtRiskRequired(allegations)).toBe(false)
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(true)
   })
 
   it('returns false when another allegation with a non at risk type exists', () => {
@@ -264,7 +264,7 @@ describe('isSiblingAtRiskRequired', () => {
         allegation_types: ['Physical abuse'],
       },
     ])
-    expect(AllegationsHelper.isSiblingAtRiskRequired(allegations)).toBe(false)
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(true)
   })
 
   it('returns true when no other allegations present', () => {
@@ -274,7 +274,7 @@ describe('isSiblingAtRiskRequired', () => {
       perpetrator_id: 'cba321',
       allegation_types: ['At risk, sibling abused'],
     }])
-    expect(AllegationsHelper.isSiblingAtRiskRequired(allegations)).toBe(true)
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
   })
 })
 

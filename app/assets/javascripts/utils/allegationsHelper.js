@@ -12,20 +12,19 @@ export function hasAtRiskableAllegation(allegation) {
   ).isEmpty()
 }
 
-export function findOtherAllegationsForAtRisk(allegation, allegations) {
-  return allegations.filterNot((allgtn) =>
-    allgtn.get('victim_id') === allegation.get('victim_id') ||
-    allgtn.get('perpetrator_id') !== allegation.get('perpetrator_id') ||
-    !hasAtRiskableAllegation(allgtn))
+export function findComplementaryAllegationsForAtRisk(atRiskAllegation, allegations) {
+  return allegations.filter((allegation) =>
+    allegation.get('victim_id') !== atRiskAllegation.get('victim_id') &&
+    allegation.get('perpetrator_id') === atRiskAllegation.get('perpetrator_id') &&
+    hasAtRiskableAllegation(allegation))
 }
 
-export function isSiblingAtRiskRequired(allegations) {
-  return allegations.reduce((shouldDisplayError, allegation, key) => {
-    const allOtherAllegations = allegations.filterNot((allgtn, ky) => ky === key)
-    const otherAtRiskableAllegations = findOtherAllegationsForAtRisk(allegation, allOtherAllegations)
-    return shouldDisplayError ||
-      hasAtRiskAllegation(allegation) && otherAtRiskableAllegations.isEmpty()
-  }, false)
+export function siblingAtRiskHasRequiredComplementaryAllegations(allegations) {
+  return !allegations.some((allegation, key) => {
+    const allOtherAllegations = allegations.filterNot((_, ky) => ky === key)
+    const complementaryAllegations = findComplementaryAllegationsForAtRisk(allegation, allOtherAllegations)
+    return hasAtRiskAllegation(allegation) && complementaryAllegations.isEmpty()
+  })
 }
 
 function findAllegation(allegations, victimId, perpetratorId) {

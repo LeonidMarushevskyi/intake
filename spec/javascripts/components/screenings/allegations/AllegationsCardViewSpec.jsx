@@ -2,6 +2,7 @@ import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 
 describe('AllegationsCardView', () => {
   let component
@@ -88,6 +89,7 @@ describe('AllegationsCardView', () => {
   describe('alertErrorMessage', () => {
     describe('when allegations are NOT required', () => {
       it('returns null when allegations are not required', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
         const props = {
           ...requiredProps,
           required: false,
@@ -96,16 +98,11 @@ describe('AllegationsCardView', () => {
         expect(component.instance().alertErrorMessage()).toEqual(null)
       })
 
-      it('returns a message when at risk is only allegation', () => {
+      it('returns a message when at risk is required and not present', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
         const props = {
           ...requiredProps,
           required: false,
-          allegations: Immutable.fromJS([{
-            id: 1,
-            victim_id: '123abc',
-            perpetrator_id: 'cba321',
-            allegation_types: ['At risk, sibling abused'],
-          }]),
         }
         const component = shallow(<AllegationsCardView {...props}/>)
         expect(component.instance().alertErrorMessage()).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
@@ -114,6 +111,7 @@ describe('AllegationsCardView', () => {
 
     describe('when allegations are required', () => {
       it('returns null when allegation are required but valid allegations exist', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
         const props = {
           ...requiredProps,
           required: true,
@@ -129,6 +127,7 @@ describe('AllegationsCardView', () => {
       })
 
       it('returns a message when allegations are required and no allegations are valid', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
         const props = {
           ...requiredProps,
           required: true,
@@ -144,6 +143,7 @@ describe('AllegationsCardView', () => {
       })
 
       it('returns a message when at risk is only allegation', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
         const props = {
           ...requiredProps,
           required: true,
