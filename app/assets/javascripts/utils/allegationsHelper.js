@@ -1,6 +1,31 @@
-import ALLEGATION_TYPES from 'AllegationTypes'
+import {ALLEGATION_TYPES} from 'AllegationTypes'
 import Immutable from 'immutable'
 import _ from 'lodash'
+
+export function hasAtRiskAllegation(allegation) {
+  return allegation.get('allegation_types').contains('At risk, sibling abused')
+}
+
+export function hasAtRiskableAllegation(allegation) {
+  return !allegation.get('allegation_types').filterNot((type) =>
+    type === 'At risk, sibling abused'
+  ).isEmpty()
+}
+
+export function findComplementaryAllegationsForAtRisk(atRiskAllegation, allegations) {
+  return allegations.filter((allegation) =>
+    allegation.get('victim_id') !== atRiskAllegation.get('victim_id') &&
+    allegation.get('perpetrator_id') === atRiskAllegation.get('perpetrator_id') &&
+    hasAtRiskableAllegation(allegation))
+}
+
+export function siblingAtRiskHasRequiredComplementaryAllegations(allegations) {
+  return !allegations.some((allegation, key) => {
+    const allOtherAllegations = allegations.filterNot((_, ky) => ky === key)
+    const complementaryAllegations = findComplementaryAllegationsForAtRisk(allegation, allOtherAllegations)
+    return hasAtRiskAllegation(allegation) && complementaryAllegations.isEmpty()
+  })
+}
 
 function findAllegation(allegations, victimId, perpetratorId) {
   return allegations.find((allegation) => (

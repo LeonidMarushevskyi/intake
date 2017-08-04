@@ -1,4 +1,4 @@
-const ALLEGATION_TYPES = Object.freeze([
+export const ALLEGATION_TYPES = Object.freeze([
   {value: 'General neglect', requiresCrossReport: false},
   {value: 'Severe neglect', requiresCrossReport: true},
   {value: 'Physical abuse', requiresCrossReport: true},
@@ -8,5 +8,3 @@ const ALLEGATION_TYPES = Object.freeze([
   {value: 'Exploitation', requiresCrossReport: true},
   {value: 'At risk, sibling abused', requiresCrossReport: true},
 ])
-
-export default ALLEGATION_TYPES

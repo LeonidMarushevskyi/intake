@@ -2,15 +2,16 @@ import AllegationsCardView from 'components/screenings/AllegationsCardView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 
 describe('AllegationsCardView', () => {
   let component
   let instance
   const allegations = Immutable.fromJS([
-    {id: null},
-    {id: '1'},
-    {id: null},
-    {id: '2'},
+    {id: null, allegation_types: []},
+    {id: '1', allegation_types: []},
+    {id: null, allegation_types: []},
+    {id: '2', allegation_types: []},
   ])
 
   const requiredProps = {
@@ -86,39 +87,76 @@ describe('AllegationsCardView', () => {
   })
 
   describe('alertErrorMessage', () => {
-    it('returns null when allegations are not required', () => {
-      const props = {
-        ...requiredProps,
-        required: false,
-      }
-      const component = shallow(<AllegationsCardView {...props}/>)
-      expect(component.instance().alertErrorMessage()).toEqual(null)
+    describe('when allegations are NOT required', () => {
+      it('returns null when allegations are not required', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        const props = {
+          ...requiredProps,
+          required: false,
+        }
+        const component = shallow(<AllegationsCardView {...props}/>)
+        expect(component.instance().alertErrorMessage()).toEqual(null)
+      })
+
+      it('returns a message when at risk is required and not present', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
+        const props = {
+          ...requiredProps,
+          required: false,
+        }
+        const component = shallow(<AllegationsCardView {...props}/>)
+        expect(component.instance().alertErrorMessage()).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
+      })
     })
 
-    it('returns null when allegation are required but valid allegations exist', () => {
-      const props = {
-        ...requiredProps,
-        required: true,
-        allegations: Immutable.fromJS([{
-          id: 1,
-          allegation_types: ['exploitation'],
-        }]),
-      }
-      const component = shallow(<AllegationsCardView {...props}/>)
-      expect(component.instance().alertErrorMessage()).toEqual(null)
-    })
+    describe('when allegations are required', () => {
+      it('returns null when allegation are required but valid allegations exist', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        const props = {
+          ...requiredProps,
+          required: true,
+          allegations: Immutable.fromJS([{
+            id: 1,
+            victim_id: '123abc',
+            perpetrator_id: 'cba321',
+            allegation_types: ['Physical abuse'],
+          }]),
+        }
+        const component = shallow(<AllegationsCardView {...props}/>)
+        expect(component.instance().alertErrorMessage()).toEqual(null)
+      })
 
-    it('returns a message when allegations are required and no allegations are valid', () => {
-      const props = {
-        ...requiredProps,
-        required: true,
-        allegations: Immutable.fromJS([{
-          id: 1,
-          allegation_types: [],
-        }]),
-      }
-      const component = shallow(<AllegationsCardView {...props}/>)
-      expect(component.instance().alertErrorMessage()).toContain('must include at least one allegation.')
+      it('returns a message when allegations are required and no allegations are valid', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        const props = {
+          ...requiredProps,
+          required: true,
+          allegations: Immutable.fromJS([{
+            id: 1,
+            victim_id: '123abc',
+            perpetrator_id: 'cba321',
+            allegation_types: [],
+          }]),
+        }
+        const component = shallow(<AllegationsCardView {...props}/>)
+        expect(component.instance().alertErrorMessage()).toContain('must include at least one allegation.')
+      })
+
+      it('returns a message when at risk is only allegation', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
+        const props = {
+          ...requiredProps,
+          required: true,
+          allegations: Immutable.fromJS([{
+            id: 1,
+            victim_id: '123abc',
+            perpetrator_id: 'cba321',
+            allegation_types: ['At risk, sibling abused'],
+          }]),
+        }
+        const component = shallow(<AllegationsCardView {...props}/>)
+        expect(component.instance().alertErrorMessage()).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
+      })
     })
   })
 
@@ -133,7 +171,7 @@ describe('AllegationsCardView', () => {
     })
 
     it("renders only allegations with persisted id's", () => {
-      const expectedAllegations = [{id: '1'}, {id: '2'}]
+      const expectedAllegations = [{id: '1', allegation_types: []}, {id: '2', allegation_types: []}]
       component = shallow(<AllegationsCardView {...requiredProps} allegations={allegations} />)
       const renderedAllegations = component.find('AllegationsShowView').props().allegations
 

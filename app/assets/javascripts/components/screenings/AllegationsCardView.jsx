@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationsEditView from 'components/screenings/AllegationsEditView'
 import AllegationsShowView from 'components/screenings/AllegationsShowView'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {
@@ -36,7 +37,9 @@ export default class AllegationsCardView extends React.Component {
   }
 
   alertErrorMessage() {
-    if (this.props.required) {
+    if (!AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(this.props.allegations)) {
+      return 'Any allegations of Sibling at Risk must be accompanied by another allegation.'
+    } else if (this.props.required) {
       if (this.props.allegations.some((allegation) => !allegation.get('allegation_types').isEmpty())) {
         return null
       } else {

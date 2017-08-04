@@ -1,6 +1,283 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import Immutable from 'immutable'
 
+describe('hasAtRiskAllegation', () => {
+  it('returns true when allegation has "At risk, sibling abused" as an allegation type', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim_id: '123abc',
+      perpetrator_id: 'cba321',
+      allegation_types: ['At risk, sibling abused', 'General neglect'],
+    })
+    expect(AllegationsHelper.hasAtRiskAllegation(allegation)).toBe(true)
+  })
+
+  it('returns false when allegation DOES NOT have "At risk, sibling abused" as an allegation type', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim_id: '123abc',
+      perpetrator_id: 'cba321',
+      allegation_types: ['Physical abuse', 'General neglect'],
+    })
+    expect(AllegationsHelper.hasAtRiskAllegation(allegation)).toBe(false)
+  })
+})
+
+describe('hasNotAtRiskableAllegation', () => {
+  it('returns true when allegation has more than one of the not at riskable allegation types', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim: {
+        first_name: 'sandy',
+        last_name: 'smith',
+      },
+      perpetrator: {
+        first_name: 'bob',
+        last_name: 'smith',
+      },
+      allegation_types: ['Physical abuse', 'General neglect'],
+    })
+    expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(true)
+  })
+
+  it('returns true when allegation has more than one of any allegation types', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim: {
+        first_name: 'sandy',
+        last_name: 'smith',
+      },
+      perpetrator: {
+        first_name: 'bob',
+        last_name: 'smith',
+      },
+      allegation_types: ['Physical abuse', 'General neglect', 'At risk, sibling abused', 'Exploitation'],
+    })
+    expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(true)
+  })
+
+  it('returns true when allegation has one of the allegation types that removes at risk error', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim: {
+        first_name: 'sandy',
+        last_name: 'smith',
+      },
+      perpetrator: {
+        first_name: 'bob',
+        last_name: 'smith',
+      },
+      allegation_types: ['Physical abuse'],
+    })
+    expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(true)
+  })
+
+  it('returns false when allegation has no allegation types', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim: {
+        first_name: 'sandy',
+        last_name: 'smith',
+      },
+      perpetrator: {
+        first_name: 'bob',
+        last_name: 'smith',
+      },
+      allegation_types: [],
+    })
+    expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(false)
+  })
+
+  it('returns false when allegation has only the not at riskable allegation types', () => {
+    const allegation = Immutable.fromJS({
+      id: 1,
+      victim: {
+        first_name: 'sandy',
+        last_name: 'smith',
+      },
+      perpetrator: {
+        first_name: 'bob',
+        last_name: 'smith',
+      },
+      allegation_types: ['At risk, sibling abused'],
+    })
+    expect(AllegationsHelper.hasAtRiskableAllegation(allegation)).toBe(false)
+  })
+})
+
+describe('findComplementaryAllegationsForAtRisk', () => {
+  it('returns empty list of allegations if same perp, different vic, but not riskable allegation', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused'],
+      },
+      {
+        id: null,
+        victim_id: '124abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused'],
+      },
+      {
+        id: 2,
+        victim_id: '123abc',
+        perpetrator_id: 'cba322',
+        allegation_types: ['Exploitation'],
+      },
+    ])
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
+    expect(actual_allegations.toJS()).toEqual([])
+    expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
+  })
+
+  it('returns empty list of allegations for if no match on perp or all same victim', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused', 'General neglect'],
+      },
+      {
+        id: null,
+        victim_id: '124abc',
+        perpetrator_id: 'cba322',
+        allegation_types: ['Physical abuse'],
+      },
+      {
+        id: 2,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['Exploitation'],
+      },
+    ])
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
+    expect(actual_allegations.toJS()).toEqual([])
+    expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
+  })
+
+  it('returns list of other allegations for same perp different victim', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused'],
+      },
+      {
+        id: null,
+        victim_id: '124abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['Physical abuse'],
+      },
+      {
+        id: 2,
+        victim_id: '123abc',
+        perpetrator_id: 'cba322',
+        allegation_types: ['Exploitation'],
+      },
+    ])
+    const expected_allegations = Immutable.fromJS([
+      allegations.get(1),
+    ])
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
+    expect(actual_allegations.toJS()).toEqual(expected_allegations.toJS())
+    expect(Immutable.is(actual_allegations, expected_allegations)).toEqual(true)
+  })
+
+  it('returns empty list when no other allegations exist', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused', 'General neglect'],
+      },
+    ])
+    const actual_allegations = AllegationsHelper.findComplementaryAllegationsForAtRisk(allegations.first(), allegations.rest())
+    expect(actual_allegations.toJS()).toEqual([])
+    expect(Immutable.is(actual_allegations, Immutable.List())).toEqual(true)
+  })
+})
+
+describe('siblingAtRiskHasRequiredComplementaryAllegations', () => {
+  it('returns true when allegation has two types', () => {
+    const allegations = Immutable.fromJS([{
+      id: 1,
+      victim_id: '123abc',
+      perpetrator_id: 'cba321',
+      allegation_types: ['Physical abuse', 'At risk, sibling abused'],
+    }])
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
+  })
+
+  it('returns true when all have at risk but only one has an other allegation type', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['Physical abuse', 'At risk, sibling abused'],
+      },
+      {
+        id: 2,
+        victim_id: '122abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused'],
+      },
+    ])
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
+  })
+
+  it('returns false with two allegations that have two types', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['General neglect', 'At risk, sibling abused'],
+      },
+      {
+        id: 2,
+        victim_id: '122abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['Physical abuse', 'At risk, sibling abused'],
+      },
+    ])
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(true)
+  })
+
+  it('returns false when another allegation with a non at risk type exists', () => {
+    const allegations = Immutable.fromJS([
+      {
+        id: 1,
+        victim_id: '123abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['At risk, sibling abused'],
+      },
+      {
+        id: 2,
+        victim_id: '122abc',
+        perpetrator_id: 'cba321',
+        allegation_types: ['Physical abuse'],
+      },
+    ])
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(true)
+  })
+
+  it('returns true when no other allegations present', () => {
+    const allegations = Immutable.fromJS([{
+      id: 1,
+      victim_id: '123abc',
+      perpetrator_id: 'cba321',
+      allegation_types: ['At risk, sibling abused'],
+    }])
+    expect(AllegationsHelper.siblingAtRiskHasRequiredComplementaryAllegations(allegations)).toBe(false)
+  })
+})
+
 describe('sortedAllegationsList', () => {
   const screeningId = '9'
   const allegations = Immutable.List()
