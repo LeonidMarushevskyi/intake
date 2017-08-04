@@ -316,7 +316,7 @@ describe('CrossReportEditView', () => {
           {agency_type: 'District attorney'},
           {agency_type: 'Law enforcement'},
           {agency_type: 'Department of justice'},
-          {agency_type: 'Licensing'}
+          {agency_type: 'Licensing'},
         ]),
         errors: Immutable.fromJS({}),
         onBlur: jasmine.createSpy(),

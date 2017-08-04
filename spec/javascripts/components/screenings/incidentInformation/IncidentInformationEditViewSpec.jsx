@@ -36,7 +36,7 @@ describe('IncidentInformationEditView', () => {
   it('renders the Incident date field', () => {
     expect(component.find('DateField[label="Incident Date"]').props().value)
       .toEqual('2006-01-21')
- })
+  })
 
   it('renders the incident county field', () => {
     expect(component.find('SelectField[label="Incident County"]').props().value)
