@@ -141,19 +141,40 @@ describe('ParticipantEditView', () => {
       expect(component.find('.fa-times').length).toEqual(1)
     })
 
-    it('renders the input fields', () => {
-      expect(component.find('InputField[label="First Name"]').props().value)
-        .toEqual('Lisa')
-      expect(component.find('InputField[label="Middle Name"]').props().value)
-        .toEqual('Marie')
-      expect(component.find('InputField[label="Last Name"]').props().value)
-        .toEqual('Simpson')
+    it('renders the first name field', () => {
+      const firstNameField = component.find('InputField[label="First Name"]')
+      expect(firstNameField.props().value).toEqual('Lisa')
+      expect(firstNameField.props().maxLength).toEqual('64')
+    })
+
+    it('renders the middle name field', () => {
+      const middleNameField = component.find('InputField[label="Middle Name"]')
+      expect(middleNameField.props().value).toEqual('Marie')
+      expect(middleNameField.props().maxLength).toEqual('64')
+    })
+
+    it('renders the last name field', () => {
+      const lastNameField = component.find('InputField[label="Last Name"]')
+      expect(lastNameField.props().value).toEqual('Simpson')
+      expect(lastNameField.props().maxLength).toEqual('64')
+    })
+
+    it('renders the suffix field', () => {
       expect(component.find('SelectField[label="Suffix"]').props().value)
         .toEqual('phd')
+    })
+
+    it('renders the DoB field', () => {
       expect(component.find('DateField[label="Date of birth"]').props().value)
         .toEqual('2016-12-31')
+    })
+
+    it('renders the gender field', () => {
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
+    })
+
+    it('renders the SSN field', () => {
       expect(component.find('MaskedInputField[label="Social security number"]').props().placeholder)
         .toEqual('')
       expect(component.find('MaskedInputField[label="Social security number"]').props().value)

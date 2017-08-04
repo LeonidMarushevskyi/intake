@@ -33,19 +33,40 @@ describe('IncidentInformationEditView', () => {
     expect(component.find('.card-header').text()).toEqual('Incident Information')
   })
 
-  it('renders the input fields', () => {
+  it('renders the Incident date field', () => {
     expect(component.find('DateField[label="Incident Date"]').props().value)
       .toEqual('2006-01-21')
+ })
+
+  it('renders the incident county field', () => {
     expect(component.find('SelectField[label="Incident County"]').props().value)
       .toEqual('alpine')
-    expect(component.find('InputField[label="Address"]').props().value)
-      .toEqual('1500 7th St')
-    expect(component.find('InputField[label="City"]').props().value)
-      .toEqual('Sacramento')
-    expect(component.find('InputField[label="Zip"]').props().value)
-      .toEqual('95814')
+  })
+
+  it('renders the address field', () => {
+    const addressField = component.find('InputField[label="Address"]')
+    expect(addressField.props().value).toEqual('1500 7th St')
+    expect(addressField.props().maxLength).toEqual('128')
+  })
+
+  it('renders the city field', () => {
+    const cityField = component.find('InputField[label="City"]')
+    expect(cityField.props().value).toEqual('Sacramento')
+    expect(cityField.props().maxLength).toEqual('64')
+  })
+
+  it('renders the zip field', () => {
+    const zipField = component.find('InputField[label="Zip"]')
+    expect(zipField.props().value).toEqual('95814')
+    expect(zipField.props().maxLength).toEqual('10')
+  })
+
+  it('renders the state field', () => {
     expect(component.find('SelectField[label="State"]').props().value)
       .toEqual('CA')
+  })
+
+  it('renders the location type field', () => {
     expect(component.find('SelectField[label="Location Type"]').props().value)
       .toEqual('Juvenile Detention')
   })

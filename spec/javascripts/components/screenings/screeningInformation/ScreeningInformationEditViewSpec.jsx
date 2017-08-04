@@ -37,15 +37,29 @@ describe('ScreeningInformationEditView', () => {
       expect(component.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
     })
 
-    it('renders the input fields', () => {
-      expect(component.find('InputField[label="Title/Name of Screening"]').props().value)
-        .toEqual('The Rocky Horror Picture Show')
-      expect(component.find('InputField[label="Assigned Social Worker"]').props().value)
-        .toEqual('Michael Bluth')
+    it('renders the name of screening field', () => {
+      const titleField = component.find('InputField[label="Title/Name of Screening"]')
+      expect(titleField.props().value).toEqual('The Rocky Horror Picture Show')
+      expect(titleField.props().maxLength).toEqual('64')
+    })
+
+    it('renders the assigned social worker field', () => {
+      const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
+      expect(assigneeField.props().value).toEqual('Michael Bluth')
+      expect(assigneeField.props().maxLength).toEqual('64')
+    })
+
+    it('renders the screening start time field', () => {
       expect(component.find('DateField[label="Screening Start Date/Time"]').props().value)
         .toEqual('2016-08-13T10:00:00.000Z')
+    })
+
+    it('renders the screening end time field', () => {
       expect(component.find('DateField[label="Screening End Date/Time"]').props().value)
         .toEqual('2016-08-22T11:00:00.000Z')
+    })
+
+    it('renders the communication method', () => {
       expect(component.find('SelectField[label="Communication Method"]').props().value)
         .toEqual('mail')
     })

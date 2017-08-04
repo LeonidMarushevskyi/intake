@@ -61,22 +61,25 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             gridClassName='col-md-3'
             id='first_name'
             label='First Name'
-            value={participant.get('first_name') || ''}
+            maxLength='64'
             onChange={(event) => onChange(['first_name'], event.target.value || null)}
+            value={participant.get('first_name') || ''}
           />
           <InputField
             gridClassName='col-md-3'
             id='middle_name'
             label='Middle Name'
-            value={participant.get('middle_name') || ''}
+            maxLength='64'
             onChange={(event) => onChange(['middle_name'], event.target.value || null)}
+            value={participant.get('middle_name') || ''}
           />
           <InputField
             gridClassName='col-md-3'
             id='last_name'
             label='Last Name'
-            value={participant.get('last_name') || ''}
+            maxLength='64'
             onChange={(event) => onChange(['last_name'], event.target.value || null)}
+            value={participant.get('last_name') || ''}
           />
           <SelectField
             gridClassName='col-md-3'

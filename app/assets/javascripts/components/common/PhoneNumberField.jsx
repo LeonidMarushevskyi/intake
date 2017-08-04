@@ -9,11 +9,12 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
     <InputField
       gridClassName='col-md-6'
       id='number'
-      type='tel'
-      placeholder='Ex: 910-435-3223'
       label='Phone Number'
-      value={Number}
+      maxLength='13'
       onChange={(event) => onChange('number', event.target.value)}
+      placeholder='Ex: 910-435-3223'
+      type='tel'
+      value={Number}
     />
     <SelectField
       gridClassName='col-md-6'
