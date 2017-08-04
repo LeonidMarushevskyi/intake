@@ -8,7 +8,7 @@ feature 'Create Person' do
       :person,
       date_of_birth: '1990-05-29',
       first_name: 'Homer',
-      gender: 'male',
+      gender: 'unknown',
       last_name: 'Simpson',
       middle_name: 'Jay',
       ssn: '123-23-1234',
@@ -31,7 +31,7 @@ feature 'Create Person' do
     fill_in 'Middle Name', with: 'Jay'
     fill_in 'Last Name', with: 'Simpson'
     select 'Esq', from: 'Suffix'
-    select 'Male', from: 'Gender'
+    select 'Unknown', from: 'Gender'
     fill_in_react_select 'Language(s)', with: 'English'
     fill_in_react_select 'Language(s)', with: 'Farsi'
     fill_in_datepicker 'Date of birth', with: '05/29/1990'
