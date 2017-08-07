@@ -10,7 +10,7 @@
     "jquery": "3.2.1",
     "jquery-ujs": "^1.2.2",
     "lodash": "4.17.4",
-    "moment": "^2.15.1",
+    "moment": "^2.18.1",
     "prop-types": "^15.5.8",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
