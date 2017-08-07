@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import Genders from 'Genders'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 const GenderRaceAndEthnicity = ({gender, races, ethnicity}) => {
   const racesText = races && races.map(({race}) => race)

@@ -1,6 +1,6 @@
 import ErrorMessages from 'components/common/ErrorMessages'
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 const CheckboxField = ({
   errors,

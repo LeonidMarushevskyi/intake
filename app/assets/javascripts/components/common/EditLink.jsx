@@ -1,5 +1,5 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 const EditLink = ({ariaLabel, onClick}) => (
   <a aria-label={ariaLabel} className='btn btn-primary pull-right' href='#' onClick={onClick}>

@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
-import React from 'react'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 import AllegationsEditView from 'components/screenings/AllegationsEditView'
 import AllegationsShowView from 'components/screenings/AllegationsShowView'
-import * as AllegationsHelper from 'utils/allegationsHelper'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {

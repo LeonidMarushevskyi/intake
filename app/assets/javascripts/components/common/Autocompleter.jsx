@@ -1,8 +1,8 @@
 import * as Utils from 'utils/http'
 import PersonSuggestion from 'components/common/PersonSuggestion'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
-import PropTypes from 'prop-types'
 const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {

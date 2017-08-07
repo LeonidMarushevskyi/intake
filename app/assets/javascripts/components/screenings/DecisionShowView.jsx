@@ -1,10 +1,10 @@
 import * as IntakeConfig from 'config'
+import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'ScreeningDecisionOptions'
 import ShowField from 'components/common/ShowField'
-import EditLink from 'components/common/EditLink'
 
 const DecisionShowView = ({screening, onEdit, errors}) => {
   const decisionDetailLabel = (() => {

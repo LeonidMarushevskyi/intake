@@ -1,9 +1,9 @@
+import * as Validator from 'utils/validator'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningInformationEditView from 'components/screenings/ScreeningInformationEditView'
 import ScreeningInformationShowView from 'components/screenings/ScreeningInformationShowView'
-import * as Validator from 'utils/validator'
 
 export default class ScreeningInformationCardView extends React.Component {
   constructor(props) {

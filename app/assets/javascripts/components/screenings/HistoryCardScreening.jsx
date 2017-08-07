@@ -1,9 +1,9 @@
+import COUNTIES from 'Counties'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'RoleType'
-import COUNTIES from 'Counties'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardScreening = ({screening, index}) => {

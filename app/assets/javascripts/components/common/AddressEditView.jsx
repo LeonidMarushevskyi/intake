@@ -1,7 +1,7 @@
 import ADDRESS_TYPE from 'AddressType'
 import InputField from 'components/common/InputField'
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import SelectField from 'components/common/SelectField'
 import US_STATE from 'USState'
 

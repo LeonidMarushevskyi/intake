@@ -1,8 +1,8 @@
+import AlertErrorMessage from 'components/common/AlertErrorMessage'
+import EditLink from 'components/common/EditLink'
 import PropTypes from 'prop-types'
 import React from 'react'
-import EditLink from 'components/common/EditLink'
 import nameFormatter from 'utils/nameFormatter'
-import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
 const AllegationsShowView = ({allegations, onEdit, alertErrorMessage, required}) => (
   <div className='card show double-gap-top' id='allegations-card'>

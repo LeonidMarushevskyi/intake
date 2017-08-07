@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import React from 'react'
-import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 import WorkerSafetyEditView from 'components/screenings/WorkerSafetyEditView'
+import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 
 export default class WorkerSafetyCardView extends React.Component {
   constructor(props) {

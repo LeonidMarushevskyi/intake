@@ -1,12 +1,12 @@
+import * as Validator from 'utils/validator'
 import CrossReportEditView from 'components/screenings/CrossReportEditView'
 import CrossReportShowView from 'components/screenings/CrossReportShowView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
+import {AGENCY_TYPES} from 'CrossReport'
 import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'CrossReport'
 import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'CrossReport'
-import * as Validator from 'utils/validator'
-import {AGENCY_TYPES} from 'CrossReport'
 
 export default class CrossReportCardView extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
+import FormField from 'components/common/FormField'
 import PropTypes from 'prop-types'
 import React from 'react'
-import FormField from 'components/common/FormField'
 
 const NarrativeEditView = ({errors, screening, onBlur, onCancel, onChange, onSave}) => (
   <div className='card edit double-gap-top' id='narrative-card'>

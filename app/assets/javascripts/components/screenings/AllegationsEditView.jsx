@@ -1,7 +1,7 @@
+import AlertErrorMessage from 'components/common/AlertErrorMessage'
+import AllegationRow from 'components/screenings/AllegationRow'
 import PropTypes from 'prop-types'
 import React from 'react'
-import AllegationRow from 'components/screenings/AllegationRow'
-import AlertErrorMessage from 'components/common/AlertErrorMessage'
 
 const AllegationsEditView = ({
   allegations,

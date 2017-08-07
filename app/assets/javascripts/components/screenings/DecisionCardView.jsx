@@ -1,8 +1,8 @@
+import DecisionEditView from 'components/screenings/DecisionEditView'
+import DecisionShowView from 'components/screenings/DecisionShowView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import DecisionEditView from 'components/screenings/DecisionEditView'
-import DecisionShowView from 'components/screenings/DecisionShowView'
 
 export default class DecisionCardView extends React.Component {
   constructor(props) {

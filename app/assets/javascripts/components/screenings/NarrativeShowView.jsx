@@ -1,7 +1,7 @@
 import EditLink from 'components/common/EditLink'
-import ShowField from 'components/common/ShowField'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ShowField from 'components/common/ShowField'
 
 const NarrativeShowView = ({errors, screening, onEdit}) => (
   <div className='card show double-gap-top' id='narrative-card'>

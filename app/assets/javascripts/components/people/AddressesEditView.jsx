@@ -1,7 +1,7 @@
+import AddressEditView from 'components/common/AddressEditView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import AddressEditView from 'components/common/AddressEditView'
 
 export default class AddressesEditView extends React.Component {
   constructor() {
