@@ -25,6 +25,7 @@ feature 'Show Screening' do
     name_suffix: 'esq',
     ssn: '123-__-____',
     addresses: [address],
+    roles: ['Victim', 'Mandated Reporter'],
     phone_numbers: [phone_number]
   )
   existing_screening = FactoryGirl.create(
@@ -63,6 +64,8 @@ feature 'Show Screening' do
         expect(page).to have_content(phone_number.number)
         expect(page).to have_content(phone_number.type)
         expect(page).to have_content(existing_participant.gender.capitalize)
+        expect(page).to have_content('Victim')
+        expect(page).to have_content('Mandated Reporter')
         expect(page).to have_content(existing_participant.languages.join(', '))
         expect(page).to have_content(date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_content('123-  -    ')

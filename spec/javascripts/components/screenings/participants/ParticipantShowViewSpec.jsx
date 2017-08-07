@@ -96,16 +96,19 @@ describe('ParticipantShowView', () => {
         last_name: 'McCallister',
         name_suffix: 'iv',
         gender: 'male',
+        roles: ['soccer coach', 'The doctor'],
         languages: ['English', 'Arabic'],
         date_of_birth: '1990-11-16',
         ssn: '111-22-33__',
       })
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
-      expect(component.find('ShowField').length).toEqual(5)
+      expect(component.find('ShowField').length).toEqual(6)
       expect(component.find('ShowField[label="Name"]').html())
         .toContain('Kevin Home Alone McCallister IV')
       expect(component.find('ShowField[label="Gender"]').html())
         .toContain('Male')
+      expect(component.find('ShowField[label="Role(s)"]').html())
+        .toContain('soccer coach', 'The doctor')
       expect(component.find('ShowField[label="Language(s)"]').html())
         .toContain('English, Arabic')
       expect(component.find('ShowField[label="Date of birth"]').html())
@@ -276,16 +279,19 @@ describe('ParticipantShowView', () => {
         last_name: 'McCallister',
         name_suffix: 'iv',
         gender: 'male',
+        roles: ['soccer coach', 'The doctor'],
         languages: ['English', 'Arabic'],
         date_of_birth: '1990-11-16',
         ssn: '111-22-33__',
       })
       const component = shallow(<ParticipantShowView participant={participant} onEdit={() => null}/>)
-      expect(component.find('ShowField').length).toEqual(5)
+      expect(component.find('ShowField').length).toEqual(6)
       expect(component.find('ShowField[label="Name"]').html())
         .toContain('Kevin Home Alone McCallister IV')
       expect(component.find('ShowField[label="Gender"]').html())
         .toContain('Male')
+      expect(component.find('ShowField[label="Role(s)"]').html())
+        .toContain('soccer coach', 'The doctor')
       expect(component.find('ShowField[label="Language(s)"]').html())
         .toContain('English, Arabic')
       expect(component.find('ShowField[label="Date of birth"]').html())
