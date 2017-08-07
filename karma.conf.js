@@ -3,17 +3,21 @@
 // Generated on Thu Jun 30 2016 11:04:09 GMT-0400 (EDT)
 //
 var webpack = require('webpack')
-var webpackConfig = require('../config/webpack/test.js')
+var webpackConfig = require('./config/webpack/test.js')
 
 module.exports = function(config) {
   config.set({
     basePath: './',
     frameworks: ['jasmine'],
     files: [
-      './../public/packs-test/main.js',
+      //'./public/packs-test/.js',
+      'spec/karma_tests.js'
     ],
+    preprocessors: {
+       './spec/karma_tests.js': ['webpack', 'sourcemap']
+    },
     exclude: [
-      './../node_modules/'
+      './node_modules/'
     ],
     client: {
       captureConsole: true
@@ -48,5 +52,15 @@ module.exports = function(config) {
       fixWebpackSourcePaths: true,
       dir: `${process.env.CI_REPORTS}/coverage/js`
     },
+    webpack: {
+      devtool: 'inline-source-map',
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve,
+      externals: {
+        'react/addons': 'react/addons',
+        'react/lib/ReactContext': 'react/lib/ReactContext',
+        'react/lib/ExecutionEnvironment': 'react/lib/ExecutionEnvironment',
+      },
+    }
   })
 }
