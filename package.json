@@ -12,7 +12,7 @@
     "lodash": "4.17.4",
     "moment": "^2.18.1",
     "prop-types": "^15.5.10",
-    "react": "^15.3.2",
+    "react": "^15.6.1",
     "react-addons-test-utils": "^15.3.2",
     "react-autosuggest": "^6.0.3",
     "react-dom": "^15.3.2",
