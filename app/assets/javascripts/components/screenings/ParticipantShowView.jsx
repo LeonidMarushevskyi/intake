@@ -47,10 +47,15 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
             </ShowField>
           </div>
           <div className='col-md-5'>
-            <ShowField label='Role(s)'>{
-              (participant.get('roles') || []).map((role, index) =>
-                (<li key={`role-${index}`}>{`${role}`}</li>)
-              )}</ShowField>
+            <ShowField label='Role(s)'>
+              {participant.get('roles') &&
+                <ul>
+                  {participant.get('roles').map((role, index) =>
+                    (<li key={`role-${index}`}>{`${role}`}</li>)
+                  )}
+                </ul>
+              }
+              </ShowField>
           </div>
           <div className='col-md-5'>
             <ShowField label='Language(s)'>
