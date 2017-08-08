@@ -33,6 +33,7 @@ test:
   <<: *default
 
   public_output_path: packs-test
+  compile: false
 
 production:
   <<: *default
