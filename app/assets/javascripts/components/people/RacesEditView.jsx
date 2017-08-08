@@ -1,7 +1,7 @@
 import CheckboxField from 'components/common/CheckboxField'
 import Immutable from 'immutable'
-import RACES from 'Races'
 import PropTypes from 'prop-types'
+import RACES from 'Races'
 import React from 'react'
 import SelectField from 'components/common/SelectField'
 

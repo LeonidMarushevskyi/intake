@@ -1,7 +1,8 @@
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
 import React from 'react'
-import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 import WorkerSafetyEditView from 'components/screenings/WorkerSafetyEditView'
+import WorkerSafetyShowView from 'components/screenings/WorkerSafetyShowView'
 
 export default class WorkerSafetyCardView extends React.Component {
   constructor(props) {
@@ -53,9 +54,9 @@ export default class WorkerSafetyCardView extends React.Component {
 }
 
 WorkerSafetyCardView.propTypes = {
-  mode: React.PropTypes.oneOf(['show', 'edit']),
-  onCancel: React.PropTypes.func.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  screening: React.PropTypes.object.isRequired,
+  mode: PropTypes.oneOf(['show', 'edit']),
+  onCancel: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  screening: PropTypes.object.isRequired,
 }

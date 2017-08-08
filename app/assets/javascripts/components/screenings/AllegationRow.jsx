@@ -1,9 +1,9 @@
-import {ALLEGATION_TYPES} from 'AllegationTypes'
-import React from 'react'
-import PropTypes from 'prop-types'
-import nameFormatter from 'utils/nameFormatter'
-import Select from 'react-select'
 import Immutable from 'immutable'
+import PropTypes from 'prop-types'
+import React from 'react'
+import Select from 'react-select'
+import nameFormatter from 'utils/nameFormatter'
+import {ALLEGATION_TYPES} from 'AllegationTypes'
 
 const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegationTypes}) => (
   <tr>

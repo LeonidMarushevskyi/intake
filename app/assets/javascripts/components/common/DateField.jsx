@@ -1,10 +1,10 @@
-import FormField from 'components/common/FormField'
-import React from 'react'
-import PropTypes from 'prop-types'
 import DateTimePicker from 'react-widgets/lib/DateTimePicker'
+import FormField from 'components/common/FormField'
+import PropTypes from 'prop-types'
+import React from 'react'
+import _ from 'lodash'
 import moment from 'moment'
 import momentLocalizer from 'react-widgets/lib/localizers/moment'
-import _ from 'lodash'
 
 momentLocalizer(moment)
 

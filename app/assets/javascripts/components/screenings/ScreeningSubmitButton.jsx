@@ -1,6 +1,6 @@
+import * as IntakeConfig from 'config'
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as IntakeConfig from 'config'
 
 const ScreeningSubmitButton = ({actions, params}) => (
   <div className='row'>

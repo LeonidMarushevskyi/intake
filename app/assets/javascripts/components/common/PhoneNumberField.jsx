@@ -1,7 +1,7 @@
+import InputField from 'components/common/InputField'
+import PHONE_NUMBER_TYPE from 'PhoneNumberType'
 import PropTypes from 'prop-types'
 import React from 'react'
-import PHONE_NUMBER_TYPE from 'PhoneNumberType'
-import InputField from 'components/common/InputField'
 import SelectField from 'components/common/SelectField'
 
 const PhoneNumberField = ({Number, Type, onChange}) => (

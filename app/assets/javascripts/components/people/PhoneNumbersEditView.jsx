@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
+import PhoneNumberField from 'components/common/PhoneNumberField'
 import PropTypes from 'prop-types'
 import React from 'react'
-import PhoneNumberField from 'components/common/PhoneNumberField'
 
 export default class PhoneNumbersEditView extends React.Component {
   constructor() {

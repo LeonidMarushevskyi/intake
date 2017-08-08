@@ -1,3 +1,4 @@
+import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'config'
 import * as screeningActions from 'actions/screeningActions'
 import AllegationsCardView from 'components/screenings/AllegationsCardView'
@@ -15,12 +16,11 @@ import React from 'react'
 import RelationshipsCard from 'components/screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'components/screenings/ScreeningSubmitButton'
+import ScreeningValidator from 'ScreeningValidator'
 import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
-import * as AllegationsHelper from 'utils/allegationsHelper'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import ScreeningValidator from 'ScreeningValidator'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {

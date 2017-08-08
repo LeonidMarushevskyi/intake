@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import COMMUNICATION_METHOD from 'CommunicationMethod'
 import DateField from 'components/common/DateField'
 import InputField from 'components/common/InputField'
+import PropTypes from 'prop-types'
+import React from 'react'
 import SelectField from 'components/common/SelectField'
 
 const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, validateField, validateOnChange, errors}) => (

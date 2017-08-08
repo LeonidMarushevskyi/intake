@@ -1,5 +1,5 @@
-import EditLink from 'components/common/EditLink'
 import AlertInfoMessage from 'components/common/AlertInfoMessage'
+import EditLink from 'components/common/EditLink'
 import ErrorMessages from 'components/common/ErrorMessages'
 import PropTypes from 'prop-types'
 import React from 'react'

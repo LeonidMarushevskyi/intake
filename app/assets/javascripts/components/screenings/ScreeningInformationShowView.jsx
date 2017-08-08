@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types'
-import React from 'react'
 import COMMUNICATION_METHOD from 'CommunicationMethod'
 import EditLink from 'components/common/EditLink'
+import PropTypes from 'prop-types'
+import React from 'react'
 import ShowField from 'components/common/ShowField'
 import {dateTimeFormatter} from 'utils/dateFormatter'
 

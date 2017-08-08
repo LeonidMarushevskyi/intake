@@ -1,9 +1,9 @@
+import * as Validator from 'utils/validator'
 import Immutable from 'immutable'
 import NarrativeEditView from 'components/screenings/NarrativeEditView'
 import NarrativeShowView from 'components/screenings/NarrativeShowView'
 import PropTypes from 'prop-types'
 import React from 'react'
-import * as Validator from 'utils/validator'
 
 export default class NarrativeCardView extends React.Component {
   constructor(props, context) {
