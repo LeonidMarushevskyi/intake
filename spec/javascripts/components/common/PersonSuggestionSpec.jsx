@@ -1,4 +1,4 @@
-import PersonSuggestion from 'components/common/PersonSuggestion'
+import PersonSuggestion from 'common/PersonSuggestion'
 import React from 'react'
 import {shallow} from 'enzyme'
 

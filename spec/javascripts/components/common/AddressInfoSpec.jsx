@@ -1,4 +1,4 @@
-import AddressInfo from 'components/common/AddressInfo'
+import AddressInfo from 'common/AddressInfo'
 import React from 'react'
 import {shallow} from 'enzyme'
 

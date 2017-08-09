@@ -1,7 +1,7 @@
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 import Immutable from 'immutable'
 import React from 'react'
-import DecisionShowView from 'components/screenings/DecisionShowView'
+import DecisionShowView from 'screenings/DecisionShowView'
 import {shallow} from 'enzyme'
 
 describe('DecisionShowView', () => {

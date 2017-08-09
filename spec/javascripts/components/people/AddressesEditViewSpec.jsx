@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
-import AddressesEditView from 'components/people/AddressesEditView'
+import AddressesEditView from 'people/AddressesEditView'
 import {shallow} from 'enzyme'
 
 describe('AddressesEditView', () => {

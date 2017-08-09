@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import AddressEditView from 'components/common/AddressEditView'
+import AddressEditView from 'common/AddressEditView'
 
 describe('AddressEditView', () => {
   let component

@@ -1,4 +1,4 @@
-import EthnicityEditView from 'components/people/EthnicityEditView'
+import EthnicityEditView from 'people/EthnicityEditView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'

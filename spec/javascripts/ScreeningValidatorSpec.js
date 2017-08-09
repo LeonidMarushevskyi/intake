@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import ScreeningValidator from 'ScreeningValidator'
+import ScreeningValidator from 'screenings/ScreeningValidator'
 import moment from 'moment'
 
 describe('ScreeningValidator', () => {
@@ -333,4 +333,3 @@ describe('ScreeningValidator', () => {
     })
   })
 })
-

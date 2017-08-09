@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import ParticipantEditView from 'components/screenings/ParticipantEditView'
+import ParticipantEditView from 'screenings/ParticipantEditView'
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 

@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable'
-import * as IntakeConfig from 'config'
-import HistoryCard from 'components/screenings/HistoryCard'
+import * as IntakeConfig from 'common/config'
+import HistoryCard from 'screenings/HistoryCard'
 import React from 'react'
 import clipboard from 'clipboard-js'
 import {shallow, mount} from 'enzyme'
-import * as config from 'config'
+import * as config from 'common/config'
 
 describe('HistoryCard', () => {
   const requiredProps = {

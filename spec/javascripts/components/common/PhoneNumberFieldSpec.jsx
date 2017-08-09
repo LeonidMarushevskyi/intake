@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import PhoneNumberField from 'components/common/PhoneNumberField'
+import PhoneNumberField from 'common/PhoneNumberField'
 
 describe('PhoneNumberField', () => {
   let component

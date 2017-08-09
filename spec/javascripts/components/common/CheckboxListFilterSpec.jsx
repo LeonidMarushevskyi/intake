@@ -1,6 +1,6 @@
 import React from 'react'
-import CheckboxListFilter from 'components/common/CheckboxListFilter'
-import SCREENING_DECISION from 'ScreeningDecision'
+import CheckboxListFilter from 'common/CheckboxListFilter'
+import SCREENING_DECISION from 'enums/ScreeningDecision'
 import {render, shallow} from 'enzyme'
 
 describe('CheckboxListFilter', () => {

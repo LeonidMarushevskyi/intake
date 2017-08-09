@@ -2,41 +2,27 @@
 // Karma configuration
 // Generated on Thu Jun 30 2016 11:04:09 GMT-0400 (EDT)
 //
+var webpack = require('webpack')
+var webpackConfig = require('./config/webpack/test.js')
+
 module.exports = function(config) {
   config.set({
-    basePath: '',
+    basePath: './',
     frameworks: ['jasmine'],
     files: [
-      'public/assets/vendor.js',
-      'public/assets/application-test.js',
+      //'./public/packs-test/.js',
+      'spec/karma_tests.js'
     ],
-    exclude: [],
     preprocessors: {
-      'public/assets/application-test.js': ['coverage', 'sourcemap'],
+       './spec/karma_tests.js': ['webpack', 'sourcemap']
     },
-    coverageReporter: {
-      type: 'in-memory',
+    exclude: [
+      './node_modules/'
+    ],
+    client: {
+      captureConsole: true
     },
-    remapIstanbulReporter: {
-      remapOptions: {
-        exclude: /node_modules/,
-      },
-      reports: {
-        html: `${process.env.CI_REPORTS}/coverage/js`,
-      },
-      subdir: (browser) => {
-        return browser.toLowerCase().split(' ').first()
-      },
-    },
-    junitReporter: {
-      outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
-      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
-      suite: '', // suite will become the package name attribute in xml testsuite element
-      useBrowserName: true, // add browser name to report and classes names
-      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
-      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
-      properties: {}, // key value pair of properties to add to the <properties> section of the report
-    },
+    reporters: ['dots'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -51,5 +37,30 @@ module.exports = function(config) {
     captureTimeout: 60000,
     browserNoActivityTimeout: 30000,
     singleRun: true,
+    concurrency: Infinity,
+    junitReporter: {
+      outputDir: process.env.CI_REPORTS, // results will be saved as $outputDir/$browserName.xml
+      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
+      suite: '', // suite will become the package name attribute in xml testsuite element
+      useBrowserName: true, // add browser name to report and classes names
+      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
+      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
+      properties: {}, // key value pair of properties to add to the <properties> section of the report
+    },
+    coverageIstanbulReporter: {
+      reports: ['html'],
+      fixWebpackSourcePaths: true,
+      dir: `${process.env.CI_REPORTS}/coverage/js`
+    },
+    webpack: {
+      devtool: 'inline-source-map',
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve,
+      externals: {
+        'react/addons': 'react/addons',
+        'react/lib/ReactContext': 'react/lib/ReactContext',
+        'react/lib/ExecutionEnvironment': 'react/lib/ExecutionEnvironment',
+      },
+    }
   })
 }

@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import WorkerSafetyCardView from 'components/screenings/WorkerSafetyCardView'
+import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 

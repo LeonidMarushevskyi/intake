@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
-import FormField from 'components/common/FormField'
+import FormField from 'common/FormField'
 
 describe('FormField', () => {
   let component

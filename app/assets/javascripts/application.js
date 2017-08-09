@@ -9,7 +9,7 @@ import configureStore from 'store/configureStore'
 import routes from 'routes'
 import {Provider} from 'react-redux'
 
-import Autocompleter from 'components/common/Autocompleter'
+import Autocompleter from 'common/Autocompleter'
 
 const store = configureStore()
 if (document.getElementById('app')) {

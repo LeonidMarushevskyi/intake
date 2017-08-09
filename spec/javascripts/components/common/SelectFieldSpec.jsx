@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import SelectField from 'components/common/SelectField'
+import SelectField from 'common/SelectField'
 
 describe('SelectField', () => {
   let component

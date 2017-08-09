@@ -15,7 +15,8 @@ feature 'Edit Screening' do
       middle_name: 'Jacqueline',
       name_suffix: 'sr',
       ssn: old_ssn,
-      roles: marge_roles
+      roles: marge_roles,
+      languages: ['Russian']
     )
   end
   let(:marge_formatted_name) do

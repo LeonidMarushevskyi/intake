@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
-import ErrorMessages from 'components/common/ErrorMessages'
+import ErrorMessages from 'common/ErrorMessages'
 
 describe('ErrorMessages', () => {
   let component

@@ -1,9 +1,9 @@
 import * as Utils from 'utils/http'
 import Immutable from 'immutable'
 import React from 'react'
-import {HomePage} from 'components/HomePage'
+import {HomePage} from 'home/HomePage'
 import {shallow} from 'enzyme'
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 
 describe('HomePage', () => {
   let component

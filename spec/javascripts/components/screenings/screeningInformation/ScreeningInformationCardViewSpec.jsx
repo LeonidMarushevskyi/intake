@@ -1,6 +1,6 @@
 import React from 'react'
 import Immutable from 'immutable'
-import ScreeningInformationCardView from 'components/screenings/ScreeningInformationCardView'
+import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import {shallow, mount} from 'enzyme'
 import * as Validator from 'utils/validator'
 import moment from 'moment'

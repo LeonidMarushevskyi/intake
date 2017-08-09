@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
-import InputField from 'components/common/InputField'
+import InputField from 'common/InputField'
 
 describe('InputField', () => {
   let component

@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable'
-import RelationshipsCard from 'components/screenings/RelationshipsCard'
+import RelationshipsCard from 'screenings/RelationshipsCard'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 

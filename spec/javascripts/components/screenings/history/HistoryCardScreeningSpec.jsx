@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable'
-import HistoryCardScreening from 'components/screenings/HistoryCardScreening'
+import HistoryCardScreening from 'screenings/HistoryCardScreening'
 import React from 'react'
 import {shallow} from 'enzyme'
 

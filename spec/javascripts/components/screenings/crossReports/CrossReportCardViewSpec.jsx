@@ -1,4 +1,4 @@
-import CrossReportCardView from 'components/screenings/CrossReportCardView'
+import CrossReportCardView from 'screenings/CrossReportCardView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow, mount} from 'enzyme'

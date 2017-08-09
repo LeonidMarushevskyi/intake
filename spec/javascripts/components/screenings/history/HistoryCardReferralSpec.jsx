@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable'
-import HistoryCardReferral from 'components/screenings/HistoryCardReferral'
+import HistoryCardReferral from 'screenings/HistoryCardReferral'
 import React from 'react'
 import {shallow} from 'enzyme'
 

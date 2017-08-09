@@ -1,5 +1,5 @@
 import React from 'react'
-import ScreeningsTable from 'components/screenings/ScreeningsTable'
+import ScreeningsTable from 'screenings/ScreeningsTable'
 import {shallow, mount} from 'enzyme'
 
 describe('ScreeningsTable', () => {

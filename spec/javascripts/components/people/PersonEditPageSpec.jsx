@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
-import {PersonEditPage} from 'components/people/PersonEditPage'
+import {PersonEditPage} from 'people/PersonEditPage'
 import {shallow, mount} from 'enzyme'
 
 describe('PersonEditPage', () => {

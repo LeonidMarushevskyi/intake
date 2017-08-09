@@ -1,7 +1,7 @@
 import React from 'react'
 import Immutable from 'immutable'
 import {shallow} from 'enzyme'
-import CheckboxField from 'components/common/CheckboxField'
+import CheckboxField from 'common/CheckboxField'
 
 describe('CheckboxField', () => {
   let onChange

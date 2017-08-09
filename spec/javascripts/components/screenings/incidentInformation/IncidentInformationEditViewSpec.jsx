@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import React from 'react'
-import IncidentInformationEditView from 'components/screenings/IncidentInformationEditView'
+import IncidentInformationEditView from 'screenings/IncidentInformationEditView'
 import {shallow, mount} from 'enzyme'
 
 describe('IncidentInformationEditView', () => {

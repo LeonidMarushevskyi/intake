@@ -1,7 +1,7 @@
-import * as IntakeConfig from 'config'
+import * as IntakeConfig from 'common/config'
 import Immutable from 'immutable'
 import React from 'react'
-import {ScreeningPage} from 'components/screenings/ScreeningPage'
+import {ScreeningPage} from 'screenings/ScreeningPage'
 import {shallow} from 'enzyme'
 import {requiredProps} from '../ScreeningPageSpec'
 

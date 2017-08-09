@@ -1,4 +1,4 @@
-import AllegationsShowView from 'components/screenings/AllegationsShowView'
+import AllegationsShowView from 'screenings/AllegationsShowView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'

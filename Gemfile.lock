@@ -181,6 +181,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
     minitest (5.10.2)
+    multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustache (0.99.8)
@@ -367,6 +368,10 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
+    webpacker (2.0)
+      activesupport (>= 4.2)
+      multi_json (~> 1.2)
+      railties (>= 4.2)
     websocket (1.2.4)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
@@ -422,6 +427,7 @@ DEPENDENCIES
   virtus
   web-console (~> 3.5)
   webmock
+  webpacker
 
 BUNDLED WITH
    1.14.6

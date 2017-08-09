@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
-import DateField from 'components/common/DateField'
+import DateField from 'common/DateField'
 import moment from 'moment'
 import Immutable from 'immutable'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import Immutable from 'immutable'
-import NarrativeShowView from 'components/screenings/NarrativeShowView'
+import NarrativeShowView from 'screenings/NarrativeShowView'
 import {shallow} from 'enzyme'
 
 describe('NarrativeShowView', () => {

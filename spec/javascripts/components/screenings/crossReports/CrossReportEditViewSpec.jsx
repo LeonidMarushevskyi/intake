@@ -1,4 +1,4 @@
-import CrossReportEditView from 'components/screenings/CrossReportEditView'
+import CrossReportEditView from 'screenings/CrossReportEditView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'

@@ -1,4 +1,4 @@
-import AllegationsCardView from 'components/screenings/AllegationsCardView'
+import AllegationsCardView from 'screenings/AllegationsCardView'
 import Immutable from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'

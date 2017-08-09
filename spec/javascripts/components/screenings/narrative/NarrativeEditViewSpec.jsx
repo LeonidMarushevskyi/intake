@@ -1,4 +1,4 @@
-import NarrativeEditView from 'components/screenings/NarrativeEditView'
+import NarrativeEditView from 'screenings/NarrativeEditView'
 import Immutable from 'immutable'
 import React from 'react'
 import {mount} from 'enzyme'
