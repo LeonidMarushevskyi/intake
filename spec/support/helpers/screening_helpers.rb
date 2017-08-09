@@ -82,7 +82,7 @@ module ScreeningHelpers
     visit edit_screening_path(id: screening.id)
 
     # TODO: remove this once we can consistently have a fresh page for these specs
-    page.evaluate_script('window.location.reload()')
+    page.driver.browser.navigate.refresh
   end
 
   def stub_and_visit_show_screening(screening)
@@ -94,7 +94,7 @@ module ScreeningHelpers
     visit screening_path(id: screening.id)
 
     # TODO: remove this once we can consistently have a fresh page for these specs
-    page.evaluate_script('window.location.reload()')
+    page.driver.browser.navigate.refresh
   end
 end
 
