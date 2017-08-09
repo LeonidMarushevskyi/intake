@@ -1,7 +1,6 @@
 import ALLEGATION_TYPES from 'enums/AllegationTypes'
 import React from 'react'
 import PropTypes from 'prop-types'
-import React from 'react'
 import Select from 'react-select'
 import nameFormatter from 'utils/nameFormatter'
 import Immutable from 'immutable'
