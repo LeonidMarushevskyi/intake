@@ -70,6 +70,7 @@ gulp.task('build-test-assets', ['clean-build-assets'], function() {
 })
 
 var revReplace = require('gulp-rev-replace')
+
 gulp.task('translate-versioned-assets', function() {
   var manifest = gulp.src('public/assets/rev-manifest.json')
   return gulp.src(['public/assets/**/*.css'])
@@ -89,5 +90,19 @@ gulp.task('version-assets', function () {
   ])
   .pipe(rev())
   .pipe(gulp.dest('public/assets'))
+  .pipe(rev.manifest())
   .pipe(gulp.dest('public/assets'))
 })
+
+var connect = require('gulp-connect')
+var cors = require('cors')
+gulp.task('server', function() {
+   connect.server({
+     root: 'public/',
+     port: 4857,
+     livereload: false,
+     middleware: function() {
+       return [cors()];
+     }
+   })
+ })
