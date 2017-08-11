@@ -17,7 +17,7 @@ module GulpAssets
     # and all other cases assets are provided by the file system from
     # the public assets folder.
     def uri(filename)
-      asset_path = "/assets/#{filename}"
+      asset_path = "#{ENV.fetch('BASE_PATH', '')}/assets/#{filename}"
       if Rails.env.development?
         return URI::HTTP.build(
           host: request.host,
