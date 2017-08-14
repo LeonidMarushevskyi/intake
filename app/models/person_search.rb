@@ -23,4 +23,5 @@ class PersonSearch
   attribute :legacy_source_table
   attribute :legacy_descriptor, LegacyDescriptor
   attribute :sensitive, Boolean
+  attribute :sealed, Boolean
 end

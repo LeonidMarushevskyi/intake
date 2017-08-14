@@ -56,6 +56,7 @@ describe PersonSearch do
         highlight: {
           first_name: '<em>Hom</em>er'
         },
+        sealed: false,
         sensitive: true,
         legacy_source_table: 'test source table',
         legacy_descriptor: legacy_descriptor.as_json
@@ -106,6 +107,7 @@ describe PersonSearch do
         'highlight' => {
           'first_name' => '<em>Hom</em>er'
         },
+        'sealed' => false,
         'sensitive' => true,
         'legacy_source_table' => 'test source table',
         'legacy_descriptor' => {

@@ -69,7 +69,8 @@ feature 'searching a participant in autocompleter' do
         { race: 'American Indian or Alaska Native' }
       ],
       ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' },
-      sensitive: true
+      sensitive: true,
+      sealed: false
     )
   end
   before do
@@ -106,6 +107,7 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content 'Work'
         expect(page).to have_content '123 Fake St, Springfield, NY 12345'
         expect(page).to have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
       end
     end
 
@@ -282,19 +284,17 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
-    scenario 'person who is not sensitive' do
+    scenario 'person who is neither sensitive nor sealed' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
-        sensitive: false
+        sensitive: false,
+        sealed: false
       )
-
-      %w[Ma].each do |search_text|
-        stub_request(
-          :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
-        ).and_return(json_body([marge].to_json, status: 200))
-      end
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+      ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -302,6 +302,51 @@ feature 'searching a participant in autocompleter' do
 
       within 'li', text: 'Marge' do
         expect(page).to_not have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
+      end
+    end
+
+    scenario 'person who is sensitive' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        sensitive: true,
+        sealed: false
+      )
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+      ).and_return(json_body([marge].to_json, status: 200))
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Ma'
+      end
+
+      within 'li', text: 'Marge' do
+        expect(page).to have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
+      end
+    end
+
+    scenario 'person who is sealed' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        sensitive: false,
+        sealed: true
+      )
+      stub_request(
+        :get,
+        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+      ).and_return(json_body([marge].to_json, status: 200))
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Ma'
+      end
+
+      within 'li', text: 'Marge' do
+        expect(page).to_not have_content 'Sensitive'
+        expect(page).to have_content 'Sealed'
       end
     end
   end
