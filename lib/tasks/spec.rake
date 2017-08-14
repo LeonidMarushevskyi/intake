@@ -29,7 +29,7 @@ namespace :spec do # rubocop:disable BlockLength
   namespace :intake do
     desc 'Run specs locally outside container'
     task :local do
-      system "#{gulp?} #{webpack} #{host_env_string} bundle exec rspec #{file_list}"
+      system "#{gulp?} #{webpack?} #{host_env_string} bundle exec rspec #{file_list}"
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do
