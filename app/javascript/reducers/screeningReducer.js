@@ -6,6 +6,7 @@ export default function screeningReducer(state = Immutable.Map(), action) {
     case types.CREATE_SCREENING_SUCCESS:
     case types.FETCH_SCREENING_SUCCESS:
     case types.UPDATE_SCREENING_SUCCESS:
+    case types.SUBMIT_SCREENING_SUCCESS:
       return action.screening
     default:
       return state
