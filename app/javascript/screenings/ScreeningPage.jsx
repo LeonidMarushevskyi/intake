@@ -236,7 +236,11 @@ export class ScreeningPage extends React.Component {
         <div>
           {
             releaseTwoInactive &&
-              <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
+              <h1>
+                {this.mode === 'edit' && 'Edit '}
+                {`Screening #${mergedScreening.get('reference')}`}
+                {mergedScreening.get('referral_id') && ` - Referral #${mergedScreening.get('referral_id')}`}
+              </h1>
           }
           {
             releaseTwo &&

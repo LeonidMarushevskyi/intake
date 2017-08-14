@@ -138,6 +138,20 @@ describe('ScreeningPage', () => {
       component.setState({loaded: true})
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
+
+    it('renders the referral id, if present', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          reference: 'ABCDEF',
+          referral_id: '123456',
+        }),
+      }
+      const component = shallow(<ScreeningPage {...props} mode='show'/>)
+      component.setState({loaded: true})
+      expect(component.find('h1').text()).toEqual('Screening #ABCDEF - Referral #123456')
+    })
   })
 
   describe('componentDidMount', () => {
