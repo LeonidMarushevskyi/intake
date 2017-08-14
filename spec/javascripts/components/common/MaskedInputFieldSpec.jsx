@@ -47,7 +47,7 @@ describe('MaskedInputField', () => {
 
     it('renders a MaskedInput field', () => {
       expect(maskedInput.props().mask).toEqual('111-11-1111')
-      expect(maskedInput.props().placeholder).toEqual(undefined)
+      expect(maskedInput.props().placeholder).toEqual('')
     })
 
     it('renders the input value', () => {
@@ -75,23 +75,30 @@ describe('MaskedInputField', () => {
   })
 
   describe('with placeholder props', () => {
+    let event
+    let maskedInput
     beforeEach(() => {
-      const propsWithMaskedInput = {
-        ...props,
-        blurPlaceholder: 'I feel lonely :( ',
-        focusPlaceholder: 'I like attention :) ',
-      }
-      component = shallow(<MaskedInputField {...propsWithMaskedInput} onChange={onChange} onBlur={onBlur} />)
+      event = {target: {placeholder: null}}
+      component = shallow(<MaskedInputField {...props} placeholder={'111'}/>)
       maskedInput = component.find('MaskedInput')
     })
 
-    it('assigns placeholder props properly', () => {
-      const event = {target: {placeholder: null}}
-      expect(maskedInput.props().mask).toEqual('111-11-1111')
-      maskedInput.props().onBlur(event)
-      expect(event.target.placeholder).toEqual('I feel lonely :( ')
-      maskedInput.props().onFocus(event)
-      expect(event.target.placeholder).toEqual('I like attention :) ')
+    it('initiates MaskedInput with no placeholder', () => {
+      expect(maskedInput.props().placeholder).toEqual('')
+    })
+
+    describe('onBlur', () => {
+      it('sets the placeholder to empty string', () => {
+        maskedInput.simulate('blur', event)
+        expect(event.target.placeholder).toEqual('')
+      })
+    })
+
+    describe('onFocus', () => {
+      it('resets the placeholder', () => {
+        maskedInput.simulate('focus', event)
+        expect(event.target.placeholder).toEqual('111')
+      })
     })
   })
 

@@ -157,9 +157,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
             id={`participant-${participant.get('id')}-ssn`}
             label='Social security number'
             mask='111-11-1111'
-            placeholder=''
-            blurPlaceholder=''
-            focusPlaceholder='___-__-____'
+            placeholder='___-__-____'
             value={participant.get('ssn') || ''}
             onChange={(event) => onChange(['ssn'], event.target.value || null)}
           />
