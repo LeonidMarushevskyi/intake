@@ -19,7 +19,6 @@ feature 'Participant Phone Number' do
       :get,
       host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
-
   end
 
   scenario 'adding a new phone number to a participant' do
@@ -129,4 +128,3 @@ feature 'Participant Phone Number' do
     end
   end
 end
-
