@@ -22,10 +22,11 @@ feature 'Submit Screening' do
     end
 
     context 'when successfully submmitting referral' do
+      let(:referral_id) { FFaker::Guid.guid }
       let(:screening_with_referral) do
         FactoryGirl.create(
           :screening,
-          referral_id: FFaker::Guid.guid
+          referral_id: referral_id
         )
       end
       before do
@@ -45,13 +46,13 @@ feature 'Submit Screening' do
         ).to have_been_made
 
         expect(alert_dialog.text).to eq(
-          "Successfully created referral #{screening_with_referral.referral_id}"
+          "Successfully created referral #{referral_id}"
         )
         alert_dialog.accept
 
-        within '#submitModal' do
-          expect(page).to have_content 'You have completed the process to submit a screening.'
-        end
+        expect(page).not_to have_content '#submitModal'
+        expect(page).to have_content " - Referral ##{referral_id}"
+        expect(page).not_to have_content 'Submit'
       end
     end
 
@@ -75,9 +76,9 @@ feature 'Submit Screening' do
         expect(alert_dialog.text).to include(error_json)
         alert_dialog.accept
 
-        within '#submitModal' do
-          expect(page).to have_content 'You have completed the process to submit a screening.'
-        end
+        expect(page).not_to have_content '#submitModal'
+        expect(page).not_to have_content ' - Referral #'
+        expect(page).to have_content 'Submit'
       end
     end
   end
