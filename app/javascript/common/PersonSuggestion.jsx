@@ -11,7 +11,7 @@ import sanitizeHtml from 'sanitize-html'
 
 const PersonSuggestion = ({
   firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races,
-  ethnicity, ssn, address, phoneNumber, legacyDescriptor,
+  ethnicity, ssn, address, phoneNumber, legacyDescriptor, isSensitive,
 }) => {
   const fullName = [firstName, middleName, lastName, NAME_SUFFIXES[nameSuffix]].filter(Boolean).join(' ')
   const sanitizedField = (field) => ({
@@ -26,6 +26,7 @@ const PersonSuggestion = ({
     <div className='row'>
       <div className='col-md-2'>
         <img src='/assets/default-profile.svg' />
+        {isSensitive && 'Sensitive'}
       </div>
       <div className='col-md-10'>
         <div className='row'>
@@ -62,6 +63,7 @@ PersonSuggestion.propTypes = {
   ethnicity: PropTypes.object,
   firstName: PropTypes.string,
   gender: PropTypes.string,
+  isSensitive: PropTypes.bool,
   languages: PropTypes.array,
   lastName: PropTypes.string,
   legacyDescriptor: PropTypes.object,

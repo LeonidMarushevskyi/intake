@@ -27,6 +27,20 @@ describe('PersonSuggestion', () => {
     expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
   })
 
+  describe('sensitive', () => {
+    it('renders when is_sensitive', () => {
+      const props = {isSensitive: true}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain('Sensitive')
+    })
+
+    it('does not render when not is_sensitive', () => {
+      const props = {isSensitive: false}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).not.toContain('Sensitive')
+    })
+  })
+
   describe('ssn', () => {
     it('renders when present', () => {
       const props = {ssn: '123-456-7890'}
