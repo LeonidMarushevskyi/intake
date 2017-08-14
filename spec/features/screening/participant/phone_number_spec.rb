@@ -110,5 +110,23 @@ feature 'Participant Phone Number' do
       .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
   end
+
+  scenario 'filling phone number with a combinaiton of valid and invalid characters' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      within '.card-body' do
+        fill_in 'Phone Number', with: 'as(343ld81103kjs809u38'
+        expect(page).to have_field('Phone Number', with: '(343)811-0380')
+        click_button 'Save'
+      end
+
+      marge.phone_numbers.first.number = '3438110380'
+      expect(
+        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(json_body(as_json_without_root_id(marge)))
+      ).to have_been_made
+    end
+  end
 end
 
