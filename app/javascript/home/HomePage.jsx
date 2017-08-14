@@ -29,11 +29,7 @@ export class HomePage extends React.Component {
     return (
       <div className='row gap-top'>
         <div className='col-md-3'>
-          <ul className='unstyled-list'>
-            <li className='half-pad-top'>
-              <Link to='#' className='row' onClick={() => { this.props.actions.createScreening() }}>Start Screening</Link>
-            </li>
-          </ul>
+          <Link to='#' onClick={() => { this.props.actions.createScreening() }}>Start Screening</Link>
         </div>
         <div className='col-md-9'>
           { IntakeConfig.isFeatureInactive('release_two') && <ScreeningsTable screenings={this.state.screenings} /> }
