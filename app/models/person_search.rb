@@ -5,4 +5,5 @@ class PersonSearch < Person
   attribute :highlight
   attribute :legacy_source_table
   attribute :legacy_descriptor
+  attribute :is_sensitive
 end

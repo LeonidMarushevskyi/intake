@@ -68,7 +68,8 @@ feature 'searching a participant in autocompleter' do
         { race: 'White', race_detail: 'European' },
         { race: 'American Indian or Alaska Native' }
       ],
-      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' },
+      is_sensitive: true
     )
   end
   before do
@@ -104,6 +105,7 @@ feature 'searching a participant in autocompleter' do
         expect(page).to_not have_content '123-23-1234'
         expect(page).to have_content 'Work'
         expect(page).to have_content '123 Fake St, Springfield, NY 12345'
+        expect(page).to have_content 'Sensitive'
       end
     end
 
@@ -277,6 +279,23 @@ feature 'searching a participant in autocompleter' do
       within '.react-autosuggest__suggestions-list em' do
         expect(page).to have_content '566'
         expect(page).to_not have_content '-23-8765'
+      end
+    end
+
+    scenario 'person who is not sensitive' do
+      %w[Ma Mar Marg Marge].each do |search_text|
+        stub_request(
+          :get,
+          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+        ).and_return(json_body([person].to_json, status: 200))
+      end
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Marge'
+      end
+
+      within 'li', text: 'Marge Jacqueline Simpson MD' do
+        expect(page).to_not have_content 'Sensitive'
       end
     end
   end
