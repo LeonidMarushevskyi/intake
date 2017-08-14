@@ -283,18 +283,24 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person who is not sensitive' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        is_sensitive: false
+      )
+
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
-        ).and_return(json_body([person].to_json, status: 200))
+        ).and_return(json_body([marge].to_json, status: 200))
       end
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
       end
 
-      within 'li', text: 'Marge Jacqueline Simpson MD' do
+      within 'li', text: 'Marge' do
         expect(page).to_not have_content 'Sensitive'
       end
     end

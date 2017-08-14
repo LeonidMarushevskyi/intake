@@ -167,6 +167,7 @@ describe('<Autocompleter />', () => {
           legacy_ui_id: '123-456-789',
           legacy_table_description: 'Client',
         },
+        is_sensitive: true,
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
       expect(attributes.firstName).toEqual('Bart')
@@ -200,6 +201,7 @@ describe('<Autocompleter />', () => {
         number: '994-907-6774',
         type: 'Home',
       })
+      expect(attributes.isSensitive).toEqual(true)
     })
 
     it('maps the first address and phone number result to addressi and phone number', () => {
@@ -324,6 +326,7 @@ describe('<Autocompleter />', () => {
           type: 'Home',
         }],
         legacy_descriptor: {},
+        is_sensitive: false,
       }]
       stubSuggestions(result)
 
@@ -358,6 +361,7 @@ describe('<Autocompleter />', () => {
           number: '994-907-6774',
           type: 'Home',
         },
+        isSensitive: false,
       })
     })
   })
