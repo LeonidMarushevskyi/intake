@@ -41,6 +41,20 @@ describe('PersonSuggestion', () => {
     })
   })
 
+  describe('sealed', () => {
+    it('renders when is_sealed', () => {
+      const props = {isSealed: true}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).toContain('Sealed')
+    })
+
+    it('does not render when not is_sealed', () => {
+      const props = {isSealed: false}
+      const component = shallow(<PersonSuggestion {...props} />)
+      expect(component.html()).not.toContain('Sealed')
+    })
+  })
+
   describe('ssn', () => {
     it('renders when present', () => {
       const props = {ssn: '123-456-7890'}
