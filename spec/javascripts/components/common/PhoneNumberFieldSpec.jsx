@@ -15,10 +15,11 @@ describe('PhoneNumberField', () => {
   })
 
   it('renders the phone number field', () => {
-    const numberField = component.find('InputField')
+    const numberField = component.find('MaskedInputField')
     expect(numberField.props().value).toEqual('222-222-2222')
+    expect(numberField.props().mask).toEqual('(111)111-1111')
     expect(numberField.props().type).toEqual('tel')
-    expect(numberField.props().placeholder).toEqual('Ex: 910-435-3223')
+    expect(numberField.props().placeholder).toEqual('(___)___-____')
     expect(numberField.props().label).toEqual('Phone Number')
     expect(numberField.props().maxLength).toEqual('13')
   })
@@ -29,7 +30,7 @@ describe('PhoneNumberField', () => {
   })
 
   it('calls onChange when phone number field has changed', () => {
-    component.find('InputField').simulate('change', {target: {value: '333-333-3333'}})
+    component.find('MaskedInputField').simulate('change', {target: {value: '333-333-3333'}})
     expect(onChange).toHaveBeenCalledWith('number', '333-333-3333')
   })
 

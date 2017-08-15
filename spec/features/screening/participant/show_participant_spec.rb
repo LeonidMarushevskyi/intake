@@ -12,21 +12,21 @@ feature 'Show Screening' do
     zip: '12345',
     type: 'Home'
   )
-  phone_number = FactoryGirl.create(
-    :phone_number
-  )
+  phone_number = FactoryGirl.create(:phone_number, number: '4567891234', type: 'Home')
 
   date_of_birth = rand(100..1000).weeks.ago
 
   existing_participant = FactoryGirl.create(
     :participant,
     date_of_birth: date_of_birth.to_s(:db),
+    gender: 'male',
     middle_name: 'Jay',
     name_suffix: 'esq',
     ssn: '123-__-____',
     addresses: [address],
     roles: ['Victim', 'Mandated Reporter'],
-    phone_numbers: [phone_number]
+    phone_numbers: [phone_number],
+    languages: ['Korean', 'Lao', 'Hawaiian']
   )
   existing_screening = FactoryGirl.create(
     :screening,
@@ -61,12 +61,12 @@ feature 'Show Screening' do
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
-        expect(page).to have_content(phone_number.number)
-        expect(page).to have_content(phone_number.type)
-        expect(page).to have_content(existing_participant.gender.capitalize)
+        expect(page).to have_content('(456)789-1234')
+        expect(page).to have_content('Home')
+        expect(page).to have_content('Male')
         expect(page).to have_content('Victim')
         expect(page).to have_content('Mandated Reporter')
-        expect(page).to have_content(existing_participant.languages.join(', '))
+        expect(page).to have_content('Korean, Lao, Hawaiian')
         expect(page).to have_content(date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_content('123-  -    ')
         expect(page).to have_content(address.street_address)

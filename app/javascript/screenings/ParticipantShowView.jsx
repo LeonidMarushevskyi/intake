@@ -14,6 +14,13 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
 
+  const phoneNumberFormatter = (phoneNumber) => {
+    // Data is Sanitized onSave but this show view gets rendered before api request come back.
+    // As a result, we're stuck with data with presentation.
+    phoneNumber = phoneNumber.replace(/[^0-9]/g,'')
+    return `(${phoneNumber.substr(0,3)})${phoneNumber.substr(3,3)}-${phoneNumber.substr(6,4)}`
+  }
+
   return (
   <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
     <div className='card-header'>
@@ -79,7 +86,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
           <div key={index}>
             <div className='row gap-top' id={`phone-number-${phoneNumber.get('id')}`}>
             <ShowField gridClassName='col-md-6' label='Phone Number'>
-              {phoneNumber.get('number')}
+              {phoneNumberFormatter(phoneNumber.get('number'))}
             </ShowField>
             <ShowField gridClassName='col-md-6' label='Phone Number Type'>
               {phoneNumber.get('type')}

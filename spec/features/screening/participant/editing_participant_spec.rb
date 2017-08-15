@@ -7,11 +7,12 @@ feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
   let(:marge_roles) { %w[Victim Perpetrator] }
+  let(:phone_number) { FactoryGirl.create(:phone_number, number: '1234567890', type: 'Work') }
   let(:marge) do
     FactoryGirl.create(
       :participant,
       :with_complete_address,
-      :with_complete_phone_number,
+      phone_numbers: [phone_number],
       middle_name: 'Jacqueline',
       name_suffix: 'sr',
       ssn: old_ssn,
@@ -52,8 +53,8 @@ feature 'Edit Screening' do
         expect(page).to have_field('Middle Name', with: marge.middle_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
         expect(page).to have_field('Suffix', with: marge.name_suffix)
-        expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
-        expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
+        expect(page).to have_field('Phone Number', with: '(123)456-7890')
+        expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
         has_react_select_field('Language(s)', with: marge.languages)
         # Date of birth should not have datepicker, but limiting by field ID will break when

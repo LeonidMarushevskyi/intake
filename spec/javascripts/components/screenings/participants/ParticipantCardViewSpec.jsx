@@ -38,7 +38,9 @@ describe('ParticipantCardView', () => {
   describe('#onSave', () => {
     let instance
     let onSave
-    const participant = Immutable.fromJS({id: '123'})
+    const phoneNumberOne = {number: '(123)345-8899'}
+    const phoneNumberTwo = {number: '1112223333'}
+    const participant = Immutable.fromJS({id: '123', phone_numbers: [phoneNumberOne, phoneNumberTwo]})
     beforeEach(() => {
       onSave = jasmine.createSpy('onSave')
       const component = shallow(<ParticipantCardView {...{participant, onSave, mode: 'edit'}} />)
@@ -50,8 +52,21 @@ describe('ParticipantCardView', () => {
       expect(instance.state.mode).toEqual('show')
     })
 
-    it('calls onSave from props with participant', () => {
-      expect(onSave).toHaveBeenCalledWith(participant)
+    it('calls onSave', () => {
+      expect(onSave).toHaveBeenCalled()
+    })
+
+    it('sanitizes participants phone numbers', () => {
+      expect(onSave.calls.argsFor(0)[0].toJS()).toEqual(
+        {
+          id: '123',
+          phone_numbers: [{
+            number: '1233458899',
+          }, {
+            number: '1112223333',
+          }],
+        }
+      )
     })
   })
 
