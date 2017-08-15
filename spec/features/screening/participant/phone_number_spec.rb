@@ -33,12 +33,9 @@ feature 'Participant Phone Number' do
 
     within edit_participant_card_selector(marge.id) do
       click_button 'Add new phone number'
-
-      within '#phone-numbers' do
-        within all('.list-item').last do
-          fill_in 'Phone Number', with: '7894561245'
-          select 'Home', from: 'Phone Number Type'
-        end
+      within all('.list-item').last do
+        fill_in 'Phone Number', with: '7894561245'
+        select 'Home', from: 'Phone Number Type'
       end
 
       click_button 'Save'
@@ -66,11 +63,9 @@ feature 'Participant Phone Number' do
       .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
-      within '#phone-numbers' do
-        expect(page).to have_field('Phone Number', with: '(917)555-5555')
-        expect(page).to have_field('Phone Number Type', with: 'Work')
-        fill_in 'Phone Number', with: '789-456-1245'
-      end
+      expect(page).to have_field('Phone Number', with: '(917)555-5555')
+      expect(page).to have_field('Phone Number Type', with: 'Work')
+      fill_in 'Phone Number', with: '789-456-1245'
 
       click_button 'Save'
     end
@@ -96,9 +91,7 @@ feature 'Participant Phone Number' do
       .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
-      within '#phone-numbers' do
-        click_link 'Delete phone number'
-      end
+      click_link 'Delete phone number'
       expect(page).to_not have_content('(917)555-5555')
 
       click_button 'Save'

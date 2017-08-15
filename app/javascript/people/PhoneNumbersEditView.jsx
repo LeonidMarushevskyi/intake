@@ -18,7 +18,7 @@ const PhoneNumbersEditView = ({onChange, phoneNumbers}) => {
   )
 
   return (
-    <div id='phone-numbers'>
+    <div>
       {
         phoneNumbers.map((numbers, index) => {
           const {number, type} = numbers.toJS()
