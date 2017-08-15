@@ -18,6 +18,9 @@ import {Provider} from 'react-redux'
 
 import Autocompleter from 'common/Autocompleter'
 
+// CSS needed
+import 'bootstrap/dist/css/bootstrap'
+
 const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(
