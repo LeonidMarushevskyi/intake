@@ -67,6 +67,7 @@ export default class Autocompleter extends React.Component {
       middle_name, name_suffix, legacy_descriptor,
       gender, languages, races, ethnicity,
       addresses, phone_numbers, highlight,
+      sensitive
     } = suggestion
     const first = 0
     const address = addresses[first] || null
@@ -110,6 +111,7 @@ export default class Autocompleter extends React.Component {
         number: phoneNumber.number,
         type: phoneNumber.type,
       },
+      isSensitive: sensitive,
     }
   }
 
