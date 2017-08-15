@@ -84,15 +84,15 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
       {
         participant.get('phone_numbers') && participant.get('phone_numbers').map((phoneNumber, index) => (
           <div key={index}>
-            <div className='row gap-top' id={`phone-number-${phoneNumber.get('id')}`}>
-            <ShowField gridClassName='col-md-6' label='Phone Number'>
-              {phoneNumberFormatter(phoneNumber.get('number'))}
-            </ShowField>
-            <ShowField gridClassName='col-md-6' label='Phone Number Type'>
-              {phoneNumber.get('type')}
-            </ShowField>
-          </div>
+            <div className='row gap-top'>
+              <ShowField gridClassName='col-md-6' label='Phone Number'>
+                {phoneNumberFormatter(phoneNumber.get('number'))}
+              </ShowField>
+              <ShowField gridClassName='col-md-6' label='Phone Number Type'>
+                {phoneNumber.get('type')}
+              </ShowField>
             </div>
+          </div>
           ))
         }
       </div>

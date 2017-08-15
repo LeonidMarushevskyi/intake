@@ -85,9 +85,7 @@ feature 'Participant Phone Number' do
     visit screening_path(id: screening.id)
 
     within show_participant_card_selector(marge.id) do
-      within "#phone-number-#{existing_phone_number.id}" do
-        expect(page).to have_content('(917)555-5555')
-      end
+      expect(page).to have_content('(917)555-5555')
 
       click_link 'Edit participant'
     end
