@@ -1,4 +1,3 @@
-import * as personActions from 'actions/personActions'
 import * as screeningActions from 'actions/screeningActions'
 import Immutable from 'immutable'
 import rootReducer from 'reducers'
@@ -9,7 +8,6 @@ describe('Store', () => {
   let store
   beforeEach(() => {
     initialState = {
-      person: Immutable.Map(),
       screening: Immutable.Map(),
       participants: Immutable.List(),
       relationships: Immutable.List(),
@@ -20,76 +18,6 @@ describe('Store', () => {
 
   it('has initial state', () => {
     expect(store.getState()).toEqual(initialState)
-  })
-
-  it('handles fetch person', () => {
-    expect(store.getState()).toEqual(initialState)
-    const person = {
-      id: '1',
-      first_name: 'Kevin',
-      last_name: 'McCallister',
-      gender: 'male',
-      date_of_birth: '11/16/1990',
-      ssn: '111223333',
-      address: {
-        id: '3',
-        street_address: '671 Lincoln Avenue',
-        city: 'Winnetka',
-        state: 'IL',
-        zip: '60093',
-      },
-    }
-    const action = personActions.fetchPersonSuccess(person)
-    store.dispatch(action)
-    expect(store.getState().person.toJS()).toEqual(person)
-  })
-
-  it('handles create person', () => {
-    const person = {
-      id: '1',
-      first_name: 'Kevin',
-      last_name: 'McCallister',
-      gender: 'male',
-      date_of_birth: '11/16/1990',
-      ssn: '111223333',
-      address: {
-        id: '3',
-        street_address: '671 Lincoln Avenue',
-        city: 'Winnetka',
-        state: 'IL',
-        zip: '60093',
-      },
-    }
-    const action = personActions.createPersonSuccess(person)
-    store.dispatch(action)
-    expect(store.getState().person.toJS()).toEqual(person)
-  })
-
-  it('handles update person', () => {
-    initialState = {
-      ...initialState,
-      person: Immutable.fromJS({
-        id: '1',
-        first_name: 'Kevin',
-        last_name: 'McCallister',
-        gender: 'female',
-        date_of_birth: '11/16/1990',
-        ssn: '111223333',
-        address: {
-          id: '3',
-          street_address: '671 Lincoln Avenue',
-          city: 'Winnetka',
-          state: 'IL',
-          zip: '60093',
-        },
-      }),
-    }
-    store = createStore(rootReducer, initialState)
-    expect(store.getState()).toEqual(initialState)
-    const updatedPerson = initialState.person.set('first_name', 'Bart').toJS()
-    const action = personActions.updatePersonSuccess(updatedPerson)
-    store.dispatch(action)
-    expect(store.getState().person.toJS()).toEqual(updatedPerson)
   })
 
   it('handles fetch screening', () => {

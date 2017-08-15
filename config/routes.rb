@@ -49,16 +49,8 @@ Rails.application.routes.draw do
           get 'search'
         end
       end
-
-      resources :people,
-        only: %i[create update show],
-        constraints: Routes::InactiveReleaseOneAndTwoConstraint
     end
   end
-
-  resources :people,
-    only: %i[new edit show],
-    constraints: Routes::InactiveReleaseOneAndTwoConstraint
 
   resources :version, only: :index
 

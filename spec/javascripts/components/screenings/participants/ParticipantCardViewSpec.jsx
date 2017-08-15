@@ -85,7 +85,14 @@ describe('ParticipantCardView', () => {
     const onChange = jasmine.createSpy('onCancel')
     const onSave = jasmine.createSpy('onCancel')
     const participantId = '5'
-    const participant = Immutable.fromJS({id: participantId, first_name: 'Tony', last_name: 'Hawk', ssn: 'ssn-1', roles: []})
+    const participant = Immutable.fromJS({
+      id: participantId,
+      first_name: 'Tony',
+      last_name: 'Hawk',
+      ssn: 'ssn-1',
+      roles: [],
+      phone_numbers: [],
+    })
 
     beforeEach(() => {
       component = shallow(
