@@ -561,10 +561,13 @@ describe('ScreeningPage', () => {
     })
   })
 
-  it('renders the submit button', () => {
-    const component = shallow(<ScreeningPage {...requiredProps} />)
-    component.setState({loaded: true})
-    expect(component.find('ScreeningSubmitButton').length).toEqual(1)
+  describe('when submit referral and release two are both inactive', () => {
+    it('renders the submit button with a modal', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
+      expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
+    })
   })
 
   describe('cardSave', () => {

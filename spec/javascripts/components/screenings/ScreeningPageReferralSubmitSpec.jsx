@@ -1,0 +1,60 @@
+import * as IntakeConfig from 'common/config'
+import Immutable from 'immutable'
+import React from 'react'
+import {ScreeningPage} from 'screenings/ScreeningPage'
+import {shallow} from 'enzyme'
+
+describe('ScreeningPage when referral_submit feature is active', () => {
+  const basePath = '/intake'
+  const sdmPath = 'https://ca.sdmdata.org'
+
+  const requiredScreeningAttributes = {
+    allegations: [],
+    id: '123456',
+    safety_alerts: [],
+    cross_reports: [],
+  }
+
+  const requiredProps = {
+    actions: {fetchScreening: () => null},
+    params: {id: '1'},
+    participants: Immutable.List(),
+    screening: Immutable.fromJS(requiredScreeningAttributes),
+    involvements: Immutable.fromJS({screenings: []}),
+    relationships: Immutable.List(),
+    mode: 'edit',
+  }
+
+  const isFeatureActiveFake = (feature) => {
+    if (feature === 'referral_submit') {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const isFeatureInactiveFake = (feature) => {
+    if (feature === 'referral_submit') {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.callFake(isFeatureInactiveFake)
+    spyOn(IntakeConfig, 'isFeatureActive').and.callFake(isFeatureActiveFake)
+    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
+    spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
+  })
+
+  describe('when submit referral is active, but release two is not', () => {
+    it('renders the submit button without a modal', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('ScreeningSubmitButton').exists()).toEqual(true)
+      expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
+    })
+  })
+})
+
