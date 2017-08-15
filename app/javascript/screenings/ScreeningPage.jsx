@@ -340,6 +340,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
+            !mergedScreening.get('referral_id') &&
             <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
           }
           {

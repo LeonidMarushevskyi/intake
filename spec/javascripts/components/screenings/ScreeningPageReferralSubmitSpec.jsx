@@ -48,12 +48,33 @@ describe('ScreeningPage when referral_submit feature is active', () => {
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
-  describe('when submit referral is active, but release two is not', () => {
-    it('renders the submit button without a modal', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
-      expect(component.find('ScreeningSubmitButton').exists()).toEqual(true)
-      expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
+  describe('when release two is not active', () => {
+    describe('when the screning does not have a referral id', () => {
+      it('renders the submit button without a modal', () => {
+        const component = shallow(<ScreeningPage {...requiredProps} />)
+        component.setState({loaded: true})
+        expect(component.find('ScreeningSubmitButton').exists()).toEqual(true)
+        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
+      })
+    })
+
+    describe('when the screening has a referral id', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABCDEF',
+      }
+
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+      }
+
+      it('renders neither submit button', () => {
+        const component = shallow(<ScreeningPage {...props} />)
+        component.setState({loaded: true})
+        expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
+        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
+      })
     })
   })
 })
