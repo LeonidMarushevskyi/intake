@@ -11,8 +11,8 @@ describe Api::V1::PeopleController do
   describe '#search' do
     it 'searches for people and renders a json with person attributes' do
       people = [
-        Person.new(first_name: 'Bart', last_name: 'Simpson'),
-        Person.new(first_name: 'John', last_name: 'Smith')
+        PersonSearch.new(first_name: 'Bart', last_name: 'Simpson'),
+        PersonSearch.new(first_name: 'John', last_name: 'Smith')
       ]
       allow(PersonSearchRepository).to receive(:search)
         .with(security_token, 'foobarbaz')
