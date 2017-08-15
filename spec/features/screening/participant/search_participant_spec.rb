@@ -69,7 +69,7 @@ feature 'searching a participant in autocompleter' do
         { race: 'American Indian or Alaska Native' }
       ],
       ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' },
-      is_sensitive: true
+      sensitive: true
     )
   end
   before do
@@ -286,10 +286,10 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
-        is_sensitive: false
+        sensitive: false
       )
 
-      %w[Ma Mar Marg Marge].each do |search_text|
+      %w[Ma].each do |search_text|
         stub_request(
           :get,
           host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
@@ -297,7 +297,7 @@ feature 'searching a participant in autocompleter' do
       end
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Marge'
+        fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
 
       within 'li', text: 'Marge' do

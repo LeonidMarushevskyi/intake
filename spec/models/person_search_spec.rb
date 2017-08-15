@@ -34,7 +34,7 @@ describe PersonSearch do
           first_name: '<em>Hom</em>er'
         },
         legacy_descriptor: legacy_descriptor,
-        is_sensitive: true
+        sensitive: true
       }.with_indifferent_access
       expect(described_class.new(attributes).as_json).to eq({
         id: '1',
@@ -60,7 +60,7 @@ describe PersonSearch do
         legacy_descriptor: legacy_descriptor.merge(
           legacy_table_description: 'Definitely on purpose!'
         ),
-        is_sensitive: true
+        sensitive: true
       }.with_indifferent_access)
     end
   end

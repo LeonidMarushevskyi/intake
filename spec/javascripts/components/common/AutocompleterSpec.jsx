@@ -167,7 +167,7 @@ describe('<Autocompleter />', () => {
           legacy_ui_id: '123-456-789',
           legacy_table_description: 'Client',
         },
-        is_sensitive: true,
+        sensitive: true,
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
       expect(attributes.firstName).toEqual('Bart')
@@ -326,7 +326,7 @@ describe('<Autocompleter />', () => {
           type: 'Home',
         }],
         legacy_descriptor: {},
-        is_sensitive: false,
+        sensitive: false,
       }]
       stubSuggestions(result)
 

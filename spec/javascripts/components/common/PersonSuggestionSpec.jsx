@@ -28,13 +28,13 @@ describe('PersonSuggestion', () => {
   })
 
   describe('sensitive', () => {
-    it('renders when is_sensitive', () => {
+    it('renders when sensitive', () => {
       const props = {isSensitive: true}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).toContain('Sensitive')
     })
 
-    it('does not render when not is_sensitive', () => {
+    it('does not render when not sensitive', () => {
       const props = {isSensitive: false}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).not.toContain('Sensitive')
