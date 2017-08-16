@@ -36,6 +36,16 @@ feature 'Edit Screening' do
     ).and_return(json_body([].to_json, status: 200))
   end
 
+  scenario 'character limitations by field' do
+    visit edit_screening_path(id: screening.id)
+    within edit_participant_card_selector(marge.id) do
+      fill_in 'Zip', with: '9i5%6Y1 8-_3.6+9*7='
+      expect(page).to have_field('Zip', with: '95618-3697')
+      fill_in 'Zip', with: '9i5%6Y1 8'
+      expect(page).to have_field('Zip', with: '95618')
+    end
+  end
+
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
