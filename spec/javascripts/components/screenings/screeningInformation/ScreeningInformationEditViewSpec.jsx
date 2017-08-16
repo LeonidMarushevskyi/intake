@@ -49,6 +49,8 @@ describe('ScreeningInformationEditView', () => {
       const assigneeField = component.find('InputField[label="Assigned Social Worker"]')
       expect(assigneeField.props().value).toEqual('Michael Bluth')
       expect(assigneeField.props().maxLength).toEqual('64')
+      // Allows alpha and space
+      expect(assigneeField.props().allowCharacters).toEqual(/[a-zA-Z\s]/)
     })
 
     it('renders the screening start time field', () => {

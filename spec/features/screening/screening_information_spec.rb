@@ -28,7 +28,9 @@ feature 'screening information card' do
   scenario 'character limitations by field' do
     within '#screening-information-card.edit' do
       fill_in 'Title/Name of Screening', with: character_buffet
+      fill_in 'Assigned Social Worker', with: character_buffet
       expect(page).to have_field('Title/Name of Screening', with: 'C am-ron')
+      expect(page).to have_field('Assigned Social Worker', with: 'C amron')
     end
   end
 

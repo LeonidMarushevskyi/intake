@@ -23,6 +23,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
           value={screening.get('name') || ''}
         />
         <InputField
+          allowCharacters={/[a-zA-Z\s]/}
           disabled={Boolean(screening.get('staff_id'))}
           errors={errors.get('assignee')}
           gridClassName='col-md-6'
