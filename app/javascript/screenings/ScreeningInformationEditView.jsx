@@ -13,6 +13,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
     <div className='card-body'>
       <div className='row'>
         <InputField
+          allowCharacters={/[a-zA-Z\s\-]/}
           gridClassName='col-md-6'
           id='name'
           label='Title/Name of Screening'

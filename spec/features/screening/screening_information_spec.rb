@@ -16,11 +16,20 @@ feature 'screening information card' do
     )
   end
 
+  let(:character_buffet) { 'C am-ron1234567890!@#$%^&*(),./;"[]' }
+
   before(:each) do
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
+  end
+
+  scenario 'character limitations by field' do
+    within '#screening-information-card.edit' do
+      fill_in 'Title/Name of Screening', with: character_buffet
+      expect(page).to have_field('Title/Name of Screening', with: 'C am-ron')
+    end
   end
 
   scenario 'user edits screening details and save the card' do
