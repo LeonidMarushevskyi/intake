@@ -14,7 +14,6 @@ export default class ParticipantCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSave = this.onSave.bind(this)
-    this.sanitizePhoneNumbers = this.sanitizePhoneNumbers.bind(this)
   }
 
   onEdit(event) {
@@ -27,16 +26,13 @@ export default class ParticipantCardView extends React.Component {
     this.props.onCancel(this.props.participant.get('id'))
   }
 
-  sanitizePhoneNumbers(participant) {
-    return participant.update('phone_numbers', (phoneNumbers) =>
-      phoneNumbers.map((phoneNumber) =>
-        phoneNumber.update('number', (number) => number.replace(/[^0-9]/g,''))
-      )
-    )
-  }
-
   onSave() {
-    this.props.onSave(this.sanitizePhoneNumbers(this.props.participant))
+    const onlyNumbers = (number) => number.replace(/[^0-9]/g,'')
+    const sanitizedParticipant = this.props.participant
+      .update('phone_numbers', (phoneNumbers) =>
+        phoneNumbers.map((phoneNumber) => phoneNumber.update('number', onlyNumbers)
+      ))
+    this.props.onSave(sanitizedParticipant)
     this.setState({mode: 'show'})
   }
 
