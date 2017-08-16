@@ -59,6 +59,8 @@ describe('IncidentInformationEditView', () => {
     const zipField = component.find('InputField[label="Zip"]')
     expect(zipField.props().value).toEqual('95814')
     expect(zipField.props().maxLength).toEqual('10')
+    // Allow digits and hyphen
+    expect(zipField.props().allowCharacters).toEqual(/[0-9\-]/)
   })
 
   it('renders the state field', () => {

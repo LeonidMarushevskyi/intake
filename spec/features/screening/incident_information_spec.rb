@@ -45,6 +45,15 @@ feature 'screening incident information card' do
     end
   end
 
+  scenario 'character limitations by field' do
+    within '#incident-information-card' do
+      fill_in 'Zip', with: '9i5%6Y1 8-_3.6+9*7='
+      expect(page).to have_field('Zip', with: '95618-3697')
+      fill_in 'Zip', with: '9i5%6Y1 8'
+      expect(page).to have_field('Zip', with: '95618')
+    end
+  end
+
   scenario 'user edits incident card from screening edit page and saves' do
     within '#incident-information-card.edit' do
       expect(page).to have_field('Incident Date', with: '08/11/2016')
