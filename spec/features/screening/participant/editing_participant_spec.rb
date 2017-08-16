@@ -7,11 +7,12 @@ feature 'Edit Screening' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
   let(:marge_roles) { %w[Victim Perpetrator] }
+  let(:phone_number) { FactoryGirl.create(:phone_number, number: '1234567890', type: 'Work') }
   let(:marge) do
     FactoryGirl.create(
       :participant,
       :with_complete_address,
-      :with_complete_phone_number,
+      phone_numbers: [phone_number],
       middle_name: 'Jacqueline',
       name_suffix: 'sr',
       ssn: old_ssn,
@@ -52,8 +53,8 @@ feature 'Edit Screening' do
         expect(page).to have_field('Middle Name', with: marge.middle_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
         expect(page).to have_field('Suffix', with: marge.name_suffix)
-        expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
-        expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
+        expect(page).to have_field('Phone Number', with: '(123)456-7890')
+        expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
         has_react_select_field('Language(s)', with: marge.languages)
         # Date of birth should not have datepicker, but limiting by field ID will break when
@@ -157,76 +158,6 @@ feature 'Edit Screening' do
           expect(page).to have_field('Social security number', with: '123-45-6789')
         end
       end
-    end
-  end
-
-  scenario 'editing and then removing a phone number from a participant' do
-    visit edit_screening_path(id: screening.id)
-    old_phone = marge.phone_numbers.first.number
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        expect(page).to have_selector('#phone-numbers')
-        expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
-        expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
-        expect(page).to have_button 'Cancel'
-        expect(page).to have_button 'Save'
-        fill_in 'Phone Number', with: '789-456-1245'
-      end
-
-      marge.phone_numbers.first.number = '789-456-1245'
-
-      stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
-    end
-
-    within show_participant_card_selector(marge.id) do
-      within '.card-body' do
-        expect(page).to have_selector("#phone-number-#{marge.phone_numbers.first.id}")
-        expect(page).to have_content('789-456-1245')
-        expect(page).to_not have_content(old_phone)
-      end
-
-      within '.card-header' do
-        click_link 'Edit participant'
-      end
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        within '#phone-numbers' do
-          click_link 'Delete phone number'
-        end
-
-        expect(page).to_not have_content('789-456-1245')
-      end
-    end
-
-    marge.phone_numbers = []
-
-    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(body: as_json_without_root_id(marge))
-      .and_return(json_body(marge.to_json, status: 200))
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
     end
   end
 

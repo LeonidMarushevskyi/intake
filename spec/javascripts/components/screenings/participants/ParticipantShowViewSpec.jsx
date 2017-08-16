@@ -211,19 +211,19 @@ describe('ParticipantShowView', () => {
     })
 
     describe('when participant has phone numbers', () => {
-      it('renders the participant with phone numbers', () => {
+      it('renders the participant with formatted phone numbers', () => {
         const participant = Immutable.fromJS({
           ...requiredParticipantProps,
           id: '7',
           phone_numbers: [{
             id: '3',
-            number: '789-456-1235',
+            number: '7894561235',
             type: 'Work',
           }],
         })
         const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}} />)
         expect(component.find('ShowField[label="Phone Number"]').html())
-          .toContain('789-456-1235')
+          .toContain('(789)456-1235')
         expect(component.find('ShowField[label="Phone Number Type"]').html())
           .toContain('Work')
       })
@@ -393,13 +393,13 @@ describe('ParticipantShowView', () => {
           id: '7',
           phone_numbers: [{
             id: '3',
-            number: '789-456-1235',
+            number: '7894561235',
             type: 'Work',
           }],
         })
         const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}} />)
         expect(component.find('ShowField[label="Phone Number"]').html())
-          .toContain('789-456-1235')
+          .toContain('(789)456-1235')
         expect(component.find('ShowField[label="Phone Number Type"]').html())
           .toContain('Work')
       })

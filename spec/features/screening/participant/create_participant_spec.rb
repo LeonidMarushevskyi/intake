@@ -46,7 +46,7 @@ feature 'Edit Screening' do
   let(:marge_phone_number) do
     FactoryGirl.create(
       :phone_number,
-      number: '971-287-6774',
+      number: '9712876774',
       type: 'Home'
     )
   end
@@ -166,7 +166,7 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_field('First Name', with: marge.first_name)
         expect(page).to have_field('Last Name', with: marge.last_name)
-        expect(page).to have_field('Phone Number', with: marge.phone_numbers.first.number)
+        expect(page).to have_field('Phone Number', with: '(971)287-6774')
         expect(page).to have_field('Phone Number Type', with: marge.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: marge.gender)
         has_react_select_field('Language(s)', with: marge.languages)
@@ -215,7 +215,7 @@ feature 'Edit Screening' do
         within '.card-body' do
           expect(page).to have_content(marge.first_name)
           expect(page).to have_content(marge.last_name)
-          expect(page).to have_content(marge.phone_numbers.first.number)
+          expect(page).to have_content('(971)287-6774')
           expect(page).to have_content(marge.phone_numbers.first.type)
           expect(page).to have_content(marge.gender.capitalize)
           expect(page).to have_content(marge.languages.join(', '))

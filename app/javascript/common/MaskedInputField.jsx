@@ -5,9 +5,7 @@ import React from 'react'
 import _ from 'lodash'
 
 const MaskedInputField = ({
-  blurPlaceholder,
   errors,
-  focusPlaceholder,
   gridClassName,
   id,
   label,
@@ -20,26 +18,17 @@ const MaskedInputField = ({
   type,
   value,
 }) => {
-  const formFieldProps = {
-    errors: errors,
-    gridClassName: gridClassName,
-    id: id,
-    label: label,
-    labelClassName: labelClassName,
-    required: required,
-  }
+  const formFieldProps = { errors, gridClassName, id, label, labelClassName, required }
 
   return (
     <FormField {...formFieldProps}>
-      <MaskedInput id={id} type={type} value={value} mask={mask}
-        placeholder={placeholder} required={required} aria-required={required}
+      <MaskedInput className='masked-input' id={id} type={type} value={value} mask={mask}
+        placeholder={''} required={required} aria-required={required}
         onBlur={(event) => {
-          event.target.placeholder = blurPlaceholder
+          event.target.placeholder = ''
           if (!_.isEmpty(onBlur)) onBlur(id, event.target.value)
         }}
-        onFocus={(event) => {
-          event.target.placeholder = focusPlaceholder
-        }}
+        onFocus={(event) => event.target.placeholder = placeholder}
         onChange={onChange}
       />
     </FormField>
@@ -52,9 +41,7 @@ MaskedInputField.defaultProps = {
 }
 
 MaskedInputField.propTypes = {
-  blurPlaceholder: PropTypes.string,
   errors: PropTypes.object,
-  focusPlaceholder: PropTypes.string,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
@@ -71,4 +58,3 @@ MaskedInputField.propTypes = {
   ]),
 }
 export default MaskedInputField
-

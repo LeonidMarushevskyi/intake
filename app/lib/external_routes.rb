@@ -3,14 +3,6 @@
 # The external routes will be accessible from here.
 class ExternalRoutes
   class << self
-    def intake_api_person_path(id)
-      "/api/v1/people/#{id}"
-    end
-
-    def intake_api_people_path
-      '/api/v1/people'
-    end
-
     def intake_api_people_search_v2_path(param)
       "/api/v2/people_search?#{param.to_param}"
     end

@@ -176,7 +176,7 @@ describe('ParticipantEditView', () => {
 
     it('renders the SSN field', () => {
       expect(component.find('MaskedInputField[label="Social security number"]').props().placeholder)
-        .toEqual('')
+        .toEqual('___-__-____')
       expect(component.find('MaskedInputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
     })

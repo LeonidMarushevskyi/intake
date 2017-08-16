@@ -3,18 +3,6 @@
 require 'rails_helper'
 
 describe ExternalRoutes do
-  describe '.intake_api_person_path' do
-    it 'returns /api/v1/people/:id' do
-      expect(described_class.intake_api_person_path('1')).to eq('/api/v1/people/1')
-    end
-  end
-
-  describe '.intake_api_people_path' do
-    it 'returns /api/v1/people' do
-      expect(described_class.intake_api_people_path).to eq('/api/v1/people')
-    end
-  end
-
   describe '.intake_api_people_search_v2_path' do
     it 'returns /api/v2/people_search' do
       expect(described_class.intake_api_people_search_v2_path(search_term: 123)).to eq(

@@ -230,3 +230,7 @@ input[type='radio']:disabled + label::before {
 .react-autosuggest__suggestion--focused {
   background-color: $light-grey;
 }
+
+.masked-input {
+  letter-spacing: 2px;
+}
