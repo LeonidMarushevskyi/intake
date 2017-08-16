@@ -10,16 +10,16 @@ describe('InputField', () => {
   let onBlur
 
   const props = {
+    disabled: false,
+    errors: Immutable.Map(),
     gridClassName: 'myWrapperTest',
-    labelClassName: 'myLabelTest',
     id: 'myInputFieldId',
     label: 'this is my label',
-    placeholder: 'This is some placeholder text...',
-    value: 'this is my field value',
-    errors: Immutable.Map(),
-    required: false,
+    labelClassName: 'myLabelTest',
     maxLength: '125',
-    disabled: false,
+    placeholder: 'This is some placeholder text...',
+    required: false,
+    value: 'this is my field value',
   }
 
   beforeEach(() => {
@@ -71,8 +71,15 @@ describe('InputField', () => {
 
     it('calls onChange when a change event occurs on input field', () => {
       const inputElement = component.find('input')
-      inputElement.simulate('change')
-      expect(onChange).toHaveBeenCalled()
+      inputElement.simulate('change', {target: {value: 'hola mundo'}})
+      expect(onChange).toHaveBeenCalledWith({target: {value: 'hola mundo'}})
+    })
+
+    it('sanitizes the call to onChange when an allowCharacters pattern is given', () => {
+      component.setProps({allowCharacters: /[a-zA-Z\s\-]/})
+      const inputElement = component.find('input')
+      inputElement.simulate('change', {target: {value: 'hola mu-ndo239847%^#@$?'}})
+      expect(onChange).toHaveBeenCalledWith({target: {value: 'hola mu-ndo'}})
     })
 
     it('calls onBlur when a blur event occurs on input field', () => {

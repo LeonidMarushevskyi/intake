@@ -11,6 +11,7 @@ const InputField = ({
   maxLength,
   onBlur,
   onChange,
+  allowCharacters,
   placeholder,
   required,
   type,
@@ -27,10 +28,24 @@ const InputField = ({
     required: required,
   }
 
+  const sanitizeValue = (string, allowRegex) => {
+    const characterArray = string.split('')
+    return characterArray.filter((character) => {
+      return character.match(allowRegex)
+    }).join('')
+  }
+
+  const onChangeWrapper = (event) => {
+    if (event.target.value && allowCharacters) {
+      event.target.value = sanitizeValue(event.target.value, allowCharacters)
+    }
+    onChange(event)
+  }
+
   return (
     <FormField {...formFieldProps}>
       <input id={id} type={type} placeholder={placeholder}
-        value={value} onChange={onChange} maxLength={maxLength} onBlur={onBlur}
+        value={value} onChange={onChangeWrapper} maxLength={maxLength} onBlur={onBlur}
         aria-required={required} required={required} disabled={disabled}
       />
     </FormField>
@@ -43,6 +58,7 @@ InputField.defaultProps = {
 }
 
 InputField.propTypes = {
+  allowCharacters: PropTypes.instanceOf(RegExp),
   disabled: PropTypes.bool,
   errors: PropTypes.object,
   gridClassName: PropTypes.string,
