@@ -108,13 +108,13 @@ export function fetchHistoryOfInvolvements(screeningId) {
   )
 }
 
-export function submitScreeningSuccess(jsonResponse) {
-  const referralId = jsonResponse.referral_id
+export function submitScreeningSuccess(screening) {
+  const referralId = screening.referral_id
   /* eslint-disable no-alert */
   alert(`Successfully created referral ${referralId}`)
   /* eslint-enable no-alert */
   return {
-    type: types.SUBMIT_SCREENING_SUCCESS,
+    type: types.SUBMIT_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)
   }
 }
 

@@ -16,6 +16,7 @@ import React from 'react'
 import RelationshipsCard from 'screenings/RelationshipsCard'
 import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
+import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
 import ScreeningValidator from 'screenings/ScreeningValidator'
 import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
@@ -236,7 +237,11 @@ export class ScreeningPage extends React.Component {
         <div>
           {
             releaseTwoInactive &&
-              <h1>{this.mode === 'edit' && 'Edit '}{`Screening #${mergedScreening.get('reference')}`}</h1>
+              <h1>
+                {this.mode === 'edit' && 'Edit '}
+                {`Screening #${mergedScreening.get('reference')}`}
+                {mergedScreening.get('referral_id') && ` - Referral #${mergedScreening.get('referral_id')}`}
+              </h1>
           }
           {
             releaseTwo &&
@@ -334,7 +339,14 @@ export class ScreeningPage extends React.Component {
           }
           {
             releaseTwoInactive &&
+            IntakeConfig.isFeatureActive('referral_submit') &&
+            !mergedScreening.get('referral_id') &&
             <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+          }
+          {
+            releaseTwoInactive &&
+            IntakeConfig.isFeatureInactive('referral_submit') &&
+            <ScreeningSubmitButtonWithModal />
           }
           {
             releaseTwo &&

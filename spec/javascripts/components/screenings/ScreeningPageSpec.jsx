@@ -138,6 +138,20 @@ describe('ScreeningPage', () => {
       component.setState({loaded: true})
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
+
+    it('renders the referral id, if present', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          reference: 'ABCDEF',
+          referral_id: '123456',
+        }),
+      }
+      const component = shallow(<ScreeningPage {...props} mode='show'/>)
+      component.setState({loaded: true})
+      expect(component.find('h1').text()).toEqual('Screening #ABCDEF - Referral #123456')
+    })
   })
 
   describe('componentDidMount', () => {
@@ -547,10 +561,13 @@ describe('ScreeningPage', () => {
     })
   })
 
-  it('renders the submit button', () => {
-    const component = shallow(<ScreeningPage {...requiredProps} />)
-    component.setState({loaded: true})
-    expect(component.find('ScreeningSubmitButton').length).toEqual(1)
+  describe('when submit referral and release two are both inactive', () => {
+    it('renders the submit button with a modal', () => {
+      const component = shallow(<ScreeningPage {...requiredProps} />)
+      component.setState({loaded: true})
+      expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
+      expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
+    })
   })
 
   describe('cardSave', () => {
