@@ -60,7 +60,7 @@ describe PersonSearch do
         legacy_source_table: 'test source table',
         legacy_descriptor: legacy_descriptor.as_json
       }
-      expect(described_class.new(attributes).as_json).to eq({
+      expect(described_class.new(attributes).as_json).to eq(
         'id' => '1',
         'first_name' => 'Homer',
         'middle_name' => 'Jay',
@@ -116,7 +116,7 @@ describe PersonSearch do
           'legacy_table_name' => 'CLIENT_T',
           'legacy_ui_id' => 'CLIENT'
         }
-      })
+      )
     end
   end
 end

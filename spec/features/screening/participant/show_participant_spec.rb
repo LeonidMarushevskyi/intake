@@ -26,7 +26,7 @@ feature 'Show Screening' do
     addresses: [address],
     roles: ['Victim', 'Mandated Reporter'],
     phone_numbers: [phone_number],
-    languages: ['Korean', 'Lao', 'Hawaiian']
+    languages: %w[Korean Lao Hawaiian]
   )
   existing_screening = FactoryGirl.create(
     :screening,
