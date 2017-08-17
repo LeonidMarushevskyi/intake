@@ -6,10 +6,11 @@ describe('ScreeningsTable', () => {
   it('renders screening table headings', () => {
     const view = shallow(<ScreeningsTable />)
     const tr = view.find('tr')
-    expect(tr.text()).toContain('Name & ID')
-    expect(tr.text()).toContain('Response Time')
-    expect(tr.text()).toContain('Decision')
-    expect(tr.text()).toContain('Report Date')
+    expect(tr.text()).toContain('Screening Name')
+    expect(tr.text()).toContain('Type/Decision')
+    expect(tr.text()).toContain('Status')
+    expect(tr.text()).toContain('Assignee')
+    expect(tr.text()).toContain('Report Date and Time')
   })
 
   it('renders screening attributes', () => {

@@ -110,9 +110,11 @@ feature 'home page' do
 
       visit root_path
       within 'thead' do
-        expect(page).to have_css('th', text: 'Name & ID')
-        expect(page).to have_css('th', text: 'Decision')
-        expect(page).to have_css('th', text: 'Report Date')
+        expect(page).to have_css('th', text: 'Screening Name')
+        expect(page).to have_css('th', text: 'Type/Decision')
+        expect(page).to have_css('th', text: 'Status')
+        expect(page).to have_css('th', text: 'Assignee')
+        expect(page).to have_css('th', text: 'Report Date and Time')
       end
 
       within 'tbody' do
@@ -120,18 +122,18 @@ feature 'home page' do
         rows = all('tr')
         within rows[0] do
           expect(page).to have_content('Little Shop of Horrors - H9S83')
-          expect(page).to have_content('08/11/2016')
           expect(page).to have_content('Screen out')
+          expect(page).to have_content('08/11/2016')
         end
         within rows[1] do
           expect(page).to have_content('The Shining - DF90W5')
-          expect(page).to have_content('08/12/2016')
           expect(page).to have_content('Promote to referral')
+          expect(page).to have_content('08/12/2016')
         end
         within rows[2] do
           expect(page).to have_content('It Follows - Q7W0B6')
-          expect(page).to have_content('08/17/2016')
           expect(page).to have_content('Differential response')
+          expect(page).to have_content('08/17/2016')
         end
       end
     end
