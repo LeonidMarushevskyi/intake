@@ -82,32 +82,27 @@ feature 'home page' do
     end
 
     scenario 'includes a list of saved screenings' do
-      screenings = [
-        FactoryGirl.create(
-          :screening_search,
-          name: 'Little Shop of Horrors',
-          reference: 'H9S83',
-          assignee: 'Melody Pond',
-          started_at: '2016-08-11T18:24:22.157Z',
-          screening_decision: 'screen_out'
-        ),
-        FactoryGirl.create(
-          :screening_search,
-          name: 'The Shining',
-          reference: 'DF90W5',
-          assignee: 'Sarah Jane Smith',
-          started_at: '2016-08-12T18:24:22.157Z',
-          screening_decision: 'promote_to_referral'
-        ),
-        FactoryGirl.create(
-          :screening_search,
-          name: 'It Follows',
-          reference: 'Q7W0B6',
-          assignee: 'Rory Williams',
-          started_at: '2016-08-17T18:24:22.157Z',
-          screening_decision: 'differential_response'
-        )
-      ]
+      screening_one = FactoryGirl.create(
+        :screening_search,
+        name: 'Little Shop of Horrors',
+        assignee: 'Melody Pond',
+        started_at: '2016-08-11T18:24:22.157Z',
+        screening_decision: 'screen_out'
+      )
+      screening_two = FactoryGirl.create(
+        :screening_search,
+        name: 'The Shining',
+        assignee: 'Sarah Jane Smith',
+        started_at: '2016-08-12T18:24:22.157Z',
+        screening_decision: 'promote_to_referral'
+      )
+      screening_without_name = FactoryGirl.create(
+        :screening_search,
+        assignee: 'Rory Williams',
+        started_at: '2016-08-17T18:24:22.157Z',
+        screening_decision: 'differential_response'
+      )
+      screenings = [screening_one, screening_two, screening_without_name]
       stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screenings.to_json, status: 200))
 
@@ -124,22 +119,25 @@ feature 'home page' do
         expect(page).to have_css('tr', count: 3)
         rows = all('tr')
         within rows[0] do
-          expect(page).to have_content('Little Shop of Horrors')
-          expect(page).not_to have_content('H9S83')
+          expect(page).to have_link(
+            screening_one.name, href: screening_path(id: screening_one.id)
+          )
           expect(page).to have_content('Screen out')
           expect(page).to have_content('Melody Pond')
           expect(page).to have_content('08/11/2016')
         end
         within rows[1] do
-          expect(page).to have_content('The Shining')
-          expect(page).not_to have_content('DF90W5')
+          expect(page).to have_link(
+            screening_two.name, href: screening_path(id: screening_two.id)
+          )
           expect(page).to have_content('Promote to referral')
           expect(page).to have_content('Sarah Jane Smith')
           expect(page).to have_content('08/12/2016')
         end
         within rows[2] do
-          expect(page).to have_content('It Follows')
-          expect(page).not_to have_content('Q7W0B6')
+          expect(page).to have_link(
+            screening_without_name.id, href: screening_path(id: screening_without_name.id)
+          )
           expect(page).to have_content('Differential response')
           expect(page).to have_content('Rory Williams')
           expect(page).to have_content('08/17/2016')
