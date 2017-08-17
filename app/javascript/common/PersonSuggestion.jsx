@@ -26,7 +26,7 @@ const PersonSuggestion = ({
     <div className='row'>
       <div className='col-md-2 profile-picture'>
         <img src='/assets/default-profile.svg' />
-        {!isSensitive && <div className='information-flag image-caption'>Sensitive</div>}
+        {isSensitive && <div className='information-flag image-caption'>Sensitive</div>}
       </div>
       <div className='col-md-10'>
         <div className='row'>
