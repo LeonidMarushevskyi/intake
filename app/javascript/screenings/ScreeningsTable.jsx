@@ -19,16 +19,18 @@ const ScreeningsTable = ({screenings}) => {
         </thead>
         <tbody>
           {
-            screenings.map((screening) => (
-              <tr key={screening.id}>
-                <td><Link to={`/screenings/${screening.id}`}>{screening.name}</Link></td>
-                <td>{SCREENING_DECISION[screening.screening_decision]}</td>
-                <td>&nbsp;</td>
-                <td>{screening.assignee}</td>
-                <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
-              </tr>
+            screenings.map((screening) => {
+              const screeningName = screening.name ? screening.name : screening.id
+              return (
+                <tr key={screening.id}>
+                  <td><Link to={`/screenings/${screening.id}`}>{screeningName}</Link></td>
+                  <td>{SCREENING_DECISION[screening.screening_decision]}</td>
+                  <td>&nbsp;</td>
+                  <td>{screening.assignee}</td>
+                  <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
+                </tr>
               )
-            )
+            })
           }
         </tbody>
       </table>
