@@ -124,19 +124,22 @@ feature 'home page' do
         expect(page).to have_css('tr', count: 3)
         rows = all('tr')
         within rows[0] do
-          expect(page).to have_content('Little Shop of Horrors - H9S83')
+          expect(page).to have_content('Little Shop of Horrors')
+          expect(page).not_to have_content('H9S83')
           expect(page).to have_content('Screen out')
           expect(page).to have_content('Melody Pond')
           expect(page).to have_content('08/11/2016')
         end
         within rows[1] do
-          expect(page).to have_content('The Shining - DF90W5')
+          expect(page).to have_content('The Shining')
+          expect(page).not_to have_content('DF90W5')
           expect(page).to have_content('Promote to referral')
           expect(page).to have_content('Sarah Jane Smith')
           expect(page).to have_content('08/12/2016')
         end
         within rows[2] do
-          expect(page).to have_content('It Follows - Q7W0B6')
+          expect(page).to have_content('It Follows')
+          expect(page).not_to have_content('Q7W0B6')
           expect(page).to have_content('Differential response')
           expect(page).to have_content('Rory Williams')
           expect(page).to have_content('08/17/2016')

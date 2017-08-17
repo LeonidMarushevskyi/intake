@@ -24,7 +24,8 @@ describe('ScreeningsTable', () => {
     }]
     const view = mount(<ScreeningsTable screenings={screenings}/>)
     const tbody = view.find('tbody')
-    expect(tbody.text()).toContain('My Screening Name - ABCDEF')
+    expect(tbody.text()).toContain('My Screening Name')
+    expect(tbody.text()).not.toContain('ABCDEF')
     expect(tbody.text()).toContain('Screen out')
     expect(tbody.text()).toContain('Bad Wolf')
     expect(tbody.text()).toContain('09/21/2016')
