@@ -15,19 +15,21 @@ export default class ScreeningsTable extends React.Component {
         <table className='table table-hover'>
           <thead>
             <tr>
-              <th scope='col'>Name &amp; ID</th>
-              <th scope='col'>Response Time</th>
-              <th scope='col'>Decision</th>
-              <th scope='col'>Report Date</th>
+              <th scope='col'>Screening Name</th>
+              <th scope='col'>Type/Decision</th>
+              <th scope='col'>Status</th>
+              <th scope='col'>Assignee</th>
+              <th scope='col'>Report Date and Time</th>
             </tr>
           </thead>
           <tbody>
             {
               this.props.screenings.map((screening) => (
                   <tr key={screening.id}>
-                    <td><Link to={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</Link></td>
-                    <td>&nbsp;</td>
+                    <td><Link to={`/screenings/${screening.id}`}>{screening.name}</Link></td>
                     <td>{SCREENING_DECISION[screening.screening_decision]}</td>
+                    <td>&nbsp;</td>
+                    <td>{screening.assignee}</td>
                     <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
                   </tr>
                 )
