@@ -29,7 +29,7 @@ export default class ScreeningsTable extends React.Component {
                     <td><Link to={`/screenings/${screening.id}`}>{`${screening.name} - ${screening.reference}`}</Link></td>
                     <td>{SCREENING_DECISION[screening.screening_decision]}</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>{screening.assignee}</td>
                     <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
                   </tr>
                 )
