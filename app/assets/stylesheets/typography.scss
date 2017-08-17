@@ -93,6 +93,24 @@ pre {
   }
 }
 
+.profile-picture {
+  position: relative;
+}
+
+.image-caption {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.information-flag {
+  background-color: $transparent-black;
+  color: $white;
+  padding: 0 .5rem;
+  text-align: center;
+}
+
 ul,
 ol {
   margin: 0;
