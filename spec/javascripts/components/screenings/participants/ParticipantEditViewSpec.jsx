@@ -286,6 +286,8 @@ describe('ParticipantEditView', () => {
       expect(roles_field.props().options).toEqual([
         {label: 'Victim', value: 'Victim'},
         {label: 'Perpetrator', value: 'Perpetrator'},
+        {label: 'Family Member', value: 'Family Member'},
+        {label: 'Collateral', value: 'Collateral'},
         {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: false},
         {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: false},
         {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: false},
@@ -323,6 +325,8 @@ describe('ParticipantEditView', () => {
         const expectedOptions = [
           {label: 'Victim', value: 'Victim'},
           {label: 'Perpetrator', value: 'Perpetrator'},
+          {label: 'Family Member', value: 'Family Member'},
+          {label: 'Collateral', value: 'Collateral'},
           {label: 'Mandated Reporter', value: 'Mandated Reporter'},
           {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
           {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},

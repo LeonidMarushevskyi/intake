@@ -6,6 +6,8 @@ export const ROLE_TYPE_REPORTER = Object.freeze([
 export const ROLE_TYPE_NON_REPORTER = Object.freeze([
   'Victim',
   'Perpetrator',
+  'Family Member',
+  'Collateral',
 ])
 
 export const ROLE_TYPE = Object.freeze([
