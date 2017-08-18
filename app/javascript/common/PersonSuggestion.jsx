@@ -8,6 +8,7 @@ import React from 'react'
 import PhoneNumberInfo from 'common/PhoneNumberInfo'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import sanitizeHtml from 'sanitize-html'
+import AvatarImg from '../../assets/images/default-profile.svg'
 
 const PersonSuggestion = ({
   firstName, lastName, middleName, nameSuffix, dateOfBirth, gender, languages, races,
@@ -25,7 +26,7 @@ const PersonSuggestion = ({
   return (
     <div className='row'>
       <div className='col-md-2 profile-picture'>
-        <img src='/assets/default-profile.svg' />
+        <img src={AvatarImg} />
         {isSensitive && <div className='information-flag image-caption'>Sensitive</div>}
         {isSealed && <div className='information-flag image-caption'>Sealed</div>}
       </div>

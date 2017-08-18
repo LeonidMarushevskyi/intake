@@ -38,7 +38,6 @@ import '../../assets/stylesheets/ie'
 import 'font-awesome/css/font-awesome'
 import '../../assets/stylesheets/google-api'
 
-
 const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(

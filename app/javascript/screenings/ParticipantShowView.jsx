@@ -9,6 +9,7 @@ import nameFormatter from 'utils/nameFormatter'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
+import AvatarImg from '../../assets/images/default-profile.svg'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => {
   const legacyDescriptor = participant.get('legacy_descriptor')
@@ -37,7 +38,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-2'>
-          <img src='/assets/default-profile.svg' />
+          <img src={AvatarImg} />
         </div>
         <div className='col-md-10'>
           {legacySourceString !== '' && <div className='row'>
