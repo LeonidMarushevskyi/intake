@@ -35,7 +35,7 @@ import 'react-select/dist/react-select.css'
 import 'react-widgets/dist/css/react-widgets'
 import '../../assets/stylesheets/multi-select'
 import '../../assets/stylesheets/ie'
-import '../../assets/stylesheets/font-awesome'
+import 'font-awesome/css/font-awesome'
 import '../../assets/stylesheets/google-api'
 
 
