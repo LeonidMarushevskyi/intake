@@ -20,6 +20,21 @@ import Autocompleter from 'common/Autocompleter'
 
 // CSS needed
 import 'bootstrap/dist/css/bootstrap'
+import '../../assets/stylesheets/helpers'
+import '../../assets/stylesheets/accessibility'
+import '../../assets/stylesheets/datepicker'
+import '../../assets/stylesheets/alert'
+import '../../assets/stylesheets/button'
+import '../../assets/stylesheets/card'
+import '../../assets/stylesheets/form'
+import '../../assets/stylesheets/list'
+import '../../assets/stylesheets/navigation'
+import '../../assets/stylesheets/table'
+import '../../assets/stylesheets/typography'
+import '../../assets/stylesheets/multi-select'
+import '../../assets/stylesheets/ie'
+import '../../assets/stylesheets/font-awesome'
+
 
 const store = configureStore()
 if (document.getElementById('app')) {
