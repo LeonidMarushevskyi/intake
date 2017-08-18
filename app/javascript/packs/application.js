@@ -36,6 +36,7 @@ import 'react-widgets/dist/css/react-widgets'
 import '../../assets/stylesheets/multi-select'
 import '../../assets/stylesheets/ie'
 import '../../assets/stylesheets/font-awesome'
+import '../../assets/stylesheets/google-api'
 
 
 const store = configureStore()
