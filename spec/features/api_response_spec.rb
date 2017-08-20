@@ -5,7 +5,7 @@ require 'feature/testing'
 
 feature 'api responses' do
   let(:screening) { create :screening, name: 'Little Shop Of Horrors' }
-  let(:auth_login_url) { 'http://www.fooooooooo.com/authn/login?callback=' }
+  let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
 
   around do |example|
     with_config(
@@ -17,6 +17,8 @@ feature 'api responses' do
   end
 
   scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path)).and_return(
       json_body({ screenings: [] }.to_json, status: 200)
     )
