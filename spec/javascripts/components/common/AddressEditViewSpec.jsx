@@ -34,7 +34,7 @@ describe('AddressEditView', () => {
     expect(zipField.props().value).toEqual('12345')
     expect(zipField.props().maxLength).toEqual('10')
     // Allow digits and hyphen
-    expect(zipField.props().allowCharacters).toEqual(/[0-9\-]/)
+    expect(zipField.props().allowCharacters).toEqual(/[0-9-]/)
   })
 
   it('renders address state as a select field', () => {

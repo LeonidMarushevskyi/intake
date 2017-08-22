@@ -40,7 +40,7 @@ const PhoneNumbersEditView = ({onChange, phoneNumbers}) => {
                 <i className='fa fa-times' />
               </a>
             </div>
-            )
+          )
         })
       }
       <div className='row'>

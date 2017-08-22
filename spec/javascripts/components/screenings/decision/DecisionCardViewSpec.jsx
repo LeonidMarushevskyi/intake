@@ -29,11 +29,11 @@ describe('DecisionCardView', () => {
 
     it('blanks decision details when decision type is changed', () => {
       component.find('#decisionDetail').simulate(
-          'change', {target: {value: 'The service in question'}}
+        'change', {target: {value: 'The service in question'}}
       )
       expect(props.onChange).toHaveBeenCalledWith(['screening_decision_detail'], 'The service in question')
       component.find('#screening_decision').simulate(
-          'change', {target: {value: 'screen_out'}}
+        'change', {target: {value: 'screen_out'}}
       )
       expect(props.onChange.calls.argsFor(1)).toContain(['screening_decision'], 'screen_out')
 

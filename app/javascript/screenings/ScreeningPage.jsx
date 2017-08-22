@@ -164,7 +164,7 @@ export class ScreeningPage extends React.Component {
                 footer={
                   IntakeConfig.isFeatureInactive('release_two') &&
                   <CreateUnknownParticipant saveCallback={this.createParticipant}/>
-                  }
+                }
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ export class ScreeningPage extends React.Component {
               participant={participant}
               mode={IntakeConfig.isFeatureInactive('release_two') ? this.mode : 'show'}
             />
-            )
+          )
         }
       </div>
     )

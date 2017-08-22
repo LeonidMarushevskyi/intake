@@ -42,7 +42,7 @@ describe('PhoneNumbersEditView', () => {
       input.simulate('change', 'number', '332-333-3333')
       expect(onChangePhoneNumbersSpy).toHaveBeenCalled()
       expect(onChangePhoneNumbersSpy.calls.argsFor(0)[0].toJS()).toEqual([
-          {number: '332-333-3333', type: 'Cell'},
+        {number: '332-333-3333', type: 'Cell'},
       ])
     })
   })

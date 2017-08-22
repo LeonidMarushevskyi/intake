@@ -36,7 +36,7 @@ export class HomePage extends React.Component {
       .then((jsonResponse) => {
         this.setState({screenings: jsonResponse})
       }
-    )
+      )
   }
 
   render() {

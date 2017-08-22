@@ -69,12 +69,12 @@ describe('ScreeningInformationShowView', () => {
 
     it('renders no end date/time', () => {
       expect(component.find('ShowField[label="Screening End Date/Time"]').html())
-      .toContain('<div class="c-gray"></div>')
+        .toContain('<div class="c-gray"></div>')
     })
 
     it('renders no communication method', () => {
       expect(component.find('ShowField[label="Communication Method"]').html())
-      .toContain('<div class="c-gray"></div>')
+        .toContain('<div class="c-gray"></div>')
     })
 
     it('renders errors for the Assigned Social Worker', () => {

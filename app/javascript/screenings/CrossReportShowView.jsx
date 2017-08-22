@@ -46,7 +46,7 @@ export default class CrossReportShowView extends React.Component {
                             <li>{agencyTypeAndName}</li>
                             <ErrorMessages errors={this.props.errors.getIn([agency_type, 'agency_name'])}/>
                           </div>
-                          )
+                        )
                       })
                     }
                   </ul>

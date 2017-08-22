@@ -64,7 +64,7 @@ export class EthnicityEditView extends React.Component {
                     }
                   </div>
                 </li>
-                )
+              )
             })
           }
         </ul>

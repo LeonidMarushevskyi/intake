@@ -42,7 +42,7 @@ const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(
     <Provider store={store}>
-    {routes}
+      {routes}
     </Provider>,
     document.getElementById('app')
   )

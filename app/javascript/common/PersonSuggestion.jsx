@@ -47,15 +47,15 @@ const PersonSuggestion = ({
                 <strong className='c-gray half-pad-right'>SSN</strong>
                 <span {...sanitizedField(ssn)} />
               </div>
-              }
-            </div>
-            <div className='col-md-6'>
-              {address && <AddressInfo {...address} /> }
-              {phoneNumber && <PhoneNumberInfo {...phoneNumber} />}
-            </div>
+            }
+          </div>
+          <div className='col-md-6'>
+            {address && <AddressInfo {...address} /> }
+            {phoneNumber && <PhoneNumberInfo {...phoneNumber} />}
           </div>
         </div>
       </div>
+    </div>
   )
 }
 

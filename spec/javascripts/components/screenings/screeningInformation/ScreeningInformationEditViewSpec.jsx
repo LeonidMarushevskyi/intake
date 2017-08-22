@@ -42,7 +42,7 @@ describe('ScreeningInformationEditView', () => {
       expect(titleField.props().value).toEqual('The Rocky Horror Picture Show')
       expect(titleField.props().maxLength).toEqual('64')
       // Allows alpha, space, and hyphen
-      expect(titleField.props().allowCharacters).toEqual(/[a-zA-Z\s\-]/)
+      expect(titleField.props().allowCharacters).toEqual(/[a-zA-Z\s-]/)
     })
 
     it('renders the assigned social worker field', () => {

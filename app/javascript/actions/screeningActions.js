@@ -9,7 +9,7 @@ export function createScreeningSuccess(screening) {
 export function createScreening() {
   return (dispatch) => (
     Utils.request('POST', '/api/v1/screenings', null, {contentType: 'application/json'})
-    .then((jsonResponse) => dispatch(createScreeningSuccess(jsonResponse)))
+      .then((jsonResponse) => dispatch(createScreeningSuccess(jsonResponse)))
   )
 }
 
@@ -20,7 +20,7 @@ export function fetchScreeningSuccess(screening) {
 export function fetchScreening(screeningId) {
   return (dispatch) => (
     Utils.request('GET', `/api/v1/screenings/${screeningId}`, null, {contentType: 'application/json'})
-    .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
+      .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
   )
 }
 
@@ -47,11 +47,11 @@ export function saveParticipant(participant) {
   return (dispatch) => (
     Utils.request(
       'PUT',
-        `/api/v1/participants/${participant.id}`,
-        JSON.stringify({participant: participant}),
-        {contentType: 'application/json'}
+      `/api/v1/participants/${participant.id}`,
+      JSON.stringify({participant: participant}),
+      {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+      .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
   )
 }
 
@@ -67,9 +67,9 @@ export function createParticipant(participant) {
       JSON.stringify({participant: participant}),
       {contentType: 'application/json'}
     )
-    .then((jsonResponse) => {
-      dispatch(createParticipantSuccess(jsonResponse))
-    })
+      .then((jsonResponse) => {
+        dispatch(createParticipantSuccess(jsonResponse))
+      })
   )
 }
 
@@ -81,11 +81,11 @@ export function deleteParticipant(id) {
   return (dispatch) => (
     Utils.request(
       'DELETE',
-        `/api/v1/participants/${id}`,
-        null,
-        {contentType: 'application/json'}
+      `/api/v1/participants/${id}`,
+      null,
+      {contentType: 'application/json'}
     )
-    .then(() => dispatch(deleteParticipantSuccess(id)))
+      .then(() => dispatch(deleteParticipantSuccess(id)))
   )
 }
 
@@ -100,11 +100,11 @@ export function fetchHistoryOfInvolvements(screeningId) {
   return (dispatch) => (
     Utils.request(
       'GET',
-        `/api/v1/screenings/${screeningId}/history_of_involvements`,
-        null,
-        {contentType: 'application/json'}
+      `/api/v1/screenings/${screeningId}/history_of_involvements`,
+      null,
+      {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
+      .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
   )
 }
 
@@ -131,14 +131,14 @@ export function submitScreening(screeningId) {
   return (dispatch) => (
     Utils.request(
       'POST',
-        `/api/v1/screenings/${screeningId}/submit`,
-        null,
-        {contentType: 'application/json'}
+      `/api/v1/screenings/${screeningId}/submit`,
+      null,
+      {contentType: 'application/json'}
     )
-    .then(
-      (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
-      (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
-    )
+      .then(
+        (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
+        (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
+      )
   )
 }
 
@@ -153,10 +153,10 @@ export function fetchRelationshipsByScreeningId(screeningId) {
   return (dispatch) => (
     Utils.request(
       'GET',
-        `/api/v1/screenings/${screeningId}/relationships`,
-        null,
-        {contentType: 'application/json'}
+      `/api/v1/screenings/${screeningId}/relationships`,
+      null,
+      {contentType: 'application/json'}
     )
-    .then((jsonResponse) => dispatch(fetchRelationshipsByScreeningIdSuccess(jsonResponse)))
+      .then((jsonResponse) => dispatch(fetchRelationshipsByScreeningIdSuccess(jsonResponse)))
   )
 }

@@ -93,11 +93,11 @@ describe('CrossReportEditView', () => {
   it('renders labels for required field as required', () => {
     component.find('#type-District_attorney').simulate('click')
     expect(component.find('InputField[label="District attorney agency name"]').props().required)
-        .toEqual(true)
+      .toEqual(true)
     expect(component.find('DateField[label="Cross Reported on Date"]').props().required)
-        .toEqual(true)
+      .toEqual(true)
     expect(component.find('SelectField[label="Communication Method"]').props().required)
-        .toEqual(true)
+      .toEqual(true)
   })
 
   it('renders the checkboxes', () => {
@@ -153,8 +153,8 @@ describe('CrossReportEditView', () => {
       reportedOnField.simulate('change', newReportedOn)
       expect(props.onChange).toHaveBeenCalled()
       expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
-          {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
-          {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
+        {agency_type: 'Department of justice', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
+        {agency_type: 'Law enforcement', reported_on: newReportedOn, communication_method: 'Child Abuse Form'},
       ])
     })
 
@@ -164,8 +164,8 @@ describe('CrossReportEditView', () => {
       communicationMethodField.simulate('change', {target: {value: newCommunicationMethod}})
       expect(props.onChange).toHaveBeenCalled()
       expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
-          {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
-          {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+        {agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
+        {agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: newCommunicationMethod},
       ])
     })
 

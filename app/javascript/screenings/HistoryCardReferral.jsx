@@ -51,7 +51,7 @@ const HistoryCardReferral = ({referral, index}) => {
                       <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
                       <td>{`${allegation.get('allegation_description')} (${disposition})`}</td>
                     </tr>
-                    )
+                  )
                 })}
               </tbody>
             </table>
