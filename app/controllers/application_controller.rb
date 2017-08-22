@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-require 'gulp_assets'
-
 # CA Intake Application Controller.
 class ApplicationController < ActionController::Base # :nodoc:
   before_action :set_cache_headers
-  include GulpAssets::Helper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  helper_method :gulp_asset_path
 
   private
 

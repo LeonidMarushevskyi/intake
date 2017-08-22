@@ -11,11 +11,6 @@ namespace :spec do # rubocop:disable BlockLength
     args.any? ? args.join(' ') : 'spec'
   end
 
-  def gulp?
-    run_gulp = file_list == 'spec' || file_list == 'spec/' || file_list.include?('features')
-    'bin/gulp &&' if run_gulp
-  end
-
   def webpack?
     run_webpack = file_list == 'spec' || file_list == 'spec/' || file_list.include?('features')
     'bin/webpack &&' if run_webpack
@@ -23,13 +18,13 @@ namespace :spec do # rubocop:disable BlockLength
 
   desc 'Run specs in ca_intake container'
   task :intake do
-    system "#{gulp?} #{webpack?} docker-compose exec ca_intake bundle exec rspec #{file_list}"
+    system "#{webpack?} docker-compose exec ca_intake bundle exec rspec #{file_list}"
   end
 
   namespace :intake do
     desc 'Run specs locally outside container'
     task :local do
-      system "#{gulp?} #{webpack?} #{host_env_string} bundle exec rspec #{file_list}"
+      system "#{webpack?} #{host_env_string} bundle exec rspec #{file_list}"
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do
@@ -37,7 +32,7 @@ namespace :spec do # rubocop:disable BlockLength
       # We need to set RAILS_ENV because the spawned spec processes pick up
       # RAILS_ENV=development from our dev environment.
       docker_cmd = 'docker-compose run -e RAILS_ENV=test --rm ca_intake bundle exec parallel_rspec'
-      system "#{gulp?} #{webpack?} #{docker_cmd} #{file_list}"
+      system "#{webpack?} #{docker_cmd} #{file_list}"
     end
 
     desc 'Run ALL THE SPECS, LINT, & KARMA!!!'

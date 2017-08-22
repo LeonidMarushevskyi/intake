@@ -27,7 +27,7 @@ System dependencies:
 * Rspec, Capybara and Selenium for unit and feature testing along with FactoryGirl
 * Jasmine and Karma for javascript testing
 * Haml set up as the default templating language
-* Asset precompilation and packaging use gulp(instead of sprocket)
+* Asset precompilation and packaging use webpack(instead of sprocket)
 * Linting tools for ruby, javascript, haml and scss
 * Execute the the test suite using: bundle exec rspec spec/
 * Run all the lints using: bin/lint

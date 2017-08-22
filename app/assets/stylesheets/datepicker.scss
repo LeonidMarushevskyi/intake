@@ -1,16 +1,10 @@
+@import 'icon/variables';
+@import 'constants';
 /////////////////////////////////////////
 
 // - Datepicker - //
 
 /////////////////////////////////////////
-
-@font-face {
-  font-family: 'RwWidgets';
-  src: url('#{$fa-font-path}/../rw/fonts/rw-widgets.eot');
-  src: url('#{$fa-font-path}/../rw/fonts/rw-widgets.eot') format('embedded-opentype'), url('#{$fa-font-path}/../rw/fonts/rw-widgets.woff') format('woff'), url('#{$fa-font-path}/../rw/fonts/rw-widgets.ttf') format('truetype'), url('#{$fa-font-path}/../rw/fonts/rw-widgets.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
 
 .rw-datetimepicker {
   table td {

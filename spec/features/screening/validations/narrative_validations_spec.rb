@@ -12,6 +12,8 @@ feature 'Narrative Card Validations' do
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
+      stub_empty_relationships_for_screening(screening)
+      stub_empty_history_for_screening(screening)
 
       visit edit_screening_path(id: screening.id)
 
@@ -24,21 +26,29 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'displays error on blur' do
-      fill_in 'Report Narrative', with: ''
+      within '#narrative-card.edit' do
+        fill_in 'Report Narrative', with: ''
+      end
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'removes error on change' do
-      fill_in 'Report Narrative', with: ''
+      within '#narrative-card.edit' do
+        fill_in 'Report Narrative', with: ''
+      end
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
-      fill_in 'Report Narrative', with: 'This stuff happend when I talked to him.'
+      within '#narrative-card.edit' do
+        fill_in 'Report Narrative', with: 'This stuff happend when I talked to him.'
+      end
       should_not_have_content error_message, inside: '#narrative-card.edit'
     end
 
     scenario 'shows error on save page' do
-      fill_in 'Report Narrative', with: ''
+      within '#narrative-card.edit' do
+        fill_in 'Report Narrative', with: ''
+      end
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
       save_card('narrative')
@@ -46,7 +56,9 @@ feature 'Narrative Card Validations' do
     end
 
     scenario 'shows no error when filled in' do
-      fill_in 'Report Narrative', with: 'This has been filled in.'
+      within '#narrative-card.edit' do
+        fill_in 'Report Narrative', with: 'This has been filled in.'
+      end
       blur_field
       should_not_have_content error_message, inside: '#narrative-card .card-body'
       save_card('narrative')

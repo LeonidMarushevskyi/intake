@@ -84,7 +84,7 @@ describe('ParticipantShowView', () => {
 
     it('renders the default avatar', () => {
       const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
-      expect(component.find('img').props().src).toEqual('/assets/default-profile.svg')
+      expect(component.find('img').props().src).toContain('/default-profile.svg')
     })
 
     it('renders the participant show fields', () => {
@@ -267,7 +267,7 @@ describe('ParticipantShowView', () => {
 
     it('renders the default avatar', () => {
       const component = shallow(<ParticipantShowView participant={Immutable.fromJS(requiredParticipantProps)} onEdit={() => null}/>)
-      expect(component.find('img').props().src).toEqual('/assets/default-profile.svg')
+      expect(component.find('img').props().src).toContain('/default-profile.svg')
     })
 
     it('renders the participant show fields', () => {

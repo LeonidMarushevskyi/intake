@@ -2,5 +2,4 @@
 
 bundle check || bundle install
 yarn
-bin/gulp
-bin/gulp server & bin/webpack-dev-server & bundle exec puma
+bin/webpack-dev-server & bundle exec puma

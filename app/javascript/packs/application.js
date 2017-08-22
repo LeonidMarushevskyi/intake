@@ -18,6 +18,26 @@ import {Provider} from 'react-redux'
 
 import Autocompleter from 'common/Autocompleter'
 
+// CSS needed
+import 'bootstrap/dist/css/bootstrap'
+import '../../assets/stylesheets/helpers'
+import '../../assets/stylesheets/accessibility'
+import '../../assets/stylesheets/datepicker'
+import '../../assets/stylesheets/alert'
+import '../../assets/stylesheets/button'
+import '../../assets/stylesheets/card'
+import '../../assets/stylesheets/form'
+import '../../assets/stylesheets/list'
+import '../../assets/stylesheets/navigation'
+import '../../assets/stylesheets/table'
+import '../../assets/stylesheets/typography'
+import 'react-select/dist/react-select.css'
+import 'react-widgets/dist/css/react-widgets'
+import '../../assets/stylesheets/multi-select'
+import '../../assets/stylesheets/ie'
+import 'font-awesome/css/font-awesome'
+import '../../assets/stylesheets/google-api'
+
 const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(

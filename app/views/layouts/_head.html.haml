@@ -12,6 +12,5 @@
 %meta{ charset: 'utf-8', name: 'viewport', content: 'width=device-width, initial-scale=1' }
 %title
   = I18n.t :title
-= stylesheet_link_tag gulp_asset_path 'rw/css/react-widgets.css'
-= stylesheet_link_tag gulp_asset_path 'application.css'
+= stylesheet_pack_tag 'application'
 = csrf_meta_tags
