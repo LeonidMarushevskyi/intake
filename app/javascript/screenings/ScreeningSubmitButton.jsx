@@ -1,4 +1,3 @@
-import * as IntakeConfig from 'common/config'
 import PropTypes from 'prop-types'
 import React from 'react'
 

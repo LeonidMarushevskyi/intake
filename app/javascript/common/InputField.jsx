@@ -30,9 +30,7 @@ const InputField = ({
 
   const sanitizeValue = (string, allowRegex) => {
     const characterArray = string.split('')
-    return characterArray.filter((character) => {
-      return character.match(allowRegex)
-    }).join('')
+    return characterArray.filter((character) => character.match(allowRegex)).join('')
   }
 
   const onChangeWrapper = (event) => {
