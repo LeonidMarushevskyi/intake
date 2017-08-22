@@ -10,7 +10,7 @@ scss() {
 }
 
 js_files() {
-  find spec/javascripts/ app/assets/javascripts -type f \( -name "*.js" -o -name "*.jsx" \)
+  find spec/javascripts/ app/javascript -type f \( -name "*.js" -o -name "*.jsx" \)
 }
 
 js() {

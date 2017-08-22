@@ -27,7 +27,7 @@ export default class ParticipantCardView extends React.Component {
   }
 
   onSave() {
-    const onlyNumbers = (number) => number.replace(/[^0-9]/g,'')
+    const onlyNumbers = (number) => number.replace(/[^0-9]/g, '')
     const sanitizedParticipant = this.props.participant
       .update('phone_numbers', (phoneNumbers) =>
         phoneNumbers.map((phoneNumber) => phoneNumber.update('number', onlyNumbers)

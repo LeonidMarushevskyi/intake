@@ -17,8 +17,9 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
   const phoneNumberFormatter = (phoneNumber) => {
     // Data is Sanitized onSave but this show view gets rendered before api request come back.
     // As a result, we're stuck with data with presentation.
-    phoneNumber = phoneNumber.replace(/[^0-9]/g,'')
-    return `(${phoneNumber.substr(0,3)})${phoneNumber.substr(3,3)}-${phoneNumber.substr(6,4)}`
+    phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+    // eslint-disable-next-line no-magic-numbers
+    return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
   }
 
   return (

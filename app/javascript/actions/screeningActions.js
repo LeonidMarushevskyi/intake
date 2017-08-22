@@ -114,7 +114,7 @@ export function submitScreeningSuccess(screening) {
   alert(`Successfully created referral ${referralId}`)
   /* eslint-enable no-alert */
   return {
-    type: types.SUBMIT_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)
+    type: types.SUBMIT_SCREENING_SUCCESS, screening: Immutable.fromJS(screening),
   }
 }
 

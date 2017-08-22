@@ -18,7 +18,7 @@ const MaskedInputField = ({
   type,
   value,
 }) => {
-  const formFieldProps = { errors, gridClassName, id, label, labelClassName, required }
+  const formFieldProps = {errors, gridClassName, id, label, labelClassName, required}
 
   return (
     <FormField {...formFieldProps}>
@@ -28,7 +28,7 @@ const MaskedInputField = ({
           event.target.placeholder = ''
           if (!_.isEmpty(onBlur)) onBlur(id, event.target.value)
         }}
-        onFocus={(event) => event.target.placeholder = placeholder}
+        onFocus={(event) => (event.target.placeholder = placeholder)}
         onChange={onChange}
       />
     </FormField>
