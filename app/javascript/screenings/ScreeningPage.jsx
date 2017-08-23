@@ -383,10 +383,10 @@ ScreeningPage.defaultProps = {
 
 export function mapStateToProps(state, _ownProps) {
   return {
-    involvements: state.involvements,
-    participants: state.participants,
-    relationships: state.relationships,
-    screening: state.screening,
+    involvements: state.get('involvements'),
+    participants: state.get('participants'),
+    relationships: state.get('relationships'),
+    screening: state.get('screening'),
   }
 }
 

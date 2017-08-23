@@ -5,30 +5,30 @@ import {
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import screeningReducer from 'reducers/screeningReducer'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 describe('screeningReducer', () => {
   describe('on CREATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const screening = {id: '1', name: 'mock_screening'}
-      const action = createScreeningSuccess(screening)
-      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
+      const screening = fromJS({id: '1'})
+      const action = createScreeningSuccess(screening.toJS())
+      expect(screeningReducer(Map(), action).equals(screening)).toEqual(true)
     })
   })
 
   describe('on FETCH_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const screening = {id: '1', name: 'mock_screening'}
-      const action = fetchScreeningSuccess(screening)
-      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
+      const screening = fromJS({id: '1'})
+      const action = fetchScreeningSuccess(screening.toJS())
+      expect(screeningReducer(Map(), action).equals(screening)).toEqual(true)
     })
   })
 
   describe('on UPDATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const screening = {id: '1', name: 'mock_screening'}
-      const action = updateScreeningSuccess(screening)
-      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
+      const screening = fromJS({id: '1'})
+      const action = updateScreeningSuccess(screening.toJS())
+      expect(screeningReducer(Map(), action).equals(screening)).toEqual(true)
     })
   })
 

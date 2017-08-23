@@ -1,5 +1,10 @@
-import * as screeningActions from 'actions/screeningActions'
-import Immutable from 'immutable'
+import {
+  fetchScreeningSuccess,
+  createScreeningSuccess,
+  updateScreeningSuccess,
+  createParticipantSuccess,
+} from 'actions/screeningActions'
+import {fromJS} from 'immutable'
 import rootReducer from 'reducers'
 import {createStore} from 'redux'
 
@@ -7,75 +12,71 @@ describe('Store', () => {
   let initialState
   let store
   beforeEach(() => {
-    initialState = {
-      screening: Immutable.Map(),
-      participants: Immutable.List(),
-      relationships: Immutable.List(),
-      involvements: Immutable.List(),
-    }
+    initialState = fromJS({
+      screening: {},
+      participants: [],
+      relationships: [],
+      involvements: [],
+    })
     store = createStore(rootReducer)
   })
 
   it('has initial state', () => {
-    expect(store.getState()).toEqual(initialState)
+    expect(store.getState().equals(initialState)).toEqual(true)
   })
 
   it('handles fetch screening', () => {
-    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
-    const screening = {
+    const screening = fromJS({
       id: '1',
       name: 'Mock screening',
-      participants: [participant],
-    }
-    const action = screeningActions.fetchScreeningSuccess(screening)
+      participants: [{id: '2', legacy_id: '3', screening_id: '1'}],
+    })
+    const participants = screening.get('participants')
+    const action = fetchScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().screening.toJS()).toEqual(screening)
-    expect(store.getState().participants.toJS()).toEqual([participant])
+    expect(store.getState().get('screening').equals(screening)).toEqual(true)
+    expect(store.getState().get('participants').equals(participants)).toEqual(true)
   })
 
   it('handles create screening', () => {
-    const screening = {
+    const screening = fromJS({
       id: '1',
       name: 'Mock screening',
       participants: [],
-    }
-    const action = screeningActions.createScreeningSuccess(screening)
+    })
+    const action = createScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().screening.toJS()).toEqual(screening)
-    expect(store.getState().participants.toJS()).toEqual([])
+    expect(store.getState().get('screening').equals(screening)).toEqual(true)
+    expect(store.getState().get('participants').isEmpty()).toEqual(true)
   })
 
-  it('handles update screening', () => {
-    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
-    initialState = {
-      ...initialState,
-      screening: Immutable.fromJS({
-        id: '1',
-        name: 'Mock screening',
-        participants: [],
-      }),
-    }
-    store = createStore(rootReducer, initialState)
-    const updatedScreening = initialState.screening
-      .set('participants', Immutable.fromJS([participant])).toJS()
-    const action = screeningActions.updateScreeningSuccess(updatedScreening)
-    store.dispatch(action)
-    expect(store.getState().screening.toJS()).toEqual(updatedScreening)
-    expect(store.getState().participants.toJS()).toEqual([participant])
-  })
+  describe('when a screening already exists in the store', () => {
+    beforeEach(() => {
+      initialState = initialState.set(
+        'screening',
+        fromJS({
+          id: '1',
+          name: 'Mock screening',
+          participants: [],
+        })
+      )
+      store = createStore(rootReducer, initialState)
+    })
 
-  it('handles create participant', () => {
-    const participant = {id: '2', legacy_id: '3', screening_id: '1'}
-    initialState = {
-      ...initialState,
-      screening: Immutable.fromJS({
-        id: '1',
-        name: 'Mock screening',
-        participants: [],
-      }),
-    }
-    const action = screeningActions.createParticipantSuccess(participant)
-    store.dispatch(action)
-    expect(store.getState().participants.toJS()).toEqual([participant])
+    it('handles update screening', () => {
+      const participants = fromJS([{id: '2', legacy_id: '3', screening_id: '1'}])
+      const updatedScreening = initialState.get('screening').set('participants', participants)
+      const action = updateScreeningSuccess(updatedScreening.toJS())
+      store.dispatch(action)
+      expect(store.getState().get('screening').equals(updatedScreening)).toEqual(true)
+      expect(store.getState().get('participants').equals(participants)).toEqual(true)
+    })
+
+    it('handles create participant', () => {
+      const participants = fromJS([{id: '2', legacy_id: '3', screening_id: '1'}])
+      const action = createParticipantSuccess(participants.get(0).toJS())
+      store.dispatch(action)
+      expect(store.getState().get('participants').equals(participants)).toEqual(true)
+    })
   })
 })
