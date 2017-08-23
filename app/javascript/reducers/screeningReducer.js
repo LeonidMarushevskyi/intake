@@ -1,14 +1,15 @@
-import * as types from 'actions/actionTypes'
-import Immutable from 'immutable'
+import {
+  CREATE_SCREENING_SUCCESS,
+  FETCH_SCREENING_SUCCESS,
+  UPDATE_SCREENING_SUCCESS,
+  SUBMIT_SCREENING_SUCCESS,
+} from 'actions/actionTypes'
+import {createReducer} from 'utils/createReducer'
+import {Map} from 'immutable'
 
-export default function screeningReducer(state = Immutable.Map(), action) {
-  switch (action.type) {
-    case types.CREATE_SCREENING_SUCCESS:
-    case types.FETCH_SCREENING_SUCCESS:
-    case types.UPDATE_SCREENING_SUCCESS:
-    case types.SUBMIT_SCREENING_SUCCESS:
-      return action.screening
-    default:
-      return state
-  }
-}
+export default createReducer(Map(), {
+  [CREATE_SCREENING_SUCCESS](state, action) { return action.screening },
+  [FETCH_SCREENING_SUCCESS](state, action) { return action.screening },
+  [UPDATE_SCREENING_SUCCESS](state, action) { return action.screening },
+  [SUBMIT_SCREENING_SUCCESS](state, action) { return action.screening },
+})

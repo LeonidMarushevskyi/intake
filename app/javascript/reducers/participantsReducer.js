@@ -1,22 +1,24 @@
-import * as types from 'actions/actionTypes'
-import Immutable from 'immutable'
+import {
+  CREATE_SCREENING_SUCCESS,
+  FETCH_SCREENING_SUCCESS,
+  UPDATE_SCREENING_SUCCESS,
+  CREATE_PARTICIPANT_SUCCESS,
+  DELETE_PARTICIPANT_SUCCESS,
+  UPDATE_PARTICIPANT_SUCCESS,
+} from 'actions/actionTypes'
+import {createReducer} from 'utils/createReducer'
+import {List} from 'immutable'
 
-export default function participantsReducer(state = Immutable.List(), action) {
-  switch (action.type) {
-    case types.CREATE_SCREENING_SUCCESS:
-    case types.FETCH_SCREENING_SUCCESS:
-    case types.UPDATE_SCREENING_SUCCESS:
-      return action.screening.get('participants')
-    case types.CREATE_PARTICIPANT_SUCCESS:
-      return state.unshift(action.participant)
-    case types.DELETE_PARTICIPANT_SUCCESS: {
-      return state.filterNot((x) => x.get('id') === action.id)
-    }
-    case types.UPDATE_PARTICIPANT_SUCCESS: {
-      const participantIndex = state.findIndex((x) => x.get('id') === action.participant.get('id'))
-      return state.setIn([participantIndex], action.participant)
-    }
-    default:
-      return state
-  }
-}
+export default createReducer(List(), {
+  [CREATE_SCREENING_SUCCESS](state, action) { return action.screening.get('participants') },
+  [FETCH_SCREENING_SUCCESS](state, action) { return action.screening.get('participants') },
+  [UPDATE_SCREENING_SUCCESS](state, action) { return action.screening.get('participants') },
+  [CREATE_PARTICIPANT_SUCCESS](state, action) { return state.unshift(action.participant) },
+  [DELETE_PARTICIPANT_SUCCESS](state, action) {
+    return state.filterNot((x) => x.get('id') === action.id)
+  },
+  [UPDATE_PARTICIPANT_SUCCESS](state, action) {
+    const participantIndex = state.findIndex((x) => x.get('id') === action.participant.get('id'))
+    return state.setIn([participantIndex], action.participant)
+  },
+})

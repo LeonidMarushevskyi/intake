@@ -1,13 +1,11 @@
-import * as types from 'actions/actionTypes'
-import Immutable from 'immutable'
+import {
+  CREATE_SCREENING_SUCCESS,
+  FETCH_RELATIONSHIPS_SUCCESS,
+} from 'actions/actionTypes'
+import {createReducer} from 'utils/createReducer'
+import {List} from 'immutable'
 
-export default function relationshipsReducer(state = Immutable.List(), action) {
-  switch (action.type) {
-    case types.CREATE_SCREENING_SUCCESS:
-      return Immutable.List()
-    case types.FETCH_RELATIONSHIPS_SUCCESS:
-      return action.relationships
-    default:
-      return state
-  }
-}
+export default createReducer(List(), {
+  [CREATE_SCREENING_SUCCESS](_state, _action) { return List() },
+  [FETCH_RELATIONSHIPS_SUCCESS](_state, action) { return action.relationships },
+})

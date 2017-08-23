@@ -1,13 +1,11 @@
-import * as types from 'actions/actionTypes'
-import Immutable from 'immutable'
+import {
+  CREATE_SCREENING_SUCCESS,
+  FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
+} from 'actions/actionTypes'
+import {createReducer} from 'utils/createReducer'
+import {List} from 'immutable'
 
-export default function involvementsReducer(state = Immutable.List(), action) {
-  switch (action.type) {
-    case types.CREATE_SCREENING_SUCCESS:
-      return Immutable.List()
-    case types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS:
-      return action.history_of_involvements
-    default:
-      return state
-  }
-}
+export default createReducer(List(), {
+  [CREATE_SCREENING_SUCCESS](_state, _action) { return List() },
+  [FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS](_state, action) { return action.history_of_involvements },
+})
