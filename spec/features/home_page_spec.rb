@@ -93,16 +93,25 @@ feature 'home page' do
         :screening_search,
         name: 'The Shining',
         assignee: 'Sarah Jane Smith',
-        started_at: '2016-08-12T18:24:22.157Z',
-        screening_decision: 'promote_to_referral'
+        started_at: '2016-08-12T12:12:22.157Z',
+        screening_decision: 'information_to_child_welfare_services'
       )
       screening_without_name = FactoryGirl.create(
         :screening_search,
         assignee: 'Rory Williams',
-        started_at: '2016-08-17T18:24:22.157Z',
+        started_at: '2016-08-17T01:24:22.157Z',
         screening_decision: 'differential_response'
       )
-      screenings = [screening_one, screening_two, screening_without_name]
+      screening_without_decision = FactoryGirl.create(
+        :screening_search,
+        name: 'Elm Street',
+        assignee: 'Freddy Krueger',
+        started_at: '2017-10-13T00:24:22.157Z',
+        screening_decision: nil
+      )
+      screenings =
+        [screening_one, screening_two, screening_without_name, screening_without_decision]
+
       stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screenings.to_json, status: 200))
 
@@ -116,31 +125,33 @@ feature 'home page' do
       end
 
       within 'tbody' do
-        expect(page).to have_css('tr', count: 3)
+        expect(page).to have_css('tr', count: 4)
         rows = all('tr')
         within rows[0] do
-          expect(page).to have_link(
-            screening_one.name, href: screening_path(id: screening_one.id)
+          expect(page).to have_link(screening_one.name, href: screening_path(id: screening_one.id))
+          expect(page).to have_text(
+            'Little Shop of Horrors Screen out Melody Pond 08/11/2016 11:24 AM'
           )
-          expect(page).to have_content('Screen out')
-          expect(page).to have_content('Melody Pond')
-          expect(page).to have_content('08/11/2016')
         end
         within rows[1] do
-          expect(page).to have_link(
-            screening_two.name, href: screening_path(id: screening_two.id)
+          expect(page).to have_link(screening_two.name, href: screening_path(id: screening_two.id))
+          expect(page).to have_text(
+            'The Shining Information to child welfare services Sarah Jane Smith 08/12/2016 5:12 AM'
           )
-          expect(page).to have_content('Promote to referral')
-          expect(page).to have_content('Sarah Jane Smith')
-          expect(page).to have_content('08/12/2016')
         end
         within rows[2] do
           expect(page).to have_link(
             screening_without_name.id, href: screening_path(id: screening_without_name.id)
           )
-          expect(page).to have_content('Differential response')
-          expect(page).to have_content('Rory Williams')
-          expect(page).to have_content('08/17/2016')
+          expect(page).to have_text(
+            'Differential response Rory Williams 08/16/2016 6:24 PM'
+          )
+        end
+        within rows[3] do
+          expect(page).to have_link(
+            screening_without_decision.name, href: screening_path(id: screening_without_decision.id)
+          )
+          expect(page).to have_text('Elm Street Freddy Krueger 10/12/2017 5:24 PM')
         end
       end
     end

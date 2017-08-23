@@ -26,7 +26,7 @@ const ScreeningsTable = ({screenings}) => (
                 <td>{SCREENING_DECISION[screening.screening_decision]}</td>
                 <td>&nbsp;</td>
                 <td>{screening.assignee}</td>
-                <td>{moment(screening.started_at).format('MM/DD/YYYY')}</td>
+                <td>{moment(screening.started_at).format('L LT')}</td>
               </tr>
             )
           })
