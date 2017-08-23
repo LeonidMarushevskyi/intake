@@ -47,6 +47,6 @@ describe('ScreeningsTable', () => {
     const screenings = [{id: 1, started_at: '2016-09-21T14:26:58.042Z'}]
     const view = shallow(<ScreeningsTable screenings={screenings}/>)
     const tbody = view.find('tbody')
-    expect(tbody.text()).toContain('09/21/2016')
+    expect(tbody.text()).toContain('09/21/2016 7:26 AM')
   })
 })
