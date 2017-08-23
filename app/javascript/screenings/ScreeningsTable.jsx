@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from '../enums/ScreeningDecision'
+import SCREENING_DECISION_OPTIONS from '../enums/ScreeningDecisionOptions'
 import moment from 'moment'
 import {Link} from 'react-router'
 
@@ -20,10 +21,15 @@ const ScreeningsTable = ({screenings}) => (
         {
           screenings.map((screening) => {
             const screeningName = screening.name ? screening.name : screening.id
+            const responseTimes = SCREENING_DECISION_OPTIONS.promote_to_referral
+            const screeningDecision =
+              (screening.screening_decision === 'promote_to_referral') ?
+              responseTimes.values[screening.screening_decision_detail] :
+              SCREENING_DECISION[screening.screening_decision]
             return (
               <tr key={screening.id}>
                 <td><Link to={`/screenings/${screening.id}`}>{screeningName}</Link></td>
-                <td>{SCREENING_DECISION[screening.screening_decision]}</td>
+                <td>{screeningDecision}</td>
                 <td>&nbsp;</td>
                 <td>{screening.assignee}</td>
                 <td>{moment(screening.started_at).format('L LT')}</td>
