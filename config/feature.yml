@@ -3,9 +3,9 @@ development:
   features:
     release_one: false
     release_two: false
-    authentication: false
+    authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     centralized_sessions: true
-    referral_submit: false
+    referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
 
 test:
   features:

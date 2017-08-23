@@ -13,7 +13,8 @@ services:
       RAILS_ENV: development
       API_URL: "http://api:3000"
       NODE_ENV: development
-      AUTHENTICATION_URL: "http://www.example.com/"
+      AUTHENTICATION_URL: "https://perry.preint.cwds.io"
+      AUTHENTICATION: 'true'
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
       USE_XVFB: 'true'
@@ -35,9 +36,9 @@ services:
     ports:
       - "3001:3000"
     environment:
-      AUTHENTICATION_URL: 'http://www.example.com/'
-      AUTHENTICATION: 'false'
-      SEARCH_URL: 'https://web.preint.cwds.io'
+      AUTHENTICATION_URL: 'https://perry.preint.cwds.io'
+      AUTHENTICATION: 'true'
+      SEARCH_URL: 'https://ferbapi.preint.cwds.io'
     tty: true
     stdin_open: true
   db:

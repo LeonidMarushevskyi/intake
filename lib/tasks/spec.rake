@@ -18,7 +18,7 @@ namespace :spec do # rubocop:disable BlockLength
 
   desc 'Run specs in ca_intake container'
   task :intake do
-    system "#{webpack?} docker-compose exec ca_intake bundle exec rspec #{file_list}"
+    system "#{webpack?} docker-compose exec ca_intake bash -c 'RAILS_ENV=test bundle exec rspec #{file_list}'"
   end
 
   namespace :intake do
