@@ -36,6 +36,14 @@ describe('ScreeningsTable', () => {
     expect(tbody.text()).toContain('Screen out')
   })
 
+  it('renders response time if decision is promote to referral', () => {
+    const screenings = [{id: 1, screening_decision: 'promote_to_referral', screening_decision_detail: 'immediate'}]
+    const view = shallow(<ScreeningsTable screenings={screenings}/>)
+    const tbody = view.find('tbody')
+    expect(tbody.text()).not.toContain('Promote to referral')
+    expect(tbody.text()).toContain('Immediate')
+  })
+
   it('renders assignee', () => {
     const screenings = [{id: 1, assignee: 'Bad Wolf'}]
     const view = shallow(<ScreeningsTable screenings={screenings}/>)

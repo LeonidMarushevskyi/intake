@@ -155,5 +155,59 @@ feature 'home page' do
         end
       end
     end
+    scenario 'it displays response time if decision is promote to referral' do
+      screenings = [
+        FactoryGirl.create(
+          :screening_search,
+          name: "It's bigger on the inside",
+          assignee: 'Clara Oswald',
+          started_at: '2016-08-12T00:00:00.157Z',
+          screening_decision: 'promote_to_referral',
+          screening_decision_detail: nil
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'promote_to_referral',
+          screening_decision_detail: 'immediate'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'promote_to_referral',
+          screening_decision_detail: '3_days'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'promote_to_referral',
+          screening_decision_detail: '5_days'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'promote_to_referral',
+          screening_decision_detail: '10_days'
+        )
+      ]
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body(screenings.to_json, status: 200))
+
+      visit root_path
+      within 'tbody' do
+        rows = all('tr')
+        within rows[0] do
+          expect(page).to have_text("It's bigger on the inside Clara Oswald 08/11/2016 5:00 PM")
+        end
+        within rows[1] do
+          expect(page).to have_content('Immediate')
+        end
+        within rows[2] do
+          expect(page).to have_content('3 days')
+        end
+        within rows[3] do
+          expect(page).to have_content('5 days')
+        end
+        within rows[4] do
+          expect(page).to have_content('10 days')
+        end
+      end
+    end
   end
 end
