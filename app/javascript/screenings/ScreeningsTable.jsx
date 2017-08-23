@@ -9,7 +9,7 @@ const ScreeningsTable = ({screenings}) => (
     <table className='table table-hover'>
       <thead>
         <tr>
-          <th scope='col'>Screening Name</th>
+          <th className='col-md-3' scope='col'>Screening Name</th>
           <th scope='col'>Type/Decision</th>
           <th scope='col'>Status</th>
           <th scope='col'>Assignee</th>
