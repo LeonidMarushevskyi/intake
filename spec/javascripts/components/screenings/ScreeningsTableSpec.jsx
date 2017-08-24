@@ -1,5 +1,6 @@
 import React from 'react'
 import ScreeningsTable from 'screenings/ScreeningsTable'
+import moment from 'moment'
 import {shallow} from 'enzyme'
 
 describe('ScreeningsTable', () => {
@@ -64,5 +65,12 @@ describe('ScreeningsTable', () => {
     const view = shallow(<ScreeningsTable screenings={screenings}/>)
     const tbody = view.find('tbody')
     expect(tbody.text()).toContain('09/21/2016 7:26 AM')
+  })
+
+  it('renders time from now', () => {
+    const screenings = [{id: 1, started_at: moment().subtract(1, 'year').format()}]
+    const view = shallow(<ScreeningsTable screenings={screenings}/>)
+    const tbody = view.find('tbody')
+    expect(tbody.text()).toContain('(a year ago)')
   })
 })

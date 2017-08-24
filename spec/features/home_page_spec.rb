@@ -264,5 +264,19 @@ feature 'home page' do
         end
       end
     end
+
+    scenario 'display time from now' do
+      screening = FactoryGirl.create(
+        :screening_search,
+        started_at: 1.year.ago.strftime('%FT%T.%LZ')
+      )
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body([screening].to_json, status: 200))
+
+      visit root_path
+      within 'tbody' do
+        expect(page).to have_content('(a year ago)')
+      end
+    end
   end
 end
