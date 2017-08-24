@@ -32,7 +32,10 @@ const ScreeningsTable = ({screenings}) => (
                 <td>{screeningDecision}</td>
                 <td>&nbsp;</td>
                 <td>{screening.assignee}</td>
-                <td>{moment(screening.started_at).format('L LT')}</td>
+                <td>
+                  {moment(screening.started_at).format('L LT')} <br/>
+                  <em className='text-muted'>({moment(screening.started_at).fromNow()})</em>
+                </td>
               </tr>
             )
           })
