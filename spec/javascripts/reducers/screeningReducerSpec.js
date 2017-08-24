@@ -1,30 +1,34 @@
-import * as screeningActions from 'actions/screeningActions'
-import * as types from 'actions/actionTypes'
+import {SUBMIT_SCREENING_SUCCESS} from 'actions/actionTypes'
+import {
+  createScreeningSuccess,
+  fetchScreeningSuccess,
+  updateScreeningSuccess,
+} from 'actions/screeningActions'
 import screeningReducer from 'reducers/screeningReducer'
-import Immutable from 'immutable'
+import {Map} from 'immutable'
 
 describe('screeningReducer', () => {
   describe('on CREATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
       const screening = {id: '1', name: 'mock_screening'}
-      const action = screeningActions.createScreeningSuccess(screening)
-      expect(screeningReducer(Immutable.Map(), action).toJS()).toEqual(screening)
+      const action = createScreeningSuccess(screening)
+      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
     })
   })
 
   describe('on FETCH_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
       const screening = {id: '1', name: 'mock_screening'}
-      const action = screeningActions.fetchScreeningSuccess(screening)
-      expect(screeningReducer(Immutable.Map(), action).toJS()).toEqual(screening)
+      const action = fetchScreeningSuccess(screening)
+      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
     })
   })
 
   describe('on UPDATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
       const screening = {id: '1', name: 'mock_screening'}
-      const action = screeningActions.updateScreeningSuccess(screening)
-      expect(screeningReducer(Immutable.Map(), action).toJS()).toEqual(screening)
+      const action = updateScreeningSuccess(screening)
+      expect(screeningReducer(Map(), action).toJS()).toEqual(screening)
     })
   })
 
@@ -32,10 +36,10 @@ describe('screeningReducer', () => {
     it('returns the screening from the action', () => {
       const screening = {id: '1', name: 'mock_screening'}
       const action = {
-        type: types.SUBMIT_SCREENING_SUCCESS,
+        type: SUBMIT_SCREENING_SUCCESS,
         screening: screening,
       }
-      expect(screeningReducer(Immutable.Map(), action)).toEqual(screening)
+      expect(screeningReducer(Map(), action)).toEqual(screening)
     })
   })
 })
