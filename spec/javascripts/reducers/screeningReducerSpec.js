@@ -34,12 +34,9 @@ describe('screeningReducer', () => {
 
   describe('on SUBMIT_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const screening = {id: '1', name: 'mock_screening'}
-      const action = {
-        type: SUBMIT_SCREENING_SUCCESS,
-        screening: screening,
-      }
-      expect(screeningReducer(Map(), action)).toEqual(screening)
+      const screening = fromJS({id: '1'})
+      const action = {type: SUBMIT_SCREENING_SUCCESS, screening: screening.toJS()}
+      expect(screeningReducer(Map(), action).equals(screening)).toEqual(true)
     })
   })
 })

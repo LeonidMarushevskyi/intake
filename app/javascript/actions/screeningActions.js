@@ -1,9 +1,8 @@
 import * as Utils from 'utils/http'
 import * as types from 'actions/actionTypes'
-import Immutable from 'immutable'
 
 export function createScreeningSuccess(screening) {
-  return {type: types.CREATE_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
+  return {type: types.CREATE_SCREENING_SUCCESS, screening}
 }
 
 export function createScreening() {
@@ -14,7 +13,7 @@ export function createScreening() {
 }
 
 export function fetchScreeningSuccess(screening) {
-  return {type: types.FETCH_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
+  return {type: types.FETCH_SCREENING_SUCCESS, screening}
 }
 
 export function fetchScreening(screeningId) {
@@ -25,7 +24,7 @@ export function fetchScreening(screeningId) {
 }
 
 export function updateScreeningSuccess(screening) {
-  return {type: types.UPDATE_SCREENING_SUCCESS, screening: Immutable.fromJS(screening)}
+  return {type: types.UPDATE_SCREENING_SUCCESS, screening}
 }
 
 export function saveScreening(screening) {
@@ -40,7 +39,7 @@ export function saveScreening(screening) {
 }
 
 export function updateParticipantSuccess(participant) {
-  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant}
 }
 
 export function saveParticipant(participant) {
@@ -56,7 +55,7 @@ export function saveParticipant(participant) {
 }
 
 export function createParticipantSuccess(participant) {
-  return {type: types.CREATE_PARTICIPANT_SUCCESS, participant: Immutable.fromJS(participant)}
+  return {type: types.CREATE_PARTICIPANT_SUCCESS, participant}
 }
 
 export function createParticipant(participant) {
@@ -74,7 +73,7 @@ export function createParticipant(participant) {
 }
 
 export function deleteParticipantSuccess(id) {
-  return {type: types.DELETE_PARTICIPANT_SUCCESS, id: id}
+  return {type: types.DELETE_PARTICIPANT_SUCCESS, id}
 }
 
 export function deleteParticipant(id) {
@@ -90,10 +89,7 @@ export function deleteParticipant(id) {
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
-  return {
-    type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
-    history_of_involvements: Immutable.fromJS(history_of_involvements),
-  }
+  return {type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS, history_of_involvements}
 }
 
 export function fetchHistoryOfInvolvements(screeningId) {
@@ -113,9 +109,7 @@ export function submitScreeningSuccess(screening) {
   /* eslint-disable no-alert */
   alert(`Successfully created referral ${referralId}`)
   /* eslint-enable no-alert */
-  return {
-    type: types.SUBMIT_SCREENING_SUCCESS, screening: Immutable.fromJS(screening),
-  }
+  return {type: types.SUBMIT_SCREENING_SUCCESS, screening}
 }
 
 export function submitScreeningFailure(jsonResponse) {
@@ -143,10 +137,7 @@ export function submitScreening(screeningId) {
 }
 
 export function fetchRelationshipsByScreeningIdSuccess(relationships) {
-  return {
-    type: types.FETCH_RELATIONSHIPS_SUCCESS,
-    relationships: Immutable.fromJS(relationships),
-  }
+  return {type: types.FETCH_RELATIONSHIPS_SUCCESS, relationships}
 }
 
 export function fetchRelationshipsByScreeningId(screeningId) {
