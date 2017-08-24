@@ -21,9 +21,9 @@ const ScreeningsTable = ({screenings}) => (
         {
           screenings.map((screening) => {
             const screeningName = screening.name ? screening.name : screening.id
-            const responseTimes = SCREENING_DECISION_OPTIONS.promote_to_referral
+            const responseTimes = SCREENING_DECISION_OPTIONS[screening.screening_decision]
             const screeningDecision =
-              (screening.screening_decision === 'promote_to_referral') ?
+              (['promote_to_referral', 'screen_out'].includes(screening.screening_decision)) ?
               responseTimes.values[screening.screening_decision_detail] :
               SCREENING_DECISION[screening.screening_decision]
             return (

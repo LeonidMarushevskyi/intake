@@ -30,10 +30,10 @@ describe('ScreeningsTable', () => {
   })
 
   it('renders decision', () => {
-    const screenings = [{id: 1, screening_decision: 'screen_out'}]
+    const screenings = [{id: 1, screening_decision: 'differential_response'}]
     const view = shallow(<ScreeningsTable screenings={screenings}/>)
     const tbody = view.find('tbody')
-    expect(tbody.text()).toContain('Screen out')
+    expect(tbody.text()).toContain('Differential response')
   })
 
   it('renders response time if decision is promote to referral', () => {
@@ -42,6 +42,14 @@ describe('ScreeningsTable', () => {
     const tbody = view.find('tbody')
     expect(tbody.text()).not.toContain('Promote to referral')
     expect(tbody.text()).toContain('Immediate')
+  })
+
+  it('renders category if decision is screen out', () => {
+    const screenings = [{id: 1, screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out'}]
+    const view = shallow(<ScreeningsTable screenings={screenings}/>)
+    const tbody = view.find('tbody')
+    expect(tbody.text()).not.toContain('Screen out')
+    expect(tbody.text()).toContain('Evaluate out')
   })
 
   it('renders assignee', () => {

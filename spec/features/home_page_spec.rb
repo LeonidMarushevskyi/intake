@@ -87,7 +87,7 @@ feature 'home page' do
         name: 'Little Shop of Horrors',
         assignee: 'Melody Pond',
         started_at: '2016-08-11T18:24:22.157Z',
-        screening_decision: 'screen_out'
+        screening_decision: 'differential_response'
       )
       screening_two = FactoryGirl.create(
         :screening_search,
@@ -130,7 +130,7 @@ feature 'home page' do
         within rows[0] do
           expect(page).to have_link(screening_one.name, href: screening_path(id: screening_one.id))
           expect(page).to have_text(
-            'Little Shop of Horrors Screen out Melody Pond 08/11/2016 11:24 AM'
+            'Little Shop of Horrors Differential response Melody Pond 08/11/2016 11:24 AM'
           )
         end
         within rows[1] do
@@ -155,7 +155,7 @@ feature 'home page' do
         end
       end
     end
-    scenario 'it displays response time if decision is promote to referral' do
+    scenario 'display response time if decision is promote to referral' do
       screenings = [
         FactoryGirl.create(
           :screening_search,
@@ -206,6 +206,61 @@ feature 'home page' do
         end
         within rows[4] do
           expect(page).to have_content('10 days')
+        end
+      end
+    end
+
+    scenario 'display Category if decision is screen out' do
+      screenings = [
+        FactoryGirl.create(
+          :screening_search,
+          name: "It's bigger on the inside",
+          assignee: 'Clara Oswald',
+          started_at: '2016-08-12T00:00:00.157Z',
+          screening_decision: 'screen_out',
+          screening_decision_detail: nil
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'screen_out',
+          screening_decision_detail: 'evaluate_out'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'screen_out',
+          screening_decision_detail: 'information_request'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'screen_out',
+          screening_decision_detail: 'consultation'
+        ),
+        FactoryGirl.create(
+          :screening_search,
+          screening_decision: 'screen_out',
+          screening_decision_detail: 'other'
+        )
+      ]
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body(screenings.to_json, status: 200))
+
+      visit root_path
+      within 'tbody' do
+        rows = all('tr')
+        within rows[0] do
+          expect(page).to have_text("It's bigger on the inside Clara Oswald 08/11/2016 5:00 PM")
+        end
+        within rows[1] do
+          expect(page).to have_content('Evaluate out')
+        end
+        within rows[2] do
+          expect(page).to have_content('Information request')
+        end
+        within rows[3] do
+          expect(page).to have_content('Consultation')
+        end
+        within rows[4] do
+          expect(page).to have_content('Other')
         end
       end
     end
