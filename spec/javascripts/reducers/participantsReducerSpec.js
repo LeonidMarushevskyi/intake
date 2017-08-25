@@ -1,3 +1,4 @@
+import * as matchers from 'jasmine-immutable-matchers'
 import {
   createScreeningSuccess,
   fetchScreeningSuccess,
@@ -10,6 +11,8 @@ import participantsReducer from 'reducers/participantsReducer'
 import {List, fromJS} from 'immutable'
 
 describe('participantsReducer', () => {
+  beforeEach(() => jasmine.addMatchers(matchers))
+
   describe('on CREATE_SCREENING_SUCCESS', () => {
     it('returns the participants from the action', () => {
       const screening = fromJS({participants: []})
@@ -23,7 +26,7 @@ describe('participantsReducer', () => {
       const screening = fromJS({participants: [{id: '2'}]})
       const participants = screening.get('participants')
       const action = fetchScreeningSuccess(screening.toJS())
-      expect(participantsReducer(List(), action).equals(participants)).toEqual(true)
+      expect(participantsReducer(List(), action)).toEqualImmutable(participants)
     })
   })
 
@@ -32,7 +35,7 @@ describe('participantsReducer', () => {
       const screening = fromJS({participants: [{id: '2'}]})
       const participants = screening.get('participants')
       const action = updateScreeningSuccess(screening.toJS())
-      expect(participantsReducer(List(), action).equals(participants)).toEqual(true)
+      expect(participantsReducer(List(), action)).toEqualImmutable(participants)
     })
   })
 
@@ -43,14 +46,14 @@ describe('participantsReducer', () => {
 
     it('returns the screening with new participant from the action', () => {
       const newParticipants = fromJS([newParticipant])
-      expect(participantsReducer(List(), action).equals(newParticipants)).toEqual(true)
+      expect(participantsReducer(List(), action)).toEqualImmutable(newParticipants)
     })
 
     it('adds new participants to the beginning of the list', () => {
       const oldParticipant = {id: '3'}
       const oldState = fromJS([oldParticipant])
       const newParticipants = fromJS([newParticipant, oldParticipant])
-      expect(participantsReducer(oldState, action).equals(newParticipants)).toEqual(true)
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 
@@ -61,7 +64,7 @@ describe('participantsReducer', () => {
       const oldState = fromJS([oldParticipant])
       const newParticipants = fromJS([newParticipant])
       const action = updateParticipantSuccess(newParticipant)
-      expect(participantsReducer(oldState, action).equals(newParticipants)).toEqual(true)
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 
@@ -72,7 +75,7 @@ describe('participantsReducer', () => {
       const oldState = fromJS([firstParticipant, secondParticipant])
       const action = deleteParticipantSuccess(secondParticipant.id)
       const newParticipants = fromJS([firstParticipant])
-      expect(participantsReducer(oldState, action).equals(newParticipants)).toEqual(true)
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 })
