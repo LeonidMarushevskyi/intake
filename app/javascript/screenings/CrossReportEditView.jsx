@@ -60,36 +60,36 @@ export default class CrossReportEditView extends React.Component {
 
   renderCrossReport(crossReportOptions) {
     return (
-        <div className='col-md-6'>
-          <ul className='unstyled-list'>
-            {
-              crossReportOptions.map((item) => {
-                const {agencyType, selected, agencyName} = item
-                const typeId = agencyType.replace(/ /gi, '_')
-                return (
-                  <li key={agencyType}>
-                    <div className='half-gap-bottom'>
-                      <CheckboxField
-                        id={`type-${typeId}`}
-                        checked={selected}
-                        errors={this.props.errors.getIn([agencyType, 'agency_type'])}
-                        onBlur={(event) =>
-                          this.props.onBlur(
-                            this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
-                            ['agency_type', agencyType]
-                          )
-                        }
-                        onChange={(event) =>
-                          this.props.onChange(
-                            this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
-                            ['agency_type', agencyType]
-                          )
-                        }
-                        required={this.props.isAgencyRequired(agencyType)}
-                        value={agencyType}
-                      />
-                      {
-                        selected &&
+      <div className='col-md-6'>
+        <ul className='unstyled-list'>
+          {
+            crossReportOptions.map((item) => {
+              const {agencyType, selected, agencyName} = item
+              const typeId = agencyType.replace(/ /gi, '_')
+              return (
+                <li key={agencyType}>
+                  <div className='half-gap-bottom'>
+                    <CheckboxField
+                      id={`type-${typeId}`}
+                      checked={selected}
+                      errors={this.props.errors.getIn([agencyType, 'agency_type'])}
+                      onBlur={(event) =>
+                        this.props.onBlur(
+                          this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
+                          ['agency_type', agencyType]
+                        )
+                      }
+                      onChange={(event) =>
+                        this.props.onChange(
+                          this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
+                          ['agency_type', agencyType]
+                        )
+                      }
+                      required={this.props.isAgencyRequired(agencyType)}
+                      value={agencyType}
+                    />
+                    {
+                      selected &&
                           <InputField
                             errors={this.props.errors.getIn([agencyType, 'agency_name'])}
                             id={`${typeId}-agency-name`}
@@ -111,14 +111,14 @@ export default class CrossReportEditView extends React.Component {
                             required
                             value={agencyName || ''}
                           />
-                      }
-                    </div>
-                  </li>
-                )
-              })
-            }
-          </ul>
-        </div>
+                    }
+                  </div>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
     )
   }
 

@@ -31,7 +31,7 @@ export default class ParticipantCardView extends React.Component {
     const sanitizedParticipant = this.props.participant
       .update('phone_numbers', (phoneNumbers) =>
         phoneNumbers.map((phoneNumber) => phoneNumber.update('number', onlyNumbers)
-      ))
+        ))
     this.props.onSave(sanitizedParticipant)
     this.setState({mode: 'show'})
   }

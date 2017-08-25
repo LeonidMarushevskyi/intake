@@ -24,8 +24,8 @@ const ScreeningsTable = ({screenings}) => (
             const responseTimes = SCREENING_DECISION_OPTIONS[screening.screening_decision]
             const screeningDecision =
               (['promote_to_referral', 'screen_out'].includes(screening.screening_decision)) ?
-              responseTimes.values[screening.screening_decision_detail] :
-              SCREENING_DECISION[screening.screening_decision]
+                responseTimes.values[screening.screening_decision_detail] :
+                SCREENING_DECISION[screening.screening_decision]
             return (
               <tr key={screening.id}>
                 <td><Link to={`/screenings/${screening.id}`}>{screeningName}</Link></td>

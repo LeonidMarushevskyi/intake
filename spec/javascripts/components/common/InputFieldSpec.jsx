@@ -76,7 +76,7 @@ describe('InputField', () => {
     })
 
     it('sanitizes the call to onChange when an allowCharacters pattern is given', () => {
-      component.setProps({allowCharacters: /[a-zA-Z\s\-]/})
+      component.setProps({allowCharacters: /[a-zA-Z\s-]/})
       const inputElement = component.find('input')
       inputElement.simulate('change', {target: {value: 'hola mu-ndo239847%^#@$?'}})
       expect(onChange).toHaveBeenCalledWith({target: {value: 'hola mu-ndo'}})

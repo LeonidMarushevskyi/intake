@@ -22,5 +22,5 @@ export function dateRangeFormatter({start_date, end_date}) {
     dateFormatter(start_date),
     dateFormatter(end_date),
   ].filter((dateString) => Boolean(dateString))
-   .join(' - ') || 'No Date'
+    .join(' - ') || 'No Date'
 }

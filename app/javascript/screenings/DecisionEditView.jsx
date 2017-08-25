@@ -54,8 +54,8 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                   <option key={value} value={value}>{decisionOptions.values[value]}</option>)
                 )}
               </SelectField>
-              }
-              { decisionOptions && decisionOptions.type === 'text' &&
+            }
+            { decisionOptions && decisionOptions.type === 'text' &&
                 <InputField
                   id='decisionDetail'
                   label={decisionLabel}
@@ -66,15 +66,15 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                   onBlur={() => onBlur('screening_decision_detail')}
                   maxLength='64'
                 />
-              }
-          <div>
-            <label htmlFor='additional_information'>Additional information</label>
-            <textarea
-              id='additional_information'
-              onChange={(event) => onChange(['additional_information'], event.target.value || null)}
-              value={screening.get('additional_information') || ''}
-            />
-          </div>
+            }
+            <div>
+              <label htmlFor='additional_information'>Additional information</label>
+              <textarea
+                id='additional_information'
+                onChange={(event) => onChange(['additional_information'], event.target.value || null)}
+                value={screening.get('additional_information') || ''}
+              />
+            </div>
           </div>
           <div className='col-md-6'>
             <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>

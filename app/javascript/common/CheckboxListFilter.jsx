@@ -39,7 +39,7 @@ export default class CheckboxListFilter extends React.Component {
                 />
                 <label htmlFor={`${name}-${item}`}>{collection[item]}</label>
               </li>
-              ))
+            ))
           }
         </ul>
       </fieldset>

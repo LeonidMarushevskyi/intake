@@ -9,20 +9,20 @@ import momentLocalizer from 'react-widgets/lib/localizers/moment'
 momentLocalizer(moment)
 
 const DateField = ({
-                    errors,
-                    gridClassName,
-                    hasCalendar,
-                    hasTime,
-                    id,
-                    label,
-                    labelClassName,
-                    max,
-                    min,
-                    onBlur,
-                    onChange,
-                    required,
-                    value,
-                  }) => {
+  errors,
+  gridClassName,
+  hasCalendar,
+  hasTime,
+  id,
+  label,
+  labelClassName,
+  max,
+  min,
+  onBlur,
+  onChange,
+  required,
+  value,
+}) => {
   const parseDate = (date) => (
     moment(date, ['YYYY-MM-DD', 'MM/DD/YYYY h:mm A', moment.ISO_8601])
   )

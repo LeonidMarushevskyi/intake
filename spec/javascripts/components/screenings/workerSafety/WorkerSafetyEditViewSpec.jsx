@@ -69,8 +69,8 @@ describe('WorkerSafetyEditView', () => {
 
   it('calls onChange when the safety alerts are changed', () => {
     const newSelectedSafetyAlerts = [
-        {label: 'Firearms in Home', value: 'Firearms in Home'},
-        {label: 'Hostile, Aggressive Client', value: 'Hostile, Aggressive Client'},
+      {label: 'Firearms in Home', value: 'Firearms in Home'},
+      {label: 'Hostile, Aggressive Client', value: 'Hostile, Aggressive Client'},
     ]
     component.find('Select[multi]').simulate('Change', newSelectedSafetyAlerts)
     expect(onChange).toHaveBeenCalledWith(

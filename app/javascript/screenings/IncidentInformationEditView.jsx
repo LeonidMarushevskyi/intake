@@ -70,7 +70,7 @@ const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onCha
             {US_STATE.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
           </SelectField>
           <InputField
-            allowCharacters={/[0-9\-]/}
+            allowCharacters={/[0-9-]/}
             gridClassName='col-md-6'
             id='zip'
             label='Zip'
@@ -93,7 +93,7 @@ const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onCha
             <optgroup key={group} label={group}>
               {LOCATION_TYPE[group].map((item) => <option key={item} value={item}>{item}</option>)}
             </optgroup>
-            )
+          )
           )}
         </SelectField>
       </div>

@@ -135,22 +135,22 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
           </SelectField>
         </div>
         <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='languages'>Language(s)</label>
-              <Select
-                multi
-                inputProps={{id: 'languages'}}
-                options={selectOptions(LANGUAGES)}
-                value={(participant.get('languages') || Immutable.List()).toJS()}
-                onChange={(languages) =>
-                  onChange(
-                    ['languages'],
-                    Immutable.List(languages.map((languages) => languages.value)) || []
-                  )
-                }
-              />
-            </div>
+          <div className='col-md-6'>
+            <label htmlFor='languages'>Language(s)</label>
+            <Select
+              multi
+              inputProps={{id: 'languages'}}
+              options={selectOptions(LANGUAGES)}
+              value={(participant.get('languages') || Immutable.List()).toJS()}
+              onChange={(languages) =>
+                onChange(
+                  ['languages'],
+                  Immutable.List(languages.map((languages) => languages.value)) || []
+                )
+              }
+            />
           </div>
+        </div>
         <div className='row'>
           <MaskedInputField
             gridClassName='col-md-6'
