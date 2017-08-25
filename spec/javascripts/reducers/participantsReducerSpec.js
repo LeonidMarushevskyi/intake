@@ -1,3 +1,4 @@
+import * as matchers from 'jasmine-immutable-matchers'
 import {
   createScreeningSuccess,
   fetchScreeningSuccess,
@@ -7,76 +8,74 @@ import {
   updateParticipantSuccess,
 } from 'actions/screeningActions'
 import participantsReducer from 'reducers/participantsReducer'
-import {Map, List, fromJS} from 'immutable'
+import {List, fromJS} from 'immutable'
 
 describe('participantsReducer', () => {
+  beforeEach(() => jasmine.addMatchers(matchers))
+
   describe('on CREATE_SCREENING_SUCCESS', () => {
     it('returns the participants from the action', () => {
-      const screening = {id: '1', name: 'mock_screening', participants: []}
-      const action = createScreeningSuccess(screening)
-      expect(participantsReducer(Map(), action).toJS()).toEqual([])
+      const screening = fromJS({participants: []})
+      const action = createScreeningSuccess(screening.toJS())
+      expect(participantsReducer(List(), action).isEmpty()).toEqual(true)
     })
   })
 
   describe('on FETCH_SCREENING_SUCCESS', () => {
     it('returns the participants from the action', () => {
-      const participant = {id: '2'}
-      const screening = {id: '1', name: 'mock_screening', participants: [participant]}
-      const action = fetchScreeningSuccess(screening)
-      expect(participantsReducer(Map(), action).toJS()).toEqual([participant])
+      const screening = fromJS({participants: [{id: '2'}]})
+      const participants = screening.get('participants')
+      const action = fetchScreeningSuccess(screening.toJS())
+      expect(participantsReducer(List(), action)).toEqualImmutable(participants)
     })
   })
 
   describe('on UPDATE_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
-      const participant = {id: '2'}
-      const screening = {id: '1', name: 'mock_screening', participants: [participant]}
-      const action = updateScreeningSuccess(screening)
-      expect(participantsReducer(Map(), action).toJS()).toEqual([participant])
+      const screening = fromJS({participants: [{id: '2'}]})
+      const participants = screening.get('participants')
+      const action = updateScreeningSuccess(screening.toJS())
+      expect(participantsReducer(List(), action)).toEqualImmutable(participants)
     })
   })
 
   describe('on CREATE_PARTICIPANT_SUCCESS', () => {
-    const newParticipant = {id: '2', screening_id: '1', person_id: '3'}
-    const oldParticipants = List([{id: '3', screening_id: '1', person_id: '4'}])
+    const newParticipant = fromJS({id: '2'})
     let action
-    beforeEach(() => {
-      action = createParticipantSuccess(newParticipant)
-    })
+    beforeEach(() => (action = createParticipantSuccess(newParticipant.toJS())))
 
     it('returns the screening with new participant from the action', () => {
-      expect(participantsReducer(List([]), action).toJS()).toEqual([
-        newParticipant,
-      ])
+      const newParticipants = fromJS([newParticipant])
+      expect(participantsReducer(List(), action)).toEqualImmutable(newParticipants)
     })
 
     it('adds new participants to the beginning of the list', () => {
-      expect(participantsReducer(oldParticipants, action).toJS()).toEqual([
-        newParticipant,
-        oldParticipants.toJS()[0],
-      ])
+      const oldParticipant = {id: '3'}
+      const oldState = fromJS([oldParticipant])
+      const newParticipants = fromJS([newParticipant, oldParticipant])
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 
   describe('on UPDATE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening with updated participants from the action', () => {
-      const oldParticipant = {id: '2', screening_id: '3', legacy_id: '10', ssn: '12345'}
-      const newParticipant = {id: '2', screening_id: '3', legacy_id: '10', ssn: '78456'}
-      const participants = fromJS([oldParticipant])
+      const newParticipant = {id: '1', first_name: 'John'}
+      const oldParticipant = {id: '1'}
+      const oldState = fromJS([oldParticipant])
+      const newParticipants = fromJS([newParticipant])
       const action = updateParticipantSuccess(newParticipant)
-      expect(participantsReducer(participants, action).toJS()).toEqual([newParticipant])
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 
   describe('on DELETE_PARTICIPANT_SUCCESS', () => {
     it('returns the screening without the deleted participant from the action', () => {
-      const firstParticipant = {id: '2', screening_id: '1', legacy_id: '3'}
-      const secondParticipant = {id: '3', screening_id: '1', legacy_id: '4'}
-      const participants = fromJS([firstParticipant, secondParticipant])
+      const firstParticipant = {id: '2'}
+      const secondParticipant = {id: '3'}
+      const oldState = fromJS([firstParticipant, secondParticipant])
       const action = deleteParticipantSuccess(secondParticipant.id)
-      expect(participantsReducer(participants, action).toJS()).toEqual([
-        firstParticipant,
-      ])
+      const newParticipants = fromJS([firstParticipant])
+      expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
   })
 })

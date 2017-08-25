@@ -5,11 +5,13 @@ import {
   SUBMIT_SCREENING_SUCCESS,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
+
+const getScreening = (state, {screening}) => (fromJS(screening))
 
 export default createReducer(Map(), {
-  [CREATE_SCREENING_SUCCESS](state, action) { return action.screening },
-  [FETCH_SCREENING_SUCCESS](state, action) { return action.screening },
-  [UPDATE_SCREENING_SUCCESS](state, action) { return action.screening },
-  [SUBMIT_SCREENING_SUCCESS](state, action) { return action.screening },
+  [CREATE_SCREENING_SUCCESS]: getScreening,
+  [FETCH_SCREENING_SUCCESS]: getScreening,
+  [UPDATE_SCREENING_SUCCESS]: getScreening,
+  [SUBMIT_SCREENING_SUCCESS]: getScreening,
 })

@@ -65,7 +65,7 @@ HomePage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    screening: state.screening,
+    screening: state.get('screening'),
     router: ownProps.router,
   }
 }
