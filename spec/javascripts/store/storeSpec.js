@@ -1,3 +1,4 @@
+import * as matchers from 'jasmine-immutable-matchers'
 import {
   fetchScreeningSuccess,
   createScreeningSuccess,
@@ -12,6 +13,7 @@ describe('Store', () => {
   let initialState
   let store
   beforeEach(() => {
+    jasmine.addMatchers(matchers)
     initialState = fromJS({
       screening: {},
       participants: [],
@@ -22,7 +24,7 @@ describe('Store', () => {
   })
 
   it('has initial state', () => {
-    expect(store.getState().equals(initialState)).toEqual(true)
+    expect(store.getState()).toEqualImmutable(initialState)
   })
 
   it('handles fetch screening', () => {
@@ -34,8 +36,8 @@ describe('Store', () => {
     const participants = screening.get('participants')
     const action = fetchScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().get('screening').equals(screening)).toEqual(true)
-    expect(store.getState().get('participants').equals(participants)).toEqual(true)
+    expect(store.getState().get('screening')).toEqualImmutable(screening)
+    expect(store.getState().get('participants')).toEqualImmutable(participants)
   })
 
   it('handles create screening', () => {
@@ -46,7 +48,7 @@ describe('Store', () => {
     })
     const action = createScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().get('screening').equals(screening)).toEqual(true)
+    expect(store.getState().get('screening')).toEqualImmutable(screening)
     expect(store.getState().get('participants').isEmpty()).toEqual(true)
   })
 
@@ -68,15 +70,16 @@ describe('Store', () => {
       const updatedScreening = initialState.get('screening').set('participants', participants)
       const action = updateScreeningSuccess(updatedScreening.toJS())
       store.dispatch(action)
-      expect(store.getState().get('screening').equals(updatedScreening)).toEqual(true)
-      expect(store.getState().get('participants').equals(participants)).toEqual(true)
+      expect(store.getState().get('screening')).toEqualImmutable(updatedScreening)
+      expect(store.getState().get('participants')).toEqualImmutable(participants)
     })
 
     it('handles create participant', () => {
-      const participants = fromJS([{id: '2', legacy_id: '3', screening_id: '1'}])
-      const action = createParticipantSuccess(participants.get(0).toJS())
+      const participant = {id: '2', legacy_id: '3', screening_id: '1'}
+      const participants = fromJS([participant])
+      const action = createParticipantSuccess(participant)
       store.dispatch(action)
-      expect(store.getState().get('participants').equals(participants)).toEqual(true)
+      expect(store.getState().get('participants')).toEqualImmutable(participants)
     })
   })
 })
