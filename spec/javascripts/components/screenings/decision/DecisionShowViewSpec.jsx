@@ -63,7 +63,7 @@ describe('DecisionShowView', () => {
       screening_decision_detail: 'Some character string',
     })
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
-    expect(component.find('ShowField').length).toEqual(3)
+    expect(component.find('ShowField').length).toEqual(4)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Differential response')
     expect(component.find('ShowField[label="Service name"]').props().labelClassName)
@@ -81,7 +81,7 @@ describe('DecisionShowView', () => {
       screening_decision_detail: 'consultation',
     })
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
-    expect(component.find('ShowField').length).toEqual(3)
+    expect(component.find('ShowField').length).toEqual(4)
     expect(component.find('ShowField[label="Screening Decision"]').props().children)
       .toEqual('Screen out')
     expect(component.find('ShowField[label="Category"]').html())
@@ -90,8 +90,17 @@ describe('DecisionShowView', () => {
       .not.toContain('required')
     expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('the decision is decided')
+    expect(component.find('ShowField[label="Access Restrictions"]').exists()).toEqual(true)
   })
 
+  it('renders Access Restrictions if available', () => {
+    const screening = Immutable.fromJS({
+      access_restrictions: 'sensitive',
+    })
+    const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
+    expect(component.find('ShowField[label="Access Restrictions"]').props().children)
+      .toEqual('Sensitive')
+  })
   it('renders Staff name for decision details when screening decision is information_to_child_welfare_services', () => {
     const screening = Immutable.fromJS({
       screening_decision: 'information_to_child_welfare_services',
@@ -119,13 +128,15 @@ describe('DecisionShowView', () => {
       screening_decision_detail: null,
       screening_decision: null,
       additional_information: null,
+      access_restrictions: null,
     })
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
-    expect(component.find('ShowField').length).toEqual(3)
+    expect(component.find('ShowField').length).toEqual(4)
     expect(component.find('ShowField[label="Screening Decision"]').html())
       .toContain('<div class="c-gray"></div>')
     expect(component.find('ShowField[label="Category"]').exists()).toEqual(false)
     expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('<div class="c-gray"></div>')
+    expect(component.find('ShowField[label="Access Restrictions"]').exists()).toEqual(true)
   })
 })

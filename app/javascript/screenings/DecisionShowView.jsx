@@ -5,6 +5,7 @@ import React from 'react'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 import ShowField from 'common/ShowField'
+import _ from 'lodash'
 
 const DecisionShowView = ({screening, onEdit, errors}) => {
   const decisionDetailLabel = (() => {
@@ -43,6 +44,9 @@ const DecisionShowView = ({screening, onEdit, errors}) => {
             </ShowField>
             <ShowField label='Additional information'>
               {screening.get('additional_information')}
+            </ShowField>
+            <ShowField label='Access Restrictions'>
+              {_.capitalize(screening.get('access_restrictions'))}
             </ShowField>
           </div>
           <div className='col-md-6'>
