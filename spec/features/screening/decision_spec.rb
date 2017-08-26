@@ -58,6 +58,8 @@ feature 'decision card' do
       expect(page).to have_field('Staff name', with: '')
       select 'Differential response', from: 'Screening Decision'
       expect(page).to have_field('Service name', with: '')
+      expect(page).to have_field('Additional information', with: 'this is why it is')
+
       expect(page).to have_content('SDM Hotline Tool')
       expect(page).to have_content(
         'Determine Decision and Response Time by using Structured Decision Making'
@@ -93,12 +95,6 @@ feature 'decision card' do
       fill_in 'Service name', with: 'An arbitrary string'
       click_button 'Save'
     end
-    expect(page).to have_content('Screening Decision')
-    expect(page).to have_content('Differential response')
-    expect(page).to have_content('Service name')
-    expect(page).to have_content('An arbitrary string')
-    expect(page).to have_content('Additional information')
-    expect(page).to have_content('I changed my decision rationale')
     expect(
       a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
@@ -109,6 +105,12 @@ feature 'decision card' do
         'Determine Decision and Response Time by using Structured Decision Making'
       )
       expect(page).to have_content('Complete SDM')
+      expect(page).to have_content('Screening Decision')
+      expect(page).to have_content('Differential response')
+      expect(page).to have_content('Service name')
+      expect(page).to have_content('An arbitrary string')
+      expect(page).to have_content('Additional information')
+      expect(page).to have_content('I changed my decision rationale')
     end
   end
 

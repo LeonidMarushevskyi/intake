@@ -13,7 +13,11 @@ export default class DecisionCardView extends React.Component {
     this.onSave = this.onSave.bind(this)
     this.onBlur = this.onBlur.bind(this)
 
-    this.fields = Immutable.fromJS(['screening_decision_detail', 'screening_decision', 'additional_information'])
+    this.fields = Immutable.fromJS([
+      'screening_decision_detail',
+      'screening_decision',
+      'additional_information',
+    ])
 
     let displayErrorsFor
     if (this.props.mode === 'show') {

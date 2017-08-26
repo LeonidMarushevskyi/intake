@@ -124,7 +124,7 @@ describe('DecisionShowView', () => {
     expect(component.find('ShowField').length).toEqual(3)
     expect(component.find('ShowField[label="Screening Decision"]').html())
       .toContain('<div class="c-gray"></div>')
-    expect(component.find('ShowField[label="Category"]').length).toEqual(0)
+    expect(component.find('ShowField[label="Category"]').exists()).toEqual(false)
     expect(component.find('ShowField[label="Additional information"]').html())
       .toContain('<div class="c-gray"></div>')
   })

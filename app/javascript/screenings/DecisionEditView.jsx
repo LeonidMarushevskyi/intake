@@ -56,16 +56,16 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
               </SelectField>
             }
             { decisionOptions && decisionOptions.type === 'text' &&
-                <InputField
-                  id='decisionDetail'
-                  label={decisionLabel}
-                  errors={errors.get('screening_decision_detail')}
-                  required={isRequired}
-                  value={screening.getIn(['screening_decision_detail']) || ''}
-                  onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
-                  onBlur={() => onBlur('screening_decision_detail')}
-                  maxLength='64'
-                />
+              <InputField
+                id='decisionDetail'
+                label={decisionLabel}
+                errors={errors.get('screening_decision_detail')}
+                required={isRequired}
+                value={screening.getIn(['screening_decision_detail']) || ''}
+                onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                onBlur={() => onBlur('screening_decision_detail')}
+                maxLength='64'
+              />
             }
             <div>
               <label htmlFor='additional_information'>Additional information</label>

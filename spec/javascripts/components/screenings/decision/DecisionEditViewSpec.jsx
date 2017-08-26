@@ -152,7 +152,7 @@ describe('DecisionEditView', () => {
       .toEqual('differential_response')
     expect(component.find('InputField[label="Service name"]').props().value)
       .toEqual('Name of the service')
-    expect(component.find('SelectField[label="Category"]').length).toEqual(0)
+    expect(component.find('SelectField[label="Category"]').exists()).toEqual(false)
     expect(component.find('textarea#additional_information').props().value)
       .toEqual('more info')
   })
