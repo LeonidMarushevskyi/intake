@@ -34,16 +34,11 @@ describe('screening actions', () => {
 
   describe('.createScreening', () => {
     const screening = {id: '3', name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
+    beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(screening)))
 
     it('posts the screening to the server', () => {
       store.dispatch(createScreening())
-      expect(Utils.request).toHaveBeenCalledWith(
-        'POST',
-        '/api/v1/screenings',
-        null,
-        {contentType: 'application/json'}
-      )
+      expect(Utils.post).toHaveBeenCalledWith('/api/v1/screenings', null)
     })
 
     it('dispatches a createScreeningSuccess', () => {
@@ -57,16 +52,11 @@ describe('screening actions', () => {
   describe('.fetchScreening', () => {
     const screeningId = '1'
     const screening = {id: screeningId, name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
+    beforeEach(() => spyOn(Utils, 'get').and.returnValue(Promise.resolve(screening)))
 
     it('fetches the screening for a given screeningId', () => {
       store.dispatch(fetchScreening(screeningId))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'GET',
-        `/api/v1/screenings/${screeningId}`,
-        null,
-        {contentType: 'application/json'}
-      )
+      expect(Utils.get).toHaveBeenCalledWith(`/api/v1/screenings/${screeningId}`)
     })
 
     it('dispatches a fetchScreeningSuccess', () => {
@@ -79,15 +69,12 @@ describe('screening actions', () => {
 
   describe('.saveScreening', () => {
     const screening = {id: '3', name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
+    beforeEach(() => spyOn(Utils, 'put').and.returnValue(Promise.resolve(screening)))
 
     it('puts the screening to the server', () => {
       store.dispatch(saveScreening(screening))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'PUT',
-        `/api/v1/screenings/${screening.id}`,
-        JSON.stringify({screening: screening}),
-        {contentType: 'application/json'}
+      expect(Utils.put).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screening.id}`, {screening}
       )
     })
 
@@ -111,15 +98,12 @@ describe('screening actions', () => {
       languages: ['English', 'Spanish'],
       ssn: 'ssn-1',
     }
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))
+    beforeEach(() => spyOn(Utils, 'put').and.returnValue(Promise.resolve(participant)))
 
     it('puts the participants to the server', () => {
       store.dispatch(saveParticipant(participant))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'PUT',
-        `/api/v1/participants/${participant.id}`,
-        JSON.stringify({participant: participant}),
-        {contentType: 'application/json'}
+      expect(Utils.put).toHaveBeenCalledWith(
+        `/api/v1/participants/${participant.id}`, {participant}
       )
     })
 
@@ -133,16 +117,11 @@ describe('screening actions', () => {
 
   describe('.createParticipant', () => {
     const participant = {screening_id: '1', legacy_id: '2', id: null}
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))
+    beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(participant)))
 
     it('posts the participant to the server', () => {
       store.dispatch(createParticipant(participant))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'POST',
-        '/api/v1/participants',
-        JSON.stringify({participant: participant}),
-        {contentType: 'application/json'}
-      )
+      expect(Utils.post).toHaveBeenCalledWith('/api/v1/participants', {participant})
     })
 
     it('dispatches a createParticipantSuccess', () => {
@@ -155,16 +134,11 @@ describe('screening actions', () => {
 
   describe('.deleteParticipant', () => {
     const participantId = '1'
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
+    beforeEach(() => spyOn(Utils, 'destroy').and.returnValue(Promise.resolve()))
 
     it('deletes the participant on the server', () => {
       store.dispatch(deleteParticipant(participantId))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'DELETE',
-        `/api/v1/participants/${participantId}`,
-        null,
-        {contentType: 'application/json'}
-      )
+      expect(Utils.destroy).toHaveBeenCalledWith(`/api/v1/participants/${participantId}`)
     })
 
     it('dispatches a deleteParticipantSuccess', () => {
@@ -176,16 +150,13 @@ describe('screening actions', () => {
   })
 
   describe('.fetchHistoryOfInvolvements', () => {
-    beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
+    beforeEach(() => spyOn(Utils, 'get').and.returnValue(Promise.resolve()))
 
     it('fetches the history of involvements from the server', () => {
       const screeningId = 22
       store.dispatch(fetchHistoryOfInvolvements(screeningId))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'GET',
-        `/api/v1/screenings/${screeningId}/history_of_involvements`,
-        null,
-        {contentType: 'application/json'}
+      expect(Utils.get).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screeningId}/history_of_involvements`
       )
     })
 
@@ -202,20 +173,18 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(window, 'alert'))
 
     it('submits a screening to the server', () => {
-      spyOn(Utils, 'request').and.returnValue(Promise.resolve())
+      spyOn(Utils, 'post').and.returnValue(Promise.resolve())
       store.dispatch(submitScreening(screeningId))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'POST',
+      expect(Utils.post).toHaveBeenCalledWith(
         `/api/v1/screenings/${screeningId}/submit`,
-        null,
-        {contentType: 'application/json'}
+        null
       )
     })
 
     describe('when server responds with success', () => {
       const referralId = '44'
       const jsonResponse = {referral_id: referralId}
-      beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(jsonResponse)))
+      beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(jsonResponse)))
 
       it('dispatches a submitScreeningSuccess', () => {
         const expectedActions = [submitScreeningSuccess(jsonResponse)]
@@ -234,7 +203,7 @@ describe('screening actions', () => {
     describe('when server responds with failure', () => {
       const jsonFailureResponse = {responseText: 'Failure response message'}
       beforeEach(() => {
-        spyOn(Utils, 'request').and.returnValue(Promise.reject(jsonFailureResponse))
+        spyOn(Utils, 'post').and.returnValue(Promise.reject(jsonFailureResponse))
       })
 
       it('dispatches a submitScreeningFailure', () => {
@@ -256,16 +225,13 @@ describe('screening actions', () => {
     const screeningId = '3'
 
     beforeEach(() => {
-      spyOn(Utils, 'request').and.returnValue(Promise.resolve())
+      spyOn(Utils, 'get').and.returnValue(Promise.resolve())
     })
 
     it('fetches screening relationships from the server', () => {
       store.dispatch(fetchRelationshipsByScreeningId(screeningId))
-      expect(Utils.request).toHaveBeenCalledWith(
-        'GET',
-        `/api/v1/screenings/${screeningId}/relationships`,
-        null,
-        {contentType: 'application/json'}
+      expect(Utils.get).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screeningId}/relationships`
       )
     })
 

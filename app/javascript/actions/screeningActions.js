@@ -1,4 +1,4 @@
-import {request} from 'utils/http'
+import {get, post, destroy, put} from 'utils/http'
 import {
   CREATE_SCREENING_SUCCESS,
   UPDATE_SCREENING_SUCCESS,
@@ -11,21 +11,6 @@ import {
   SUBMIT_SCREENING_SUCCESS,
   SUBMIT_SCREENING_FAILURE,
 } from 'actions/actionTypes'
-
-const get = (url) => request('GET', url, null, {contentType: 'application/json'})
-const destroy = (url) => request('DELETE', url, null, {contentType: 'application/json'})
-const put = (url, data) => request(
-  'PUT',
-  url,
-  data && JSON.stringify(data),
-  {contentType: 'application/json'}
-)
-const post = (url, data) => request(
-  'POST',
-  url,
-  data && JSON.stringify(data),
-  {contentType: 'application/json'}
-)
 
 export function createScreeningSuccess(screening) {
   return {type: CREATE_SCREENING_SUCCESS, screening}
