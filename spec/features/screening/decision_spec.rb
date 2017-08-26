@@ -65,6 +65,10 @@ feature 'decision card' do
                                     'Mark as Sensitive',
                                     'Mark as Sealed'
                                   ])
+      expect(page).not_to have_field('Restrictions Rational')
+      select 'Mark as Sensitive', from: 'Access Restrictions'
+      expect(page).to have_field('Restrictions Rational')
+
       expect(page).to have_content('SDM Hotline Tool')
       expect(page).to have_content(
         'Determine Decision and Response Time by using Structured Decision Making'
@@ -83,6 +87,7 @@ feature 'decision card' do
       screening_decision: 'differential_response',
       screening_decision_detail: 'An arbitrary string',
       additional_information: 'I changed my decision rationale',
+      restrictions_rational: 'Someone in this screening has sensitive information',
       access_restrictions: 'sensitive'
     )
 
@@ -101,6 +106,7 @@ feature 'decision card' do
       select 'Differential response', from: 'Screening Decision'
       fill_in 'Service name', with: 'An arbitrary string'
       select 'Mark as Sensitive', from: 'Access Restrictions'
+      fill_in 'Restrictions Rational', with: 'Someone in this screening has sensitive information'
       click_button 'Save'
     end
     expect(
@@ -120,6 +126,7 @@ feature 'decision card' do
       expect(page).to have_content('Additional information')
       expect(page).to have_content('I changed my decision rationale')
       expect(page).to have_content('Sensitive')
+      expect(page).to have_content('Someone in this screening has sensitive information')
     end
   end
 
