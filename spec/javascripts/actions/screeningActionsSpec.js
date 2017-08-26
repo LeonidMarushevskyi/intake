@@ -1,5 +1,25 @@
 import * as Utils from 'utils/http'
-import * as screeningActions from 'actions/screeningActions'
+import {
+  createParticipant,
+  createParticipantSuccess,
+  createScreening,
+  createScreeningSuccess,
+  deleteParticipant,
+  deleteParticipantSuccess,
+  fetchHistoryOfInvolvements,
+  fetchHistoryOfInvolvementsSuccess,
+  fetchRelationshipsByScreeningId,
+  fetchRelationshipsByScreeningIdSuccess,
+  fetchScreening,
+  fetchScreeningSuccess,
+  saveParticipant,
+  saveScreening,
+  submitScreening,
+  submitScreeningFailure,
+  submitScreeningSuccess,
+  updateParticipantSuccess,
+  updateScreeningSuccess,
+} from 'actions/screeningActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -17,7 +37,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
 
     it('posts the screening to the server', () => {
-      store.dispatch(screeningActions.createScreening())
+      store.dispatch(createScreening())
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
         '/api/v1/screenings',
@@ -27,8 +47,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a createScreeningSuccess', () => {
-      const expectedActions = [screeningActions.createScreeningSuccess(screening)]
-      store.dispatch(screeningActions.createScreening()).then(() =>
+      const expectedActions = [createScreeningSuccess(screening)]
+      store.dispatch(createScreening()).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -40,7 +60,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
 
     it('fetches the screening for a given screeningId', () => {
-      store.dispatch(screeningActions.fetchScreening(screeningId))
+      store.dispatch(fetchScreening(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'GET',
         `/api/v1/screenings/${screeningId}`,
@@ -50,8 +70,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a fetchScreeningSuccess', () => {
-      const expectedActions = [screeningActions.fetchScreeningSuccess(screening)]
-      store.dispatch(screeningActions.fetchScreening(screeningId)).then(() =>
+      const expectedActions = [fetchScreeningSuccess(screening)]
+      store.dispatch(fetchScreening(screeningId)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -62,7 +82,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(screening)))
 
     it('puts the screening to the server', () => {
-      store.dispatch(screeningActions.saveScreening(screening))
+      store.dispatch(saveScreening(screening))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
         `/api/v1/screenings/${screening.id}`,
@@ -72,8 +92,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a updateScreeningSuccess', () => {
-      const expectedActions = [screeningActions.updateScreeningSuccess(screening)]
-      store.dispatch(screeningActions.saveScreening(screening)).then(() =>
+      const expectedActions = [updateScreeningSuccess(screening)]
+      store.dispatch(saveScreening(screening)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -94,7 +114,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))
 
     it('puts the participants to the server', () => {
-      store.dispatch(screeningActions.saveParticipant(participant))
+      store.dispatch(saveParticipant(participant))
       expect(Utils.request).toHaveBeenCalledWith(
         'PUT',
         `/api/v1/participants/${participant.id}`,
@@ -104,8 +124,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a updateParticipantSuccess', () => {
-      const expectedActions = [screeningActions.updateParticipantSuccess(participant)]
-      store.dispatch(screeningActions.saveParticipant(participant)).then(() =>
+      const expectedActions = [updateParticipantSuccess(participant)]
+      store.dispatch(saveParticipant(participant)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -116,7 +136,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(participant)))
 
     it('posts the participant to the server', () => {
-      store.dispatch(screeningActions.createParticipant(participant))
+      store.dispatch(createParticipant(participant))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
         '/api/v1/participants',
@@ -126,8 +146,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a createParticipantSuccess', () => {
-      const expectedActions = [screeningActions.createParticipantSuccess(participant)]
-      store.dispatch(screeningActions.createParticipant(participant)).then(() =>
+      const expectedActions = [createParticipantSuccess(participant)]
+      store.dispatch(createParticipant(participant)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -138,7 +158,7 @@ describe('screening actions', () => {
     beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve()))
 
     it('deletes the participant on the server', () => {
-      store.dispatch(screeningActions.deleteParticipant(participantId))
+      store.dispatch(deleteParticipant(participantId))
       expect(Utils.request).toHaveBeenCalledWith(
         'DELETE',
         `/api/v1/participants/${participantId}`,
@@ -148,8 +168,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a deleteParticipantSuccess', () => {
-      const expectedActions = [screeningActions.deleteParticipantSuccess(participantId)]
-      store.dispatch(screeningActions.deleteParticipant(participantId)).then(() =>
+      const expectedActions = [deleteParticipantSuccess(participantId)]
+      store.dispatch(deleteParticipant(participantId)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -160,7 +180,7 @@ describe('screening actions', () => {
 
     it('fetches the history of involvements from the server', () => {
       const screeningId = 22
-      store.dispatch(screeningActions.fetchHistoryOfInvolvements(screeningId))
+      store.dispatch(fetchHistoryOfInvolvements(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'GET',
         `/api/v1/screenings/${screeningId}/history_of_involvements`,
@@ -170,8 +190,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a fetchHistoryOfInvolvementsSuccess', () => {
-      const expectedActions = [screeningActions.fetchHistoryOfInvolvementsSuccess()]
-      store.dispatch(screeningActions.fetchHistoryOfInvolvements()).then(() =>
+      const expectedActions = [fetchHistoryOfInvolvementsSuccess()]
+      store.dispatch(fetchHistoryOfInvolvements()).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
@@ -183,7 +203,7 @@ describe('screening actions', () => {
 
     it('submits a screening to the server', () => {
       spyOn(Utils, 'request').and.returnValue(Promise.resolve())
-      store.dispatch(screeningActions.submitScreening(screeningId))
+      store.dispatch(submitScreening(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'POST',
         `/api/v1/screenings/${screeningId}/submit`,
@@ -198,14 +218,14 @@ describe('screening actions', () => {
       beforeEach(() => spyOn(Utils, 'request').and.returnValue(Promise.resolve(jsonResponse)))
 
       it('dispatches a submitScreeningSuccess', () => {
-        const expectedActions = [screeningActions.submitScreeningSuccess(jsonResponse)]
-        store.dispatch(screeningActions.submitScreening(screeningId)).then(() =>
+        const expectedActions = [submitScreeningSuccess(jsonResponse)]
+        store.dispatch(submitScreening(screeningId)).then(() =>
           expect(store.getActions()).toEqual(expectedActions)
         )
       })
 
       it('displays an success alert with the referralId', () => {
-        store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
+        store.dispatch(submitScreening(screeningId)).then(() => {
           expect(window.alert).toHaveBeenCalledWith(`Successfully created referral ${referralId}`)
         })
       })
@@ -218,14 +238,14 @@ describe('screening actions', () => {
       })
 
       it('dispatches a submitScreeningFailure', () => {
-        const expectedActions = [screeningActions.submitScreeningFailure(jsonFailureResponse)]
-        store.dispatch(screeningActions.submitScreening(screeningId)).then(() =>
+        const expectedActions = [submitScreeningFailure(jsonFailureResponse)]
+        store.dispatch(submitScreening(screeningId)).then(() =>
           expect(store.getActions()).toEqual(expectedActions)
         )
       })
 
       it('displays an response in an alert', () => {
-        store.dispatch(screeningActions.submitScreening(screeningId)).then(() => {
+        store.dispatch(submitScreening(screeningId)).then(() => {
           expect(window.alert).toHaveBeenCalledWith('Failure response message')
         })
       })
@@ -240,7 +260,7 @@ describe('screening actions', () => {
     })
 
     it('fetches screening relationships from the server', () => {
-      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId))
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId))
       expect(Utils.request).toHaveBeenCalledWith(
         'GET',
         `/api/v1/screenings/${screeningId}/relationships`,
@@ -250,8 +270,8 @@ describe('screening actions', () => {
     })
 
     it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
-      const expectedActions = [screeningActions.fetchRelationshipsByScreeningIdSuccess()]
-      store.dispatch(screeningActions.fetchRelationshipsByScreeningId(screeningId)).then(() => {
+      const expectedActions = [fetchRelationshipsByScreeningIdSuccess()]
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId)).then(() => {
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

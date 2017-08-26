@@ -1,71 +1,83 @@
-import * as Utils from 'utils/http'
-import * as types from 'actions/actionTypes'
+import {request} from 'utils/http'
+import {
+  CREATE_SCREENING_SUCCESS,
+  UPDATE_SCREENING_SUCCESS,
+  FETCH_SCREENING_SUCCESS,
+  CREATE_PARTICIPANT_SUCCESS,
+  DELETE_PARTICIPANT_SUCCESS,
+  UPDATE_PARTICIPANT_SUCCESS,
+  FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
+  FETCH_RELATIONSHIPS_SUCCESS,
+  SUBMIT_SCREENING_SUCCESS,
+  SUBMIT_SCREENING_FAILURE,
+} from 'actions/actionTypes'
+
+const get = (url) => request('GET', url, null, {contentType: 'application/json'})
+const destroy = (url) => request('DELETE', url, null, {contentType: 'application/json'})
+const put = (url, data) => request(
+  'PUT',
+  url,
+  data && JSON.stringify(data),
+  {contentType: 'application/json'}
+)
+const post = (url, data) => request(
+  'POST',
+  url,
+  data && JSON.stringify(data),
+  {contentType: 'application/json'}
+)
 
 export function createScreeningSuccess(screening) {
-  return {type: types.CREATE_SCREENING_SUCCESS, screening}
+  return {type: CREATE_SCREENING_SUCCESS, screening}
 }
 
 export function createScreening() {
   return (dispatch) => (
-    Utils.request('POST', '/api/v1/screenings', null, {contentType: 'application/json'})
+    post('/api/v1/screenings', null)
       .then((jsonResponse) => dispatch(createScreeningSuccess(jsonResponse)))
   )
 }
 
 export function fetchScreeningSuccess(screening) {
-  return {type: types.FETCH_SCREENING_SUCCESS, screening}
+  return {type: FETCH_SCREENING_SUCCESS, screening}
 }
 
 export function fetchScreening(screeningId) {
   return (dispatch) => (
-    Utils.request('GET', `/api/v1/screenings/${screeningId}`, null, {contentType: 'application/json'})
+    get(`/api/v1/screenings/${screeningId}`)
       .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
   )
 }
 
 export function updateScreeningSuccess(screening) {
-  return {type: types.UPDATE_SCREENING_SUCCESS, screening}
+  return {type: UPDATE_SCREENING_SUCCESS, screening}
 }
 
 export function saveScreening(screening) {
   return (dispatch) => (
-    Utils.request(
-      'PUT',
-      `/api/v1/screenings/${screening.id}`,
-      JSON.stringify({screening: screening}),
-      {contentType: 'application/json'}
-    ).then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
+    put(`/api/v1/screenings/${screening.id}`, {screening})
+      .then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
   )
 }
 
 export function updateParticipantSuccess(participant) {
-  return {type: types.UPDATE_PARTICIPANT_SUCCESS, participant}
+  return {type: UPDATE_PARTICIPANT_SUCCESS, participant}
 }
 
 export function saveParticipant(participant) {
   return (dispatch) => (
-    Utils.request(
-      'PUT',
-      `/api/v1/participants/${participant.id}`,
-      JSON.stringify({participant: participant}),
-      {contentType: 'application/json'}
-    )
+    put(`/api/v1/participants/${participant.id}`, {participant})
       .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
   )
 }
 
 export function createParticipantSuccess(participant) {
-  return {type: types.CREATE_PARTICIPANT_SUCCESS, participant}
+  return {type: CREATE_PARTICIPANT_SUCCESS, participant}
 }
 
 export function createParticipant(participant) {
   return (dispatch) => (
-    Utils.request(
-      'POST',
-      '/api/v1/participants',
-      JSON.stringify({participant: participant}),
-      {contentType: 'application/json'}
-    )
+    post('/api/v1/participants', {participant})
       .then((jsonResponse) => {
         dispatch(createParticipantSuccess(jsonResponse))
       })
@@ -73,33 +85,23 @@ export function createParticipant(participant) {
 }
 
 export function deleteParticipantSuccess(id) {
-  return {type: types.DELETE_PARTICIPANT_SUCCESS, id}
+  return {type: DELETE_PARTICIPANT_SUCCESS, id}
 }
 
 export function deleteParticipant(id) {
   return (dispatch) => (
-    Utils.request(
-      'DELETE',
-      `/api/v1/participants/${id}`,
-      null,
-      {contentType: 'application/json'}
-    )
+    destroy(`/api/v1/participants/${id}`)
       .then(() => dispatch(deleteParticipantSuccess(id)))
   )
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
-  return {type: types.FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS, history_of_involvements}
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS, history_of_involvements}
 }
 
 export function fetchHistoryOfInvolvements(screeningId) {
   return (dispatch) => (
-    Utils.request(
-      'GET',
-      `/api/v1/screenings/${screeningId}/history_of_involvements`,
-      null,
-      {contentType: 'application/json'}
-    )
+    get(`/api/v1/screenings/${screeningId}/history_of_involvements`)
       .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
   )
 }
@@ -109,26 +111,19 @@ export function submitScreeningSuccess(screening) {
   /* eslint-disable no-alert */
   alert(`Successfully created referral ${referralId}`)
   /* eslint-enable no-alert */
-  return {type: types.SUBMIT_SCREENING_SUCCESS, screening}
+  return {type: SUBMIT_SCREENING_SUCCESS, screening}
 }
 
 export function submitScreeningFailure(jsonResponse) {
   /* eslint-disable no-alert */
   alert(jsonResponse.responseText)
   /* eslint-enable no-alert */
-  return {
-    type: types.SUBMIT_SCREENING_FAILURE,
-  }
+  return {type: SUBMIT_SCREENING_FAILURE}
 }
 
 export function submitScreening(screeningId) {
   return (dispatch) => (
-    Utils.request(
-      'POST',
-      `/api/v1/screenings/${screeningId}/submit`,
-      null,
-      {contentType: 'application/json'}
-    )
+    post(`/api/v1/screenings/${screeningId}/submit`, null)
       .then(
         (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
         (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
@@ -137,17 +132,12 @@ export function submitScreening(screeningId) {
 }
 
 export function fetchRelationshipsByScreeningIdSuccess(relationships) {
-  return {type: types.FETCH_RELATIONSHIPS_SUCCESS, relationships}
+  return {type: FETCH_RELATIONSHIPS_SUCCESS, relationships}
 }
 
 export function fetchRelationshipsByScreeningId(screeningId) {
   return (dispatch) => (
-    Utils.request(
-      'GET',
-      `/api/v1/screenings/${screeningId}/relationships`,
-      null,
-      {contentType: 'application/json'}
-    )
+    get(`/api/v1/screenings/${screeningId}/relationships`)
       .then((jsonResponse) => dispatch(fetchRelationshipsByScreeningIdSuccess(jsonResponse)))
   )
 }
