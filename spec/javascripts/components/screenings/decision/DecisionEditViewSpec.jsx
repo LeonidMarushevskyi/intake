@@ -96,6 +96,15 @@ describe('conditional decision options', () => {
     expect(component.find('#decisionDetail').props().required).toBeFalsy()
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
+
+  it('renders restrictions rational field for access restrictions', () => {
+    expect(component.find('#restrictions_rational').exists()).toEqual(true)
+  })
+
+  it('does not render restrictions rational field if no access restrictions are selected', () => {
+    component.setProps({screening: Immutable.fromJS({access_restrictions: ''})})
+    expect(component.find('#restrictions_rational').exists()).toEqual(false)
+  })
 })
 
 describe('DecisionEditView', () => {

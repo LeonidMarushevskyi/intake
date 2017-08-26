@@ -13,6 +13,7 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
     (Boolean(decisionOptions) && decisionOptions.label) || ''
   ))()
   const isRequired = decisionLabel === 'Response time'
+  const isRestricted = Boolean(screening.get('access_restrictions'))
 
   const onChangeDecision = (event) => {
     onChange(['screening_decision'], event.target.value || null, () => {
@@ -85,6 +86,17 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
             >
               {Object.keys(ACCESS_RESTRICTIONS).map((item) => <option key={item} value={item}>{ACCESS_RESTRICTIONS[item]}</option>)}
             </SelectField>
+            { isRestricted &&
+              <div>
+                <label className='required' htmlFor='restrictions_rational'>Restrictions Rational</label>
+                <textarea
+                  id='restrictions_rational'
+                  onChange={(event) => onChange(['restrictions_rational'], event.target.value || null)}
+                  value={screening.get('restrictions_rational') || ''}
+                  onBlur={() => onBlur('restrictions_rational')}
+                />
+              </div>
+            }
           </div>
           <div className='col-md-6'>
             <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>

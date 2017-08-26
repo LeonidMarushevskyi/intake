@@ -18,6 +18,7 @@ export default class DecisionCardView extends React.Component {
       'screening_decision',
       'additional_information',
       'access_restrictions',
+      'restrictions_rational',
     ])
 
     let displayErrorsFor
