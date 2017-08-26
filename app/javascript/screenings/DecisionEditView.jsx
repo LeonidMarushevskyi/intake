@@ -3,6 +3,7 @@ import InputField from 'common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
+import ACCESS_RESTRICTIONS from 'enums/AccessRestrictions'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 import SelectField from 'common/SelectField'
 
@@ -75,6 +76,15 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                 value={screening.get('additional_information') || ''}
               />
             </div>
+            <SelectField
+              id='access_restrictions'
+              label= 'Access Restrictions'
+              value={screening.get('access_restrictions')}
+              onChange={(event) => onChange(['access_restrictions'], event.target.value || null)}
+              onBlur={() => onBlur('access_restrictions')}
+            >
+              {Object.keys(ACCESS_RESTRICTIONS).map((item) => <option key={item} value={item}>{ACCESS_RESTRICTIONS[item]}</option>)}
+            </SelectField>
           </div>
           <div className='col-md-6'>
             <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>

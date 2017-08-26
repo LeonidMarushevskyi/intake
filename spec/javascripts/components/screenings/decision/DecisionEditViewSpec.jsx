@@ -19,6 +19,7 @@ describe('conditional decision options', () => {
       screening: Immutable.fromJS({
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
+        access_restrictions: 'sensitive',
       }),
       errors: errors,
     }
@@ -155,6 +156,7 @@ describe('DecisionEditView', () => {
     expect(component.find('SelectField[label="Category"]').exists()).toEqual(false)
     expect(component.find('textarea#additional_information').props().value)
       .toEqual('more info')
+    expect(component.find('SelectField[label="Access Restrictions"]').exists()).toEqual(true)
   })
 
   it('displays a select list when the decision option requires one', () => {

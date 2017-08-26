@@ -20,6 +20,7 @@ module Api
         :safety_information,
         :screening_decision,
         :screening_decision_detail,
+        :access_restrictions,
         :staff_id,
         :started_at,
         cross_reports: %i[
