@@ -53,7 +53,6 @@ export class ScreeningPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
-      .then(() => this.setState({loaded: true}))
   }
 
   componentWillReceiveProps(nextProps) {

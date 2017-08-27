@@ -4,7 +4,9 @@ import {
   CREATE_SCREENING_SUCCESS,
   CREATE_SCREENING_FAILURE,
   UPDATE_SCREENING_SUCCESS,
+  FETCH_SCREENING,
   FETCH_SCREENING_SUCCESS,
+  FETCH_SCREENING_FAILURE,
   CREATE_PARTICIPANT_SUCCESS,
   DELETE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT_SUCCESS,
@@ -31,11 +33,12 @@ export function fetchScreeningSuccess(screening) {
   return {type: FETCH_SCREENING_SUCCESS, screening}
 }
 
-export function fetchScreening(screeningId) {
-  return (dispatch) => (
-    get(`/api/v1/screenings/${screeningId}`)
-      .then((jsonResponse) => dispatch(fetchScreeningSuccess(jsonResponse)))
-  )
+export function fetchScreeningFailure(error) {
+  return {type: FETCH_SCREENING_FAILURE, error}
+}
+
+export function fetchScreening(id) {
+  return (dispatch) => dispatch({type: FETCH_SCREENING, id})
 }
 
 export function updateScreeningSuccess(screening) {

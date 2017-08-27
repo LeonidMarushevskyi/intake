@@ -51,8 +51,7 @@ describe('ScreeningPage when referral_submit feature is active', () => {
   describe('when release two is not active', () => {
     describe('when the screning does not have a referral id', () => {
       it('renders the submit button without a modal', () => {
-        const component = shallow(<ScreeningPage {...requiredProps} />)
-        component.setState({loaded: true})
+        const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
         expect(component.find('ScreeningSubmitButton').exists()).toEqual(true)
         expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
       })
@@ -67,11 +66,11 @@ describe('ScreeningPage when referral_submit feature is active', () => {
       const props = {
         ...requiredProps,
         screening: Immutable.fromJS(screening),
+        loaded: true,
       }
 
       it('renders neither submit button', () => {
         const component = shallow(<ScreeningPage {...props} />)
-        component.setState({loaded: true})
         expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
         expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(false)
       })

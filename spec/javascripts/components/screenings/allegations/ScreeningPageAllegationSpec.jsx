@@ -52,11 +52,11 @@ describe('ScreeningPage', () => {
           allegation_types: ['General neglect'],
         }],
       }),
+      loaded: true,
     }
 
     it('renders persisted allegations', () => {
       const component = mount(<ScreeningPage {...props} mode='show' />)
-      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsShowView')
       expect(allegationsCard.text()).toContain('Homer Simpson')
       expect(allegationsCard.text()).toContain('Bart Simpson')
@@ -75,9 +75,9 @@ describe('ScreeningPage', () => {
         },
         participants: Immutable.fromJS([victim, perpetrator]),
         mode: 'edit',
+        loaded: true,
       }
       const component = mount(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsEditView')
       expect(allegationsCard.length).toEqual(1)
 
@@ -109,7 +109,6 @@ describe('ScreeningPage', () => {
     it('generates new allegations for the participants when there are no persisted allegations', () => {
       props.screening = props.screening.set('allegations', [])
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const expectedAllegations = [{
         id: null,
         screening_id: '3',
@@ -130,7 +129,6 @@ describe('ScreeningPage', () => {
       ]
       props.screening = props.screening.set('allegations', Immutable.fromJS(persistedAllegations))
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const expectedAllegations = [{
         id: '9',
         screening_id: '3',
@@ -158,7 +156,6 @@ describe('ScreeningPage', () => {
       ]
       props.screening = props.screening.set('allegations', Immutable.fromJS(persisted_allegations))
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const expectedAllegations = [{
         id: '9',
         screening_id: '3',
@@ -188,7 +185,6 @@ describe('ScreeningPage', () => {
       ]
       props.screening = props.screening.set('allegations', Immutable.fromJS(persisted_allegations))
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const expectedAllegations = [{
         id: '9',
         screening_id: '3',
@@ -210,7 +206,6 @@ describe('ScreeningPage', () => {
       ]
       props.screening = props.screening.set('allegations', Immutable.fromJS(persisted_allegations))
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const screeningEdits = Immutable.fromJS({allegations: {1: {2: ['New allegation type']}}})
       component.setState({screeningEdits})
 

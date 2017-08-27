@@ -36,7 +36,9 @@ describe('Store', () => {
     const participants = screening.get('participants')
     const action = fetchScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().get('screening')).toEqualImmutable(screening)
+    expect(store.getState().get('screening')).toEqualImmutable(
+      screening.set('fetch_status', 'FETCHED')
+    )
     expect(store.getState().get('participants')).toEqualImmutable(participants)
   })
 
@@ -48,7 +50,9 @@ describe('Store', () => {
     })
     const action = createScreeningSuccess(screening.toJS())
     store.dispatch(action)
-    expect(store.getState().get('screening')).toEqualImmutable(screening)
+    expect(store.getState().get('screening')).toEqualImmutable(
+      screening.set('fetch_status', 'FETCHED')
+    )
     expect(store.getState().get('participants').isEmpty()).toEqual(true)
   })
 
@@ -70,7 +74,9 @@ describe('Store', () => {
       const updatedScreening = initialState.get('screening').set('participants', participants)
       const action = updateScreeningSuccess(updatedScreening.toJS())
       store.dispatch(action)
-      expect(store.getState().get('screening')).toEqualImmutable(updatedScreening)
+      expect(store.getState().get('screening')).toEqualImmutable(
+        updatedScreening.set('fetch_status', 'FETCHED')
+      )
       expect(store.getState().get('participants')).toEqualImmutable(participants)
     })
 

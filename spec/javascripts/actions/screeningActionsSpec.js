@@ -8,8 +8,6 @@ import {
   fetchHistoryOfInvolvementsSuccess,
   fetchRelationshipsByScreeningId,
   fetchRelationshipsByScreeningIdSuccess,
-  fetchScreening,
-  fetchScreeningSuccess,
   saveParticipant,
   saveScreening,
   submitScreening,
@@ -30,25 +28,6 @@ describe('screening actions', () => {
   let store
   beforeEach(() => {
     store = mockStore()
-  })
-
-  describe('.fetchScreening', () => {
-    const screeningId = '1'
-    const screening = {id: screeningId, name: 'mock_screening'}
-    beforeEach((done) => {
-      spyOn(Utils, 'get').and.returnValue(Promise.resolve(screening))
-      store.dispatch(fetchScreening(screeningId)).then(() => done())
-    })
-
-    it('fetches the screening for a given screeningId', () => {
-      expect(Utils.get).toHaveBeenCalledWith(`/api/v1/screenings/${screeningId}`)
-    })
-
-    it('dispatches a fetchScreeningSuccess', () => {
-      expect(store.getActions()).toEqual([
-        fetchScreeningSuccess(screening),
-      ])
-    })
   })
 
   describe('.saveScreening', () => {
