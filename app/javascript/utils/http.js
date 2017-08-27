@@ -98,3 +98,29 @@ export function request(method, url, data, options) {
       })
   })
 }
+
+export function get(url) {
+  return request('GET', url, null, {contentType: 'application/json'})
+}
+
+export function destroy(url) {
+  return request('DELETE', url, null, {contentType: 'application/json'})
+}
+
+export function put(url, data) {
+  return request(
+    'PUT',
+    url,
+    data && JSON.stringify(data),
+    {contentType: 'application/json'}
+  )
+}
+
+export function post(url, data) {
+  return request(
+    'POST',
+    url,
+    data && JSON.stringify(data),
+    {contentType: 'application/json'}
+  )
+}
