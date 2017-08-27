@@ -11,7 +11,6 @@ import * as IntakeConfig from 'common/config'
 export class HomePage extends React.Component {
   constructor() {
     super(...arguments)
-    this.createScreening = this.createScreening.bind(this)
     this.getScreenings = this.getScreenings.bind(this)
     this.state = {screenings: []}
   }
@@ -22,13 +21,12 @@ export class HomePage extends React.Component {
     }
   }
 
-  createScreening() {
-    this.props.actions.createScreening().then(() => {
-      const {screening} = this.props
-      this.props.router.push({
-        pathname: `/screenings/${screening.get('id')}/edit`,
-      })
-    })
+  componentWillReceiveProps(nextProps) {
+    const newScreeningId = nextProps.screening.get('id')
+    const oldScreeningId = this.props.screening.get('id')
+    if (newScreeningId && newScreeningId !== oldScreeningId) {
+      this.props.router.push({pathname: `/screenings/${newScreeningId}/edit`})
+    }
   }
 
   getScreenings() {
@@ -41,7 +39,7 @@ export class HomePage extends React.Component {
         <div className='col-md-3'>
           <ul className='unstyled-list'>
             <li className='half-pad-top'>
-              <Link to='#' className='row' onClick={() => { this.createScreening() }}>Start Screening</Link>
+              <Link to='#' className='row' onClick={() => { this.props.actions.createScreening() }}>Start Screening</Link>
             </li>
           </ul>
         </div>
