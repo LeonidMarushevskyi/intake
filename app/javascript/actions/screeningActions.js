@@ -1,6 +1,8 @@
 import {get, post, destroy, put} from 'utils/http'
 import {
+  CREATE_SCREENING,
   CREATE_SCREENING_SUCCESS,
+  CREATE_SCREENING_FAILURE,
   UPDATE_SCREENING_SUCCESS,
   FETCH_SCREENING_SUCCESS,
   CREATE_PARTICIPANT_SUCCESS,
@@ -17,11 +19,12 @@ export function createScreeningSuccess(screening) {
   return {type: CREATE_SCREENING_SUCCESS, screening}
 }
 
+export function createScreeningFailure(error) {
+  return {type: CREATE_SCREENING_FAILURE, error}
+}
+
 export function createScreening() {
-  return (dispatch) => (
-    post('/api/v1/screenings', null)
-      .then((jsonResponse) => dispatch(createScreeningSuccess(jsonResponse)))
-  )
+  return (dispatch) => dispatch({type: CREATE_SCREENING})
 }
 
 export function fetchScreeningSuccess(screening) {

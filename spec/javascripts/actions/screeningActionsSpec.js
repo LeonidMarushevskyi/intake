@@ -2,8 +2,6 @@ import * as Utils from 'utils/http'
 import {
   createParticipant,
   createParticipantSuccess,
-  createScreening,
-  createScreeningSuccess,
   deleteParticipant,
   deleteParticipantSuccess,
   fetchHistoryOfInvolvements,
@@ -32,23 +30,6 @@ describe('screening actions', () => {
   let store
   beforeEach(() => {
     store = mockStore()
-  })
-
-  describe('.createScreening', () => {
-    const screening = {id: '3', name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(screening)))
-
-    it('posts the screening to the server', () => {
-      store.dispatch(createScreening())
-      expect(Utils.post).toHaveBeenCalledWith('/api/v1/screenings', null)
-    })
-
-    it('dispatches a createScreeningSuccess', () => {
-      const expectedActions = [createScreeningSuccess(screening)]
-      store.dispatch(createScreening()).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
-    })
   })
 
   describe('.fetchScreening', () => {
