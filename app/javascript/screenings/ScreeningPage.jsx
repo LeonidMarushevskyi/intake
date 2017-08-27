@@ -27,7 +27,6 @@ export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      loaded: false,
       screening: props.screening,
       screeningEdits: Immutable.Map(),
       participantsEdits: Immutable.Map(),
@@ -207,7 +206,7 @@ export class ScreeningPage extends React.Component {
       onChange: this.setField,
       onSave: this.cardSave,
     }
-    const {screening, loaded} = this.state
+    const {screening} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
@@ -228,7 +227,7 @@ export class ScreeningPage extends React.Component {
       cardErrors = screeningValidator.validateScreening()
     }
 
-    if (loaded) {
+    if (this.props.loaded) {
       return (
         <div>
           {
@@ -366,6 +365,7 @@ export class ScreeningPage extends React.Component {
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   involvements: PropTypes.object.isRequired,
+  loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
@@ -380,6 +380,7 @@ ScreeningPage.defaultProps = {
 export function mapStateToProps(state, _ownProps) {
   return {
     involvements: state.get('involvements'),
+    loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
     relationships: state.get('relationships'),
     screening: state.get('screening'),
