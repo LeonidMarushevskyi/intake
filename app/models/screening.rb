@@ -21,7 +21,7 @@ class Screening # :nodoc:
   attribute :screening_decision
   attribute :screening_decision_detail
   attribute :access_restrictions
-  attribute :restrictions_rational
+  attribute :restrictions_rationale
   attribute :staff_id
   attribute :started_at
 

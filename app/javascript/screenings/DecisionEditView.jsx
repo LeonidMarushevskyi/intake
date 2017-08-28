@@ -88,12 +88,12 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
             </SelectField>
             { isRestricted &&
               <div>
-                <label className='required' htmlFor='restrictions_rational'>Restrictions Rational</label>
+                <label className='required' htmlFor='restrictions_rationale'>Restrictions Rationale</label>
                 <textarea
-                  id='restrictions_rational'
-                  onChange={(event) => onChange(['restrictions_rational'], event.target.value || null)}
-                  value={screening.get('restrictions_rational') || ''}
-                  onBlur={() => onBlur('restrictions_rational')}
+                  id='restrictions_rationale'
+                  onChange={(event) => onChange(['restrictions_rationale'], event.target.value || null)}
+                  value={screening.get('restrictions_rationale') || ''}
+                  onBlur={() => onBlur('restrictions_rationale')}
                 />
               </div>
             }

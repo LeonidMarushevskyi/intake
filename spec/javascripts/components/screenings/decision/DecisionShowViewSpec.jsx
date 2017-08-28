@@ -93,20 +93,20 @@ describe('DecisionShowView', () => {
     expect(component.find('ShowField[label="Access Restrictions"]').exists()).toEqual(true)
   })
 
-  it('renders Access Restrictions and Restrictions Rational if restrictions exist', () => {
+  it('renders Access Restrictions and Restrictions Rationale if restrictions exist', () => {
     const screening = Immutable.fromJS({
       access_restrictions: 'sensitive',
-      restrictions_rational: 'This is sensitive',
+      restrictions_rationale: 'This is sensitive',
     })
     const component = shallow(<DecisionShowView screening={screening} onEdit={onEdit} errors={errors}/>)
     expect(component.find('ShowField[label="Access Restrictions"]').props().children)
       .toEqual('Sensitive')
-    expect(component.find('ShowField[label="Restrictions Rational"]').html())
+    expect(component.find('ShowField[label="Restrictions Rationale"]').html())
       .toContain('This is sensitive')
   })
 
-  it('does not render Restrictions Rational field in case of no access restrictions', () => {
-    expect(component.find('ShowField[label="Restrictions Rational"]').exists()).toEqual(false)
+  it('does not render Restrictions Rationale field in case of no access restrictions', () => {
+    expect(component.find('ShowField[label="Restrictions Rationale"]').exists()).toEqual(false)
   })
 
   it('renders Staff name for decision details when screening decision is information_to_child_welfare_services', () => {

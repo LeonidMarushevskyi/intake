@@ -60,7 +60,7 @@ describe('DecisionCardView', () => {
           'screening_decision',
           'additional_information',
           'access_restrictions',
-          'restrictions_rational',
+          'restrictions_rationale',
         ]))
       })
     })
@@ -77,7 +77,7 @@ describe('DecisionCardView', () => {
           'screening_decision',
           'additional_information',
           'access_restrictions',
-          'restrictions_rational',
+          'restrictions_rationale',
         ]))
       })
       it('discards changes on cancel', () => {

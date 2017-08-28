@@ -21,7 +21,7 @@ module Api
         :screening_decision,
         :screening_decision_detail,
         :access_restrictions,
-        :restrictions_rational,
+        :restrictions_rationale,
         :staff_id,
         :started_at,
         cross_reports: %i[

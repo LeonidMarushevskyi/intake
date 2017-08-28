@@ -50,8 +50,8 @@ const DecisionShowView = ({screening, onEdit, errors}) => {
               {_.capitalize(screening.get('access_restrictions'))}
             </ShowField>
             { isRestricted &&
-              <ShowField label='Restrictions Rational'>
-                {screening.get('restrictions_rational')}
+              <ShowField label='Restrictions Rationale'>
+                {screening.get('restrictions_rationale')}
               </ShowField>
             }
           </div>
