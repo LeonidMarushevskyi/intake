@@ -1,5 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
-import * as Utils from 'utils/http'
+import {get} from 'utils/http'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningsTable from 'screenings/ScreeningsTable'
@@ -32,11 +32,7 @@ export class HomePage extends React.Component {
   }
 
   getScreenings() {
-    Utils.request('GET', '/api/v1/screenings')
-      .then((jsonResponse) => {
-        this.setState({screenings: jsonResponse})
-      }
-      )
+    get('/api/v1/screenings').then((screenings) => this.setState({screenings}))
   }
 
   render() {
