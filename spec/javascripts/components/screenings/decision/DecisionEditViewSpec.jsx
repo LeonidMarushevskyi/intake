@@ -20,6 +20,7 @@ describe('conditional decision options', () => {
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
         access_restrictions: 'sensitive',
+        restrictions_rationale: 'Child at risk',
       }),
       errors: errors,
     }
@@ -97,8 +98,12 @@ describe('conditional decision options', () => {
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
 
-    expect(component.find('#restrictions_rational').exists()).toEqual(true)
+  it('renders access restrictions field', () => {
+    expect(component.find('#access_restrictions').props().value).toEqual('sensitive')
+  })
+
   it('renders restrictions rationale field for access restrictions', () => {
+    expect(component.find('#restrictions_rationale').props().value).toEqual('Child at risk')
   })
 
   it('does not render restrictions rationale field if no access restrictions are selected', () => {
