@@ -32,6 +32,64 @@ describe('ScreeningPage', () => {
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
+  describe('renderMode', () => {
+    it('uses the mode from params, if present', () => {
+      const props = {
+        ...requiredProps,
+        params: {id: '1', mode: 'show'},
+        mode: 'edit',
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().renderMode()).toEqual('show')
+    })
+
+    it('uses the mode from props is params has no mode', () => {
+      const props = {
+        ...requiredProps,
+        params: {id: '1'},
+        mode: 'edit',
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().renderMode()).toEqual('edit')
+    })
+
+    it('forces the page to show mode if a referral_id is present for the screening', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+        params: {id: '1', mode: 'edit'},
+        mode: 'edit',
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().renderMode()).toEqual('show')
+    })
+
+    it('renders cards using the mode returned from the method', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+        params: {id: '1', mode: 'edit'},
+        mode: 'edit',
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      component.setState({loaded: true})
+      const safetyAlerts = component.find('WorkerSafetyCardView')
+      expect(safetyAlerts.props().mode).toEqual('show')
+    })
+  })
+
   describe('render', () => {
     it('renders the history card', () => {
       const involvements = Immutable.fromJS([{id: 1}, {id: 3}])

@@ -40,6 +40,7 @@ export class ScreeningPage extends React.Component {
       'deleteParticipant',
       'mergeScreeningWithEdits',
       'participants',
+      'renderMode',
       'saveParticipant',
       'setField',
       'setParticipantField',
@@ -47,7 +48,7 @@ export class ScreeningPage extends React.Component {
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
     })
-    this.mode = this.props.params.mode || this.props.mode
+    this.mode = this.renderMode()
   }
 
   componentDidMount() {
@@ -57,6 +58,14 @@ export class ScreeningPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.screening.equals(nextProps.screening)) {
       this.setState({screening: nextProps.screening})
+    }
+  }
+
+  renderMode() {
+    if (this.props.screening.get('referral_id')) {
+      return 'show'
+    } else {
+      return this.props.params.mode || this.props.mode
     }
   }
 
