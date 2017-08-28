@@ -8,18 +8,14 @@ import {
   fetchHistoryOfInvolvementsSuccess,
   fetchRelationshipsByScreeningId,
   fetchRelationshipsByScreeningIdSuccess,
-  saveParticipant,
   saveScreening,
   submitScreening,
   submitScreeningFailure,
   submitScreeningSuccess,
-  updateParticipantSuccess,
-  updateParticipantFailure,
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -46,64 +42,6 @@ describe('screening actions', () => {
       store.dispatch(saveScreening(screening)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
-    })
-  })
-
-  describe('.saveParticipant', () => {
-    const participant = {
-      screening_id: '1',
-      legacy_id: '2',
-      id: '199',
-      first_name: 'Lisa',
-      last_name: 'Simpson',
-      date_of_birth: '2016-12-31',
-      gender: 'female',
-      languages: ['English', 'Spanish'],
-      ssn: 'ssn-1',
-    }
-
-    it('puts the participants to the server', () => {
-      spyOn(Utils, 'put').and.returnValue(Promise.resolve(participant))
-      store.dispatch(saveParticipant(participant))
-      expect(Utils.put).toHaveBeenCalledWith(
-        `/api/v1/participants/${participant.id}`, {participant}
-      )
-    })
-
-    describe('when server responds successfully', () => {
-      const screening = {id: '344'}
-      beforeEach((done) => {
-        spyOn(Utils, 'put')
-        spyOn(Utils, 'get')
-        store = mockStore(fromJS({screening: {id: '344'}}))
-        Utils.put.and.returnValue(Promise.resolve(participant))
-        Utils.get.and.returnValue(Promise.resolve(screening))
-        store.dispatch(saveParticipant(participant)).then(() => done())
-      })
-
-      it('dispatches a updateParticipantSuccess', () => {
-        expect(store.getActions()).toEqual([
-          updateParticipantSuccess(participant),
-          fetchScreeningSuccess(screening),
-        ])
-      })
-
-      it('fetches the screening', () => {
-        expect(Utils.get).toHaveBeenCalledWith('/api/v1/screenings/344')
-      })
-    })
-
-    describe('when server responds unsuccessfully', () => {
-      beforeEach((done) => {
-        spyOn(Utils, 'put').and.returnValue(Promise.reject(participant))
-        store.dispatch(saveParticipant(participant)).then(() => done())
-      })
-
-      it('dispatches a updateParticipantFailure', () => {
-        expect(store.getActions()).toEqual([
-          updateParticipantFailure(participant),
-        ])
-      })
     })
   })
 

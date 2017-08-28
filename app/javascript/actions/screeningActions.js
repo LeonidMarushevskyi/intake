@@ -9,6 +9,7 @@ import {
   FETCH_SCREENING_FAILURE,
   CREATE_PARTICIPANT_SUCCESS,
   DELETE_PARTICIPANT_SUCCESS,
+  UPDATE_PARTICIPANT,
   UPDATE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT_FAILURE,
   FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
@@ -61,16 +62,7 @@ export function updateParticipantFailure(error) {
 }
 
 export function saveParticipant(participant) {
-  return (dispatch, getState) => (
-    put(`/api/v1/participants/${participant.id}`, {participant})
-      .then(
-        (participant) => {
-          dispatch(updateParticipantSuccess(participant))
-          fetchScreening(getState().getIn(['screening', 'id']))(dispatch)
-        },
-        (error) => dispatch(updateParticipantFailure(error))
-      )
-  )
+  return (dispatch) => dispatch({type: UPDATE_PARTICIPANT, participant})
 }
 
 export function createParticipantSuccess(participant) {
