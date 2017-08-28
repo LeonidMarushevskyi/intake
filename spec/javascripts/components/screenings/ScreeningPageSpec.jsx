@@ -90,6 +90,52 @@ describe('ScreeningPage', () => {
     })
   })
 
+  describe('editable', () => {
+    it('allows edits if there is no referral id', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: null,
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().editable()).toEqual(true)
+    })
+
+    it('does not allow edits if there is a referral id', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().editable()).toEqual(false)
+    })
+
+    it('passes canEdit to cards', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      component.setState({loaded: true})
+      const safetyAlerts = component.find('WorkerSafetyCardView')
+      expect(safetyAlerts.props().editable).toEqual(false)
+    })
+  })
+
   describe('render', () => {
     it('renders the history card', () => {
       const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
