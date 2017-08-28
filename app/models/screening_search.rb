@@ -10,4 +10,5 @@ class ScreeningSearch # :nodoc:
   attribute :screening_decision
   attribute :screening_decision_detail
   attribute :assignee
+  attribute :referral_id
 end

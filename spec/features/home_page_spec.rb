@@ -279,5 +279,27 @@ feature 'home page' do
         expect(page).to have_content('(a year ago)')
       end
     end
+
+    scenario 'screenings display link to investigation when referral id is present' do
+      screening_with_name = FactoryGirl.create(
+        :screening_search,
+        name: 'Screening with name and investigation',
+        referral_id: '5667'
+      )
+      screening_without_name = FactoryGirl.create(
+        :screening_search,
+        referral_id: '1111'
+      )
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body([screening_without_name, screening_with_name].to_json, status: 200))
+
+      visit root_path
+      within 'tbody' do
+        expect(page).to have_link(
+          'Screening with name and investigation', href: investigation_path(id: '5667')
+        )
+        expect(page).to have_link('1111', href: investigation_path(id: '1111'))
+      end
+    end
   end
 end

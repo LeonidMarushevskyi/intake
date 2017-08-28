@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
 
+  resources :investigations, only: [:show]
+
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :screenings,
