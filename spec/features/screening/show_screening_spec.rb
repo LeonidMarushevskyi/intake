@@ -128,4 +128,45 @@ feature 'Show Screening' do
       expect(page.status_code).to_not eq 200
     end
   end
+
+  context 'when a screening has already been submitted as a referral' do
+    let(:existing_screening) do
+      FactoryGirl.create(
+        :screening,
+        referral_id: '123ABC',
+        additional_information: 'The reasoning for this decision',
+        address: address,
+        assignee: 'Bob Loblaw',
+        communication_method: 'mail',
+        ended_at: '2016-08-22T11:00:00.000Z',
+        incident_county: 'sacramento',
+        incident_date: '2016-08-11',
+        location_type: "Child's Home",
+        name: 'The Rocky Horror Picture Show',
+        reference: 'My Bad!',
+        report_narrative: 'some narrative',
+        screening_decision: 'screen_out',
+        screening_decision_detail: 'consultation',
+        started_at: '2016-08-13T10:00:00.000Z',
+        cross_reports: [
+          { agency_type: 'District attorney', agency_name: 'SCDA' },
+          { agency_type: 'Licensing' }
+        ]
+      )
+    end
+
+    scenario 'the screening is in read only mode' do
+      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
+        .and_return(json_body(existing_screening.to_json))
+      stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
+
+      visit screening_path(id: existing_screening.id)
+      expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
+      expect(page).not_to have_content 'Submit'
+      expect(page).not_to have_content 'Edit'
+      expect(page).not_to have_content 'Save'
+      expect(page).not_to have_content 'Cancel'
+    end
+  end
 end

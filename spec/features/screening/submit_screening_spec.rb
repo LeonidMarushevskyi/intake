@@ -78,7 +78,6 @@ feature 'Submit Screening' do
 
         expect(page).not_to have_content '#submitModal'
         expect(page).not_to have_content ' - Referral #'
-        expect(page).to have_content 'Submit'
       end
     end
   end
