@@ -155,7 +155,8 @@ feature 'home page' do
         end
       end
     end
-    scenario 'display response time if decision is promote to referral' do
+
+    scenario 'screenings display response time if decision is promote to referral' do
       screenings = [
         FactoryGirl.create(
           :screening_search,
@@ -210,7 +211,7 @@ feature 'home page' do
       end
     end
 
-    scenario 'display Category if decision is screen out' do
+    scenario 'screenings display category if decision is screen out' do
       screenings = [
         FactoryGirl.create(
           :screening_search,
@@ -265,7 +266,7 @@ feature 'home page' do
       end
     end
 
-    scenario 'display time from now' do
+    scenario 'screenings display reported date time time from now' do
       screening = FactoryGirl.create(
         :screening_search,
         started_at: 1.year.ago.strftime('%FT%T.%LZ')
