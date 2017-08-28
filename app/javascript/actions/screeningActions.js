@@ -7,7 +7,9 @@ import {
   FETCH_SCREENING,
   FETCH_SCREENING_SUCCESS,
   FETCH_SCREENING_FAILURE,
+  CREATE_PARTICIPANT,
   CREATE_PARTICIPANT_SUCCESS,
+  CREATE_PARTICIPANT_FAILURE,
   DELETE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT,
   UPDATE_PARTICIPANT_SUCCESS,
@@ -69,13 +71,12 @@ export function createParticipantSuccess(participant) {
   return {type: CREATE_PARTICIPANT_SUCCESS, participant}
 }
 
+export function createParticipantFailure(error) {
+  return {type: CREATE_PARTICIPANT_FAILURE, error}
+}
+
 export function createParticipant(participant) {
-  return (dispatch) => (
-    post('/api/v1/participants', {participant})
-      .then((jsonResponse) => {
-        dispatch(createParticipantSuccess(jsonResponse))
-      })
-  )
+  return (dispatch) => dispatch({type: CREATE_PARTICIPANT, participant})
 }
 
 export function deleteParticipantSuccess(id) {

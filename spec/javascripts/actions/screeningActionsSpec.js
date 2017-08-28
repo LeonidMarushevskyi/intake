@@ -1,7 +1,5 @@
 import * as Utils from 'utils/http'
 import {
-  createParticipant,
-  createParticipantSuccess,
   deleteParticipant,
   deleteParticipantSuccess,
   fetchHistoryOfInvolvements,
@@ -40,23 +38,6 @@ describe('screening actions', () => {
     it('dispatches a updateScreeningSuccess', () => {
       const expectedActions = [updateScreeningSuccess(screening)]
       store.dispatch(saveScreening(screening)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
-    })
-  })
-
-  describe('.createParticipant', () => {
-    const participant = {screening_id: '1', legacy_id: '2', id: null}
-    beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(participant)))
-
-    it('posts the participant to the server', () => {
-      store.dispatch(createParticipant(participant))
-      expect(Utils.post).toHaveBeenCalledWith('/api/v1/participants', {participant})
-    })
-
-    it('dispatches a createParticipantSuccess', () => {
-      const expectedActions = [createParticipantSuccess(participant)]
-      store.dispatch(createParticipant(participant)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })
