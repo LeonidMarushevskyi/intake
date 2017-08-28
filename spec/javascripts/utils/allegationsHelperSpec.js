@@ -703,7 +703,6 @@ describe('areCrossReportsRequired', () => {
       'Sexual abuse',
       'Emotional abuse',
       'Exploitation',
-      'At risk, sibling abused',
     ]
     allegationsRequiringReports.forEach((allegation) => {
       const allegations = Immutable.fromJS([
@@ -719,6 +718,7 @@ describe('areCrossReportsRequired', () => {
     const allegationsNotRequiringReports = [
       'Caretaker absent/incapacity',
       'General neglect',
+      'At risk, sibling abused',
     ]
     allegationsNotRequiringReports.forEach((allegation) => {
       const allegations = Immutable.fromJS([
