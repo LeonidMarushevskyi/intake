@@ -19,22 +19,22 @@ const ScreeningsTable = ({screenings}) => (
       </thead>
       <tbody>
         {
-          screenings.map((screening) => {
-            const screeningName = screening.name ? screening.name : screening.id
-            const responseTimes = SCREENING_DECISION_OPTIONS[screening.screening_decision]
+          screenings.map(({id, name, screening_decision, screening_decision_detail, assignee, started_at}) => {
+            const screeningName = name ? name : id
+            const responseTimes = SCREENING_DECISION_OPTIONS[screening_decision]
             const screeningDecision =
-              (['promote_to_referral', 'screen_out'].includes(screening.screening_decision)) ?
-                responseTimes.values[screening.screening_decision_detail] :
-                SCREENING_DECISION[screening.screening_decision]
+              (['promote_to_referral', 'screen_out'].includes(screening_decision)) ?
+                responseTimes.values[screening_decision_detail] :
+                SCREENING_DECISION[screening_decision]
             return (
-              <tr key={screening.id}>
-                <td><Link to={`/screenings/${screening.id}`}>{screeningName}</Link></td>
+              <tr key={id}>
+                <td><Link to={`/screenings/${id}`}>{screeningName}</Link></td>
                 <td>{screeningDecision}</td>
                 <td>&nbsp;</td>
-                <td>{screening.assignee}</td>
+                <td>{assignee}</td>
                 <td>
-                  {moment(screening.started_at).format('L LT')} <br/>
-                  <em className='text-muted'>({moment(screening.started_at).fromNow()})</em>
+                  {moment(started_at).format('L LT')} <br/>
+                  <em className='text-muted'>({moment(started_at).fromNow()})</em>
                 </td>
               </tr>
             )
