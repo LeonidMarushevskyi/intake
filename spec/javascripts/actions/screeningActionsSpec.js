@@ -1,7 +1,5 @@
 import * as Utils from 'utils/http'
 import {
-  deleteParticipant,
-  deleteParticipantSuccess,
   fetchHistoryOfInvolvements,
   fetchHistoryOfInvolvementsSuccess,
   fetchRelationshipsByScreeningId,
@@ -38,23 +36,6 @@ describe('screening actions', () => {
     it('dispatches a updateScreeningSuccess', () => {
       const expectedActions = [updateScreeningSuccess(screening)]
       store.dispatch(saveScreening(screening)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
-    })
-  })
-
-  describe('.deleteParticipant', () => {
-    const participantId = '1'
-    beforeEach(() => spyOn(Utils, 'destroy').and.returnValue(Promise.resolve()))
-
-    it('deletes the participant on the server', () => {
-      store.dispatch(deleteParticipant(participantId))
-      expect(Utils.destroy).toHaveBeenCalledWith(`/api/v1/participants/${participantId}`)
-    })
-
-    it('dispatches a deleteParticipantSuccess', () => {
-      const expectedActions = [deleteParticipantSuccess(participantId)]
-      store.dispatch(deleteParticipant(participantId)).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })

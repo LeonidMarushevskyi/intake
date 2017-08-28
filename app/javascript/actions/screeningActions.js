@@ -1,4 +1,4 @@
-import {get, post, destroy, put} from 'utils/http'
+import {get, post, put} from 'utils/http'
 import {
   CREATE_SCREENING,
   CREATE_SCREENING_SUCCESS,
@@ -10,7 +10,9 @@ import {
   CREATE_PARTICIPANT,
   CREATE_PARTICIPANT_SUCCESS,
   CREATE_PARTICIPANT_FAILURE,
+  DELETE_PARTICIPANT,
   DELETE_PARTICIPANT_SUCCESS,
+  DELETE_PARTICIPANT_FAILURE,
   UPDATE_PARTICIPANT,
   UPDATE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT_FAILURE,
@@ -83,11 +85,12 @@ export function deleteParticipantSuccess(id) {
   return {type: DELETE_PARTICIPANT_SUCCESS, id}
 }
 
+export function deleteParticipantFailure(error) {
+  return {type: DELETE_PARTICIPANT_FAILURE, error}
+}
+
 export function deleteParticipant(id) {
-  return (dispatch) => (
-    destroy(`/api/v1/participants/${id}`)
-      .then(() => dispatch(deleteParticipantSuccess(id)))
-  )
+  return (dispatch) => dispatch({type: DELETE_PARTICIPANT, id})
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
