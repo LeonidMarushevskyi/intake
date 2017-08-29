@@ -7,6 +7,7 @@ import React from 'react'
 import {AGENCY_TYPES} from 'enums/CrossReport'
 import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'enums/CrossReport'
 import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'enums/CrossReport'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class CrossReportCardView extends React.Component {
   constructor(props) {
@@ -127,8 +128,7 @@ export default class CrossReportCardView extends React.Component {
     return CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.includes(agencyType) && this.props.areCrossReportsRequired
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -258,7 +258,16 @@ export default class CrossReportCardView extends React.Component {
     }
     const CrossReportView = (mode === 'edit') ? CrossReportEditView : CrossReportShowView
     const props = allprops[mode]
-    return <CrossReportView {...props} />
+    return (
+      <div className={`card ${mode} double-gap-top`} id='cross-report-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Cross Report'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <CrossReportView {...props} />
+      </div>
+    )
   }
 }
 
@@ -269,6 +278,7 @@ CrossReportCardView.defaultProps = {
 CrossReportCardView.propTypes = {
   areCrossReportsRequired: PropTypes.bool.isRequired,
   crossReports: PropTypes.object,
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

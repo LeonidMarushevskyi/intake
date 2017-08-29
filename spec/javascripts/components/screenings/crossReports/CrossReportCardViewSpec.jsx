@@ -14,6 +14,7 @@ describe('CrossReportCardView', () => {
       {agency_type: 'District attorney', agency_name: 'SCDA Office'},
       {agency_type: 'Department of justice'},
     ]),
+    editable: true,
   }
   beforeEach(() => {
     props.onEdit = jasmine.createSpy()
@@ -21,6 +22,15 @@ describe('CrossReportCardView', () => {
     props.onCancel = jasmine.createSpy()
     props.onChange = jasmine.createSpy()
     props.onSave = jasmine.createSpy()
+  })
+
+  it('renders the card header', () => {
+    const component = shallow(<CrossReportCardView {...props} mode='edit' />)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Cross Report')
   })
 
   describe('crossReportsInclude', () => {
@@ -166,6 +176,7 @@ describe('CrossReportCardView', () => {
               {agency_type: 'District attorney', agency_name: 'SCDA Office'},
               {agency_type: 'Department of justice'},
             ]),
+            editable: true,
           }
           validateFieldSpy = spyOn(CrossReportCardView.prototype, 'validateField').and.callThrough()
           component = shallow(<CrossReportCardView {...validationProps} mode='edit' />)
@@ -392,17 +403,6 @@ describe('CrossReportCardView', () => {
           Licensing: {agency_name: [], communication_method: [], reported_on: []},
         }
         expect(component.find('CrossReportShowView').props().errors.toJS()).toEqual(expectedErrors)
-      })
-
-      describe('when the user clicks edit link', () => {
-        beforeEach(() => {
-          const editLink = component.find('a[aria-label="Edit cross report"]')
-          editLink.simulate('click')
-        })
-
-        it('it renders the cross report edit card', () => {
-          expect(component.find('CrossReportEditView').length).toEqual(1)
-        })
       })
     })
   })

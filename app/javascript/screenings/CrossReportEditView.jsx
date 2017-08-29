@@ -135,76 +135,71 @@ export default class CrossReportEditView extends React.Component {
     const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method'))
 
     return (
-      <div className='card edit double-gap-top' id='cross-report-card'>
-        <div className='card-header'>
-          <span>Cross Report</span>
+      <div className='card-body no-pad-top'>
+        { this.props.alertInfoMessage && <AlertInfoMessage message={this.props.alertInfoMessage} /> }
+        <div className='row col-md-12'>
+          <label>This report has cross reported to:</label>
         </div>
-        <div className='card-body no-pad-top'>
-          { this.props.alertInfoMessage && <AlertInfoMessage message={this.props.alertInfoMessage} /> }
-          <div className='row col-md-12'>
-            <label>This report has cross reported to:</label>
-          </div>
-          <div className='row gap-top'>
-            { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
-            { this.renderCrossReport(crossReportData.slice(halfIndex)) }
-          </div>
-          <div className='row gap-top'>
-            {
-              hasCrossReport &&
-                <fieldset className='fieldset-inputs'>
-                  <legend>Communication Time and Method</legend>
-                  <DateField
-                    errors={reportedOnErrors}
-                    gridClassName='col-md-6'
-                    id='cross_report_reported_on'
-                    label='Cross Reported on Date'
-                    onBlur={(value) => {
-                      this.props.onBlur(
-                        this.updatedCrossReports(null, 'reported_on', value), ['reported_on']
-                      )
-                    }}
-                    onChange={(value) => {
-                      this.props.onChange(
-                        this.updatedCrossReports(null, 'reported_on', value), ['reported_on']
-                      )
-                      this.setState({reportedOn: value})
-                    }}
-                    hasTime={false}
-                    required
-                    value={this.state.reportedOn}
-                  />
-                  <SelectField
-                    errors={communicationErrors.toList()}
-                    gridClassName='col-md-6'
-                    id='cross_report_communication_method'
-                    label='Communication Method'
-                    onBlur={(event) => {
-                      this.props.onBlur(
-                        this.updatedCrossReports(null, 'communication_method', event.target.value),
-                        ['communication_method']
-                      )
-                    }}
-                    onChange={(event) => {
-                      this.props.onChange(
-                        this.updatedCrossReports(null, 'communication_method', event.target.value),
-                        ['communication_method']
-                      )
-                      this.setState({communicationMethod: event.target.value})
-                    }}
-                    required
-                    value={this.state.communicationMethod}
-                  >
-                    <option key='' value='' />
-                    {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}
-                  </SelectField>
-                </fieldset>
-            }
-          </div>
-          <div className='row'>
-            <div className='centered'>
-              <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
-              <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
-            </div>
+        <div className='row gap-top'>
+          { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
+          { this.renderCrossReport(crossReportData.slice(halfIndex)) }
+        </div>
+        <div className='row gap-top'>
+          {
+            hasCrossReport &&
+              <fieldset className='fieldset-inputs'>
+                <legend>Communication Time and Method</legend>
+                <DateField
+                  errors={reportedOnErrors}
+                  gridClassName='col-md-6'
+                  id='cross_report_reported_on'
+                  label='Cross Reported on Date'
+                  onBlur={(value) => {
+                    this.props.onBlur(
+                      this.updatedCrossReports(null, 'reported_on', value), ['reported_on']
+                    )
+                  }}
+                  onChange={(value) => {
+                    this.props.onChange(
+                      this.updatedCrossReports(null, 'reported_on', value), ['reported_on']
+                    )
+                    this.setState({reportedOn: value})
+                  }}
+                  hasTime={false}
+                  required
+                  value={this.state.reportedOn}
+                />
+                <SelectField
+                  errors={communicationErrors.toList()}
+                  gridClassName='col-md-6'
+                  id='cross_report_communication_method'
+                  label='Communication Method'
+                  onBlur={(event) => {
+                    this.props.onBlur(
+                      this.updatedCrossReports(null, 'communication_method', event.target.value),
+                      ['communication_method']
+                    )
+                  }}
+                  onChange={(event) => {
+                    this.props.onChange(
+                      this.updatedCrossReports(null, 'communication_method', event.target.value),
+                      ['communication_method']
+                    )
+                    this.setState({communicationMethod: event.target.value})
+                  }}
+                  required
+                  value={this.state.communicationMethod}
+                >
+                  <option key='' value='' />
+                  {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}
+                </SelectField>
+              </fieldset>
+          }
+        </div>
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
+            <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
           </div>
         </div>
       </div>
