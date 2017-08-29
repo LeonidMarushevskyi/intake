@@ -5,7 +5,7 @@ import SCREENING_DECISION_OPTIONS from '../enums/ScreeningDecisionOptions'
 import moment from 'moment'
 import {Link} from 'react-router'
 
-const ScreeningRow = ({id, name, decision, decisionDetail, assignee, startedAt}) => {
+const ScreeningRow = ({id, name, decision, decisionDetail, assignee, startedAt, referralId}) => {
   const screeningStatus = (decision, decisionDetail) => {
     if (['promote_to_referral', 'screen_out'].includes(decision)) {
       const responseTimes = SCREENING_DECISION_OPTIONS[decision]
@@ -14,10 +14,25 @@ const ScreeningRow = ({id, name, decision, decisionDetail, assignee, startedAt})
       return SCREENING_DECISION[decision]
     }
   }
-  const screeningName = name ? name : id
+  const linkName = (id, referralId, name) => {
+    if (name) {
+      return name
+    } else if (referralId) {
+      return referralId
+    } else {
+      return id
+    }
+  }
+  const linkPath = (id, referralId) => {
+    if (referralId) {
+      return `/investigations/${referralId}`
+    } else {
+      return `/screenings/${id}`
+    }
+  }
   return (
     <tr>
-      <td><Link to={`/screenings/${id}`}>{screeningName}</Link></td>
+      <td><Link to={linkPath(id, referralId)}>{linkName(id, referralId, name)}</Link></td>
       <td>{screeningStatus(decision, decisionDetail)}</td>
       <td>&nbsp;</td>
       <td>{assignee}</td>
@@ -35,6 +50,7 @@ ScreeningRow.propTypes = {
   decisionDetail: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
+  referralId: PropTypes.string,
   startedAt: PropTypes.string,
 }
 export default ScreeningRow

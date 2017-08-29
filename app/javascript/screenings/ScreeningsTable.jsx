@@ -16,7 +16,7 @@ const ScreeningsTable = ({screenings}) => (
       </thead>
       <tbody>
         {
-          screenings.map(({id, name, screening_decision, screening_decision_detail, assignee, started_at}) => (
+          screenings.map(({id, name, screening_decision, screening_decision_detail, assignee, started_at, referral_id}) => (
             <ScreeningRow
               key={id}
               id={id}
@@ -25,6 +25,7 @@ const ScreeningsTable = ({screenings}) => (
               decisionDetail={screening_decision_detail}
               assignee={assignee}
               startedAt={started_at}
+              referralId={referral_id}
             />
           )
           )

@@ -4,20 +4,40 @@ import moment from 'moment'
 import {shallow} from 'enzyme'
 
 describe('ScreeningRow', () => {
-  it('renders link to screening with name', () => {
-    const props = {id: '1', name: 'My Screening Name'}
-    const view = shallow(<ScreeningRow {...props} />)
-    const link = view.find('Link')
-    expect(link.props().to).toEqual('/screenings/1')
-    expect(link.html()).toEqual('<a>My Screening Name</a>')
+  describe('when referral id is not present', () => {
+    it('renders link to screening with name', () => {
+      const props = {id: '1', name: 'My Screening Name'}
+      const view = shallow(<ScreeningRow {...props} />)
+      const link = view.find('Link')
+      expect(link.props().to).toEqual('/screenings/1')
+      expect(link.html()).toEqual('<a>My Screening Name</a>')
+    })
+
+    it('renders link to screening with ID when name is not present', () => {
+      const props = {id: '123', name: null}
+      const view = shallow(<ScreeningRow {...props} />)
+      const link = view.find('Link')
+      expect(link.props().to).toEqual('/screenings/123')
+      expect(link.html()).toEqual('<a>123</a>')
+    })
   })
 
-  it('renders link to screening with ID when name is not present', () => {
-    const props = {id: '123', name: null}
-    const view = shallow(<ScreeningRow {...props} />)
-    const link = view.find('Link')
-    expect(link.props().to).toEqual('/screenings/123')
-    expect(link.html()).toEqual('<a>123</a>')
+  describe('when referral id is present', () => {
+    it('renders link to investigation with name', () => {
+      const props = {id: '1', referralId: '456', name: 'My Screening Name'}
+      const view = shallow(<ScreeningRow {...props} />)
+      const link = view.find('Link')
+      expect(link.props().to).toEqual('/investigations/456')
+      expect(link.html()).toEqual('<a>My Screening Name</a>')
+    })
+
+    it('renders link to investigation with referral id when name is not present', () => {
+      const props = {id: '1', referralId: '456', name: null}
+      const view = shallow(<ScreeningRow {...props} />)
+      const link = view.find('Link')
+      expect(link.props().to).toEqual('/investigations/456')
+      expect(link.html()).toEqual('<a>456</a>')
+    })
   })
 
   it('renders decision', () => {
