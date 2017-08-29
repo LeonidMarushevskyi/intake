@@ -136,10 +136,6 @@ describe('DecisionEditView', () => {
     component = shallow(<DecisionEditView {...props} />)
   })
 
-  it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toEqual('Decision')
-  })
-
   it('renders errors for screening_decision', () => {
     expect(component.find('#screening_decision').props().errors).toEqual(Immutable.List())
   })

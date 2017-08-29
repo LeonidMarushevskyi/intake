@@ -22,10 +22,6 @@ describe('DecisionShowView', () => {
     )
   })
 
-  it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toContain('Decision')
-  })
-
   it('renders the report narrative label as required', () => {
     expect(component.find('ShowField[label="Screening Decision"]').props().required)
       .toEqual(true)
@@ -37,19 +33,6 @@ describe('DecisionShowView', () => {
     expect(component.text()).toContain('Determine Decision and Response Time by using Structured Decision Making')
     expect(sdm_link.prop('href')).toEqual('https://ca.sdmdata.org')
     expect(sdm_link.prop('target')).toEqual('_blank')
-  })
-
-  it('renders the edit link', () => {
-    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit decision card')
-  })
-
-  describe('clicking the edit link', () => {
-    beforeEach(() => {
-      component.find('EditLink').simulate('click')
-    })
-    it('switches to edit mode when edit icon is clicked', () => {
-      expect(onEdit).toHaveBeenCalled()
-    })
   })
 
   it('renders errors passed for screening decision', () => {

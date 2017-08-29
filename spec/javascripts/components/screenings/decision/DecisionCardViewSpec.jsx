@@ -20,8 +20,19 @@ describe('DecisionCardView', () => {
         additional_information: 'the decision is taken',
       }),
       errors: Immutable.Map(),
+      editable: true,
     }
   })
+
+  it('renders the card header', () => {
+    const component = shallow(<DecisionCardView {...props} mode='edit'/>)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Decision')
+  })
+
   describe('in edit mode', () => {
     beforeEach(() => {
       component = mount(<DecisionCardView {...props} mode='edit' />)
@@ -94,10 +105,6 @@ describe('DecisionCardView', () => {
     })
     it('renders the show card', () => {
       expect(component.find('DecisionShowView').length).toEqual(1)
-    })
-    it('displays edit card when edit link is clicked', () => {
-      component.find('a[aria-label="Edit decision card"]').simulate('click')
-      expect(component.find('DecisionEditView').length).toEqual(1)
     })
 
     it('passes errors from the state', () => {
