@@ -33,14 +33,8 @@ feature 'show cross reports' do
     )
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([], status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
-    ).and_return(json_body([], status: 200))
+    stub_empty_history_for_screening(screening)
+    stub_empty_relationships_for_screening(screening)
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
@@ -101,10 +95,8 @@ feature 'show cross reports' do
     )
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([], status: 200))
+    stub_empty_history_for_screening(screening)
+    stub_empty_relationships_for_screening(screening)
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
@@ -152,14 +144,8 @@ feature 'show cross reports' do
     )
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([], status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
-    ).and_return(json_body([], status: 200))
+    stub_empty_history_for_screening(screening)
+    stub_empty_relationships_for_screening(screening)
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do

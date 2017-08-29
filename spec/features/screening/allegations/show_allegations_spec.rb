@@ -30,12 +30,10 @@ feature 'show allegations' do
     )
     screening.allegations << allegation
 
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
 
     visit screening_path(id: screening.id)
 
@@ -135,10 +133,8 @@ feature 'show allegations' do
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
 
     visit screening_path(id: screening.id)
 
@@ -198,16 +194,8 @@ feature 'show allegations' do
     screening.allegations << allegation
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
-
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
 
     visit screening_path(id: screening.id)
 
@@ -289,10 +277,8 @@ feature 'show allegations' do
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
 
     visit screening_path(id: screening.id)
 
@@ -343,10 +329,8 @@ feature 'show allegations' do
 
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
-    ).and_return(json_body([].to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
 
     visit screening_path(id: screening.id)
 
