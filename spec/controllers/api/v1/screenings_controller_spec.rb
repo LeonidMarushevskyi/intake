@@ -97,6 +97,8 @@ describe Api::V1::ScreeningsController do
         incident_county: 'sacramento',
         name: '123 Report',
         screening_decision: 'evaluate_out',
+        access_restrictions: 'sensitive',
+        restrictions_rationale: 'Someone in this screening has sensitive information',
         cross_reports: [
           {
             agency_type: 'Department of justice',

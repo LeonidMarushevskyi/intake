@@ -3,6 +3,7 @@ import InputField from 'common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
+import ACCESS_RESTRICTIONS from 'enums/AccessRestrictions'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 import SelectField from 'common/SelectField'
 
@@ -12,6 +13,7 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
     (Boolean(decisionOptions) && decisionOptions.label) || ''
   ))()
   const isRequired = decisionLabel === 'Response time'
+  const isRestricted = Boolean(screening.get('access_restrictions'))
 
   const onChangeDecision = (event) => {
     onChange(['screening_decision'], event.target.value || null, () => {
@@ -56,16 +58,16 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
               </SelectField>
             }
             { decisionOptions && decisionOptions.type === 'text' &&
-                <InputField
-                  id='decisionDetail'
-                  label={decisionLabel}
-                  errors={errors.get('screening_decision_detail')}
-                  required={isRequired}
-                  value={screening.getIn(['screening_decision_detail']) || ''}
-                  onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
-                  onBlur={() => onBlur('screening_decision_detail')}
-                  maxLength='64'
-                />
+              <InputField
+                id='decisionDetail'
+                label={decisionLabel}
+                errors={errors.get('screening_decision_detail')}
+                required={isRequired}
+                value={screening.getIn(['screening_decision_detail']) || ''}
+                onChange={(event) => onChange(['screening_decision_detail'], event.target.value || null)}
+                onBlur={() => onBlur('screening_decision_detail')}
+                maxLength='64'
+              />
             }
             <div>
               <label htmlFor='additional_information'>Additional information</label>
@@ -75,6 +77,27 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                 value={screening.get('additional_information') || ''}
               />
             </div>
+            <SelectField
+              id='access_restrictions'
+              label= 'Access Restrictions'
+              value={screening.get('access_restrictions')}
+              onChange={(event) => onChange(['access_restrictions'], event.target.value || null)}
+              onBlur={() => onBlur('access_restrictions')}
+            >
+              {Object.keys(ACCESS_RESTRICTIONS).map((item) => <option key={item} value={item}>{ACCESS_RESTRICTIONS[item]}</option>)}
+            </SelectField>
+            { isRestricted &&
+              <div>
+                <label className='required' htmlFor='restrictions_rationale'>Restrictions Rationale</label>
+                <textarea
+                  id='restrictions_rationale'
+                  onChange={(event) => onChange(['restrictions_rationale'], event.target.value || null)}
+                  value={screening.get('restrictions_rationale') || ''}
+                  onBlur={() => onBlur('restrictions_rationale')}
+                  maxLength='255'
+                />
+              </div>
+            }
           </div>
           <div className='col-md-6'>
             <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>

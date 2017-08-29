@@ -20,6 +20,8 @@ class Screening # :nodoc:
   attribute :safety_information, String
   attribute :screening_decision
   attribute :screening_decision_detail
+  attribute :access_restrictions
+  attribute :restrictions_rationale
   attribute :staff_id
   attribute :started_at
 

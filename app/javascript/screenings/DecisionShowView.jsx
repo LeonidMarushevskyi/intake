@@ -5,8 +5,10 @@ import React from 'react'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 import ShowField from 'common/ShowField'
+import _ from 'lodash'
 
 const DecisionShowView = ({screening, onEdit, errors}) => {
+  const isRestricted = Boolean(screening.get('access_restrictions'))
   const decisionDetailLabel = (() => {
     const decisionOptions = SCREENING_DECISION_OPTIONS[screening.get('screening_decision')] || false
     return (decisionOptions && decisionOptions.label) || ''
@@ -44,6 +46,14 @@ const DecisionShowView = ({screening, onEdit, errors}) => {
             <ShowField label='Additional information'>
               {screening.get('additional_information')}
             </ShowField>
+            <ShowField label='Access Restrictions'>
+              {_.capitalize(screening.get('access_restrictions'))}
+            </ShowField>
+            { isRestricted &&
+              <ShowField label='Restrictions Rationale'>
+                {screening.get('restrictions_rationale')}
+              </ShowField>
+            }
           </div>
           <div className='col-md-6'>
             <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>

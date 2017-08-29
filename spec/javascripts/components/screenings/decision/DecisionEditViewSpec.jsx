@@ -19,6 +19,8 @@ describe('conditional decision options', () => {
       screening: Immutable.fromJS({
         screening_decision: 'promote_to_referral',
         screening_decision_detail: 'immediate',
+        access_restrictions: 'sensitive',
+        restrictions_rationale: 'Child at risk',
       }),
       errors: errors,
     }
@@ -95,6 +97,19 @@ describe('conditional decision options', () => {
     expect(component.find('#decisionDetail').props().required).toBeFalsy()
     expect(component.find('label[htmlFor="decisionDetail"]').text()).toEqual('Service name')
   })
+
+  it('renders access restrictions field', () => {
+    expect(component.find('#access_restrictions').props().value).toEqual('sensitive')
+  })
+
+  it('renders restrictions rationale field for access restrictions', () => {
+    expect(component.find('#restrictions_rationale').props().value).toEqual('Child at risk')
+  })
+
+  it('does not render restrictions rationale field if no access restrictions are selected', () => {
+    component.setProps({screening: Immutable.fromJS({access_restrictions: ''})})
+    expect(component.find('#restrictions_rationale').exists()).toEqual(false)
+  })
 })
 
 describe('DecisionEditView', () => {
@@ -152,9 +167,10 @@ describe('DecisionEditView', () => {
       .toEqual('differential_response')
     expect(component.find('InputField[label="Service name"]').props().value)
       .toEqual('Name of the service')
-    expect(component.find('SelectField[label="Category"]').length).toEqual(0)
+    expect(component.find('SelectField[label="Category"]').exists()).toEqual(false)
     expect(component.find('textarea#additional_information').props().value)
       .toEqual('more info')
+    expect(component.find('SelectField[label="Access Restrictions"]').exists()).toEqual(true)
   })
 
   it('displays a select list when the decision option requires one', () => {
