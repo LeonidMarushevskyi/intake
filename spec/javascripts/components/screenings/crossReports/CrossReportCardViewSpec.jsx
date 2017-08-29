@@ -59,7 +59,7 @@ describe('CrossReportCardView', () => {
           areCrossReportsRequired={true}
         />
       )
-      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations')
+      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations (except General Neglect, Caretaker Absence, or "At risk, sibling abused")')
     })
 
     it('returns a message when cross reports are required but district attorney has not been selected', () => {
@@ -72,7 +72,7 @@ describe('CrossReportCardView', () => {
           areCrossReportsRequired={true}
         />
       )
-      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations')
+      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations (except General Neglect, Caretaker Absence, or "At risk, sibling abused")')
     })
 
     it('returns a message when cross reports are required but law enforcement has not been selected', () => {
@@ -85,7 +85,7 @@ describe('CrossReportCardView', () => {
           areCrossReportsRequired={true}
         />
       )
-      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations')
+      expect(component.instance().alertInfoMessage()).toContain('Any report that includes allegations (except General Neglect, Caretaker Absence, or "At risk, sibling abused")')
     })
 
     it('returns a message when cross reports are required, and law enforcement and D.A. have both been selected', () => {

@@ -69,16 +69,28 @@ feature 'show cross reports' do
       :participant,
       :victim
     )
+    victim2 = FactoryGirl.create(
+      :participant,
+      :victim
+    )
     screening = FactoryGirl.create(
       :screening,
       id: 1,
-      participants: [perpetrator, victim],
-      allegations: [{
-        screening_id: 1,
-        perpetrator_id: perpetrator.id,
-        victim_id: victim.id,
-        allegation_types: ['General neglect']
-      }],
+      participants: [perpetrator, victim, victim2],
+      allegations: [
+        {
+          screening_id: 1,
+          perpetrator_id: perpetrator.id,
+          victim_id: victim.id,
+          allegation_types: ['General neglect']
+        },
+        {
+          screening_id: 1,
+          perpetrator_id: perpetrator.id,
+          victim_id: victim2.id,
+          allegation_types: ['At risk, sibling abused']
+        }
+      ],
       cross_reports: [
         CrossReport.new(
           agency_type: 'Law enforcement',
@@ -114,16 +126,28 @@ feature 'show cross reports' do
       :participant,
       :victim
     )
+    victim2 = FactoryGirl.create(
+      :participant,
+      :victim
+    )
     screening = FactoryGirl.create(
       :screening,
       id: 1,
-      participants: [perpetrator, victim],
-      allegations: [{
-        screening_id: 1,
-        perpetrator_id: perpetrator.id,
-        victim_id: victim.id,
-        allegation_types: ['Severe neglect']
-      }],
+      participants: [perpetrator, victim, victim2],
+      allegations: [
+        {
+          screening_id: 1,
+          perpetrator_id: perpetrator.id,
+          victim_id: victim.id,
+          allegation_types: ['Severe neglect']
+        },
+        {
+          screening_id: 1,
+          perpetrator_id: perpetrator.id,
+          victim_id: victim2.id,
+          allegation_types: ['At risk, sibling abused']
+        }
+      ],
       cross_reports: []
     )
     stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
