@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 # 6/23/2017 - version 3.x does not support extends yet.
 # - https://docs.docker.com/compose/extends/#extending-services
 services:
@@ -10,11 +10,11 @@ services:
       - "4857:4857"
       - "8080:8080"
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: ${RAILS_ENV:-development}
       API_URL: "http://api:3000"
       NODE_ENV: development
       AUTHENTICATION_URL: "https://perry.preint.cwds.io"
-      AUTHENTICATION: 'true'
+      AUTHENTICATION: ${AUTHENTICATION:-true}
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
       USE_XVFB: 'true'
@@ -37,7 +37,7 @@ services:
       - "3001:3000"
     environment:
       AUTHENTICATION_URL: 'https://perry.preint.cwds.io'
-      AUTHENTICATION: 'true'
+      AUTHENTICATION: ${AUTHENTICATION:-true}
       SEARCH_URL: 'https://ferbapi.preint.cwds.io'
     tty: true
     stdin_open: true

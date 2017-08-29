@@ -18,7 +18,7 @@ namespace :spec do # rubocop:disable BlockLength
 
   desc 'Run specs in ca_intake container'
   task :intake do
-    command = "RAILS_ENV=test bundle exec rspec #{file_list}"
+    command = "AUTHENTICATION=false RAILS_ENV=test bundle exec rspec #{file_list}"
     system "#{webpack?} docker-compose exec ca_intake bash -c '#{command}'"
   end
 
@@ -32,7 +32,13 @@ namespace :spec do # rubocop:disable BlockLength
       # docker-compose supports ENV vars for run, but not exec (yet?)
       # We need to set RAILS_ENV because the spawned spec processes pick up
       # RAILS_ENV=development from our dev environment.
-      docker_cmd = 'docker-compose run -e RAILS_ENV=test --rm ca_intake bundle exec parallel_rspec'
+      docker_cmd = <<~END.tr("\n", ' ')
+        docker-compose run
+        -e AUTHENTICATION=false
+        -e RAILS_ENV=test
+        --rm ca_intake
+        bundle exec parallel_rspec
+      END
       system "#{webpack?} #{docker_cmd} #{file_list}"
     end
 
