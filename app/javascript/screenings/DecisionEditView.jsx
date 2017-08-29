@@ -94,6 +94,7 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                   onChange={(event) => onChange(['restrictions_rationale'], event.target.value || null)}
                   value={screening.get('restrictions_rationale') || ''}
                   onBlur={() => onBlur('restrictions_rationale')}
+                  maxLength='255'
                 />
               </div>
             }
