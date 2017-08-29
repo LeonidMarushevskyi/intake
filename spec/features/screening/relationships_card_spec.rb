@@ -89,16 +89,13 @@ feature 'Relationship card' do
         :get,
         host_url(ExternalRoutes.intake_api_screening_path(participants_screening.id))
       ).and_return(json_body(participants_screening.to_json))
+      stub_empty_history_for_screening(participants_screening)
       stub_request(
         :get,
         host_url(
           ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
         )
       ).and_return(json_body(relationships.to_json, status: 200))
-      stub_request(
-        :get,
-        host_url(ExternalRoutes.intake_api_history_of_involvements_path(participants_screening.id))
-      ).and_return(json_body([].to_json, status: 200))
     end
 
     scenario 'viewing a screening' do

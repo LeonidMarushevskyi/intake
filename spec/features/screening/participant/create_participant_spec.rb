@@ -80,10 +80,8 @@ feature 'Edit Screening' do
         host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
       ).and_return(json_body([marge].to_json, status: 200))
     end
-    stub_request(
-      :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
-    ).and_return(json_body([].to_json, status: 200))
+    stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
   end
 

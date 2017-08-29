@@ -8,21 +8,11 @@ feature 'History card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
   context 'with no history of envolvements' do
-    let(:no_involvements) do
-      {
-        referrals: [],
-        screenings: [],
-        cases: []
-      }
-    end
-
     before do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
-      stub_request(
-        :get,
-        host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
-      ).and_return(json_body(no_involvements.to_json, status: 200))
+      stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
     end
 
     scenario 'while editting an existing screening displays the no HOI copy' do
@@ -208,11 +198,7 @@ feature 'History card' do
         :get,
         host_url(ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id))
       ).and_return(json_body(screening_involvement.to_json, status: 200))
-
-      stub_request(
-        :get,
-        host_url(ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id))
-      ).and_return(json_body([].to_json, status: 200))
+      stub_empty_relationships_for_screening(existing_screening)
     end
 
     scenario 'copy button' do
