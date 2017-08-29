@@ -4,6 +4,7 @@ import {Router, Route, IndexRoute, useRouterHistory} from 'react-router'
 import App from 'common/App'
 import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
+import InvestigationPage from 'investigations/InvestigationPage'
 import {config} from 'common/config'
 
 const historyIntake = useRouterHistory(createHistory)({
@@ -16,6 +17,7 @@ export default (
       <IndexRoute component={HomePage} />
       <Route path='screenings/:id' component={ScreeningPage}/>
       <Route path='screenings/:id/:mode' component={ScreeningPage} />
+      <Route path='investigations/:id' component={InvestigationPage} />
     </Route>
   </Router>
 )

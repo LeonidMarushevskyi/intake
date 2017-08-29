@@ -23,14 +23,14 @@ describe('HomePage', () => {
       const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
       let instance
       beforeEach((done) => {
-        spyOn(Utils, 'request').and.returnValue(Promise.resolve(mockScreenings))
+        spyOn(Utils, 'get').and.returnValue(Promise.resolve(mockScreenings))
         instance = shallow(<HomePage {...requiredProps}/>).instance()
         spyOn(instance, 'setState').and.callFake(done)
         instance.componentDidMount()
       })
 
       it('fetches the screenings', () => {
-        expect(Utils.request).toHaveBeenCalledWith('GET', '/api/v1/screenings')
+        expect(Utils.get).toHaveBeenCalledWith('/api/v1/screenings')
       })
 
       it('sets the screening state with the fetched screenings', () => {
@@ -96,13 +96,13 @@ describe('HomePage', () => {
 
     describe('#componentDidMount', () => {
       beforeEach(() => {
-        spyOn(Utils, 'request')
+        spyOn(Utils, 'get')
         const instance = shallow(<HomePage {...requiredProps}/>).instance()
         instance.componentDidMount()
       })
 
       it('does not fetch the screenings', () => {
-        expect(Utils.request).not.toHaveBeenCalledWith('GET', '/api/v1/screenings')
+        expect(Utils.get).not.toHaveBeenCalledWith('/api/v1/screenings')
       })
     })
   })
