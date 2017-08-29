@@ -19,6 +19,7 @@ describe('IncidentInformationCardView', () => {
       location_type: 'Juvenile Detention',
     }),
     errors: Immutable.List(),
+    editable: true,
   }
 
   beforeEach(() => {
@@ -27,6 +28,15 @@ describe('IncidentInformationCardView', () => {
     props.onSave = jasmine.createSpy('onSave')
     props.onEdit = jasmine.createSpy('onEdit')
     promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
+  })
+
+  it('renders the card header', () => {
+    const component = shallow(<IncidentInformationCardView {...props} mode='edit'/>)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Incident Information')
   })
 
   describe('render', () => {
@@ -87,17 +97,6 @@ describe('IncidentInformationCardView', () => {
 
       it('passes errors to the edit view', () => {
         expect(component.find('IncidentInformationShowView').props().errors).toEqual(Immutable.List())
-      })
-
-      describe('when the user clicks edit link', () => {
-        beforeEach(() => {
-          const editLink = component.find('a[aria-label="Edit incident information"]')
-          editLink.simulate('click')
-        })
-
-        it('it renders the incident edit card', () => {
-          expect(component.find('IncidentInformationEditView').length).toEqual(1)
-        })
       })
     })
   })

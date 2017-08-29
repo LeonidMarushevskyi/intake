@@ -3,6 +3,7 @@ import IncidentInformationEditView from 'screenings/IncidentInformationEditView'
 import IncidentInformationShowView from 'screenings/IncidentInformationShowView'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class IncidentInformationCardView extends React.Component {
   constructor(props, context) {
@@ -32,8 +33,7 @@ export default class IncidentInformationCardView extends React.Component {
     }
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -79,11 +79,21 @@ export default class IncidentInformationCardView extends React.Component {
     }
     const IncidentInformationView = (mode === 'edit') ? IncidentInformationEditView : IncidentInformationShowView
     const props = allProps[mode]
-    return <IncidentInformationView {...props} />
+    return (
+      <div className={`card ${mode} double-gap-top`} id='incident-information-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Incident Information'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <IncidentInformationView {...props} />
+      </div>
+    )
   }
 }
 
 IncidentInformationCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func.isRequired,

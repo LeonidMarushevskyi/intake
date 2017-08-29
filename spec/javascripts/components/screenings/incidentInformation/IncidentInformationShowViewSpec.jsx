@@ -18,25 +18,8 @@ describe('IncidentInformationShowView', () => {
     )
   })
 
-  it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toContain('Incident Information')
-  })
-
-  it('renders the edit link', () => {
-    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit incident information')
-  })
-
   it('renders errors passed for incident date', () => {
     expect(component.find('ShowField[label="Incident Date"]').props().errors).toEqual(Immutable.List())
-  })
-
-  describe('clicking the edit link', () => {
-    beforeEach(() => {
-      component.find('EditLink').simulate('click')
-    })
-    it('switches to edit mode when edit icon is clicked', () => {
-      expect(onEdit).toHaveBeenCalled()
-    })
   })
 
   it('render the show fields', () => {
