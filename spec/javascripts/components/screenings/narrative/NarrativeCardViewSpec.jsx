@@ -1,12 +1,12 @@
 import Immutable from 'immutable'
 import NarrativeCardView from 'screenings/NarrativeCardView'
 import React from 'react'
-import {mount} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('NarrativeCardView', () => {
   let component
   const screening = Immutable.fromJS({report_narrative: 'This is my narrative'})
-  const props = {screening: screening}
+  const props = {screening: screening, editable: true}
   const promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
 
   beforeEach(() => {
@@ -14,6 +14,15 @@ describe('NarrativeCardView', () => {
     props.onChange = jasmine.createSpy('onChange')
     props.onCancel = jasmine.createSpy('onCancel')
     props.onEdit = jasmine.createSpy('onEdit')
+  })
+
+  it('renders the card header', () => {
+    const component = shallow(<NarrativeCardView {...props} mode='edit' />)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Narrative')
   })
 
   describe('render', () => {
@@ -47,36 +56,6 @@ describe('NarrativeCardView', () => {
       describe('when the narrative is edited', () => {
         beforeEach(() => {
           component.find('textarea').simulate('change', {target: {value: 'this is my new text'}})
-        })
-
-        describe("and 'Cancel' is clicked and 'Edit' is clicked", () => {
-          beforeEach(() => {
-            const cancelButton = component.find('button[children="Cancel"]')
-            cancelButton.simulate('click')
-            const editLink = component.find('a[aria-label="Edit narrative"]')
-            editLink.simulate('click')
-          })
-
-          it('the narrative edit view is rendered with the original narrative', () => {
-            expect(component.find('NarrativeEditView').props().screening).toEqual(screening)
-          })
-
-          describe('with missing data', () => {
-            beforeEach(() => {
-              const invaildProps = {
-                ...props,
-                screening: Immutable.fromJS({report_narrative: ''}),
-                mode: 'edit',
-              }
-
-              component = mount(<NarrativeCardView {...invaildProps} />)
-              component.find('.btn.btn-default').simulate('click')
-            })
-
-            it('validates the field', () => {
-              expect(component.update().find('NarrativeShowView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
-            })
-          })
         })
 
         describe("and 'Save' is clicked", () => {
@@ -167,18 +146,6 @@ describe('NarrativeCardView', () => {
         component = mount(<NarrativeCardView {...props} mode='show'/>)
         expect(component.find('NarrativeShowView').length).toEqual(1)
         expect(component.find('NarrativeShowView').props().screening).toEqual(screening)
-      })
-
-      describe("and a user clicks 'Edit narrative'", () => {
-        beforeEach(() => {
-          component = mount(<NarrativeCardView {...props} mode='show'/>)
-          const editLink = component.find('a[aria-label="Edit narrative"]')
-          editLink.simulate('click')
-        })
-
-        it('the narrative edit view is rendered', () => {
-          expect(component.find('NarrativeEditView').length).toEqual(1)
-        })
       })
 
       describe('and missing required field', () => {

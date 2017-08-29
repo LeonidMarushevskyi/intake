@@ -4,6 +4,7 @@ import NarrativeEditView from 'screenings/NarrativeEditView'
 import NarrativeShowView from 'screenings/NarrativeShowView'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class NarrativeCardView extends React.Component {
   constructor(props, context) {
@@ -33,8 +34,7 @@ export default class NarrativeCardView extends React.Component {
     }
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -95,11 +95,21 @@ export default class NarrativeCardView extends React.Component {
     }
     const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowView
     const props = allProps[mode]
-    return <NarrativeView {...props} />
+    return (
+      <div className={`card ${mode} double-gap-top`} id='narrative-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Narrative'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <NarrativeView {...props} />
+      </div>
+    )
   }
 }
 
 NarrativeCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
