@@ -31,42 +31,37 @@ const AllegationsEditView = ({
   }
 
   return (
-    <div className='card edit double-gap-top' id='allegations-card'>
-      <div className='card-header'>
-        <span>Allegations</span>
-      </div>
-      <div className='card-body no-pad-top'>
-        { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
-        <div className='row'>
-          <div className='col-md-12'>
-            <table className='table table-hover'>
-              <thead>
-                <tr>
-                  <th scope='col'>Alleged Victim/Children</th>
-                  <th scope='col'>Alleged Perpetrator</th>
-                  <th scope='col'>Allegation(s){required && ' (Required)'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allegationsWithViewFlag(allegations).map((allegation, index) =>
-                  <AllegationRow
-                    displayVictim={allegation.get('display_victim')}
-                    key={index}
-                    victim={allegation.get('victim')}
-                    perpetrator={allegation.get('perpetrator')}
-                    onChange={onChange}
-                    allegationTypes={allegation.get('allegation_types')}
-                  />
-                )}
-              </tbody>
-            </table>
-          </div>
+    <div className='card-body no-pad-top'>
+      { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
+      <div className='row'>
+        <div className='col-md-12'>
+          <table className='table table-hover'>
+            <thead>
+              <tr>
+                <th scope='col'>Alleged Victim/Children</th>
+                <th scope='col'>Alleged Perpetrator</th>
+                <th scope='col'>Allegation(s){required && ' (Required)'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allegationsWithViewFlag(allegations).map((allegation, index) =>
+                <AllegationRow
+                  displayVictim={allegation.get('display_victim')}
+                  key={index}
+                  victim={allegation.get('victim')}
+                  perpetrator={allegation.get('perpetrator')}
+                  onChange={onChange}
+                  allegationTypes={allegation.get('allegation_types')}
+                />
+              )}
+            </tbody>
+          </table>
         </div>
-        <div className='row'>
-          <div className='centered'>
-            <button className='btn btn-primary' onClick={onSave}>Save</button>
-            <button className='btn btn-default' onClick={onCancel}>Cancel</button>
-          </div>
+      </div>
+      <div className='row'>
+        <div className='centered'>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
+          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>
