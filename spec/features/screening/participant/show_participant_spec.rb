@@ -23,6 +23,8 @@ feature 'Show Screening' do
     middle_name: 'Jay',
     name_suffix: 'esq',
     ssn: '123-__-____',
+    sealed: false,
+    sensitive: true,
     addresses: [address],
     roles: ['Victim', 'Mandated Reporter'],
     phone_numbers: [phone_number],
@@ -45,6 +47,7 @@ feature 'Show Screening' do
 
     within show_participant_card_selector(existing_participant.id) do
       within '.card-header' do
+        expect(page).to have_content('Sensitive')
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
