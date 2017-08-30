@@ -16,12 +16,22 @@ describe('ScreeningInformationCardView', () => {
       ended_at: '2016-08-22T11:00:00.000Z',
       communication_method: 'mail',
     }),
+    editable: true,
   }
 
   beforeEach(() => {
     baseProps.onChange = jasmine.createSpy('onChange')
     baseProps.onCancel = jasmine.createSpy('onCancel')
     baseProps.onSave = jasmine.createSpy('onSave').and.returnValue(Promise.resolve())
+  })
+
+  it('renders the card header', () => {
+    const component = shallow(<ScreeningInformationCardView {...baseProps} mode='edit' />)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Screening Information')
   })
 
   describe('validateOnChange', () => {
@@ -231,11 +241,6 @@ describe('ScreeningInformationCardView', () => {
 
       it('renders the show card', () => {
         expect(component.find('ScreeningInformationShowView').length).toEqual(1)
-      })
-
-      it('displays edit card when edit link is clicked', () => {
-        component.find('a[aria-label="Edit screening information"]').simulate('click')
-        expect(component.find('ScreeningInformationEditView').length).toEqual(1)
       })
 
       it('passes errors from the state', () => {

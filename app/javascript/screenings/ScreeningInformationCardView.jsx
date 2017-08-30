@@ -2,6 +2,7 @@ import * as Validator from 'utils/validator'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 import ScreeningInformationEditView from 'screenings/ScreeningInformationEditView'
 import ScreeningInformationShowView from 'screenings/ScreeningInformationShowView'
 
@@ -103,11 +104,21 @@ export default class ScreeningInformationCardView extends React.Component {
     }
     const ScreeningInformationView = (mode === 'edit') ? ScreeningInformationEditView : ScreeningInformationShowView
     const props = allprops[mode]
-    return <ScreeningInformationView {...props} />
+    return (
+      <div className={`card ${mode} double-gap-top`} id='screening-information-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Screening Information'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <ScreeningInformationView {...props} />
+      </div>
+    )
   }
 }
 
 ScreeningInformationCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
