@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
+import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardReferral = ({referral, index}) => {
@@ -18,8 +19,7 @@ const HistoryCardReferral = ({referral, index}) => {
   const referralId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
   const accessLimitation = referral.get('access_limitation')
   const limitedAccessCode = accessLimitation ? accessLimitation.get('limited_access_code') : 'N'
-  const isSealed = limitedAccessCode && limitedAccessCode === 'R'
-  const isSensitive = limitedAccessCode && limitedAccessCode === 'S'
+  const accessNotification = accessDescription(limitedAccessCode)
 
   return (
     <tr key={`referral-${index}`} id={`referral-${referral.get('id')}`}>
@@ -28,8 +28,7 @@ const HistoryCardReferral = ({referral, index}) => {
         <div className='row'>Referral</div>
         <div className='row'>{referralId}</div>
         <div className='row'>{`(${status})`}</div>
-        {isSealed && <div className='row information-flag'>Sealed</div>}
-        {isSensitive && <div className='row information-flag'>Sensitive</div>}
+        {accessNotification && <div className='row information-flag'>{accessNotification}</div>}
       </td>
       <td>{incidentCounty}</td>
       <td>

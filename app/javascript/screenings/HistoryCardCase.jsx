@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
+import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
 const HistoryCardCase = ({hoiCase, index}) => {
@@ -16,8 +17,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
   const caseId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
   const accessLimitation = hoiCase.get('access_limitation')
   const limitedAccessCode = accessLimitation ? accessLimitation.get('limited_access_code') : 'N'
-  const isSealed = limitedAccessCode && limitedAccessCode === 'R'
-  const isSensitive = limitedAccessCode && limitedAccessCode === 'S'
+  const accessNotification = accessDescription(limitedAccessCode)
 
   const focusChild = hoiCase.get('focus_child')
 
@@ -34,8 +34,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
         <div className='row'>Case</div>
         <div className='row'>{caseId}</div>
         <div className='row'>{`(${status})`}</div>
-        {isSealed && <div className='row information-flag'>Sealed</div>}
-        {isSensitive && <div className='row information-flag'>Sensitive</div>}
+        {accessNotification && <div className='row information-flag'>{accessNotification}</div>}
       </td>
       <td>{incidentCounty}</td>
       <td>
