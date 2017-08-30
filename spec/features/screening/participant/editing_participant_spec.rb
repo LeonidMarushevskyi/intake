@@ -16,6 +16,8 @@ feature 'Edit Screening' do
       middle_name: 'Jacqueline',
       name_suffix: 'sr',
       ssn: old_ssn,
+      sealed: false,
+      sensitive: true,
       roles: marge_roles,
       languages: ['Russian']
     )
@@ -48,6 +50,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
+        expect(page).to have_content('Sensitive')
         expect(page).to have_content marge_formatted_name
         expect(page).to have_button 'Delete participant'
       end

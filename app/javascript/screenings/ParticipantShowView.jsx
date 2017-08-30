@@ -9,9 +9,11 @@ import nameFormatter from 'utils/nameFormatter'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
+import {participantFlag} from 'utils/accessIndicator'
 import AvatarImg from '../../assets/images/default-profile.svg'
 
 const ParticipantShowView = ({participant, onDelete, onEdit}) => {
+  const flag = participantFlag(participant.toJS())
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
 
@@ -27,6 +29,7 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
     <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
       <div className='card-header'>
         <span>{nameFormatter(participant)}</span>
+        { flag && <span className='information-flag'>{flag}</span>}
         <button aria-label='Delete participant'
           className='pull-right delete-button'
           onClick={() => onDelete(participant.get('id'))}

@@ -112,6 +112,11 @@ pre {
   text-align: center;
 }
 
+.card .card-header span.information-flag {
+  margin-left: $half-spacing;
+  padding: 0 $half-spacing;
+}
+
 ul,
 ol {
   margin: 0;

@@ -12,6 +12,8 @@ FactoryGirl.define do
     last_name { Faker::Name.last_name }
     gender { %w[male female].sample }
     ssn { FFaker::SSN.ssn }
+    sealed { false }
+    sensitive { false }
     date_of_birth { Faker::Date.between(30.years.ago, 25.years.ago).to_s(:db) }
     legacy_descriptor factory: :legacy_descriptor
 

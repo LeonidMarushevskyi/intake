@@ -21,6 +21,8 @@ module Api
         :legacy_friendly_table,
         :screening_id,
         :ssn,
+        :sealed,
+        :sensitive,
         addresses: %i[id legacy_id legacy_source_table street_address city state zip type],
         legacy_descriptor: %i[
           id

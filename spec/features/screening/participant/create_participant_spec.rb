@@ -11,6 +11,8 @@ def filtered_participant_attributes
     gender
     last_name
     ssn
+    sealed
+    sensitive
   ]
 end
 
@@ -59,6 +61,8 @@ feature 'Edit Screening' do
       gender: 'female',
       last_name: 'Simpson',
       ssn: '123-23-1234',
+      sealed: false,
+      sensitive: true,
       languages: %w[French Italian],
       legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
       addresses: [marge_address],
@@ -85,7 +89,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: existing_screening.id)
   end
 
-  scenario 'adding an unknown participant when autocompleter contains results' do
+  scenario 'creating an unknown participant when autocompleter contains results' do
     created_participant_unknown = FactoryGirl.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
@@ -112,6 +116,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(created_participant_unknown.id) do
       within '.card-header' do
+        expect(page).not_to have_content('Sensitive')
         expect(page).to have_content 'Unknown Person'
       end
     end
@@ -131,7 +136,7 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'creating a new participant from a person' do
+  scenario 'adding a participant from search results' do
     marge_attributes = build_participant_from_person_and_screening(marge, existing_screening)
     participant_marge = FactoryGirl.build(:participant, marge_attributes)
     created_participant_marge = FactoryGirl.create(:participant, participant_marge.as_json)
@@ -157,6 +162,7 @@ feature 'Edit Screening' do
 
     within edit_participant_card_selector(created_participant_marge.id) do
       within '.card-header' do
+        expect(page).to have_content('Sensitive')
         expect(page).to have_content 'Marge Simpson'
         expect(page).to have_button 'Delete participant'
       end
@@ -205,6 +211,7 @@ feature 'Edit Screening' do
 
       within show_participant_card_selector(created_participant_marge.id) do
         within '.card-header' do
+          expect(page).to have_content('Sensitive')
           expect(page).to have_content('Marge Simpson')
           expect(page).to_not have_link 'Edit participant'
           expect(page).to have_button 'Delete participant'
