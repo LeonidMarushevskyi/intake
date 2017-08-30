@@ -51,11 +51,6 @@ describe('ParticipantEditView', () => {
       )
     })
 
-    it('renders a participant edit view card', () => {
-      expect(component.find('.card.edit').length).toEqual(1)
-      expect(component.find('#participants-card-199').length).toEqual(1)
-    })
-
     it('renders the participant legacy id and table', () => {
       expect(component.text()).toContain('Client ID 123-456-789 in CWS-CMS')
     })
@@ -84,77 +79,6 @@ describe('ParticipantEditView', () => {
       })
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.text()).not.toContain('in CWS-CMS')
-    })
-
-    it('does not render flags when none is provided', () => {
-      expect(component.find('span.information-flag').exists()).toEqual(false)
-    })
-
-    it('renders the sensitive flag', () => {
-      const participant = Immutable.fromJS({...requiredParticipantProps, sensitive: true})
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('span.information-flag').text()).toEqual('Sensitive')
-    })
-
-    it('renders the sealed flag', () => {
-      const participant = Immutable.fromJS({...requiredParticipantProps, sealed: true})
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('span.information-flag').text()).toEqual('Sealed')
-    })
-
-    it('renders the participant header correctly when first name is null', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        id: '199',
-        first_name: null,
-        last_name: 'Simpson',
-      })
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header span').text()).toEqual('(Unknown first name) Simpson')
-    })
-
-    it('renders the participant header correctly when last name is null', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        id: '199',
-        first_name: 'Lisa',
-        last_name: null,
-      })
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header span').text()).toEqual('Lisa (Unknown last name)')
-    })
-
-    it('renders the participant header correctly when first and last names are null', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        id: '199',
-        first_name: null,
-        last_name: null,
-      })
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header span').text()).toEqual('Unknown Person')
-    })
-
-    it('renders the participants first and last name in the card header', () => {
-      expect(component.find('.card-header').text()).toContain('Lisa Marie Simpson, PhD')
-    })
-
-    it('renders the participant header with no name when first and last name is null', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        id: '199',
-        first_name: null,
-        last_name: null,
-        date_of_birth: '2016-12-31',
-        gender: 'female',
-        ssn: 'ssn-1',
-      })
-      component = shallow(<ParticipantEditView participant={participant} />)
-      expect(component.find('.card-header')).not.toContain('<span></span>')
-    })
-
-    it('renders the delete link', () => {
-      expect(component.find('.fa-times').length).toEqual(1)
     })
 
     it('renders the first name field', () => {
@@ -229,24 +153,6 @@ describe('ParticipantEditView', () => {
       expect(onCancel).toHaveBeenCalled()
       expect(component.find('MaskedInputField[label="Social security number"]').props().value)
         .toEqual('ssn-1')
-    })
-
-    it('calls the onDelete function when delete link is clicked', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        id: '199',
-        first_name: 'Lisa',
-        last_name: 'Simpson',
-        date_of_birth: '2016-12-31',
-        gender: 'female',
-        ssn: 'ssn-1',
-      })
-
-      const onDelete = jasmine.createSpy('onDelete')
-
-      component = shallow(<ParticipantEditView participant={participant} onDelete={onDelete}/>)
-      component.find('.delete-button').simulate('click')
-      expect(onDelete).toHaveBeenCalled()
     })
 
     describe('languages', () => {
