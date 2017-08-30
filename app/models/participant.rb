@@ -11,6 +11,8 @@ class Participant
   attribute :last_name
   attribute :middle_name
   attribute :ssn
+  attribute :sealed, Boolean, default: false
+  attribute :sensitive, Boolean, default: false
   attribute :name_suffix
   attribute :phone_numbers, Array[PhoneNumber]
   attribute :addresses, Array[Address]

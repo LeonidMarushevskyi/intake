@@ -46,6 +46,8 @@ describe Api::V1::ParticipantsController do
         },
         screening_id: '1',
         ssn: '123-23-1234',
+        sealed: 'false',
+        sensitive: 'true',
         languages: %w[French Farsi]
       }.with_indifferent_access
     end
