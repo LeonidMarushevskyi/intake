@@ -14,6 +14,7 @@ import SelectField from 'common/SelectField'
 import selectOptions from 'utils/selectHelper'
 import nameFormatter from 'utils/nameFormatter'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
+import {participantFlag} from 'utils/accessIndicator'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'enums/RoleType'
 
 const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}) => {
@@ -35,13 +36,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
       return item
     })
   }
-  let flag
-  if (participant.get('sealed') === true) {
-    flag = 'Sealed'
-  } else if (participant.get('sensitive') === true) {
-    flag = 'Sensitive'
-  }
-
+  const flag = participantFlag(participant.toJS())
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
 

@@ -91,20 +91,13 @@ describe('ParticipantEditView', () => {
     })
 
     it('renders the sensitive flag', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        sensitive: true,
-      })
+      const participant = Immutable.fromJS({...requiredParticipantProps, sensitive: true})
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('span.information-flag').text()).toEqual('Sensitive')
     })
 
-    it('renders only the sealed flag even when both are set', () => {
-      const participant = Immutable.fromJS({
-        ...requiredParticipantProps,
-        sealed: true,
-        sensitive: true,
-      })
+    it('renders the sealed flag', () => {
+      const participant = Immutable.fromJS({...requiredParticipantProps, sealed: true})
       component = shallow(<ParticipantEditView participant={participant} />)
       expect(component.find('span.information-flag').text()).toEqual('Sealed')
     })
