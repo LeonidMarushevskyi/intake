@@ -16,6 +16,10 @@ const HistoryCardReferral = ({referral, index}) => {
   const allegations = referral.get('allegations')
   const legacyDescriptor = referral.get('legacy_descriptor')
   const referralId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
+  const accessLimitation = referral.get('access_limitation')
+  const limitedAccessCode = accessLimitation ? accessLimitation.get('limited_access_code') : 'N'
+  const isSealed = limitedAccessCode && limitedAccessCode === 'R'
+  const isSensitive = limitedAccessCode && limitedAccessCode === 'S'
 
   return (
     <tr key={`referral-${index}`} id={`referral-${referral.get('id')}`}>
@@ -24,6 +28,8 @@ const HistoryCardReferral = ({referral, index}) => {
         <div className='row'>Referral</div>
         <div className='row'>{referralId}</div>
         <div className='row'>{`(${status})`}</div>
+        {isSealed && <div className='row information-flag'>Sealed</div>}
+        {isSensitive && <div className='row information-flag'>Sensitive</div>}
       </td>
       <td>{incidentCounty}</td>
       <td>
