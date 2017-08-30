@@ -6,12 +6,10 @@ import {shallow} from 'enzyme'
 describe('ParticipantCardView', () => {
   describe('#onEdit', () => {
     it('toggles the mode to edit', () => {
-      const component = shallow(<ParticipantCardView participant={Immutable.Map()} mode={'show'}/>)
+      const component = shallow(<ParticipantCardView participant={Immutable.Map()} mode={'show'} editable={true}/>)
       const instance = component.instance()
-      const event = jasmine.createSpyObj('event', ['preventDefault'])
-      instance.onEdit(event)
+      instance.onEdit()
       expect(instance.state.mode).toEqual('edit')
-      expect(event.preventDefault).toHaveBeenCalled()
     })
   })
 
@@ -24,10 +22,6 @@ describe('ParticipantCardView', () => {
       const component = shallow(<ParticipantCardView {...{participant, onCancel, mode: 'edit'}} />)
       instance = component.instance()
       instance.onCancel()
-    })
-
-    it('toggles the mode to show', () => {
-      expect(instance.state.mode).toEqual('show')
     })
 
     it('calls onCancel from props with participant id', () => {
