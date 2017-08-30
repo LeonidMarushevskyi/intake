@@ -41,27 +41,26 @@ namespace :docker do # rubocop:disable BlockLength
       system 'docker-machine restart intake && eval $(docker-machine env intake)'
     end
   end
-end
-
-namespace :logs do
-  desc 'Show logs for ca_intake container'
-  task :intake do
-    system 'docker-compose logs -f ca_intake'
-  end
-  desc 'Show logs for api container'
-  task :api do
-    system 'docker-compose logs -f api'
-  end
-end
-
-namespace :console do
-  desc 'Start rails console in ca_intake container'
-  task :intake do
-    system 'docker-compose exec ca_intake bundle exec rails console'
+  namespace :logs do
+    desc 'Show logs for ca_intake container'
+    task :intake do
+      system 'docker-compose logs -f ca_intake'
+    end
+    desc 'Show logs for api container'
+    task :api do
+      system 'docker-compose logs -f api'
+    end
   end
 
-  desc 'Start rails console in api container'
-  task :api do
-    system 'docker-compose exec api bundle exec rails console'
+  namespace :console do
+    desc 'Start rails console in ca_intake container'
+    task :intake do
+      system 'docker-compose exec ca_intake bundle exec rails console'
+    end
+
+    desc 'Start rails console in api container'
+    task :api do
+      system 'docker-compose exec api bundle exec rails console'
+    end
   end
 end
