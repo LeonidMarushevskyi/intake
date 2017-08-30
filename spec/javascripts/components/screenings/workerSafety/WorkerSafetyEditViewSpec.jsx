@@ -23,9 +23,6 @@ describe('WorkerSafetyEditView', () => {
       />
     )
   })
-  it('renders worker card header', () => {
-    expect(component.find('.card-header').text()).toContain('Worker Safety')
-  })
 
   it('renders the correct options', () => {
     expect(component.find('Select[multi]').props().options).toEqual([

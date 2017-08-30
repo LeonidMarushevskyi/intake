@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 import WorkerSafetyShowView from 'screenings/WorkerSafetyShowView'
 import WorkerSafetyEditView from 'screenings/WorkerSafetyEditView'
 
@@ -16,8 +17,7 @@ export default class WorkerSafetyCardView extends React.Component {
     this.fields = Immutable.fromJS(['safety_alerts', 'safety_information'])
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
   onCancel() {
@@ -49,11 +49,21 @@ export default class WorkerSafetyCardView extends React.Component {
       safetyAlerts: this.props.screening.get('safety_alerts'),
       safetyInformation: this.props.screening.get('safety_information'),
     }
-    return <WorkerSafetyView {...props} />
+    return (
+      <div className='card show double-gap-top' id='worker-safety-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Worker Safety'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <WorkerSafetyView {...props} />
+      </div>
+    )
   }
 }
 
 WorkerSafetyCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['show', 'edit']),
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

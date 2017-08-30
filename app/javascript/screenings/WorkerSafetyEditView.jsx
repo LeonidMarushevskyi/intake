@@ -12,41 +12,36 @@ export default class WorkerSafetyEditView extends React.Component {
 
   render() {
     return (
-      <div className='card edit double-gap-top' id='worker-safety-card'>
-        <div className='card-header'>
-          <span>Worker Safety</span>
+      <div className='card-body'>
+        <div className='row'>
+          <div className='col-md-6'>
+            <label htmlFor='safety_alerts'>Worker safety alerts</label>
+            <Select
+              multi
+              inputProps={{id: 'safety_alerts'}}
+              options={selectOptions(SAFETY_ALERT)}
+              value={this.props.safetyAlerts.toJS()}
+              onChange={
+                (alerts) => this.props.onChange(['safety_alerts'],
+                  Immutable.List(alerts.map((alert) => alert.value)) || [])
+              }
+            />
+          </div>
         </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-6'>
-              <label htmlFor='safety_alerts'>Worker safety alerts</label>
-              <Select
-                multi
-                inputProps={{id: 'safety_alerts'}}
-                options={selectOptions(SAFETY_ALERT)}
-                value={this.props.safetyAlerts.toJS()}
-                onChange={
-                  (alerts) => this.props.onChange(['safety_alerts'],
-                    Immutable.List(alerts.map((alert) => alert.value)) || [])
-                }
-              />
-            </div>
+        <div className='row'>
+          <div className='col-md-12'>
+            <label className='no-gap' htmlFor='safety_information'>Additional safety information</label>
+            <textarea
+              id='safety_information'
+              onChange={(event) => this.props.onChange(['safety_information'], event.target.value || null)}
+              value={this.props.safetyInformation || ''}
+            />
           </div>
-          <div className='row'>
-            <div className='col-md-12'>
-              <label className='no-gap' htmlFor='safety_information'>Additional safety information</label>
-              <textarea
-                id='safety_information'
-                onChange={(event) => this.props.onChange(['safety_information'], event.target.value || null)}
-                value={this.props.safetyInformation || ''}
-              />
-            </div>
-          </div>
-          <div className='row'>
-            <div className='centered'>
-              <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
-              <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
-            </div>
+        </div>
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary' onClick={this.props.onSave}>Save</button>
+            <button className='btn btn-default' onClick={this.props.onCancel}>Cancel</button>
           </div>
         </div>
       </div>
