@@ -1,4 +1,4 @@
-import {participantFlag} from 'utils/accessIndicator'
+import {participantFlag, accessDescription} from 'utils/accessIndicator'
 
 describe('participantFlag', () => {
   it('returns undefined when no flags are set', () => {
@@ -18,3 +18,16 @@ describe('participantFlag', () => {
   })
 })
 
+describe('accessDescription', () => {
+  it('returns Sealed when accessCode is R', () => {
+    expect(accessDescription('R')).toEqual('Sealed')
+  })
+
+  it('returns Sensitive when accessCode is S', () => {
+    expect(accessDescription('S')).toEqual('Sensitive')
+  })
+
+  it('returns undefined when accessCode is neither R nor S', () => {
+    expect(accessDescription({})).toEqual(undefined)
+  })
+})
