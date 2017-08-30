@@ -86,6 +86,29 @@ describe('ParticipantEditView', () => {
       expect(component.text()).not.toContain('in CWS-CMS')
     })
 
+    it('does not render flags when none is provided', () => {
+      expect(component.find('span.information-flag').exists()).toEqual(false)
+    })
+
+    it('renders the sensitive flag', () => {
+      const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
+        sensitive: true,
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+      expect(component.find('span.information-flag').text()).toEqual('Sensitive')
+    })
+
+    it('renders only the sealed flag even when both are set', () => {
+      const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
+        sealed: true,
+        sensitive: true,
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+      expect(component.find('span.information-flag').text()).toEqual('Sealed')
+    })
+
     it('renders the participant header correctly when first name is null', () => {
       const participant = Immutable.fromJS({
         ...requiredParticipantProps,

@@ -23,10 +23,18 @@ const ParticipantShowView = ({participant, onDelete, onEdit}) => {
     return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
   }
 
+  let flag
+  if (participant.get('sealed') === true) {
+    flag = 'Sealed'
+  } else if (participant.get('sensitive') === true) {
+    flag = 'Sensitive'
+  }
+
   return (
     <div className='card show double-gap-top' id={`participants-card-${participant.get('id')}`}>
       <div className='card-header'>
         <span>{nameFormatter(participant)}</span>
+        { flag && <span className='information-flag'>{flag}</span>}
         <button aria-label='Delete participant'
           className='pull-right delete-button'
           onClick={() => onDelete(participant.get('id'))}

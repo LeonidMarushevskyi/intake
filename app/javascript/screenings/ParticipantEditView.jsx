@@ -35,6 +35,12 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
       return item
     })
   }
+  let flag
+  if (participant.get('sealed') === true) {
+    flag = 'Sealed'
+  } else if (participant.get('sensitive') === true) {
+    flag = 'Sensitive'
+  }
 
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
@@ -43,6 +49,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDelete, onSave}
     <div className='card edit double-gap-top' id={`participants-card-${participant.get('id')}`}>
       <div className='card-header'>
         <span>{nameFormatter(participant)}</span>
+        { flag && <span className='information-flag'>{flag}</span>}
         <button aria-label='Delete participant'
           className='pull-right delete-button'
           onClick={() => onDelete(participant.get('id'))}
