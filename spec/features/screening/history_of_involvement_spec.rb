@@ -32,7 +32,7 @@ feature 'History card' do
     end
   end
 
-  context 'a screening with participants' do
+  context 'a screening with participants and HoI' do
     let(:screenings) do
       [
         {
@@ -87,6 +87,9 @@ feature 'History card' do
           ],
           legacy_descriptor: {
             legacy_ui_id: '0853-2115-5670-6000802'
+          },
+          access_limitation: {
+            limited_access_code: 'R'
           }
         },
         {
@@ -112,6 +115,9 @@ feature 'History card' do
           ],
           legacy_descriptor: {
             legacy_ui_id: '0202-9769-1248-2000283'
+          },
+          access_limitation: {
+            limited_access_code: 'S'
           }
         }
       ]
@@ -147,6 +153,9 @@ feature 'History card' do
           },
           legacy_descriptor: {
             legacy_ui_id: '0393-5909-1798-6027230'
+          },
+          access_limitation: {
+            limited_access_code: 'R'
           }
         },
         {
@@ -175,6 +184,9 @@ feature 'History card' do
           },
           legacy_descriptor: {
             legacy_ui_id: '0208-9997-9274-0000863'
+          },
+          access_limitation: {
+            limited_access_code: 'N'
           }
         }
       ]
@@ -256,6 +268,7 @@ feature 'History card' do
             expect(page).to have_content('0853-2115-5670-6000802')
             expect(page).to have_content('(Closed - Immediate)')
             expect(page).to have_content('Madera')
+            expect(page).to have_content('Sealed')
 
             within 'table' do
               allegation_rows = page.all('tr')
@@ -283,6 +296,7 @@ feature 'History card' do
             expect(page).to have_content('0202-9769-1248-2000283')
             expect(page).to have_content('(Open)')
             expect(page).to have_content('San Francisco')
+            expect(page).to have_content('Sensitive')
 
             within 'table' do
               allegation_rows = page.all('tr')
@@ -313,6 +327,7 @@ feature 'History card' do
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
+            expect(page).to have_content('Sealed')
           end
 
           within rows[5] do
@@ -325,6 +340,8 @@ feature 'History card' do
             expect(page).to have_content('Focus Child: fChild2 fc2Last')
             expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
             expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
+            expect(page).to_not have_content('Sealed')
+            expect(page).to_not have_content('Sensitive')
           end
         end
       end
@@ -377,6 +394,7 @@ feature 'History card' do
             expect(page).to have_content('0853-2115-5670-6000802')
             expect(page).to have_content('(Closed - Immediate)')
             expect(page).to have_content('Madera')
+            expect(page).to have_content('Sealed')
 
             within 'table' do
               allegation_rows = page.all('tr')
@@ -404,6 +422,7 @@ feature 'History card' do
             expect(page).to have_content('0202-9769-1248-2000283')
             expect(page).to have_content('(Open)')
             expect(page).to have_content('San Francisco')
+            expect(page).to have_content('Sensitive')
 
             within 'table' do
               allegation_rows = page.all('tr')
@@ -434,6 +453,7 @@ feature 'History card' do
             expect(page).to have_content('Focus Child: fChild1 fc1Last')
             expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
             expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
+            expect(page).to have_content('Sealed')
           end
 
           within rows[5] do
@@ -446,6 +466,8 @@ feature 'History card' do
             expect(page).to have_content('Focus Child: fChild2 fc2Last')
             expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
             expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
+            expect(page).to_not have_content('Sealed')
+            expect(page).to_not have_content('Sensitive')
           end
         end
       end
@@ -480,6 +502,7 @@ feature 'History card' do
               expect(page).to have_content('0853-2115-5670-6000802')
               expect(page).to have_content('(Closed - Immediate)')
               expect(page).to have_content('Madera')
+              expect(page).to have_content('Sealed')
 
               within 'table' do
                 allegation_rows = page.all('tr')
@@ -507,6 +530,7 @@ feature 'History card' do
               expect(page).to have_content('0202-9769-1248-2000283')
               expect(page).to have_content('(Open)')
               expect(page).to have_content('San Francisco')
+              expect(page).to have_content('Sensitive')
 
               within 'table' do
                 allegation_rows = page.all('tr')
@@ -534,6 +558,7 @@ feature 'History card' do
               expect(page).to have_content('0393-5909-1798-6027230')
               expect(page).to have_content('(Closed - Family Reunification)')
               expect(page).to have_content('El Dorado')
+              expect(page).to have_content('Sealed')
               expect(page).to have_content('Focus Child: fChild1 fc1Last')
               expect(page).to have_content('Parent(s): Parent1 p1Last, Parent2 p2Last')
               expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
@@ -546,6 +571,8 @@ feature 'History card' do
               expect(page).to have_content('0208-9997-9274-0000863')
               expect(page).to have_content('Open')
               expect(page).to have_content('Plumas')
+              expect(page).to_not have_content('Sealed')
+              expect(page).to_not have_content('Sensitive')
               expect(page).to have_content('Focus Child: fChild2 fc2Last')
               expect(page).to have_content('Parent(s): Parent3 p3Last, Parent4 p4Last')
               expect(page).to have_content('Worker: SocialWorker2 sw2LastName')
