@@ -18,10 +18,12 @@ import {
   submitScreeningFailure,
   submitScreeningSuccess,
   updateParticipantSuccess,
+  updateParticipantFailure,
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -52,18 +54,19 @@ describe('screening actions', () => {
   describe('.fetchScreening', () => {
     const screeningId = '1'
     const screening = {id: screeningId, name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'get').and.returnValue(Promise.resolve(screening)))
+    beforeEach((done) => {
+      spyOn(Utils, 'get').and.returnValue(Promise.resolve(screening))
+      store.dispatch(fetchScreening(screeningId)).then(() => done())
+    })
 
     it('fetches the screening for a given screeningId', () => {
-      store.dispatch(fetchScreening(screeningId))
       expect(Utils.get).toHaveBeenCalledWith(`/api/v1/screenings/${screeningId}`)
     })
 
     it('dispatches a fetchScreeningSuccess', () => {
-      const expectedActions = [fetchScreeningSuccess(screening)]
-      store.dispatch(fetchScreening(screeningId)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
+      expect(store.getActions()).toEqual([
+        fetchScreeningSuccess(screening),
+      ])
     })
   })
 
@@ -98,20 +101,49 @@ describe('screening actions', () => {
       languages: ['English', 'Spanish'],
       ssn: 'ssn-1',
     }
-    beforeEach(() => spyOn(Utils, 'put').and.returnValue(Promise.resolve(participant)))
 
     it('puts the participants to the server', () => {
+      spyOn(Utils, 'put').and.returnValue(Promise.resolve(participant))
       store.dispatch(saveParticipant(participant))
       expect(Utils.put).toHaveBeenCalledWith(
         `/api/v1/participants/${participant.id}`, {participant}
       )
     })
 
-    it('dispatches a updateParticipantSuccess', () => {
-      const expectedActions = [updateParticipantSuccess(participant)]
-      store.dispatch(saveParticipant(participant)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
+    describe('when server responds successfully', () => {
+      const screening = {id: '344'}
+      beforeEach((done) => {
+        spyOn(Utils, 'put')
+        spyOn(Utils, 'get')
+        store = mockStore(fromJS({screening: {id: '344'}}))
+        Utils.put.and.returnValue(Promise.resolve(participant))
+        Utils.get.and.returnValue(Promise.resolve(screening))
+        store.dispatch(saveParticipant(participant)).then(() => done())
+      })
+
+      it('dispatches a updateParticipantSuccess', () => {
+        expect(store.getActions()).toEqual([
+          updateParticipantSuccess(participant),
+          fetchScreeningSuccess(screening),
+        ])
+      })
+
+      it('fetches the screening', () => {
+        expect(Utils.get).toHaveBeenCalledWith('/api/v1/screenings/344')
+      })
+    })
+
+    describe('when server responds unsuccessfully', () => {
+      beforeEach((done) => {
+        spyOn(Utils, 'put').and.returnValue(Promise.reject(participant))
+        store.dispatch(saveParticipant(participant)).then(() => done())
+      })
+
+      it('dispatches a updateParticipantFailure', () => {
+        expect(store.getActions()).toEqual([
+          updateParticipantFailure(participant),
+        ])
+      })
     })
   })
 

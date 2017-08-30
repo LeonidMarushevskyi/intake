@@ -118,10 +118,9 @@ export class ScreeningPage extends React.Component {
 
   saveParticipant(participant) {
     return this.props.actions.saveParticipant(participant.toJS())
-      .then(() => {
-        this.props.actions.fetchScreening(this.props.params.id)
+      .then(() =>
         this.setField(['allegations'], AllegationsHelper.removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations')))
-      })
+      )
   }
 
   mergeScreeningWithEdits(changes) {

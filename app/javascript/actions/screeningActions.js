@@ -6,6 +6,7 @@ import {
   CREATE_PARTICIPANT_SUCCESS,
   DELETE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT_SUCCESS,
+  UPDATE_PARTICIPANT_FAILURE,
   FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
   FETCH_RELATIONSHIPS_SUCCESS,
   SUBMIT_SCREENING_SUCCESS,
@@ -49,10 +50,20 @@ export function updateParticipantSuccess(participant) {
   return {type: UPDATE_PARTICIPANT_SUCCESS, participant}
 }
 
+export function updateParticipantFailure(error) {
+  return {type: UPDATE_PARTICIPANT_FAILURE, error}
+}
+
 export function saveParticipant(participant) {
-  return (dispatch) => (
+  return (dispatch, getState) => (
     put(`/api/v1/participants/${participant.id}`, {participant})
-      .then((jsonResponse) => dispatch(updateParticipantSuccess(jsonResponse)))
+      .then(
+        (participant) => {
+          dispatch(updateParticipantSuccess(participant))
+          fetchScreening(getState().getIn(['screening', 'id']))(dispatch)
+        },
+        (error) => dispatch(updateParticipantFailure(error))
+      )
   )
 }
 
