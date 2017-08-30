@@ -14,6 +14,10 @@ const HistoryCardCase = ({hoiCase, index}) => {
   const assignee = hoiCase.get('assigned_social_worker')
   const legacyDescriptor = hoiCase.get('legacy_descriptor')
   const caseId = legacyDescriptor ? legacyDescriptor.get('legacy_ui_id') : ''
+  const accessLimitation = hoiCase.get('access_limitation')
+  const limitedAccessCode = accessLimitation ? accessLimitation.get('limited_access_code') : 'N'
+  const isSealed = limitedAccessCode && limitedAccessCode === 'R'
+  const isSensitive = limitedAccessCode && limitedAccessCode === 'S'
 
   const focusChild = hoiCase.get('focus_child')
 
@@ -30,6 +34,8 @@ const HistoryCardCase = ({hoiCase, index}) => {
         <div className='row'>Case</div>
         <div className='row'>{caseId}</div>
         <div className='row'>{`(${status})`}</div>
+        {isSealed && <div className='row information-flag'>Sealed</div>}
+        {isSensitive && <div className='row information-flag'>Sensitive</div>}
       </td>
       <td>{incidentCounty}</td>
       <td>

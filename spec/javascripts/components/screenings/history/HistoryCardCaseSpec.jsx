@@ -68,6 +68,28 @@ describe('HistoryCardCase', () => {
     expect(cells.at(1).text()).toEqual('Case(Open)')
   })
 
+  it('displays a sealed notification', () => {
+    const hoiCase = Immutable.fromJS({
+      start_date: '2016-08-13',
+      access_limitation: {limited_access_code: 'R'},
+    })
+
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Case(Open)Sealed')
+  })
+
+  it('displays a sensitive notification', () => {
+    const hoiCase = Immutable.fromJS({
+      start_date: '2016-08-13',
+      access_limitation: {limited_access_code: 'S'},
+    })
+
+    const component = shallow(<HistoryCardCase hoiCase={hoiCase} index={1} />)
+    const cells = component.find('tr > td')
+    expect(cells.at(1).text()).toEqual('Case(Open)Sensitive')
+  })
+
   it('displays a status of In Progress if there is an end date', () => {
     const hoiCase = Immutable.fromJS({
       start_date: '2016-08-13',
