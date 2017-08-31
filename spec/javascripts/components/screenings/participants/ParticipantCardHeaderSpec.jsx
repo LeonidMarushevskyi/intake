@@ -11,14 +11,29 @@ describe('ParticipantCardHeader', () => {
     onEdit = jasmine.createSpy('onEdit')
   })
 
-  function renderComponent({title = 'J Doe', showEdit = true}) {
-    const props = {title, showEdit, onEdit, onDelete}
+  function renderComponent({title = 'J Doe', showEdit = true, informationFlag = null}) {
+    const props = {informationFlag, title, showEdit, onEdit, onDelete}
     return shallow(<ParticipantCardHeader {...props} />)
   }
 
   it('displays the name passed in the props', () => {
     const component = renderComponent({title: 'Alex'})
     expect(component.text()).toContain('Alex')
+  })
+
+  describe('participant flag', () => {
+    it('does not render a flag element if no flag is present', () => {
+      const component = renderComponent({informationFlag: null})
+      const informationFlag = component.find('span').filter('.information-flag')
+      expect(informationFlag.exists()).toEqual(false)
+    })
+
+    it('displays the flag if one is passed', () => {
+      const component = renderComponent({informationFlag: 'Sensitive'})
+      const informationFlag = component.find('span').filter('.information-flag')
+      expect(informationFlag.exists()).toEqual(true)
+      expect(informationFlag.text()).toEqual('Sensitive')
+    })
   })
 
   it('displays the edit button if the card is editable', () => {

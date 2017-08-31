@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import EditLink from 'common/EditLink'
 
-const ParticipantCardHeader = ({title, onDelete, onEdit, showEdit}) => (
+const ParticipantCardHeader = ({informationFlag, title, onDelete, onEdit, showEdit}) => (
   <div className='card-header'>
     <span>{title}</span>
+    { informationFlag && <span className='information-flag'>{informationFlag}</span>}
     <button aria-label='Delete participant'
       className='pull-right delete-button'
       onClick={onDelete}
@@ -24,6 +25,7 @@ const ParticipantCardHeader = ({title, onDelete, onEdit, showEdit}) => (
 )
 
 ParticipantCardHeader.propTypes = {
+  informationFlag: PropTypes.string,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   showEdit: PropTypes.bool.isRequired,
