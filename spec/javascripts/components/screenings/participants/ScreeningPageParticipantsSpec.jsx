@@ -136,7 +136,6 @@ describe('ScreeningPage', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
         component.instance().saveParticipant(updatedParticipant)
         expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
-        expect(fetchScreening).toHaveBeenCalledWith(participant1.get('screening_id'))
       })
     })
 
