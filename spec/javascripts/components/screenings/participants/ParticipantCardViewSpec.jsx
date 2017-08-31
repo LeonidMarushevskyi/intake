@@ -27,6 +27,7 @@ describe('Participant card view', () => {
         expect(header.length).toEqual(1)
         expect(header.props().informationFlag).toEqual('Sealed')
         expect(header.props().onDelete).toEqual(jasmine.any(Function))
+        expect(header.props().showDelete).toEqual(true)
         expect(header.props().onEdit).toEqual(component.instance().onEdit)
         expect(header.props().showEdit).toEqual(true)
         expect(header.props().title).toEqual('Alex Doe')

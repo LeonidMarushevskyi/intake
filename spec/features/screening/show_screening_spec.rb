@@ -155,6 +155,12 @@ feature 'Show Screening' do
       )
     end
 
+    before do
+      existing_screening.participants = Array.new(3) do
+        FactoryGirl.create :participant, screening_id: existing_screening.id
+      end
+    end
+
     scenario 'the screening is in read only mode' do
       stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
         .and_return(json_body(existing_screening.to_json))
@@ -167,6 +173,7 @@ feature 'Show Screening' do
       expect(page).not_to have_content 'Edit'
       expect(page).not_to have_content 'Save'
       expect(page).not_to have_content 'Cancel'
+      expect(page).not_to have_selector '.delete-button'
     end
   end
 end

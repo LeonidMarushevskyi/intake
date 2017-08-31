@@ -73,6 +73,7 @@ export default class ParticipantCardView extends React.Component {
         <ParticipantCardHeader
           informationFlag={informationFlag}
           onDelete={() => this.props.onDelete(participant.get('id'))}
+          showDelete={editable}
           onEdit={this.onEdit}
           showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
           title={nameFormatter(participant)}

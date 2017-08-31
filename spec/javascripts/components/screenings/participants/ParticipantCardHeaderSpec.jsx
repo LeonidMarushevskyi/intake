@@ -11,8 +11,8 @@ describe('ParticipantCardHeader', () => {
     onEdit = jasmine.createSpy('onEdit')
   })
 
-  function renderComponent({title = 'J Doe', showEdit = true, informationFlag = null}) {
-    const props = {informationFlag, title, showEdit, onEdit, onDelete}
+  function renderComponent({title = 'J Doe', showEdit = true, showDelete = true, informationFlag = null}) {
+    const props = {informationFlag, title, showDelete, showEdit, onEdit, onDelete}
     return shallow(<ParticipantCardHeader {...props} />)
   }
 
@@ -36,34 +36,44 @@ describe('ParticipantCardHeader', () => {
     })
   })
 
-  it('displays the edit button if the card is editable', () => {
-    const component = renderComponent({showEdit: true})
-    expect(component.find('EditLink').exists()).toEqual(true)
+  describe('edit button', () => {
+    it('displays if the card is editable', () => {
+      const component = renderComponent({showEdit: true})
+      expect(component.find('EditLink').exists()).toEqual(true)
+    })
+
+    it('calls the onEdit function from the props when clicked', () => {
+      const component = renderComponent({showEdit: true})
+      const event = jasmine.createSpyObj('event', ['preventDefault'])
+      const editLink = component.find('EditLink')
+      editLink.simulate('click', event)
+      expect(onEdit).toHaveBeenCalled()
+    })
+
+    it('does not render if the card is not editable', () => {
+      const component = renderComponent({showEdit: false})
+      expect(component.find('EditLink').exists()).toEqual(false)
+    })
   })
 
-  it('uses the card title in the aria label', () => {
-    const component = renderComponent({showEdit: true})
-    const editLink = component.find('EditLink')
-    expect(editLink.props().ariaLabel).toEqual('Edit participant')
-  })
+  describe('delete button', () => {
+    it('displays if showDelete is true', () => {
+      const component = renderComponent({showDelete: true})
+      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      expect(deleteButton.exists()).toEqual(true)
+    })
 
-  it('calls the onEdit function from the props when the edit button is clicked', () => {
-    const component = renderComponent({showEdit: true})
-    const event = jasmine.createSpyObj('event', ['preventDefault'])
-    const editLink = component.find('EditLink')
-    editLink.simulate('click', event)
-    expect(onEdit).toHaveBeenCalled()
-  })
+    it('calls the onDelete function from the props when clicked', () => {
+      const component = renderComponent({showEdit: true})
+      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      deleteButton.simulate('click')
+      expect(onDelete).toHaveBeenCalled()
+    })
 
-  it('does not render the edit button if the card is not editable', () => {
-    const component = renderComponent({showEdit: false})
-    expect(component.find('EditLink').exists()).toEqual(false)
-  })
-
-  it('calls the onDelete function from the props when the delete button is clicked', () => {
-    const component = renderComponent({showEdit: true})
-    const deleteButton = component.find('button')
-    deleteButton.simulate('click')
-    expect(onDelete).toHaveBeenCalled()
+    it('displays if showDelete is false', () => {
+      const component = renderComponent({showDelete: false})
+      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      expect(deleteButton.exists()).toEqual(false)
+    })
   })
 })
