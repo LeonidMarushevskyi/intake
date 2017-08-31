@@ -103,6 +103,7 @@ describe('conditional decision options', () => {
   })
 
   it('renders restrictions rationale field for access restrictions', () => {
+    expect(component.find('label[htmlFor="decisionDetail"]').props().className).toBe('required')
     expect(component.find('#restrictions_rationale').props().value).toEqual('Child at risk')
   })
 
