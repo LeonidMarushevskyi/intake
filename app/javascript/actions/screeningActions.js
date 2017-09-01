@@ -1,4 +1,4 @@
-import {get, post, put} from 'utils/http'
+import {post, put} from 'utils/http'
 import {
   CREATE_SCREENING,
   CREATE_SCREENING_SUCCESS,
@@ -19,7 +19,9 @@ import {
   FETCH_HISTORY_OF_INVOLVEMENTS,
   FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
   FETCH_HISTORY_OF_INVOLVEMENTS_FAILURE,
+  FETCH_RELATIONSHIPS,
   FETCH_RELATIONSHIPS_SUCCESS,
+  FETCH_RELATIONSHIPS_FAILURE,
   SUBMIT_SCREENING_SUCCESS,
   SUBMIT_SCREENING_FAILURE,
 } from 'actions/actionTypes'
@@ -132,13 +134,14 @@ export function submitScreening(screeningId) {
   )
 }
 
-export function fetchRelationshipsByScreeningIdSuccess(relationships) {
+export function fetchRelationshipsSuccess(relationships) {
   return {type: FETCH_RELATIONSHIPS_SUCCESS, relationships}
 }
 
-export function fetchRelationshipsByScreeningId(screeningId) {
-  return (dispatch) => (
-    get(`/api/v1/screenings/${screeningId}/relationships`)
-      .then((jsonResponse) => dispatch(fetchRelationshipsByScreeningIdSuccess(jsonResponse)))
-  )
+export function fetchRelationshipsFailure(error) {
+  return {type: FETCH_RELATIONSHIPS_FAILURE, error}
+}
+
+export function fetchRelationships(id) {
+  return (dispatch) => dispatch({type: FETCH_RELATIONSHIPS, id})
 }

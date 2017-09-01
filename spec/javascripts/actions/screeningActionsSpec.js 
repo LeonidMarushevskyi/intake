@@ -1,10 +1,10 @@
 import * as Utils from 'utils/http'
 import {
-  saveScreening,
+  fetchRelationshipsByScreeningId,
+  fetchRelationshipsByScreeningIdSuccess,
   submitScreening,
   submitScreeningFailure,
   submitScreeningSuccess,
-  updateScreeningSuccess,
 } from 'actions/screeningActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -16,25 +16,6 @@ describe('screening actions', () => {
   let store
   beforeEach(() => {
     store = mockStore()
-  })
-
-  describe('.saveScreening', () => {
-    const screening = {id: '3', name: 'mock_screening'}
-    beforeEach(() => spyOn(Utils, 'put').and.returnValue(Promise.resolve(screening)))
-
-    it('puts the screening to the server', () => {
-      store.dispatch(saveScreening(screening))
-      expect(Utils.put).toHaveBeenCalledWith(
-        `/api/v1/screenings/${screening.id}`, {screening}
-      )
-    })
-
-    it('dispatches a updateScreeningSuccess', () => {
-      const expectedActions = [updateScreeningSuccess(screening)]
-      store.dispatch(saveScreening(screening)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
-    })
   })
 
   describe('.submitScreening', () => {
@@ -86,6 +67,28 @@ describe('screening actions', () => {
         store.dispatch(submitScreening(screeningId)).then(() => {
           expect(window.alert).toHaveBeenCalledWith('Failure response message')
         })
+      })
+    })
+  })
+
+  describe('.fetchRelationshipsByScreeningId', () => {
+    const screeningId = '3'
+
+    beforeEach(() => {
+      spyOn(Utils, 'get').and.returnValue(Promise.resolve())
+    })
+
+    it('fetches screening relationships from the server', () => {
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId))
+      expect(Utils.get).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screeningId}/relationships`
+      )
+    })
+
+    it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
+      const expectedActions = [fetchRelationshipsByScreeningIdSuccess()]
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
       })
     })
   })

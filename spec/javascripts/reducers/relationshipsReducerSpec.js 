@@ -1,7 +1,7 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import relationshipsReducer from 'reducers/relationshipsReducer'
 import {
-  fetchRelationshipsSuccess,
+  fetchRelationshipsByScreeningIdSuccess,
   createScreeningSuccess,
 } from 'actions/screeningActions'
 import {List, fromJS} from 'immutable'
@@ -12,7 +12,7 @@ describe('relationshipsReducer', () => {
   describe('on FETCH_RELATIONSHIPS_SUCCESS', () => {
     it('returns the relationships from the action', () => {
       const relationships = fromJS([{id: 1}, {id: 2}])
-      const action = fetchRelationshipsSuccess(relationships.toJS())
+      const action = fetchRelationshipsByScreeningIdSuccess(relationships.toJS())
       expect(relationshipsReducer(List(), action)).toEqualImmutable(relationships)
     })
   })
