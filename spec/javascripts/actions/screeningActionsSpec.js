@@ -1,7 +1,5 @@
 import * as Utils from 'utils/http'
 import {
-  fetchHistoryOfInvolvements,
-  fetchHistoryOfInvolvementsSuccess,
   fetchRelationshipsByScreeningId,
   fetchRelationshipsByScreeningIdSuccess,
   saveScreening,
@@ -36,25 +34,6 @@ describe('screening actions', () => {
     it('dispatches a updateScreeningSuccess', () => {
       const expectedActions = [updateScreeningSuccess(screening)]
       store.dispatch(saveScreening(screening)).then(() =>
-        expect(store.getActions()).toEqual(expectedActions)
-      )
-    })
-  })
-
-  describe('.fetchHistoryOfInvolvements', () => {
-    beforeEach(() => spyOn(Utils, 'get').and.returnValue(Promise.resolve()))
-
-    it('fetches the history of involvements from the server', () => {
-      const screeningId = 22
-      store.dispatch(fetchHistoryOfInvolvements(screeningId))
-      expect(Utils.get).toHaveBeenCalledWith(
-        `/api/v1/screenings/${screeningId}/history_of_involvements`
-      )
-    })
-
-    it('dispatches a fetchHistoryOfInvolvementsSuccess', () => {
-      const expectedActions = [fetchHistoryOfInvolvementsSuccess()]
-      store.dispatch(fetchHistoryOfInvolvements()).then(() =>
         expect(store.getActions()).toEqual(expectedActions)
       )
     })

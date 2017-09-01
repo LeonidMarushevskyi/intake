@@ -16,7 +16,9 @@ import {
   UPDATE_PARTICIPANT,
   UPDATE_PARTICIPANT_SUCCESS,
   UPDATE_PARTICIPANT_FAILURE,
+  FETCH_HISTORY_OF_INVOLVEMENTS,
   FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
+  FETCH_HISTORY_OF_INVOLVEMENTS_FAILURE,
   FETCH_RELATIONSHIPS_SUCCESS,
   SUBMIT_SCREENING_SUCCESS,
   SUBMIT_SCREENING_FAILURE,
@@ -97,11 +99,12 @@ export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
   return {type: FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS, history_of_involvements}
 }
 
-export function fetchHistoryOfInvolvements(screeningId) {
-  return (dispatch) => (
-    get(`/api/v1/screenings/${screeningId}/history_of_involvements`)
-      .then((jsonResponse) => dispatch(fetchHistoryOfInvolvementsSuccess(jsonResponse)))
-  )
+export function fetchHistoryOfInvolvementsFailure(error) {
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_FAILURE, error}
+}
+
+export function fetchHistoryOfInvolvements(id) {
+  return (dispatch) => dispatch({type: FETCH_HISTORY_OF_INVOLVEMENTS, id})
 }
 
 export function submitScreeningSuccess(screening) {
