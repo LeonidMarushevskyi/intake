@@ -23,6 +23,10 @@ module WebmockHelpers
     specific_path = path.sub(%r{^/}, '')
     "#{base_path}/#{specific_path}"
   end
+
+  def ferb_api_url(path)
+    "#{Rails.application.config.intake[:ferb_api_url]}#{path}"
+  end
 end
 
 RSpec.configure do |config|
