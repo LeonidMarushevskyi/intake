@@ -99,20 +99,22 @@ feature 'Edit Screening' do
   end
 
   before do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     %w[Ma Mar Marg Marge].each do |search_text|
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
       ).and_return(json_body([marge].to_json, status: 200))
     end
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     %w[Ho].each do |search_text|
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
       ).and_return(json_body([homer].to_json, status: 200))
     end
     stub_empty_relationships_for_screening(existing_screening)
@@ -132,7 +134,7 @@ feature 'Edit Screening' do
       legacy_descriptor: nil
     }
 
-    stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
       .and_return(json_body(created_participant_unknown.to_json, status: 201))
     within '#search-card', text: 'Search' do
@@ -141,7 +143,7 @@ feature 'Edit Screening' do
       expect(page).to_not have_content('Create a new person')
     end
 
-    expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+    expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .with(body: hash_including(new_participant_request)))
       .to have_been_made
 
@@ -171,7 +173,7 @@ feature 'Edit Screening' do
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryGirl.build(:participant, homer_attributes)
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-    stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -180,7 +182,7 @@ feature 'Edit Screening' do
       fill_in_autocompleter 'Search for any person', with: 'Homer'
       find('li', text: 'Homer Simpson').click
     end
-    expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+    expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
 
     # adding participant doesnt change screening modifications
@@ -228,7 +230,7 @@ feature 'Edit Screening' do
                     body: { staffId: '123', privileges: ['Sensitive Persons'] }.to_json)
       stub_request(:get, %r{https?://.*/authn/validate\?token=#{insensitive_token}})
         .and_return(status: 200, body: { staffId: '123', privileges: [] }.to_json)
-      stub_request(:get, host_url(ExternalRoutes.intake_api_staff_path('123')))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('123')))
         .and_return(json_body({ staffId: '123', first_name: 'Bob', last_name: 'Boberson',
                                 county: 'San Francisco' }.to_json, status: 200))
     end
@@ -276,7 +278,7 @@ feature 'Edit Screening' do
             :participant,
             participant_homer.as_json
           )
-          stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
 
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -310,7 +312,7 @@ feature 'Edit Screening' do
             :participant,
             sensitive_participant_marge.as_json
           )
-          stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_marge.to_json, status: 201))
 
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -319,7 +321,7 @@ feature 'Edit Screening' do
             fill_in_autocompleter 'Search for any person', with: 'Marge'
             find('li', text: 'Marge Simpson').click
           end
-          expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+          expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .with(json_body(sensitive_participant_marge.to_json(except: :id)))).to have_been_made
 
           # adding participant doesnt change screening modifications
@@ -357,7 +359,7 @@ feature 'Edit Screening' do
             :participant,
             participant_homer.as_json
           )
-          stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
 
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -389,7 +391,7 @@ feature 'Edit Screening' do
       homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
       participant_homer = FactoryGirl.build(:participant, homer_attributes)
       created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-      stub_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+      stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
         .and_return(json_body(created_participant_homer.to_json, status: 201))
 
       within '#search-card', text: 'Search' do
@@ -397,7 +399,7 @@ feature 'Edit Screening' do
         find('li', text: 'Homer Simpson').click
       end
 
-      expect(a_request(:post, host_url(ExternalRoutes.intake_api_participants_path))
+      expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
         .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
 
       within show_participant_card_selector(created_participant_homer.id) do

@@ -31,7 +31,7 @@ feature 'show cross reports' do
         )
       ]
     )
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
@@ -93,7 +93,7 @@ feature 'show cross reports' do
         )
       ]
     )
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
@@ -142,7 +142,7 @@ feature 'show cross reports' do
       ],
       cross_reports: []
     )
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
@@ -158,7 +158,7 @@ feature 'show cross reports' do
 
     screening.cross_reports << { agency_type: 'Disctrict attorney' }
     screening.cross_reports << { agency_type: 'Law enforcement' }
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     within '#cross-report-card.edit' do
       click_button 'Save'

@@ -23,8 +23,9 @@ feature 'screening incident information card' do
   end
 
   before(:each) do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json))
     visit edit_screening_path(id: existing_screening.id)
   end
 
@@ -32,15 +33,17 @@ feature 'screening incident information card' do
     existing_screening.address.assign_attributes(
       street_address: '33 Whatever'
     )
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     within '#incident-information-card.edit' do
       fill_in 'Address', with: '33 Whatever'
       click_button 'Save'
       expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(as_json_without_root_id(existing_screening)))
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(json_body(as_json_without_root_id(existing_screening)))
       ).to have_been_made
     end
   end
@@ -71,8 +74,9 @@ feature 'screening incident information card' do
     end
 
     existing_screening.assign_attributes(incident_date: '2015-10-05')
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#incident-information-card.edit' do
@@ -80,8 +84,9 @@ feature 'screening incident information card' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
 
     within '#incident-information-card.show' do

@@ -46,8 +46,9 @@ feature 'Edit Screening' do
 
   context 'when no releases are enabled' do
     before(:each) do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .and_return(json_body(existing_screening.to_json, status: 200))
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json, status: 200))
       visit edit_screening_path(id: existing_screening.id)
       expect(page).to have_content 'Edit Screening #My Bad!'
     end
@@ -173,8 +174,9 @@ feature 'Edit Screening' do
     end
 
     scenario 'edit an existing screening' do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .and_return(json_body(existing_screening.to_json, status: 200))
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json, status: 200))
       visit edit_screening_path(id: existing_screening.id)
 
       within '#snapshot-card' do
@@ -232,8 +234,9 @@ feature 'individual card save' do
   end
 
   before(:each) do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
     within '#screening-information-card' do
       fill_in 'Title/Name of Screening', with: 'This should not save'
@@ -245,14 +248,16 @@ feature 'individual card save' do
       updated_screening = as_json_without_root_id(
         existing_screening
       ).merge(incident_date: '1996-02-12')
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(as_json_without_root_id(updated_screening)))
+      stub_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
       fill_in_datepicker 'Incident Date', with: '02/12/1996'
       click_button 'Save'
       expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(as_json_without_root_id(updated_screening)))
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(json_body(as_json_without_root_id(updated_screening)))
       ).to have_been_made
     end
   end
@@ -262,14 +267,16 @@ feature 'individual card save' do
       updated_screening = as_json_without_root_id(existing_screening).merge(
         report_narrative: 'This is the updated narrative'
       ).to_json
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(updated_screening))
+      stub_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(updated_screening))
         .and_return(json_body(updated_screening))
       fill_in 'Report Narrative', with: 'This is the updated narrative'
       click_button 'Save'
       expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(updated_screening))
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(json_body(updated_screening))
       ).to have_been_made
     end
   end
@@ -282,8 +289,9 @@ feature 'individual card save' do
       }
     ]
 
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#cross-report-card' do
@@ -293,8 +301,9 @@ feature 'individual card save' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
 
     within '#cross-report-card' do
@@ -316,8 +325,9 @@ feature 'individual card save' do
       }
     ]
 
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#cross-report-card' do
@@ -325,8 +335,9 @@ feature 'individual card save' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
 
     page.driver.browser.navigate.refresh
@@ -346,8 +357,9 @@ feature 'individual card save' do
   scenario 'Worker safety card saves in isolation' do
     existing_screening.safety_alerts = ['Dangerous Animal on Premises']
     existing_screening.safety_information = 'Important information!'
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#worker-safety-card' do
@@ -356,8 +368,9 @@ feature 'individual card save' do
       click_button 'Save'
     end
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(json_body(as_json_without_root_id(existing_screening)))
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
   end
 
@@ -372,8 +385,9 @@ feature 'individual card save' do
       )
       existing_screening.incident_date = '1996-02-12'
 
-      stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(as_json_without_root_id(existing_screening)))
+      stub_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(json_body(as_json_without_root_id(existing_screening)))
         .and_return(json_body(existing_screening.to_json))
 
       fill_in_datepicker 'Incident Date', with: '02-12-1996'
@@ -384,8 +398,9 @@ feature 'individual card save' do
       click_button 'Save'
 
       expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .with(json_body(as_json_without_root_id(existing_screening)))
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(json_body(as_json_without_root_id(existing_screening)))
       ).to have_been_made
     end
   end

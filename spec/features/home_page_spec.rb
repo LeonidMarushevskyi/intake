@@ -30,7 +30,8 @@ feature 'home page' do
 
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
-          :get, host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          :get,
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -41,13 +42,18 @@ feature 'home page' do
       fill_in_autocompleter 'People', with: 'Marge'
 
       expect(
-        a_request(:get, host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'M')))
+        a_request(
+          :get,
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'M'))
+        )
       ).to_not have_been_made
       %w[Ma Mar Marg Marge].each do |search_text|
         expect(
           a_request(
             :get,
-            host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+            intake_api_url(
+              ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text)
+            )
           )
         ).to have_been_made
       end
@@ -65,7 +71,7 @@ feature 'home page' do
       screening = FactoryGirl.create :screening, name: 'Test Screening', reference: 'ABCD'
       visit root_path
       expect(
-        a_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        a_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       ).to_not have_been_made
       expect(page).to have_link 'Start Screening'
       expect(page).not_to have_content screening.name
@@ -112,7 +118,7 @@ feature 'home page' do
       screenings =
         [screening_one, screening_two, screening_without_name, screening_without_decision]
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screenings.to_json, status: 200))
 
       visit root_path
@@ -187,7 +193,7 @@ feature 'home page' do
           screening_decision_detail: '10_days'
         )
       ]
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screenings.to_json, status: 200))
 
       visit root_path
@@ -242,7 +248,7 @@ feature 'home page' do
           screening_decision_detail: 'other'
         )
       ]
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screenings.to_json, status: 200))
 
       visit root_path
@@ -271,7 +277,7 @@ feature 'home page' do
         :screening_search,
         started_at: 1.year.ago.strftime('%FT%T.%LZ')
       )
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([screening].to_json, status: 200))
 
       visit root_path
@@ -290,7 +296,7 @@ feature 'home page' do
         :screening_search,
         referral_id: '1111'
       )
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([screening_without_name, screening_with_name].to_json, status: 200))
 
       visit root_path

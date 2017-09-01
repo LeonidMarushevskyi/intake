@@ -9,7 +9,7 @@ feature 'Participant Phone Number' do
   let(:screening) { FactoryGirl.create(:screening, participants: [marge]) }
 
   before do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
@@ -19,7 +19,7 @@ feature 'Participant Phone Number' do
     visit edit_screening_path(id: screening.id)
 
     marge.phone_numbers << PhoneNumber.new(number: '7894561245', type: 'Home')
-    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
@@ -34,7 +34,7 @@ feature 'Participant Phone Number' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
 
@@ -50,7 +50,7 @@ feature 'Participant Phone Number' do
     visit edit_screening_path(id: screening.id)
 
     marge.phone_numbers.first.number = '7894561245'
-    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
@@ -63,7 +63,7 @@ feature 'Participant Phone Number' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
   end
@@ -78,7 +78,7 @@ feature 'Participant Phone Number' do
     end
 
     marge.phone_numbers = []
-    stub_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
@@ -90,7 +90,7 @@ feature 'Participant Phone Number' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(json_body(as_json_without_root_id(marge)))
     ).to have_been_made
   end
@@ -107,7 +107,7 @@ feature 'Participant Phone Number' do
 
       marge.phone_numbers.first.number = '3438110380'
       expect(
-        a_request(:put, host_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(json_body(as_json_without_root_id(marge)))
       ).to have_been_made
     end

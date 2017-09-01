@@ -7,8 +7,9 @@ feature 'cross reports' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
   scenario 'adding cross reports to an existing screening' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today
@@ -28,8 +29,9 @@ feature 'cross reports' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(
         body: hash_including(
           'cross_reports' => array_including(
             hash_including(
@@ -68,8 +70,9 @@ feature 'cross reports' do
         reported_on: reported_on
       )
     ]
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
     within '#cross-report-card' do
@@ -82,8 +85,9 @@ feature 'cross reports' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(
         body: hash_including(
           'cross_reports' => array_including(
             hash_including(
@@ -119,8 +123,9 @@ feature 'cross reports' do
         reported_on: Date.today.to_s(:db)
       )
     ]
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
@@ -147,8 +152,10 @@ feature 'cross reports' do
   end
 
   scenario 'viewing empty cross reports on an existing screening' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get,
+      intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
@@ -159,8 +166,9 @@ feature 'cross reports' do
   end
 
   scenario 'communication method and time fields are cached' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today
@@ -179,8 +187,9 @@ feature 'cross reports' do
     end
 
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .with(
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(
         body: hash_including(
           'cross_reports' => array_including(
             hash_including(
@@ -196,10 +205,12 @@ feature 'cross reports' do
   end
 
   scenario 'communication method and time fields are cleared from cache after save' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today

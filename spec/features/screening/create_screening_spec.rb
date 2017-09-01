@@ -21,11 +21,11 @@ feature 'Create Screening' do
         address: nil,
         assignee: nil
       )
-      stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .with(body: as_json_without_root_id(new_screening))
         .and_return(json_body(new_screening.to_json, status: 201))
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
         .and_return(json_body(new_screening.to_json, status: 200))
 
       visit root_path
@@ -33,7 +33,7 @@ feature 'Create Screening' do
 
       expect(
         a_request(
-          :post, host_url(ExternalRoutes.intake_api_screenings_path)
+          :post, intake_api_url(ExternalRoutes.intake_api_screenings_path)
         ).with(body: as_json_without_root_id(new_screening))
       ).to have_been_made
 
@@ -85,20 +85,21 @@ feature 'Create Screening' do
           staff_id: '1234'
         )
 
-        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .and_return(json_body([].to_json, status: 200))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
-          .and_return(json_body(new_screening.to_json, status: 200))
+        stub_request(
+          :get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id))
+        ).and_return(json_body(new_screening.to_json, status: 200))
 
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_details.to_json, status: 200))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_staff_path('1234')))
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
@@ -136,18 +137,19 @@ feature 'Create Screening' do
           assignee: user_name_display,
           staff_id: '1234'
         )
-        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .and_return(json_body([].to_json, status: 200))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
-          .and_return(json_body(new_screening.to_json, status: 200))
+        stub_request(
+          :get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id))
+        ).and_return(json_body(new_screening.to_json, status: 200))
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_details.to_json, status: 200))
-        stub_request(:get, host_url(ExternalRoutes.intake_api_staff_path('1234')))
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
@@ -174,15 +176,16 @@ feature 'Create Screening' do
           assignee: nil,
           staff_id: nil
         )
-        stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .and_return(json_body([].to_json, status: 200))
 
-        stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
-          .and_return(json_body(new_screening.to_json, status: 200))
+        stub_request(
+          :get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id))
+        ).and_return(json_body(new_screening.to_json, status: 200))
 
         stub_request(:get, auth_validation_url)
           .and_return(status: 200)
@@ -206,14 +209,14 @@ feature 'Create Screening' do
       address: nil,
       assignee: nil
     )
-    stub_request(:post, host_url(ExternalRoutes.intake_api_screenings_path))
+    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .with(body: as_json_without_root_id(new_screening))
       .and_return(json_body(new_screening.to_json, status: 201))
 
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body([].to_json, status: 200))
 
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
       .and_return(json_body(new_screening.to_json, status: 200))
 
     visit root_path
@@ -221,7 +224,7 @@ feature 'Create Screening' do
 
     expect(
       a_request(
-        :post, host_url(ExternalRoutes.intake_api_screenings_path)
+        :post, intake_api_url(ExternalRoutes.intake_api_screenings_path)
       ).with(body: as_json_without_root_id(new_screening))
     ).to have_been_made
 

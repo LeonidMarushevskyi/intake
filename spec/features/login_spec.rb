@@ -32,9 +32,9 @@ feature 'login' do
   end
 
   context 'user provides valid security token', accessibility: false do
-    let(:staff_url) { host_url(ExternalRoutes.intake_api_staff_path(1234)) }
+    let(:staff_url) { intake_api_url(ExternalRoutes.intake_api_staff_path(1234)) }
     before do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screening_results, status: 200))
     end
 
@@ -76,14 +76,14 @@ feature 'login' do
 
   scenario 'user has already logged in', accessibility: false do
     Feature.run_with_activated(:authentication) do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screening_results, status: 200))
       stub_request(:get, auth_validation_url).and_return(status: 200)
       visit root_path(token: 123)
       expect(a_request(:get, auth_validation_url)).to have_been_made
       WebMock.reset!
 
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screening_results, status: 200))
       visit root_path
       expect(a_request(:get, %r{http://www.example.com})).to_not have_been_made
@@ -94,9 +94,9 @@ feature 'login' do
   scenario 'user uses session token when communicating to API' do
     Feature.run_with_activated(:authentication) do
       screening = FactoryGirl.create(:screening, name: 'My Screening')
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
         .and_return(json_body(screening.to_json, status: 200))
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screenings_path))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body([].to_json, status: 200))
       stub_request(:get, auth_validation_url)
         .and_return(json_body(auth_artifact.to_json, status: 200))
@@ -119,7 +119,7 @@ feature 'login' do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
-          a_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
+          a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
           .with(headers: { 'Authorization' => bobs_token })
         ).to have_been_made
       end
@@ -128,7 +128,7 @@ feature 'login' do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
-          a_request(:get, host_url(ExternalRoutes.intake_api_screening_path(1)))
+          a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
           .with(headers: { 'Authorization' => alexs_token })
         ).to have_been_made
       end
