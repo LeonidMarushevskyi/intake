@@ -36,7 +36,7 @@ export function createScreeningFailure(error) {
 }
 
 export function createScreening() {
-  return (dispatch) => dispatch({type: CREATE_SCREENING})
+  return {type: CREATE_SCREENING}
 }
 
 export function fetchScreeningSuccess(screening) {
@@ -48,7 +48,7 @@ export function fetchScreeningFailure(error) {
 }
 
 export function fetchScreening(id) {
-  return (dispatch) => dispatch({type: FETCH_SCREENING, id})
+  return {type: FETCH_SCREENING, id}
 }
 
 export function updateScreeningSuccess(screening) {
@@ -71,7 +71,7 @@ export function updateParticipantFailure(error) {
 }
 
 export function saveParticipant(participant) {
-  return (dispatch) => dispatch({type: UPDATE_PARTICIPANT, participant})
+  return {type: UPDATE_PARTICIPANT, participant}
 }
 
 export function createParticipantSuccess(participant) {
@@ -83,7 +83,7 @@ export function createParticipantFailure(error) {
 }
 
 export function createParticipant(participant) {
-  return (dispatch) => dispatch({type: CREATE_PARTICIPANT, participant})
+  return {type: CREATE_PARTICIPANT, participant}
 }
 
 export function deleteParticipantSuccess(id) {
@@ -95,7 +95,7 @@ export function deleteParticipantFailure(error) {
 }
 
 export function deleteParticipant(id) {
-  return (dispatch) => dispatch({type: DELETE_PARTICIPANT, id})
+  return {type: DELETE_PARTICIPANT, id}
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
@@ -107,7 +107,7 @@ export function fetchHistoryOfInvolvementsFailure(error) {
 }
 
 export function fetchHistoryOfInvolvements(id) {
-  return (dispatch) => dispatch({type: FETCH_HISTORY_OF_INVOLVEMENTS, id})
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS, id}
 }
 
 export function submitScreeningSuccess(screening) {
@@ -119,7 +119,7 @@ export function submitScreeningFailure(error) {
 }
 
 export function submitScreening(id) {
-  return (dispatch) => dispatch({type: SUBMIT_SCREENING, id})
+  return {type: SUBMIT_SCREENING, id}
 }
 
 export function fetchRelationshipsSuccess(relationships) {
@@ -131,5 +131,5 @@ export function fetchRelationshipsFailure(error) {
 }
 
 export function fetchRelationships(id) {
-  return (dispatch) => dispatch({type: FETCH_RELATIONSHIPS, id})
+  return {type: FETCH_RELATIONSHIPS, id}
 }
