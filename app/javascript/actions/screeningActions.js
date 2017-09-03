@@ -1,4 +1,4 @@
-import {post, put} from 'utils/http'
+import {put} from 'utils/http'
 import {
   CREATE_SCREENING,
   CREATE_SCREENING_SUCCESS,
@@ -22,6 +22,7 @@ import {
   FETCH_RELATIONSHIPS,
   FETCH_RELATIONSHIPS_SUCCESS,
   FETCH_RELATIONSHIPS_FAILURE,
+  SUBMIT_SCREENING,
   SUBMIT_SCREENING_SUCCESS,
   SUBMIT_SCREENING_FAILURE,
 } from 'actions/actionTypes'
@@ -110,28 +111,15 @@ export function fetchHistoryOfInvolvements(id) {
 }
 
 export function submitScreeningSuccess(screening) {
-  const referralId = screening.referral_id
-  /* eslint-disable no-alert */
-  alert(`Successfully created referral ${referralId}`)
-  /* eslint-enable no-alert */
   return {type: SUBMIT_SCREENING_SUCCESS, screening}
 }
 
-export function submitScreeningFailure(jsonResponse) {
-  /* eslint-disable no-alert */
-  alert(jsonResponse.responseText)
-  /* eslint-enable no-alert */
-  return {type: SUBMIT_SCREENING_FAILURE}
+export function submitScreeningFailure(error) {
+  return {type: SUBMIT_SCREENING_FAILURE, error}
 }
 
-export function submitScreening(screeningId) {
-  return (dispatch) => (
-    post(`/api/v1/screenings/${screeningId}/submit`, null)
-      .then(
-        (jsonResponse) => { dispatch(submitScreeningSuccess(jsonResponse)) },
-        (jsonResponse) => { dispatch(submitScreeningFailure(jsonResponse)) }
-      )
-  )
+export function submitScreening(id) {
+  return (dispatch) => dispatch({type: SUBMIT_SCREENING, id})
 }
 
 export function fetchRelationshipsSuccess(relationships) {
