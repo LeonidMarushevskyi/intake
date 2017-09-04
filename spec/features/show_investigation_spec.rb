@@ -4,9 +4,43 @@ require 'rails_helper'
 
 feature 'Show Investigation' do
   scenario 'user navigates to the investigation show page' do
-    visit investigation_path(id: '12345')
-    within '.card.show' do
-      expect(page).to have_content 'Screening Summary'
+    investigation_id = '12345'
+    screening_summary = {
+      id: '222',
+      name: 'My Screening',
+      decision_detail: 'immediate',
+      additional_information: 'There was considerable evidence abuse',
+      allegations: [{
+        victim_id: '2',
+        perpetrator_id: '3',
+        allegation_types: ['Severe neglect']
+      }, {
+        victim_id: '2',
+        perpetrator_id: '4',
+        allegation_types: ['Severe neglect', 'Sexual abuse']
+      }],
+      safety_alerts: [
+        'Dangerous Animal on Premises',
+        'Firearms in Home',
+        'Hostile, Aggressive Client',
+        'Remote or Isolated Location'
+      ],
+      safety_information: 'Animal is a tiger'
+    }
+    stub_request(
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_screening(investigation_id))
+    ).and_return(json_body(screening_summary.to_json, status: 200))
+    visit investigation_path(id: investigation_id)
+    within '.card.show', text: 'Screening Summary' do
+      expect(page).to have_link 'My Screening', href: screening_path(id: '222')
+      expect(page).to have_content 'Immediate'
+      expect(page).to have_content 'There was considerable evidence abuse'
+      expect(page).to have_content 'Dangerous Animal on Premises'
+      expect(page).to have_content 'Firearms in Home'
+      expect(page).to have_content 'Severe neglect, Sexual abuse'
+      expect(page).to have_content 'Hostile, Aggressive Client'
+      expect(page).to have_content 'Remote or Isolated Location'
+      expect(page).to have_content 'Animal is a tiger'
     end
   end
 end
