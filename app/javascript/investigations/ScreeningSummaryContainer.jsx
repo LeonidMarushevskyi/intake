@@ -1,7 +1,9 @@
-import {connect} from 'react-redux'
+import * as actions from 'actions/screeningSummaryActions'
+import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
 import ScreeningSummary from 'investigations/ScreeningSummary'
 import {Set, List} from 'immutable'
-import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
 const mapStateToProps = (state, _ownProps) => {
   const allegations = state.getIn(['screeningSummary', 'allegations']) || List()
@@ -19,6 +21,6 @@ const mapStateToProps = (state, _ownProps) => {
   }
 }
 
-const mapDispatchToProps = (_dispatch, _ownProps) => ({})
+const mapDispatchToProps = (dispatch, _ownProps) => ({actions: bindActionCreators(actions, dispatch)})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreeningSummary)

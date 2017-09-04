@@ -1,6 +1,6 @@
 import ScreeningSummary from 'investigations/ScreeningSummary'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('ScreeningSummary', () => {
   it('renders screening summary header', () => {
@@ -54,5 +54,19 @@ describe('ScreeningSummary', () => {
     expect(component.find('.card-body').text()).toContain(
       'Evidence of abuse was substantial'
     )
+  })
+
+  describe('#componentDidMount', () => {
+    let fetch
+
+    beforeEach(() => {
+      fetch = jasmine.createSpy('fetch')
+      const id = '456'
+      mount(<ScreeningSummary actions={{fetch}} params={{id}}/>)
+    })
+
+    it('fetches screening summary', () => {
+      expect(fetch).toHaveBeenCalledWith('456')
+    })
   })
 })
