@@ -1,0 +1,95 @@
+import * as Utils from 'utils/http'
+import {
+  fetchRelationshipsByScreeningId,
+  fetchRelationshipsByScreeningIdSuccess,
+  submitScreening,
+  submitScreeningFailure,
+  submitScreeningSuccess,
+} from 'actions/screeningActions'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
+
+describe('screening actions', () => {
+  let store
+  beforeEach(() => {
+    store = mockStore()
+  })
+
+  describe('.submitScreening', () => {
+    const screeningId = '3'
+    beforeEach(() => spyOn(window, 'alert'))
+
+    it('submits a screening to the server', () => {
+      spyOn(Utils, 'post').and.returnValue(Promise.resolve())
+      store.dispatch(submitScreening(screeningId))
+      expect(Utils.post).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screeningId}/submit`,
+        null
+      )
+    })
+
+    describe('when server responds with success', () => {
+      const referralId = '44'
+      const jsonResponse = {referral_id: referralId}
+      beforeEach(() => spyOn(Utils, 'post').and.returnValue(Promise.resolve(jsonResponse)))
+
+      it('dispatches a submitScreeningSuccess', () => {
+        const expectedActions = [submitScreeningSuccess(jsonResponse)]
+        store.dispatch(submitScreening(screeningId)).then(() =>
+          expect(store.getActions()).toEqual(expectedActions)
+        )
+      })
+
+      it('displays an success alert with the referralId', () => {
+        store.dispatch(submitScreening(screeningId)).then(() => {
+          expect(window.alert).toHaveBeenCalledWith(`Successfully created referral ${referralId}`)
+        })
+      })
+    })
+
+    describe('when server responds with failure', () => {
+      const jsonFailureResponse = {responseText: 'Failure response message'}
+      beforeEach(() => {
+        spyOn(Utils, 'post').and.returnValue(Promise.reject(jsonFailureResponse))
+      })
+
+      it('dispatches a submitScreeningFailure', () => {
+        const expectedActions = [submitScreeningFailure(jsonFailureResponse)]
+        store.dispatch(submitScreening(screeningId)).then(() =>
+          expect(store.getActions()).toEqual(expectedActions)
+        )
+      })
+
+      it('displays an response in an alert', () => {
+        store.dispatch(submitScreening(screeningId)).then(() => {
+          expect(window.alert).toHaveBeenCalledWith('Failure response message')
+        })
+      })
+    })
+  })
+
+  describe('.fetchRelationshipsByScreeningId', () => {
+    const screeningId = '3'
+
+    beforeEach(() => {
+      spyOn(Utils, 'get').and.returnValue(Promise.resolve())
+    })
+
+    it('fetches screening relationships from the server', () => {
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId))
+      expect(Utils.get).toHaveBeenCalledWith(
+        `/api/v1/screenings/${screeningId}/relationships`
+      )
+    })
+
+    it('dispatches a fetchRelationshipsByScreeningIdSuccess', () => {
+      const expectedActions = [fetchRelationshipsByScreeningIdSuccess()]
+      store.dispatch(fetchRelationshipsByScreeningId(screeningId)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
+})

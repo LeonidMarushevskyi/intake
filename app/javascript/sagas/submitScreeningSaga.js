@@ -1,0 +1,25 @@
+import {takeEvery, put, call, select} from 'redux-saga/effects'
+import {post} from 'utils/http'
+import {
+  submitScreeningSuccess,
+  submitScreeningFailure,
+} from 'actions/screeningActions'
+import {getScreening} from 'selectors'
+import {
+  SUBMIT_SCREENING,
+} from 'actions/actionTypes'
+
+export function* submitScreening({id}) {
+  try {
+    const response = yield call(post, `/api/v1/screenings/${id}/submit`)
+    yield put(submitScreeningSuccess(response))
+    const screening = yield select(getScreening)
+    yield call(alert, `Successfully created referral ${screening.get('referral_id')}`)
+  } catch (error) {
+    yield put(submitScreeningFailure(error.responseJSON))
+    yield call(alert, error.responseText)
+  }
+}
+export function* submitScreeningSaga() {
+  yield takeEvery(SUBMIT_SCREENING, submitScreening)
+}

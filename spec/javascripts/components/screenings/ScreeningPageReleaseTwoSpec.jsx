@@ -32,40 +32,34 @@ describe('ScreeningPage when release two is active', () => {
     }
 
     it('does not display a submit button', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('ScreeningSubmitButton').length).toEqual(0)
     })
 
     it('does not show the create new person button', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('Autocompleter').length).toBe(1)
       expect(component.find('Autocompleter').props().footer).toEqual(false)
     })
 
     it('renders the snapshot copy', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.text()).toContain('The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.')
     })
 
     it('does not render home and edit links', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('IndexLink').length).toEqual(0)
       expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
     })
 
     it('does not render the screening information in edit mode', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('ScreeningInformationCardView').length).toEqual(0)
     })
 
     it('does render a start over button', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       const button = component.find('button')
       expect(button.length).toEqual(1)
       expect(button.text()).toEqual('Start Over')
@@ -79,9 +73,8 @@ describe('ScreeningPage when release two is active', () => {
           {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
           {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
         ])
-        const props = {...requiredProps, participants}
+        const props = {...requiredProps, participants, loaded: true}
         component = shallow(<ScreeningPage {...props} />)
-        component.setState({loaded: true})
       })
 
       it('renders the card header', () => {
@@ -115,9 +108,9 @@ describe('ScreeningPage when release two is active', () => {
         ...requiredProps,
         involvements,
         participants,
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       expect(component.find('HistoryCard').length).toEqual(1)
       expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
       expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
@@ -126,26 +119,22 @@ describe('ScreeningPage when release two is active', () => {
     })
 
     it('does not render the allegations card', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('AllegationsCardView').length).toEqual(0)
     })
 
     it('does not render the relations card', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('RelationshipsCard').length).toEqual(0)
     })
 
     it('does not render the worker safety card', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('WorkerSafetyCardView').length).toEqual(0)
     })
 
     it('does not render the screening heading', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
       expect(component.find('h1').length).toEqual(0)
     })
   })

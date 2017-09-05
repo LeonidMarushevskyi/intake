@@ -6,14 +6,14 @@ export default class RelationshipsCard extends React.Component {
   componentDidMount() {
     const {actions, participants, screeningId} = this.props
     if (!participants.isEmpty()) {
-      actions.fetchRelationshipsByScreeningId(screeningId)
+      actions.fetchRelationships(screeningId)
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const {participants, actions, screeningId} = this.props
     if (participants !== nextProps.participants) {
-      actions.fetchRelationshipsByScreeningId(screeningId)
+      actions.fetchRelationships(screeningId)
     }
   }
 

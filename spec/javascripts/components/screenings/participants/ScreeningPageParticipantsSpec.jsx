@@ -18,7 +18,6 @@ describe('ScreeningPage', () => {
     const saveParticipant = jasmine.createSpy('saveParticipant').and.returnValue(promiseObj)
     const deleteParticipant = jasmine.createSpy('deleteParticipant')
     const createParticipant = jasmine.createSpy('createParticipant')
-    const fetchScreening = jasmine.createSpy('fetchScreening')
 
     const address1 = Immutable.Map({
       city: 'Sacramento',
@@ -67,7 +66,7 @@ describe('ScreeningPage', () => {
 
     const props = {
       ...requiredProps,
-      actions: {createParticipant, saveParticipant, deleteParticipant, fetchScreening},
+      actions: {createParticipant, saveParticipant, deleteParticipant},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
     }

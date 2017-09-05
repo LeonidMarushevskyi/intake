@@ -16,23 +16,23 @@ describe('RelationshipsCard', () => {
   })
 
   describe('#componentDidMount', () => {
-    let fetchRelationships
+    let fetchRelationshipsByScreeningId
     beforeEach(() => {
-      fetchRelationships = jasmine.createSpy('fetchRelationships')
+      fetchRelationshipsByScreeningId = jasmine.createSpy('fetchRelationshipsByScreeningId')
     })
 
     describe('when participants are not empty', () => {
       it('fetch relationships', () => {
         const props = {
           ...requiredProps,
-          actions: {fetchRelationships},
+          actions: {fetchRelationshipsByScreeningId},
           participants: Immutable.fromJS([
             {id: 1},
             {id: 2},
           ]),
         }
         component = mount(<RelationshipsCard {...props}/>)
-        expect(fetchRelationships).toHaveBeenCalledWith(props.screeningId)
+        expect(fetchRelationshipsByScreeningId).toHaveBeenCalledWith(props.screeningId)
       })
     })
 
@@ -40,22 +40,22 @@ describe('RelationshipsCard', () => {
       it('does not fetch relationships', () => {
         const props = {
           ...requiredProps,
-          actions: {fetchRelationships},
+          actions: {fetchRelationshipsByScreeningId},
           participants: Immutable.List(),
         }
         component = mount(<RelationshipsCard {...props}/>)
-        expect(fetchRelationships).not.toHaveBeenCalled()
+        expect(fetchRelationshipsByScreeningId).not.toHaveBeenCalled()
       })
     })
   })
 
   describe('#componentWillReceiveProps', () => {
-    let fetchRelationships
+    let fetchRelationshipsByScreeningId
     beforeEach(() => {
-      fetchRelationships = jasmine.createSpy('fetchRelationships')
+      fetchRelationshipsByScreeningId = jasmine.createSpy('fetchRelationshipsByScreeningId')
       const updatedProps = {
         ...requiredProps,
-        actions: {fetchRelationships},
+        actions: {fetchRelationshipsByScreeningId},
       }
       component = shallow(<RelationshipsCard {...updatedProps}/>)
     })
@@ -70,7 +70,7 @@ describe('RelationshipsCard', () => {
           ]),
         }
         component.setProps(newProps)
-        expect(fetchRelationships).toHaveBeenCalledWith(newProps.screeningId)
+        expect(fetchRelationshipsByScreeningId).toHaveBeenCalledWith(newProps.screeningId)
       })
     })
 
@@ -78,7 +78,7 @@ describe('RelationshipsCard', () => {
       it('does not fetch relationships', () => {
         const newProps = {participants: Immutable.List()}
         component.setProps(newProps)
-        expect(fetchRelationships).not.toHaveBeenCalled()
+        expect(fetchRelationshipsByScreeningId).not.toHaveBeenCalled()
       })
     })
   })

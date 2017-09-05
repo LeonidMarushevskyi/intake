@@ -40,9 +40,9 @@ describe('ScreeningPage', () => {
         ...requiredProps,
         involvements,
         participants,
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       expect(component.find('HistoryCard').length).toEqual(1)
       expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
       expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
@@ -55,9 +55,9 @@ describe('ScreeningPage', () => {
         ...requiredProps,
         allegations: Immutable.List(),
         mode: 'edit',
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const allegationsCard = component.find('AllegationsCardView')
       expect(allegationsCard.length).toEqual(1)
       expect(allegationsCard.props().allegations).toEqual(Immutable.List())
@@ -87,9 +87,9 @@ describe('ScreeningPage', () => {
             {agency_type: 'Department of justice'},
           ],
         }),
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const crossReportsCard = component.find('CrossReportCardView')
       expect(crossReportsCard.length).toEqual(1)
       expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
@@ -103,9 +103,9 @@ describe('ScreeningPage', () => {
         mode: 'edit',
         participants: Immutable.fromJS([]),
         relationships: Immutable.fromJS([{id: '123'}]),
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       expect(component.find('RelationshipsCard').length).toEqual(1)
       expect(component.find('RelationshipsCard').props().participants).toEqual(Immutable.fromJS([]))
       expect(component.find('RelationshipsCard').props().relationships).toEqual(props.relationships)
@@ -117,9 +117,9 @@ describe('ScreeningPage', () => {
       const props = {
         ...requiredProps,
         mode: 'edit',
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      component.setState({loaded: true})
       const safetyCard = component.find('WorkerSafetyCardView')
       expect(safetyCard.length).toEqual(1)
       expect(safetyCard.props().mode).toEqual('edit')
@@ -133,9 +133,9 @@ describe('ScreeningPage', () => {
           ...requiredScreeningAttributes,
           reference: 'The Rocky Horror Picture Show',
         }),
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} mode='show'/>)
-      component.setState({loaded: true})
       expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
     })
 
@@ -147,9 +147,9 @@ describe('ScreeningPage', () => {
           reference: 'ABCDEF',
           referral_id: '123456',
         }),
+        loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} mode='show'/>)
-      component.setState({loaded: true})
       expect(component.find('h1').text()).toEqual('Screening #ABCDEF - Referral #123456')
     })
   })
@@ -336,10 +336,10 @@ describe('ScreeningPage', () => {
             {id: '1', first_name: 'Melissa', last_name: 'Powers', relationships: []},
             {id: '2', first_name: 'Marshall', last_name: 'Powers', relationships: []},
           ]),
+          loaded: true,
         }
 
         component = shallow(<ScreeningPage {...props} />)
-        component.setState({loaded: true})
         cardCallbacks = {
           onCancel: component.instance().cancelEdit,
           onChange: component.instance().setField,
@@ -427,25 +427,23 @@ describe('ScreeningPage', () => {
   })
 
   describe('loading flag', () => {
-    const props = {
-      ...requiredProps,
-      screening: Immutable.fromJS({
-        ...requiredScreeningAttributes,
-        report_narrative: 'this is a narrative report',
-      }),
-      mode: 'edit',
-    }
-
     let component
 
-    beforeEach(() => {
-      component = shallow(<ScreeningPage {...props} />)
-    })
-
     describe('is true', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          report_narrative: 'this is a narrative report',
+        }),
+        mode: 'edit',
+        loaded: true,
+      }
+
       beforeEach(() => {
-        component.setState({loaded: true})
+        component = shallow(<ScreeningPage {...props} />)
       })
+
       it('renders the cross report card view', () => {
         expect(component.find('CrossReportCardView').length).toEqual(1)
       })
@@ -459,7 +457,20 @@ describe('ScreeningPage', () => {
         expect(component.find('DecisionCardView').length).toEqual(1)
       })
     })
+
     describe('is false', () => {
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS({
+          ...requiredScreeningAttributes,
+          report_narrative: 'this is a narrative report',
+        }),
+        mode: 'edit',
+      }
+
+      beforeEach(() => {
+        component = shallow(<ScreeningPage {...props} />)
+      })
       it('does not render the narrative card', () => {
         expect(component.find('NarrativeCardView').length).toEqual(0)
       })
@@ -498,9 +509,9 @@ describe('ScreeningPage', () => {
         const props = {
           ...requiredProps,
           screening,
+          loaded: true,
         }
         const component = shallow(<ScreeningPage {...props} />)
-        component.setState({loaded: true})
         expect(component.find('ScreeningInformationCardView').length).toEqual(1)
       })
 
@@ -514,9 +525,9 @@ describe('ScreeningPage', () => {
           const props = {
             ...requiredProps,
             participants,
+            loaded: true,
           }
           component = shallow(<ScreeningPage {...props} />)
-          component.setState({loaded: true})
         })
 
         it('renders the card header', () => {
@@ -563,8 +574,7 @@ describe('ScreeningPage', () => {
 
   describe('when submit referral and release two are both inactive', () => {
     it('renders the submit button with a modal', () => {
-      const component = shallow(<ScreeningPage {...requiredProps} />)
-      component.setState({loaded: true})
+      const component = shallow(<ScreeningPage {...requiredProps} loaded={true}/>)
       expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
       expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
     })
