@@ -21,12 +21,18 @@ class ApplicationController < ActionController::Base # :nodoc:
     if auth_artifact
       session[:security_token] = security_token
       return unless json?(auth_artifact)
-      staff_id = JSON.parse(auth_artifact)['staffId']
-      return unless staff_id
-      session[:user_details] = StaffRepository.find(security_token, staff_id)
+      auth_data = JSON.parse(auth_artifact)
+      staff_id = auth_data['staffId']
+      set_user_details_on_session(security_token, staff_id, auth_data)
     else
       redirect_to SecurityRepository.login_url(request.original_url)
     end
+  end
+
+  def set_user_details_on_session(security_token, staff_id, auth_data)
+    return unless staff_id
+    session[:user_details] = StaffRepository.find(security_token, staff_id)
+    session[:user_details]['privileges'] = auth_data['privileges']
   end
 
   def security_token
