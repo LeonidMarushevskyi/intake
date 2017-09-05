@@ -1,5 +1,4 @@
 #!/bin/bash
-
 bundle check || bundle install
 yarn
-bin/webpack-dev-server & bundle exec puma
+bundle exec puma
