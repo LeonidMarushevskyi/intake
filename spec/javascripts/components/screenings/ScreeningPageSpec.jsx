@@ -34,11 +34,11 @@ describe('ScreeningPage', () => {
   })
 
   describe('renderMode', () => {
-    it('uses the mode from params, if present', () => {
+    it('uses the mode from props if editable is true', () => {
       const props = {
         ...requiredProps,
-        params: {id: '1', mode: 'show'},
-        mode: 'edit',
+        mode: 'show',
+        editable: true
       }
 
       const component = shallow(<ScreeningPage {...props}/>)

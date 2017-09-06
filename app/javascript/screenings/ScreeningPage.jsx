@@ -64,7 +64,7 @@ export class ScreeningPage extends React.Component {
     if (!this.props.editable) {
       return 'show'
     } else {
-      return this.props.params.mode || this.props.mode
+      return this.props.mode
     }
   }
 
@@ -402,7 +402,7 @@ ScreeningPage.defaultProps = {
   mode: 'show',
 }
 
-export function mapStateToProps(state, _ownProps) {
+export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     involvements: state.get('involvements'),
@@ -410,6 +410,7 @@ export function mapStateToProps(state, _ownProps) {
     participants: state.get('participants'),
     relationships: state.get('relationships'),
     screening: state.get('screening'),
+    mode: ownProps.params.mode,
   }
 }
 
