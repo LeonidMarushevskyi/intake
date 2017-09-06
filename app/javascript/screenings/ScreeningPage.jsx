@@ -63,9 +63,8 @@ export class ScreeningPage extends React.Component {
   renderMode() {
     if (!this.props.editable) {
       return 'show'
-    } else {
-      return this.props.mode
     }
+    return this.props.mode
   }
 
   setField(fieldSeq, value, callback) {

@@ -38,7 +38,7 @@ describe('ScreeningPage', () => {
       const props = {
         ...requiredProps,
         mode: 'show',
-        editable: true
+        editable: true,
       }
 
       const component = shallow(<ScreeningPage {...props}/>)
