@@ -38,7 +38,6 @@ export class ScreeningPage extends React.Component {
       'cardSave',
       'createParticipant',
       'deleteParticipant',
-      'editable',
       'mergeScreeningWithEdits',
       'participants',
       'renderMode',
@@ -61,12 +60,8 @@ export class ScreeningPage extends React.Component {
     }
   }
 
-  editable() {
-    return !this.props.screening.get('referral_id')
-  }
-
   renderMode() {
-    if (this.props.screening.get('referral_id')) {
+    if (!this.props.editable) {
       return 'show'
     } else {
       return this.props.params.mode || this.props.mode
@@ -193,7 +188,7 @@ export class ScreeningPage extends React.Component {
         {
           participants.map((participant) =>
             <ParticipantCardView
-              editable={this.editable()}
+              editable={this.props.editable}
               key={participant.get('id')}
               onCancel={this.cancelParticipantEdit}
               onDelete={this.deleteParticipant}
@@ -212,7 +207,7 @@ export class ScreeningPage extends React.Component {
     return (
       <div>
         <IndexLink to={IntakeConfig.basePath()} className='gap-right'>Home</IndexLink>
-        {this.editable() && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
+        {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
       </div>
     )
   }
@@ -225,7 +220,7 @@ export class ScreeningPage extends React.Component {
     }
     const {screening} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const editable = this.editable()
+    const editable = this.props.editable
     const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
@@ -393,6 +388,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  editable: PropTypes.bool,
   involvements: PropTypes.object.isRequired,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
@@ -408,6 +404,7 @@ ScreeningPage.defaultProps = {
 
 export function mapStateToProps(state, _ownProps) {
   return {
+    editable: !state.getIn(['screening', 'referral_id']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),

@@ -19,6 +19,7 @@ export const requiredProps = {
   involvements: Immutable.fromJS({screenings: []}),
   relationships: Immutable.List(),
   mode: 'edit',
+  editable: true,
 }
 
 describe('ScreeningPage', () => {
@@ -44,18 +45,7 @@ describe('ScreeningPage', () => {
       expect(component.instance().renderMode()).toEqual('show')
     })
 
-    it('uses the mode from props is params has no mode', () => {
-      const props = {
-        ...requiredProps,
-        params: {id: '1'},
-        mode: 'edit',
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      expect(component.instance().renderMode()).toEqual('edit')
-    })
-
-    it('forces the page to show mode if a referral_id is present for the screening', () => {
+    it('forces the page to show mode if editable is false', () => {
       const screening = {
         ...requiredScreeningAttributes,
         referral_id: 'ABC123',
@@ -65,6 +55,7 @@ describe('ScreeningPage', () => {
         screening: Immutable.fromJS(screening),
         params: {id: '1', mode: 'edit'},
         mode: 'edit',
+        editable: false,
       }
 
       const component = shallow(<ScreeningPage {...props}/>)
@@ -81,58 +72,13 @@ describe('ScreeningPage', () => {
         screening: Immutable.fromJS(screening),
         params: {id: '1', mode: 'edit'},
         mode: 'edit',
+        loaded: true,
+        editable: false,
       }
 
       const component = shallow(<ScreeningPage {...props}/>)
-      component.setState({loaded: true})
       const safetyAlerts = component.find('WorkerSafetyCardView')
       expect(safetyAlerts.props().mode).toEqual('show')
-    })
-  })
-
-  describe('editable', () => {
-    it('allows edits if there is no referral id', () => {
-      const screening = {
-        ...requiredScreeningAttributes,
-        referral_id: null,
-      }
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS(screening),
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      expect(component.instance().editable()).toEqual(true)
-    })
-
-    it('does not allow edits if there is a referral id', () => {
-      const screening = {
-        ...requiredScreeningAttributes,
-        referral_id: 'ABC123',
-      }
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS(screening),
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      expect(component.instance().editable()).toEqual(false)
-    })
-
-    it('passes canEdit to cards', () => {
-      const screening = {
-        ...requiredScreeningAttributes,
-        referral_id: 'ABC123',
-      }
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS(screening),
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      component.setState({loaded: true})
-      const safetyAlerts = component.find('WorkerSafetyCardView')
-      expect(safetyAlerts.props().editable).toEqual(false)
     })
   })
 
