@@ -10,6 +10,7 @@ describe('WorkerSafetyCardView', () => {
       safety_alerts: ['Gang Affiliation or Gang Activity'],
       safety_information: 'Info',
     }),
+    editable: true,
   }
 
   beforeEach(() => {
@@ -20,16 +21,21 @@ describe('WorkerSafetyCardView', () => {
     props.onSave = jasmine.createSpy('onSave').and.returnValue(promiseSpy)
   })
 
+  it('renders the card header', () => {
+    const component = shallow(<WorkerSafetyCardView {...props} mode='edit' />)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Worker Safety')
+  })
+
   describe('when mode is set to show', () => {
     beforeEach(() => {
       component = mount(<WorkerSafetyCardView {...props} mode='show'/>)
     })
     it('renders the worker safety show card', () => {
       expect(component.find('WorkerSafetyShowView').length).toEqual(1)
-    })
-    it('changes the mode when onEdit is called', () => {
-      component.find('a[aria-label="Edit worker safety"]').simulate('click')
-      expect(component.instance().state.mode).toEqual('edit')
     })
   })
 

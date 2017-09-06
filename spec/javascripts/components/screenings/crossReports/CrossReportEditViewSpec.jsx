@@ -22,8 +22,7 @@ describe('CrossReportEditView', () => {
     component = shallow(<CrossReportEditView {...props}/>)
   })
 
-  it('renders the card title and cross reported label', () => {
-    expect(component.find('.card.edit .card-header').text()).toEqual('Cross Report')
+  it('renders cross reported label', () => {
     expect(component.find('.card-body').text()).toContain('This report has cross reported to:')
   })
 

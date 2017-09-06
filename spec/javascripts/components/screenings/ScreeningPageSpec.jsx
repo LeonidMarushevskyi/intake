@@ -19,6 +19,7 @@ export const requiredProps = {
   involvements: Immutable.fromJS({screenings: []}),
   relationships: Immutable.List(),
   mode: 'edit',
+  editable: true,
 }
 
 describe('ScreeningPage', () => {
@@ -30,6 +31,55 @@ describe('ScreeningPage', () => {
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
+  })
+
+  describe('renderMode', () => {
+    it('uses the mode from props if editable is true', () => {
+      const props = {
+        ...requiredProps,
+        mode: 'show',
+        editable: true
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().renderMode()).toEqual('show')
+    })
+
+    it('forces the page to show mode if editable is false', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+        params: {id: '1', mode: 'edit'},
+        mode: 'edit',
+        editable: false,
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      expect(component.instance().renderMode()).toEqual('show')
+    })
+
+    it('renders cards using the mode returned from the method', () => {
+      const screening = {
+        ...requiredScreeningAttributes,
+        referral_id: 'ABC123',
+      }
+      const props = {
+        ...requiredProps,
+        screening: Immutable.fromJS(screening),
+        params: {id: '1', mode: 'edit'},
+        mode: 'edit',
+        loaded: true,
+        editable: false,
+      }
+
+      const component = shallow(<ScreeningPage {...props}/>)
+      const safetyAlerts = component.find('WorkerSafetyCardView')
+      expect(safetyAlerts.props().mode).toEqual('show')
+    })
   })
 
   describe('render', () => {

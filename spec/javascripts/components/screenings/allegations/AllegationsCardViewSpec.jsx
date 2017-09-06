@@ -18,12 +18,26 @@ describe('AllegationsCardView', () => {
     allegations: Immutable.List(),
     required: false,
     mode: 'edit',
+    editable: true,
   }
 
   beforeEach(() => {
     requiredProps.onSave = jasmine.createSpy('onSave')
     requiredProps.onChange = jasmine.createSpy('onChange')
     requiredProps.onCancel = jasmine.createSpy('onCancel')
+  })
+
+  it('renders the card header', () => {
+    const props = {
+      ...requiredProps,
+      editable: false,
+    }
+    const component = shallow(<AllegationsCardView {...props}/>)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Allegations')
   })
 
   describe('#onCancel', () => {

@@ -23,6 +23,7 @@ describe('ScreeningPage when referral_submit feature is active', () => {
     involvements: Immutable.fromJS({screenings: []}),
     relationships: Immutable.List(),
     mode: 'edit',
+    editable: true,
   }
 
   const isFeatureActiveFake = (feature) => {
@@ -57,7 +58,7 @@ describe('ScreeningPage when referral_submit feature is active', () => {
       })
     })
 
-    describe('when the screening has a referral id', () => {
+    describe('when the screening is not editable', () => {
       const screening = {
         ...requiredScreeningAttributes,
         referral_id: 'ABCDEF',
@@ -67,6 +68,7 @@ describe('ScreeningPage when referral_submit feature is active', () => {
         ...requiredProps,
         screening: Immutable.fromJS(screening),
         loaded: true,
+        editable: false,
       }
 
       it('renders neither submit button', () => {

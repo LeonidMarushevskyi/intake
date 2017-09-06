@@ -8,6 +8,7 @@ describe('AllegationsShowView', () => {
     allegations: Immutable.List(),
     onEdit: () => {},
     required: false,
+    editable: true,
   }
 
   it('renders allegations show view headings', () => {
@@ -62,19 +63,6 @@ describe('AllegationsShowView', () => {
     expect(allegationCells.at(6).text()).toEqual('Bart Simpson')
     expect(allegationCells.at(7).text()).toEqual('Marge Simpson')
     expect(allegationCells.at(8).text()).toEqual('Severe neglect')
-  })
-
-  it('calls the onEdit function when edit link is clicked', () => {
-    const onEdit = jasmine.createSpy()
-    const event = jasmine.createSpyObj('event', ['preventDefault'])
-    const props = {
-      ...requiredProps,
-      onEdit,
-    }
-    const component = shallow(<AllegationsShowView {...props}/>)
-    expect(component.find('EditLink').length).toEqual(1)
-    component.find('EditLink').simulate('click', event)
-    expect(onEdit).toHaveBeenCalled()
   })
 
   describe('Error alert message', () => {

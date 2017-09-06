@@ -3,6 +3,7 @@ import React from 'react'
 import AllegationsEditView from 'screenings/AllegationsEditView'
 import AllegationsShowView from 'screenings/AllegationsShowView'
 import * as AllegationsHelper from 'utils/allegationsHelper'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {
@@ -69,12 +70,23 @@ export default class AllegationsCardView extends React.Component {
     }
 
     const AllegationsView = (mode === 'show') ? AllegationsShowView : AllegationsEditView
-    return <AllegationsView {...props} />
+
+    return (
+      <div className={`card ${mode} double-gap-top`} id='allegations-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Allegations'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <AllegationsView {...props} />
+      </div>
+    )
   }
 }
 
 AllegationsCardView.propTypes = {
   allegations: PropTypes.object.isRequired,
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

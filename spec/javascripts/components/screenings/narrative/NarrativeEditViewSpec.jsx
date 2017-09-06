@@ -32,10 +32,6 @@ describe('NarrativeEditView', () => {
       )
     })
 
-    it('renders the narrative card header', () => {
-      expect(component.find('#narrative-card .card-header').text()).toEqual('Narrative')
-    })
-
     it('renders the report narrative label as required', () => {
       expect(component.find('textarea').props().required)
         .toEqual(true)

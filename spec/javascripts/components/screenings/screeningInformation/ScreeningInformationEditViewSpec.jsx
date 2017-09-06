@@ -33,10 +33,6 @@ describe('ScreeningInformationEditView', () => {
       component = shallow(<ScreeningInformationEditView {...requiredProps} />)
     })
 
-    it('renders the card header', () => {
-      expect(component.find('#screening-information-card .card-header').text()).toEqual('Screening Information')
-    })
-
     it('renders the name of screening field', () => {
       const titleField = component.find('InputField[label="Title/Name of Screening"]')
       expect(titleField.props().value).toEqual('The Rocky Horror Picture Show')
@@ -112,7 +108,7 @@ describe('ScreeningInformationEditView', () => {
 
   describe('validateOnChange', () => {
     it('fires the call the validateOnChange function when a field changes', () => {
-      const comMethodSelect = component.find('#screening-information-card select')
+      const comMethodSelect = component.find('select')
       comMethodSelect.simulate('change', {target: {value: 'fax'}})
       expect(requiredProps.validateOnChange).toHaveBeenCalledWith('communication_method', 'fax')
     })

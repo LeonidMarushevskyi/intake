@@ -40,6 +40,7 @@ export class ScreeningPage extends React.Component {
       'deleteParticipant',
       'mergeScreeningWithEdits',
       'participants',
+      'renderMode',
       'saveParticipant',
       'setField',
       'setParticipantField',
@@ -47,7 +48,6 @@ export class ScreeningPage extends React.Component {
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
     })
-    this.mode = this.props.params.mode || this.props.mode
   }
 
   componentDidMount() {
@@ -57,6 +57,14 @@ export class ScreeningPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.screening.equals(nextProps.screening)) {
       this.setState({screening: nextProps.screening})
+    }
+  }
+
+  renderMode() {
+    if (!this.props.editable) {
+      return 'show'
+    } else {
+      return this.props.mode
     }
   }
 
@@ -176,17 +184,18 @@ export class ScreeningPage extends React.Component {
 
     return (
       <div>
-        { this.mode === 'edit' && this.renderAutocompleter() }
+        { this.renderMode() === 'edit' && this.renderAutocompleter() }
         {
           participants.map((participant) =>
             <ParticipantCardView
+              editable={this.props.editable}
               key={participant.get('id')}
               onCancel={this.cancelParticipantEdit}
               onDelete={this.deleteParticipant}
               onChange={this.setParticipantField}
               onSave={this.saveParticipant}
               participant={participant}
-              mode={IntakeConfig.isFeatureInactive('release_two') ? this.mode : 'show'}
+              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
             />
           )
         }
@@ -198,7 +207,7 @@ export class ScreeningPage extends React.Component {
     return (
       <div>
         <IndexLink to={IntakeConfig.basePath()} className='gap-right'>Home</IndexLink>
-        <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>
+        {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
       </div>
     )
   }
@@ -211,6 +220,8 @@ export class ScreeningPage extends React.Component {
     }
     const {screening} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
+    const editable = this.props.editable
+    const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
@@ -236,7 +247,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <h1>
-                {this.mode === 'edit' && 'Edit '}
+                {mode === 'edit' && 'Edit '}
                 {`Screening #${mergedScreening.get('reference')}`}
                 {mergedScreening.get('referral_id') && ` - Referral #${mergedScreening.get('referral_id')}`}
               </h1>
@@ -263,7 +274,8 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <ScreeningInformationCardView
               {...cardCallbacks}
-              mode={this.mode}
+              editable={editable}
+              mode={mode}
               screening={mergedScreening}
             />
           }
@@ -272,7 +284,8 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <NarrativeCardView
               {...cardCallbacks}
-              mode={this.mode}
+              editable={editable}
+              mode={mode}
               screening={mergedScreening}
             />
           }
@@ -280,8 +293,9 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             <IncidentInformationCardView
               {...cardCallbacks}
+              editable={editable}
               errors={cardErrors.get('incident_information_card') || Immutable.List()}
-              mode={this.mode}
+              mode={mode}
               screening={mergedScreening}
             />
           }
@@ -291,13 +305,15 @@ export class ScreeningPage extends React.Component {
                 allegations={sortedAllegations}
                 required={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
                 {...cardCallbacks}
-                mode={this.mode}
+                editable={editable}
+                mode={mode}
               />
           }
           {
             releaseTwoInactive &&
             <RelationshipsCard
               actions={this.props.actions}
+              editable={editable}
               participants={this.props.participants}
               relationships={this.props.relationships}
               screeningId={this.props.params.id}
@@ -307,12 +323,14 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <WorkerSafetyCardView
                 {...cardCallbacks}
-                mode={this.mode}
+                editable={editable}
+                mode={mode}
                 screening={mergedScreening}
               />
           }
           <HistoryCard
             actions={this.props.actions}
+            editable={editable}
             involvements={this.props.involvements}
             participants={this.props.participants}
             screeningId={this.props.params.id}
@@ -323,26 +341,29 @@ export class ScreeningPage extends React.Component {
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 crossReports={mergedScreening.get('cross_reports')}
-                mode={this.mode}
+                editable={editable}
+                mode={mode}
               />
           }
           {
             releaseTwoInactive &&
             <DecisionCardView
               {...cardCallbacks}
+              editable={editable}
               errors={cardErrors.get('decision_card')}
-              mode={this.mode}
+              mode={mode}
               screening={mergedScreening}
             />
           }
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
-            !mergedScreening.get('referral_id') &&
+            editable &&
             <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
           }
           {
             releaseTwoInactive &&
+            editable &&
             IntakeConfig.isFeatureInactive('referral_submit') &&
             <ScreeningSubmitButtonWithModal />
           }
@@ -356,7 +377,7 @@ export class ScreeningPage extends React.Component {
               </div>
             </div>
           }
-          { this.mode === 'show' && this.renderFooterLinks() }
+          { mode === 'show' && this.renderFooterLinks() }
         </div>
       )
     } else {
@@ -367,6 +388,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  editable: PropTypes.bool,
   involvements: PropTypes.object.isRequired,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
@@ -380,13 +402,15 @@ ScreeningPage.defaultProps = {
   mode: 'show',
 }
 
-export function mapStateToProps(state, _ownProps) {
+export function mapStateToProps(state, ownProps) {
   return {
+    editable: !state.getIn(['screening', 'referral_id']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
     relationships: state.get('relationships'),
     screening: state.get('screening'),
+    mode: ownProps.params.mode,
   }
 }
 

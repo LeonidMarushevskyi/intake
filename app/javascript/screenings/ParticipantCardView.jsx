@@ -1,3 +1,7 @@
+import * as IntakeConfig from 'common/config'
+import nameFormatter from 'utils/nameFormatter'
+import {participantFlag} from 'utils/accessIndicator'
+import ParticipantCardHeader from 'screenings/ParticipantCardHeader'
 import ParticipantEditView from 'screenings/ParticipantEditView'
 import ParticipantShowView from 'screenings/ParticipantShowView'
 import PropTypes from 'prop-types'
@@ -16,8 +20,7 @@ export default class ParticipantCardView extends React.Component {
     this.onSave = this.onSave.bind(this)
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -43,30 +46,46 @@ export default class ParticipantCardView extends React.Component {
 
   render() {
     const {mode} = this.state
+    const {editable, participant} = this.props
 
     const sharedProps = {
-      onDelete: this.props.onDelete,
-      participant: this.props.participant,
+      participant: participant,
     }
 
     const allProps = {
       edit: {
+        ...sharedProps,
         onCancel: this.onCancel,
         onChange: this.onChange,
         onSave: this.onSave,
       },
       show: {
+        ...sharedProps,
         onEdit: this.onEdit,
       },
     }
 
     const ParticipantView = (mode === 'edit') ? ParticipantEditView : ParticipantShowView
-    const props = Object.assign(allProps[mode], sharedProps)
-    return <ParticipantView {...props} />
+    const props = allProps[mode]
+    const informationFlag = participantFlag(participant.toJS())
+    return (
+      <div className={`card ${mode} double-gap-top`} id={`participants-card-${participant.get('id')}`}>
+        <ParticipantCardHeader
+          informationFlag={informationFlag}
+          onDelete={() => this.props.onDelete(participant.get('id'))}
+          showDelete={editable}
+          onEdit={this.onEdit}
+          showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
+          title={nameFormatter(participant)}
+        />
+        <ParticipantView {...props} />
+      </div>
+    )
   }
 }
 
 ParticipantCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
   onCancel: PropTypes.func,
   onChange: PropTypes.func,

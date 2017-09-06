@@ -17,13 +17,6 @@ describe('WorkerSafetyShowView', () => {
       />
     )
   })
-  it('renders worker card header', () => {
-    expect(component.find('.card-header').text()).toContain('Worker Safety')
-  })
-
-  it('renders the edit link', () => {
-    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit worker safety')
-  })
 
   it('renders the worker safety show fields', () => {
     const alerts = component.find('ShowField[label="Worker safety alerts"]')
@@ -31,14 +24,5 @@ describe('WorkerSafetyShowView', () => {
       .toContain('Be careful!')
     expect(alerts.find('li').html())
       .toContain('Gang Affiliation or Gang Activity')
-  })
-
-  describe('clicking the edit link', () => {
-    beforeEach(() => {
-      component.find('EditLink').simulate('click')
-    })
-    it('switches to edit mode when edit icon is clicked', () => {
-      expect(onEdit).toHaveBeenCalled()
-    })
   })
 })

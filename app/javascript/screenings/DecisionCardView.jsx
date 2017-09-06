@@ -3,6 +3,7 @@ import DecisionShowView from 'screenings/DecisionShowView'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class DecisionCardView extends React.Component {
   constructor(props) {
@@ -34,8 +35,7 @@ export default class DecisionCardView extends React.Component {
     }
   }
 
-  onEdit(event) {
-    event.preventDefault()
+  onEdit() {
     this.setState({mode: 'edit'})
   }
 
@@ -81,11 +81,21 @@ export default class DecisionCardView extends React.Component {
     }
     const DecisionView = (mode === 'edit') ? DecisionEditView : DecisionShowView
     const props = allProps[mode]
-    return <DecisionView {...props} />
+    return (
+      <div className={`card ${mode} double-gap-top`} id='decision-card'>
+        <ScreeningCardHeader
+          onEdit={this.onEdit}
+          title='Decision'
+          showEdit={this.props.editable && mode === 'show'}
+        />
+        <DecisionView {...props} />
+      </div>
+    )
   }
 }
 
 DecisionCardView.propTypes = {
+  editable: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
   mode: PropTypes.string,
   onCancel: PropTypes.func.isRequired,

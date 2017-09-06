@@ -53,6 +53,7 @@ describe('ScreeningPage', () => {
         }],
       }),
       loaded: true,
+      editable: true,
     }
 
     it('renders persisted allegations', () => {

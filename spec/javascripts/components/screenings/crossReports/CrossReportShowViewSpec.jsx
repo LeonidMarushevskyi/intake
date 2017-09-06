@@ -29,23 +29,6 @@ describe('CrossReportShowView', () => {
     })
   })
 
-  it('renders the card header', () => {
-    expect(component.find('.card.show .card-header').text()).toContain('Cross Report')
-  })
-
-  it('renders the edit link', () => {
-    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit cross report')
-  })
-
-  describe('clicking the edit link', () => {
-    beforeEach(() => {
-      component.find('EditLink').simulate('click')
-    })
-    it('switches to edit mode when edit icon is clicked', () => {
-      expect(onEdit).toHaveBeenCalled()
-    })
-  })
-
   describe('when cross reports are present', () => {
     let component
     beforeEach(() => {

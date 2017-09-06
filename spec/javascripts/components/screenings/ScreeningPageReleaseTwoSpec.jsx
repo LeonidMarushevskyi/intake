@@ -29,6 +29,7 @@ describe('ScreeningPage when release two is active', () => {
       involvements: Immutable.fromJS({screenings: []}),
       relationships: Immutable.List(),
       mode: 'edit',
+      editable: true,
     }
 
     it('does not display a submit button', () => {
@@ -73,7 +74,7 @@ describe('ScreeningPage when release two is active', () => {
           {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
           {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
         ])
-        const props = {...requiredProps, participants, loaded: true}
+        const props = {...requiredProps, participants, loaded: true, editable: true}
         component = shallow(<ScreeningPage {...props} />)
       })
 
@@ -109,6 +110,7 @@ describe('ScreeningPage when release two is active', () => {
         involvements,
         participants,
         loaded: true,
+        editable: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
       expect(component.find('HistoryCard').length).toEqual(1)

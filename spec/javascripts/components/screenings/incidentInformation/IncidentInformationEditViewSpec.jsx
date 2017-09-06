@@ -29,10 +29,6 @@ describe('IncidentInformationEditView', () => {
     component = shallow(<IncidentInformationEditView {...props} />)
   })
 
-  it('renders the card header', () => {
-    expect(component.find('.card-header').text()).toEqual('Incident Information')
-  })
-
   it('renders the Incident date field', () => {
     expect(component.find('DateField[label="Incident Date"]').props().value)
       .toEqual('2006-01-21')

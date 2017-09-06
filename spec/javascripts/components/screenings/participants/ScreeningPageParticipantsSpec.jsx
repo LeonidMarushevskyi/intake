@@ -69,6 +69,7 @@ describe('ScreeningPage', () => {
       actions: {createParticipant, saveParticipant, deleteParticipant},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
+      editable: true,
     }
 
     let component

@@ -12,22 +12,6 @@ describe('ScreeningInformationShowView', () => {
     errors: Immutable.Map(),
   }
 
-  it('render the card headers', () => {
-    component = shallow(<ScreeningInformationShowView {...requiredProps} />)
-    expect(component.find('.card-header').text()).toContain('Screening Information')
-  })
-
-  it('renders the edit link', () => {
-    component = shallow(<ScreeningInformationShowView {...requiredProps} />)
-    expect(component.find('EditLink').props().ariaLabel).toEqual('Edit screening information')
-  })
-
-  it('calls the onEdit function when edit link is clicked', () => {
-    component = shallow(<ScreeningInformationShowView {...requiredProps} />)
-    component.find('EditLink').simulate('click')
-    expect(requiredProps.onEdit).toHaveBeenCalled()
-  })
-
   describe('when the screening values are null', () => {
     beforeEach(() => {
       const screening = Immutable.fromJS({
