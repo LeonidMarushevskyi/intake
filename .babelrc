@@ -22,6 +22,8 @@
         "spec": true
       }
     ],
-    "transform-regenerator"
+    "transform-regenerator",
+    [ "transform-runtime", { "polyfill": false, "regenerator": true } ],
+    "array-includes"
   ]
 }
