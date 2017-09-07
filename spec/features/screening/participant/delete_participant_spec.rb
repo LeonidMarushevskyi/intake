@@ -9,10 +9,11 @@ feature 'Delete Participant' do
   let(:screening) { FactoryGirl.create(:screening, participants: [participant]) }
 
   before do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
-      .and_return(json_body(nil, status: 204))
+    stub_request(
+      :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
+    ).and_return(json_body(nil, status: 204))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
   end
@@ -25,7 +26,7 @@ feature 'Delete Participant' do
       end
     end
     expect(
-      a_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+      a_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id)))
     ).to have_been_made
     expect(page).to_not have_css(edit_participant_card_selector(participant.id))
   end
@@ -38,7 +39,7 @@ feature 'Delete Participant' do
       end
     end
     expect(
-      a_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+      a_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id)))
     ).to have_been_made
     expect(page).to_not have_css(show_participant_card_selector(participant.id))
   end
@@ -58,7 +59,9 @@ feature 'Delete Participant' do
         end
       end
       expect(
-        a_request(:delete, host_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+        a_request(
+          :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
+        )
       ).to have_been_made
       expect(page).to_not have_css(edit_participant_card_selector(participant.id))
     end

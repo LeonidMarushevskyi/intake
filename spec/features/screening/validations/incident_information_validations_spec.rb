@@ -47,7 +47,7 @@ feature 'Incident Information Validations' do
   context 'On the show page' do
     let(:show_card) { '#incident-information-card.show' }
     before do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body(screening.to_json, status: 200))
 
       visit screening_path(id: screening.id)

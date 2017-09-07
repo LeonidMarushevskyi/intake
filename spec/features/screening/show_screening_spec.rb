@@ -40,8 +40,9 @@ feature 'Show Screening' do
   end
 
   scenario 'showing existing screening' do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json))
 
     visit screening_path(id: existing_screening.id)
 
@@ -121,8 +122,9 @@ feature 'Show Screening' do
     end
 
     scenario 'view an existing screening returns 404', accessibility: false, js: true do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .and_return(json_body(existing_screening.to_json))
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json))
       visit screening_path(id: existing_screening.id)
 
       expect(page.status_code).to_not eq 200
@@ -162,8 +164,10 @@ feature 'Show Screening' do
     end
 
     scenario 'the screening is in read only mode' do
-      stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-        .and_return(json_body(existing_screening.to_json))
+      stub_request(
+        :get,
+        intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json))
       stub_empty_relationships_for_screening(existing_screening)
       stub_empty_history_for_screening(existing_screening)
 

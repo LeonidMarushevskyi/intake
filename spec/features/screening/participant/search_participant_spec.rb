@@ -6,12 +6,13 @@ require 'feature/testing'
 feature 'searching a person' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   before do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
     stub_request(
       :get,
-      host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa'))
+      intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa'))
     ).and_return(json_body([].to_json, status: 200))
   end
 
@@ -23,7 +24,7 @@ feature 'searching a person' do
     expect(
       a_request(
         :get,
-        host_url(
+        intake_api_url(
           ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa')
         )
       )
@@ -74,8 +75,9 @@ feature 'searching a participant in autocompleter' do
     )
   end
   before do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(existing_screening.id)))
-      .and_return(json_body(existing_screening.to_json, status: 200))
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
     visit edit_screening_path(id: existing_screening.id)
   end
 
@@ -84,7 +86,7 @@ feature 'searching a participant in autocompleter' do
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([person].to_json, status: 200))
       end
 
@@ -120,7 +122,7 @@ feature 'searching a participant in autocompleter' do
       %w[M Ma Mar Marg].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -143,7 +145,7 @@ feature 'searching a participant in autocompleter' do
       %w[M Ma Mar Marg].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -161,7 +163,7 @@ feature 'searching a participant in autocompleter' do
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([person_with_out_phone_numbers].to_json, status: 200))
       end
 
@@ -193,7 +195,7 @@ feature 'searching a participant in autocompleter' do
        '123-23-1', '123-23-12', '123-23-123', '123-23-1234'].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([person_with_out_addresses].to_json, status: 200))
       end
 
@@ -223,7 +225,7 @@ feature 'searching a participant in autocompleter' do
       %w[Ma Mar Marg Marge].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([person_with_name_only].to_json, status: 200))
       end
 
@@ -247,7 +249,7 @@ feature 'searching a participant in autocompleter' do
       %w[2 20 201 2011].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -270,7 +272,7 @@ feature 'searching a participant in autocompleter' do
       %w[5 56 566].each do |search_text|
         stub_request(
           :get,
-          host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
         ).and_return(json_body([marge].to_json, status: 200))
       end
 
@@ -293,7 +295,7 @@ feature 'searching a participant in autocompleter' do
       )
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
@@ -315,7 +317,7 @@ feature 'searching a participant in autocompleter' do
       )
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
@@ -337,7 +339,7 @@ feature 'searching a participant in autocompleter' do
       )
       stub_request(
         :get,
-        host_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do

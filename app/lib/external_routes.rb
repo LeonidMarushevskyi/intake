@@ -43,6 +43,10 @@ class ExternalRoutes
       "/api/v1/staff/#{id}"
     end
 
+    def ferb_api_investigations_screening(id)
+      "/investigations/#{id}/screening"
+    end
+
     def sdm_path
       'https://ca.sdmdata.org'
     end

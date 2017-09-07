@@ -53,6 +53,12 @@ Rails.application.routes.draw do
           get 'search'
         end
       end
+
+      resources :investigations, only: [:screening] do
+        member do
+          get :screening
+        end
+      end
     end
   end
 

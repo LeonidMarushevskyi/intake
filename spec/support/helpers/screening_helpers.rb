@@ -48,14 +48,14 @@ module ScreeningHelpers
   def stub_empty_relationships_for_screening(screening)
     stub_request(
       :get,
-      host_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
+      intake_api_url(ExternalRoutes.intake_api_relationships_by_screening_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
   end
 
   def stub_empty_history_for_screening(screening)
     stub_request(
       :get,
-      host_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
+      intake_api_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
   end
 
@@ -74,7 +74,7 @@ module ScreeningHelpers
   end
 
   def stub_and_visit_edit_screening(screening)
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
@@ -86,7 +86,7 @@ module ScreeningHelpers
   end
 
   def stub_and_visit_show_screening(screening)
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)

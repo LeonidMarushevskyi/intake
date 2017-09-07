@@ -15,7 +15,7 @@ feature 'decision card' do
   end
 
   before(:each) do
-    stub_request(:get, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
@@ -91,7 +91,7 @@ feature 'decision card' do
       access_restrictions: 'sensitive'
     )
 
-    stub_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
       .and_return(json_body(screening.to_json))
 
@@ -110,7 +110,7 @@ feature 'decision card' do
       click_button 'Save'
     end
     expect(
-      a_request(:put, host_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .with(json_body(as_json_without_root_id(screening)))
     ).to have_been_made
     within '#decision-card.show' do

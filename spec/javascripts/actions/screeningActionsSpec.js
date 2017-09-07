@@ -5,6 +5,7 @@ import {
 } from 'actions/screeningActions'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {Map} from 'immutable'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -12,7 +13,7 @@ const mockStore = configureMockStore(middlewares)
 describe('screening actions', () => {
   let store
   beforeEach(() => {
-    store = mockStore()
+    store = mockStore(Map())
   })
 
   describe('.saveScreening', () => {
