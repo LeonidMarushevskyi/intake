@@ -5,6 +5,7 @@ import App from 'common/App'
 import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
+import InvestigationContactContainer from 'investigations/InvestigationContactContainer'
 import {config} from 'common/config'
 
 const historyIntake = useRouterHistory(createHistory)({
@@ -18,6 +19,7 @@ export default (
       <Route path='screenings/:id' component={ScreeningPage}/>
       <Route path='screenings/:id/:mode' component={ScreeningPage} />
       <Route path='investigations/:id' component={ScreeningSummaryContainer} />
+      <Route path='investigations/:investigation_id/contacts/new' component={InvestigationContactContainer} />
     </Route>
   </Router>
 )
