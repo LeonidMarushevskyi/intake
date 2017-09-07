@@ -164,6 +164,20 @@ describe ApplicationController do
             expect(session[:security_token]).to eq security_token
             expect(session[:user_details]).to eq user_details
           end
+
+          context 'when staff repository throws error' do
+            before do
+              expect(StaffRepository).to receive(:find)
+                .with(new_security_token, 'def')
+                .and_throw('Some sort of issue')
+            end
+
+            it 'sets session security token' do
+              process :custom, method: :get, params: { token: security_token }
+              expect(session[:security_token]).to eq security_token
+              expect(session[:user_details]).to eq user_details
+            end
+          end
         end
       end
     end
