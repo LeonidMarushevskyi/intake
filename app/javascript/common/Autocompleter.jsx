@@ -61,7 +61,7 @@ export default class Autocompleter extends React.Component {
   }
 
   shouldRenderSuggestions(value) {
-    return value.trimLeft().length >= MIN_SEARCHABLE_CHARS
+    return value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
   }
 
   mapPersonSearchAttributes(suggestion) {
