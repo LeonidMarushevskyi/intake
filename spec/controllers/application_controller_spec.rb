@@ -167,7 +167,7 @@ describe ApplicationController do
 
           context 'when staff repository throws error' do
             before do
-              expect(StaffRepository).to receive(:find)
+              allow(StaffRepository).to receive(:find)
                 .and_throw('Some sort of issue')
             end
 
