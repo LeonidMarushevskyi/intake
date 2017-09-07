@@ -42,11 +42,13 @@ export default class Autocompleter extends React.Component {
   }
 
   onSuggestionSelected(event, {suggestion}) {
-    this.onSuggestionsClearRequested()
-    this.setState({value: ''})
-    if (!suggestion.props) {
-      // Assume footer components handle their own clicks.
-      this.props.onSelect(suggestion)
+    if (this.props.isSelectable(suggestion)) {
+      this.onSuggestionsClearRequested()
+      this.setState({value: ''})
+      if (!suggestion.props) {
+        // Assume footer components handle their own clicks.
+        this.props.onSelect(suggestion)
+      }
     }
   }
 
@@ -172,11 +174,13 @@ Autocompleter.propTypes = {
     PropTypes.bool,
   ]),
   id: PropTypes.string,
+  isSelectable: PropTypes.func,
   onSelect: PropTypes.func,
 }
 
 Autocompleter.defaultProps = {
   footer: false,
+  isSelectable: () => true,
 }
 
 Autocompleter.displayName = 'Autocompleter'
