@@ -1,6 +1,7 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
+import * as staffActions from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
@@ -37,6 +38,7 @@ export class ScreeningPage extends React.Component {
       'cancelParticipantEdit',
       'cardSave',
       'createParticipant',
+      'canCreateParticipant',
       'deleteParticipant',
       'mergeScreeningWithEdits',
       'participants',
@@ -52,6 +54,7 @@ export class ScreeningPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
+    this.props.staffActions.checkStaffPermission('add_sensitive_people')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,6 +108,10 @@ export class ScreeningPage extends React.Component {
   cancelParticipantEdit(id) {
     const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
     this.setState({participantsEdits: updatedParticipantsEdits})
+  }
+
+  canCreateParticipant(person) {
+    return (person.sensitive === false || this.props.hasAddSensitivePerson)
   }
 
   createParticipant(person) {
@@ -166,6 +173,7 @@ export class ScreeningPage extends React.Component {
               <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
               <Autocompleter id='screening_participants'
                 onSelect={this.createParticipant}
+                isSelectable={this.canCreateParticipant}
                 footer={
                   IntakeConfig.isFeatureInactive('release_two') &&
                   <CreateUnknownParticipant saveCallback={this.createParticipant}/>
@@ -388,6 +396,7 @@ export class ScreeningPage extends React.Component {
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   editable: PropTypes.bool,
+  hasAddSensitivePerson: PropTypes.bool,
   involvements: PropTypes.object.isRequired,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
@@ -395,15 +404,18 @@ ScreeningPage.propTypes = {
   participants: PropTypes.object.isRequired,
   relationships: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
+  staffActions: PropTypes.object.isRequired,
 }
 
 ScreeningPage.defaultProps = {
   mode: 'show',
+  hasAddSensitivePerson: false,
 }
 
 export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
+    hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
@@ -416,6 +428,7 @@ export function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, _ownProps) {
   return {
     actions: bindActionCreators(screeningActions, dispatch),
+    staffActions: bindActionCreators(staffActions, dispatch),
   }
 }
 

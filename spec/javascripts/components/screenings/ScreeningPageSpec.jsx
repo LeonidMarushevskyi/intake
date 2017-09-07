@@ -13,6 +13,7 @@ export const requiredScreeningAttributes = {
 
 export const requiredProps = {
   actions: {fetchScreening: () => null},
+  staffActions: {checkStaffPermission: () => null},
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
@@ -206,20 +207,27 @@ describe('ScreeningPage', () => {
 
   describe('componentDidMount', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
+    const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
     const fetchHistoryOfInvolvements = () => Promise.resolve()
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
         ...requiredProps,
         actions: {fetchScreening, fetchHistoryOfInvolvements},
+        staffActions: {checkStaffPermission},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
+      checkStaffPermission.and.returnValue(promiseSpyObj)
       mount(<ScreeningPage {...props} />)
     })
 
     it('GETs the screening from the server', () => {
       expect(fetchScreening).toHaveBeenCalledWith('222')
+    })
+
+    it('GETs the staff permission from the server', () => {
+      expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
   })
 
@@ -230,11 +238,14 @@ describe('ScreeningPage', () => {
 
     beforeEach(() => {
       const fetchScreening = jasmine.createSpy('fetchScreening')
+      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
       fetchScreening.and.returnValue(Promise.resolve())
+      checkStaffPermission.and.returnValue(Promise.resolve())
       const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
         actions: {fetchScreening, fetchHistoryOfInvolvements},
+        staffActions: {checkStaffPermission},
         params: {id: '222'},
         screening: Immutable.fromJS({
           report_narrative: 'my narrative',
@@ -600,6 +611,11 @@ describe('ScreeningPage', () => {
           it('is passed an id', () => {
             expect(autocompleter.props().id).toEqual('screening_participants')
           })
+          it('is pass the correct isSelectable callback', () => {
+            expect(autocompleter.props().isSelectable).toEqual(
+              component.instance().canCreateParticipant
+            )
+          })
           it('is pass the correct onSelect callback', () => {
             expect(autocompleter.props().onSelect).toEqual(
               component.instance().createParticipant
@@ -627,6 +643,40 @@ describe('ScreeningPage', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true}/>)
       expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
       expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
+    })
+  })
+
+  describe('canCreateParticipant', () => {
+    let instance
+    const sensitive = {sensitive: true}
+    const insensitive = {sensitive: false}
+
+    describe('with permission', () => {
+      beforeEach(() => {
+        instance = shallow(<ScreeningPage {...requiredProps} hasAddSensitivePerson={true} />).instance()
+      })
+
+      it('returns true for sensitive participant', () => {
+        expect(instance.canCreateParticipant(sensitive)).toBe(true)
+      })
+
+      it('returns true for insensitive participant', () => {
+        expect(instance.canCreateParticipant(insensitive)).toBe(true)
+      })
+    })
+
+    describe('without permission', () => {
+      beforeEach(() => {
+        instance = shallow(<ScreeningPage {...requiredProps} hasAddSensitivePerson={false} />).instance()
+      })
+
+      it('returns true for sensitive participant', () => {
+        expect(instance.canCreateParticipant(sensitive)).toBe(false)
+      })
+
+      it('returns true for insensitive participant', () => {
+        expect(instance.canCreateParticipant(insensitive)).toBe(true)
+      })
     })
   })
 
