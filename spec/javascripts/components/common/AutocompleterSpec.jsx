@@ -48,6 +48,31 @@ describe('<Autocompleter />', () => {
       onSelect = jasmine.createSpy('onSelectSpy')
       component = shallow(<Autocompleter onSelect={onSelect} />)
     })
+    describe('selection is selectable', () => {
+      let isSelectable
+      beforeEach(() => {
+        isSelectable = jasmine.createSpy('isSelectable')
+        component = shallow(<Autocompleter onSelect={onSelect} isSelectable={isSelectable} />)
+      })
+      describe('with permission to add sensitive', () => {
+        it('clears the search Text and adds the suggestion', () => {
+          isSelectable.and.returnValue(true)
+          const suggestion = {id: '1', first_name: 'Bart'}
+          component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
+          expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
+          expect(component.state('value')).toEqual('')
+        })
+      })
+      describe('without permission to add sensitive', () => {
+        it('skips onSelect and does not clear suggestions', () => {
+          isSelectable.and.returnValue(false)
+          const suggestion = {id: '1', first_name: 'Bart'}
+          component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
+          expect(onSelect).not.toHaveBeenCalled()
+          expect(component.state('value')).toEqual('')
+        })
+      })
+    })
     describe('selection is a component', () => {
       it('skips onSelect for component selections', () => {
         component.instance().onSuggestionSelected(null, {suggestion: <p>Test Footer</p>})

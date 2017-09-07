@@ -128,10 +128,26 @@ describe ApplicationController do
 
         context 'when provided valid security token and auth_artifact' do
           let(:auth_artifact) do
-            { 'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc' }
+            {
+              'user' => 'user', 'roles' => %w[role1 role2], 'staffId' => 'abc',
+              'privileges' => ['Some privilege', 'Another one']
+            }
           end
 
-          let(:user_details) { { 'first_name' => 'Joe', 'last_name' => 'Cool' } }
+          let(:staff_repo_result) do
+            {
+              'first_name' => 'Joe',
+              'last_name' => 'Cool'
+            }
+          end
+
+          let(:user_details) do
+            {
+              'first_name' => 'Joe',
+              'last_name' => 'Cool',
+              'privileges' => ['Some privilege', 'Another one']
+            }
+          end
 
           let(:security_token) { 'my_secure_token' }
           before do
@@ -140,7 +156,7 @@ describe ApplicationController do
               .and_return(auth_artifact.to_json)
             expect(StaffRepository).to receive(:find)
               .with(security_token, 'abc')
-              .and_return(user_details)
+              .and_return(staff_repo_result)
           end
 
           it 'sets session security token' do
