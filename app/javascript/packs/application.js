@@ -10,7 +10,7 @@ import 'babel-polyfill'
 import 'jquery'
 import 'common/jquery-helpers'
 
-//import 'bootstrap'
+import 'bootstrap'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import configureStore from 'store/configureStore'
