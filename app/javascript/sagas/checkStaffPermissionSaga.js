@@ -3,8 +3,8 @@ import {get} from 'utils/http'
 import {
   checkStaffPermissionSuccess,
   checkStaffPermissionFailure,
+  CHECK_STAFF_PERMISSION,
 } from 'actions/staffActions'
-import {CHECK_STAFF_PERMISSION} from 'actions/staffActionTypes'
 
 export function* checkStaffPermission({permission}) {
   try {

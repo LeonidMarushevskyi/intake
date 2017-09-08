@@ -1,8 +1,6 @@
-import {
-  CHECK_STAFF_PERMISSION,
-  CHECK_STAFF_PERMISSION_SUCCESS,
-  CHECK_STAFF_PERMISSION_FAILURE,
-} from 'actions/staffActionTypes'
+export const CHECK_STAFF_PERMISSION = 'app/staff/CHECK_STAFF_PERMISSION'
+export const CHECK_STAFF_PERMISSION_SUCCESS = 'app/staff/CHECK_STAFF_PERMISSION_SUCCESS'
+export const CHECK_STAFF_PERMISSION_FAILURE = 'app/staff/CHECK_STAFF_PERMISSION_FAILURE'
 
 export function checkStaffPermission(permission) {
   return {type: CHECK_STAFF_PERMISSION, permission}

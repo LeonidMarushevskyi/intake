@@ -1,11 +1,14 @@
 import 'babel-polyfill'
 import {takeLatest, put, call} from 'redux-saga/effects'
 import {get} from 'utils/http'
-import {checkStaffPermissionSaga, checkStaffPermission} from 'sagas/checkStaffPermissionSaga'
-import {CHECK_STAFF_PERMISSION} from 'actions/staffActionTypes'
+import {
+  checkStaffPermissionSaga,
+  checkStaffPermission,
+} from 'sagas/checkStaffPermissionSaga'
 import {
   checkStaffPermissionSuccess,
   checkStaffPermissionFailure,
+  CHECK_STAFF_PERMISSION,
 } from 'actions/staffActions'
 
 describe('checkStaffPermissionSaga', () => {
