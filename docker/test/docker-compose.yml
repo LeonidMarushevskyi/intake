@@ -8,6 +8,7 @@ services:
     command: bin/ci
     environment:
       API_URL: "http://api"
+      FERB_API_URL: "https://ferbapi.preint.cwds.io"
       RAILS_ENV: test
       CI_REPORTS: /reports
       GENERATE_TEST_REPORTS: 'yes'
