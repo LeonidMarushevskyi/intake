@@ -18,6 +18,7 @@ const mapStateToProps = (state, _ownProps) => {
     decisionRationale: state.getIn(['screeningSummary', 'additional_information']),
     responseTime: RESPONSE_TIMES[state.getIn(['screeningSummary', 'decision_detail'])],
     allegations: allegationTypes.toJS(),
+    loaded: Boolean(state.getIn(['screeningSummary', 'id'])),
   }
 }
 
