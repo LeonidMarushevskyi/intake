@@ -4,13 +4,13 @@ import {Link} from 'react-router'
 
 export class ScreeningSummary extends React.Component {
   componentDidMount() {
-    const {actions, params: {id}} = this.props
+    const {actions, id} = this.props
     actions.fetch(id)
   }
 
   render() {
     const {
-      id,
+      screeningId,
       name,
       responseTime,
       allegations,
@@ -25,7 +25,7 @@ export class ScreeningSummary extends React.Component {
         <div className='row'>
           <div className='col-md-4'>
             <label>Name</label>
-            <Link to={`/screenings/${id}`}>{name}</Link>
+            <Link to={`/screenings/${screeningId}`}>{name}</Link>
           </div>
           <div className='col-md-4'>
             <label>Response Time</label>
@@ -80,6 +80,7 @@ ScreeningSummary.propTypes = {
   responseTime: PropTypes.string,
   safetyAlerts: PropTypes.array,
   safetyInformation: PropTypes.string,
+  screeningId: PropTypes.string,
 }
 ScreeningSummary.defaultProps = {
   allegations: [],

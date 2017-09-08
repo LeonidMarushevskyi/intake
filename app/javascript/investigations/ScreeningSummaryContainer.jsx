@@ -5,13 +5,14 @@ import {Set, List} from 'immutable'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-const mapStateToProps = (state, _ownProps) => {
+const mapStateToProps = (state, ownProps) => {
   const allegations = state.getIn(['screeningSummary', 'allegations']) || List()
   const allegationTypes = allegations.reduce((uniq, alegation) => uniq.concat(alegation.get('allegation_types')), Set())
   const safetyAlerts = state.getIn(['screeningSummary', 'safety_alerts']) || List()
   const RESPONSE_TIMES = SCREENING_DECISION_OPTIONS.promote_to_referral.values
   return {
-    id: state.getIn(['screeningSummary', 'id']),
+    id: ownProps.params.id,
+    screeningId: state.getIn(['screeningSummary', 'id']),
     name: state.getIn(['screeningSummary', 'name']),
     safetyAlerts: safetyAlerts.toJS(),
     safetyInformation: state.getIn(['screeningSummary', 'safety_information']),
