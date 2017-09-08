@@ -23,6 +23,7 @@ describe('ScreeningPage when release two is active', () => {
 
     const requiredProps = {
       actions: {fetchScreening: () => null},
+      staffActions: {checkStaffPermission: () => null},
       params: {id: '1'},
       participants: Immutable.List(),
       screening: Immutable.fromJS(requiredScreeningAttributes),

@@ -17,6 +17,7 @@ describe('ScreeningPage when referral_submit feature is active', () => {
 
   const requiredProps = {
     actions: {fetchScreening: () => null},
+    staffActions: {checkStaffPermission: () => null},
     params: {id: '1'},
     participants: Immutable.List(),
     screening: Immutable.fromJS(requiredScreeningAttributes),
