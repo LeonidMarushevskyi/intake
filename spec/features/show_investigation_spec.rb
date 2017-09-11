@@ -51,5 +51,10 @@ feature 'Show Investigation' do
         end
       end
     end
+
+    within '.card.show', text: 'Contact Log' do
+      contact_url = new_investigation_contact_path(investigation_id: investigation_id)
+      expect(page).to have_link 'Create New Contact', href: contact_url
+    end
   end
 end
