@@ -19,7 +19,11 @@ feature 'Edit Screening' do
       sealed: false,
       sensitive: true,
       roles: marge_roles,
-      languages: ['Russian']
+      languages: ['Russian'],
+      ethnicity: {
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican'
+      }
     )
   end
   let(:marge_formatted_name) do
@@ -80,6 +84,8 @@ feature 'Edit Screening' do
         expect(page).to have_field('State', with: marge.addresses.first.state)
         expect(page).to have_field('Zip', with: marge.addresses.first.zip)
         expect(page).to have_field('Address Type', with: marge.addresses.first.type)
+        expect(page.find('input[value="Yes"]')).to be_checked
+        expect(page).to have_field('ethnicity-detail', text: 'Mexican')
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
         fill_in 'Social security number', with: new_ssn
@@ -342,6 +348,32 @@ feature 'Edit Screening' do
         fill_in_react_select('Role', with: 'Non-mandated Reporter')
         has_react_select_field('Role', with: ['Non-mandated Reporter'])
       end
+    end
+  end
+
+  scenario 'when a user modifies existing person ethnicity to null' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      within('#ethnicity') do
+        find('label', text: 'Yes').click
+      end
+      marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
+
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(body: as_json_without_root_id(marge))
+        .and_return(json_body(marge.to_json, status: 200))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .and_return(json_body(marge.to_json, status: 200))
+
+      click_button 'Save'
+      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(json_body(as_json_without_root_id(marge))))
+        .to have_been_made
+    end
+
+    within show_participant_card_selector(marge.id) do
+      expect(page).to_not have_content('Yes - Mexican')
     end
   end
 end
