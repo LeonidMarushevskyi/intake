@@ -9,10 +9,10 @@ describe('ScreeningSummary', () => {
   })
 
   it('renders link to screening with name', () => {
-    const props = {id: '1', name: 'My Screening Name', loaded: true}
+    const props = {id: '1', name: 'My Screening Name', screeningId: '123', loaded: true}
     const component = shallow(<ScreeningSummary {...props} />)
     const link = component.find('Link')
-    expect(link.props().to).toEqual('/screenings/1')
+    expect(link.props().to).toEqual('/screenings/123')
     expect(link.html()).toEqual('<a>My Screening Name</a>')
   })
 
@@ -62,7 +62,7 @@ describe('ScreeningSummary', () => {
     beforeEach(() => {
       fetch = jasmine.createSpy('fetch')
       const id = '456'
-      mount(<ScreeningSummary actions={{fetch}} params={{id}}/>)
+      mount(<ScreeningSummary actions={{fetch}} id={id} />)
     })
 
     it('fetches screening summary', () => {
