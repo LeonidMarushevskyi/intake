@@ -12,6 +12,6 @@ describe('ContactLog', () => {
     const component = renderContactLog({id: 'ABCD1234'})
     const link = component.find('Link')
     expect(link.props().to).toEqual('/investigations/ABCD1234/contacts/new')
-    expect(link.html()).toEqual('<a>Create New Contact</a>')
+    expect(link.html()).toEqual('<a target="_blank">Create New Contact</a>')
   })
 })

@@ -10,7 +10,7 @@ const ContactLog = ({id}) => (
     <div className='card-body'>
       <div className='row'>
         <div className='centered'>
-          <Link to={`/investigations/${id}/contacts/new`}>Create New Contact</Link>
+          <Link to={`/investigations/${id}/contacts/new`} target='_blank'>Create New Contact</Link>
         </div>
       </div>
     </div>

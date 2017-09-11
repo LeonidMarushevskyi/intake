@@ -55,6 +55,7 @@ feature 'Show Investigation' do
     within '.card.show', text: 'Contact Log' do
       contact_url = new_investigation_contact_path(investigation_id: investigation_id)
       expect(page).to have_link 'Create New Contact', href: contact_url
+      expect(page.find_link('Create New Contact')[:target]).to eq '_blank'
     end
   end
 end
