@@ -1,5 +1,6 @@
 import AddressesEditView from 'people/AddressesEditView'
 import DateField from 'common/DateField'
+import EthnicityEditView from 'people/EthnicityEditView'
 import Genders from 'enums/Genders'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import Immutable from 'immutable'
@@ -153,6 +154,10 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
       <AddressesEditView
         addresses={participant.get('addresses') || Immutable.List()}
         onChange={(addresses) => onChange(['addresses'], addresses || [])}
+      />
+      <EthnicityEditView
+        ethnicity={participant.get('ethnicity') || Immutable.Map()}
+        onChange={(ethnicity) => onChange(['ethnicity'], ethnicity)}
       />
       <div className='row'>
         <div className='centered'>
