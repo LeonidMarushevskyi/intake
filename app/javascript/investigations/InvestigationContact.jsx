@@ -26,7 +26,7 @@ class InvestigationContact extends React.Component {
           <form>
             <div className='row'>
               <DateField
-                gridClassName='col-md-6'
+                gridClassName='col-md-12'
                 id='started_at'
                 label='Date/Time'
                 value={started_at}
