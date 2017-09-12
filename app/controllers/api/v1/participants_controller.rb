@@ -33,6 +33,7 @@ module Api
           legacy_ui_id
         ],
         phone_numbers: %i[id number type],
+        races: %i[race race_detail],
         roles: [],
         languages: [],
         ethnicity: %i[hispanic_latino_origin ethnicity_detail]
