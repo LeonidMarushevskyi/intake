@@ -21,7 +21,7 @@ class Participant
   attribute :screening_id
   attribute :roles, Array[String]
   attribute :languages, Array
-  attribute :races, Array
+  attribute :races, Array[Race]
   attribute :ethnicity, Ethnicity, default: ->(_person, _attribute) { Ethnicity.new }
   attribute :legacy_descriptor, LegacyDescriptor
 end
