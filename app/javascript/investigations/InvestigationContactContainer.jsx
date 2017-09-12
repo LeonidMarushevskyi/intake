@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux'
 const mapStateToProps = (state, ownProps) => ({
   investigationId: ownProps.params.investigation_id,
   contact: state.get('contact').toJS(),
+  statuses: state.get('contactStatuses').toJS(),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(actions, dispatch),
