@@ -66,9 +66,13 @@ describe('ParticipantShowView', () => {
       languages: ['English', 'Arabic'],
       date_of_birth: '1990-11-16',
       ssn: '111-22-33__',
+      ethnicity: {
+        hispanic_latino_origin: 'Yes',
+        ethnicity_detail: 'Mexican',
+      },
     })
     const component = shallow(<ParticipantShowView participant={participant} />)
-    expect(component.find('ShowField').length).toEqual(6)
+    expect(component.find('ShowField').length).toEqual(7)
     expect(component.find('ShowField[label="Name"]').html())
       .toContain('Kevin Home Alone McCallister IV')
     expect(component.find('ShowField[label="Gender"]').html())
@@ -81,6 +85,8 @@ describe('ParticipantShowView', () => {
       .toContain('11/16/1990')
     expect(component.find('ShowField[label="Social security number"]').html())
       .toContain('111-22-33  ')
+    expect(component.find('ShowField[label="Hispanic/Latino Origin"]').html())
+      .toContain('Yes - Mexican')
   })
 
   describe('when participant has a partial name', () => {

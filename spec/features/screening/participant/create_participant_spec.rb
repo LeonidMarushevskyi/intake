@@ -26,7 +26,8 @@ def build_participant_from_person_and_screening(person, screening)
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,
-    languages: person.languages
+    languages: person.languages,
+    ethnicity: person.ethnicity
   )
 end
 

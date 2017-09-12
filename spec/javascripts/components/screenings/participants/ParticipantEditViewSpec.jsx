@@ -121,6 +121,19 @@ describe('ParticipantEditView', () => {
         .toEqual('ssn-1')
     })
 
+    describe('ethnicity', () => {
+      it('renders the EthnicityEditView', () => {
+        expect(component.find('EthnicityEditView').length).toEqual(1)
+      })
+
+      it('change event calls onChange with ethnicity', () => {
+        const ethnicity = Immutable.Map({hispanic_latino_origin: 'Yes'})
+        component.find('EthnicityEditView')
+          .simulate('change', ethnicity)
+        expect(onChange).toHaveBeenCalledWith(['ethnicity'], ethnicity)
+      })
+    })
+
     it('renders the save button', () => {
       expect(component.find('.btn.btn-primary').text()).toEqual('Save')
     })

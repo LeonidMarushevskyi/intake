@@ -34,7 +34,8 @@ module Api
         ],
         phone_numbers: %i[id number type],
         roles: [],
-        languages: []
+        languages: [],
+        ethnicity: %i[hispanic_latino_origin ethnicity_detail]
       ].freeze
 
       def create

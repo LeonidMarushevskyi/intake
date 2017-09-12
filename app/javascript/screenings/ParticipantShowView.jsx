@@ -20,6 +20,8 @@ const ParticipantShowView = ({participant}) => {
     // eslint-disable-next-line no-magic-numbers
     return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
   }
+  const {ethnicity} = participant.toJS()
+  const {hispanic_latino_origin, ethnicity_detail} = ethnicity || {}
 
   return (
     <div className='card-body'>
@@ -114,6 +116,13 @@ const ParticipantShowView = ({participant}) => {
             )
           })
         }
+      </div>
+      <div className='row gap-top'>
+        <ShowField gridClassName='col-md-12' label='Hispanic/Latino Origin'>
+          {hispanic_latino_origin &&
+            `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`
+          }
+        </ShowField>
       </div>
     </div>
   )

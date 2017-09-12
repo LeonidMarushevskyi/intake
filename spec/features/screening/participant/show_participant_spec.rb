@@ -28,7 +28,11 @@ feature 'Show Screening' do
     addresses: [address],
     roles: ['Victim', 'Mandated Reporter'],
     phone_numbers: [phone_number],
-    languages: %w[Korean Lao Hawaiian]
+    languages: %w[Korean Lao Hawaiian],
+    ethnicity: {
+      hispanic_latino_origin: 'Yes',
+      ethnicity_detail: 'Mexican'
+    }
   )
   existing_screening = FactoryGirl.create(
     :screening,
@@ -76,6 +80,8 @@ feature 'Show Screening' do
         expect(page).to have_content('New York')
         expect(page).to have_content(address.zip)
         expect(page).to have_content(address.type)
+        expect(page).to have_content('Hispanic/Latino Origin')
+        expect(page).to have_content('Yes - Mexican')
       end
     end
   end
