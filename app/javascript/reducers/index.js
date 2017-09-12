@@ -4,6 +4,7 @@ import relationships from 'reducers/relationshipsReducer'
 import screening from 'reducers/screeningReducer'
 import staff from 'reducers/staffReducer'
 import screeningSummary from 'reducers/screeningSummaryReducer'
+import contact from 'reducers/contactReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   screening,
   staff,
   screeningSummary,
+  contact,
 })
 
 export default rootReducer
