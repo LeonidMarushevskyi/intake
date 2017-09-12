@@ -9,7 +9,11 @@ feature 'Create Investigation Contact' do
     within '.card-header' do
       expect(page).to have_content("New Contact - Investigation #{investigation_id}")
     end
-
-    fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
+    within '.card-body' do
+      fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
+      select 'Attempted', from: 'Status'
+    end
+    expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
+    expect(page).to have_select('Status', selected: 'Attempted')
   end
 end
