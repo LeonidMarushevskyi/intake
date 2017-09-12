@@ -348,4 +348,36 @@ describe('ParticipantEditView', () => {
         .toEqual('111-11-1111')
     })
   })
+
+  describe('races', () => {
+    const races = Immutable.fromJS([
+      {race: 'White', race_detail: 'Middle Eastern'}, {race: 'Asian', race_detail: 'Cambodian'},
+    ])
+    const participant = Immutable.fromJS({
+      ...requiredParticipantProps,
+      id: '199',
+      first_name: 'Lisa',
+      last_name: 'Simpson',
+      date_of_birth: '2016-12-31',
+      gender: 'female',
+      ssn: 'ssn-1',
+      races: races,
+      addresses: [{}],
+      phone_numbers: [{}],
+    })
+    let component
+    beforeEach(() => {
+      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} />)
+    })
+    it('renders the races in edit view', () => {
+      expect(component.find('RacesEditView').length).toEqual(1)
+    })
+    it('passes the paricipant race info', () => {
+      expect(component.find('RacesEditView').props().races).toEqual(races)
+    })
+    it('fires the onChange call when a field changes', () => {
+      component.find('RacesEditView').simulate('change', {target: {value: {race: 'Asian'}}})
+      expect(onChange).toHaveBeenCalledWith(['races'], {target: {value: {race: 'Asian'}}})
+    })
+  })
 })
