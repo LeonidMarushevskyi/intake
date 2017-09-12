@@ -21,6 +21,7 @@ describe('Store', () => {
       involvements: [],
       staff: {},
       screeningSummary: {},
+      contact: {},
     })
     store = createStore(rootReducer)
   })
