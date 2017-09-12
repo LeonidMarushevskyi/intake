@@ -6,7 +6,7 @@ class InvestigationContact extends React.Component {
   componentDidMount() {
     const {
       investigationId,
-      actions: {setContact}
+      actions: {setContact},
     } = this.props
     setContact({investigation_id: investigationId})
   }
@@ -14,7 +14,7 @@ class InvestigationContact extends React.Component {
     const {
       investigationId,
       contact: {started_at},
-      actions: {setContact}
+      actions: {setContact},
     } = this.props
     const onChange = (fieldValues) => setContact({...this.props.contact, ...fieldValues})
     return (
