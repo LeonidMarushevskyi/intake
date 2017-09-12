@@ -28,7 +28,7 @@ describe('InvestigationContact', () => {
     const setContact = jasmine.createSpy('setContact')
     const component = renderContact({actions: {setContact}, contact: {started_at: ''}})
     component.find('DateField').simulate('change', '123')
-    expect(setContact).toHaveBeenCalled()
+    expect(setContact).toHaveBeenCalledWith({started_at: '123'})
   })
 
   it('calls setContact when the component mounts', () => {
