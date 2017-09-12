@@ -126,7 +126,7 @@ describe('ParticipantEditView', () => {
         expect(component.find('EthnicityEditView').length).toEqual(1)
       })
 
-      it('change event calls setField with ethnicity', () => {
+      it('change event calls onChange with ethnicity', () => {
         const ethnicity = Immutable.Map({hispanic_latino_origin: 'Yes'})
         component.find('EthnicityEditView')
           .simulate('change', ethnicity)
