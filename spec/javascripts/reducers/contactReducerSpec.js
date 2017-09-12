@@ -11,11 +11,13 @@ describe('contactReducer', () => {
       const action = setContact({
         investigation_id: '123',
         started_at: '2016-08-11T18:24:22.157Z',
+        status: 'C',
       })
       expect(contactReducer(Map(), action)).toEqual(
         Map({
           investigation_id: '123',
           started_at: '2016-08-11T18:24:22.157Z',
+          status: 'C',
         })
       )
     })
