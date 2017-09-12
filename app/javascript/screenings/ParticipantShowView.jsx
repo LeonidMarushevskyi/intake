@@ -124,6 +124,18 @@ const ParticipantShowView = ({participant}) => {
           }
         </ShowField>
       </div>
+      <div className='row gap-top'>
+        <ShowField gridClassName='col-md-12' label='Race'>
+          {
+            participant.get('races') && participant.get('races').map((raceInformation) => {
+              const race = raceInformation.get('race')
+              const raceDetail = raceInformation.get('race_detail')
+              const raceDetailText = (raceDetail && ` - ${raceDetail}`) || ''
+              return `${race}${raceDetailText}`
+            }).join(', ')
+          }
+        </ShowField>
+      </div>
     </div>
   )
 }
