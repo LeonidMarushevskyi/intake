@@ -7,9 +7,10 @@ describe('InvestigationContact', () => {
     investigationId = 'ABC123',
     actions = {},
     contact = {},
+    errors = {},
     statuses = [],
   }) {
-    const props = {investigationId, actions, contact, statuses}
+    const props = {investigationId, actions, contact, statuses, errors}
     return shallow(<InvestigationContact {...props} />)
   }
 
@@ -20,9 +21,12 @@ describe('InvestigationContact', () => {
   })
 
   it('displays the started at datetime picker', () => {
-    const component = renderContact({contact: {started_at: '2016-08-11T18:24:22.157Z'}})
+    const component = renderContact({
+      contact: {started_at: '2016-08-11T18:24:22.157Z'},
+      errors: {started_at: ['Things are wrong!']},
+    })
     const startedAt = component.find('DateField')
-    expect(startedAt.props().value).toEqual('2016-08-11T18:24:22.157Z')
+    expect(startedAt.props().errors).toEqual(['Things are wrong!'])
   })
 
   it('changing started at fires setContact', () => {

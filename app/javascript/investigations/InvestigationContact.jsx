@@ -17,6 +17,7 @@ class InvestigationContact extends React.Component {
       contact: {started_at, status},
       actions: {setContact},
       statuses,
+      errors,
     } = this.props
     const onChange = (fieldValues) => setContact({...this.props.contact, ...fieldValues})
     return (
@@ -33,6 +34,7 @@ class InvestigationContact extends React.Component {
                 label='Date/Time'
                 value={started_at}
                 onChange={(value) => onChange({started_at: value})}
+                errors={errors.started_at}
               />
             </div>
             <div className='row'>
@@ -57,8 +59,13 @@ class InvestigationContact extends React.Component {
 InvestigationContact.propTypes = {
   actions: PropTypes.object,
   contact: PropTypes.object,
+  errors: PropTypes.object,
   investigationId: PropTypes.string.isRequired,
   statuses: PropTypes.array.isRequired,
+}
+
+InvestigationContact.defaultProps = {
+  errors: {},
 }
 
 export default InvestigationContact
