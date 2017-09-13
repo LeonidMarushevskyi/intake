@@ -72,4 +72,18 @@ describe ExternalRoutes do
       expect(described_class.intake_api_staff_path(24)).to eq('/api/v1/staff/24')
     end
   end
+
+  describe '.ferb_api_investigations_screening' do
+    it 'returns /investigations/:id/screening' do
+      expect(described_class.ferb_api_investigations_screening(24)).to eq(
+        '/investigations/24/screening'
+      )
+    end
+  end
+
+  describe '.ferb_api_lov' do
+    it 'returns /lov' do
+      expect(described_class.ferb_api_lov).to eq('/lov')
+    end
+  end
 end
