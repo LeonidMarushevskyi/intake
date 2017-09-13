@@ -16,7 +16,7 @@ ShowField.propTypes = {
     PropTypes.number,
     PropTypes.element,
   ]),
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   label: PropTypes.string.isRequired,
   labelClassName: PropTypes.string,

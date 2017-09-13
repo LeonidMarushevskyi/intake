@@ -19,7 +19,7 @@ SelectField.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.object,
   ]).isRequired,
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

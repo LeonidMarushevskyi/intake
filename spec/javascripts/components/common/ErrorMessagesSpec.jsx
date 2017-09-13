@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import ErrorMessages from 'common/ErrorMessages'
 
@@ -20,8 +19,8 @@ describe('ErrorMessages', () => {
     })
   })
 
-  describe('when an empty list is passed for errors', () => {
-    const props = {id: 'myInputFieldId', errors: Immutable.List()}
+  describe('when errors is an empty array', () => {
+    const props = {id: 'myInputFieldId', errors: []}
 
     it('does not render error messages', () => {
       component = shallow(<ErrorMessages {...props}/>)
@@ -30,7 +29,7 @@ describe('ErrorMessages', () => {
   })
 
   describe('when there are errors', () => {
-    const errors = Immutable.fromJS(['You have failed this city', 'Stick to the plan!'])
+    const errors = ['You have failed this city', 'Stick to the plan!']
     describe('when id is passed', () => {
       beforeEach(() => {
         const props = {id: 'myInputFieldId', errors}

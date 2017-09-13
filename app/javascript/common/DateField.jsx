@@ -85,7 +85,7 @@ DateField.defaultProps = {
 }
 
 DateField.propTypes = {
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   hasCalendar: PropTypes.bool,
   hasTime: PropTypes.bool,

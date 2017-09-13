@@ -31,7 +31,7 @@ const CheckboxField = ({
 CheckboxField.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   id: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,

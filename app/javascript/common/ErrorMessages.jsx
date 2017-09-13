@@ -12,7 +12,7 @@ const ErrorMessages = ({id, errors}) => (
 )
 
 ErrorMessages.propTypes = {
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   id: PropTypes.string,
 }
 export default ErrorMessages

@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import CheckboxField from 'common/CheckboxField'
 
@@ -8,7 +7,7 @@ describe('CheckboxField', () => {
   let onBlur
   let component
   const props = {
-    errors: Immutable.Map(),
+    errors: [],
     id: 'myCheckboxFieldId',
     value: 'this-is-my-value',
   }
@@ -25,7 +24,7 @@ describe('CheckboxField', () => {
   })
 
   it('passes errors to the ErrorMessages', () => {
-    expect(component.find('ErrorMessages').props().errors).toEqual(Immutable.Map())
+    expect(component.find('ErrorMessages').props().errors).toEqual([])
   })
 
   describe('with no flags set', () => {
