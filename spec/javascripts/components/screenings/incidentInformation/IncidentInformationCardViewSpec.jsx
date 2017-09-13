@@ -18,7 +18,7 @@ describe('IncidentInformationCardView', () => {
       },
       location_type: 'Juvenile Detention',
     }),
-    errors: Immutable.List(),
+    errors: Immutable.Map(),
     editable: true,
   }
 
@@ -52,7 +52,7 @@ describe('IncidentInformationCardView', () => {
       })
 
       it('passes errors to the edit view', () => {
-        expect(component.find('IncidentInformationEditView').props().errors).toEqual(Immutable.List())
+        expect(component.find('IncidentInformationEditView').props().errors).toEqual({})
       })
 
       describe('when a user clicks Cancel', () => {
@@ -96,7 +96,7 @@ describe('IncidentInformationCardView', () => {
       })
 
       it('passes errors to the edit view', () => {
-        expect(component.find('IncidentInformationShowView').props().errors).toEqual(Immutable.List())
+        expect(component.find('IncidentInformationShowView').props().errors).toEqual({})
       })
     })
   })
@@ -115,8 +115,7 @@ describe('IncidentInformationCardView', () => {
       const component = shallow(<IncidentInformationCardView {...props} mode={'edit'} errors={errorProps}/>)
       component.setState({displayErrorsFor: Immutable.List(['foo'])})
       const errors = component.instance().filteredErrors()
-      expect(errors.toJS()).toEqual({foo: ['foo error']})
-      expect(Immutable.is(errors, Immutable.fromJS({foo: ['foo error']}))).toEqual(true)
+      expect(errors).toEqual({foo: ['foo error']})
     })
   })
 })
