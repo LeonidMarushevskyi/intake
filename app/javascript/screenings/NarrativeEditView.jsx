@@ -6,7 +6,7 @@ const NarrativeEditView = ({errors, screening, onBlur, onCancel, onChange, onSav
   <div className='card-body'>
     <div className='row'>
       <FormField
-        errors={errors.get('report_narrative')}
+        errors={errors.report_narrative}
         gridClassName='col-md-12'
         id='report_narrative'
         label='Report Narrative'

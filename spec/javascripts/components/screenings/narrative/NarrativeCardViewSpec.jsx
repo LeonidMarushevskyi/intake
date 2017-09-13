@@ -86,7 +86,7 @@ describe('NarrativeCardView', () => {
             })
 
             it('validates the field', () => {
-              expect(component.update().find('NarrativeShowView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
+              expect(component.update().find('NarrativeShowView').props().errors.report_narrative).toContain('Please enter a narrative.')
             })
           })
         })
@@ -97,12 +97,12 @@ describe('NarrativeCardView', () => {
           const oldErrors = Immutable.fromJS({report_narrative: ['The rules of gravity have begun to apply!']})
           component.setState({errors: oldErrors})
           component.find('textarea').simulate('blur', {target: {value: '   '}})
-          expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
+          expect(component.update().find('NarrativeEditView').props().errors.report_narrative).toContain('Please enter a narrative.')
         })
 
         it('does not validate if there are no errors on the field', () => {
           component.find('textarea').simulate('blur', {target: {value: ''}})
-          expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
+          expect(component.update().find('NarrativeEditView').props().errors.report_narrative).toContain('Please enter a narrative.')
         })
       })
 
@@ -111,13 +111,13 @@ describe('NarrativeCardView', () => {
           const oldErrors = Immutable.fromJS({report_narrative: ['The rules of gravity have begun to apply!']})
           component.setState({errors: oldErrors})
           component.find('textarea').simulate('change', {target: {value: '   '}})
-          expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
+          expect(component.update().find('NarrativeEditView').props().errors.report_narrative).toContain('Please enter a narrative.')
           expect(props.onChange).toHaveBeenCalledWith(['report_narrative'], '   ', undefined)
         })
 
         it('does not validate if there are no errors on the field', () => {
           component.find('textarea').simulate('change', {target: {value: ''}})
-          expect(component.update().find('NarrativeEditView').props().errors.get('report_narrative')).toEqual(undefined)
+          expect(component.update().find('NarrativeEditView').props().errors.report_narrative).toEqual(undefined)
           expect(props.onChange).toHaveBeenCalledWith(['report_narrative'], null, undefined)
         })
       })
@@ -135,7 +135,7 @@ describe('NarrativeCardView', () => {
           })
 
           it('no error on initial load', () => {
-            expect(component.find('NarrativeEditView').props().errors.get('report_narrative')).toEqual(undefined)
+            expect(component.find('NarrativeEditView').props().errors.report_narrative).toEqual(undefined)
           })
         })
       })
@@ -160,7 +160,7 @@ describe('NarrativeCardView', () => {
         })
 
         it('the error is passed down', () => {
-          expect(component.find('NarrativeShowView').props().errors.get('report_narrative').toJS()).toContain('Please enter a narrative.')
+          expect(component.find('NarrativeShowView').props().errors.report_narrative).toContain('Please enter a narrative.')
         })
       })
     })

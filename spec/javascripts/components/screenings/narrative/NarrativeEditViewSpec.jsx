@@ -22,7 +22,7 @@ describe('NarrativeEditView', () => {
       onChange = jasmine.createSpy('onChange')
       component = mount(
         <NarrativeEditView
-          errors={Immutable.Map()}
+          errors={{}}
           onBlur={onBlur}
           onCancel={onCancel}
           onChange={onChange}
@@ -77,7 +77,7 @@ describe('NarrativeEditView', () => {
   describe('with INVALID data', () => {
     let errors
     beforeEach(() => {
-      errors = Immutable.fromJS({report_narrative: ['Please enter a narrative.']})
+      errors = {report_narrative: ['Please enter a narrative.']}
       screening = Immutable.fromJS({
         report_narrative: '',
       })
@@ -98,7 +98,7 @@ describe('NarrativeEditView', () => {
     })
 
     it('passes the error props correctly', () => {
-      expect(component.find('FormField').props().errors).toEqual(errors.get('report_narrative'))
+      expect(component.find('FormField').props().errors).toEqual(errors.report_narrative)
     })
 
     it('renders the narrative error', () => {
