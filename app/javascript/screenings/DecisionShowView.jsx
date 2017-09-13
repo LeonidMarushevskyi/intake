@@ -27,13 +27,13 @@ const DecisionShowView = ({screening, errors}) => {
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-6'>
-          <ShowField label='Screening Decision' errors={errors.get('screening_decision')} required>
+          <ShowField label='Screening Decision' errors={errors.screening_decision} required>
             {screening.get('screening_decision') && SCREENING_DECISION[screening.get('screening_decision')] || ''}
           </ShowField>
           <ShowField
             label={decisionDetailLabel}
             required={decisionDetailLabel === 'Response time'}
-            errors={errors.get('screening_decision_detail')}
+            errors={errors.screening_decision_detail}
           >
             {decisionDetailText}
           </ShowField>

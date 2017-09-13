@@ -116,7 +116,7 @@ describe('conditional decision options', () => {
 describe('DecisionEditView', () => {
   let component
   let props
-  const errors = Immutable.fromJS({screening_decision: [], screening_decision_detail: []})
+  const errors = {screening_decision: [], screening_decision_detail: []}
 
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
@@ -137,11 +137,11 @@ describe('DecisionEditView', () => {
   })
 
   it('renders errors for screening_decision', () => {
-    expect(component.find('#screening_decision').props().errors).toEqual(Immutable.List())
+    expect(component.find('#screening_decision').props().errors).toEqual([])
   })
 
   it('renders errors for screening_decision_detail', () => {
-    expect(component.find('#decisionDetail').props().errors).toEqual(Immutable.List())
+    expect(component.find('#decisionDetail').props().errors).toEqual([])
   })
 
   it('calls onBlur with the proper field name for screening decision', () => {
@@ -186,7 +186,7 @@ describe('DecisionEditView', () => {
     const selectField = component.find('SelectField[label="Category"]')
     selectField.simulate('blur')
     expect(props.onBlur).toHaveBeenCalledWith('screening_decision_detail')
-    expect(selectField.props().errors).toEqual(Immutable.List())
+    expect(selectField.props().errors).toEqual([])
     expect(selectField.length).toEqual(1)
     expect(component.find('InputField[label="Service name"]').length).toEqual(0)
   })

@@ -7,7 +7,7 @@ import {shallow} from 'enzyme'
 describe('DecisionShowView', () => {
   let component
   let onEdit
-  const errors = Immutable.fromJS({screening_decision: []})
+  const errors = {screening_decision: []}
 
   beforeEach(() => {
     const sdmPath = 'https://ca.sdmdata.org'
@@ -36,7 +36,7 @@ describe('DecisionShowView', () => {
   })
 
   it('renders errors passed for screening decision', () => {
-    expect(component.find('ShowField[label="Screening Decision"]').props().errors).toEqual(Immutable.List())
+    expect(component.find('ShowField[label="Screening Decision"]').props().errors).toEqual([])
   })
 
   it('renders the show fields with text input decision_detail', () => {
