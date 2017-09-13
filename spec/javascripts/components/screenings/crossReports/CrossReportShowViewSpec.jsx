@@ -67,12 +67,12 @@ describe('CrossReportShowView', () => {
 
     it('renders an error for communication_method', () => {
       const field = component.find('ShowField[label="Communication Method"]')
-      expect(field.props().errors).toEqual(Immutable.List(['Error 2']))
+      expect(field.props().errors).toEqual(['Error 2'])
     })
 
     it('renders an error for reported_on', () => {
       const field = component.find('ShowField[label="Cross Reported on Date"]')
-      expect(field.props().errors).toEqual(Immutable.List(['Error 3']))
+      expect(field.props().errors).toEqual(['Error 3'])
     })
   })
 

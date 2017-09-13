@@ -14,9 +14,9 @@ export default class CrossReportShowView extends React.Component {
   render() {
     const crossReports = this.props.crossReports.toJS()
     const hasCrossReports = !_.isEmpty(crossReports)
-    const agencyTypeErrors = this.props.errors.toSet().flatMap((item) => item.get('agency_type'))
-    const reportedOnErrors = this.props.errors.toSet().flatMap((item) => item.get('reported_on'))
-    const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method'))
+    const agencyTypeErrors = this.props.errors.toSet().flatMap((item) => item.get('agency_type')).toJS()
+    const reportedOnErrors = this.props.errors.toSet().flatMap((item) => item.get('reported_on')).toJS()
+    const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method')).toJS()
     let reportedOn
     let communicationMethod
     const [firstCrossReport] = crossReports
@@ -38,7 +38,9 @@ export default class CrossReportShowView extends React.Component {
                       return (
                         <div key={index}>
                           <li>{agencyTypeAndName}</li>
-                          <ErrorMessages errors={this.props.errors.getIn([agency_type, 'agency_name'])}/>
+                          <ErrorMessages
+                            errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
+                          />
                         </div>
                       )
                     })
@@ -51,7 +53,7 @@ export default class CrossReportShowView extends React.Component {
           firstCrossReport &&
             <div className='row'>
               <ShowField
-                errors={reportedOnErrors.toList()}
+                errors={reportedOnErrors}
                 gridClassName='col-md-6'
                 label='Cross Reported on Date'
                 required={hasCrossReports}
@@ -59,7 +61,7 @@ export default class CrossReportShowView extends React.Component {
                 {reportedOn}
               </ShowField>
               <ShowField
-                errors={communicationErrors.toList()}
+                errors={communicationErrors}
                 gridClassName='col-md-6'
                 label='Communication Method'
                 required={hasCrossReports}
