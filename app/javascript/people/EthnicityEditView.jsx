@@ -32,7 +32,7 @@ export class EthnicityEditView extends React.Component {
   }
 
   renderEthnicityAndDetails(ethnicityOptions) {
-    const {ethnicity} = this.props
+    const {id, ethnicity} = this.props
     return (
       <div className='col-md-6'>
         <ul className='unstyled-list'>
@@ -45,7 +45,7 @@ export class EthnicityEditView extends React.Component {
                 <li key={option}>
                   <div className='half-gap-bottom'>
                     <CheckboxField
-                      id={`ethnicity-${option.replace(/ /gi, '_')}`}
+                      id={`${id}-ethnicity-${option.replace(/ /gi, '_')}`}
                       value={option}
                       checked={selected}
                       disabled={Boolean(disabled)}
@@ -53,7 +53,7 @@ export class EthnicityEditView extends React.Component {
                     />
                     {option === 'Yes' && hispanicLatinoOrigin === 'Yes' &&
                     <SelectField
-                      id={'ethnicity-detail'}
+                      id={`${id}-ethnicity-detail`}
                       label={''}
                       value={ethnicity.get('ethnicity_detail')}
                       onChange={(event) => this.changeEthnicityDetail(event.target.value)}
@@ -91,6 +91,7 @@ export class EthnicityEditView extends React.Component {
 
 EthnicityEditView.propTypes = {
   ethnicity: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 }
 

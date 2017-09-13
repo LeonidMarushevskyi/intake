@@ -124,6 +124,7 @@ describe('ParticipantEditView', () => {
     describe('ethnicity', () => {
       it('renders the EthnicityEditView', () => {
         expect(component.find('EthnicityEditView').length).toEqual(1)
+        expect(component.find('EthnicityEditView').props().id).toEqual('participant-199')
       })
 
       it('change event calls onChange with ethnicity', () => {

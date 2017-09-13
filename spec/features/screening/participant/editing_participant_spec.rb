@@ -89,7 +89,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Address Type', with: marge.addresses.first.type)
         within '#ethnicity' do
           expect(page.find('input[value="Yes"]')).to be_checked
-          expect(page).to have_field('ethnicity-detail', text: 'Mexican')
+          expect(page).to have_field("participant-#{marge.id}-ethnicity-detail", text: 'Mexican')
         end
         within '#race' do
           expect(page.find('input[value="Asian"]')).to be_checked

@@ -10,6 +10,7 @@ describe('EthnicityEditView', () => {
     onChange = jasmine.createSpy('onChange')
     const props = {
       ethnicity: Immutable.Map(),
+      id: 'person-123',
       onChange: onChange,
     }
     component = shallow(<EthnicityEditView {...props}/>)
@@ -18,6 +19,13 @@ describe('EthnicityEditView', () => {
   it('renders the ethnicity checkboxes', () => {
     const checkboxes = component.find('CheckboxField')
     expect(checkboxes.length).toEqual(5)
+    expect(checkboxes.nodes.map((checkbox) => checkbox.props.id)).toEqual([
+      'person-123-ethnicity-Yes',
+      'person-123-ethnicity-No',
+      'person-123-ethnicity-Unknown',
+      'person-123-ethnicity-Abandoned',
+      'person-123-ethnicity-Declined_to_answer',
+    ])
     expect(checkboxes.nodes.map((checkbox) => checkbox.props.value)).toEqual([
       'Yes',
       'No',
@@ -33,6 +41,7 @@ describe('EthnicityEditView', () => {
         hispanic_latino_origin: 'Yes',
         ethnicity_detail: 'Mexican',
       }),
+      id: 'person-123',
       onChange: onChange,
     }
     component = shallow(<EthnicityEditView {...props}/>)
