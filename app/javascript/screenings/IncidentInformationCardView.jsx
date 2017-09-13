@@ -56,7 +56,7 @@ export default class IncidentInformationCardView extends React.Component {
   filteredErrors() {
     return this.props.errors.filter((_value, key) => (
       this.state.displayErrorsFor.includes(key)
-    ))
+    )).toJS()
   }
 
   render() {

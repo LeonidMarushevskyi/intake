@@ -67,24 +67,21 @@ describe('ScreeningInformationCardView', () => {
       component.instance().validateField('communication_method', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {communication_method: ['Please select a communication method.']}
-      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-      expect(errorProps.toJS()).toEqual(expectedErrors)
+      expect(errorProps).toEqual(expectedErrors)
     })
 
     it('adds errors for assigned social worker being required', () => {
       component.instance().validateField('assignee', '')
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {assignee: ['Please enter an assigned worker.']}
-      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-      expect(errorProps.toJS()).toEqual(expectedErrors)
+      expect(errorProps).toEqual(expectedErrors)
     })
 
     it('adds errors for start date/time being required', () => {
       component.instance().validateField('started_at', null)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {started_at: ['Please enter a screening start date.']}
-      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-      expect(errorProps.toJS()).toEqual(expectedErrors)
+      expect(errorProps).toEqual(expectedErrors)
     })
 
     it('adds errors for end date/time being in the future', () => {
@@ -92,8 +89,7 @@ describe('ScreeningInformationCardView', () => {
       component.instance().validateField('ended_at', futureDate)
       const errorProps = component.update().find('ScreeningInformationEditView').props().errors
       const expectedErrors = {ended_at: ['The end date and time cannot be in the future.']}
-      expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-      expect(errorProps.toJS()).toEqual(expectedErrors)
+      expect(errorProps).toEqual(expectedErrors)
     })
 
     describe('when start date is in the future, but before the end date', () => {
@@ -110,8 +106,7 @@ describe('ScreeningInformationCardView', () => {
         component.instance().validateField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time cannot be in the future.']}
-        expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-        expect(errorProps.toJS()).toEqual(expectedErrors)
+        expect(errorProps).toEqual(expectedErrors)
       })
     })
 
@@ -129,8 +124,7 @@ describe('ScreeningInformationCardView', () => {
         component.instance().validateField('started_at', date)
         const errorProps = component.update().find('ScreeningInformationEditView').props().errors
         const expectedErrors = {started_at: ['The start date and time must be before the end date and time.']}
-        expect(Immutable.is(errorProps, Immutable.fromJS(expectedErrors))).toEqual(true)
-        expect(errorProps.toJS()).toEqual(expectedErrors)
+        expect(errorProps).toEqual(expectedErrors)
       })
     })
   })
@@ -141,7 +135,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('does not have errors when all values are valid', () => {
-      expect(component.find('ScreeningInformationEditView').props().errors).toEqual(Immutable.Map())
+      expect(component.find('ScreeningInformationEditView').props().errors).toEqual({})
     })
 
     it('renders the edit card', () => {
@@ -154,7 +148,7 @@ describe('ScreeningInformationCardView', () => {
     })
 
     it('passes errors from the state', () => {
-      expect(component.find('ScreeningInformationEditView').props().errors).toEqual(Immutable.Map())
+      expect(component.find('ScreeningInformationEditView').props().errors).toEqual({})
     })
 
     it('renders the save and cancel button', () => {
@@ -244,7 +238,7 @@ describe('ScreeningInformationCardView', () => {
       })
 
       it('passes errors from the state', () => {
-        expect(component.find('ScreeningInformationShowView').props().errors.toJS())
+        expect(component.find('ScreeningInformationShowView').props().errors)
           .toEqual({
             assignee: [],
             communication_method: [],
@@ -267,7 +261,7 @@ describe('ScreeningInformationCardView', () => {
         }
         component = mount(<ScreeningInformationCardView {...props} mode='show' />)
         const errors = component.find('ScreeningInformationShowView').props().errors
-        expect(errors.get('started_at').toJS()).toContain('The start date and time cannot be in the future.')
+        expect(errors.started_at).toContain('The start date and time cannot be in the future.')
       })
 
       it('validates that end date/time cannot be in the future', () => {
@@ -283,7 +277,7 @@ describe('ScreeningInformationCardView', () => {
         }
         component = mount(<ScreeningInformationCardView {...props} mode='show' />)
         const errors = component.find('ScreeningInformationShowView').props().errors
-        expect(errors.get('ended_at').toJS()).toContain('The end date and time cannot be in the future.')
+        expect(errors.ended_at).toContain('The end date and time cannot be in the future.')
       })
 
       it('validates that start date/time cannot be after end date/time', () => {
@@ -299,7 +293,7 @@ describe('ScreeningInformationCardView', () => {
         }
         component = mount(<ScreeningInformationCardView {...props} mode='show' />)
         const errors = component.find('ScreeningInformationShowView').props().errors
-        expect(errors.get('started_at').toJS()).toContain('The start date and time must be before the end date and time.')
+        expect(errors.started_at).toContain('The start date and time must be before the end date and time.')
       })
     })
 
@@ -320,15 +314,15 @@ describe('ScreeningInformationCardView', () => {
       })
 
       it('validates the presence of the assigned social worker field', () => {
-        expect(errors.get('assignee').toJS()).toContain('Please enter an assigned worker.')
+        expect(errors.assignee).toContain('Please enter an assigned worker.')
       })
 
       it('validates the presence of the communication method field', () => {
-        expect(errors.get('communication_method').toJS()).toContain('Please select a communication method.')
+        expect(errors.communication_method).toContain('Please select a communication method.')
       })
 
       it('validates the presence of the start date field', () => {
-        expect(errors.get('started_at').toJS()).toContain('Please enter a screening start date.')
+        expect(errors.started_at).toContain('Please enter a screening start date.')
       })
     })
   })

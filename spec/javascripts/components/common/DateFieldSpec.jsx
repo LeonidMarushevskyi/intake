@@ -2,7 +2,6 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 import DateField from 'common/DateField'
 import moment from 'moment'
-import Immutable from 'immutable'
 
 describe('DateField', () => {
   let component
@@ -123,10 +122,10 @@ describe('DateField', () => {
 
   describe('when errors exist', () => {
     it('sends the errors to FormField', () => {
-      const errors = Immutable.List(['Error 1', 'Error 2'])
+      const errors = ['Error 1', 'Error 2']
       component = shallow(<DateField {...props} errors={errors} />)
       expect(component.find('FormField').props().errors)
-        .toEqual(Immutable.List(['Error 1', 'Error 2']))
+        .toEqual(['Error 1', 'Error 2'])
     })
   })
 

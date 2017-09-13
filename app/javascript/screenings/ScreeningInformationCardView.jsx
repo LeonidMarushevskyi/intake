@@ -88,7 +88,7 @@ export default class ScreeningInformationCardView extends React.Component {
     const {errors, mode} = this.state
     const allprops = {
       edit: {
-        errors: errors,
+        errors: errors.toJS(),
         validateOnChange: this.validateOnChange,
         validateField: this.validateField,
         onCancel: this.onCancel,
@@ -99,7 +99,7 @@ export default class ScreeningInformationCardView extends React.Component {
       show: {
         onEdit: this.onEdit,
         screening: this.props.screening,
-        errors: errors,
+        errors: errors.toJS(),
       },
     }
     const ScreeningInformationView = (mode === 'edit') ? ScreeningInformationEditView : ScreeningInformationShowView

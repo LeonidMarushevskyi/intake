@@ -41,7 +41,7 @@ MaskedInputField.defaultProps = {
 }
 
 MaskedInputField.propTypes = {
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

@@ -108,7 +108,7 @@ describe('DecisionCardView', () => {
     })
 
     it('passes errors from the state', () => {
-      expect(component.find('DecisionShowView').props().errors).toEqual(Immutable.Map())
+      expect(component.find('DecisionShowView').props().errors).toEqual({})
     })
   })
 
@@ -126,8 +126,7 @@ describe('DecisionCardView', () => {
       const component = shallow(<DecisionCardView {...props} mode={'edit'} errors={errorProps}/>)
       component.setState({displayErrorsFor: Immutable.List(['foo'])})
       const errors = component.instance().filteredErrors()
-      expect(errors.toJS()).toEqual({foo: ['foo error']})
-      expect(Immutable.is(errors, Immutable.fromJS({foo: ['foo error']}))).toEqual(true)
+      expect(errors).toEqual({foo: ['foo error']})
     })
   })
 })

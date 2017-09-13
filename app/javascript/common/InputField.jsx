@@ -58,7 +58,7 @@ InputField.defaultProps = {
 InputField.propTypes = {
   allowCharacters: PropTypes.instanceOf(RegExp),
   disabled: PropTypes.bool,
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

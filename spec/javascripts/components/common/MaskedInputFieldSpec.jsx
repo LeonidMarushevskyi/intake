@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import MaskedInputField from 'common/MaskedInputField'
 
@@ -23,7 +22,7 @@ describe('MaskedInputField', () => {
       onBlur: onBlur,
       value: 'this is my field value',
       mask: '111-11-1111',
-      errors: Immutable.Map(),
+      errors: [],
       required: false,
     }
   })
@@ -40,7 +39,7 @@ describe('MaskedInputField', () => {
       expect(formField.props().gridClassName).toEqual('myWrapperTest')
       expect(formField.props().id).toEqual('myInputFieldId')
       expect(formField.props().label).toEqual('this is my label')
-      expect(formField.props().errors).toEqual(Immutable.Map())
+      expect(formField.props().errors).toEqual([])
       expect(formField.props().required).toEqual(false)
       expect(maskedInput.exists()).toEqual(true)
     })

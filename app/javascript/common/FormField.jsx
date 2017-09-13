@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const FormField = ({children, errors, gridClassName, labelClassName, id, label, required}) => {
-  const hasErrors = errors && !errors.isEmpty()
+  const emptyArrayLength = 0
+  const hasErrors = errors && errors.length > emptyArrayLength
   const gridClassNames = ClassNames(gridClassName, {'input-error': hasErrors})
   const labelClassNames =
     ClassNames(labelClassName, {'input-error-label': hasErrors}, {required: required})
@@ -24,7 +25,7 @@ FormField.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  errors: PropTypes.object,
+  errors: PropTypes.array,
   gridClassName: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string.isRequired,

@@ -15,7 +15,7 @@ const IncidentInformationEditView = ({screening, onBlur, onCancel, onSave, onCha
         id='incident_date'
         label='Incident Date'
         value={screening.get('incident_date')}
-        errors={errors.get('incident_date')}
+        errors={errors.incident_date}
         onChange={(value) => onChange(['incident_date'], value)}
         onBlur={() => onBlur('incident_date')}
         hasTime={false}

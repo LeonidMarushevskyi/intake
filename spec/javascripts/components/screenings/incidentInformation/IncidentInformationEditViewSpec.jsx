@@ -24,7 +24,7 @@ describe('IncidentInformationEditView', () => {
         },
         location_type: 'Juvenile Detention',
       }),
-      errors: Immutable.fromJS({incident_date: []}),
+      errors: {incident_date: []},
     }
     component = shallow(<IncidentInformationEditView {...props} />)
   })
@@ -71,7 +71,7 @@ describe('IncidentInformationEditView', () => {
 
   it('passes errors to incident date', () => {
     const incidentDate = component.find('DateField[label="Incident Date"]')
-    expect(incidentDate.props().errors).toEqual(Immutable.List())
+    expect(incidentDate.props().errors).toEqual([])
   })
 
   it('calls onBlur with the proper field name when incident date is blurred', () => {

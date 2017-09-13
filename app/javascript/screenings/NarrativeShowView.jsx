@@ -5,7 +5,7 @@ import ShowField from 'common/ShowField'
 const NarrativeShowView = ({errors, screening}) => (
   <div className='card-body'>
     <div className='row'>
-      <ShowField gridClassName='col-md-12' label='Report Narrative' errors={errors.get('report_narrative')} required>
+      <ShowField gridClassName='col-md-12' label='Report Narrative' errors={errors.report_narrative} required>
         {screening.get('report_narrative')}
       </ShowField>
     </div>

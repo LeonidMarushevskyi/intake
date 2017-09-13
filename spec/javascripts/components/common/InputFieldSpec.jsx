@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import InputField from 'common/InputField'
 
@@ -11,7 +10,7 @@ describe('InputField', () => {
 
   const props = {
     disabled: false,
-    errors: Immutable.Map(),
+    errors: [],
     gridClassName: 'myWrapperTest',
     id: 'myInputFieldId',
     label: 'this is my label',
@@ -38,7 +37,7 @@ describe('InputField', () => {
       expect(formField.props().gridClassName).toEqual('myWrapperTest')
       expect(formField.props().id).toEqual('myInputFieldId')
       expect(formField.props().label).toEqual('this is my label')
-      expect(formField.props().errors).toEqual(Immutable.Map())
+      expect(formField.props().errors).toEqual([])
       expect(formField.props().required).toEqual(false)
       expect(formField.childAt(0).node.type).toEqual('input')
       expect(formField.props().disabled).toEqual(false)

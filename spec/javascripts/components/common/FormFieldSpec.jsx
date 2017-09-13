@@ -1,5 +1,4 @@
 import React from 'react'
-import Immutable from 'immutable'
 import {shallow} from 'enzyme'
 import FormField from 'common/FormField'
 
@@ -56,7 +55,7 @@ describe('FormField', () => {
       label: 'Do not judge a component by its label',
       gridClassName: 'working-class object-oriented-class',
       labelClassName: 'trouble-maker',
-      errors: Immutable.List(['Please choose wisely.', 'Stick to the plan!']),
+      errors: ['Please choose wisely.', 'Stick to the plan!'],
     }
 
     it('renders label and its wrapper with error classes', () => {
@@ -68,7 +67,7 @@ describe('FormField', () => {
     it('renders ErrorMessages and passes it errors', () => {
       component = shallow(<FormField {...props}/>)
       expect(component.find('ErrorMessages').props().errors)
-        .toEqual(Immutable.List(['Please choose wisely.', 'Stick to the plan!']))
+        .toEqual(['Please choose wisely.', 'Stick to the plan!'])
     })
 
     describe('when required', () => {

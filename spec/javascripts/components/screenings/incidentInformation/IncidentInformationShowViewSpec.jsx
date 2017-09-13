@@ -13,13 +13,13 @@ describe('IncidentInformationShowView', () => {
       <IncidentInformationShowView
         screening={Immutable.fromJS({})}
         onEdit={onEdit}
-        errors={Immutable.fromJS({incident_date: []})}
+        errors={{incident_date: []}}
       />
     )
   })
 
   it('renders errors passed for incident date', () => {
-    expect(component.find('ShowField[label="Incident Date"]').props().errors).toEqual(Immutable.List())
+    expect(component.find('ShowField[label="Incident Date"]').props().errors).toEqual([])
   })
 
   it('render the show fields', () => {
@@ -39,7 +39,7 @@ describe('IncidentInformationShowView', () => {
       <IncidentInformationShowView
         screening={screening}
         onEdit={onEdit}
-        errors={Immutable.List()}
+        errors={{}}
       />
     )
     expect(component.find('ShowField').length).toEqual(7)
@@ -75,7 +75,7 @@ describe('IncidentInformationShowView', () => {
       <IncidentInformationShowView
         screening={screening}
         onEdit={onEdit}
-        errors={Immutable.List()}
+        errors={{}}
       />
     )
     expect(component.find('ShowField').length).toEqual(7)

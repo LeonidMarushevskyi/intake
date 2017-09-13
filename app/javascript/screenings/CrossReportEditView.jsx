@@ -59,6 +59,7 @@ export default class CrossReportEditView extends React.Component {
   }
 
   renderCrossReport(crossReportOptions) {
+    const {errors} = this.props
     return (
       <div className='col-md-6'>
         <ul className='unstyled-list'>
@@ -72,7 +73,7 @@ export default class CrossReportEditView extends React.Component {
                     <CheckboxField
                       id={`type-${typeId}`}
                       checked={selected}
-                      errors={this.props.errors.getIn([agencyType, 'agency_type'])}
+                      errors={errors.getIn([agencyType, 'agency_type']) && errors.getIn([agencyType, 'agency_type']).toJS()}
                       onBlur={(event) =>
                         this.props.onBlur(
                           this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
@@ -91,7 +92,7 @@ export default class CrossReportEditView extends React.Component {
                     {
                       selected &&
                           <InputField
-                            errors={this.props.errors.getIn([agencyType, 'agency_name'])}
+                            errors={errors.getIn([agencyType, 'agency_name']) && errors.getIn([agencyType, 'agency_name']).toJS()}
                             id={`${typeId}-agency-name`}
                             label={`${agencyType} agency name`}
                             maxLength='128'
@@ -131,8 +132,8 @@ export default class CrossReportEditView extends React.Component {
     // reported_on is a single value, but stored on >1 cross reports.
     // In theory, all values will either be the same or undefined so flatMap
     // is just an alternative to picking an arbitrary item to retrieve from.
-    const reportedOnErrors = this.props.errors.toSet().flatMap((item) => item.get('reported_on'))
-    const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method'))
+    const reportedOnErrors = this.props.errors.toSet().flatMap((item) => item.get('reported_on')).toJS()
+    const communicationErrors = this.props.errors.toSet().flatMap((item) => item.get('communication_method')).toJS()
 
     return (
       <div className='card-body no-pad-top'>
@@ -170,7 +171,7 @@ export default class CrossReportEditView extends React.Component {
                   value={this.state.reportedOn}
                 />
                 <SelectField
-                  errors={communicationErrors.toList()}
+                  errors={communicationErrors}
                   gridClassName='col-md-6'
                   id='cross_report_communication_method'
                   label='Communication Method'

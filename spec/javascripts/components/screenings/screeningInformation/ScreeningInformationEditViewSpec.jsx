@@ -7,7 +7,7 @@ describe('ScreeningInformationEditView', () => {
   let component
 
   const requiredProps = {
-    errors: Immutable.Map(),
+    errors: {},
     screening: Immutable.fromJS({
       name: 'The Rocky Horror Picture Show',
       assignee: 'Michael Bluth',
@@ -137,13 +137,13 @@ describe('ScreeningInformationEditView', () => {
       const props = {
         ...requiredProps,
         validateField: validateFieldSpy,
-        errors: Immutable.fromJS({
+        errors: {
           assignee: ['First error', 'Second error'],
           communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
           started_at: ['My error', 'My other error'],
           ended_at: ['More errors'],
           name: [],
-        }),
+        },
       }
       component = shallow(<ScreeningInformationEditView {...props} />)
     })
@@ -185,13 +185,13 @@ describe('ScreeningInformationEditView', () => {
       const props = {
         ...requiredProps,
         validateOnChange: validateOnChangeSpy,
-        errors: Immutable.fromJS({
+        errors: {
           assignee: ['First error', 'Second error'],
           communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
           started_at: ['My error', 'My other error'],
           ended_at: ['More errors'],
           name: [],
-        }),
+        },
       }
       component = shallow(<ScreeningInformationEditView {...props} />)
     })
@@ -229,22 +229,22 @@ describe('ScreeningInformationEditView', () => {
     it('passes the appropriate errors to the fields', () => {
       const props = {
         ...requiredProps,
-        errors: Immutable.fromJS({
+        errors: {
           assignee: ['First error', 'Second error'],
           communication_method: ['Stick to the plan!', 'An error occured while displaying the previous error'],
           started_at: ['My error', 'My other error'],
           ended_at: ['More errors'],
           name: [],
-        }),
+        },
       }
       component = shallow(<ScreeningInformationEditView {...props} />)
-      expect(component.find('InputField[id="assignee"]').props().errors.toJS())
+      expect(component.find('InputField[id="assignee"]').props().errors)
         .toEqual(['First error', 'Second error'])
-      expect(component.find('SelectField[id="communication_method"]').props().errors.toJS())
+      expect(component.find('SelectField[id="communication_method"]').props().errors)
         .toEqual(['Stick to the plan!', 'An error occured while displaying the previous error'])
-      expect(component.find('DateField[label="Screening Start Date/Time"]').props().errors.toJS())
+      expect(component.find('DateField[label="Screening Start Date/Time"]').props().errors)
         .toEqual(['My error', 'My other error'])
-      expect(component.find('DateField[label="Screening End Date/Time"]').props().errors.toJS())
+      expect(component.find('DateField[label="Screening End Date/Time"]').props().errors)
         .toEqual(['More errors'])
     })
   })

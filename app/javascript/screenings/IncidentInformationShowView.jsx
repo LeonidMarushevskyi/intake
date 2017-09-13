@@ -12,7 +12,7 @@ const IncidentInformationShowView = ({screening, errors}) => {
   return (
     <div className='card-body'>
       <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Incident Date' errors={errors.get('incident_date')}>
+        <ShowField gridClassName='col-md-6' label='Incident Date' errors={errors.incident_date}>
           {incidentDate}
         </ShowField>
       </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import ShowField from 'common/ShowField'
-import Immutable from 'immutable'
 
 describe('ShowField', () => {
   let component
@@ -37,12 +36,12 @@ describe('when field is required and has errors', () => {
     const props = {
       label: 'this is my label',
       required: true,
-      errors: Immutable.List(['Error 1', 'Error 2']),
+      errors: ['Error 1', 'Error 2'],
     }
     const component = shallow(<ShowField {...props} >show field value</ShowField>)
     const formField = component.find('FormField')
     expect(formField.props().required).toEqual(true)
-    expect(formField.props().errors).toEqual(Immutable.List(['Error 1', 'Error 2']))
+    expect(formField.props().errors).toEqual(['Error 1', 'Error 2'])
   })
 })
 

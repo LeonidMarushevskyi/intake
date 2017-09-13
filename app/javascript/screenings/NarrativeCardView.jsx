@@ -80,7 +80,7 @@ export default class NarrativeCardView extends React.Component {
     const {errors, mode} = this.state
     const allProps = {
       edit: {
-        errors: errors,
+        errors: errors.toJS(),
         screening: this.props.screening,
         onBlur: this.onBlur,
         onCancel: this.onCancel,
@@ -88,7 +88,7 @@ export default class NarrativeCardView extends React.Component {
         onSave: this.onSave,
       },
       show: {
-        errors: errors,
+        errors: errors.toJS(),
         screening: this.props.screening,
         onEdit: this.onEdit,
       },
