@@ -157,6 +157,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
         onChange={(addresses) => onChange(['addresses'], addresses || [])}
       />
       <RacesEditView
+        id={`participant-${participant.get('id')}`}
         races={participant.get('races') || Immutable.List()}
         onChange={(races) => onChange(['races'], races)}
       />

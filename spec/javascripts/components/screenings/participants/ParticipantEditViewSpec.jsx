@@ -372,6 +372,7 @@ describe('ParticipantEditView', () => {
     })
     it('renders the races in edit view', () => {
       expect(component.find('RacesEditView').length).toEqual(1)
+      expect(component.find('RacesEditView').props().id).toEqual('participant-199')
     })
     it('passes the paricipant race info', () => {
       expect(component.find('RacesEditView').props().races).toEqual(races)

@@ -93,7 +93,7 @@ feature 'Edit Screening' do
         end
         within '#race' do
           expect(page.find('input[value="Asian"]')).to be_checked
-          expect(page).to have_field('Asian-race-detail', text: 'Hmong')
+          expect(page).to have_field("participant-#{marge.id}-Asian-race-detail", text: 'Hmong')
         end
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
