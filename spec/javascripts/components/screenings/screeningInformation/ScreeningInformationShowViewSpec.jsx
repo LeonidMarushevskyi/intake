@@ -9,7 +9,7 @@ describe('ScreeningInformationShowView', () => {
   const requiredProps = {
     onEdit: jasmine.createSpy(),
     screening: Immutable.fromJS({}),
-    errors: Immutable.Map(),
+    errors: {},
   }
 
   describe('when the screening values are null', () => {
@@ -25,12 +25,12 @@ describe('ScreeningInformationShowView', () => {
       const props = {
         ...requiredProps,
         screening,
-        errors: Immutable.fromJS({
+        errors: {
           assignee: ['Error 1', 'Error 2'],
           started_at: ['Error 3', 'Error 4'],
           communication_method: ['My Spider-Sense is tingling.'],
           ended_at: ['Never give up', 'Never surrender'],
-        }),
+        },
       }
 
       component = shallow(<ScreeningInformationShowView {...props} />)

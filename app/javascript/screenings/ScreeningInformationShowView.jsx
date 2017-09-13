@@ -11,22 +11,22 @@ const ScreeningInformationShowView = ({errors, screening}) => (
         {screening.get('name')}
       </ShowField>
       <ShowField gridClassName='col-md-6' label='Assigned Social Worker'
-        errors={errors.get('assignee')} required
+        errors={errors.assignee} required
       >
         {screening.get('assignee')}
       </ShowField>
     </div>
     <div className='row double-gap-top'>
-      <ShowField gridClassName='col-md-6' label='Screening Start Date/Time' errors={errors.get('started_at')} required>
+      <ShowField gridClassName='col-md-6' label='Screening Start Date/Time' errors={errors.started_at} required>
         {dateTimeFormatter(screening.get('started_at'))}
       </ShowField>
-      <ShowField gridClassName='col-md-6' label='Screening End Date/Time' errors={errors.get('ended_at')}>
+      <ShowField gridClassName='col-md-6' label='Screening End Date/Time' errors={errors.ended_at}>
         {dateTimeFormatter(screening.get('ended_at'))}
       </ShowField>
     </div>
     <div className='row double-gap-top'>
       <ShowField gridClassName='col-md-6' label='Communication Method'
-        errors={errors.get('communication_method')} required
+        errors={errors.communication_method} required
       >
         {COMMUNICATION_METHOD[screening.get('communication_method')]}
       </ShowField>

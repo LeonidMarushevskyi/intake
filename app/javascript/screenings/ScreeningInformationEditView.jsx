@@ -21,7 +21,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
       <InputField
         allowCharacters={/[a-zA-Z\s]/}
         disabled={Boolean(screening.get('staff_id'))}
-        errors={errors.get('assignee')}
+        errors={errors.assignee}
         gridClassName='col-md-6'
         id='assignee'
         label='Assigned Social Worker'
@@ -42,7 +42,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         value={screening.get('started_at')}
         onChange={(value) => validateOnChange('started_at', value)}
         onBlur={(value) => validateField('started_at', value)}
-        errors={errors.get('started_at')}
+        errors={errors.started_at}
       />
       <DateField
         gridClassName='col-md-6'
@@ -51,7 +51,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         value={screening.get('ended_at')}
         onChange={(value) => validateOnChange('ended_at', value)}
         onBlur={(value) => validateField('ended_at', value)}
-        errors={errors.get('ended_at')}
+        errors={errors.ended_at}
       />
     </div>
     <div className='row'>
@@ -63,7 +63,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         value={screening.get('communication_method')}
         onChange={(event) => validateOnChange('communication_method', event.target.value || null)}
         onBlur={(event) => validateField('communication_method', event.target.value)}
-        errors={errors.get('communication_method')}
+        errors={errors.communication_method}
       >
         <option key='' />
         {Object.keys(COMMUNICATION_METHOD).map((item) => <option key={item} value={item}>{COMMUNICATION_METHOD[item]}</option>)}
