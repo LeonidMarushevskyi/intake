@@ -15,10 +15,11 @@ class InvestigationContact extends React.Component {
     const {
       investigationId,
       contact: {started_at, status},
-      actions: {setContact},
+      actions: {setContactField, touchContactField},
       statuses,
+      errors,
     } = this.props
-    const onChange = (fieldValues) => setContact({...this.props.contact, ...fieldValues})
+
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
@@ -32,7 +33,9 @@ class InvestigationContact extends React.Component {
                 id='started_at'
                 label='Date/Time'
                 value={started_at}
-                onChange={(value) => onChange({started_at: value})}
+                onChange={(value) => setContactField('started_at', value)}
+                onBlur={() => touchContactField('started_at')}
+                errors={errors.started_at}
               />
             </div>
             <div className='row'>
@@ -41,7 +44,7 @@ class InvestigationContact extends React.Component {
                 id='status'
                 label='Status'
                 value={status}
-                onChange={(event) => onChange({status: event.target.value})}
+                onChange={(event) => setContactField('status', event.target.value)}
               >
                 <option key='' value='' />
                 {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
@@ -57,8 +60,13 @@ class InvestigationContact extends React.Component {
 InvestigationContact.propTypes = {
   actions: PropTypes.object,
   contact: PropTypes.object,
+  errors: PropTypes.object,
   investigationId: PropTypes.string.isRequired,
   statuses: PropTypes.array.isRequired,
+}
+
+InvestigationContact.defaultProps = {
+  errors: {},
 }
 
 export default InvestigationContact
