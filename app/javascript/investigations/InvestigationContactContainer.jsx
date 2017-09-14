@@ -8,12 +8,17 @@ const errors = (contact) => (
   new ContactValidator(contact).validate()
 )
 
-const mapStateToProps = (state, ownProps) => ({
-  investigationId: ownProps.params.investigation_id,
-  contact: state.get('contact').toJS(),
-  statuses: state.get('contactStatuses').toJS(),
-  errors: errors(state.get('contact').toJS()),
-})
+const mapStateToProps = (state, ownProps) => {
+  const contactFields = state.get('contact')
+  const contactValues = contactFields.map((field) => field.get('value')).toJS()
+
+  return {
+    investigationId: ownProps.params.investigation_id,
+    contact: contactValues,
+    errors: errors(contactValues),
+    statuses: state.get('contactStatuses').toJS(),
+  }
+}
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(actions, dispatch),

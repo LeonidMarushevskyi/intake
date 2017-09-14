@@ -1,4 +1,4 @@
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 import {setContact} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import contactReducer from 'reducers/contactReducer'
@@ -14,10 +14,17 @@ describe('contactReducer', () => {
         status: 'C',
       })
       expect(contactReducer(Map(), action)).toEqual(
-        Map({
-          investigation_id: '123',
-          started_at: '2016-08-11T18:24:22.157Z',
-          status: 'C',
+        fromJS({
+          investigation_id: {
+            value: '123',
+            touched: false,
+          }, started_at: {
+            value: '2016-08-11T18:24:22.157Z',
+            touched: false,
+          }, status: {
+            value: 'C',
+            touched: false,
+          },
         })
       )
     })
