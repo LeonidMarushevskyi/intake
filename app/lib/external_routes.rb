@@ -47,6 +47,10 @@ class ExternalRoutes
       "/investigations/#{id}/screening"
     end
 
+    def ferb_api_lov
+      '/lov'
+    end
+
     def sdm_path
       'https://ca.sdmdata.org'
     end

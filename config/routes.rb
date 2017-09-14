@@ -61,6 +61,8 @@ Rails.application.routes.draw do
           get :screening
         end
       end
+
+      resources :system_codes, only: [:index]
     end
   end
 
