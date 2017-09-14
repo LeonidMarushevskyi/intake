@@ -44,6 +44,10 @@ describe Api::V1::ParticipantsController do
           legacy_table_name: 'CLIENT_T',
           legacy_ui_id: '0947-1946-9435-0081454'
         },
+        races: [
+          { race: 'White', race_detail: 'Romanian' },
+          { race: 'Asian', race_detail: 'Cambodian' }
+        ],
         screening_id: '1',
         ssn: '123-23-1234',
         sealed: 'false',
@@ -79,7 +83,11 @@ describe Api::V1::ParticipantsController do
         id: '1',
         first_name: 'Marge',
         last_name: 'Simpson',
-        roles: ['Victim']
+        roles: ['Victim'],
+        races: [
+          { race: 'White', race_detail: 'Middle Eastern' },
+          { race: 'Asian', race_detail: 'Chinese' }
+        ]
       }
     end
     let(:params) do

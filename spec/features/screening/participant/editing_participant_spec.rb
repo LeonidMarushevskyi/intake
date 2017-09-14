@@ -18,6 +18,9 @@ feature 'Edit Screening' do
       ssn: old_ssn,
       sealed: false,
       sensitive: true,
+      races: [
+        { race: 'Asian', race_detail: 'Hmong' }
+      ],
       roles: marge_roles,
       languages: ['Russian'],
       ethnicity: {
@@ -84,8 +87,14 @@ feature 'Edit Screening' do
         expect(page).to have_field('State', with: marge.addresses.first.state)
         expect(page).to have_field('Zip', with: marge.addresses.first.zip)
         expect(page).to have_field('Address Type', with: marge.addresses.first.type)
-        expect(page.find('input[value="Yes"]')).to be_checked
-        expect(page).to have_field('ethnicity-detail', text: 'Mexican')
+        within '#ethnicity' do
+          expect(page.find('input[value="Yes"]')).to be_checked
+          expect(page).to have_field("participant-#{marge.id}-ethnicity-detail", text: 'Mexican')
+        end
+        within '#race' do
+          expect(page.find('input[value="Asian"]')).to be_checked
+          expect(page).to have_field("participant-#{marge.id}-Asian-race-detail", text: 'Hmong')
+        end
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
         fill_in 'Social security number', with: new_ssn

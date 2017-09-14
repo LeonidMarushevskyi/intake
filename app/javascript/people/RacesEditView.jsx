@@ -59,6 +59,7 @@ export class RacesEditView extends React.Component {
   }
 
   renderRaceAndRaceDetails(raceData) {
+    const {id} = this.props
     return (
       <div className='col-md-6'>
         <ul className='unstyled-list'>
@@ -70,7 +71,7 @@ export class RacesEditView extends React.Component {
                 <div className='half-gap-bottom'>
                   <CheckboxField
                     key={race}
-                    id={`race-${raceId}`}
+                    id={`${id}-race-${raceId}`}
                     value={race}
                     checked={selected}
                     disabled={disabled}
@@ -78,7 +79,7 @@ export class RacesEditView extends React.Component {
                   />
                   {selected && raceDetails &&
                     <SelectField
-                      id={`${raceId}-race-detail`}
+                      id={`${id}-${raceId}-race-detail`}
                       label={''}
                       value={selectedRaceDetail}
                       onChange={(event) => this.changeRaceDetail(race, event.target.value)}
@@ -115,6 +116,7 @@ export class RacesEditView extends React.Component {
 }
 
 RacesEditView.propTypes = {
+  id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   races: PropTypes.object.isRequired,
 }

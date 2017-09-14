@@ -62,6 +62,7 @@ describe('ParticipantShowView', () => {
       last_name: 'McCallister',
       name_suffix: 'iv',
       gender: 'male',
+      races: [{race: 'White', race_detail: 'Middle Eastern'}],
       roles: ['soccer coach', 'The doctor'],
       languages: ['English', 'Arabic'],
       date_of_birth: '1990-11-16',
@@ -72,7 +73,7 @@ describe('ParticipantShowView', () => {
       },
     })
     const component = shallow(<ParticipantShowView participant={participant} />)
-    expect(component.find('ShowField').length).toEqual(7)
+    expect(component.find('ShowField').length).toEqual(8)
     expect(component.find('ShowField[label="Name"]').html())
       .toContain('Kevin Home Alone McCallister IV')
     expect(component.find('ShowField[label="Gender"]').html())
@@ -85,6 +86,8 @@ describe('ParticipantShowView', () => {
       .toContain('11/16/1990')
     expect(component.find('ShowField[label="Social security number"]').html())
       .toContain('111-22-33  ')
+    expect(component.find('ShowField[label="Race"]').html())
+      .toContain('White - Middle Eastern')
     expect(component.find('ShowField[label="Hispanic/Latino Origin"]').html())
       .toContain('Yes - Mexican')
   })
@@ -162,6 +165,24 @@ describe('ParticipantShowView', () => {
         .toContain('(789)456-1235')
       expect(component.find('ShowField[label="Phone Number Type"]').html())
         .toContain('Work')
+    })
+  })
+
+  describe('when participant has races', () => {
+    const participant = Immutable.fromJS({
+      ...requiredParticipantProps,
+      id: '7',
+      races: [
+        {race: 'White', race_detail: 'Romanian'},
+        {race: 'Asian', race_detail: 'Chinese'},
+        {race: 'Black or African American'},
+      ],
+    })
+    const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}} />)
+
+    it('renders the participant with race information', () => {
+      expect(component.find('.row ShowField[label="Race"]').html())
+        .toContain('White - Romanian, Asian - Chinese, Black or African American')
     })
   })
 })

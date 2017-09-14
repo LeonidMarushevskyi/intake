@@ -35,7 +35,10 @@ describe Participant do
         ],
         languages: %w[English Farsi],
         legacy_descriptor: legacy_descriptor,
-        races: %w[White Asian],
+        races: [
+          { race: 'White', race_detail: 'Romanian' },
+          { race: 'Asian', race_detail: 'Cambodian' }
+        ],
         legacy_id: '1',
         legacy_source_table: 'CLIENT_T',
         screening_id: '2',
@@ -74,7 +77,10 @@ describe Participant do
           )],
           languages: %w[English Farsi],
           legacy_descriptor: legacy_descriptor,
-          races: %w[White Asian],
+          races: match_array([
+                               a_hash_including(race: 'White', race_detail: 'Romanian'),
+                               a_hash_including(race: 'Asian', race_detail: 'Cambodian')
+                             ]),
           ethnicity: a_hash_including(
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: 'Mexican'

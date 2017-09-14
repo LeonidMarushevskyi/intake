@@ -23,6 +23,7 @@ def build_participant_from_person_and_screening(person, screening)
     legacy_id: person.id,
     legacy_source_table: person.legacy_source_table,
     legacy_descriptor: person.legacy_descriptor,
+    races: person.races,
     screening_id: screening.id.to_s,
     addresses: person.addresses,
     phone_numbers: person.phone_numbers,

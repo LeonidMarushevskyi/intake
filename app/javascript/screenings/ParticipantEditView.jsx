@@ -9,6 +9,7 @@ import MaskedInputField from 'common/MaskedInputField'
 import LANGUAGES from 'enums/Languages'
 import PhoneNumbersEditView from 'people/PhoneNumbersEditView'
 import PropTypes from 'prop-types'
+import RacesEditView from 'people/RacesEditView'
 import React from 'react'
 import Select from 'react-select'
 import SelectField from 'common/SelectField'
@@ -155,7 +156,13 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
         addresses={participant.get('addresses') || Immutable.List()}
         onChange={(addresses) => onChange(['addresses'], addresses || [])}
       />
+      <RacesEditView
+        id={`participant-${participant.get('id')}`}
+        races={participant.get('races') || Immutable.List()}
+        onChange={(races) => onChange(['races'], races)}
+      />
       <EthnicityEditView
+        id={`participant-${participant.get('id')}`}
         ethnicity={participant.get('ethnicity') || Immutable.Map()}
         onChange={(ethnicity) => onChange(['ethnicity'], ethnicity)}
       />
