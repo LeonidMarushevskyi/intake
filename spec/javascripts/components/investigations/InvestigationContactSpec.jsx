@@ -60,6 +60,13 @@ describe('InvestigationContact', () => {
     expect(setContact).toHaveBeenCalledWith({status: 'C'})
   })
 
+  it('blurring started at fires touchContactField', () => {
+    const touchContactField = jasmine.createSpy('touchContactField')
+    const component = renderContact({actions: {touchContactField}, contact: {started_at: ''}})
+    component.find('DateField').simulate('blur')
+    expect(touchContactField).toHaveBeenCalledWith('started_at')
+  })
+
   it('calls setContact when the component mounts', () => {
     const setContact = jasmine.createSpy('setContact')
     mount(

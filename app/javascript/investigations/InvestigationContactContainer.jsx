@@ -4,6 +4,12 @@ import InvestigationContact from 'investigations/InvestigationContact'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
+const filteredErrors = (touchedFields, errors) => (
+  touchedFields.reduce((filteredErrors, field) => (
+    Object.assign(filteredErrors, {[field]: errors[field]})
+  ), {})
+)
+
 const errors = (contact) => (
   new ContactValidator(contact).validate()
 )
@@ -11,11 +17,12 @@ const errors = (contact) => (
 const mapStateToProps = (state, ownProps) => {
   const contactFields = state.get('contact')
   const contactValues = contactFields.map((field) => field.get('value')).toJS()
+  const contactTouchedFields = contactFields.filter((field) => field.get('touched')).keySeq().toJS()
 
   return {
     investigationId: ownProps.params.investigation_id,
     contact: contactValues,
-    errors: errors(contactValues),
+    errors: filteredErrors(contactTouchedFields, errors(contactValues)),
     statuses: state.get('contactStatuses').toJS(),
   }
 }

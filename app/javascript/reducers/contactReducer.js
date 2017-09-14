@@ -1,4 +1,4 @@
-import {SET_CONTACT} from 'actions/contactActions'
+import {SET_CONTACT, TOUCH_CONTACT_FIELD} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -20,5 +20,8 @@ export default createReducer(Map(), {
         },
       }
     )
+  },
+  [TOUCH_CONTACT_FIELD](state, {field}) {
+    return state.setIn([field, 'touched'], true)
   },
 })
