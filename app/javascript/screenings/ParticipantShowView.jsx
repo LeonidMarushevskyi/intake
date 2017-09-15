@@ -118,13 +118,6 @@ const ParticipantShowView = ({participant}) => {
         }
       </div>
       <div className='row gap-top'>
-        <ShowField gridClassName='col-md-12' label='Hispanic/Latino Origin'>
-          {hispanic_latino_origin &&
-            `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`
-          }
-        </ShowField>
-      </div>
-      <div className='row gap-top'>
         <ShowField gridClassName='col-md-12' label='Race'>
           {
             participant.get('races') && participant.get('races').map((raceInformation) => {
@@ -133,6 +126,13 @@ const ParticipantShowView = ({participant}) => {
               const raceDetailText = (raceDetail && ` - ${raceDetail}`) || ''
               return `${race}${raceDetailText}`
             }).join(', ')
+          }
+        </ShowField>
+      </div>
+      <div className='row gap-top'>
+        <ShowField gridClassName='col-md-12' label='Hispanic/Latino Origin'>
+          {hispanic_latino_origin &&
+            `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`
           }
         </ShowField>
       </div>
