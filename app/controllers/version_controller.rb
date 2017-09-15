@@ -5,7 +5,9 @@
 class VersionController < ApplicationController
   def index
     current_sha = `git rev-parse HEAD`.strip
-    message = current_sha.present? ? current_sha : 'Git not found'
-    render plain: message
+    message = { version: current_sha.present? ? current_sha : 'Git not found' }
+              .merge(Rails.configuration.intake)
+              .merge(active_features: Feature.active_features)
+    render json: JSON.pretty_generate(message)
   end
 end
