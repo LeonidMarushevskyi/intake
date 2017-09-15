@@ -37,7 +37,7 @@ const RACES = Object.freeze({
     exclusive: false,
     raceDetails: [
       'American Indian',
-      'Alaskan Native',
+      'Alaska Native',
     ],
   },
   'Native Hawaiian or Other Pacific Islander': {
