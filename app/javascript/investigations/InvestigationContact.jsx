@@ -45,6 +45,8 @@ class InvestigationContact extends React.Component {
                 label='Status'
                 value={status}
                 onChange={(event) => setContactField('status', event.target.value)}
+                onBlur={() => touchContactField('status')}
+                errors={errors.status}
               >
                 <option key='' value='' />
                 {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}

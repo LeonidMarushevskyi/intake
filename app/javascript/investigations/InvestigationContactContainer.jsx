@@ -18,7 +18,6 @@ const mapStateToProps = (state, ownProps) => {
   const contactFields = state.get('contact')
   const contactValues = contactFields.map((field) => field.get('value')).toJS()
   const contactTouchedFields = contactFields.filter((field) => field.get('touched')).keySeq().toJS()
-
   return {
     investigationId: ownProps.params.investigation_id,
     contact: contactValues,

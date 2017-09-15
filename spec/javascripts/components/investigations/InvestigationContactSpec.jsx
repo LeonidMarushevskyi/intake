@@ -27,6 +27,7 @@ describe('InvestigationContact', () => {
     })
     const startedAt = component.find('DateField')
     expect(startedAt.props().errors).toEqual(['Things are wrong!'])
+    expect(startedAt.props().value).toEqual('2016-08-11T18:24:22.157Z')
   })
 
   it('changing started at fires setContactField', () => {
@@ -44,6 +45,7 @@ describe('InvestigationContact', () => {
         {code: 'A', value: 'Attempted'},
         {code: 'C', value: 'Completed'},
       ],
+      errors: {status: ['This could be wrong!']},
     })
     const statusField = component.find('SelectField')
     expect(statusField.props().value).toEqual('S')
@@ -51,6 +53,7 @@ describe('InvestigationContact', () => {
     expect(statusField.childAt(1).props().value).toEqual('S')
     expect(statusField.childAt(2).props().value).toEqual('A')
     expect(statusField.childAt(3).props().value).toEqual('C')
+    expect(statusField.props().errors).toEqual(['This could be wrong!'])
   })
 
   it('changing status fires setContactField', () => {
@@ -58,6 +61,13 @@ describe('InvestigationContact', () => {
     const component = renderContact({actions: {setContactField}, contact: {status: ''}})
     component.find('SelectField').simulate('change', {target: {value: 'C'}})
     expect(setContactField).toHaveBeenCalledWith('status', 'C')
+  })
+
+  it('blurring status at fires touchContactField', () => {
+    const touchContactField = jasmine.createSpy('touchContactField')
+    const component = renderContact({actions: {touchContactField}, contact: {status: ''}})
+    component.find('SelectField').simulate('blur')
+    expect(touchContactField).toHaveBeenCalledWith('status')
   })
 
   it('blurring started at fires touchContactField', () => {
