@@ -8,9 +8,10 @@ class ContactValidator {
 
   validate() {
     const contact = this.contact
-    const errors = {
-      started_at: [],
-    }
+    const fields = ['started_at', 'status']
+    const errors = fields.reduce(
+      (errors, field) => ({...errors, [field]: []}), {}
+    )
 
     if (_.isEmpty(contact.started_at)) {
       errors.started_at.push('Please enter a contact date')
@@ -19,6 +20,10 @@ class ContactValidator {
     const now = moment().toISOString()
     if (contact.started_at > now) {
       errors.started_at.push('The date and time cannot be in the future.')
+    }
+
+    if (_.isEmpty(contact.status)) {
+      errors.status.push('Please enter a contact status')
     }
 
     return errors

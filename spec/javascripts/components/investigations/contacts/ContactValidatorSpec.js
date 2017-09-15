@@ -28,5 +28,11 @@ describe('ContactValidator', () => {
       expect(new ContactValidator(contact).validate().started_at)
         .toEqual(['The date and time cannot be in the future.'])
     })
+
+    it('returns an error if status is missing from the contact', () => {
+      const contact = {}
+      expect(new ContactValidator(contact).validate().status)
+        .toEqual(['Please enter a contact status'])
+    })
   })
 })
