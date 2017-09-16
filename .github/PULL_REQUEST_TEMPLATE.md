@@ -1,6 +1,6 @@
 ### Pivotal Story
 
-- [Name of Story 12345](http://example.org/link/to/story/12345)
+- [Name of Story NNNNN](https://www.pivotaltracker.com/story/show/NNNNN)
 
 ### Purpose
 
