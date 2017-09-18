@@ -13,7 +13,7 @@ services:
       API_URL: "http://api:3000"
       FERB_API_URL: "https://ferbapi.preint.cwds.io"
       NODE_ENV: development
-      AUTHENTICATION_URL: "https://perry.preint.cwds.io"
+      AUTHENTICATION_URL: "https://perry.preint.cwds.io/perry"
       AUTHENTICATION: ${AUTHENTICATION:-true}
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
@@ -36,7 +36,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      AUTHENTICATION_URL: 'https://perry.preint.cwds.io'
+      AUTHENTICATION_URL: 'https://perry.preint.cwds.io/perry'
       AUTHENTICATION: ${AUTHENTICATION:-true}
       SEARCH_URL: 'https://ferbapi.preint.cwds.io'
     tty: true
