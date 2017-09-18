@@ -13,7 +13,7 @@ import 'common/jquery-helpers'
 import 'bootstrap'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import configureStore from 'store/configureStore'
+import {store} from 'store/configureStore'
 import routes from 'common/routes'
 import {Provider} from 'react-redux'
 
@@ -33,8 +33,8 @@ import 'react-widgets/dist/css/react-widgets.css'
 import '../../assets/stylesheets/multi-select'
 import '../../assets/stylesheets/ie'
 import '../../assets/stylesheets/google-api'
+import '../../assets/stylesheets/page-error'
 
-const store = configureStore()
 if (document.getElementById('app')) {
   ReactDOM.render(
     <Provider store={store}>

@@ -8,7 +8,7 @@ var webpackConfig = require('./config/webpack/test.js')
 module.exports = function(config) {
   config.set({
     basePath: './',
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-ajax', 'jasmine'],
     files: [
       //'./public/packs-test/.js',
       'spec/karma_tests.js'
