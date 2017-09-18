@@ -1,7 +1,6 @@
 import {App} from 'common/App'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
-import {Map} from 'immutable'
 
 describe('App', () => {
   let actions
@@ -20,7 +19,7 @@ describe('App', () => {
 
   describe('http errors', () => {
     it('are rendered when present', () => {
-      const remoteError = Map({why: 'Low quality plan'})
+      const remoteError = {why: 'Low quality plan'}
       component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(true)
       expect(component.find('.page-has-remote-error').exists()).toEqual(true)
@@ -31,7 +30,7 @@ describe('App', () => {
       expect(component.find('.page-has-remote-error').exists()).toEqual(false)
     })
     it('are not rendered when empty', () => {
-      const remoteError = Map({})
+      const remoteError = {}
       component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(false)
       expect(component.find('.page-has-remote-error').exists()).toEqual(false)

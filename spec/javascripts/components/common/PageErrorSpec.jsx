@@ -1,7 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PageError from 'common/PageError'
-import {Map} from 'immutable'
 
 describe('ErrorMessages', () => {
   let component
