@@ -16,7 +16,7 @@ export class PageError extends React.Component {
   }
 
   render() {
-    const messages = this.props.messageObject.toJS()
+    const messages = this.props.messageObject
     const problemMessage = 'There was a problem with your request and the server returned an error.'
     const instructions = 'Please save the output below and include it with any support requests.'
     const openClass = this.state.expanded ? 'expanded' : 'collapsed'
