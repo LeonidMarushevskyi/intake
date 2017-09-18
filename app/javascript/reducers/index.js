@@ -1,6 +1,7 @@
 import involvements from 'reducers/involvementsReducer'
 import participants from 'reducers/participantsReducer'
 import relationships from 'reducers/relationshipsReducer'
+import remoteError from 'reducers/remoteErrorReducer'
 import screening from 'reducers/screeningReducer'
 import staff from 'reducers/staffReducer'
 import screeningSummary from 'reducers/screeningSummaryReducer'
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   screening,
   staff,
   screeningSummary,
+  remoteError,
   contact,
   contactStatuses,
 })
