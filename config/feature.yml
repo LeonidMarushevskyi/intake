@@ -6,6 +6,7 @@ development:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     centralized_sessions: true
     referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
+    investigations: true
 
 test:
   features:
@@ -14,6 +15,7 @@ test:
     authentication: false
     centralized_sessions: true
     referral_submit: false
+    investigations: true
 
 production:
   features:
@@ -22,3 +24,4 @@ production:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
     referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
+    investigations: <%= ENV.fetch('INVESTIGATIONS', true) %>
