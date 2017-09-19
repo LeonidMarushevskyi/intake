@@ -37,6 +37,13 @@ describe('InvestigationContact', () => {
     expect(setContactField).toHaveBeenCalledWith('started_at', '123')
   })
 
+  it('blurring started at fires touchContactField', () => {
+    const touchContactField = jasmine.createSpy('touchContactField')
+    const component = renderContact({actions: {touchContactField}, contact: {started_at: ''}})
+    component.find('DateField').simulate('blur')
+    expect(touchContactField).toHaveBeenCalledWith('started_at')
+  })
+
   it('displays the status dropdown', () => {
     const component = renderContact({
       contact: {status: 'S'},
@@ -70,11 +77,19 @@ describe('InvestigationContact', () => {
     expect(touchContactField).toHaveBeenCalledWith('status')
   })
 
-  it('blurring started at fires touchContactField', () => {
-    const touchContactField = jasmine.createSpy('touchContactField')
-    const component = renderContact({actions: {touchContactField}, contact: {started_at: ''}})
-    component.find('DateField').simulate('blur')
-    expect(touchContactField).toHaveBeenCalledWith('started_at')
+  it('displays note', () => {
+    const component = renderContact({contact: {note: 'This is a simple contact note'}})
+    const noteField = component.find('textarea')
+    expect(noteField.text()).toContain('This is a simple contact note')
+  })
+
+  it('changing note fires setContactField', () => {
+    const setContactField = jasmine.createSpy('setContactField')
+    const component = renderContact({
+      actions: {setContactField}, contact: {note: 'This is a simple contact note'},
+    })
+    component.find('textarea').simulate('change', {target: {value: 'This is a new note'}})
+    expect(setContactField).toHaveBeenCalledWith('note', 'This is a new note')
   })
 
   it('calls setContact when the component mounts', () => {

@@ -14,7 +14,7 @@ class InvestigationContact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, status},
+      contact: {started_at, status, note},
       actions: {setContactField, touchContactField},
       statuses,
       errors,
@@ -28,29 +28,46 @@ class InvestigationContact extends React.Component {
         <div className='card-body'>
           <form>
             <div className='row'>
-              <DateField
-                gridClassName='col-md-12'
-                id='started_at'
-                label='Date/Time'
-                value={started_at}
-                onChange={(value) => setContactField('started_at', value)}
-                onBlur={() => touchContactField('started_at')}
-                errors={errors.started_at}
-              />
-            </div>
-            <div className='row'>
-              <SelectField
-                gridClassName='col-md-12'
-                id='status'
-                label='Status'
-                value={status}
-                onChange={(event) => setContactField('status', event.target.value)}
-                onBlur={() => touchContactField('status')}
-                errors={errors.status}
-              >
-                <option key='' value='' />
-                {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
-              </SelectField>
+              <div className='col-md-6'>
+                <div className='row'>
+                  <DateField
+                    gridClassName='col-md-12'
+                    id='started_at'
+                    label='Date/Time'
+                    value={started_at}
+                    onChange={(value) => setContactField('started_at', value)}
+                    onBlur={() => touchContactField('started_at')}
+                    errors={errors.started_at}
+                  />
+                </div>
+                <div className='row'>
+                  <SelectField
+                    gridClassName='col-md-12'
+                    id='status'
+                    label='Status'
+                    value={status}
+                    onChange={(event) => setContactField('status', event.target.value)}
+                    onBlur={() => touchContactField('status')}
+                    errors={errors.status}
+                  >
+                    <option key='' value='' />
+                    {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
+              </div>
+              <div className='col-md-6'>
+                <div className='row'>
+                  <div className='col-md-12'>
+                    <label htmlFor={'note'}>Contact Notes (optional)</label>
+                    <textarea
+                      id={'note'}
+                      onChange={(event) => setContactField('note', event.target.value)}
+                    >
+                      {note}
+                    </textarea>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
         </div>
