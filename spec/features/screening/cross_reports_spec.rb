@@ -17,6 +17,8 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       expect(page).to_not have_content 'Communication Time and Method'
+      expect(page).to have_content 'County'
+      select 'Sacramento', from: 'County'
       find('label', text: /\ADepartment of justice\z/).click
       fill_in 'Department of justice agency name', with: 'Sac Office'
       find('label', text: /\ALaw enforcement\z/).click
@@ -35,12 +37,14 @@ feature 'cross reports' do
         body: hash_including(
           'cross_reports' => array_including(
             hash_including(
+              'county' => 'sacramento',
               'agency_type' => 'Law enforcement',
               'agency_name' => 'LA Office',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
+              'county' => 'sacramento',
               'agency_type' => 'Department of justice',
               'agency_name' => 'Sac Office',
               'reported_on' => reported_on.to_s(:db),
@@ -58,12 +62,14 @@ feature 'cross reports' do
 
     existing_screening.cross_reports = [
       CrossReport.new(
+        county: 'sacramento',
         agency_type: 'Department of justice',
         agency_name: 'Humboldt Office',
         communication_method: communication_method,
         reported_on: reported_on
       ),
       CrossReport.new(
+        county: 'sacramento',
         agency_type: 'Law enforcement',
         agency_name: 'LA Office',
         communication_method: communication_method,
@@ -76,6 +82,10 @@ feature 'cross reports' do
     visit edit_screening_path(id: existing_screening.id)
 
     within '#cross-report-card' do
+      expect(page).to have_select('County', selected: 'Sacramento')
+      select 'Lake', from: 'County'
+      expect(page).to have_select('County', selected: 'Lake')
+
       find('label', text: /\ADepartment of justice\z/).click
       expect(find(:checkbox, 'Department of justice')).to_not be_checked
 
@@ -91,12 +101,14 @@ feature 'cross reports' do
         body: hash_including(
           'cross_reports' => array_including(
             hash_including(
+              'county' => 'lake',
               'agency_type' => 'Law enforcement',
               'agency_name' => 'LA Office',
               'reported_on' => reported_on,
               'communication_method' => communication_method
             ),
             hash_including(
+              'county' => 'lake',
               'agency_type' => 'District attorney',
               'agency_name' => nil,
               'reported_on' => reported_on,
@@ -111,12 +123,14 @@ feature 'cross reports' do
   scenario 'viewing cross reports on an existing screening' do
     existing_screening.cross_reports = [
       CrossReport.new(
+        county: 'sacramento',
         agency_type: 'Department of justice',
         agency_name: 'Humboldt Office',
         communication_method: 'Child Abuse Form',
         reported_on: Date.today.to_s(:db)
       ),
       CrossReport.new(
+        county: 'sacramento',
         agency_type: 'Law enforcement',
         agency_name: 'LA Office',
         communication_method: 'Child Abuse Form',
@@ -129,6 +143,8 @@ feature 'cross reports' do
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
+      expect(page).to_not have_content 'County'
+      expect(page).to_not have_content 'Sacramento'
       expect(page).to have_content 'Department of justice'
       expect(page).to have_content 'Humboldt Office'
       expect(page).to have_content 'Law enforcement'
@@ -142,6 +158,7 @@ feature 'cross reports' do
     click_link 'Edit cross report'
 
     within '#cross-report-card', text: 'Cross Report' do
+      expect(page).to have_select('County', selected: 'Sacramento')
       expect(find(:checkbox, 'Law enforcement')).to be_checked
       expect(page).to have_field('Law enforcement agency name', with: 'LA Office')
       expect(find(:checkbox, 'Department of justice')).to be_checked
@@ -159,6 +176,7 @@ feature 'cross reports' do
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
+      expect(page).to_not have_content 'County'
       expect(page).to_not have_content 'Communication Time and Method'
       expect(page).to_not have_content 'Cross Reported on Date'
       expect(page).to_not have_content 'Communication Method'
