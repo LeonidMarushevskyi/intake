@@ -1,6 +1,6 @@
 import * as actions from 'actions/contactActions'
 import ContactValidator from 'investigations/contacts/ContactValidator'
-import InvestigationContact from 'investigations/InvestigationContact'
+import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -30,4 +30,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(actions, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvestigationContact)
+export default connect(mapStateToProps, mapDispatchToProps)(Contact)
