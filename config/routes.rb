@@ -4,6 +4,7 @@ require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constrain
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_and_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_investigations_constraint')
 
 Rails.application.routes.draw do
   root 'home#index'
@@ -18,7 +19,9 @@ Rails.application.routes.draw do
     constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
 
-  resources :investigations, only: [:show] do
+  resources :investigations,
+    only: [:show],
+    constraints: Routes::ActiveInvestigationsConstraint do
     resources :contacts, only: [:new]
   end
 
@@ -56,7 +59,9 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :investigations, only: [:screening] do
+      resources :investigations,
+        only: [:screening],
+        constraints: Routes::ActiveInvestigationsConstraint do
         member do
           get :screening
         end
