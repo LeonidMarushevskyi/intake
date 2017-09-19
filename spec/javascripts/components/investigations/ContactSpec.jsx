@@ -1,8 +1,8 @@
-import InvestigationContact from 'investigations/InvestigationContact'
+import Contact from 'investigations/Contact'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-describe('InvestigationContact', () => {
+describe('Contact', () => {
   function renderContact({
     investigationId = 'ABC123',
     actions = {},
@@ -11,7 +11,7 @@ describe('InvestigationContact', () => {
     statuses = [],
   }) {
     const props = {investigationId, actions, contact, statuses, errors}
-    return shallow(<InvestigationContact {...props} />)
+    return shallow(<Contact {...props} />)
   }
 
   it('displays the investigation Id in the header', () => {
@@ -95,7 +95,7 @@ describe('InvestigationContact', () => {
   it('calls setContact when the component mounts', () => {
     const setContact = jasmine.createSpy('setContact')
     mount(
-      <InvestigationContact
+      <Contact
         investigationId='ABC123'
         actions={{setContact}}
         contact={{}}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
 import SelectField from 'common/SelectField'
 
-class InvestigationContact extends React.Component {
+class Contact extends React.Component {
   componentDidMount() {
     const {
       investigationId,
@@ -76,7 +76,7 @@ class InvestigationContact extends React.Component {
   }
 }
 
-InvestigationContact.propTypes = {
+Contact.propTypes = {
   actions: PropTypes.object,
   contact: PropTypes.object,
   errors: PropTypes.object,
@@ -84,8 +84,8 @@ InvestigationContact.propTypes = {
   statuses: PropTypes.array.isRequired,
 }
 
-InvestigationContact.defaultProps = {
+Contact.defaultProps = {
   errors: {},
 }
 
-export default InvestigationContact
+export default Contact
