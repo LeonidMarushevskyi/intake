@@ -58,6 +58,9 @@ export default class CrossReportEditView extends React.Component {
       }
       return crossReports.filterNot((item) => item.get('agency_type') === agencyType)
     }
+    if (value === '') {
+      value = null
+    }
     return crossReports.map((crossReport) => crossReport.set(fieldName, value))
   }
 
@@ -158,7 +161,7 @@ export default class CrossReportEditView extends React.Component {
             }}
             value={this.state.county}
           >
-            <option key='' value='' />
+            <option key='' />
             {Object.keys(COUNTIES).map((item) => <option key={item} value={item}>{COUNTIES[item]}</option>)}
           </SelectField>
         </div>
@@ -212,7 +215,7 @@ export default class CrossReportEditView extends React.Component {
                   required
                   value={this.state.communicationMethod}
                 >
-                  <option key='' value='' />
+                  <option key='' />
                   {COMMUNICATION_METHODS.map((item) => <option key={item} value={item}>{item}</option>)}
                 </SelectField>
               </fieldset>
