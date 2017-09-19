@@ -12,6 +12,7 @@ describe('contactReducer', () => {
         investigation_id: '123',
         started_at: '2016-08-11T18:24:22.157Z',
         status: 'C',
+        note: 'This is a note',
       })
       expect(contactReducer(Map(), action)).toEqual(
         fromJS({
@@ -23,6 +24,8 @@ describe('contactReducer', () => {
           }, status: {
             value: 'C',
             touched: false,
+          }, note: {
+            value: 'This is a note',
           },
         })
       )
