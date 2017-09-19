@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
 import SelectField from 'common/SelectField'
+import FormField from 'common/FormField'
 
 class Contact extends React.Component {
   componentDidMount() {
@@ -57,15 +58,11 @@ class Contact extends React.Component {
               </div>
               <div className='col-md-6'>
                 <div className='row'>
-                  <div className='col-md-12'>
-                    <label htmlFor={'note'}>Contact Notes (optional)</label>
-                    <textarea
-                      id={'note'}
-                      onChange={(event) => setContactField('note', event.target.value)}
-                    >
+                  <FormField id='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
+                    <textarea id='note' onChange={(event) => setContactField('note', event.target.value)}>
                       {note}
                     </textarea>
-                  </div>
+                  </FormField>
                 </div>
               </div>
             </div>
