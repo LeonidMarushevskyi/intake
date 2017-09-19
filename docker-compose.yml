@@ -29,7 +29,7 @@ services:
     stdin_open: true
   api:
     extends:
-      file: ../intake_api_prototype/docker-compose.common.yml
+      file: ../intake_api/docker-compose.common.yml
       service: api
     links:
       - db
@@ -43,7 +43,7 @@ services:
     stdin_open: true
   db:
     extends:
-      file: ../intake_api_prototype/docker-compose.common.yml
+      file: ../intake_api/docker-compose.common.yml
       service: db
   redis:
     image: 'redis:3.0'
