@@ -18,7 +18,7 @@ feature 'Narrative Card Validations' do
       visit edit_screening_path(id: screening.id)
 
       # TODO: remove this once we can consistently have a fresh page for these specs
-      page.evaluate_script('window.location.reload()')
+      page.driver.browser.navigate.refresh
     end
 
     scenario 'displays no error on initial load' do
