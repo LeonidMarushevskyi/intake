@@ -26,6 +26,7 @@ module Api
         :started_at,
         cross_reports: %i[
           id
+          county
           agency_type
           agency_name
           reported_on
