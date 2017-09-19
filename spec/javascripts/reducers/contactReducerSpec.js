@@ -17,7 +17,6 @@ describe('contactReducer', () => {
         fromJS({
           investigation_id: {
             value: '123',
-            touched: false,
           }, started_at: {
             value: '2016-08-11T18:24:22.157Z',
             touched: false,

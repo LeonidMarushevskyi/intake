@@ -8,7 +8,6 @@ export default createReducer(Map(), {
       {
         investigation_id: {
           value: investigation_id,
-          touched: false,
         },
         started_at: {
           value: started_at,
