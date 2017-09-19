@@ -101,12 +101,14 @@ describe Api::V1::ScreeningsController do
         restrictions_rationale: 'Someone in this screening has sensitive information',
         cross_reports: [
           {
+            county: 'sacramento',
             agency_type: 'Department of justice',
             agency_name: 'SCD office',
             reported_on: '1990-01-15',
             communication_method: 'Child Abuse Form'
           },
           {
+            county: 'sacramento',
             agency_type: 'Licensing',
             agency_name: 'SCD office',
             reported_on: '1990-01-15',

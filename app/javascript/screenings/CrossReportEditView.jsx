@@ -7,12 +7,14 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
 import {AGENCY_TYPES, COMMUNICATION_METHODS} from 'enums/CrossReport'
+import COUNTIES from 'enums/Counties'
 
 export default class CrossReportEditView extends React.Component {
   constructor(props) {
     super(props)
     const [firstCrossReport] = props.crossReports.toJS()
     this.state = {
+      county: firstCrossReport && firstCrossReport.county,
       communicationMethod: firstCrossReport && firstCrossReport.communication_method,
       reportedOn: firstCrossReport && firstCrossReport.reported_on,
     }
@@ -47,6 +49,7 @@ export default class CrossReportEditView extends React.Component {
         }
         return crossReports.push(
           Immutable.Map({
+            county: this.state.county,
             agency_type: agencyType,
             agency_name: null,
             reported_on: this.state.reportedOn,
@@ -140,6 +143,24 @@ export default class CrossReportEditView extends React.Component {
         { this.props.alertInfoMessage && <AlertInfoMessage message={this.props.alertInfoMessage} /> }
         <div className='row col-md-12'>
           <label>This report has cross reported to:</label>
+        </div>
+        <div className='row'>
+          <SelectField
+            gridClassName='col-md-6'
+            id='cross_report_county'
+            label='County'
+            onChange={(event) => {
+              this.props.onChange(
+                this.updatedCrossReports(null, 'county', event.target.value),
+                ['county']
+              )
+              this.setState({county: event.target.value})
+            }}
+            value={this.state.county}
+          >
+            <option key='' value='' />
+            {Object.keys(COUNTIES).map((item) => <option key={item} value={item}>{COUNTIES[item]}</option>)}
+          </SelectField>
         </div>
         <div className='row gap-top'>
           { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }

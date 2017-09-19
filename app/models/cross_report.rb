@@ -4,6 +4,7 @@
 class CrossReport
   include Virtus.model
 
+  attribute :county, String
   attribute :agency_type, String
   attribute :agency_name, String
   attribute :communication_method, String
