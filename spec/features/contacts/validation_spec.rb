@@ -6,6 +6,8 @@ feature 'Validate Investigation Contact' do
   scenario 'user sees that status is required' do
     stub_system_codes
     visit new_investigation_contact_path(investigation_id: '123ABC')
+
+    # TODO: remove this once we can consistently have a fresh page for these specs
     page.driver.browser.navigate.refresh
 
     expect(page).not_to have_content 'Please enter a contact status'
