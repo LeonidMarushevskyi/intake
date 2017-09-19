@@ -75,8 +75,8 @@ describe('CrossReportEditView', () => {
     })
     it('returns an updated crossReports when county is passed', () => {
       expect(component.instance().updatedCrossReports(null, 'county', '').toJS()).toEqual([
-        {county: '', agency_type: 'District attorney', agency_name: 'SCDA Office'},
-        {county: '', agency_type: 'Department of justice'},
+        {county: null, agency_type: 'District attorney', agency_name: 'SCDA Office'},
+        {county: null, agency_type: 'Department of justice'},
       ])
     })
   })
