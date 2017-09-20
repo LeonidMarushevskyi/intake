@@ -20,6 +20,9 @@ export default createReducer(Map(), {
         note: {
           value: null,
         },
+        purpose: {
+          value: null,
+        },
       }
     )
   },
