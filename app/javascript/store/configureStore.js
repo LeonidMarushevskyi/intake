@@ -5,7 +5,7 @@ import {initSagas} from 'initSagas'
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly'
 import {createStore, applyMiddleware} from 'redux'
 
-export default function configureStore(initialState) {
+function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
   const store = createStore(
     rootReducer, /* preloadedState, */
@@ -17,3 +17,5 @@ export default function configureStore(initialState) {
   initSagas(sagaMiddleware)
   return store
 }
+
+export const store = configureStore()

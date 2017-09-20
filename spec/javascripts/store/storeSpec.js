@@ -21,6 +21,7 @@ describe('Store', () => {
       involvements: [],
       staff: {},
       screeningSummary: {},
+      remoteError: {},
       contact: {},
       contactStatuses: [],
     })

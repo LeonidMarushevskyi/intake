@@ -1,5 +1,7 @@
 import $ from 'jquery'
 import {config} from '../common/config'
+import {store} from 'store/configureStore'
+import {httpError} from 'actions/httpActions'
 
 export const STATUS_CODES = Object.freeze({
   'continue': 100,
@@ -84,9 +86,12 @@ export function request(method, url, data, options) {
       type: method,
       url: urlWithBasepath,
       data: data,
+      contentType: 'application/json; charset=utf-8',
       headers: {'X-CSRF-Token': getCSRFToken()},
     }, options || {}))
-      .done(resolve).fail((response) => {
+      .done(resolve)
+      .fail((response) => {
+        store.dispatch(httpError(response.responseJSON))
         if (response.status === STATUS_CODES.forbidden) {
           const firstIndex = 0
           const currentLocation = encodeURIComponent(window.location.href.split('?')[firstIndex])

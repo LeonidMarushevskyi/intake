@@ -1,0 +1,37 @@
+@import 'colors';
+
+.page-error {
+  background: $red;
+  color: $white-smoke;
+  font-size: 1.2rem;
+  left: 0;
+  padding-bottom: 2rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+  &.collapsed {
+    max-height: 10rem;
+    overflow: hidden;
+  }
+
+  &.expanded {
+    height: 100%;
+    overflow: scroll;
+    padding-bottom: 3rem;
+  }
+
+  button {
+    background: $transparent-black;
+    bottom: 1rem;
+    font-size: 1.5rem;
+    left: 50%;
+    position: absolute;
+  }
+}
+
+.page-has-remote-error {
+  margin-top: 10rem;
+}
+

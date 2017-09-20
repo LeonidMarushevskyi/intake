@@ -3924,6 +3924,10 @@ istanbul@0.4.5, istanbul@^0.4.0, istanbul@^0.4.3:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
+jasmine-ajax@^3.0.0, jasmine-ajax@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jasmine-ajax/-/jasmine-ajax-3.3.1.tgz#f8cad9fd49dfd44f3cf798d36f4e857d125c75c5"
+
 jasmine-core@~2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.7.0.tgz#50ff8c4f92d8ef5c0b2c1b846dd263ed85152091"
@@ -4107,6 +4111,12 @@ karma-htmlfile-reporter@^0.3.5:
   resolved "https://registry.yarnpkg.com/karma-htmlfile-reporter/-/karma-htmlfile-reporter-0.3.5.tgz#09abca9910a3eb1dbba27a9a766026948c96ca04"
   dependencies:
     xmlbuilder "3.1.0"
+
+karma-jasmine-ajax@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/karma-jasmine-ajax/-/karma-jasmine-ajax-0.1.13.tgz#78bb92d896fe32a25a180098c47722e1d9605bfc"
+  dependencies:
+    jasmine-ajax "^3.0.0"
 
 karma-jasmine@^1.1.0:
   version "1.1.0"
