@@ -15,9 +15,10 @@ class Contact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, status, note},
+      contact: {started_at, status, note, purpose},
       actions: {setField, touchField},
       statuses,
+      purposes,
       errors,
     } = this.props
 
@@ -55,6 +56,19 @@ class Contact extends React.Component {
                     {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
+                <div className='row'>
+                  <SelectField
+                    gridClassName='col-md-12'
+                    id='purpose'
+                    label='Purpose'
+                    value={purpose}
+                    onChange={(event) => setField('purpose', event.target.value)}
+                    errors={errors.purpose}
+                  >
+                    <option key='' value='' />
+                    {purposes.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
               </div>
               <div className='col-md-6'>
                 <div className='row'>
@@ -78,6 +92,7 @@ Contact.propTypes = {
   contact: PropTypes.object,
   errors: PropTypes.object,
   investigationId: PropTypes.string.isRequired,
+  purposes: PropTypes.array.isRequired,
   statuses: PropTypes.array.isRequired,
 }
 
