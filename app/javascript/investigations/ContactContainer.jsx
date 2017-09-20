@@ -23,6 +23,7 @@ const mapStateToProps = (state, ownProps) => {
     contact: contactValues,
     errors: filteredErrors(contactTouchedFields, errors(contactValues)),
     statuses: state.get('contactStatuses').toJS(),
+    purposes: state.get('contactPurposes').toJS(),
   }
 }
 

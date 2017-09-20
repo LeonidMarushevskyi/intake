@@ -7,6 +7,7 @@ import staff from 'reducers/staffReducer'
 import screeningSummary from 'reducers/screeningSummaryReducer'
 import contact from 'reducers/contactReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
+import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   remoteError,
   contact,
   contactStatuses,
+  contactPurposes,
 })
 
 export default rootReducer
