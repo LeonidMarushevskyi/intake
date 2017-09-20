@@ -8,7 +8,7 @@ class ContactValidator {
 
   validate() {
     const contact = this.contact
-    const fields = ['started_at', 'status']
+    const fields = ['started_at', 'status', 'purpose']
     const errors = fields.reduce(
       (errors, field) => ({...errors, [field]: []}), {}
     )
@@ -24,6 +24,10 @@ class ContactValidator {
 
     if (_.isEmpty(contact.status)) {
       errors.status.push('Please enter a contact status')
+    }
+
+    if (_.isEmpty(contact.purpose)) {
+      errors.purpose.push('Please enter a contact purpose')
     }
 
     return errors

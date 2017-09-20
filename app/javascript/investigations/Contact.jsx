@@ -63,6 +63,7 @@ class Contact extends React.Component {
                     label='Purpose'
                     value={purpose}
                     onChange={(event) => setField('purpose', event.target.value)}
+                    onBlur={() => touchField('purpose')}
                     errors={errors.purpose}
                   >
                     <option key='' value='' />

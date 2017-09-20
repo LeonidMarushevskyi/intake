@@ -34,5 +34,11 @@ describe('ContactValidator', () => {
       expect(new ContactValidator(contact).validate().status)
         .toEqual(['Please enter a contact status'])
     })
+
+    it('returns an error if purpose is missing from the contact', () => {
+      const contact = {}
+      expect(new ContactValidator(contact).validate().purpose)
+        .toEqual(['Please enter a contact purpose'])
+    })
   })
 })

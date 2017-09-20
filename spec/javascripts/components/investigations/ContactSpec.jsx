@@ -119,6 +119,13 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('purpose', '3')
   })
 
+  it('blurring purpose fires touchField', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}, contact: {purpose: ''}})
+    component.find("SelectField[id='purpose']").simulate('blur')
+    expect(touchField).toHaveBeenCalledWith('purpose')
+  })
+
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
     mount(

@@ -24,6 +24,7 @@ describe('contactReducer', () => {
           },
           purpose: {
             value: null,
+            touched: false,
           },
         })
       )

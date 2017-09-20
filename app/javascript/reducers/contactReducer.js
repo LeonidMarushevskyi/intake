@@ -22,6 +22,7 @@ export default createReducer(Map(), {
         },
         purpose: {
           value: null,
+          touched: false,
         },
       }
     )
