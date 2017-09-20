@@ -38,13 +38,13 @@ feature 'api responses' do
     expect(page.current_url).to eq(login_url)
   end
 
-  scenario 'API returns an error other than 403' do
-    stub_request(
-      :get,
-      intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id))
-    ).and_return(body: 'I failed', status: 500)
+  scenario 'API returns a 500 and errors are shown to user' do
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body('I failed', status: 500))
     visit screening_path(id: screening.id)
-    expect(page.current_url).to have_content screening_path(screening.id)
+    expect(page).to have_content 'status: 500'
+    click_button 'Expand'
+    expect(page).to have_content 'body: I failed'
   end
 
   scenario 'API returns a success' do
