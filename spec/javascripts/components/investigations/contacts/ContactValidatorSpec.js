@@ -29,6 +29,12 @@ describe('ContactValidator', () => {
         .toEqual(['The date and time cannot be in the future'])
     })
 
+    it('returns an error if communication_method is missing from the contact', () => {
+      const contact = {}
+      expect(new ContactValidator(contact).validate().communication_method)
+        .toEqual(['Please enter the communication method'])
+    })
+
     it('returns an error if status is missing from the contact', () => {
       const contact = {}
       expect(new ContactValidator(contact).validate().status)
