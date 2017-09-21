@@ -8,9 +8,9 @@ class Contact extends React.Component {
   componentDidMount() {
     const {
       investigationId,
-      actions: {setContact},
+      actions: {build},
     } = this.props
-    setContact({investigation_id: investigationId})
+    build({investigation_id: investigationId})
   }
   render() {
     const {

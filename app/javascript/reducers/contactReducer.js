@@ -3,22 +3,22 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [SET_CONTACT](_state, {investigation_id, started_at, status, note}) {
+  [SET_CONTACT](_state, {investigation_id}) {
     return fromJS(
       {
         investigation_id: {
           value: investigation_id,
         },
         started_at: {
-          value: started_at,
+          value: null,
           touched: false,
         },
         status: {
-          value: status,
+          value: null,
           touched: false,
         },
         note: {
-          value: note,
+          value: null,
         },
       }
     )

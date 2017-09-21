@@ -92,16 +92,16 @@ describe('Contact', () => {
     expect(setContactField).toHaveBeenCalledWith('note', 'This is a new note')
   })
 
-  it('calls setContact when the component mounts', () => {
-    const setContact = jasmine.createSpy('setContact')
+  it('calls build when the component mounts', () => {
+    const build = jasmine.createSpy('build')
     mount(
       <Contact
         investigationId='ABC123'
-        actions={{setContact}}
+        actions={{build}}
         contact={{}}
         statuses={[]}
       />
     )
-    expect(setContact).toHaveBeenCalledWith({investigation_id: 'ABC123'})
+    expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
   })
 })
