@@ -13,7 +13,7 @@ describe('request', () => {
 
   describe('error handling', () => {
     beforeEach(() => {
-      spyOn(store, 'dispatch')//.and.callThrough()
+      spyOn(store, 'dispatch')
     })
 
     it('dispatches the http error action', () => {
