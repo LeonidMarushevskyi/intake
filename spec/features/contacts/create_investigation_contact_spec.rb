@@ -23,6 +23,48 @@ feature 'Create Investigation Contact' do
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
     expect(page).to have_select('Purpose', selected: 'Investigate Referral')
+
+    stub_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts('123ABC')))
+      .and_return(
+        json_body(
+          {
+            id: 123,
+            started_at: '2016-08-17T10:00:00.000Z',
+            status: 'A',
+            note: 'This was an attempted contact',
+            purpose: '1',
+            communication_method: 'ABC',
+            location: '123'
+          }.to_json,
+          status: 201
+        )
+      )
+    click_button 'Save'
+    expect(
+      a_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts('123ABC')))
+      .with(
+        body: {
+          started_at: '2016-08-17T10:00:00.000Z',
+          purpose: '1',
+          status: 'A',
+          note: 'This was an attempted contact',
+          communication_method: 'ABC',
+          location: '123'
+        }.to_json
+      )
+    ).to have_been_made
+
+    within '.card-header' do
+      expect(page).to have_content('Contact - Investigation 123ABC')
+    end
+    within '.card-body' do
+      expect(page).to have_content 'Date & Time (08/17/2016 3:00 AM)'
+      expect(page).to have_content 'Status Attempted'
+      expect(page).to have_content 'Purpose Investigate Referral'
+      expect(page).to have_content 'Contact Notes (Optional) This was an attempted contact'
+      expect(page).to have_content 'Communication Method In person'
+      expect(page).to have_content 'Location School'
+    end
   end
 
   scenario 'user does not see location until in person is selected for communication method' do
