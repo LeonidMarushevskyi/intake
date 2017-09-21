@@ -207,14 +207,14 @@ describe('HistoryCard', () => {
           expect(copyButton.props().onClick).toEqual(jasmine.any(Function))
         })
         it('calls the clipboard library', () => {
-          const copySpy = spyOn(clipboard, 'copy').and.callThrough()
+          spyOn(clipboard, 'copy')
           const wrapper = mount(<HistoryCard {...requiredProps} involvements={involvements} />)
           const resultsTable = wrapper.find('table').node
           wrapper.find('button[children="Copy"]').simulate('click')
           expect(wrapper.text()).not.toContain(
             'To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select "Copy."'
           )
-          expect(copySpy).toHaveBeenCalledWith({
+          expect(clipboard.copy).toHaveBeenCalledWith({
             'text/plain': resultsTable.innerText,
             'text/html': resultsTable.outerHTML,
           })
@@ -318,11 +318,11 @@ describe('HistoryCard', () => {
           expect(copyButton.props().onClick).toEqual(jasmine.any(Function))
         })
         it('calls the clipboard library', () => {
-          const copySpy = spyOn(clipboard, 'copy').and.callThrough()
+          spyOn(clipboard, 'copy')
           const wrapper = mount(<HistoryCard {...requiredProps} involvements={involvements} />)
           const resultsTable = wrapper.find('table').node
           wrapper.find('button[children="Copy"]').simulate('click')
-          expect(copySpy).toHaveBeenCalledWith({
+          expect(clipboard.copy).toHaveBeenCalledWith({
             'text/plain': resultsTable.innerText,
             'text/html': resultsTable.outerHTML,
           })
