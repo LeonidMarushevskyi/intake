@@ -26,7 +26,7 @@ describe('ContactValidator', () => {
       const tomorrow = moment().add(1, 'days').toISOString()
       const contact = {started_at: tomorrow}
       expect(new ContactValidator(contact).validate().started_at)
-        .toEqual(['The date and time cannot be in the future.'])
+        .toEqual(['The date and time cannot be in the future'])
     })
 
     it('returns an error if status is missing from the contact', () => {

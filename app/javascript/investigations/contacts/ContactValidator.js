@@ -18,7 +18,7 @@ class ContactValidator {
 
     const now = moment().toISOString()
     if (started_at > now) {
-      errors.started_at.push('The date and time cannot be in the future.')
+      errors.started_at.push('The date and time cannot be in the future')
     }
 
     if (!status) {

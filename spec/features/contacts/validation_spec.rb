@@ -23,7 +23,7 @@ feature 'Validate Investigation Contact' do
   end
 
   scenario 'user sees that date/time is required' do
-    expect(page).not_to have_content 'The date and time cannot be in the future.'
+    expect(page).not_to have_content 'The date and time cannot be in the future'
     expect(page).not_to have_content 'Please enter a contact date'
 
     fill_in_datepicker 'Date/Time', with: '', blur: false
@@ -32,10 +32,10 @@ feature 'Validate Investigation Contact' do
     expect(page).to have_content 'Please enter a contact date'
 
     fill_in_datepicker 'Date/Time', with: 2.years.from_now
-    expect(page).to have_content 'The date and time cannot be in the future.'
+    expect(page).to have_content 'The date and time cannot be in the future'
 
     fill_in_datepicker 'Date/Time', with: 2.years.ago
-    expect(page).not_to have_content 'The date and time cannot be in the future.'
+    expect(page).not_to have_content 'The date and time cannot be in the future'
     expect(page).not_to have_content 'Please enter a contact date'
   end
 
