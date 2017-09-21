@@ -24,6 +24,7 @@ const mapStateToProps = (state, ownProps) => {
     errors: filteredErrors(contactTouchedFields, errors(contactValues)),
     statuses: state.get('contactStatuses').toJS(),
     purposes: state.get('contactPurposes').toJS(),
+    communicationMethods: state.get('communicationMethods').toJS(),
   }
 }
 
