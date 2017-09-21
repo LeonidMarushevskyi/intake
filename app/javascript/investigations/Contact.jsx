@@ -16,7 +16,7 @@ class Contact extends React.Component {
     const {
       investigationId,
       contact: {started_at, communication_method, location, status, note, purpose},
-      actions: {setField, touchField},
+      actions: {setField, touchField, create},
       statuses,
       purposes,
       communicationMethods,
@@ -24,14 +24,17 @@ class Contact extends React.Component {
       errors,
       inPersonCode,
     } = this.props
-
+    const onSubmit = (event) => {
+      event.preventDefault()
+      create(this.props.contact)
+    }
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
           <span>{`New Contact - Investigation ${investigationId}`}</span>
         </div>
         <div className='card-body'>
-          <form>
+          <form onSubmit={onSubmit}>
             <div className='row'>
               <div className='col-md-6'>
                 <div className='row'>
@@ -112,6 +115,11 @@ class Contact extends React.Component {
                     </textarea>
                   </FormField>
                 </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='centered'>
+                <button className='btn btn-primary' type='submit'>Save</button>
               </div>
             </div>
           </form>

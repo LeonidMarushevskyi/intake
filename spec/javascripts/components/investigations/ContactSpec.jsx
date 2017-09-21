@@ -238,6 +238,36 @@ describe('Contact', () => {
     expect(touchField).toHaveBeenCalledWith('purpose')
   })
 
+  it('displays the save button', () => {
+    const component = renderContact({})
+    const saveButton = component.find('button')
+    expect(saveButton.text()).toContain('Save')
+    expect(saveButton.props().type).toEqual('submit')
+  })
+
+  it('clicking save fires the create action', () => {
+    const create = jasmine.createSpy('create')
+    const event = jasmine.createSpyObj('event', ['preventDefault'])
+    const component = renderContact({
+      contact: {
+        investigation_id: '123',
+        started_at: '2016-08-11T18:24:22.157Z',
+        status: 'S',
+        note: 'This is a new note',
+        purpose: '1',
+      },
+      actions: {create},
+    })
+    component.find('form').simulate('submit', event)
+    expect(create).toHaveBeenCalledWith({
+      investigation_id: '123',
+      started_at: '2016-08-11T18:24:22.157Z',
+      status: 'S',
+      note: 'This is a new note',
+      purpose: '1',
+    })
+  })
+
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
     mount(
