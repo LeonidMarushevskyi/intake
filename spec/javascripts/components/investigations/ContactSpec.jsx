@@ -30,18 +30,18 @@ describe('Contact', () => {
     expect(startedAt.props().value).toEqual('2016-08-11T18:24:22.157Z')
   })
 
-  it('changing started at fires setContactField', () => {
-    const setContactField = jasmine.createSpy('setContactField')
-    const component = renderContact({actions: {setContactField}, contact: {started_at: ''}})
+  it('changing started at fires setField', () => {
+    const setField = jasmine.createSpy('setField')
+    const component = renderContact({actions: {setField}, contact: {started_at: ''}})
     component.find('DateField').simulate('change', '123')
-    expect(setContactField).toHaveBeenCalledWith('started_at', '123')
+    expect(setField).toHaveBeenCalledWith('started_at', '123')
   })
 
-  it('blurring started at fires touchContactField', () => {
-    const touchContactField = jasmine.createSpy('touchContactField')
-    const component = renderContact({actions: {touchContactField}, contact: {started_at: ''}})
+  it('blurring started at fires touchField', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}, contact: {started_at: ''}})
     component.find('DateField').simulate('blur')
-    expect(touchContactField).toHaveBeenCalledWith('started_at')
+    expect(touchField).toHaveBeenCalledWith('started_at')
   })
 
   it('displays the status dropdown', () => {
@@ -63,18 +63,18 @@ describe('Contact', () => {
     expect(statusField.props().errors).toEqual(['This could be wrong!'])
   })
 
-  it('changing status fires setContactField', () => {
-    const setContactField = jasmine.createSpy('setContactField')
-    const component = renderContact({actions: {setContactField}, contact: {status: ''}})
+  it('changing status fires setField', () => {
+    const setField = jasmine.createSpy('setField')
+    const component = renderContact({actions: {setField}, contact: {status: ''}})
     component.find('SelectField').simulate('change', {target: {value: 'C'}})
-    expect(setContactField).toHaveBeenCalledWith('status', 'C')
+    expect(setField).toHaveBeenCalledWith('status', 'C')
   })
 
-  it('blurring status at fires touchContactField', () => {
-    const touchContactField = jasmine.createSpy('touchContactField')
-    const component = renderContact({actions: {touchContactField}, contact: {status: ''}})
+  it('blurring status at fires touchField', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}, contact: {status: ''}})
     component.find('SelectField').simulate('blur')
-    expect(touchContactField).toHaveBeenCalledWith('status')
+    expect(touchField).toHaveBeenCalledWith('status')
   })
 
   it('displays note', () => {
@@ -83,25 +83,25 @@ describe('Contact', () => {
     expect(noteField.text()).toContain('This is a simple contact note')
   })
 
-  it('changing note fires setContactField', () => {
-    const setContactField = jasmine.createSpy('setContactField')
+  it('changing note fires setField', () => {
+    const setField = jasmine.createSpy('setField')
     const component = renderContact({
-      actions: {setContactField}, contact: {note: 'This is a simple contact note'},
+      actions: {setField}, contact: {note: 'This is a simple contact note'},
     })
     component.find('textarea').simulate('change', {target: {value: 'This is a new note'}})
-    expect(setContactField).toHaveBeenCalledWith('note', 'This is a new note')
+    expect(setField).toHaveBeenCalledWith('note', 'This is a new note')
   })
 
-  it('calls setContact when the component mounts', () => {
-    const setContact = jasmine.createSpy('setContact')
+  it('calls build when the component mounts', () => {
+    const build = jasmine.createSpy('build')
     mount(
       <Contact
         investigationId='ABC123'
-        actions={{setContact}}
+        actions={{build}}
         contact={{}}
         statuses={[]}
       />
     )
-    expect(setContact).toHaveBeenCalledWith({investigation_id: 'ABC123'})
+    expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
   })
 })

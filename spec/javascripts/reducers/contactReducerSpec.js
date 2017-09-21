@@ -1,5 +1,5 @@
 import {Map, fromJS} from 'immutable'
-import {setContact, setContactField, touchContactField} from 'actions/contactActions'
+import {build, setField, touchField} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import contactReducer from 'reducers/contactReducer'
 
@@ -8,24 +8,19 @@ describe('contactReducer', () => {
 
   describe('on SET_CONTACT', () => {
     it('returns the contact', () => {
-      const action = setContact({
-        investigation_id: '123',
-        started_at: '2016-08-11T18:24:22.157Z',
-        status: 'C',
-        note: 'This is a note',
-      })
+      const action = build({investigation_id: '123'})
       expect(contactReducer(Map(), action)).toEqual(
         fromJS({
           investigation_id: {
             value: '123',
           }, started_at: {
-            value: '2016-08-11T18:24:22.157Z',
+            value: null,
             touched: false,
           }, status: {
-            value: 'C',
+            value: null,
             touched: false,
           }, note: {
-            value: 'This is a note',
+            value: null,
           },
         })
       )
@@ -34,7 +29,7 @@ describe('contactReducer', () => {
 
   describe('on SET_CONTACT_FIELD', () => {
     it('returns the contact with the newly updated value, but touched remains the same', () => {
-      const action = setContactField('started_at', 'ABC')
+      const action = setField('started_at', 'ABC')
       const state = fromJS({started_at: {value: '123', touched: false}})
       expect(contactReducer(state, action)).toEqualImmutable(
         fromJS({
@@ -49,7 +44,7 @@ describe('contactReducer', () => {
 
   describe('on TOUCH_CONTACT_FIELD', () => {
     it('returns the contact with touched set to true, but the value remains the same', () => {
-      const action = touchContactField('started_at')
+      const action = touchField('started_at')
       const state = fromJS({started_at: {value: '123', touched: false}})
       expect(contactReducer(state, action)).toEqualImmutable(
         fromJS({
