@@ -24,6 +24,7 @@ describe('Store', () => {
       remoteError: {},
       contact: {},
       contactStatuses: [],
+      contactPurposes: [],
     })
     store = createStore(rootReducer)
   })

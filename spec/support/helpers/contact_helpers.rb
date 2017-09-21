@@ -3,7 +3,8 @@
 module ContactHelpers
   def stub_system_codes
     contact_statuses = [
-      { code: 'A', value: 'Attempted', category: 'contact_status', sub_category: nil }
+      { code: 'A', value: 'Attempted', category: 'contact_status', sub_category: nil },
+      { code: '1', value: 'Investigate Referral', category: 'contact_purpose', sub_category: nil }
     ]
     stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov)).and_return(
       json_body(contact_statuses, status: 200)

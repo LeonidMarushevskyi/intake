@@ -22,6 +22,10 @@ describe('contactReducer', () => {
           }, note: {
             value: null,
           },
+          purpose: {
+            value: null,
+            touched: false,
+          },
         })
       )
     })
