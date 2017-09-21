@@ -16,7 +16,7 @@ class Contact extends React.Component {
     const {
       investigationId,
       contact: {started_at, status, note},
-      actions: {setField, touchContactField},
+      actions: {setField, touchField},
       statuses,
       errors,
     } = this.props
@@ -37,7 +37,7 @@ class Contact extends React.Component {
                     label='Date/Time'
                     value={started_at}
                     onChange={(value) => setField('started_at', value)}
-                    onBlur={() => touchContactField('started_at')}
+                    onBlur={() => touchField('started_at')}
                     errors={errors.started_at}
                   />
                 </div>
@@ -48,7 +48,7 @@ class Contact extends React.Component {
                     label='Status'
                     value={status}
                     onChange={(event) => setField('status', event.target.value)}
-                    onBlur={() => touchContactField('status')}
+                    onBlur={() => touchField('status')}
                     errors={errors.status}
                   >
                     <option key='' value='' />

@@ -37,11 +37,11 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('started_at', '123')
   })
 
-  it('blurring started at fires touchContactField', () => {
-    const touchContactField = jasmine.createSpy('touchContactField')
-    const component = renderContact({actions: {touchContactField}, contact: {started_at: ''}})
+  it('blurring started at fires touchField', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}, contact: {started_at: ''}})
     component.find('DateField').simulate('blur')
-    expect(touchContactField).toHaveBeenCalledWith('started_at')
+    expect(touchField).toHaveBeenCalledWith('started_at')
   })
 
   it('displays the status dropdown', () => {
@@ -70,11 +70,11 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('status', 'C')
   })
 
-  it('blurring status at fires touchContactField', () => {
-    const touchContactField = jasmine.createSpy('touchContactField')
-    const component = renderContact({actions: {touchContactField}, contact: {status: ''}})
+  it('blurring status at fires touchField', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}, contact: {status: ''}})
     component.find('SelectField').simulate('blur')
-    expect(touchContactField).toHaveBeenCalledWith('status')
+    expect(touchField).toHaveBeenCalledWith('status')
   })
 
   it('displays note', () => {

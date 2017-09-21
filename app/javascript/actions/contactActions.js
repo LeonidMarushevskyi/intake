@@ -10,6 +10,6 @@ export function setField(field, value) {
   return {type: SET_CONTACT_FIELD, field, value}
 }
 
-export function touchContactField(field) {
+export function touchField(field) {
   return {type: TOUCH_CONTACT_FIELD, field}
 }

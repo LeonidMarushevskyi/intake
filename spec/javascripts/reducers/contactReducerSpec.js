@@ -1,5 +1,5 @@
 import {Map, fromJS} from 'immutable'
-import {build, setField, touchContactField} from 'actions/contactActions'
+import {build, setField, touchField} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import contactReducer from 'reducers/contactReducer'
 
@@ -44,7 +44,7 @@ describe('contactReducer', () => {
 
   describe('on TOUCH_CONTACT_FIELD', () => {
     it('returns the contact with touched set to true, but the value remains the same', () => {
-      const action = touchContactField('started_at')
+      const action = touchField('started_at')
       const state = fromJS({started_at: {value: '123', touched: false}})
       expect(contactReducer(state, action)).toEqualImmutable(
         fromJS({
