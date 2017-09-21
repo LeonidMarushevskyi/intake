@@ -15,10 +15,11 @@ class Contact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, status, note, purpose},
+      contact: {started_at, communication_method, status, note, purpose},
       actions: {setField, touchField},
       statuses,
       purposes,
+      communicationMethods,
       errors,
     } = this.props
 
