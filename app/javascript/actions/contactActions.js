@@ -6,7 +6,7 @@ export function build({investigation_id}) {
   return {type: SET_CONTACT, investigation_id}
 }
 
-export function setContactField(field, value) {
+export function setField(field, value) {
   return {type: SET_CONTACT_FIELD, field, value}
 }
 

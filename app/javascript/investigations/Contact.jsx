@@ -16,7 +16,7 @@ class Contact extends React.Component {
     const {
       investigationId,
       contact: {started_at, status, note},
-      actions: {setContactField, touchContactField},
+      actions: {setField, touchContactField},
       statuses,
       errors,
     } = this.props
@@ -36,7 +36,7 @@ class Contact extends React.Component {
                     id='started_at'
                     label='Date/Time'
                     value={started_at}
-                    onChange={(value) => setContactField('started_at', value)}
+                    onChange={(value) => setField('started_at', value)}
                     onBlur={() => touchContactField('started_at')}
                     errors={errors.started_at}
                   />
@@ -47,7 +47,7 @@ class Contact extends React.Component {
                     id='status'
                     label='Status'
                     value={status}
-                    onChange={(event) => setContactField('status', event.target.value)}
+                    onChange={(event) => setField('status', event.target.value)}
                     onBlur={() => touchContactField('status')}
                     errors={errors.status}
                   >
@@ -59,7 +59,7 @@ class Contact extends React.Component {
               <div className='col-md-6'>
                 <div className='row'>
                   <FormField id='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
-                    <textarea id='note' onChange={(event) => setContactField('note', event.target.value)}>
+                    <textarea id='note' onChange={(event) => setField('note', event.target.value)}>
                       {note}
                     </textarea>
                   </FormField>
