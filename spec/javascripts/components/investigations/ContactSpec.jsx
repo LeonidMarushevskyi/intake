@@ -10,8 +10,9 @@ describe('Contact', () => {
     errors = {},
     statuses = [],
     purposes = [],
+    communicationMethods = [],
   }) {
-    const props = {investigationId, actions, contact, statuses, purposes, errors}
+    const props = {investigationId, actions, contact, statuses, purposes, communicationMethods, errors}
     return shallow(<Contact {...props} />)
   }
 
@@ -71,11 +72,51 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('status', 'C')
   })
 
-  it('blurring status at fires touchField', () => {
+  it('blurring status fires touchField', () => {
     const touchField = jasmine.createSpy('touchField')
     const component = renderContact({actions: {touchField}, contact: {status: ''}})
     component.find("SelectField[id='status']").simulate('blur')
     expect(touchField).toHaveBeenCalledWith('status')
+  })
+
+  it('displays the communication method dropdown', () => {
+    const component = renderContact({
+      contact: {communication_method: '2'},
+      communicationMethods: [
+        {code: '1', value: 'Carrier Pigeon'},
+        {code: '2', value: 'Smoke Signal'},
+        {code: '3', value: 'Morse Code'},
+      ], errors: {
+        communication_method: ['Not valid'],
+      },
+    })
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    expect(communicationMethodSelect.exists()).toEqual(true)
+    expect(communicationMethodSelect.props().value).toEqual('2')
+    expect(communicationMethodSelect.props().errors).toEqual(['Not valid'])
+    expect(communicationMethodSelect.childAt(0).props().value).toEqual('')
+    expect(communicationMethodSelect.childAt(1).props().value).toEqual('1')
+    expect(communicationMethodSelect.childAt(1).text()).toEqual('Carrier Pigeon')
+    expect(communicationMethodSelect.childAt(2).props().value).toEqual('2')
+    expect(communicationMethodSelect.childAt(2).text()).toEqual('Smoke Signal')
+    expect(communicationMethodSelect.childAt(3).props().value).toEqual('3')
+    expect(communicationMethodSelect.childAt(3).text()).toEqual('Morse Code')
+  })
+
+  it('changing communication method fires setField with the proper parameters', () => {
+    const setField = jasmine.createSpy('setField')
+    const component = renderContact({actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: '1'}})
+    expect(setField).toHaveBeenCalledWith('communication_method', '1')
+  })
+
+  it('blurring communication method fires touchField with the proper parameter', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('blur')
+    expect(touchField).toHaveBeenCalledWith('communication_method')
   })
 
   it('displays note', () => {
@@ -135,6 +176,7 @@ describe('Contact', () => {
         contact={{}}
         statuses={[]}
         purposes={[]}
+        communicationMethods={[]}
       />
     )
     expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})

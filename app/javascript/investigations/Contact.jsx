@@ -46,6 +46,20 @@ class Contact extends React.Component {
                 <div className='row'>
                   <SelectField
                     gridClassName='col-md-12'
+                    id='communication_method'
+                    label='Communication Method'
+                    value={communication_method}
+                    onChange={(event) => setField('communication_method', event.target.value)}
+                    onBlur={() => touchField('communication_method')}
+                    errors={errors.communication_method}
+                  >
+                    <option key='' value='' />
+                    {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
+                <div className='row'>
+                  <SelectField
+                    gridClassName='col-md-12'
                     id='status'
                     label='Status'
                     value={status}
@@ -91,6 +105,7 @@ class Contact extends React.Component {
 
 Contact.propTypes = {
   actions: PropTypes.object,
+  communicationMethods: PropTypes.array.isRequired,
   contact: PropTypes.object,
   errors: PropTypes.object,
   investigationId: PropTypes.string.isRequired,
