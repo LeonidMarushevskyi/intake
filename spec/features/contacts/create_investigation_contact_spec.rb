@@ -12,10 +12,12 @@ feature 'Create Investigation Contact' do
     within '.card-body' do
       fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
       select 'Attempted', from: 'Status'
-      fill_in 'Contact Notes', with: 'This was an attempted contact'
+      select 'In Person', from: 'Communication Method'
       select 'Investigate Referral', from: 'Purpose'
+      fill_in 'Contact Notes', with: 'This was an attempted contact'
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
+    expect(page).to have_select('Communication Method', selected: 'In Person')
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
     expect(page).to have_select('Purpose', selected: 'Investigate Referral')

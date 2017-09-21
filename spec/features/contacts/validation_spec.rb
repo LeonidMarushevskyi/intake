@@ -49,4 +49,15 @@ feature 'Validate Investigation Contact' do
     select 'Investigate Referral', from: 'Purpose'
     expect(page).not_to have_content 'Please enter a contact purpose'
   end
+
+  scenario 'user sees that communication method is required' do
+    expect(page).not_to have_content 'Please enter the communication method'
+
+    select '', from: 'Communication Method'
+    blur_field
+    expect(page).to have_content 'Please enter the communication method'
+
+    select 'In Person', from: 'Communication Method'
+    expect(page).not_to have_content 'Please enter the communication method'
+  end
 end
