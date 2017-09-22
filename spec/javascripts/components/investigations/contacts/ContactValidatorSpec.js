@@ -35,6 +35,12 @@ describe('ContactValidator', () => {
         .toEqual(['Please enter the communication method'])
     })
 
+    it('returns an error if location is missing from the contact', () => {
+      const contact = {}
+      expect(new ContactValidator(contact).validate().location)
+        .toEqual(['Please enter the contact location'])
+    })
+
     it('returns an error if status is missing from the contact', () => {
       const contact = {}
       expect(new ContactValidator(contact).validate().status)

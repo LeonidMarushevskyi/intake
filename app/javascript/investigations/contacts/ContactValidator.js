@@ -6,8 +6,8 @@ class ContactValidator {
   }
 
   validate() {
-    const {started_at, communication_method, status, purpose} = this.contact
-    const fields = ['started_at', 'communication_method', 'status', 'purpose']
+    const {started_at, communication_method, location, status, purpose} = this.contact
+    const fields = ['started_at', 'communication_method', 'location', 'status', 'purpose']
     const errors = fields.reduce(
       (errors, field) => ({...errors, [field]: []}), {}
     )
@@ -23,6 +23,10 @@ class ContactValidator {
 
     if (!communication_method) {
       errors.communication_method.push('Please enter the communication method')
+    }
+
+    if (!location) {
+      errors.location.push('Please enter the contact location')
     }
 
     if (!status) {
