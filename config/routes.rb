@@ -65,6 +65,7 @@ Rails.application.routes.draw do
         member do
           get :screening
         end
+        resources :contacts, only: :create, module: :investigations
       end
 
       resources :system_codes, only: [:index]
