@@ -228,6 +228,7 @@ describe('Contact', () => {
         statuses={[]}
         purposes={[]}
         communicationMethods={[]}
+        locations={[]}
       />
     )
     expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})

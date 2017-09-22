@@ -25,6 +25,7 @@ const mapStateToProps = (state, ownProps) => {
     statuses: state.get('contactStatuses').toJS(),
     purposes: state.get('contactPurposes').toJS(),
     communicationMethods: state.get('communicationMethods').toJS(),
+    locations: state.get('locations').toJS(),
   }
 }
 
