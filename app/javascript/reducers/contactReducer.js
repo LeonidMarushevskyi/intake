@@ -17,6 +17,10 @@ export default createReducer(Map(), {
           value: null,
           touched: false,
         },
+        location: {
+          value: null,
+          touched: false,
+        },
         status: {
           value: null,
           touched: false,

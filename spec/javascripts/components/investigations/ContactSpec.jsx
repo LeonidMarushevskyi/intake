@@ -11,8 +11,18 @@ describe('Contact', () => {
     statuses = [],
     purposes = [],
     communicationMethods = [],
+    locations = [],
   }) {
-    const props = {investigationId, actions, contact, statuses, purposes, communicationMethods, errors}
+    const props = {
+      investigationId,
+      actions,
+      contact,
+      statuses,
+      purposes,
+      communicationMethods,
+      locations,
+      errors,
+    }
     return shallow(<Contact {...props} />)
   }
 
@@ -117,6 +127,47 @@ describe('Contact', () => {
     const communicationMethodSelect = component.find("SelectField[id='communication_method']")
     communicationMethodSelect.simulate('blur')
     expect(touchField).toHaveBeenCalledWith('communication_method')
+  })
+
+  it('displays the location dropdown', () => {
+    const component = renderContact({
+      contact: {location: '2'},
+      locations: [
+        {code: '1', value: 'On a mountain'},
+        {code: '2', value: 'In space'},
+        {code: '3', value: 'Under an umbrella'},
+      ], errors: {
+        location: ['Not valid'],
+      },
+    })
+    const locationSelect = component.find("SelectField[id='location']")
+    expect(locationSelect.exists()).toEqual(true)
+    expect(locationSelect.props().value).toEqual('2')
+    expect(locationSelect.props().errors).toEqual(['Not valid'])
+    expect(locationSelect.childAt(0).props().value).toEqual('')
+    expect(locationSelect.childAt(0).text()).toEqual('')
+    expect(locationSelect.childAt(1).props().value).toEqual('1')
+    expect(locationSelect.childAt(1).text()).toEqual('On a mountain')
+    expect(locationSelect.childAt(2).props().value).toEqual('2')
+    expect(locationSelect.childAt(2).text()).toEqual('In space')
+    expect(locationSelect.childAt(3).props().value).toEqual('3')
+    expect(locationSelect.childAt(3).text()).toEqual('Under an umbrella')
+  })
+
+  it('changing location calls setField with the proper parameters', () => {
+    const setField = jasmine.createSpy('setField')
+    const component = renderContact({actions: {setField}})
+    const locationSelect = component.find("SelectField[id='location']")
+    locationSelect.simulate('change', {target: {value: '4'}})
+    expect(setField).toHaveBeenCalledWith('location', '4')
+  })
+
+  it('blurring location calls touchField with the proper parameters', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}})
+    const locationSelect = component.find("SelectField[id='location']")
+    locationSelect.simulate('blur')
+    expect(touchField).toHaveBeenCalledWith('location')
   })
 
   it('displays note', () => {

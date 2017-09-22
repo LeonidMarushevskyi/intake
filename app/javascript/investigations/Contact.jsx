@@ -15,11 +15,12 @@ class Contact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, communication_method, status, note, purpose},
+      contact: {started_at, communication_method, location, status, note, purpose},
       actions: {setField, touchField},
       statuses,
       purposes,
       communicationMethods,
+      locations,
       errors,
     } = this.props
 
@@ -55,6 +56,20 @@ class Contact extends React.Component {
                   >
                     <option key='' value='' />
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
+                <div>
+                  <SelectField
+                    gridClassName='col-md-12'
+                    id='location'
+                    label='Location'
+                    value={location}
+                    onChange={(event) => setField('location', event.target.value)}
+                    onBlur={() => touchField('location')}
+                    errors={errors.location}
+                  >
+                    <option key='' value='' />
+                    {locations.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
                 <div className='row'>
@@ -109,6 +124,7 @@ Contact.propTypes = {
   contact: PropTypes.object,
   errors: PropTypes.object,
   investigationId: PropTypes.string.isRequired,
+  locations: PropTypes.array.isRequired,
   purposes: PropTypes.array.isRequired,
   statuses: PropTypes.array.isRequired,
 }
