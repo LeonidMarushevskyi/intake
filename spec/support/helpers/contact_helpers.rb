@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 module ContactHelpers
+  IN_PERSON = '408'
+
   def stub_system_codes
     contact_statuses = [
       { code: 'A', value: 'Attempted', category: 'contact_status', sub_category: nil },
       { code: '1', value: 'Investigate Referral', category: 'contact_purpose', sub_category: nil },
-      { code: 'ABC', value: 'In person', category: 'communication_method', sub_category: nil },
+      { code: IN_PERSON, value: 'In person', category: 'communication_method', sub_category: nil },
       { code: '123', value: 'School', category: 'contact_location', sub_category: nil }
     ]
     stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov)).and_return(

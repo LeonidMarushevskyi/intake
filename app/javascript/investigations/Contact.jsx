@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
 import SelectField from 'common/SelectField'
 import FormField from 'common/FormField'
+const IN_PERSON = '408'
 
 class Contact extends React.Component {
   componentDidMount() {
@@ -58,20 +59,22 @@ class Contact extends React.Component {
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
-                <div className='row'>
-                  <SelectField
-                    gridClassName='col-md-12'
-                    id='location'
-                    label='Location'
-                    value={location}
-                    onChange={(event) => setField('location', event.target.value)}
-                    onBlur={() => touchField('location')}
-                    errors={errors.location}
-                  >
-                    <option key='' value='' />
-                    {locations.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
-                  </SelectField>
-                </div>
+                { communication_method === IN_PERSON &&
+                  <div className='row'>
+                    <SelectField
+                      gridClassName='col-md-12'
+                      id='location'
+                      label='Location'
+                      value={location}
+                      onChange={(event) => setField('location', event.target.value)}
+                      onBlur={() => touchField('location')}
+                      errors={errors.location}
+                    >
+                      <option key='' value='' />
+                      {locations.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                    </SelectField>
+                  </div>
+                }
                 <div className='row'>
                   <SelectField
                     gridClassName='col-md-12'

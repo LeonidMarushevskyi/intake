@@ -64,6 +64,7 @@ feature 'Validate Investigation Contact' do
   scenario 'user sees that location is required' do
     expect(page).not_to have_content 'Please enter the contact location'
 
+    select 'In Person', from: 'Communication Method'
     select '', from: 'Location'
     blur_field
     expect(page).to have_content 'Please enter the contact location'

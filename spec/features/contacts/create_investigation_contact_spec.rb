@@ -24,4 +24,13 @@ feature 'Create Investigation Contact' do
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
     expect(page).to have_select('Purpose', selected: 'Investigate Referral')
   end
+
+  scenario 'user does not see location until in person is selected for communication method' do
+    stub_system_codes
+    visit new_investigation_contact_path(investigation_id: '123ABC')
+
+    expect(page).to_not have_select('Location')
+    select 'In Person', from: 'Communication Method'
+    expect(page).to have_select('Location')
+  end
 end

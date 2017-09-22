@@ -1,6 +1,7 @@
 import Contact from 'investigations/Contact'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
+const IN_PERSON = '408'
 
 describe('Contact', () => {
   function renderContact({
@@ -129,9 +130,15 @@ describe('Contact', () => {
     expect(touchField).toHaveBeenCalledWith('communication_method')
   })
 
-  it('displays the location dropdown', () => {
+  it('does not display the location dropdown when the communication method is not in person', () => {
+    const component = renderContact({contact: {location: '2'}})
+    const locationSelect = component.find("SelectField[id='location']")
+    expect(locationSelect.exists()).toEqual(false)
+  })
+
+  it('displays the location dropdown when the communication method is in person', () => {
     const component = renderContact({
-      contact: {location: '2'},
+      contact: {communication_method: IN_PERSON, location: '2'},
       locations: [
         {code: '1', value: 'On a mountain'},
         {code: '2', value: 'In space'},
@@ -156,7 +163,10 @@ describe('Contact', () => {
 
   it('changing location calls setField with the proper parameters', () => {
     const setField = jasmine.createSpy('setField')
-    const component = renderContact({actions: {setField}})
+    const component = renderContact({
+      actions: {setField},
+      contact: {communication_method: IN_PERSON},
+    })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('change', {target: {value: '4'}})
     expect(setField).toHaveBeenCalledWith('location', '4')
@@ -164,7 +174,10 @@ describe('Contact', () => {
 
   it('blurring location calls touchField with the proper parameters', () => {
     const touchField = jasmine.createSpy('touchField')
-    const component = renderContact({actions: {touchField}})
+    const component = renderContact({
+      actions: {touchField},
+      contact: {communication_method: IN_PERSON},
+    })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('blur')
     expect(touchField).toHaveBeenCalledWith('location')
