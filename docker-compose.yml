@@ -38,7 +38,8 @@ services:
     environment:
       AUTHENTICATION_URL: 'https://perry.preint.cwds.io/perry'
       AUTHENTICATION: ${AUTHENTICATION:-true}
-      SEARCH_URL: 'https://ferbapi.preint.cwds.io'
+      DORA_URL: 'https://dora.preint.cwds.io/'
+      FERB_URL: 'https://ferbapi.preint.cwds.io'
     tty: true
     stdin_open: true
   db:
