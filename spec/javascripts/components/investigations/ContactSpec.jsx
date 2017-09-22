@@ -1,7 +1,6 @@
 import Contact from 'investigations/Contact'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
-const IN_PERSON = '408'
 
 describe('Contact', () => {
   function renderContact({
@@ -13,6 +12,7 @@ describe('Contact', () => {
     purposes = [],
     communicationMethods = [],
     locations = [],
+    inPersonCode = '',
   }) {
     const props = {
       investigationId,
@@ -23,6 +23,7 @@ describe('Contact', () => {
       communicationMethods,
       locations,
       errors,
+      inPersonCode,
     }
     return shallow(<Contact {...props} />)
   }
@@ -131,14 +132,16 @@ describe('Contact', () => {
   })
 
   it('does not display the location dropdown when the communication method is not in person', () => {
-    const component = renderContact({contact: {location: '2'}})
+    const component = renderContact({inPersonCode: '2', contact: {communication_method: '3'}})
     const locationSelect = component.find("SelectField[id='location']")
     expect(locationSelect.exists()).toEqual(false)
   })
 
   it('displays the location dropdown when the communication method is in person', () => {
+    const inPersonCode = '2'
     const component = renderContact({
-      contact: {communication_method: IN_PERSON, location: '2'},
+      inPersonCode,
+      contact: {communication_method: inPersonCode, location: '2'},
       locations: [
         {code: '1', value: 'On a mountain'},
         {code: '2', value: 'In space'},
@@ -163,9 +166,11 @@ describe('Contact', () => {
 
   it('changing location calls setField with the proper parameters', () => {
     const setField = jasmine.createSpy('setField')
+    const inPersonCode = '2'
     const component = renderContact({
+      inPersonCode,
       actions: {setField},
-      contact: {communication_method: IN_PERSON},
+      contact: {communication_method: inPersonCode},
     })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('change', {target: {value: '4'}})
@@ -174,9 +179,11 @@ describe('Contact', () => {
 
   it('blurring location calls touchField with the proper parameters', () => {
     const touchField = jasmine.createSpy('touchField')
+    const inPersonCode = '2'
     const component = renderContact({
+      inPersonCode,
       actions: {touchField},
-      contact: {communication_method: IN_PERSON},
+      contact: {communication_method: inPersonCode},
     })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('blur')

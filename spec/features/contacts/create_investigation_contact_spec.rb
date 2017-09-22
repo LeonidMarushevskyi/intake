@@ -12,13 +12,13 @@ feature 'Create Investigation Contact' do
     within '.card-body' do
       fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
       select 'Attempted', from: 'Status'
-      select 'In Person', from: 'Communication Method'
+      select 'In person', from: 'Communication Method'
       select 'School', from: 'Location'
       select 'Investigate Referral', from: 'Purpose'
       fill_in 'Contact Notes', with: 'This was an attempted contact'
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
-    expect(page).to have_select('Communication Method', selected: 'In Person')
+    expect(page).to have_select('Communication Method', selected: 'In person')
     expect(page).to have_select('Location', selected: 'School')
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
@@ -30,7 +30,7 @@ feature 'Create Investigation Contact' do
     visit new_investigation_contact_path(investigation_id: '123ABC')
 
     expect(page).to_not have_select('Location')
-    select 'In Person', from: 'Communication Method'
+    select 'In person', from: 'Communication Method'
     expect(page).to have_select('Location')
   end
 end

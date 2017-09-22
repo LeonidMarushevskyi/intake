@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
 import SelectField from 'common/SelectField'
 import FormField from 'common/FormField'
-const IN_PERSON = '408'
 
 class Contact extends React.Component {
   componentDidMount() {
@@ -23,6 +22,7 @@ class Contact extends React.Component {
       communicationMethods,
       locations,
       errors,
+      inPersonCode,
     } = this.props
 
     return (
@@ -59,7 +59,7 @@ class Contact extends React.Component {
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
-                { communication_method === IN_PERSON &&
+                { communication_method === inPersonCode &&
                   <div className='row'>
                     <SelectField
                       gridClassName='col-md-12'
@@ -126,6 +126,7 @@ Contact.propTypes = {
   communicationMethods: PropTypes.array.isRequired,
   contact: PropTypes.object,
   errors: PropTypes.object,
+  inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
   locations: PropTypes.array.isRequired,
   purposes: PropTypes.array.isRequired,
