@@ -58,7 +58,7 @@ class Contact extends React.Component {
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
-                <div>
+                <div className='row'>
                   <SelectField
                     gridClassName='col-md-12'
                     id='location'
