@@ -2,6 +2,7 @@ import {
   SET_CONTACT,
   SET_CONTACT_FIELD,
   TOUCH_CONTACT_FIELD,
+  CREATE_CONTACT_SUCCESS,
 } from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
@@ -48,5 +49,14 @@ export default createReducer(Map(), {
   },
   [TOUCH_CONTACT_FIELD](state, {field}) {
     return state.setIn([field, 'touched'], true)
+  },
+  [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
+    return state.setIn(['id', 'value'], id)
+      .setIn(['started_at', 'value'], started_at)
+      .setIn(['status', 'value'], status)
+      .setIn(['note', 'value'], note)
+      .setIn(['purpose', 'value'], purpose)
+      .setIn(['communication_method', 'value'], communication_method)
+      .setIn(['location', 'value'], location)
   },
 })
