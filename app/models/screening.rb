@@ -24,7 +24,9 @@ class Screening # :nodoc:
   attribute :restrictions_rationale
   attribute :staff_id
   attribute :started_at
-
+  attribute :indexable, Boolean, default: lambda { |_screening, _attribute|
+    Feature.inactive?(:release_two)
+  }
   attribute :address, Address
   attribute :assignee, String
   attribute :cross_reports, Array[CrossReport]
