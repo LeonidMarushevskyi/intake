@@ -25,6 +25,8 @@ describe('Store', () => {
       contact: {},
       contactStatuses: [],
       contactPurposes: [],
+      communicationMethods: [],
+      locations: [],
     })
     store = createStore(rootReducer)
   })

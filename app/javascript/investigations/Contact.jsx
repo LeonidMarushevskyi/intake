@@ -15,11 +15,14 @@ class Contact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, status, note, purpose},
+      contact: {started_at, communication_method, location, status, note, purpose},
       actions: {setField, touchField},
       statuses,
       purposes,
+      communicationMethods,
+      locations,
       errors,
+      inPersonCode,
     } = this.props
 
     return (
@@ -42,6 +45,36 @@ class Contact extends React.Component {
                     errors={errors.started_at}
                   />
                 </div>
+                <div className='row'>
+                  <SelectField
+                    gridClassName='col-md-12'
+                    id='communication_method'
+                    label='Communication Method'
+                    value={communication_method}
+                    onChange={(event) => setField('communication_method', event.target.value)}
+                    onBlur={() => touchField('communication_method')}
+                    errors={errors.communication_method}
+                  >
+                    <option key='' value='' />
+                    {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
+                { communication_method === inPersonCode &&
+                  <div className='row'>
+                    <SelectField
+                      gridClassName='col-md-12'
+                      id='location'
+                      label='Location'
+                      value={location}
+                      onChange={(event) => setField('location', event.target.value)}
+                      onBlur={() => touchField('location')}
+                      errors={errors.location}
+                    >
+                      <option key='' value='' />
+                      {locations.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                    </SelectField>
+                  </div>
+                }
                 <div className='row'>
                   <SelectField
                     gridClassName='col-md-12'
@@ -90,9 +123,12 @@ class Contact extends React.Component {
 
 Contact.propTypes = {
   actions: PropTypes.object,
+  communicationMethods: PropTypes.array.isRequired,
   contact: PropTypes.object,
   errors: PropTypes.object,
+  inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
+  locations: PropTypes.array.isRequired,
   purposes: PropTypes.array.isRequired,
   statuses: PropTypes.array.isRequired,
 }

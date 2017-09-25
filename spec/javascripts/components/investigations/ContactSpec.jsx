@@ -10,8 +10,21 @@ describe('Contact', () => {
     errors = {},
     statuses = [],
     purposes = [],
+    communicationMethods = [],
+    locations = [],
+    inPersonCode = '',
   }) {
-    const props = {investigationId, actions, contact, statuses, purposes, errors}
+    const props = {
+      investigationId,
+      actions,
+      contact,
+      statuses,
+      purposes,
+      communicationMethods,
+      locations,
+      errors,
+      inPersonCode,
+    }
     return shallow(<Contact {...props} />)
   }
 
@@ -71,11 +84,110 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('status', 'C')
   })
 
-  it('blurring status at fires touchField', () => {
+  it('blurring status fires touchField', () => {
     const touchField = jasmine.createSpy('touchField')
     const component = renderContact({actions: {touchField}, contact: {status: ''}})
     component.find("SelectField[id='status']").simulate('blur')
     expect(touchField).toHaveBeenCalledWith('status')
+  })
+
+  it('displays the communication method dropdown', () => {
+    const component = renderContact({
+      contact: {communication_method: '2'},
+      communicationMethods: [
+        {code: '1', value: 'Carrier Pigeon'},
+        {code: '2', value: 'Smoke Signal'},
+        {code: '3', value: 'Morse Code'},
+      ], errors: {
+        communication_method: ['Not valid'],
+      },
+    })
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    expect(communicationMethodSelect.exists()).toEqual(true)
+    expect(communicationMethodSelect.props().value).toEqual('2')
+    expect(communicationMethodSelect.props().errors).toEqual(['Not valid'])
+    expect(communicationMethodSelect.childAt(0).props().value).toEqual('')
+    expect(communicationMethodSelect.childAt(1).props().value).toEqual('1')
+    expect(communicationMethodSelect.childAt(1).text()).toEqual('Carrier Pigeon')
+    expect(communicationMethodSelect.childAt(2).props().value).toEqual('2')
+    expect(communicationMethodSelect.childAt(2).text()).toEqual('Smoke Signal')
+    expect(communicationMethodSelect.childAt(3).props().value).toEqual('3')
+    expect(communicationMethodSelect.childAt(3).text()).toEqual('Morse Code')
+  })
+
+  it('changing communication method fires setField with the proper parameters', () => {
+    const setField = jasmine.createSpy('setField')
+    const component = renderContact({actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: '1'}})
+    expect(setField).toHaveBeenCalledWith('communication_method', '1')
+  })
+
+  it('blurring communication method fires touchField with the proper parameter', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const component = renderContact({actions: {touchField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('blur')
+    expect(touchField).toHaveBeenCalledWith('communication_method')
+  })
+
+  it('does not display the location dropdown when the communication method is not in person', () => {
+    const component = renderContact({inPersonCode: '2', contact: {communication_method: '3'}})
+    const locationSelect = component.find("SelectField[id='location']")
+    expect(locationSelect.exists()).toEqual(false)
+  })
+
+  it('displays the location dropdown when the communication method is in person', () => {
+    const inPersonCode = '2'
+    const component = renderContact({
+      inPersonCode,
+      contact: {communication_method: inPersonCode, location: '2'},
+      locations: [
+        {code: '1', value: 'On a mountain'},
+        {code: '2', value: 'In space'},
+        {code: '3', value: 'Under an umbrella'},
+      ], errors: {
+        location: ['Not valid'],
+      },
+    })
+    const locationSelect = component.find("SelectField[id='location']")
+    expect(locationSelect.exists()).toEqual(true)
+    expect(locationSelect.props().value).toEqual('2')
+    expect(locationSelect.props().errors).toEqual(['Not valid'])
+    expect(locationSelect.childAt(0).props().value).toEqual('')
+    expect(locationSelect.childAt(0).text()).toEqual('')
+    expect(locationSelect.childAt(1).props().value).toEqual('1')
+    expect(locationSelect.childAt(1).text()).toEqual('On a mountain')
+    expect(locationSelect.childAt(2).props().value).toEqual('2')
+    expect(locationSelect.childAt(2).text()).toEqual('In space')
+    expect(locationSelect.childAt(3).props().value).toEqual('3')
+    expect(locationSelect.childAt(3).text()).toEqual('Under an umbrella')
+  })
+
+  it('changing location calls setField with the proper parameters', () => {
+    const setField = jasmine.createSpy('setField')
+    const inPersonCode = '2'
+    const component = renderContact({
+      inPersonCode,
+      actions: {setField},
+      contact: {communication_method: inPersonCode},
+    })
+    const locationSelect = component.find("SelectField[id='location']")
+    locationSelect.simulate('change', {target: {value: '4'}})
+    expect(setField).toHaveBeenCalledWith('location', '4')
+  })
+
+  it('blurring location calls touchField with the proper parameters', () => {
+    const touchField = jasmine.createSpy('touchField')
+    const inPersonCode = '2'
+    const component = renderContact({
+      inPersonCode,
+      actions: {touchField},
+      contact: {communication_method: inPersonCode},
+    })
+    const locationSelect = component.find("SelectField[id='location']")
+    locationSelect.simulate('blur')
+    expect(touchField).toHaveBeenCalledWith('location')
   })
 
   it('displays note', () => {
@@ -135,6 +247,8 @@ describe('Contact', () => {
         contact={{}}
         statuses={[]}
         purposes={[]}
+        communicationMethods={[]}
+        locations={[]}
       />
     )
     expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})

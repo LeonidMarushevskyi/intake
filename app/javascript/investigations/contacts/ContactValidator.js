@@ -6,8 +6,8 @@ class ContactValidator {
   }
 
   validate() {
-    const {started_at, status, purpose} = this.contact
-    const fields = ['started_at', 'status', 'purpose']
+    const {started_at, communication_method, location, status, purpose} = this.contact
+    const fields = ['started_at', 'communication_method', 'location', 'status', 'purpose']
     const errors = fields.reduce(
       (errors, field) => ({...errors, [field]: []}), {}
     )
@@ -18,7 +18,15 @@ class ContactValidator {
 
     const now = moment().toISOString()
     if (started_at > now) {
-      errors.started_at.push('The date and time cannot be in the future.')
+      errors.started_at.push('The date and time cannot be in the future')
+    }
+
+    if (!communication_method) {
+      errors.communication_method.push('Please enter the communication method')
+    }
+
+    if (!location) {
+      errors.location.push('Please enter the contact location')
     }
 
     if (!status) {

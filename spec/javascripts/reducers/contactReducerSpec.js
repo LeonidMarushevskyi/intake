@@ -9,17 +9,28 @@ describe('contactReducer', () => {
   describe('on SET_CONTACT', () => {
     it('returns the contact', () => {
       const action = build({investigation_id: '123'})
-      expect(contactReducer(Map(), action)).toEqual(
+      expect(contactReducer(Map(), action)).toEqualImmutable(
         fromJS({
           investigation_id: {
             value: '123',
-          }, started_at: {
+          },
+          started_at: {
             value: null,
             touched: false,
-          }, status: {
+          },
+          communication_method: {
             value: null,
             touched: false,
-          }, note: {
+          },
+          location: {
+            value: null,
+            touched: false,
+          },
+          status: {
+            value: null,
+            touched: false,
+          },
+          note: {
             value: null,
           },
           purpose: {

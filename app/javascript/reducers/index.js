@@ -8,6 +8,8 @@ import screeningSummary from 'reducers/screeningSummaryReducer'
 import contact from 'reducers/contactReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
+import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
+import locations from 'reducers/systemCodes/locationsReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   contact,
   contactStatuses,
   contactPurposes,
+  communicationMethods,
+  locations,
 })
 
 export default rootReducer
