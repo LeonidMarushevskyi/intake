@@ -11,7 +11,9 @@ describe('contactReducer', () => {
       const action = build({investigation_id: '123'})
       expect(contactReducer(Map(), action)).toEqualImmutable(
         fromJS({
-          investigation_id: {
+          id: {
+            value: null,
+          }, investigation_id: {
             value: '123',
           },
           started_at: {

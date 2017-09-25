@@ -6,6 +6,9 @@ export default createReducer(Map(), {
   [SET_CONTACT](_state, {investigation_id}) {
     return fromJS(
       {
+        id: {
+          value: null,
+        },
         investigation_id: {
           value: investigation_id,
         },
