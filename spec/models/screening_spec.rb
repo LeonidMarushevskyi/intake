@@ -1,12 +1,33 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'feature/testing'
 
 describe Screening do
   describe 'new screening object' do
     let(:screening) { described_class.new }
     it ' does not have default cross report values' do
       expect(screening.cross_reports).to be_empty
+    end
+    describe '#indexable' do
+      around do |example|
+        Feature.run_with_deactivated(:release_two) do
+          example.run
+        end
+      end
+      it 'sets indexable to true' do
+        expect(screening.indexable).to be true
+      end
+    end
+    describe 'release_two enabled' do
+      around do |example|
+        Feature.run_with_activated(:release_two) do
+          example.run
+        end
+      end
+      it 'sets indexable to false' do
+        expect(screening.indexable).to be false
+      end
     end
   end
 
@@ -19,6 +40,7 @@ describe Screening do
         id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
+        indexable: false,
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
@@ -87,6 +109,7 @@ describe Screening do
         id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
+        indexable: false,
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',

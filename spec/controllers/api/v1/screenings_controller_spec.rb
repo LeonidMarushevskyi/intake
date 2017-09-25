@@ -12,6 +12,23 @@ describe Api::V1::ScreeningsController do
     }
   end
 
+  describe 'permitted attributes' do
+    describe '#create' do
+      before do
+        allow(LUID).to receive(:generate).and_return(['123ABC'])
+      end
+      it 'does not set indexable' do
+        screening_params = { indexable: [true, false].sample }
+        expect(Screening).to receive(:new)
+          .with(
+            hash_not_including(:indexable)
+          ).and_call_original
+        allow(ScreeningRepository).to receive(:create)
+        process :create, method: :post, session: session, params: screening_params
+      end
+    end
+  end
+
   describe '#create' do
     let(:created_screening) { double(:screening, id: '1') }
     let(:blank_screening) { double(:screening) }
