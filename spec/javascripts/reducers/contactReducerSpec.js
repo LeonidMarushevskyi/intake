@@ -1,5 +1,9 @@
 import {Map, fromJS} from 'immutable'
-import {build, setField, touchField} from 'actions/contactActions'
+import {
+  build,
+  setField,
+  touchField,
+} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import contactReducer from 'reducers/contactReducer'
 
@@ -13,18 +17,11 @@ describe('contactReducer', () => {
         fromJS({
           id: {
             value: null,
-          }, investigation_id: {
+          },
+          investigation_id: {
             value: '123',
           },
           started_at: {
-            value: null,
-            touched: false,
-          },
-          communication_method: {
-            value: null,
-            touched: false,
-          },
-          location: {
             value: null,
             touched: false,
           },
@@ -36,6 +33,14 @@ describe('contactReducer', () => {
             value: null,
           },
           purpose: {
+            value: null,
+            touched: false,
+          },
+          communication_method: {
+            value: null,
+            touched: false,
+          },
+          location: {
             value: null,
             touched: false,
           },
