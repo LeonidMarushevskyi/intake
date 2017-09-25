@@ -47,7 +47,7 @@
     "no-lone-blocks": [2],
     "no-lonely-if": [2],
     "no-loop-func": [2],
-    "no-magic-numbers": [2, { "enforceConst": true }],
+    "no-magic-numbers": [2, { "enforceConst": true, "ignore": [0] }],
     "no-multi-spaces": [2],
     "no-multiple-empty-lines": [2, { "max": 1, "maxEOF": 1 }],
     "no-native-reassign": [2],

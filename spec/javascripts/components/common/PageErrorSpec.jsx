@@ -1,15 +1,14 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PageError from 'common/PageError'
-import {Map} from 'immutable'
 
 describe('ErrorMessages', () => {
   let component
 
   describe('when errors are passed', () => {
-    const props = Map({
+    const props = {
       why: 'had a bad plan but stuck to it :(',
-    })
+    }
 
     beforeEach(() => {
       component = shallow(<PageError messageObject={props}/>)

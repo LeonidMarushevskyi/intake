@@ -1,3 +1,4 @@
+import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -10,10 +11,9 @@ export class App extends React.Component {
     this.props.actions.fetch()
   }
   render() {
-    const hasRemoteError = this.props.remoteError && !this.props.remoteError.isEmpty()
-    const wrapperClass = hasRemoteError ? 'page-has-remote-error' : ''
+    const hasRemoteError = this.props.remoteError && Object.keys(this.props.remoteError).length > 0
     return (
-      <div className={wrapperClass}>
+      <div className={ClassNames({'page-has-remote-error': hasRemoteError})}>
         { hasRemoteError &&
           <PageError messageObject={this.props.remoteError}/>
         }
@@ -27,8 +27,8 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
   remoteError: PropTypes.object,
 }
-const mapStateToProps = (_state, _ownProps) => ({
-  remoteError: _state.getIn(['remoteError']),
+const mapStateToProps = (state, _ownProps) => ({
+  remoteError: state.getIn(['remoteError']).toJS(),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(systemCodesActions, dispatch),

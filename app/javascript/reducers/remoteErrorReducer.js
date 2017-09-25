@@ -5,7 +5,7 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [HTTP_FAILURE](_state, action) {
-    return action.responseJSON ? fromJS(action.responseJSON) : _state
+  [HTTP_FAILURE](state, action) {
+    return action.responseJSON ? fromJS(action.responseJSON) : state
   },
 })
