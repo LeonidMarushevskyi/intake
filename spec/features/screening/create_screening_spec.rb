@@ -15,7 +15,7 @@ feature 'Create Screening' do
       allow(LUID).to receive(:generate).and_return(['DQJIYK'])
       new_screening = FactoryGirl.create(
         :screening,
-        indexable: true,
+        indexable: false,
         reference: 'DQJIYK',
         safety_alerts: [],
         safety_information: nil,
