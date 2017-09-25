@@ -22,6 +22,8 @@ const ParticipantShowView = ({participant}) => {
   }
   const {ethnicity} = participant.toJS()
   const {hispanic_latino_origin, ethnicity_detail} = ethnicity || {}
+  const showDateOfBirth = participant.get('date_of_birth') || !(participant.get('approximate_age'))
+  const showApproximateAge = !showDateOfBirth
 
   return (
     <div className='card-body'>
@@ -61,9 +63,16 @@ const ParticipantShowView = ({participant}) => {
               </ShowField>
             </div>
             <div className='col-md-5'>
+              {showDateOfBirth &&
               <ShowField label='Date of birth'>
                 {dateFormatter(participant.get('date_of_birth'))}
               </ShowField>
+              }
+              {showApproximateAge &&
+              <ShowField label='Approximate Age'>
+                {[participant.get('approximate_age'), participant.get('approximate_age_units')].join(' ')}
+              </ShowField>
+              }
               <ShowField label='Social security number'>
                 {ssnFormatter(participant.get('ssn'))}
               </ShowField>
