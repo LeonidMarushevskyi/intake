@@ -1,18 +1,13 @@
 import React from 'react'
-import {createHistory} from 'history'
-import {Router, Route, IndexRoute, useRouterHistory} from 'react-router'
+import {Router, Route, IndexRoute} from 'react-router'
 import App from 'common/App'
+import history from 'common/history'
 import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
 import ContactContainer from 'investigations/ContactContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
-import {config} from 'common/config'
-
-const historyIntake = useRouterHistory(createHistory)({
-  basename: config().base_path,
-})
 
 const InvestigationPage = (props) => (
   <div>
@@ -22,7 +17,7 @@ const InvestigationPage = (props) => (
 )
 
 export default (
-  <Router history={historyIntake} >
+  <Router history={history} >
     <Route path='/' component={App}>
       <IndexRoute component={HomePage} />
       <Route path='screenings/:id' component={ScreeningPage}/>
