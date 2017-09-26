@@ -1,7 +1,6 @@
 import React from 'react'
 import {Router, Route, IndexRoute} from 'react-router'
 import App from 'common/App'
-import history from 'common/history'
 import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
@@ -10,7 +9,11 @@ import ContactContainer from 'investigations/ContactContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
 import {store} from 'store/configureStore'
 import {Provider} from 'react-redux'
+import {routerHistory} from 'common/history'
+import {createSelectLocationState} from 'reducers/routerReducer'
+import {syncHistoryWithStore} from 'react-router-redux'
 
+const history = syncHistoryWithStore(routerHistory, store, {selectLocationState: createSelectLocationState()})
 const InvestigationPage = (props) => (
   <div>
     <ScreeningSummaryContainer {...props} />

@@ -10,6 +10,7 @@ import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
+import routing from 'reducers/routerReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   contactPurposes,
   communicationMethods,
   locations,
+  routing,
 })
 
 export default rootReducer
