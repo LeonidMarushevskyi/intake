@@ -9,7 +9,7 @@ feature 'api responses' do
 
   around do |example|
     with_config(
-      base_path: '/',
+      base_path: '',
       authentication_login_url: auth_login_url
     ) do
       example.run

@@ -18,7 +18,7 @@ feature 'login' do
     with_config(
       authentication_base_url: 'http://www.example.com',
       authentication_login_url: auth_login_url,
-      base_path: '/'
+      base_path: ''
     ) do
       example.run
     end

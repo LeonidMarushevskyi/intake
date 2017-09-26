@@ -53,7 +53,7 @@ feature 'Create Screening' do
     around do |example|
       with_config(
         authentication_base_url: 'http://www.example.com',
-        base_path: '/'
+        base_path: ''
       ) do
         Feature.run_with_activated(:authentication) do
           example.run
