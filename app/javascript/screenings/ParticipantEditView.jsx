@@ -1,4 +1,5 @@
 import AddressesEditView from 'people/AddressesEditView'
+import APPROXIMATE_AGE_UNITS from 'enums/ApproximateAgeUnits'
 import DateField from 'common/DateField'
 import EthnicityEditView from 'people/EthnicityEditView'
 import Genders from 'enums/Genders'
@@ -38,6 +39,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
   }
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
+  const haveDob = Boolean(participant.get('date_of_birth'))
 
   return (
     <div className='card-body'>
@@ -105,7 +107,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
       />
       <div className='row'>
         <DateField
-          gridClassName='col-md-6'
+          gridClassName='col-md-3'
           id='date_of_birth'
           label='Date of birth'
           hasTime={false}
@@ -113,6 +115,26 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
           value={participant.get('date_of_birth')}
           onChange={(value) => onChange(['date_of_birth'], value)}
         />
+        or
+        <InputField
+          gridClassName='col-md-1'
+          id='approximate_age'
+          label='Approximate Age'
+          value={haveDob ? '' : participant.get('approximate_age')}
+          onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
+          disabled={haveDob}
+        />
+        <div className='col-md-1'>
+          <select
+            id='approximate_age_units'
+            aria-label='Approximate Age Units'
+            value={haveDob ? 'Years' : participant.get('approximate_age_units') || 'Years'}
+            onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
+            disabled={haveDob}
+          >
+            {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
+          </select>
+        </div>
         <SelectField
           gridClassName='col-md-6'
           id='gender'

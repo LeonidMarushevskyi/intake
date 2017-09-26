@@ -109,6 +109,21 @@ describe('ParticipantEditView', () => {
         .toEqual('2016-12-31')
     })
 
+    it('renders the approximate age fields', () => {
+      const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
+        id: participantId,
+        approximate_age: '10',
+        approximate_age_units: 'Months',
+      })
+      component = shallow(<ParticipantEditView participant={participant} />)
+
+      expect(component.find('InputField[label="Approximate Age"]').props().value)
+        .toEqual('10')
+      expect(component.find('select[id="approximate_age_units"]').props().value)
+        .toEqual('Months')
+    })
+
     it('renders the gender field', () => {
       expect(component.find('SelectField[label="Gender"]').props().value)
         .toEqual('female')
@@ -380,6 +395,72 @@ describe('ParticipantEditView', () => {
     it('fires the onChange call when a field changes', () => {
       component.find('RacesEditView').simulate('change', {target: {value: {race: 'Asian'}}})
       expect(onChange).toHaveBeenCalledWith(['races'], {target: {value: {race: 'Asian'}}})
+    })
+  })
+
+  describe('approximate age when dob is set', () => {
+    const participant = Immutable.fromJS({
+      ...requiredParticipantProps,
+      id: '199',
+      date_of_birth: '2016-12-31',
+    })
+    let component
+    beforeEach(() => {
+      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} />)
+    })
+    it('is disabled when DoB is populated', () => {
+      expect(component.find('InputField[label="Approximate Age"]').props().disabled)
+        .toEqual(true)
+      expect(component.find('select[aria-label="Approximate Age Units"]').props().disabled)
+        .toEqual(true)
+    })
+  })
+
+  describe('approximate age when setting dob', () => {
+    const participant = Immutable.fromJS({
+      ...requiredParticipantProps,
+      id: '199',
+      approximate_age: '10',
+      approximate_age_units: 'Months',
+    })
+    let component
+    beforeEach(() => {
+      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} />)
+    })
+    it('is disabled and set to defaults when DoB is populated', () => {
+      expect(component.find('InputField[label="Approximate Age"]').props().value)
+        .toEqual('10')
+      expect(component.find('InputField[label="Approximate Age"]').props().disabled)
+        .toEqual(false)
+      expect(component.find('select[aria-label="Approximate Age Units"]').props().value)
+        .toEqual('Months')
+      expect(component.find('select[aria-label="Approximate Age Units"]').props().disabled)
+        .toEqual(false)
+      component.find('DateField[label="Date of birth"]').simulate('change', {target: {value: '2016-1-1'}})
+
+      expect(onChange).toHaveBeenCalledWith(['approximate_age'], {target: {value: ''}})
+      expect(component.find('InputField[label="Approximate Age"]').props().disabled)
+        .toEqual(true)
+      expect(onChange).toHaveBeenCalledWith(['approximate_age_units'], {target: {value: ''}})
+      expect(component.find('select[aria-label="Approximate Age Units"]').props().disabled)
+        .toEqual(true)
+    })
+  })
+
+  describe('approximate age validations', () => {
+    const participant = Immutable.fromJS({
+      ...requiredParticipantProps,
+      id: '199',
+    })
+    let component
+    beforeEach(() => {
+      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} />)
+    })
+    it('limits data entry to numeric digits', () => {
+      expect(component.find('InputField[label="Approximate Age"]').props().maxLength).toEqual('3')
+    })
+    it('limits data entry to a maximum of three characters', () => {
+      expect(component.find('InputField[label="Approximate Age"]').props().allowCharacters).toEqual(/[0-9]/)
     })
   })
 })
