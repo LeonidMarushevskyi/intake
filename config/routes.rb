@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :investigations,
     only: [:show],
     constraints: Routes::ActiveInvestigationsConstraint do
-    resources :contacts, only: [:new]
+    resources :contacts, only: %i[new show]
   end
 
   namespace :api, defaults: { format: :json } do
