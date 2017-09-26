@@ -30,6 +30,56 @@ describe('CrossReportEditView', () => {
     expect(component.find('SelectField[label="County"]').length).toEqual(1)
   })
 
+  describe('when no county is selected', () => {
+    beforeEach(() => {
+      props = {
+        crossReports: Immutable.fromJS([
+          {county: null},
+          {county: null},
+        ]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy(),
+        onChange: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+    it('does not render the cross report agency fields', () => {
+      const checkboxes = component.find('CheckboxField')
+      expect(checkboxes.length).toEqual(0)
+    })
+  })
+
+  describe('when county is selected', () => {
+    beforeEach(() => {
+      props = {
+        crossReports: Immutable.fromJS([
+          {county: 'state_of_california'},
+          {county: 'state_of_california'},
+        ]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy(),
+        onChange: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+    it('does render the cross report agency fields', () => {
+      const checkboxes = component.find('CheckboxField')
+      expect(checkboxes.length).toEqual(4)
+      expect(checkboxes.nodes.map((checkbox) => checkbox.props.value)).toEqual([
+        'District attorney',
+        'Law enforcement',
+        'Department of justice',
+        'Licensing',
+      ])
+    })
+  })
+
   describe('Alert info messages', () => {
     it('renders an alert info message when passed', () => {
       component.setProps({alertInfoMessage: 'Help me, Obi-Wan Kenobi!'})
@@ -337,10 +387,10 @@ describe('CrossReportEditView', () => {
       props = {
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         crossReports: Immutable.fromJS([
-          {agency_type: 'District attorney'},
-          {agency_type: 'Law enforcement'},
-          {agency_type: 'Department of justice'},
-          {agency_type: 'Licensing'},
+          {county: 'smallville', agency_type: 'District attorney'},
+          {county: 'smallville', agency_type: 'Law enforcement'},
+          {county: 'smallville', agency_type: 'Department of justice'},
+          {county: 'smallville', agency_type: 'Licensing'},
         ]),
         errors: Immutable.fromJS({}),
         onBlur: jasmine.createSpy(),

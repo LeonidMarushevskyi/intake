@@ -166,8 +166,8 @@ export default class CrossReportEditView extends React.Component {
           </SelectField>
         </div>
         <div className='row gap-top'>
-          { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
-          { this.renderCrossReport(crossReportData.slice(halfIndex)) }
+          { this.state.county && this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
+          { this.state.county && this.renderCrossReport(crossReportData.slice(halfIndex)) }
         </div>
         <div className='row gap-top'>
           {

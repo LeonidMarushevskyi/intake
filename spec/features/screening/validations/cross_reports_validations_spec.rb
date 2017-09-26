@@ -8,7 +8,12 @@ feature 'Cross Reports Validations' do
   let(:screening) do
     FactoryGirl.create(
       :screening, cross_reports: [
-        FactoryGirl.create(:cross_report, :invalid, agency_type: 'Department of justice')
+        FactoryGirl.create(
+          :cross_report,
+          :invalid,
+          county: 'state_of_california',
+          agency_type: 'Department of justice'
+        )
       ]
     )
   end

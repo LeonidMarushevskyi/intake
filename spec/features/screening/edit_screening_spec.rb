@@ -34,10 +34,12 @@ feature 'Edit Screening' do
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
         {
+          county: 'sacramento',
           agency_type: 'District attorney',
           agency_name: 'SCDA Office'
         },
         {
+          county: 'sacramento',
           agency_type: 'Law enforcement'
         }
       ]
@@ -284,6 +286,7 @@ feature 'individual card save' do
   scenario 'cross report save and edits' do
     existing_screening.cross_reports = [
       {
+        county: 'state_of_california',
         agency_type: 'Department of justice',
         agency_name: 'Sac Office'
       }
@@ -295,6 +298,7 @@ feature 'individual card save' do
       .and_return(json_body(existing_screening.to_json))
 
     within '#cross-report-card' do
+      select 'State of California', from: 'County'
       find('label', text: 'Department of justice').click
       fill_in 'Department of justice agency name', with: 'Sac Office'
       click_button 'Save'
@@ -320,6 +324,7 @@ feature 'individual card save' do
 
     existing_screening.cross_reports = [
       {
+        county: 'state_of_california',
         agency_type: 'Department of justice',
         agency_name: nil
       }
@@ -343,6 +348,7 @@ feature 'individual card save' do
     page.driver.browser.navigate.refresh
 
     within '#cross-report-card' do
+      select 'State of California', from: 'County'
       find('label', text: 'Department of justice').click
       doj_input = find_field('Department of justice agency name')
 

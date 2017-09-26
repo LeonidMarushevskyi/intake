@@ -193,6 +193,7 @@ feature 'cross reports' do
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
+      select 'State of California', from: 'County'
       find('label', text: /\ADepartment of justice\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
@@ -235,6 +236,7 @@ feature 'cross reports' do
     communication_method = 'Child Abuse Form'
 
     within '#cross-report-card' do
+      select 'State of California', from: 'County'
       find('label', text: /\ADepartment of justice\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
@@ -245,6 +247,7 @@ feature 'cross reports' do
     click_link 'Edit cross report'
 
     within '#cross-report-card' do
+      select 'State of California', from: 'County'
       find('label', text: /\ADepartment of justice\z/).click
       expect(page).to have_field('Cross Reported on Date', with: '')
       expect(page).to have_field('Communication Method', with: '')
