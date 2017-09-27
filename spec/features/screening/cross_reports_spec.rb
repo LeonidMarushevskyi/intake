@@ -86,10 +86,12 @@ feature 'cross reports' do
       select 'Lake', from: 'County'
       expect(page).to have_select('County', selected: 'Lake')
 
-      find('label', text: /\ADepartment of justice\z/).click
       expect(find(:checkbox, 'Department of justice')).to_not be_checked
 
+      find('label', text: /\ALaw enforcement\z/).click
       expect(find(:checkbox, 'Law enforcement')).to be_checked
+
+      fill_in 'Law enforcement agency name', with: 'LA Office'
       find('label', text: /\ADistrict attorney\z/).click
       click_button 'Save'
     end

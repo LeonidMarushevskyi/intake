@@ -117,17 +117,17 @@ describe('CrossReportEditView', () => {
         {county: 'sacramento', agency_type: 'District attorney', agency_name: 'SCDA Office'},
       ])
     })
+    it('returns an updated crossReports with all agencys removed if county is changed', () => {
+      expect(component.instance().updatedCrossReports(null, 'county', 'state_of_california').toJS()).toEqual([])
+    })
     it('returns an updated crossReports when communication_method and value are passed', () => {
       expect(component.instance().updatedCrossReports('District attorney', 'agency_name', '').toJS()).toEqual([
         {county: 'sacramento', agency_type: 'District attorney', agency_name: null},
         {county: 'sacramento', agency_type: 'Department of justice'},
       ])
     })
-    it('returns an updated crossReports when county is passed', () => {
-      expect(component.instance().updatedCrossReports(null, 'county', '').toJS()).toEqual([
-        {county: null, agency_type: 'District attorney', agency_name: 'SCDA Office'},
-        {county: null, agency_type: 'Department of justice'},
-      ])
+    it('returns an empty crossReports when county is passed', () => {
+      expect(component.instance().updatedCrossReports(null, 'county', '').toJS()).toEqual([])
     })
   })
 
@@ -263,10 +263,7 @@ describe('CrossReportEditView', () => {
       const countyField = component.find('SelectField[label="County"]')
       countyField .simulate('change', {target: {value: 'san_fransisco'}})
       expect(props.onChange).toHaveBeenCalled()
-      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
-        {county: 'san_fransisco', agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
-        {county: 'san_fransisco', agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
-      ])
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([])
     })
   })
 
