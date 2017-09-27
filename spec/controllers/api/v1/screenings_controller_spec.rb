@@ -42,7 +42,8 @@ describe Api::V1::ScreeningsController do
     it 'creates and renders screening as json' do
       assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
       expect(Screening).to receive(:new)
-        .with(reference: '123ABC', assignee: assignee, staff_id: '123').and_return(blank_screening)
+        .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '123')
+        .and_return(blank_screening)
 
       process :create, method: :post, session: session
       expect(response).to be_successful
@@ -50,10 +51,11 @@ describe Api::V1::ScreeningsController do
     end
 
     describe 'setting assignee' do
-      it 'leaves assignee and staff_id as nil if user_details is not set' do
+      it 'leaves assignee and assignee_staff_id as nil if user_details is not set' do
         session = { 'security_token' => security_token }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: nil, staff_id: nil).and_return(blank_screening)
+          .with(reference: '123ABC', assignee: nil, assignee_staff_id: nil)
+          .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
       end
@@ -67,7 +69,7 @@ describe Api::V1::ScreeningsController do
             'user_details' => staff
           }
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, staff_id: '456')
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '456')
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
@@ -81,7 +83,7 @@ describe Api::V1::ScreeningsController do
             'user_details' => staff
           }
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, staff_id: '789')
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful

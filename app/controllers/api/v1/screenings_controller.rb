@@ -22,7 +22,7 @@ module Api
         :screening_decision_detail,
         :access_restrictions,
         :restrictions_rationale,
-        :staff_id,
+        :assignee_staff_id,
         :started_at,
         cross_reports: %i[
           id
@@ -53,7 +53,7 @@ module Api
         new_screening = Screening.new(
           reference: LUID.generate.first,
           assignee: build_assignee_name(session),
-          staff_id: build_staff_id(session)
+          assignee_staff_id: build_staff_id(session)
         )
         screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening

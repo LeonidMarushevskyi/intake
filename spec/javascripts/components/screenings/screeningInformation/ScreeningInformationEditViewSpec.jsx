@@ -64,13 +64,13 @@ describe('ScreeningInformationEditView', () => {
         .toEqual('mail')
     })
 
-    it('does not disable assigned social worker if no staff_id', () => {
+    it('does not disable assigned social worker if no assignee_staff_id', () => {
       expect(component.find('InputField[label="Assigned Social Worker"]').props().disabled)
         .toBeFalsy()
     })
 
-    it('disables assigned social worker if has staff_id', () => {
-      component = shallow(<ScreeningInformationEditView {...requiredProps} screening={Immutable.fromJS({assignee: 'Michael Bluth', staff_id: '123'})} />)
+    it('disables assigned social worker if has assignee_staff_id', () => {
+      component = shallow(<ScreeningInformationEditView {...requiredProps} screening={Immutable.fromJS({assignee: 'Michael Bluth', assignee_staff_id: '123'})} />)
       expect(component.find('InputField[label="Assigned Social Worker"]').props().disabled)
         .toEqual(true)
     })

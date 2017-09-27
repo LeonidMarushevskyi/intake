@@ -52,7 +52,7 @@ describe Screening do
         screening_decision_detail: '3 days',
         access_restrictions: 'sensitive',
         restrictions_rationale: 'This is a sensitive referral',
-        staff_id: '1234',
+        assignee_staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
         address: {
           id: '1',
@@ -124,7 +124,7 @@ describe Screening do
         screening_decision_detail: '3 days',
         access_restrictions: 'sensitive',
         restrictions_rationale: 'This is a sensitive referral',
-        staff_id: '1234',
+        assignee_staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
         cross_reports: array_including(
           a_hash_including(

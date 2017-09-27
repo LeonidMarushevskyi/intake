@@ -22,7 +22,7 @@ class Screening # :nodoc:
   attribute :screening_decision_detail
   attribute :access_restrictions
   attribute :restrictions_rationale
-  attribute :staff_id
+  attribute :assignee_staff_id
   attribute :started_at
   attribute :indexable, Boolean, default: lambda { |_screening, _attribute|
     Feature.inactive?(:release_two)
