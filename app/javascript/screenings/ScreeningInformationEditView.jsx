@@ -20,7 +20,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
       />
       <InputField
         allowCharacters={/[a-zA-Z\s]/}
-        disabled={Boolean(screening.get('staff_id'))}
+        disabled={Boolean(screening.get('assignee_staff_id'))}
         errors={errors.assignee}
         gridClassName='col-md-6'
         id='assignee'

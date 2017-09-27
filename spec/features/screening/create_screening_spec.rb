@@ -83,7 +83,7 @@ feature 'Create Screening' do
           safety_information: nil,
           address: nil,
           assignee: user_name_display,
-          staff_id: '1234'
+          assignee_staff_id: '1234'
         )
 
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
@@ -136,7 +136,7 @@ feature 'Create Screening' do
           safety_information: nil,
           address: nil,
           assignee: user_name_display,
-          staff_id: '1234'
+          assignee_staff_id: '1234'
         )
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
@@ -175,7 +175,7 @@ feature 'Create Screening' do
           safety_information: nil,
           address: nil,
           assignee: nil,
-          staff_id: nil
+          assignee_staff_id: nil
         )
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
