@@ -10,6 +10,7 @@ import {
   createFailure,
   CREATE_CONTACT,
 } from 'actions/contactActions'
+import {push} from 'react-router-redux'
 
 describe('createContactSaga', () => {
   it('creates contact on CREATE_CONTACT', () => {
@@ -21,12 +22,16 @@ describe('createContactSaga', () => {
 describe('createContact', () => {
   it('creates and puts contact', () => {
     const contact = {investigation_id: '123'}
+    const contactResponse = {id: '222'}
     const gen = createContact(contact)
     expect(gen.next().value).toEqual(
       call(post, '/api/v1/investigations/123/contacts', contact)
     )
-    expect(gen.next(contact).value).toEqual(
-      put(createSuccess(contact))
+    expect(gen.next(contactResponse).value).toEqual(
+      put(createSuccess(contactResponse))
+    )
+    expect(gen.next().value).toEqual(
+      put(push('/investigations/123/contacts/222'))
     )
   })
 

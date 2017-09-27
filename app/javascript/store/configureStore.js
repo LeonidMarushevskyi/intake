@@ -4,6 +4,8 @@ import thunk from 'redux-thunk'
 import {initSagas} from 'initSagas'
 import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly'
 import {createStore, applyMiddleware} from 'redux'
+import {routerMiddleware} from 'react-router-redux'
+import {routerHistory} from 'common/history'
 
 function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
@@ -11,7 +13,7 @@ function configureStore(initialState) {
     rootReducer, /* preloadedState, */
     initialState,
     composeWithDevTools(
-      applyMiddleware(sagaMiddleware, thunk)
+      applyMiddleware(sagaMiddleware, thunk, routerMiddleware(routerHistory))
     )
   )
   initSagas(sagaMiddleware)

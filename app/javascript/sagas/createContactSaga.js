@@ -1,4 +1,5 @@
 import {takeEvery, put, call} from 'redux-saga/effects'
+import {push} from 'react-router-redux'
 import {post} from 'utils/http'
 import {
   createSuccess,
@@ -8,10 +9,14 @@ import {
 
 export function* createContact(contact) {
   try {
+    const investigationId = contact.investigation_id
     const response = yield call(
-      post, `/api/v1/investigations/${contact.investigation_id}/contacts`, contact
+      post, `/api/v1/investigations/${investigationId}/contacts`, contact
     )
     yield put(createSuccess(response))
+    const {id} = response
+    const show_contact_path = `/investigations/${investigationId}/contacts/${id}`
+    yield put(push(show_contact_path))
   } catch (error) {
     yield put(createFailure(error.responseJSON))
   }
