@@ -107,7 +107,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
       />
       <div className='row'>
         <DateField
-          gridClassName='col-md-3'
+          gridClassName='col-md-2'
           id='date_of_birth'
           label='Date of birth'
           hasTime={false}
@@ -115,26 +115,25 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
           value={participant.get('date_of_birth')}
           onChange={(value) => onChange(['date_of_birth'], value)}
         />
-        or
+        <div className='col-md-1'>or</div>
         <InputField
-          gridClassName='col-md-1'
+          gridClassName='col-md-2'
           id='approximate_age'
           label='Approximate Age'
           value={haveDob ? '' : participant.get('approximate_age')}
           onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
           disabled={haveDob}
         />
-        <div className='col-md-1'>
           <select
+            className='col-md-1'
             id='approximate_age_units'
             aria-label='Approximate Age Units'
             value={haveDob ? 'Years' : participant.get('approximate_age_units') || 'Years'}
-            onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
+            onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
             disabled={haveDob}
           >
             {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
           </select>
-        </div>
         <SelectField
           gridClassName='col-md-6'
           id='gender'
