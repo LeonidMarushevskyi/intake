@@ -59,6 +59,8 @@ export default class CrossReportEditView extends React.Component {
       return crossReports.filterNot((item) => item.get('agency_type') === agencyType)
     }
     if (fieldName === 'county') {
+      this.setState({reportedOn: null})
+      this.setState({communicationMethod: null})
       return Immutable.List()
     }
     if (value === '') {

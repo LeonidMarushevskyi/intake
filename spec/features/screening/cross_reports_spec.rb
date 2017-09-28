@@ -57,7 +57,7 @@ feature 'cross reports' do
   end
 
   scenario 'editing cross reports to an existing screening' do
-    reported_on = Date.today.to_s(:db)
+    reported_on = Date.today
     communication_method = 'Child Abuse Form'
 
     existing_screening.cross_reports = [
@@ -66,14 +66,14 @@ feature 'cross reports' do
         agency_type: 'Department of justice',
         agency_name: 'Humboldt Office',
         communication_method: communication_method,
-        reported_on: reported_on
+        reported_on: reported_on.to_s(:db)
       ),
       CrossReport.new(
         county: 'sacramento',
         agency_type: 'Law enforcement',
         agency_name: 'LA Office',
         communication_method: communication_method,
-        reported_on: reported_on
+        reported_on: reported_on.to_s(:db)
       )
     ]
     stub_request(
@@ -93,6 +93,9 @@ feature 'cross reports' do
 
       fill_in 'Law enforcement agency name', with: 'LA Office'
       find('label', text: /\ADistrict attorney\z/).click
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on
+      expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
+      select communication_method, from: 'Communication Method'
       click_button 'Save'
     end
 
@@ -106,14 +109,14 @@ feature 'cross reports' do
               'county' => 'lake',
               'agency_type' => 'Law enforcement',
               'agency_name' => 'LA Office',
-              'reported_on' => reported_on,
+              'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
               'county' => 'lake',
               'agency_type' => 'District attorney',
               'agency_name' => nil,
-              'reported_on' => reported_on,
+              'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
           )
@@ -218,6 +221,51 @@ feature 'cross reports' do
               'agency_name' => nil,
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
+            )
+          )
+        )
+      )
+    ).to have_been_made
+  end
+
+  scenario 'communication method and time fields are cleared after county change' do
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
+    visit edit_screening_path(id: existing_screening.id)
+
+    reported_on = Date.today
+    communication_method = 'Child Abuse Form'
+
+    within '#cross-report-card' do
+      select 'San Francisco', from: 'County'
+      find('label', text: /\ADepartment of justice\z/).click
+      fill_in_datepicker 'Cross Reported on Date', with: reported_on
+      select communication_method, from: 'Communication Method'
+      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ALaw enforcement\z/).click
+      expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
+      expect(page).to have_field('Communication Method', with: communication_method)
+      select 'State of California', from: 'County'
+      find('label', text: /\ALaw enforcement\z/).click
+      expect(page)
+        .to_not have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
+      expect(page).to_not have_field('Communication Method', with: communication_method)
+
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(
+        :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).with(
+        body: hash_including(
+          'cross_reports' => array_including(
+            hash_including(
+              'agency_type' => 'Law enforcement',
+              'agency_name' => nil,
+              'reported_on' => nil,
+              'communication_method' => nil
             )
           )
         )
