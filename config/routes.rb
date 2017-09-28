@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       resources :investigations,
         only: [:screening],
         constraints: Routes::ActiveInvestigationsConstraint do
+
+        resources :people, only: [:index], module: 'investigations'
         member do
           get :screening
         end
