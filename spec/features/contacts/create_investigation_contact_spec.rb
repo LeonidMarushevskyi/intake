@@ -3,11 +3,23 @@
 require 'rails_helper'
 
 feature 'Create Investigation Contact' do
-  scenario 'user can add new contact' do
+  let(:investigation_id) { '123ABC' }
+
+  before do
+    people = [
+      { first_name: 'Emma', last_name: 'Woodhouse' },
+      { first_name: 'George', last_name: 'Knightley' }
+    ]
     stub_system_codes
-    visit new_investigation_contact_path(investigation_id: '123ABC')
+    stub_request(
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people(investigation_id))
+    ).and_return(json_body(people.to_json, status: 200))
+    visit new_investigation_contact_path(investigation_id: investigation_id)
+  end
+
+  scenario 'user can add new contact' do
     within '.card-header' do
-      expect(page).to have_content('New Contact - Investigation 123ABC')
+      expect(page).to have_content("New Contact - Investigation #{investigation_id}")
     end
     within '.card-body' do
       fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
@@ -19,6 +31,8 @@ feature 'Create Investigation Contact' do
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
     expect(page).to have_select('Communication Method', selected: 'In person')
+    expect(page).to have_content('Emma Woodhouse')
+    expect(page).to have_content('George Knightley')
     expect(page).to have_select('Location', selected: 'School')
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
@@ -68,9 +82,6 @@ feature 'Create Investigation Contact' do
   end
 
   scenario 'user does not see location until in person is selected for communication method' do
-    stub_system_codes
-    visit new_investigation_contact_path(investigation_id: '123ABC')
-
     expect(page).to_not have_select('Location')
     select 'In person', from: 'Communication Method'
     expect(page).to have_select('Location')
