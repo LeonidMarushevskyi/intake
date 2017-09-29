@@ -21,14 +21,6 @@ export class HomePage extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const newScreeningId = nextProps.screening.get('id')
-    const oldScreeningId = this.props.screening.get('id')
-    if (newScreeningId && newScreeningId !== oldScreeningId) {
-      this.props.router.push({pathname: `/screenings/${newScreeningId}/edit`})
-    }
-  }
-
   getScreenings() {
     get('/api/v1/screenings').then((screenings) => this.setState({screenings}))
   }

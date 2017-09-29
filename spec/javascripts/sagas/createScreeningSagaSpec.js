@@ -10,6 +10,7 @@ import {
   createScreeningSuccess,
   createScreeningFailure,
 } from 'actions/screeningActions'
+import {push} from 'react-router-redux'
 
 describe('createScreeningSaga', () => {
   it('creates screening on CREATE_SCREENING', () => {
@@ -25,6 +26,9 @@ describe('createScreening', () => {
     expect(gen.next().value).toEqual(call(post, '/api/v1/screenings'))
     expect(gen.next(screening).value).toEqual(
       put(createScreeningSuccess(screening))
+    )
+    expect(gen.next().value).toEqual(
+      put(push('/screenings/123/edit'))
     )
   })
 
