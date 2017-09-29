@@ -8,6 +8,7 @@ describe('CrossReportEditView', () => {
   let props
   beforeEach(() => {
     props = {
+      countyCodes: [],
       crossReports: Immutable.fromJS([
         {county: 'sacramento', agency_type: 'District attorney', agency_name: 'SCDA Office'},
         {county: 'sacramento', agency_type: 'Department of justice'},
@@ -27,12 +28,13 @@ describe('CrossReportEditView', () => {
   })
 
   it('renders the county field', () => {
-    expect(component.find('SelectField[label="County"]').length).toEqual(1)
+    expect(component.find('CountySelectField[id="cross_report_county"]').length).toEqual(1)
   })
 
   describe('when no county is selected', () => {
     beforeEach(() => {
       props = {
+        countyCodes: [],
         crossReports: Immutable.fromJS([
           {county: null},
           {county: null},
@@ -55,9 +57,10 @@ describe('CrossReportEditView', () => {
   describe('when county is selected', () => {
     beforeEach(() => {
       props = {
+        countyCodes: [],
         crossReports: Immutable.fromJS([
-          {county: 'state_of_california'},
-          {county: 'state_of_california'},
+          {county: '1086'},
+          {county: '1086'},
         ]),
         errors: Immutable.fromJS({}),
         onBlur: jasmine.createSpy(),
@@ -181,6 +184,7 @@ describe('CrossReportEditView', () => {
     beforeEach(() => {
       props = {
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+        countyCodes: [],
         crossReports: Immutable.fromJS([
           {county: 'sacramento', agency_type: 'Department of justice', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
           {county: 'sacramento', agency_type: 'Law enforcement', reported_on: '2011-02-13', communication_method: 'Child Abuse Form'},
@@ -260,7 +264,7 @@ describe('CrossReportEditView', () => {
     })
 
     it('changes existing cross reports agency name when county is changed', () => {
-      const countyField = component.find('SelectField[label="County"]')
+      const countyField = component.find('CountySelectField[id="cross_report_county"]')
       countyField .simulate('change', {target: {value: 'san_fransisco'}})
       expect(props.onChange).toHaveBeenCalled()
       expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([])
@@ -271,6 +275,7 @@ describe('CrossReportEditView', () => {
     beforeEach(() => {
       props = {
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+        countyCodes: [],
         crossReports: Immutable.fromJS([{
           county: 'gotham',
           agency_type: 'Department of justice',
@@ -356,6 +361,7 @@ describe('CrossReportEditView', () => {
     beforeEach(() => {
       props = {
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+        countyCodes: [],
         crossReports: Immutable.fromJS([]),
         errors: Immutable.fromJS({}),
         onBlur: jasmine.createSpy(),
@@ -383,6 +389,7 @@ describe('CrossReportEditView', () => {
     beforeEach(() => {
       props = {
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+        countyCodes: [],
         crossReports: Immutable.fromJS([
           {county: 'smallville', agency_type: 'District attorney'},
           {county: 'smallville', agency_type: 'Law enforcement'},

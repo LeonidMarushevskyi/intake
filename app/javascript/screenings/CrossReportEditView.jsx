@@ -6,8 +6,8 @@ import InputField from 'common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
+import CountySelectField from 'common/CountySelectField'
 import {AGENCY_TYPES, COMMUNICATION_METHODS} from 'enums/CrossReport'
-import COUNTIES from 'enums/Counties'
 
 export default class CrossReportEditView extends React.Component {
   constructor(props) {
@@ -153,10 +153,9 @@ export default class CrossReportEditView extends React.Component {
           <label>This report has cross reported to:</label>
         </div>
         <div className='row'>
-          <SelectField
+          <CountySelectField
             gridClassName='col-md-6'
             id='cross_report_county'
-            label='County'
             onChange={(event) => {
               this.props.onChange(
                 this.updatedCrossReports(null, 'county', event.target.value),
@@ -165,10 +164,8 @@ export default class CrossReportEditView extends React.Component {
               this.setState({county: event.target.value})
             }}
             value={this.state.county}
-          >
-            <option key='' />
-            {Object.keys(COUNTIES).map((item) => <option key={item} value={item}>{COUNTIES[item]}</option>)}
-          </SelectField>
+            countyCodes={this.props.countyCodes}
+          />
         </div>
         <div className='row gap-top'>
           { this.state.county && this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
@@ -239,6 +236,7 @@ export default class CrossReportEditView extends React.Component {
 
 CrossReportEditView.propTypes = {
   alertInfoMessage: PropTypes.string,
+  countyCodes: PropTypes.array.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   isAgencyRequired: PropTypes.func.isRequired,
