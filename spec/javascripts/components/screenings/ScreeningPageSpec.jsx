@@ -13,6 +13,7 @@ export const requiredScreeningAttributes = {
 
 export const requiredProps = {
   actions: {fetchScreening: () => null},
+  countyCodes: [{code: '123', value: 'county'}],
   staffActions: {checkStaffPermission: () => null},
   params: {id: '1'},
   participants: Immutable.List(),
@@ -144,6 +145,7 @@ describe('ScreeningPage', () => {
       const crossReportsCard = component.find('CrossReportCardView')
       expect(crossReportsCard.length).toEqual(1)
       expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
+      expect(crossReportsCard.props().countyCodes).toEqual([{code: '123', value: 'county'}])
       expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
       expect(crossReportsCard.props().mode).toEqual('edit')
     })
@@ -800,4 +802,3 @@ describe('ScreeningPage', () => {
     })
   })
 })
-
