@@ -13,5 +13,5 @@ Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
   example.location.gsub(%r{^./}, '').gsub(%r{[/:]}, '__')
 end
 
-Capybara::Screenshot.prune_strategy = :keep_last_run
+Capybara::Screenshot.prune_strategy = { keep: 100 }
 Capybara::Screenshot.append_timestamp = false
