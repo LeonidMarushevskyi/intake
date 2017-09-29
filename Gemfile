@@ -44,7 +44,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '2.15.1'
   gem 'capybara-accessible'
   gem 'capybara-screenshot'
   gem 'faker'
@@ -52,7 +52,7 @@ group :test do
   gem 'poltergeist'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter', require: false
-  gem 'selenium-webdriver', '2.53.1'
+  gem 'selenium-webdriver', '3.4.0'
   gem 'simplecov', require: false
   gem 'webmock'
 end
