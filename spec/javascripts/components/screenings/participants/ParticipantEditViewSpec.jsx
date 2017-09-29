@@ -8,6 +8,7 @@ describe('ParticipantEditView', () => {
   let component
   let onChange
   let onCancel
+  let onDobBlur
   let onSave
 
   const requiredParticipantProps = {
@@ -19,6 +20,7 @@ describe('ParticipantEditView', () => {
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
     onCancel = jasmine.createSpy('onCancel')
+    onDobBlur = jasmine.createSpy('onDobBlur')
     onSave = jasmine.createSpy('onSave')
   })
 
@@ -416,7 +418,7 @@ describe('ParticipantEditView', () => {
     })
   })
 
-  describe('approximate age when setting dob', () => {
+  describe('onBlur of DOB calls onDobBlur', () => {
     const participant = Immutable.fromJS({
       ...requiredParticipantProps,
       id: '199',
@@ -425,25 +427,11 @@ describe('ParticipantEditView', () => {
     })
     let component
     beforeEach(() => {
-      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} />)
+      component = shallow(<ParticipantEditView participant={participant} onChange={onChange} onDobBlur={onDobBlur} />)
     })
-    it('is disabled and set to defaults when DoB is populated', () => {
-      expect(component.find('InputField[label="Approximate Age"]').props().value)
-        .toEqual('10')
-      expect(component.find('InputField[label="Approximate Age"]').props().disabled)
-        .toEqual(false)
-      expect(component.find('select[aria-label="Approximate Age Units"]').props().value)
-        .toEqual('Months')
-      expect(component.find('select[aria-label="Approximate Age Units"]').props().disabled)
-        .toEqual(false)
-      component.find('DateField[label="Date of birth"]').simulate('change', {target: {value: '2016-1-1'}})
-
-      expect(onChange).toHaveBeenCalledWith(['approximate_age'], {target: {value: ''}})
-      expect(component.find('InputField[label="Approximate Age"]').props().disabled)
-        .toEqual(true)
-      expect(onChange).toHaveBeenCalledWith(['approximate_age_units'], {target: {value: ''}})
-      expect(component.find('select[aria-label="Approximate Age Units"]').props().disabled)
-        .toEqual(true)
+    it('is disabled when DoB is populated', () => {
+      component.find('DateField[label="Date of birth"]').props().onBlur('2016-1-1')
+      expect(onDobBlur).toHaveBeenCalledWith('2016-1-1')
     })
   })
 

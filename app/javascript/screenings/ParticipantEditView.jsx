@@ -18,7 +18,7 @@ import selectOptions from 'utils/selectHelper'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'enums/RoleType'
 
-const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
+const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave}) => {
   const roleOptions = (selectedRoles = Immutable.List()) => {
     const hasReporterRole = selectedRoles.some((role) =>
       ROLE_TYPE_REPORTER.includes(role)
@@ -37,6 +37,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
       return item
     })
   }
+
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
   const haveDob = Boolean(participant.get('date_of_birth'))
@@ -116,6 +117,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
               hasCalendar={false}
               value={participant.get('date_of_birth')}
               onChange={(value) => onChange(['date_of_birth'], value)}
+              onBlur={(value) => onDobBlur(value)}
             />
             <div className='col-md-1 text-between-inputs' >or</div>
             <InputField
@@ -124,20 +126,20 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
               label='Approximate Age'
               allowCharacters={/[0-9]/}
               maxLength='3'
-              value={haveDob ? '' : participant.get('approximate_age')}
+              value={participant.get('approximate_age') || ''}
               onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
               disabled={haveDob}
             />
             <div className='col-md-4 input-no-header'>
-            <select
-              id='approximate_age_units'
-              aria-label='Approximate Age Units'
-              value={haveDob ? 'years' : participant.get('approximate_age_units') || 'years'}
-              onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
-              disabled={haveDob}
-            >
-              {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
-            </select>
+              <select
+                id='approximate_age_units'
+                aria-label='Approximate Age Units'
+                value={participant.get('approximate_age_units') || 'years'}
+                onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
+                disabled={haveDob}
+              >
+                {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
+              </select>
             </div>
           </div>
         </div>
@@ -207,6 +209,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
 ParticipantEditView.propTypes = {
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
+  onDobBlur: PropTypes.func,
   onSave: PropTypes.func,
   participant: PropTypes.object.isRequired,
 }
