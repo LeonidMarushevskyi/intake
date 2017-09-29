@@ -4,6 +4,7 @@ import {
   currentPurposeSelector,
   currentLocationSelector,
   currentCommunicationMethodSelector,
+  inPersonCommunicationMethodSelector,
 } from 'selectors/contactSelectors'
 
 describe('currentStatusSelector', () => {
@@ -67,5 +68,18 @@ describe('currentCommunicationMethodSelector', () => {
     const contact = {communication_method: {value: null}}
     const state = fromJS({contact, communicationMethods})
     expect(currentCommunicationMethodSelector(state)).toEqual(undefined)
+  })
+})
+
+describe('inPersonCommunicationMethodSelector', () => {
+  it("returns the code value for 'In person' communication method", () => {
+    const communicationMethods = [{code: '667', value: 'In person'}]
+    const state = fromJS({communicationMethods})
+    expect(inPersonCommunicationMethodSelector(state)).toEqual('667')
+  })
+
+  it('returns undefined when communication methods are empty', () => {
+    const state = fromJS({communicationMethods: []})
+    expect(inPersonCommunicationMethodSelector(state)).toEqual(undefined)
   })
 })

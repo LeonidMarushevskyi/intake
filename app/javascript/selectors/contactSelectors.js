@@ -5,12 +5,10 @@ import {Map} from 'immutable'
 const systemCodeDisplayValue = (code, systemCodes, noSetValue = Map(), context = this) => systemCodes.find(
   (systemCode) => systemCode.get('code') === code, context, noSetValue
 ).get('value')
-/* eslint-enable no-invalid-this */
-const statusesSelector = (state) => state.get('contactStatuses')
-const purposesSelector = (state) => state.get('contactPurposes')
-const locationsSelector = (state) => state.get('locations')
-const communicationMethodsSelector = (state) => state.get('communicationMethods')
-
+export const statusesSelector = (state) => state.get('contactStatuses')
+export const purposesSelector = (state) => state.get('contactPurposes')
+export const locationsSelector = (state) => state.get('locations')
+export const communicationMethodsSelector = (state) => state.get('communicationMethods')
 export const currentStatusSelector = createSelector(
   (state) => state.getIn(['contact', 'status', 'value']),
   statusesSelector,
@@ -31,3 +29,11 @@ export const currentCommunicationMethodSelector = createSelector(
   communicationMethodsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
+export const inPersonCommunicationMethodSelector = createSelector(
+  communicationMethodsSelector,
+  (systemCodes) => {
+    const systemCode = systemCodes.find((systemCode) => systemCode.get('value') === 'In person', this, Map())
+    return systemCode.get('code')
+  }
+)
+/* eslint-enable no-invalid-this */
