@@ -3,7 +3,6 @@ export const getScreening = (state) => state.get('screening')
 export const findByCategory = (statusCodes = List(), selectedCategory) => (
   statusCodes.filter(({category}) => category === selectedCategory)
 )
-
 export const findInPersonCommunicationMethod = (state) => {
   const communicationMethods = state.get('communicationMethods')
   if (communicationMethods) {
