@@ -4,7 +4,7 @@ import {
   submitScreeningSuccess,
   submitScreeningFailure,
 } from 'actions/screeningActions'
-import {getScreening} from 'selectors'
+import {currentScreeningSelector} from 'selectors/screeningSelectors'
 import {
   SUBMIT_SCREENING,
 } from 'actions/actionTypes'
@@ -13,7 +13,7 @@ export function* submitScreening({id}) {
   try {
     const response = yield call(post, `/api/v1/screenings/${id}/submit`)
     yield put(submitScreeningSuccess(response))
-    const screening = yield select(getScreening)
+    const screening = yield select(currentScreeningSelector)
     yield call(alert, `Successfully created referral ${screening.get('referral_id')}`)
   } catch (error) {
     yield put(submitScreeningFailure(error.responseJSON))
