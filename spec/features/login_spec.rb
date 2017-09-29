@@ -102,20 +102,20 @@ feature 'login' do
         .and_return(json_body(auth_artifact.to_json, status: 200))
 
       bobs_token = 'BOBS_TOKEN'
-      in_browser(:bob) do
+      Capybara.using_session(:bob) do
         stub_request(:get, "http://www.example.com/authn/validate?token=#{bobs_token}")
           .and_return(status: 200)
         visit root_path(token: bobs_token)
       end
 
       alexs_token = 'ALEXS_TOKEN'
-      in_browser(:alex) do
+      Capybara.using_session(:alex) do
         stub_request(:get, "http://www.example.com/authn/validate?token=#{alexs_token}")
           .and_return(status: 200)
         visit root_path(token: alexs_token)
       end
 
-      in_browser(:bob) do
+      Capybara.using_session(:bob) do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
@@ -124,7 +124,7 @@ feature 'login' do
         ).to have_been_made
       end
 
-      in_browser(:alex) do
+      Capybara.using_session(:alex) do
         visit screening_path(1)
         expect(page).to have_content 'My Screening'
         expect(
