@@ -122,6 +122,8 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
               gridClassName='col-md-3'
               id='approximate_age'
               label='Approximate Age'
+              allowCharacters={/[0-9]/}
+              maxLength='3'
               value={haveDob ? '' : participant.get('approximate_age')}
               onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
               disabled={haveDob}
