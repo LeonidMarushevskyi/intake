@@ -118,7 +118,7 @@ feature 'Show Screening' do
       end
     end
 
-    scenario 'view an existing screening returns 404', accessibility: false, js: true do
+    scenario 'view an existing screening returns 404', browser: :poltergeist do
       stub_request(
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).and_return(json_body(existing_screening.to_json))

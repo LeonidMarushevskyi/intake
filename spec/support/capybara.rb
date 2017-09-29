@@ -4,7 +4,6 @@ require 'capybara/rspec'
 require 'support/capybara/screenshot'
 require 'capybara/accessible'
 require 'capybara/poltergeist'
-Capybara.javascript_driver = :poltergeist
 Capybara.raise_server_errors = false
 
 # Tests must be run in the correct timezone because

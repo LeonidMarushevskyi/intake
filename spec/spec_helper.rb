@@ -76,9 +76,9 @@ RSpec.configure do |config|
     WebMock.allow_net_connect!
   end
 
-  config.around(:example, accessibility: false) do |example|
+  config.around(:example, type: :feature, browser: :poltergeist) do |example|
     tmp_driver = Capybara.default_driver
-    Capybara.default_driver = :selenium
+    Capybara.default_driver = :accessible_poltergeist
     example.run
     Capybara.default_driver = tmp_driver
   end

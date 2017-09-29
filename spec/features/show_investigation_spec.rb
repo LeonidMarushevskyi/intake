@@ -75,7 +75,7 @@ feature 'Show Investigation' do
       end
     end
 
-    scenario 'view an existing screening returns 404', js: true do
+    scenario 'view an existing screening returns 404', browser: :poltergeist do
       investigation_id = '12345'
       visit investigation_path(id: investigation_id)
       expect(
