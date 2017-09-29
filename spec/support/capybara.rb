@@ -12,10 +12,44 @@ Capybara.raise_server_errors = false
 # The Time Lords
 ENV['TZ'] = 'Etc/GMT+7'
 
+Capybara.register_driver :accessible_selenium do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(
+    marionette: ENV['MARIONETTE'] == 'true'
+  )
+  driver = Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    desired_capabilities: capabilities
+  )
+  adaptor = Capybara::Accessible::SeleniumDriverAdapter.new
+  Capybara::Accessible.setup(driver, adaptor)
+end
+
+Capybara.register_driver :accessible_poltergeist do |app|
+  driver = Capybara::Poltergeist::Driver.new(app, js_errors: false)
+  adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
+  Capybara::Accessible.setup(driver, adaptor)
+end
+
 Capybara.default_driver = :accessible_selenium
+
+Capybara.server_port = 8889 + ENV['TEST_ENV_NUMBER'].to_i
 
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true
+
+module Capybara
+  module Accessible
+    class SeleniumDriverAdapter
+      def modal_dialog_present?(driver)
+        driver.browser.switch_to.alert
+        true
+      rescue ::Selenium::WebDriver::Error::NoSuchAlertError, ::NoMethodError
+        false
+      end
+    end
+  end
+end
 
 Capybara::Accessible::Auditor::Node.class_eval do
   SELECTORS_TO_IGNORE = <<-IGNORES
