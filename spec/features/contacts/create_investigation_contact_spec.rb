@@ -10,7 +10,6 @@ feature 'Create Investigation Contact' do
       { first_name: 'Emma', last_name: 'Woodhouse' },
       { first_name: 'George', last_name: 'Knightley' }
     ]
-    stub_system_codes
     stub_request(
       :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people(investigation_id))
     ).and_return(json_body(people.to_json, status: 200))

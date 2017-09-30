@@ -38,7 +38,6 @@ feature 'Show Investigation' do
       stub_request(
         :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_screening(investigation_id))
       ).and_return(json_body(screening_summary.to_json, status: 200))
-      stub_system_codes
       visit investigation_path(id: investigation_id)
       within '.card.show', text: 'Screening Summary' do
         within '.card-body' do

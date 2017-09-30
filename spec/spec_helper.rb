@@ -38,6 +38,11 @@ RSpec.configure do |config|
     end
   end
 
+  config.before :each do
+    # we try stub_system_codes because it is only loaded in feature tests
+    try(:stub_system_codes)
+  end
+
   config.after :suite do
     @headless_manager.destroy if @headless_manager && ENV['USE_XVFB'] == 'true'
   end

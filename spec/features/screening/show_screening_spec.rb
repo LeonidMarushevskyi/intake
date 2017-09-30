@@ -33,8 +33,8 @@ feature 'Show Screening' do
       screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
-        { county: 'state_of_california', agency_type: 'District attorney', agency_name: 'SCDA' },
-        { county: 'state_of_california', agency_type: 'Licensing' }
+        { county: 'c41', agency_type: 'District attorney', agency_name: 'SCDA' },
+        { county: 'c41', agency_type: 'Licensing' }
       ]
     )
   end

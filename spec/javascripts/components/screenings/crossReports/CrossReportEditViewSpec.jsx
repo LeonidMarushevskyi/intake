@@ -121,7 +121,7 @@ describe('CrossReportEditView', () => {
       ])
     })
     it('returns an updated crossReports with all agencys removed if county is changed', () => {
-      expect(component.instance().updatedCrossReports(null, 'county', 'state_of_california').toJS()).toEqual([])
+      expect(component.instance().updatedCrossReports(null, 'county', '1086').toJS()).toEqual([])
     })
     it('returns an updated crossReports when communication_method and value are passed', () => {
       expect(component.instance().updatedCrossReports('District attorney', 'agency_name', '').toJS()).toEqual([

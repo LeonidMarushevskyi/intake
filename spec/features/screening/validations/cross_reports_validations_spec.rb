@@ -11,7 +11,7 @@ feature 'Cross Reports Validations' do
         FactoryGirl.create(
           :cross_report,
           :invalid,
-          county: 'state_of_california',
+          county: 'c41',
           agency_type: 'Department of justice'
         )
       ]

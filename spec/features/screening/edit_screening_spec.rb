@@ -34,12 +34,12 @@ feature 'Edit Screening' do
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
         {
-          county: 'sacramento',
+          county: 'c42',
           agency_type: 'District attorney',
           agency_name: 'SCDA Office'
         },
         {
-          county: 'sacramento',
+          county: 'c42',
           agency_type: 'Law enforcement'
         }
       ]
@@ -286,7 +286,7 @@ feature 'individual card save' do
   scenario 'cross report save and edits' do
     existing_screening.cross_reports = [
       {
-        county: 'state_of_california',
+        county: 'c41',
         agency_type: 'Department of justice',
         agency_name: 'Sac Office'
       }
@@ -324,7 +324,7 @@ feature 'individual card save' do
 
     existing_screening.cross_reports = [
       {
-        county: 'state_of_california',
+        county: 'c41',
         agency_type: 'Department of justice',
         agency_name: nil
       }
