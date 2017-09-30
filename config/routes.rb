@@ -70,7 +70,9 @@ Rails.application.routes.draw do
         resources :contacts, only: :create, module: :investigations
       end
 
-      resources :system_codes, only: [:index]
+      resources :system_codes,
+        only: [:index]
+      get 'cross_report_agency/:county_id', to: 'system_codes#cross_report_agency'
     end
   end
 
