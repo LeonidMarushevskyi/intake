@@ -44,9 +44,9 @@ namespace :spec do # rubocop:disable BlockLength
 
     desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
     task :full do
-      Rake::Task['spec:intake:parallel'].invoke
-      system 'bin/lint'
-      system 'bin/karma'
+      if system('bin/lint') && system('bin/karma')
+        Rake::Task['spec:intake:parallel'].invoke
+      end
     end
   end
 
