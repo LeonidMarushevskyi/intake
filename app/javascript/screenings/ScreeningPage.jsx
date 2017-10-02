@@ -1,7 +1,8 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
-import * as staffActions from 'actions/staffActions'
+import {checkStaffPermission} from 'actions/staffActions'
+import {fetch as fetchCountyAgency} from 'actions/countyAgencyActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
@@ -350,6 +351,7 @@ export class ScreeningPage extends React.Component {
                 countyCodes={this.props.countyCodes}
                 crossReports={mergedScreening.get('cross_reports')}
                 editable={editable}
+                actions={this.props.actions}
                 mode={mode}
               />
           }
@@ -429,9 +431,9 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const allActions = Object.merge(screeningActions, staffActions)
+  const actions = Object.assign({}, screeningActions, {checkStaffPermission}, {fetchCountyAgency})
   return {
-    actions: bindActionCreators(allActions, dispatch),
+    actions: bindActionCreators(actions, dispatch),
   }
 }
 
