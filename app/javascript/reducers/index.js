@@ -1,3 +1,4 @@
+import investigationPeople from 'reducers/investigationPeopleReducer'
 import involvements from 'reducers/involvementsReducer'
 import participants from 'reducers/participantsReducer'
 import relationships from 'reducers/relationshipsReducer'
@@ -14,19 +15,20 @@ import routing from 'reducers/routerReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
+  communicationMethods,
+  contact,
+  contactPurposes,
+  contactStatuses,
+  investigationPeople,
   involvements,
+  locations,
   participants,
   relationships,
-  screening,
-  staff,
-  screeningSummary,
   remoteError,
-  contact,
-  contactStatuses,
-  contactPurposes,
-  communicationMethods,
-  locations,
   routing,
+  screening,
+  screeningSummary,
+  staff,
 })
 
 export default rootReducer
