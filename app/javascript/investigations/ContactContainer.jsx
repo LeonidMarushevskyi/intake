@@ -22,12 +22,17 @@ const errors = (contact) => (
 )
 
 const mapStateToProps = (state, ownProps) => {
-  const contactFields = state.get('contact')
-  const contactValues = contactFields.map((field) => field.get('value')).toJS()
-  const contactTouchedFields = contactFields.filter((field) => field.get('touched')).keySeq().toJS()
+  const contact = state.get('contact')
+  const contactValues = contact.map((field) => field.get('value')).toJS()
+  const contactTouchedFields = contact.filter((field) => field.get('touched')).keySeq().toJS()
   return {
     investigationId: ownProps.params.investigation_id,
-    contact: contactValues,
+    startedAt: contact.getIn(['started_at', 'value']),
+    communicationMethod: contact.getIn(['communication_method', 'value']),
+    location: contact.getIn(['location', 'value']),
+    status: contact.getIn(['status', 'value']),
+    note: contact.getIn(['note', 'value']),
+    purpose: contact.getIn(['purpose', 'value']),
     errors: filteredErrors(contactTouchedFields, errors(contactValues)),
     statuses: statusesSelector(state).toJS(),
     purposes: purposesSelector(state).toJS(),

@@ -12,7 +12,12 @@ class Contact extends React.Component {
   render() {
     const {
       investigationId,
-      contact: {started_at, communication_method, location, status, note, purpose},
+      startedAt,
+      communicationMethod,
+      location,
+      status,
+      note,
+      purpose,
       actions: {setField, touchField, create},
       statuses,
       purposes,
@@ -23,7 +28,15 @@ class Contact extends React.Component {
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
-      create(this.props.contact)
+      create({
+        investigation_id: investigationId,
+        started_at: startedAt,
+        communication_method: communicationMethod,
+        location,
+        status,
+        note,
+        purpose,
+      })
     }
     return (
       <div className='card show double-gap-top'>
@@ -39,7 +52,7 @@ class Contact extends React.Component {
                     gridClassName='col-md-12'
                     id='started_at'
                     label='Date/Time'
-                    value={started_at}
+                    value={startedAt}
                     onChange={(value) => setField('started_at', value)}
                     onBlur={() => touchField('started_at')}
                     errors={errors.started_at}
@@ -50,7 +63,7 @@ class Contact extends React.Component {
                     gridClassName='col-md-12'
                     id='communication_method'
                     label='Communication Method'
-                    value={communication_method}
+                    value={communicationMethod}
                     onChange={(event) => setField('communication_method', event.target.value)}
                     onBlur={() => touchField('communication_method')}
                     errors={errors.communication_method}
@@ -59,7 +72,7 @@ class Contact extends React.Component {
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
-                { communication_method === inPersonCode &&
+                { communicationMethod === inPersonCode &&
                   <div className='row'>
                     <SelectField
                       gridClassName='col-md-12'
@@ -128,13 +141,18 @@ class Contact extends React.Component {
 
 Contact.propTypes = {
   actions: PropTypes.object,
+  communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
-  contact: PropTypes.object,
   errors: PropTypes.object,
   inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
+  location: PropTypes.string,
   locations: PropTypes.array.isRequired,
+  note: PropTypes.string,
+  purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
+  startedAt: PropTypes.string,
+  status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
 }
 
