@@ -8,8 +8,10 @@ describe('CrossReportCardView', () => {
   let promiseObj
   let validateFieldSpy
 
+  const fetchCountyAgency = jasmine.createSpy('fetchCountyAgency')
   const props = {
     areCrossReportsRequired: true,
+    actions: {fetchCountyAgency},
     countyCodes: [{code: '12', value: 'county'}],
     crossReports: Immutable.fromJS([
       {agency_type: 'District attorney', agency_name: 'SCDA Office'},
@@ -130,6 +132,7 @@ describe('CrossReportCardView', () => {
           {agency_type: 'District attorney', agency_name: 'SCDA Office'},
           {agency_type: 'Department of justice'},
         ])
+        expect(component.find('CrossReportEditView').props().actions.fetchCountyAgency).toEqual(fetchCountyAgency)
       })
 
       describe('isAgencyRequired', () => {
@@ -170,6 +173,7 @@ describe('CrossReportCardView', () => {
         let validationProps
         beforeEach(() => {
           validationProps = {
+            ...props,
             onChange: jasmine.createSpy('onChange'),
             onCancel: jasmine.createSpy('onCancel'),
             onSave: jasmine.createSpy('onSave'),

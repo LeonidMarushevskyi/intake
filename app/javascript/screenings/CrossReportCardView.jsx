@@ -240,6 +240,7 @@ export default class CrossReportCardView extends React.Component {
     const errors = this.state.errors
     const allprops = {
       edit: {
+        actions: this.props.actions,
         errors: errors,
         isAgencyRequired: this.isAgencyRequired,
         countyCodes: this.props.countyCodes,
@@ -278,6 +279,7 @@ CrossReportCardView.defaultProps = {
 }
 
 CrossReportCardView.propTypes = {
+  actions: PropTypes.object.isRequired,
   areCrossReportsRequired: PropTypes.bool.isRequired,
   countyCodes: PropTypes.array,
   crossReports: PropTypes.object,
