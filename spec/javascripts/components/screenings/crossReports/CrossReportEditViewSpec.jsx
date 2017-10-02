@@ -4,10 +4,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('CrossReportEditView', () => {
+  const fetchCountyAgency = jasmine.createSpy('fetchCountyAgency')
   let component
   let props
   beforeEach(() => {
     props = {
+      actions: {fetchCountyAgency},
       countyCodes: [],
       crossReports: Immutable.fromJS([
         {county: 'sacramento', agency_type: 'District attorney', agency_name: 'SCDA Office'},
@@ -34,6 +36,7 @@ describe('CrossReportEditView', () => {
   describe('when no county is selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         countyCodes: [],
         crossReports: Immutable.fromJS([
           {county: null},
@@ -57,6 +60,7 @@ describe('CrossReportEditView', () => {
   describe('when county is selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         countyCodes: [],
         crossReports: Immutable.fromJS([
           {county: '1086'},
@@ -183,6 +187,7 @@ describe('CrossReportEditView', () => {
   describe('when an agency is selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         countyCodes: [],
         crossReports: Immutable.fromJS([
@@ -265,15 +270,25 @@ describe('CrossReportEditView', () => {
 
     it('changes existing cross reports agency name when county is changed', () => {
       const countyField = component.find('CountySelectField[id="cross_report_county"]')
-      countyField .simulate('change', {target: {value: 'san_fransisco'}})
+      countyField .simulate('change', {target: {value: '123'}})
       expect(props.onChange).toHaveBeenCalled()
       expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([])
+    })
+
+    it('fires action to fetch counties when county is changed', () => {
+      const countyField = component.find('CountySelectField[id="cross_report_county"]')
+      countyField .simulate('change', {target: {value: '123'}})
+      expect(props.onChange).toHaveBeenCalled()
+      expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([])
+      expect(props.actions.fetchCountyAgency).toHaveBeenCalled()
+      expect(props.actions.fetchCountyAgency.calls.argsFor(0)[0]).toEqual('123')
     })
   })
 
   describe('caching communication and date data when an agency is selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         countyCodes: [],
         crossReports: Immutable.fromJS([{
@@ -360,6 +375,7 @@ describe('CrossReportEditView', () => {
   describe('when no agency is selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         countyCodes: [],
         crossReports: Immutable.fromJS([]),
@@ -388,6 +404,7 @@ describe('CrossReportEditView', () => {
   describe('when all agencies are selected', () => {
     beforeEach(() => {
       props = {
+        actions: {fetchCountyAgency},
         isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
         countyCodes: [],
         crossReports: Immutable.fromJS([
