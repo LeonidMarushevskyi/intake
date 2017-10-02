@@ -409,7 +409,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the home and edit link', () => {
-        const homeLink = component.find({to: basePath})
+        const homeLink = component.find({to: '/'})
         const editLink = component.find({to: '/screenings/1/edit'})
         expect(homeLink.html()).toContain('Home')
         expect(editLink.html()).toContain('Edit')

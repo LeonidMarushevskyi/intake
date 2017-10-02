@@ -6,7 +6,12 @@ describe('Contact', () => {
   function renderContact({
     investigationId = 'ABC123',
     actions = {},
-    contact = {},
+    startedAt = null,
+    communicationMethod = null,
+    location = null,
+    status = null,
+    note = null,
+    purpose = null,
     errors = {},
     statuses = [],
     purposes = [],
@@ -17,7 +22,12 @@ describe('Contact', () => {
     const props = {
       investigationId,
       actions,
-      contact,
+      startedAt,
+      communicationMethod,
+      location,
+      status,
+      note,
+      purpose,
       statuses,
       purposes,
       communicationMethods,
@@ -36,7 +46,7 @@ describe('Contact', () => {
 
   it('displays the started at datetime picker', () => {
     const component = renderContact({
-      contact: {started_at: '2016-08-11T18:24:22.157Z'},
+      startedAt: '2016-08-11T18:24:22.157Z',
       errors: {started_at: ['Things are wrong!']},
     })
     const startedAt = component.find('DateField')
@@ -46,21 +56,21 @@ describe('Contact', () => {
 
   it('changing started at fires setField', () => {
     const setField = jasmine.createSpy('setField')
-    const component = renderContact({actions: {setField}, contact: {started_at: ''}})
+    const component = renderContact({actions: {setField}, startedAt: ''})
     component.find('DateField').simulate('change', '123')
     expect(setField).toHaveBeenCalledWith('started_at', '123')
   })
 
   it('blurring started at fires touchField', () => {
     const touchField = jasmine.createSpy('touchField')
-    const component = renderContact({actions: {touchField}, contact: {started_at: ''}})
+    const component = renderContact({actions: {touchField}, startedAt: ''})
     component.find('DateField').simulate('blur')
     expect(touchField).toHaveBeenCalledWith('started_at')
   })
 
   it('displays the status dropdown', () => {
     const component = renderContact({
-      contact: {status: 'S'},
+      status: 'S',
       statuses: [
         {code: 'S', value: 'Scheduled'},
         {code: 'A', value: 'Attempted'},
@@ -79,21 +89,21 @@ describe('Contact', () => {
 
   it('changing status fires setField', () => {
     const setField = jasmine.createSpy('setField')
-    const component = renderContact({actions: {setField}, contact: {status: ''}})
+    const component = renderContact({actions: {setField}, status: ''})
     component.find("SelectField[id='status']").simulate('change', {target: {value: 'C'}})
     expect(setField).toHaveBeenCalledWith('status', 'C')
   })
 
   it('blurring status fires touchField', () => {
     const touchField = jasmine.createSpy('touchField')
-    const component = renderContact({actions: {touchField}, contact: {status: ''}})
+    const component = renderContact({actions: {touchField}, status: ''})
     component.find("SelectField[id='status']").simulate('blur')
     expect(touchField).toHaveBeenCalledWith('status')
   })
 
   it('displays the communication method dropdown', () => {
     const component = renderContact({
-      contact: {communication_method: '2'},
+      communicationMethod: '2',
       communicationMethods: [
         {code: '1', value: 'Carrier Pigeon'},
         {code: '2', value: 'Smoke Signal'},
@@ -132,7 +142,7 @@ describe('Contact', () => {
   })
 
   it('does not display the location dropdown when the communication method is not in person', () => {
-    const component = renderContact({inPersonCode: '2', contact: {communication_method: '3'}})
+    const component = renderContact({inPersonCode: '2', communicationMethod: '3'})
     const locationSelect = component.find("SelectField[id='location']")
     expect(locationSelect.exists()).toEqual(false)
   })
@@ -141,7 +151,8 @@ describe('Contact', () => {
     const inPersonCode = '2'
     const component = renderContact({
       inPersonCode,
-      contact: {communication_method: inPersonCode, location: '2'},
+      communicationMethod: inPersonCode,
+      location: '2',
       locations: [
         {code: '1', value: 'On a mountain'},
         {code: '2', value: 'In space'},
@@ -170,7 +181,7 @@ describe('Contact', () => {
     const component = renderContact({
       inPersonCode,
       actions: {setField},
-      contact: {communication_method: inPersonCode},
+      communicationMethod: inPersonCode,
     })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('change', {target: {value: '4'}})
@@ -183,7 +194,7 @@ describe('Contact', () => {
     const component = renderContact({
       inPersonCode,
       actions: {touchField},
-      contact: {communication_method: inPersonCode},
+      communicationMethod: inPersonCode,
     })
     const locationSelect = component.find("SelectField[id='location']")
     locationSelect.simulate('blur')
@@ -191,7 +202,7 @@ describe('Contact', () => {
   })
 
   it('displays note', () => {
-    const component = renderContact({contact: {note: 'This is a simple contact note'}})
+    const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')
     expect(noteField.text()).toContain('This is a simple contact note')
   })
@@ -199,7 +210,7 @@ describe('Contact', () => {
   it('changing note fires setField', () => {
     const setField = jasmine.createSpy('setField')
     const component = renderContact({
-      actions: {setField}, contact: {note: 'This is a simple contact note'},
+      actions: {setField}, note: 'This is a simple contact note',
     })
     component.find('textarea').simulate('change', {target: {value: 'This is a new note'}})
     expect(setField).toHaveBeenCalledWith('note', 'This is a new note')
@@ -207,7 +218,7 @@ describe('Contact', () => {
 
   it('displays the purpose dropdown', () => {
     const component = renderContact({
-      contact: {purpose: '1'},
+      purpose: '1',
       purposes: [
         {code: '1', value: 'Investigate Referral'},
         {code: '2', value: 'Consult with Collateral'},
@@ -226,16 +237,48 @@ describe('Contact', () => {
 
   it('changing purpose fires setField', () => {
     const setField = jasmine.createSpy('setField')
-    const component = renderContact({actions: {setField}, contact: {purpose: ''}})
+    const component = renderContact({actions: {setField}, purpose: ''})
     component.find("SelectField[id='purpose']").simulate('change', {target: {value: '3'}})
     expect(setField).toHaveBeenCalledWith('purpose', '3')
   })
 
   it('blurring purpose fires touchField', () => {
     const touchField = jasmine.createSpy('touchField')
-    const component = renderContact({actions: {touchField}, contact: {purpose: ''}})
+    const component = renderContact({actions: {touchField}, purpose: ''})
     component.find("SelectField[id='purpose']").simulate('blur')
     expect(touchField).toHaveBeenCalledWith('purpose')
+  })
+
+  it('displays the save button', () => {
+    const component = renderContact({})
+    const saveButton = component.find('button')
+    expect(saveButton.text()).toContain('Save')
+    expect(saveButton.props().type).toEqual('submit')
+  })
+
+  it('clicking save fires the create action', () => {
+    const create = jasmine.createSpy('create')
+    const event = jasmine.createSpyObj('event', ['preventDefault'])
+    const component = renderContact({
+      investigationId: '123',
+      startedAt: '2016-08-11T18:24:22.157Z',
+      status: 'S',
+      communicationMethod: '654',
+      location: '432',
+      note: 'This is a new note',
+      purpose: '1',
+      actions: {create},
+    })
+    component.find('form').simulate('submit', event)
+    expect(create).toHaveBeenCalledWith({
+      investigation_id: '123',
+      started_at: '2016-08-11T18:24:22.157Z',
+      communication_method: '654',
+      location: '432',
+      status: 'S',
+      note: 'This is a new note',
+      purpose: '1',
+    })
   })
 
   it('calls build when the component mounts', () => {

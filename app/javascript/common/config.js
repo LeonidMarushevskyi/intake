@@ -1,5 +1,6 @@
 export function config() {
-  return window.org.intake.config
+  const {org: {intake: {config = {}} = {}} = {}} = window
+  return config
 }
 
 export function isFeatureActive(feature) {

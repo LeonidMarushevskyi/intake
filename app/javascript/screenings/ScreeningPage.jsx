@@ -213,7 +213,7 @@ export class ScreeningPage extends React.Component {
   renderFooterLinks() {
     return (
       <div>
-        <IndexLink to={IntakeConfig.basePath()} className='gap-right'>Home</IndexLink>
+        <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
         {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
       </div>
     )

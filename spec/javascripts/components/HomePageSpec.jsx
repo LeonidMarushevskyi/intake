@@ -1,5 +1,5 @@
 import * as Utils from 'utils/http'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 import React from 'react'
 import {HomePage} from 'home/HomePage'
 import {shallow} from 'enzyme'
@@ -17,48 +17,6 @@ describe('HomePage', () => {
     beforeEach(() => {
       spyOn(IntakeConfig, 'isFeatureInactive')
       IntakeConfig.isFeatureInactive.and.returnValue(true)
-    })
-
-    describe('#componentWillReceiveProps', () => {
-      let router
-      const screening = fromJS({id: 1})
-      beforeEach(() => {
-        router = jasmine.createSpyObj('router', ['push'])
-        component = shallow(
-          <HomePage actions={{}} screening={screening} router={router} />
-        )
-      })
-
-      describe('when nextProps contains a screening not equal to previous screening', () => {
-        beforeEach(() => {
-          const newScreening = fromJS({id: 12})
-          component.setProps({screening: newScreening})
-        })
-
-        it('routes to the new screening', () => {
-          expect(router.push).toHaveBeenCalledWith({pathname: '/screenings/12/edit'})
-        })
-      })
-
-      describe('when nextProps contains a screening equal to previous screening', () => {
-        beforeEach(() => {
-          component.setProps({screening})
-        })
-
-        it('does not route to screening', () => {
-          expect(router.push).not.toHaveBeenCalled()
-        })
-      })
-
-      describe('when nextProps contains a screening that is empty', () => {
-        beforeEach(() => {
-          component.setProps({screening: Map()})
-        })
-
-        it('does not route to screening', () => {
-          expect(router.push).not.toHaveBeenCalled()
-        })
-      })
     })
 
     describe('#componentDidMount', () => {

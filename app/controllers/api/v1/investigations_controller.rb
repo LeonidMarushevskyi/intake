@@ -8,12 +8,12 @@ module Api
       respond_to :json
 
       def screening
-        response = FerbAPI.make_api_call(
+        screening_summary = FerbAPI.make_api_call(
           session['security_token'],
           ExternalRoutes.ferb_api_investigations_screening(params[:id]),
           :get
         )
-        render json: response.body
+        render json: screening_summary.body, status: screening_summary.status
       end
     end
   end

@@ -81,6 +81,14 @@ describe ExternalRoutes do
     end
   end
 
+  describe '.ferb_api_investigations_contacts' do
+    it 'returns /investigations/:id/contacts' do
+      expect(described_class.ferb_api_investigations_contacts(33)).to eq(
+        '/investigations/33/contacts'
+      )
+    end
+  end
+
   describe '.ferb_api_lov' do
     it 'returns /lov' do
       expect(described_class.ferb_api_lov).to eq('/lov')

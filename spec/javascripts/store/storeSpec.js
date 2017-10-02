@@ -27,6 +27,7 @@ describe('Store', () => {
       contactPurposes: [],
       communicationMethods: [],
       locations: [],
+      routing: {locationBeforeTransitions: null},
     })
     store = createStore(rootReducer)
   })

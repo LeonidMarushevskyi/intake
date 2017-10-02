@@ -6,7 +6,7 @@ import {
   submitScreeningSaga,
   submitScreening,
 } from 'sagas/submitScreeningSaga'
-import {getScreening} from 'selectors'
+import {currentScreeningSelector} from 'selectors/screeningSelectors'
 import {SUBMIT_SCREENING} from 'actions/actionTypes'
 import {
   submitScreeningSuccess,
@@ -30,7 +30,7 @@ describe('submitScreening', () => {
     expect(gen.next(response).value).toEqual(
       put(submitScreeningSuccess(response))
     )
-    expect(gen.next().value).toEqual(select(getScreening))
+    expect(gen.next().value).toEqual(select(currentScreeningSelector))
     expect(gen.next(currentScreening).value).toEqual(
       call(alert, 'Successfully created referral 444')
     )

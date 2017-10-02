@@ -5,7 +5,7 @@ import {
   updateParticipantFailure,
   fetchScreeningSuccess,
 } from 'actions/screeningActions'
-import {getScreening} from 'selectors'
+import {currentScreeningSelector} from 'selectors/screeningSelectors'
 import {
   UPDATE_PARTICIPANT,
 } from 'actions/actionTypes'
@@ -14,7 +14,7 @@ export function* saveParticipant({participant}) {
   try {
     let response = yield call(Utils.put, `/api/v1/participants/${participant.id}`, participant)
     yield put(updateParticipantSuccess(response))
-    const screening = yield select(getScreening)
+    const screening = yield select(currentScreeningSelector)
     response = yield call(Utils.get, `/api/v1/screenings/${screening.get('id')}`)
     yield put(fetchScreeningSuccess(response))
   } catch (error) {

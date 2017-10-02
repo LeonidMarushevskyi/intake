@@ -13,9 +13,7 @@ import 'common/jquery-helpers'
 import 'bootstrap'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {store} from 'store/configureStore'
 import routes from 'common/routes'
-import {Provider} from 'react-redux'
 
 import Autocompleter from 'common/Autocompleter'
 
@@ -36,12 +34,7 @@ import '../../assets/stylesheets/google-api'
 import '../../assets/stylesheets/page-error'
 
 if (document.getElementById('app')) {
-  ReactDOM.render(
-    <Provider store={store}>
-      {routes}
-    </Provider>,
-    document.getElementById('app')
-  )
+  ReactDOM.render(routes, document.getElementById('app'))
 }
 
 if (document.getElementById('app-release-one')) {

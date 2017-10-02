@@ -5,5 +5,9 @@
 class ContactsController < ApplicationController
   before_action :authenticate_user, if: :authentication_enabled?
 
-  def new; end
+  def new
+    render :show
+  end
+
+  def show; end
 end

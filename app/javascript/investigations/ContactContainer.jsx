@@ -3,7 +3,13 @@ import ContactValidator from 'investigations/contacts/ContactValidator'
 import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {findInPersonCommunicationMethod} from 'selectors/index'
+import {
+  statusesSelector,
+  purposesSelector,
+  locationsSelector,
+  communicationMethodsSelector,
+  inPersonCommunicationMethodSelector,
+} from 'selectors/contactSelectors'
 
 const filteredErrors = (touchedFields, errors) => (
   touchedFields.reduce((filteredErrors, field) => (
@@ -16,19 +22,23 @@ const errors = (contact) => (
 )
 
 const mapStateToProps = (state, ownProps) => {
-  const contactFields = state.get('contact')
-  const contactValues = contactFields.map((field) => field.get('value')).toJS()
-  const contactTouchedFields = contactFields.filter((field) => field.get('touched')).keySeq().toJS()
-  const inPerson = findInPersonCommunicationMethod(state)
+  const contact = state.get('contact')
+  const contactValues = contact.map((field) => field.get('value')).toJS()
+  const contactTouchedFields = contact.filter((field) => field.get('touched')).keySeq().toJS()
   return {
     investigationId: ownProps.params.investigation_id,
-    contact: contactValues,
+    startedAt: contact.getIn(['started_at', 'value']),
+    communicationMethod: contact.getIn(['communication_method', 'value']),
+    location: contact.getIn(['location', 'value']),
+    status: contact.getIn(['status', 'value']),
+    note: contact.getIn(['note', 'value']),
+    purpose: contact.getIn(['purpose', 'value']),
     errors: filteredErrors(contactTouchedFields, errors(contactValues)),
-    statuses: state.get('contactStatuses').toJS(),
-    purposes: state.get('contactPurposes').toJS(),
-    communicationMethods: state.get('communicationMethods').toJS(),
-    inPersonCode: inPerson ? inPerson.toJS().code : undefined,
-    locations: state.get('locations').toJS(),
+    statuses: statusesSelector(state).toJS(),
+    purposes: purposesSelector(state).toJS(),
+    communicationMethods: communicationMethodsSelector(state).toJS(),
+    inPersonCode: inPersonCommunicationMethodSelector(state),
+    locations: locationsSelector(state).toJS(),
   }
 }
 

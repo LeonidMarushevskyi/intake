@@ -6,17 +6,19 @@ import FormField from 'common/FormField'
 
 class Contact extends React.Component {
   componentDidMount() {
-    const {
-      investigationId,
-      actions: {build},
-    } = this.props
+    const {investigationId, actions: {build}} = this.props
     build({investigation_id: investigationId})
   }
   render() {
     const {
       investigationId,
-      contact: {started_at, communication_method, location, status, note, purpose},
-      actions: {setField, touchField},
+      startedAt,
+      communicationMethod,
+      location,
+      status,
+      note,
+      purpose,
+      actions: {setField, touchField, create},
       statuses,
       purposes,
       communicationMethods,
@@ -24,14 +26,25 @@ class Contact extends React.Component {
       errors,
       inPersonCode,
     } = this.props
-
+    const onSubmit = (event) => {
+      event.preventDefault()
+      create({
+        investigation_id: investigationId,
+        started_at: startedAt,
+        communication_method: communicationMethod,
+        location,
+        status,
+        note,
+        purpose,
+      })
+    }
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
           <span>{`New Contact - Investigation ${investigationId}`}</span>
         </div>
         <div className='card-body'>
-          <form>
+          <form onSubmit={onSubmit}>
             <div className='row'>
               <div className='col-md-6'>
                 <div className='row'>
@@ -39,7 +52,7 @@ class Contact extends React.Component {
                     gridClassName='col-md-12'
                     id='started_at'
                     label='Date/Time'
-                    value={started_at}
+                    value={startedAt}
                     onChange={(value) => setField('started_at', value)}
                     onBlur={() => touchField('started_at')}
                     errors={errors.started_at}
@@ -50,7 +63,7 @@ class Contact extends React.Component {
                     gridClassName='col-md-12'
                     id='communication_method'
                     label='Communication Method'
-                    value={communication_method}
+                    value={communicationMethod}
                     onChange={(event) => setField('communication_method', event.target.value)}
                     onBlur={() => touchField('communication_method')}
                     errors={errors.communication_method}
@@ -59,7 +72,7 @@ class Contact extends React.Component {
                     {communicationMethods.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
                   </SelectField>
                 </div>
-                { communication_method === inPersonCode &&
+                { communicationMethod === inPersonCode &&
                   <div className='row'>
                     <SelectField
                       gridClassName='col-md-12'
@@ -114,6 +127,11 @@ class Contact extends React.Component {
                 </div>
               </div>
             </div>
+            <div className='row'>
+              <div className='centered'>
+                <button className='btn btn-primary' type='submit'>Save</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -123,13 +141,18 @@ class Contact extends React.Component {
 
 Contact.propTypes = {
   actions: PropTypes.object,
+  communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
-  contact: PropTypes.object,
   errors: PropTypes.object,
   inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
+  location: PropTypes.string,
   locations: PropTypes.array.isRequired,
+  note: PropTypes.string,
+  purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
+  startedAt: PropTypes.string,
+  status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
 }
 
