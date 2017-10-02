@@ -12,9 +12,11 @@ export const requiredScreeningAttributes = {
 }
 
 export const requiredProps = {
-  actions: {fetchScreening: () => null},
+  actions: {
+    fetchScreening: () => null,
+    checkStaffPermission: () => null
+  },
   countyCodes: [{code: '123', value: 'county'}],
-  staffActions: {checkStaffPermission: () => null},
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
@@ -215,8 +217,7 @@ describe('ScreeningPage', () => {
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements},
-        staffActions: {checkStaffPermission},
+        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -246,8 +247,7 @@ describe('ScreeningPage', () => {
       const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements},
-        staffActions: {checkStaffPermission},
+        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
         screening: Immutable.fromJS({
           report_narrative: 'my narrative',

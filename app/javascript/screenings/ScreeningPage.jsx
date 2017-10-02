@@ -54,7 +54,7 @@ export class ScreeningPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
-    this.props.staffActions.checkStaffPermission('add_sensitive_people')
+    this.props.actions.checkStaffPermission('add_sensitive_people')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -406,7 +406,6 @@ ScreeningPage.propTypes = {
   participants: PropTypes.object.isRequired,
   relationships: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
-  staffActions: PropTypes.object.isRequired,
 }
 
 ScreeningPage.defaultProps = {
@@ -430,9 +429,9 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
+  const allActions = Object.merge(screeningActions, staffActions)
   return {
-    actions: bindActionCreators(screeningActions, dispatch),
-    staffActions: bindActionCreators(staffActions, dispatch),
+    actions: bindActionCreators(allActions, dispatch),
   }
 }
 
