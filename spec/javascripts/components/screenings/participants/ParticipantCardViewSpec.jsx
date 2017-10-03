@@ -123,20 +123,25 @@ describe('Participant card view', () => {
 
       describe('when mode is set to edit', () => {
         let component
-        const onCancel = jasmine.createSpy('onCancel')
-        const onChange = jasmine.createSpy('onCancel')
-        const onSave = jasmine.createSpy('onCancel')
+        let onCancel
+        let onChange
+        let onSave
         const participantId = '5'
         const participant = Immutable.fromJS({
           id: participantId,
           first_name: 'Tony',
           last_name: 'Hawk',
+          approximate_age: '16',
+          approximate_age_units: 'weeks',
           ssn: 'ssn-1',
           roles: [],
           phone_numbers: [],
         })
 
         beforeEach(() => {
+          onCancel = jasmine.createSpy('onCancel')
+          onChange = jasmine.createSpy('onChange')
+          onSave = jasmine.createSpy('onSave')
           component = shallow(
             <ParticipantCardView
               participant={participant}
@@ -167,6 +172,20 @@ describe('Participant card view', () => {
           const updatedParticipant = participant.setIn(['first_name'], 'Bart')
           component.find('ParticipantEditView').props().onChange(['first_name'], 'Bart')
           expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
+        })
+
+        describe('when onDobBlur is called', () => {
+          it('calls onChange from props with cleared approximate age values when given a non-empty value', () => {
+            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            component.find('ParticipantEditView').props().onDobBlur('123')
+            expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
+          })
+
+          it('does not call onChange when given an empty value', () => {
+            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            component.find('ParticipantEditView').props().onDobBlur('')
+            expect(onChange).not.toHaveBeenCalledWith(participantId, updatedParticipant)
+          })
         })
       })
     })

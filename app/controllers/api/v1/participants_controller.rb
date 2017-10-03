@@ -10,6 +10,8 @@ module Api
       PERMITTED_PARAMS = [
         :id,
         :date_of_birth,
+        :approximate_age,
+        :approximate_age_units,
         :first_name,
         :middle_name,
         :last_name,

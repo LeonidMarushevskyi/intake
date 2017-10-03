@@ -17,6 +17,7 @@ export default class ParticipantCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.onDobBlur = this.onDobBlur.bind(this)
     this.onSave = this.onSave.bind(this)
   }
 
@@ -44,6 +45,13 @@ export default class ParticipantCardView extends React.Component {
     this.props.onChange(this.props.participant.get('id'), participant)
   }
 
+  onDobBlur(value) {
+    if (value) {
+      const participant = this.props.participant.set('approximate_age', '').set('approximate_age_units', '')
+      this.props.onChange(this.props.participant.get('id'), participant)
+    }
+  }
+
   render() {
     const {mode} = this.state
     const {editable, participant} = this.props
@@ -57,6 +65,7 @@ export default class ParticipantCardView extends React.Component {
         ...sharedProps,
         onCancel: this.onCancel,
         onChange: this.onChange,
+        onDobBlur: this.onDobBlur,
         onSave: this.onSave,
       },
       show: {

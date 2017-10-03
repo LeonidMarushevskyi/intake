@@ -91,6 +91,38 @@ feature 'Show Screening' do
     end
   end
 
+  context 'showing participant with approximate age' do
+    approximate_participant = FactoryGirl.create(
+      :participant,
+      date_of_birth: nil,
+      approximate_age: 10,
+      approximate_age_units: 'Months'
+    )
+    approximate_screening = FactoryGirl.create(
+      :screening,
+      participants: [approximate_participant]
+    )
+
+    before do
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(approximate_screening.id))
+      ).and_return(json_body(approximate_screening.to_json, status: 200))
+      stub_empty_history_for_screening(approximate_screening)
+      stub_empty_relationships_for_screening(approximate_screening)
+    end
+
+    scenario 'showing participant' do
+      visit screening_path(id: approximate_screening.id)
+
+      within show_participant_card_selector(approximate_participant.id) do
+        within '.card-body' do
+          expect(page).to have_content('10')
+          expect(page).to have_content('Months')
+        end
+      end
+    end
+  end
+
   scenario 'editing an existing participant on the show page' do
     visit screening_path(id: existing_screening.id)
 

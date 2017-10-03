@@ -15,6 +15,8 @@ describe Participant do
         name_suffix: 'esq',
         gender: 'male',
         date_of_birth: '05/29/1990',
+        approximate_age: 10,
+        approximate_age_units: 'months',
         ssn: '123-23-1234',
         addresses: [
           {
@@ -59,6 +61,8 @@ describe Participant do
           name_suffix: 'esq',
           gender: 'male',
           date_of_birth: '05/29/1990',
+          approximate_age: 10,
+          approximate_age_units: 'months',
           ssn: '123-23-1234',
           sealed: false,
           sensitive: false,

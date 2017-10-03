@@ -92,6 +92,20 @@ describe('ParticipantShowView', () => {
       .toContain('Yes - Mexican')
   })
 
+  describe('when participant has an approximate age', () => {
+    it('renders the approximate age show fields', () => {
+      const participant = Immutable.fromJS({
+        ...requiredParticipantProps,
+        id: '200',
+        approximate_age: 10,
+        approximate_age_units: 'Months',
+      })
+      const component = shallow(<ParticipantShowView participant={participant} onEdit={() => {}}/>)
+      expect(component.find('ShowField[label="Date of birth"]').exists()).toEqual(false)
+      expect(component.find('ShowField[label="Approximate Age"]').html()).toContain('10 Months')
+    })
+  })
+
   describe('when participant has a partial name', () => {
     it('renders the participant name show fields', () => {
       const participant = Immutable.fromJS({

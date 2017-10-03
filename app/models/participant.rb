@@ -6,6 +6,8 @@ class Participant
 
   attribute :id
   attribute :date_of_birth
+  attribute :approximate_age
+  attribute :approximate_age_units
   attribute :first_name
   attribute :gender
   attribute :last_name

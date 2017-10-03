@@ -1,4 +1,5 @@
 import AddressesEditView from 'people/AddressesEditView'
+import APPROXIMATE_AGE_UNITS from 'enums/ApproximateAgeUnits'
 import DateField from 'common/DateField'
 import EthnicityEditView from 'people/EthnicityEditView'
 import Genders from 'enums/Genders'
@@ -17,7 +18,7 @@ import selectOptions from 'utils/selectHelper'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'enums/RoleType'
 
-const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
+const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave}) => {
   const roleOptions = (selectedRoles = Immutable.List()) => {
     const hasReporterRole = selectedRoles.some((role) =>
       ROLE_TYPE_REPORTER.includes(role)
@@ -36,8 +37,10 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
       return item
     })
   }
+
   const legacyDescriptor = participant.get('legacy_descriptor')
   const legacySourceString = legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : ''
+  const haveDob = Boolean(participant.get('date_of_birth'))
 
   return (
     <div className='card-body'>
@@ -104,15 +107,42 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
         onChange={(phone_numbers) => onChange(['phone_numbers'], phone_numbers || [])}
       />
       <div className='row'>
-        <DateField
-          gridClassName='col-md-6'
-          id='date_of_birth'
-          label='Date of birth'
-          hasTime={false}
-          hasCalendar={false}
-          value={participant.get('date_of_birth')}
-          onChange={(value) => onChange(['date_of_birth'], value)}
-        />
+        <div className='col-md-6'>
+          <div className='row'>
+            <DateField
+              gridClassName='col-md-4'
+              id='date_of_birth'
+              label='Date of birth'
+              hasTime={false}
+              hasCalendar={false}
+              value={participant.get('date_of_birth')}
+              onChange={(value) => onChange(['date_of_birth'], value)}
+              onBlur={(value) => onDobBlur(value)}
+            />
+            <div className='col-md-1 text-between-inputs' >or</div>
+            <InputField
+              gridClassName='col-md-3'
+              id='approximate_age'
+              label='Approximate Age'
+              allowCharacters={/[0-9]/}
+              maxLength='3'
+              value={participant.get('approximate_age') || ''}
+              onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
+              disabled={haveDob}
+            />
+            <div className='col-md-4 input-no-header'>
+              <select
+                id='approximate_age_units'
+                aria-label='Approximate Age Units'
+                value={participant.get('approximate_age_units') || 'years'}
+                onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
+                disabled={haveDob}
+              >
+                {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
         <SelectField
           gridClassName='col-md-6'
           id='gender'
@@ -179,6 +209,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onSave}) => {
 ParticipantEditView.propTypes = {
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
+  onDobBlur: PropTypes.func,
   onSave: PropTypes.func,
   participant: PropTypes.object.isRequired,
 }
