@@ -18,6 +18,7 @@ describe('Contact', () => {
     communicationMethods = [],
     locations = [],
     inPersonCode = '',
+    people = [],
   }) {
     const props = {
       investigationId,
@@ -34,6 +35,7 @@ describe('Contact', () => {
       locations,
       errors,
       inPersonCode,
+      people,
     }
     return shallow(<Contact {...props} />)
   }
@@ -201,6 +203,16 @@ describe('Contact', () => {
     expect(touchField).toHaveBeenCalledWith('location')
   })
 
+  it('displays people present', () => {
+    const people = [
+      {first_name: 'Ferris', last_name: 'Bueller'},
+      {first_name: 'Cameron', last_name: 'Fry'},
+    ]
+    const component = renderContact({people})
+    expect(component.html()).toContain('Ferris Bueller')
+    expect(component.html()).toContain('Cameron Fry')
+  })
+
   it('displays note', () => {
     const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')
@@ -283,17 +295,20 @@ describe('Contact', () => {
 
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
+    const fetchPeople = jasmine.createSpy('fetchPeople')
     mount(
       <Contact
         investigationId='ABC123'
-        actions={{build}}
+        actions={{build, fetchPeople}}
         contact={{}}
         statuses={[]}
         purposes={[]}
         communicationMethods={[]}
         locations={[]}
+        people={[]}
       />
     )
     expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
+    expect(fetchPeople).toHaveBeenCalledWith({investigationId: 'ABC123'})
   })
 })
