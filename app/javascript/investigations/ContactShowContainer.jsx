@@ -1,9 +1,9 @@
 import ContactShow from 'investigations/ContactShow'
 import {
-  currentStatusSelector,
-  currentPurposeSelector,
-  currentCommunicationMethodSelector,
-  currentLocationSelector,
+  getStatusValueSelector,
+  getPurposeValueSelector,
+  getCommunicationMethodValueSelector,
+  getLocationValueSelector,
 } from 'selectors/contactSelectors'
 import {connect} from 'react-redux'
 
@@ -12,10 +12,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     investigationId: ownProps.params.investigation_id,
     startedAt: contact.getIn(['started_at', 'value']),
-    status: currentStatusSelector(state),
-    purpose: currentPurposeSelector(state),
-    communicationMethod: currentCommunicationMethodSelector(state),
-    location: currentLocationSelector(state),
+    status: getStatusValueSelector(state),
+    purpose: getPurposeValueSelector(state),
+    communicationMethod: getCommunicationMethodValueSelector(state),
+    location: getLocationValueSelector(state),
     note: contact.getIn(['note', 'value']),
   }
 }

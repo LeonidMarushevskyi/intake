@@ -5,12 +5,12 @@ import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {
-  statusesSelector,
-  purposesSelector,
-  locationsSelector,
-  communicationMethodsSelector,
-  inPersonCommunicationMethodSelector,
-} from 'selectors/contactSelectors'
+  getStatusesSelector,
+  getPurposesSelector,
+  getLocationsSelector,
+  getCommunicationMethodsSelector,
+  getInPersonCommunicationMethodValueSelector,
+} from 'selectors/systemCodeSelectors'
 
 const filteredErrors = (touchedFields, errors) => (
   touchedFields.reduce((filteredErrors, field) => (
@@ -35,11 +35,11 @@ const mapStateToProps = (state, ownProps) => {
     note: contact.getIn(['note', 'value']),
     purpose: contact.getIn(['purpose', 'value']),
     errors: filteredErrors(contactTouchedFields, errors(contactValues)),
-    statuses: statusesSelector(state).toJS(),
-    purposes: purposesSelector(state).toJS(),
-    communicationMethods: communicationMethodsSelector(state).toJS(),
-    inPersonCode: inPersonCommunicationMethodSelector(state),
-    locations: locationsSelector(state).toJS(),
+    statuses: getStatusesSelector(state).toJS(),
+    purposes: getPurposesSelector(state).toJS(),
+    communicationMethods: getCommunicationMethodsSelector(state).toJS(),
+    inPersonCode: getInPersonCommunicationMethodValueSelector(state),
+    locations: getLocationsSelector(state).toJS(),
     people: state.get('investigationPeople').toJS(),
   }
 }
