@@ -38,7 +38,7 @@ const ParticipantShowView = ({participant}) => {
           <div className='row'>
             <div className='col-md-5'>
               <ShowField label='Name'>
-                {nameFormatter(participant)}
+                {nameFormatter(participant.toJS())}
               </ShowField>
               <ShowField label='Gender'>
                 {GENDERS[participant.get('gender')]}

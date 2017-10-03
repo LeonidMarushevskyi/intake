@@ -37,12 +37,12 @@ const HistoryCardScreening = ({screening, index}) => {
       <td>
         <div className='row'>
           <span className='col-md-12 participants'>
-            { nonOnlyReporters.map((p) => nameFormatter(p)).join(', ') }
+            { nonOnlyReporters.map((p) => nameFormatter(p.toJS())).join(', ') }
           </span>
         </div>
         <div className='row'>
           <span className='col-md-6 reporter'>
-            {`Reporter: ${reporter ? nameFormatter(reporter, {name_default: ''}) : ''}`}
+            {`Reporter: ${reporter ? nameFormatter(Object.assign(reporter.toJS(), {name_default: ''})) : ''}`}
           </span>
           <span className='col-md-6 assignee'>
             {`Worker: ${assignee && assignee.get('last_name') ? assignee.get('last_name') : ''}`}

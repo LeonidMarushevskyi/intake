@@ -1,5 +1,4 @@
 import NAME_SUFFIXES from 'enums/NameSuffixes'
-import _ from 'lodash'
 
 const addSuffix = (name, suffix) => {
   if (['ii', 'iii', 'iv'].includes(suffix)) {
@@ -11,46 +10,24 @@ const addSuffix = (name, suffix) => {
   }
 }
 
-const nameFormatter = (nameableObject, options) => {
-  const formatOptions = options || {}
-  const nameType = formatOptions.name_type
-  const nameDefault = formatOptions.name_default
-
-  let firstNameKey
-  let lastNameKey
-  let middleNameKey
-  let suffixKey
-
-  if (nameType) {
-    firstNameKey = `${nameType}_first_name`
-    lastNameKey = `${nameType}_last_name`
-    middleNameKey = `${nameType}_middle_name`
-    suffixKey = `${nameType}_name_suffix`
-  } else {
-    firstNameKey = 'first_name'
-    lastNameKey = 'last_name'
-    middleNameKey = 'middle_name'
-    suffixKey = 'name_suffix'
-  }
-
-  const firstName = nameableObject.get(firstNameKey)
-  const lastName = nameableObject.get(lastNameKey)
-  const middleName = nameableObject.get(middleNameKey)
-  const nameSuffix = nameableObject.get(suffixKey)
-
-  if (firstName || lastName) {
-    const names = [firstName || '(Unknown first name)']
-    if (middleName) { names.push(middleName) }
-    names.push(lastName || '(Unknown last name)')
+const nameFormatter = ({
+  first_name,
+  last_name,
+  middle_name,
+  name_suffix,
+  name_default = 'Unknown Person',
+}) => {
+  if (first_name || last_name) {
+    const names = [first_name || '(Unknown first name)']
+    if (middle_name) { names.push(middle_name) }
+    names.push(last_name || '(Unknown last name)')
     const name = names.join(' ')
-    return addSuffix(name, nameSuffix)
-  } else if (middleName) {
-    const name = `Unknown ${middleName}`
-    return addSuffix(name, nameSuffix)
-  } else if (_.isUndefined(nameDefault)) {
-    return 'Unknown Person'
+    return addSuffix(name, name_suffix)
+  } else if (middle_name) {
+    const name = `Unknown ${middle_name}`
+    return addSuffix(name, name_suffix)
   } else {
-    return nameDefault
+    return name_default
   }
 }
 

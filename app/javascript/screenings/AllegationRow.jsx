@@ -7,11 +7,11 @@ import Immutable from 'immutable'
 
 const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegationTypes}) => (
   <tr>
-    <td><strong>{displayVictim ? nameFormatter(victim) : ''}</strong></td>
-    <td>{nameFormatter(perpetrator)}</td>
+    <td><strong>{displayVictim ? nameFormatter(victim.toJS()) : ''}</strong></td>
+    <td>{nameFormatter(perpetrator.toJS())}</td>
     <td>
       <Select
-        aria-label={`allegations ${nameFormatter(victim)} ${nameFormatter(perpetrator)}`}
+        aria-label={`allegations ${nameFormatter(victim.toJS())} ${nameFormatter(perpetrator.toJS())}`}
         multi
         inputProps={{id: `allegations_${victim.get('id')}_${perpetrator.get('id')}`}}
         value={allegationTypes.toJS()}

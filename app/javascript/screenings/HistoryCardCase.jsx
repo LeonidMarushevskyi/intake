@@ -24,7 +24,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
   const parentNames = []
   const parents = hoiCase.get('parents') || []
   parents.forEach((parent) =>
-    parentNames.push(nameFormatter(parent))
+    parentNames.push(nameFormatter(parent.toJS()))
   )
 
   return (
@@ -40,7 +40,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
       <td>
         <div className='row'>
           <span className='focus-child'>
-            {`Focus Child: ${focusChild ? nameFormatter(focusChild) : ''}`}
+            {`Focus Child: ${focusChild ? nameFormatter(focusChild.toJS()) : ''}`}
           </span>
         </div>
         <div className='row'>
@@ -50,7 +50,7 @@ const HistoryCardCase = ({hoiCase, index}) => {
         </div>
         <div className='row'>
           <span className='assignee'>
-            {`Worker: ${assignee ? nameFormatter(assignee, {name_default: ''}) : ''}`}
+            {`Worker: ${assignee ? nameFormatter(Object.assign(assignee.toJS(), {name_default: ''})) : ''}`}
           </span>
         </div>
       </td>

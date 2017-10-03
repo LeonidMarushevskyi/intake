@@ -52,8 +52,24 @@ const HistoryCardReferral = ({referral, index}) => {
                   const disposition = allegation.get('disposition_description') || 'Pending decision'
                   return (
                     <tr key={`allegation-${index}`}>
-                      <td>{allegation ? nameFormatter(allegation, {name_type: 'victim', name_default: ''}) : ''}</td>
-                      <td>{allegation ? nameFormatter(allegation, {name_type: 'perpetrator', name_default: ''}) : ''}</td>
+                      <td>
+                        {allegation ? nameFormatter({
+                          first_name: allegation.get('victim_first_name'),
+                          middle_name: allegation.get('victim_middle_name'),
+                          last_name: allegation.get('victim_last_name'),
+                          name_suffix: allegation.get('victim_name_suffix'),
+                          name_default: '',
+                        }) : ''}
+                      </td>
+                      <td>
+                        {allegation ? nameFormatter({
+                          first_name: allegation.get('perpetrator_first_name'),
+                          middle_name: allegation.get('perpetrator_middle_name'),
+                          last_name: allegation.get('perpetrator_last_name'),
+                          name_suffix: allegation.get('perpetrator_name_suffix'),
+                          name_default: '',
+                        }) : ''}
+                      </td>
                       <td>{`${allegation.get('allegation_description')} (${disposition})`}</td>
                     </tr>
                   )
@@ -64,10 +80,10 @@ const HistoryCardReferral = ({referral, index}) => {
         </div>
         <div className='row'>
           <span className='col-md-6 reporter'>
-            {`Reporter: ${reporter ? nameFormatter(reporter, {name_default: ''}) : ''}`}
+            {`Reporter: ${reporter ? nameFormatter(Object.assign(reporter.toJS(), {name_default: ''})) : ''}`}
           </span>
           <span className='col-md-6 assignee'>
-            {`Worker: ${assignee ? nameFormatter(assignee, {name_default: ''}) : ''}`}
+            {`Worker: ${assignee ? nameFormatter(Object.assign(assignee.toJS(), {name_default: ''})) : ''}`}
           </span>
         </div>
       </td>
