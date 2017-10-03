@@ -1,1 +1,1 @@
-export const currentScreeningSelector = (state) => state.get('screening')
+export const getScreeningSelector = (state) => state.get('screening')

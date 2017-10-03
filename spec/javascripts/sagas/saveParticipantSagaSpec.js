@@ -6,7 +6,7 @@ import {
   saveParticipantSaga,
   saveParticipant,
 } from 'sagas/saveParticipantSaga'
-import {currentScreeningSelector} from 'selectors/screeningSelectors'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {UPDATE_PARTICIPANT} from 'actions/actionTypes'
 import {
   updateParticipantSuccess,
@@ -32,7 +32,7 @@ describe('saveParticipant', () => {
     expect(gen.next(participant).value).toEqual(
       put(updateParticipantSuccess(participant))
     )
-    expect(gen.next().value).toEqual(select(currentScreeningSelector))
+    expect(gen.next().value).toEqual(select(getScreeningSelector))
 
     const currentScreening = fromJS({id: '444'})
     expect(gen.next(currentScreening).value).toEqual(
