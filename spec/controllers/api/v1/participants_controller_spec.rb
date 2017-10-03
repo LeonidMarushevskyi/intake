@@ -12,6 +12,8 @@ describe Api::V1::ParticipantsController do
     let(:participant_params) do
       {
         date_of_birth: '05/29/1990',
+        approximate_age: '10',
+        approximate_age_units: 'months',
         first_name: 'Homer',
         middle_name: 'Jay',
         last_name: 'Simpson',
