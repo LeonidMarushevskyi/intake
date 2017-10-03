@@ -38,7 +38,14 @@ export default class RelationshipsCard extends React.Component {
                     id={`participant-${participant.get('id')}-relationship-${related_legacy_id}`}
                   >
                     <strong>{relationship.get('indexed_person_relationship')}</strong>
-                    &nbsp;of {nameFormatter(relationship, {name_type: 'related_person'})}
+                    &nbsp;of {
+                      nameFormatter({
+                        first_name: relationship.get('related_person_first_name'),
+                        middle_name: relationship.get('related_person_middle_name'),
+                        last_name: relationship.get('related_person_last_name'),
+                        name_suffix: relationship.get('related_person_name_suffix'),
+                      })
+                    }
                   </li>
                 )
               })
@@ -68,7 +75,7 @@ export default class RelationshipsCard extends React.Component {
     return (
       <div className='row' key={index}>
         <div className='col-md-6 gap-top'>
-          {nameFormatter(participant)}
+          {nameFormatter(participant.toJS())}
           {this.renderParticipantRelationships(participant)}
         </div>
       </div>

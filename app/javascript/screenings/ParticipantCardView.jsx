@@ -76,7 +76,7 @@ export default class ParticipantCardView extends React.Component {
           showDelete={editable}
           onEdit={this.onEdit}
           showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
-          title={nameFormatter(participant)}
+          title={nameFormatter(participant.toJS())}
         />
         <ParticipantView {...props} />
       </div>

@@ -1,4 +1,5 @@
-import * as actions from 'actions/contactActions'
+import * as contactActions from 'actions/contactActions'
+import {fetch as fetchPeople} from 'actions/investigationPeopleActions'
 import ContactValidator from 'investigations/contacts/ContactValidator'
 import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
@@ -39,11 +40,13 @@ const mapStateToProps = (state, ownProps) => {
     communicationMethods: communicationMethodsSelector(state).toJS(),
     inPersonCode: inPersonCommunicationMethodSelector(state),
     locations: locationsSelector(state).toJS(),
+    people: state.get('investigationPeople').toJS(),
   }
 }
 
-const mapDispatchToProps = (dispatch, _ownProps) => ({
-  actions: bindActionCreators(actions, dispatch),
-})
+const mapDispatchToProps = (dispatch, _ownProps) => {
+  const actions = Object.assign(contactActions, {fetchPeople})
+  return {actions: bindActionCreators(actions, dispatch)}
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contact)

@@ -21,8 +21,8 @@ const AllegationsShowView = ({allegations, alertErrorMessage, required}) => (
               const sortedAllegationTypes = allegation.get('allegation_types').sort()
               return sortedAllegationTypes.map((allegationType, index) =>
                 <tr key={`allegation_type-${index}`}>
-                  <td><strong>{nameFormatter(allegation.get('victim'))}</strong></td>
-                  <td>{nameFormatter(allegation.get('perpetrator'))}</td>
+                  <td><strong>{nameFormatter(allegation.get('victim').toJS())}</strong></td>
+                  <td>{nameFormatter(allegation.get('perpetrator').toJS())}</td>
                   <td>{allegationType}</td>
                 </tr>
               )

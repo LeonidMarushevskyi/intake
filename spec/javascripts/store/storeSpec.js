@@ -28,6 +28,7 @@ describe('Store', () => {
       communicationMethods: [],
       locations: [],
       routing: {locationBeforeTransitions: null},
+      investigationPeople: [],
     })
     store = createStore(rootReducer)
   })

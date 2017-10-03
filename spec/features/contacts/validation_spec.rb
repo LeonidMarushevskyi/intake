@@ -4,8 +4,12 @@ require 'rails_helper'
 
 feature 'Validate Investigation Contact' do
   before do
+    investigation_id = '123ABC'
     stub_system_codes
-    visit new_investigation_contact_path(investigation_id: '123ABC')
+    stub_request(
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people(investigation_id))
+    ).and_return(json_body([], status: 200))
+    visit new_investigation_contact_path(investigation_id: investigation_id)
 
     # TODO: remove this once we can consistently have a fresh page for these specs
     page.driver.browser.navigate.refresh

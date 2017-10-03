@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
+import nameFormatter from 'utils/nameFormatter'
 import SelectField from 'common/SelectField'
 import FormField from 'common/FormField'
 
 class Contact extends React.Component {
   componentDidMount() {
-    const {investigationId, actions: {build}} = this.props
+    const {investigationId, actions: {build, fetchPeople}} = this.props
+    fetchPeople({investigationId})
     build({investigation_id: investigationId})
   }
   render() {
@@ -25,6 +27,7 @@ class Contact extends React.Component {
       locations,
       errors,
       inPersonCode,
+      people,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
@@ -89,6 +92,14 @@ class Contact extends React.Component {
                   </div>
                 }
                 <div className='row'>
+                  <FormField gridClassName='col-md-12' label='People Present' id='people'>
+                    { <ul>
+                      {people.map((person, i) => <li key={i}>{nameFormatter(person)}</li>)}
+                    </ul>
+                    }
+                  </FormField>
+                </div>
+                <div className='row'>
                   <SelectField
                     gridClassName='col-md-12'
                     id='status'
@@ -149,6 +160,7 @@ Contact.propTypes = {
   location: PropTypes.string,
   locations: PropTypes.array.isRequired,
   note: PropTypes.string,
+  people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
   startedAt: PropTypes.string,
