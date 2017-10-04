@@ -418,7 +418,7 @@ describe('ParticipantEditView', () => {
     })
   })
 
-  describe('onBlur of DOB calls onDobBlur', () => {
+  describe('onBlur of DOB', () => {
     const participant = Immutable.fromJS({
       ...requiredParticipantProps,
       id: '199',
@@ -429,7 +429,7 @@ describe('ParticipantEditView', () => {
     beforeEach(() => {
       component = shallow(<ParticipantEditView participant={participant} onChange={onChange} onDobBlur={onDobBlur} />)
     })
-    it('is disabled when DoB is populated', () => {
+    it('calls onDobBlur', () => {
       component.find('DateField[label="Date of birth"]').props().onBlur('2016-1-1')
       expect(onDobBlur).toHaveBeenCalledWith('2016-1-1')
     })
