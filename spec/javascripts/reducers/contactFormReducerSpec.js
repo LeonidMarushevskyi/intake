@@ -14,7 +14,11 @@ describe('contactReducer', () => {
 
   describe('on BUILD_CONTACT_SUCCESS', () => {
     it('returns the contact', () => {
-      const action = buildSuccess({investigation_id: '123', investigation_started_at: 'date time'})
+      const people = [
+        {first_name: 'Bob', last_name: 'Smith', legacy_descriptor: '1'},
+        {first_name: 'Jane', last_name: 'Doe', legacy_descriptor: '2'},
+      ]
+      const action = buildSuccess({investigation_id: '123', investigation_started_at: 'date time', people})
       expect(contactFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           id: {
@@ -49,6 +53,10 @@ describe('contactReducer', () => {
           investigation_started_at: {
             value: 'date time',
           },
+          people: [
+            {name: 'Bob Smith', selected: false, id: '1'},
+            {name: 'Jane Doe', selected: false, id: '2'},
+          ],
         })
       )
     })

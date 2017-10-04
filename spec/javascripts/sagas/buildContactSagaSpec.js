@@ -15,7 +15,7 @@ describe('buildContactSaga', () => {
 describe('buildContact', () => {
   it('fetches the contacts investigation', () => {
     const gen = buildContact({investigation_id: '123ABC'})
-    const investigation = {id: '123ABC', started_at: 'date time'}
+    const investigation = {id: '123ABC', started_at: 'date time', people: ['bob']}
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/investigations/123ABC')
     )
@@ -23,7 +23,7 @@ describe('buildContact', () => {
       put(fetchSuccess(investigation))
     )
     expect(gen.next(investigation).value).toEqual(
-      put(buildSuccess({investigation_id: '123ABC', investigation_started_at: 'date time'}))
+      put(buildSuccess({investigation_id: '123ABC', investigation_started_at: 'date time', people: ['bob']}))
     )
   })
 

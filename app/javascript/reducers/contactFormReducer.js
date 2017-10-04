@@ -7,9 +7,10 @@ import {
 import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
+import nameFormatter from 'utils/nameFormatter'
 
 export default createReducer(Map(), {
-  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at}) {
+  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, people = []}) {
     const fieldWithTouch = {value: null, touched: false}
     const fieldWithValue = (value) => ({value: value})
     return fromJS({
@@ -22,6 +23,7 @@ export default createReducer(Map(), {
       communication_method: fieldWithTouch,
       location: fieldWithTouch,
       investigation_started_at: fieldWithValue(investigation_started_at),
+      people: people.map((person) => ({name: nameFormatter(person), selected: false, id: person.legacy_descriptor})),
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {
