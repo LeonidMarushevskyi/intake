@@ -74,7 +74,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
-        has_react_select_field('Language(s)', with: marge.languages)
+        has_react_select_field('Language(s) (Primary First)', with: marge.languages)
         # Date of birth should not have datepicker, but limiting by field ID will break when
         # DOB fields are correctly namespaced by participant ID. Feel free to make this more
         # specific once that's done.
