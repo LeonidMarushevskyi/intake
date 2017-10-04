@@ -1,6 +1,6 @@
 import {Map, fromJS} from 'immutable'
 import {
-  build,
+  buildSuccess,
   setField,
   touchField,
 } from 'actions/contactFormActions'
@@ -11,9 +11,9 @@ import contactFormReducer from 'reducers/contactFormReducer'
 describe('contactReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on BUILD_CONTACT', () => {
+  describe('on BUILD_CONTACT_SUCCESS', () => {
     it('returns the contact', () => {
-      const action = build({investigation_id: '123'})
+      const action = buildSuccess({investigation_id: '123'})
       expect(contactFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           id: {
