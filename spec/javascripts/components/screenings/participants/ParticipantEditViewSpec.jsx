@@ -187,14 +187,19 @@ describe('ParticipantEditView', () => {
     })
 
     describe('languages', () => {
-      it('renders the language field', () => {
+      it('renders the languages label', () => {
+        expect(component.find('label[htmlFor="languages"]').props().children)
+          .toEqual('Language(s) (Primary First)')
+      })
+
+      it('renders the languages field', () => {
         const language_container = component.find('label[htmlFor="languages"]').parent()
         expect(language_container.find('Select[multi]').length).toEqual(1)
         expect(language_container.find('Select[multi]').props().inputProps.id).toEqual('languages')
         expect(language_container.find('Select[multi]').props().value).toEqual([])
       })
 
-      it('renders the language field after changes', () => {
+      it('renders the languages field after changes', () => {
         const language_container = component.find('label[htmlFor="languages"]').parent()
         const newSelectedLanguages = [
           {label: 'Farsi', value: 'farsi'},
@@ -202,6 +207,17 @@ describe('ParticipantEditView', () => {
         ]
         language_container.find('Select[multi]').simulate('change', newSelectedLanguages)
         expect(onChange).toHaveBeenCalledWith(['languages'], Immutable.List(['farsi', 'english']))
+      })
+
+      it('limits of number of picked languages to 2', () => {
+        const language_container = component.find('label[htmlFor="languages"]').parent()
+        const newSelectedLanguages = [
+          {label: 'Farsi', value: 'farsi'},
+          {label: 'Spanish', value: 'spanish'},
+          {label: 'English', value: 'english'},
+        ]
+        language_container.find('Select[multi]').simulate('change', newSelectedLanguages)
+        expect(onChange).toHaveBeenCalledWith(['languages'], Immutable.List(['farsi', 'spanish']))
       })
     })
   })

@@ -74,7 +74,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
-        has_react_select_field('Language(s)', with: marge.languages)
+        has_react_select_field('Language(s) (Primary First)', with: marge.languages)
         # Date of birth should not have datepicker, but limiting by field ID will break when
         # DOB fields are correctly namespaced by participant ID. Feel free to make this more
         # specific once that's done.
@@ -267,8 +267,10 @@ feature 'Edit Screening' do
         fill_in_react_select 'Language(s)', with: 'English'
         fill_in_react_select 'Language(s)', with: 'Farsi'
         remove_react_select_option('Language(s)', marge.languages.first)
+        fill_in_react_select 'Language(s)', with: 'Arabic'
+        fill_in_react_select 'Language(s)', with: 'Spanish'
       end
-      marge.languages = %w[English Farsi]
+      marge.languages = %w[English Arabic]
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .with(body: marge.to_json)
         .and_return(json_body(marge.to_json, status: 200))

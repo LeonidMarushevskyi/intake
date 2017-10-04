@@ -6,7 +6,8 @@ describe('languages', () => {
   it('renders when present', () => {
     const props = {languages: ['French', 'Italian']}
     const component = shallow(<LanguageInfo {...props} />)
-    expect(component.html()).toContain('<div><strong class="c-gray half-pad-right">Language</strong><span>French, Italian</span></div>'
+    expect(component.html()).toContain(
+      '<div><strong class="c-gray half-pad-right">Language</strong><span>French (Primary), Italian</span></div>'
     )
   })
 

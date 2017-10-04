@@ -8,6 +8,7 @@ import legacySourceFormatter from 'utils/legacySourceFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
 import AvatarImg from '../../assets/images/default-profile.svg'
+import {flagPrimaryLanguage} from 'common/LanguageInfo'
 
 const ParticipantShowView = ({participant}) => {
   const legacyDescriptor = participant.get('legacy_descriptor')
@@ -58,8 +59,8 @@ const ParticipantShowView = ({participant}) => {
               </ShowField>
             </div>
             <div className='col-md-5'>
-              <ShowField label='Language(s)'>
-                {(participant.get('languages') || []).join(', ')}
+              <ShowField label='Language(s) (Primary First)'>
+                {flagPrimaryLanguage((participant.toJS().languages) || []).join(', ')}
               </ShowField>
             </div>
             <div className='col-md-5'>
