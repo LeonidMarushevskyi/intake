@@ -6,6 +6,12 @@ require 'spec_helper'
 feature 'cross reports' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
+  before do
+    stub_county_agencies('c40')
+    stub_county_agencies('c41')
+    stub_county_agencies('c42')
+  end
+
   scenario 'adding cross reports to an existing screening' do
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
@@ -20,9 +26,9 @@ feature 'cross reports' do
       expect(page).to have_content 'County'
       select 'Sacramento', from: 'County'
       find('label', text: /\ADepartment of justice\z/).click
-      fill_in 'Department of justice agency name', with: 'Sac Office'
+      select 'DOJ Agency', from: 'Department of justice agency name'
       find('label', text: /\ALaw enforcement\z/).click
-      fill_in 'Law enforcement agency name', with: 'LA Office'
+      select 'The Sheriff', from: 'Law enforcement agency name'
       expect(page).to have_content 'Communication Time and Method'
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       expect(find_field('Cross Reported on Date').value).to eq(reported_on.strftime('%m/%d/%Y'))
@@ -39,14 +45,14 @@ feature 'cross reports' do
             hash_including(
               'county' => 'c42',
               'agency_type' => 'Law enforcement',
-              'agency_name' => 'LA Office',
+              'agency_name' => 'BMG2f3J75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
               'county' => 'c42',
               'agency_type' => 'Department of justice',
-              'agency_name' => 'Sac Office',
+              'agency_name' => 'EYIS9Nh75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
@@ -64,14 +70,14 @@ feature 'cross reports' do
       CrossReport.new(
         county: 'c42',
         agency_type: 'Department of justice',
-        agency_name: 'Humboldt Office',
+        agency_name: 'EYIS9Nh75C',
         communication_method: communication_method,
         reported_on: reported_on.to_s(:db)
       ),
       CrossReport.new(
         county: 'c42',
         agency_type: 'Law enforcement',
-        agency_name: 'LA Office',
+        agency_name: 'BMG2f3J75C',
         communication_method: communication_method,
         reported_on: reported_on.to_s(:db)
       )
@@ -91,7 +97,7 @@ feature 'cross reports' do
       find('label', text: /\ALaw enforcement\z/).click
       expect(find(:checkbox, 'Law enforcement')).to be_checked
 
-      fill_in 'Law enforcement agency name', with: 'LA Office'
+      select 'The Sheriff', from: 'Law enforcement agency name'
       find('label', text: /\ADistrict attorney\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
@@ -108,7 +114,7 @@ feature 'cross reports' do
             hash_including(
               'county' => 'c40',
               'agency_type' => 'Law enforcement',
-              'agency_name' => 'LA Office',
+              'agency_name' => 'BMG2f3J75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
@@ -130,14 +136,14 @@ feature 'cross reports' do
       CrossReport.new(
         county: 'c42',
         agency_type: 'Department of justice',
-        agency_name: 'Humboldt Office',
+        agency_name: 'EYIS9Nh75C',
         communication_method: 'Child Abuse Form',
         reported_on: Date.today.to_s(:db)
       ),
       CrossReport.new(
         county: 'c42',
         agency_type: 'Law enforcement',
-        agency_name: 'LA Office',
+        agency_name: 'BMG2f3J75C',
         communication_method: 'Child Abuse Form',
         reported_on: Date.today.to_s(:db)
       )
@@ -151,11 +157,9 @@ feature 'cross reports' do
       expect(page).to_not have_content 'County'
       expect(page).to_not have_content 'Sacramento'
       expect(page).to have_content 'Department of justice'
-      expect(page).to have_content 'Humboldt Office'
+      expect(page).to have_content 'DOJ Agency'
       expect(page).to have_content 'Law enforcement'
-      expect(page).to have_content 'LA Office'
-      expect(page).to have_content 'Law enforcement'
-      expect(page).to have_content 'LA Office'
+      expect(page).to have_content 'The Sheriff'
       expect(page).to have_content Date.today.strftime('%m/%d/%Y')
       expect(page).to have_content 'Child Abuse Form'
     end
@@ -165,9 +169,9 @@ feature 'cross reports' do
     within '#cross-report-card', text: 'Cross Report' do
       expect(page).to have_select('County', selected: 'Sacramento')
       expect(find(:checkbox, 'Law enforcement')).to be_checked
-      expect(page).to have_field('Law enforcement agency name', with: 'LA Office')
+      expect(page).to have_select('Law enforcement agency name', selected: 'The Sheriff')
       expect(find(:checkbox, 'Department of justice')).to be_checked
-      expect(page).to have_field('Department of justice agency name', with: 'Humboldt Office')
+      expect(page).to have_select('Department of justice agency name', selected: 'DOJ Agency')
       expect(page).to have_field('Communication Method', with: 'Child Abuse Form')
       expect(page).to have_field('Cross Reported on Date', with: Date.today.strftime('%m/%d/%Y'))
     end

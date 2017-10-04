@@ -20,6 +20,7 @@ feature 'Cross Reports Validations' do
 
   context 'on the edit page' do
     before do
+      stub_county_agencies('c41')
       stub_and_visit_edit_screening(screening)
     end
 
@@ -45,10 +46,10 @@ feature 'Cross Reports Validations' do
           error_message: error_message,
           screening_updates:
           { cross_reports:
-            [agency_type: 'Department of justice', agency_name: 'LA Office'] }
+            [county: 'c41', agency_type: 'Department of justice', agency_name: 'EYIS9Nh75C'] }
         ) do
           within '#cross-report-card.edit' do
-            fill_in 'Department of justice agency name', with: 'LA Office'
+            select 'DOJ Agency', from: 'Department of justice agency name'
           end
         end
       end
@@ -58,21 +59,21 @@ feature 'Cross Reports Validations' do
       end
 
       scenario 'displays error on blur' do
-        fill_in 'Department of justice agency name', with: ''
+        select '', from: 'Department of justice agency name'
         blur_field
         should_have_content error_message, inside: '#cross-report-card.edit'
       end
 
       scenario 'removes error on change' do
-        fill_in 'Department of justice agency name', with: ''
+        select '', from: 'Department of justice agency name'
         blur_field
         should_have_content error_message, inside: '#cross-report-card.edit'
-        fill_in 'Department of justice agency name', with: 'S.H.I.E.L.D.'
+        select 'DOJ Agency', from: 'Department of justice agency name'
         should_not_have_content error_message, inside: '#cross-report-card.edit'
       end
 
       scenario 'shows error on save page' do
-        fill_in 'Department of justice agency name', with: ''
+        select '', from: 'Department of justice agency name'
         blur_field
         should_have_content error_message, inside: '#cross-report-card.edit'
         save_card('cross-report')
@@ -80,7 +81,7 @@ feature 'Cross Reports Validations' do
       end
 
       scenario 'shows no error when filled in' do
-        fill_in 'Department of justice agency name', with: 'Justice League'
+        select 'DOJ Agency', from: 'Department of justice agency name'
         blur_field
         should_not_have_content error_message, inside: '#cross-report-card .card-body'
         save_card('cross-report')
