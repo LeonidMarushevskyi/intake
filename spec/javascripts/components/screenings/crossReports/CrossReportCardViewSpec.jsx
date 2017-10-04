@@ -28,6 +28,13 @@ describe('CrossReportCardView', () => {
     props.onSave = jasmine.createSpy()
   })
 
+  describe('componentDidMount', () => {
+    it('fires fetchCountyAgencies action', () => {
+      mount(<CrossReportCardView {...props} mode='show' />)
+      expect(fetchCountyAgencies).toHaveBeenCalledWith('123')
+    })
+  })
+
   it('renders the card header', () => {
     const component = shallow(<CrossReportCardView {...props} mode='edit' />)
     const header = component.find('ScreeningCardHeader')

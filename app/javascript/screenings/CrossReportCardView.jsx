@@ -113,6 +113,13 @@ export default class CrossReportCardView extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const [firstCrossReport] = this.props.crossReports.toJS()
+    if (firstCrossReport && firstCrossReport.county) {
+      this.props.actions.fetchCountyAgencies(firstCrossReport.county)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.mode === 'show') {
       this.setState({errors: this.validateAllCrossReports()})
@@ -255,6 +262,7 @@ export default class CrossReportCardView extends React.Component {
       show: {
         errors: errors,
         onEdit: this.onEdit,
+        countyAgencies: this.props.countyAgencies,
         crossReports: this.props.crossReports,
         alertInfoMessage: alertInfoMessage,
       },
