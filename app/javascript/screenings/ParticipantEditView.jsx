@@ -156,7 +156,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
       </div>
       <div className='row'>
         <div className='col-md-6'>
-          <label htmlFor='languages'>Language(s)</label>
+          <label htmlFor='languages'>Language(s) (Primary First)</label>
           <Select
             multi
             inputProps={{id: 'languages'}}
