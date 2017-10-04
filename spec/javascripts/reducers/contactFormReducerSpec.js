@@ -3,18 +3,18 @@ import {
   build,
   setField,
   touchField,
-  createSuccess,
-} from 'actions/contactActions'
+} from 'actions/contactFormActions'
+import {createSuccess} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
-import contactReducer from 'reducers/contactReducer'
+import contactFormReducer from 'reducers/contactFormReducer'
 
 describe('contactReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on SET_CONTACT', () => {
+  describe('on BUILD_CONTACT', () => {
     it('returns the contact', () => {
       const action = build({investigation_id: '123'})
-      expect(contactReducer(Map(), action)).toEqualImmutable(
+      expect(contactFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           id: {
             value: null,
@@ -54,7 +54,7 @@ describe('contactReducer', () => {
     it('returns the contact with the newly updated value, but touched remains the same', () => {
       const action = setField('started_at', 'ABC')
       const state = fromJS({started_at: {value: '123', touched: false}})
-      expect(contactReducer(state, action)).toEqualImmutable(
+      expect(contactFormReducer(state, action)).toEqualImmutable(
         fromJS({
           started_at: {
             value: 'ABC',
@@ -69,7 +69,7 @@ describe('contactReducer', () => {
     it('returns the contact with touched set to true, but the value remains the same', () => {
       const action = touchField('started_at')
       const state = fromJS({started_at: {value: '123', touched: false}})
-      expect(contactReducer(state, action)).toEqualImmutable(
+      expect(contactFormReducer(state, action)).toEqualImmutable(
         fromJS({
           started_at: {
             value: '123',
@@ -122,7 +122,7 @@ describe('contactReducer', () => {
           touched: false,
         },
       })
-      expect(contactReducer(initialContact, action)).toEqualImmutable(
+      expect(contactFormReducer(initialContact, action)).toEqualImmutable(
         fromJS({
           id: {
             value: '123',

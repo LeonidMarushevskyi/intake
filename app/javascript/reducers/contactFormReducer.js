@@ -1,14 +1,14 @@
 import {
-  SET_CONTACT,
+  BUILD_CONTACT,
   SET_CONTACT_FIELD,
   TOUCH_CONTACT_FIELD,
-  CREATE_CONTACT_SUCCESS,
-} from 'actions/contactActions'
+} from 'actions/contactFormActions'
+import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [SET_CONTACT](_state, {investigation_id}) {
+  [BUILD_CONTACT](_state, {investigation_id}) {
     const NEW_CONTACT = fromJS({
       id: {
         value: null,

@@ -13,22 +13,22 @@ const systemCodeDisplayValue = (code, systemCodes, noSetValue = Map(), context =
 ).get('value')
 /* eslint-enable no-invalid-this */
 export const getStatusValueSelector = createSelector(
-  (state) => state.getIn(['contact', 'status', 'value']),
+  (state) => state.getIn(['contactForm', 'status', 'value']),
   getStatusesSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
 export const getPurposeValueSelector = createSelector(
-  (state) => state.getIn(['contact', 'purpose', 'value']),
+  (state) => state.getIn(['contactForm', 'purpose', 'value']),
   getPurposesSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
 export const getLocationValueSelector = createSelector(
-  (state) => state.getIn(['contact', 'location', 'value']),
+  (state) => state.getIn(['contactForm', 'location', 'value']),
   getLocationsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
 export const getCommunicationMethodValueSelector = createSelector(
-  (state) => state.getIn(['contact', 'communication_method', 'value']),
+  (state) => state.getIn(['contactForm', 'communication_method', 'value']),
   getCommunicationMethodsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
