@@ -59,6 +59,10 @@ class ExternalRoutes
       '/lov'
     end
 
+    def ferb_api_cross_report_agency
+      '/cross_report_agency'
+    end
+
     def sdm_path
       'https://ca.sdmdata.org'
     end

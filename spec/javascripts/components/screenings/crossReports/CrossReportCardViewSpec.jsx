@@ -8,11 +8,15 @@ describe('CrossReportCardView', () => {
   let promiseObj
   let validateFieldSpy
 
+  const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
   const props = {
     areCrossReportsRequired: true,
+    actions: {fetchCountyAgencies},
+    counties: [{code: '123', value: 'county'}],
+    countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
     crossReports: Immutable.fromJS([
-      {agency_type: 'District attorney', agency_name: 'SCDA Office'},
-      {agency_type: 'Department of justice'},
+      {county: '123', agency_type: 'District attorney', agency_name: '1234'},
+      {county: '123', agency_type: 'Department of justice'},
     ]),
     editable: true,
   }
@@ -22,6 +26,13 @@ describe('CrossReportCardView', () => {
     props.onCancel = jasmine.createSpy()
     props.onChange = jasmine.createSpy()
     props.onSave = jasmine.createSpy()
+  })
+
+  describe('componentDidMount', () => {
+    it('fires fetchCountyAgencies action', () => {
+      mount(<CrossReportCardView {...props} mode='show' />)
+      expect(fetchCountyAgencies).toHaveBeenCalledWith('123')
+    })
   })
 
   it('renders the card header', () => {
@@ -123,11 +134,13 @@ describe('CrossReportCardView', () => {
       it('renders the edit view', () => {
         expect(component.find('CrossReportEditView').length).toEqual(1)
         expect(component.find('CrossReportEditView').props().isAgencyRequired).toEqual(jasmine.any(Function))
-        expect(component.find('CrossReportEditView').props().isAgencyRequired).toEqual(jasmine.any(Function))
+        expect(component.find('CrossReportEditView').props().counties).toEqual([{code: '123', value: 'county'}])
+        expect(component.find('CrossReportEditView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
         expect(component.find('CrossReportEditView').props().crossReports.toJS()).toEqual([
-          {agency_type: 'District attorney', agency_name: 'SCDA Office'},
-          {agency_type: 'Department of justice'},
+          {county: '123', agency_type: 'District attorney', agency_name: '1234'},
+          {county: '123', agency_type: 'Department of justice'},
         ])
+        expect(component.find('CrossReportEditView').props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
       })
 
       describe('isAgencyRequired', () => {
@@ -168,12 +181,13 @@ describe('CrossReportCardView', () => {
         let validationProps
         beforeEach(() => {
           validationProps = {
+            ...props,
             onChange: jasmine.createSpy('onChange'),
             onCancel: jasmine.createSpy('onCancel'),
             onSave: jasmine.createSpy('onSave'),
             areCrossReportsRequired: true,
             crossReports: Immutable.fromJS([
-              {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+              {agency_type: 'District attorney', agency_name: '1234'},
               {agency_type: 'Department of justice'},
             ]),
             editable: true,
@@ -307,6 +321,7 @@ describe('CrossReportCardView', () => {
         it('renders the cross report show view', () => {
           component.find('button[children="Cancel"]').simulate('click')
           expect(component.find('CrossReportShowView').length).toEqual(1)
+          expect(component.find('CrossReportShowView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
         })
 
         it('validates all cross reports', () => {

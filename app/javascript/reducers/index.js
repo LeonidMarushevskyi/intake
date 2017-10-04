@@ -10,6 +10,8 @@ import contactForm from 'reducers/contactFormReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
+import counties from 'reducers/systemCodes/countiesReducer'
+import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
 import routing from 'reducers/routerReducer'
 import {combineReducers} from 'redux-immutable'
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   contactForm,
   contactPurposes,
   contactStatuses,
+  countyAgencies,
+  counties,
   investigationPeople,
   involvements,
   locations,

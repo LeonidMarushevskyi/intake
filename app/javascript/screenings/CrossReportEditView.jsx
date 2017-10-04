@@ -2,12 +2,11 @@ import CheckboxField from 'common/CheckboxField'
 import DateField from 'common/DateField'
 import Immutable from 'immutable'
 import AlertInfoMessage from 'common/AlertInfoMessage'
-import InputField from 'common/InputField'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
+import CountySelectField from 'common/CountySelectField'
 import {AGENCY_TYPES, COMMUNICATION_METHODS} from 'enums/CrossReport'
-import COUNTIES from 'enums/Counties'
 
 export default class CrossReportEditView extends React.Component {
   constructor(props) {
@@ -58,6 +57,11 @@ export default class CrossReportEditView extends React.Component {
       }
       return crossReports.filterNot((item) => item.get('agency_type') === agencyType)
     }
+    if (fieldName === 'county') {
+      this.setState({reportedOn: null})
+      this.setState({communicationMethod: null})
+      return Immutable.List()
+    }
     if (value === '') {
       value = null
     }
@@ -72,7 +76,7 @@ export default class CrossReportEditView extends React.Component {
           {
             crossReportOptions.map((item) => {
               const {agencyType, selected, agencyName} = item
-              const typeId = agencyType.replace(/ /gi, '_')
+              const typeId = agencyType.replace(/ /gi, '_').toUpperCase()
               return (
                 <li key={agencyType}>
                   <div className='half-gap-bottom'>
@@ -80,6 +84,7 @@ export default class CrossReportEditView extends React.Component {
                       id={`type-${typeId}`}
                       checked={selected}
                       errors={errors.getIn([agencyType, 'agency_type']) && errors.getIn([agencyType, 'agency_type']).toJS()}
+                      disabled={this.props.countyAgencies[typeId] === undefined || this.props.countyAgencies[typeId].length === 0}
                       onBlur={(event) =>
                         this.props.onBlur(
                           this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
@@ -97,11 +102,10 @@ export default class CrossReportEditView extends React.Component {
                     />
                     {
                       selected &&
-                          <InputField
+                          <SelectField
                             errors={errors.getIn([agencyType, 'agency_name']) && errors.getIn([agencyType, 'agency_name']).toJS()}
                             id={`${typeId}-agency-name`}
                             label={`${agencyType} agency name`}
-                            maxLength='128'
                             onBlur={(event) =>
                               this.props.onBlur(
                                 this.updatedCrossReports(agencyType, 'agency_name', event.target.value),
@@ -114,10 +118,12 @@ export default class CrossReportEditView extends React.Component {
                                 ['agency_name', agencyType]
                               )
                             }
-                            placeholder='Agency Name'
                             required
                             value={agencyName || ''}
-                          />
+                          >
+                            <option key='' />
+                            {this.props.countyAgencies[typeId] !== undefined && this.props.countyAgencies[typeId].map((agency) => <option key={agency.id} value={agency.id}>{agency.name}</option>)}
+                          </SelectField>
                     }
                   </div>
                 </li>
@@ -148,11 +154,11 @@ export default class CrossReportEditView extends React.Component {
           <label>This report has cross reported to:</label>
         </div>
         <div className='row'>
-          <SelectField
+          <CountySelectField
             gridClassName='col-md-6'
             id='cross_report_county'
-            label='County'
             onChange={(event) => {
+              this.props.actions.fetchCountyAgencies(event.target.value)
               this.props.onChange(
                 this.updatedCrossReports(null, 'county', event.target.value),
                 ['county']
@@ -160,14 +166,12 @@ export default class CrossReportEditView extends React.Component {
               this.setState({county: event.target.value})
             }}
             value={this.state.county}
-          >
-            <option key='' />
-            {Object.keys(COUNTIES).map((item) => <option key={item} value={item}>{COUNTIES[item]}</option>)}
-          </SelectField>
+            counties={this.props.counties}
+          />
         </div>
         <div className='row gap-top'>
-          { this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
-          { this.renderCrossReport(crossReportData.slice(halfIndex)) }
+          { this.state.county && this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
+          { this.state.county && this.renderCrossReport(crossReportData.slice(halfIndex)) }
         </div>
         <div className='row gap-top'>
           {
@@ -233,7 +237,10 @@ export default class CrossReportEditView extends React.Component {
 }
 
 CrossReportEditView.propTypes = {
+  actions: PropTypes.object.isRequired,
   alertInfoMessage: PropTypes.string,
+  counties: PropTypes.array.isRequired,
+  countyAgencies: PropTypes.object.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   isAgencyRequired: PropTypes.func.isRequired,

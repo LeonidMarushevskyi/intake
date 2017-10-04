@@ -113,6 +113,13 @@ export default class CrossReportCardView extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const [firstCrossReport] = this.props.crossReports.toJS()
+    if (firstCrossReport && firstCrossReport.county) {
+      this.props.actions.fetchCountyAgencies(firstCrossReport.county)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.mode === 'show') {
       this.setState({errors: this.validateAllCrossReports()})
@@ -240,8 +247,11 @@ export default class CrossReportCardView extends React.Component {
     const errors = this.state.errors
     const allprops = {
       edit: {
+        actions: this.props.actions,
         errors: errors,
         isAgencyRequired: this.isAgencyRequired,
+        counties: this.props.counties,
+        countyAgencies: this.props.countyAgencies,
         crossReports: this.props.crossReports,
         alertInfoMessage: alertInfoMessage,
         onSave: this.onSave,
@@ -252,6 +262,7 @@ export default class CrossReportCardView extends React.Component {
       show: {
         errors: errors,
         onEdit: this.onEdit,
+        countyAgencies: this.props.countyAgencies,
         crossReports: this.props.crossReports,
         alertInfoMessage: alertInfoMessage,
       },
@@ -273,10 +284,15 @@ export default class CrossReportCardView extends React.Component {
 
 CrossReportCardView.defaultProps = {
   allegations: Immutable.fromJS([]),
+  counties: [],
+  countyAgencies: {},
 }
 
 CrossReportCardView.propTypes = {
+  actions: PropTypes.object.isRequired,
   areCrossReportsRequired: PropTypes.bool.isRequired,
+  counties: PropTypes.array,
+  countyAgencies: PropTypes.object,
   crossReports: PropTypes.object,
   editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),

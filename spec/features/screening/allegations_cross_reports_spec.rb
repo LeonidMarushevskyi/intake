@@ -25,6 +25,7 @@ feature 'show cross reports' do
       }],
       cross_reports: [
         CrossReport.new(
+          county: 'c41',
           agency_type: 'Law enforcement',
           agency_name: 'LA Office',
           communication_method: 'Child Abuse Form'
@@ -87,6 +88,7 @@ feature 'show cross reports' do
       ],
       cross_reports: [
         CrossReport.new(
+          county: 'c41',
           agency_type: 'Law enforcement',
           agency_name: 'LA Office',
           communication_method: 'Child Abuse Form'
@@ -142,6 +144,7 @@ feature 'show cross reports' do
       ],
       cross_reports: []
     )
+    stub_county_agencies('c41')
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -149,6 +152,7 @@ feature 'show cross reports' do
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
+      select 'State of California', from: 'County'
       expect(page).to have_content('must be cross-reported to law enforcement')
       find('label', text: /\ADistrict attorney\z/).click
       expect(page).to have_content('must be cross-reported to law enforcement')
@@ -156,8 +160,8 @@ feature 'show cross reports' do
       expect(page).to_not have_content('must be cross-reported to law enforcement')
     end
 
-    screening.cross_reports << { agency_type: 'Disctrict attorney' }
-    screening.cross_reports << { agency_type: 'Law enforcement' }
+    screening.cross_reports << { county: 'c41', agency_type: 'Disctrict attorney' }
+    screening.cross_reports << { county: 'c41', agency_type: 'Law enforcement' }
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     within '#cross-report-card.edit' do

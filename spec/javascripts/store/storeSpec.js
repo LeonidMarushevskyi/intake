@@ -26,6 +26,8 @@ describe('Store', () => {
       contactStatuses: [],
       contactPurposes: [],
       communicationMethods: [],
+      counties: [],
+      countyAgencies: [],
       locations: [],
       routing: {locationBeforeTransitions: null},
       investigationPeople: [],

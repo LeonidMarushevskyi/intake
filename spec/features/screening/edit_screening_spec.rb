@@ -34,10 +34,12 @@ feature 'Edit Screening' do
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
         {
+          county: 'c42',
           agency_type: 'District attorney',
-          agency_name: 'SCDA Office'
+          agency_name: '45Hvp7x00F'
         },
         {
+          county: 'c42',
           agency_type: 'Law enforcement'
         }
       ]
@@ -46,6 +48,7 @@ feature 'Edit Screening' do
 
   context 'when no releases are enabled' do
     before(:each) do
+      stub_county_agencies('c42')
       stub_request(
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).and_return(json_body(existing_screening.to_json, status: 200))
@@ -114,9 +117,12 @@ feature 'Edit Screening' do
       within '#cross-report-card.edit', text: 'Cross Report' do
         expect(page).to have_content('This report has cross reported to:')
         expect(page.find('input[value="District attorney"]')).to be_checked
-        expect(page).to have_field('District attorney agency name', with: 'SCDA Office')
+        expect(page).to have_select(
+          'District attorney agency name',
+          selected: 'LA District Attorney'
+        )
         expect(page.find('input[value="Law enforcement"]')).to be_checked
-        expect(page).to have_field('Law enforcement agency name', text: '')
+        expect(page).to have_select('Law enforcement agency name', selected: '')
         expect(page).to have_button 'Save'
         expect(page).to have_button 'Cancel'
       end
@@ -284,19 +290,22 @@ feature 'individual card save' do
   scenario 'cross report save and edits' do
     existing_screening.cross_reports = [
       {
-        agency_type: 'Department of justice',
-        agency_name: 'Sac Office'
+        county: 'c41',
+        agency_type: 'District attorney',
+        agency_name: '65Hvp7x01F'
       }
     ]
 
+    stub_county_agencies('c41')
     stub_request(
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
 
     within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
-      fill_in 'Department of justice agency name', with: 'Sac Office'
+      select 'State of California', from: 'County'
+      find('label', text: 'District attorney').click
+      select 'LA District Attorney - Criminal Division', from: 'District attorney agency name'
       click_button 'Save'
     end
 
@@ -308,20 +317,23 @@ feature 'individual card save' do
 
     within '#cross-report-card' do
       click_link 'Edit cross report'
-      expect(page).to have_field('Department of justice agency name', with: 'Sac Office')
-
-      doj_input = find_field('Department of justice agency name')
-      10.times do
-        doj_input.send_keys [:backspace]
-      end
+      expect(page).to have_select(
+        'District attorney agency name',
+        selected: 'LA District Attorney - Criminal Division'
+      )
+      select 'LA District Attorney', from: 'District attorney agency name'
       blur_field
-      expect(page).to have_field('Department of justice agency name', with: '')
+      expect(page).to have_select(
+        'District attorney agency name',
+        selected: 'LA District Attorney'
+      )
     end
 
     existing_screening.cross_reports = [
       {
-        agency_type: 'Department of justice',
-        agency_name: nil
+        county: 'c41',
+        agency_type: 'District attorney',
+        agency_name: '45Hvp7x00F'
       }
     ]
 
@@ -339,19 +351,6 @@ feature 'individual card save' do
         :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
-
-    page.driver.browser.navigate.refresh
-
-    within '#cross-report-card' do
-      find('label', text: 'Department of justice').click
-      doj_input = find_field('Department of justice agency name')
-
-      130.times do
-        doj_input.send_keys ['a']
-      end
-
-      expect(doj_input.value.length).to equal(128)
-    end
   end
 
   scenario 'Worker safety card saves in isolation' do

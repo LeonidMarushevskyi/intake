@@ -34,6 +34,7 @@ describe('ScreeningPage', () => {
       ...requiredProps,
       mode: 'show',
       actions: {
+        checkStaffPermission: () => null,
         fetchScreening: () => Promise.resolve(),
         fetchHistoryOfInvolvements: () => Promise.resolve(),
         fetchRelationships: () => Promise.resolve(),
@@ -69,6 +70,7 @@ describe('ScreeningPage', () => {
       const props = {
         ...requiredProps,
         actions: {
+          checkStaffPermission: () => null,
           fetchScreening: () => Promise.resolve(),
           fetchHistoryOfInvolvements: () => Promise.resolve(),
           fetchRelationships: () => Promise.resolve(),
@@ -225,4 +227,3 @@ describe('ScreeningPage', () => {
     })
   })
 })
-

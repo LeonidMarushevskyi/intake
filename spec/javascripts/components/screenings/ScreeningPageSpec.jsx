@@ -12,8 +12,13 @@ export const requiredScreeningAttributes = {
 }
 
 export const requiredProps = {
-  actions: {fetchScreening: () => null},
-  staffActions: {checkStaffPermission: () => null},
+  actions: {
+    checkStaffPermission: () => null,
+    fetchScreening: () => null,
+    fetchCountyAgencies: () => null,
+  },
+  counties: [{code: '123', value: 'county'}],
+  countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
@@ -122,8 +127,12 @@ describe('ScreeningPage', () => {
         {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim', 'Perpetrator']},
         {id: '2', first_name: 'Malory', last_name: 'Archer', roles: ['Perpetrator']},
       ])
+      const fetchScreening = jasmine.createSpy('fetchScreening')
+      const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
+      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
       const props = {
         ...requiredProps,
+        actions: {fetchScreening, checkStaffPermission, fetchCountyAgencies},
         participants: participants,
         mode: 'edit',
         screening: Immutable.fromJS({
@@ -144,8 +153,11 @@ describe('ScreeningPage', () => {
       const crossReportsCard = component.find('CrossReportCardView')
       expect(crossReportsCard.length).toEqual(1)
       expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
+      expect(crossReportsCard.props().counties).toEqual([{code: '123', value: 'county'}])
+      expect(crossReportsCard.props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
       expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
       expect(crossReportsCard.props().mode).toEqual('edit')
+      expect(crossReportsCard.props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
     })
 
     it('renders the relations card', () => {
@@ -213,8 +225,7 @@ describe('ScreeningPage', () => {
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements},
-        staffActions: {checkStaffPermission},
+        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -244,8 +255,7 @@ describe('ScreeningPage', () => {
       const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements},
-        staffActions: {checkStaffPermission},
+        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
         screening: Immutable.fromJS({
           report_narrative: 'my narrative',
@@ -800,4 +810,3 @@ describe('ScreeningPage', () => {
     })
   })
 })
-

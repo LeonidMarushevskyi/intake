@@ -5,6 +5,7 @@ import React from 'react'
 import ShowField from 'common/ShowField'
 import _ from 'lodash'
 import {dateFormatter} from 'utils/dateFormatter'
+import {agencyTypeAndName} from 'selectors/countyAgenciesSelectors'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -33,17 +34,14 @@ export default class CrossReportShowView extends React.Component {
               crossReports &&
                 <ul className='unstyled-list'>
                   {
-                    crossReports.map(({agency_type, agency_name}, index) => {
-                      const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
-                      return (
-                        <div key={index}>
-                          <li>{agencyTypeAndName}</li>
-                          <ErrorMessages
-                            errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
-                          />
-                        </div>
-                      )
-                    })
+                    crossReports.map(({agency_type, agency_name}, index) => (
+                      <div key={index}>
+                        <li>{agencyTypeAndName(agency_type, agency_name, this.props.countyAgencies)}</li>
+                        <ErrorMessages
+                          errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
+                        />
+                      </div>
+                    ))
                   }
                 </ul>
             }
@@ -77,6 +75,7 @@ export default class CrossReportShowView extends React.Component {
 
 CrossReportShowView.propTypes = {
   alertInfoMessage: PropTypes.string,
+  countyAgencies: PropTypes.object.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,

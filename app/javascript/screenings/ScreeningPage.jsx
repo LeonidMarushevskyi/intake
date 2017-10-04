@@ -1,7 +1,8 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
-import * as staffActions from 'actions/staffActions'
+import {checkStaffPermission} from 'actions/staffActions'
+import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
@@ -23,6 +24,16 @@ import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {
+  DISTRICT_ATTORNEY,
+  DEPARTMENT_OF_JUSTICE,
+  LAW_ENFORCEMENT,
+  LICENSING,
+  getDistrictAttorneyAgencies,
+  getDepartmentOfJusticeAgencies,
+  getLawEnforcementAgencies,
+  getLicensingAgencies,
+} from 'selectors/countyAgenciesSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -54,7 +65,7 @@ export class ScreeningPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
-    this.props.staffActions.checkStaffPermission('add_sensitive_people')
+    this.props.actions.checkStaffPermission('add_sensitive_people')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -347,8 +358,11 @@ export class ScreeningPage extends React.Component {
               <CrossReportCardView
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
+                counties={this.props.counties}
+                countyAgencies={this.props.countyAgencies}
                 crossReports={mergedScreening.get('cross_reports')}
                 editable={editable}
+                actions={this.props.actions}
                 mode={mode}
               />
           }
@@ -395,6 +409,8 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  counties: PropTypes.array,
+  countyAgencies: PropTypes.object,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
   involvements: PropTypes.object.isRequired,
@@ -404,10 +420,11 @@ ScreeningPage.propTypes = {
   participants: PropTypes.object.isRequired,
   relationships: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
-  staffActions: PropTypes.object.isRequired,
 }
 
 ScreeningPage.defaultProps = {
+  counties: [],
+  countyAgencies: {},
   mode: 'show',
   hasAddSensitivePerson: false,
 }
@@ -415,6 +432,14 @@ ScreeningPage.defaultProps = {
 export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
+    counties: state.get('counties').toJS(),
+    countyAgencies: {
+      stuff: state.get('countyAgencies').toJS(),
+      [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
+      [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
+      [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
+      [LICENSING]: getLicensingAgencies(state).toJS(),
+    },
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
@@ -426,9 +451,9 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
+  const actions = Object.assign({}, screeningActions, {checkStaffPermission}, {fetchCountyAgencies})
   return {
-    actions: bindActionCreators(screeningActions, dispatch),
-    staffActions: bindActionCreators(staffActions, dispatch),
+    actions: bindActionCreators(actions, dispatch),
   }
 }
 

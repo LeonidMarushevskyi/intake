@@ -33,13 +33,14 @@ feature 'Show Screening' do
       screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
-        { agency_type: 'District attorney', agency_name: 'SCDA' },
-        { agency_type: 'Licensing' }
+        { county: 'c41', agency_type: 'District attorney', agency_name: '45Hvp7x00F' },
+        { county: 'c41', agency_type: 'Licensing' }
       ]
     )
   end
 
   scenario 'showing existing screening' do
+    stub_county_agencies('c41')
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json))
@@ -98,16 +99,12 @@ feature 'Show Screening' do
 
     within '#cross-report-card', text: 'Cross Report' do
       expect(page).to have_content 'District attorney'
-      expect(page).to have_content 'SCDA'
+      expect(page).to have_content 'LA District Attorney'
       expect(page).to have_content 'Licensing'
       click_link 'Edit cross report'
-      expect(page).to have_field('District attorney agency name', with: 'SCDA')
-
-      da_input = find_field('District attorney agency name')
-      10.times do
-        da_input.send_keys [:backspace]
-      end
-      expect(page).to have_field('District attorney agency name', with: '')
+      expect(page).to have_select('District attorney agency name', selected: 'LA District Attorney')
+      select '', from: 'District attorney agency name'
+      expect(page).to have_select('District attorney agency name', selected: '')
     end
 
     expect(page).to have_link('Home', href: root_path)
@@ -151,7 +148,7 @@ feature 'Show Screening' do
         screening_decision_detail: 'consultation',
         started_at: '2016-08-13T10:00:00.000Z',
         cross_reports: [
-          { agency_type: 'District attorney', agency_name: 'SCDA' },
+          { agency_type: 'District attorney', agency_name: '45Hvp7x00F' },
           { agency_type: 'Licensing' }
         ]
       )
