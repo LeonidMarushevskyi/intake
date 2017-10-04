@@ -405,6 +405,15 @@ feature 'Edit Screening' do
       fill_in_datepicker 'Date of birth', with: dob
       expect(page).to have_field('Approximate Age', disabled: true, with: '')
       expect(page).to have_select('approximate_age_units', disabled: true, selected: 'Years')
+
+      fill_in_datepicker 'Date of birth', with: ''
+      fill_in 'Approximate Age', with: 'abc1234'
+      select 'Days', from: 'approximate_age_units'
+      fill_in_datepicker 'Date of birth', with: dob, blur: false
+      click_button 'Save'
+      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(json_body(as_json_without_root_id(marge))))
+        .to have_been_made
     end
   end
 end

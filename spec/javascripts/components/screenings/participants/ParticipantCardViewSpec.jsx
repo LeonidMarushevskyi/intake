@@ -67,7 +67,13 @@ describe('Participant card view', () => {
         let onSave
         const phoneNumberOne = {number: '(123)345-8899'}
         const phoneNumberTwo = {number: '1112223333'}
-        const participant = Immutable.fromJS({id: '123', phone_numbers: [phoneNumberOne, phoneNumberTwo]})
+        const participant = Immutable.fromJS({
+          id: '123',
+          phone_numbers: [phoneNumberOne, phoneNumberTwo],
+          date_of_birth: '1/1/2017',
+          approximate_age: '10',
+          approximate_age_units: 'weeks',
+        })
         beforeEach(() => {
           onSave = jasmine.createSpy('onSave')
           const component = shallow(<ParticipantCardView {...{participant, onSave, mode: 'edit', editable: true}} />)
@@ -83,7 +89,7 @@ describe('Participant card view', () => {
           expect(onSave).toHaveBeenCalled()
         })
 
-        it('sanitizes participants phone numbers', () => {
+        it('sanitizes participants phone numbers and approximate age', () => {
           expect(onSave.calls.argsFor(0)[0].toJS()).toEqual(
             {
               id: '123',
@@ -92,6 +98,9 @@ describe('Participant card view', () => {
               }, {
                 number: '1112223333',
               }],
+              date_of_birth: '1/1/2017',
+              approximate_age: null,
+              approximate_age_units: null,
             }
           )
         })
@@ -176,13 +185,13 @@ describe('Participant card view', () => {
 
         describe('when onDobBlur is called', () => {
           it('calls onChange from props with cleared approximate age values when given a non-empty value', () => {
-            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
             component.find('ParticipantEditView').props().onDobBlur('123')
             expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
           })
 
           it('does not call onChange when given an empty value', () => {
-            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
             component.find('ParticipantEditView').props().onDobBlur('')
             expect(onChange).not.toHaveBeenCalledWith(participantId, updatedParticipant)
           })

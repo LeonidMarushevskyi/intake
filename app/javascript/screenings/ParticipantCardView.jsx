@@ -19,6 +19,7 @@ export default class ParticipantCardView extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.onDobBlur = this.onDobBlur.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.stripApproximateAge = this.stripApproximateAge.bind(this)
   }
 
   onEdit() {
@@ -36,7 +37,11 @@ export default class ParticipantCardView extends React.Component {
       .update('phone_numbers', (phoneNumbers) =>
         phoneNumbers.map((phoneNumber) => phoneNumber.update('number', onlyNumbers)
         ))
-    this.props.onSave(sanitizedParticipant)
+    if (sanitizedParticipant.get('date_of_birth')) {
+      this.props.onSave(this.stripApproximateAge(sanitizedParticipant))
+    } else {
+      this.props.onSave(sanitizedParticipant)
+    }
     this.setState({mode: 'show'})
   }
 
@@ -47,9 +52,13 @@ export default class ParticipantCardView extends React.Component {
 
   onDobBlur(value) {
     if (value) {
-      const participant = this.props.participant.set('approximate_age', '').set('approximate_age_units', '')
+      const participant = this.stripApproximateAge(this.props.participant)
       this.props.onChange(this.props.participant.get('id'), participant)
     }
+  }
+
+  stripApproximateAge(participant) {
+    return participant.set('approximate_age', null).set('approximate_age_units', null)
   }
 
   render() {
