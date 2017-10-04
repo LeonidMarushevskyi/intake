@@ -1,7 +1,7 @@
-import ContactValidator from 'investigations/contacts/ContactValidator'
+import ContactValidator from 'investigations/contacts/ContactFormValidator'
 import moment from 'moment'
 
-describe('ContactValidator', () => {
+describe('ContactFormValidator', () => {
   describe('started_at', () => {
     it('returns an object with an empty array for started_at when no errors are present', () => {
       const yesterday = moment().subtract(1, 'days').toISOString()

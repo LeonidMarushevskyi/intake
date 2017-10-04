@@ -1,7 +1,7 @@
 import * as contactFormActions from 'actions/contactFormActions'
 import {create} from 'actions/contactActions'
 import {fetch as fetchPeople} from 'actions/investigationPeopleActions'
-import ContactValidator from 'investigations/contacts/ContactValidator'
+import ContactFormValidator from 'investigations/contacts/ContactFormValidator'
 import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -20,7 +20,7 @@ const filteredErrors = (touchedFields, errors) => (
 )
 
 const errors = (contactForm) => (
-  new ContactValidator(contactForm).validate()
+  new ContactFormValidator(contactForm).validate()
 )
 
 const mapStateToProps = (state, ownProps) => {
