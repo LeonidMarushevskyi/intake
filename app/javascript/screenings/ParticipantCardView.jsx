@@ -52,13 +52,14 @@ export default class ParticipantCardView extends React.Component {
 
   onDobBlur(value) {
     if (value) {
-      const participant = this.stripApproximateAge(this.props.participant)
-      this.props.onChange(this.props.participant.get('id'), participant)
+      this.stripApproximateAge(this.props.participant)
     }
   }
 
   stripApproximateAge(participant) {
-    return participant.set('approximate_age', null).set('approximate_age_units', null)
+    const cleanedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
+    this.props.onChange(cleanedParticipant.get('id'), cleanedParticipant)
+    return cleanedParticipant
   }
 
   render() {

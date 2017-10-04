@@ -65,6 +65,7 @@ describe('Participant card view', () => {
       describe('#onSave', () => {
         let instance
         let onSave
+        let onChange
         const phoneNumberOne = {number: '(123)345-8899'}
         const phoneNumberTwo = {number: '1112223333'}
         const participant = Immutable.fromJS({
@@ -76,7 +77,8 @@ describe('Participant card view', () => {
         })
         beforeEach(() => {
           onSave = jasmine.createSpy('onSave')
-          const component = shallow(<ParticipantCardView {...{participant, onSave, mode: 'edit', editable: true}} />)
+          onChange = jasmine.createSpy('onChange')
+          const component = shallow(<ParticipantCardView {...{participant, onSave, onChange, mode: 'edit', editable: true}} />)
           instance = component.instance()
           instance.onSave()
         })
@@ -87,6 +89,10 @@ describe('Participant card view', () => {
 
         it('calls onSave', () => {
           expect(onSave).toHaveBeenCalled()
+        })
+
+        it('calls onChange', () => {
+          expect(onChange).toHaveBeenCalled()
         })
 
         it('sanitizes participants phone numbers and approximate age', () => {
