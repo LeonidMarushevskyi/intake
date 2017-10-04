@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
-import nameFormatter from 'utils/nameFormatter'
 import SelectField from 'common/SelectField'
 import FormField from 'common/FormField'
 
@@ -107,7 +106,7 @@ class ContactForm extends React.Component {
                 <div className='row'>
                   <FormField gridClassName='col-md-12' label='People Present' id='people'>
                     { <ul>
-                      {people.map((person, i) => <li key={i}>{nameFormatter(person)}</li>)}
+                      {people.map((person, i) => <li key={i}>{person.name}</li>)}
                     </ul>
                     }
                   </FormField>

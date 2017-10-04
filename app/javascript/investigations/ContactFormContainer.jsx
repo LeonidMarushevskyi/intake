@@ -35,7 +35,7 @@ const mapStateToProps = (state, ownProps) => {
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
     officeLocationCode: getOfficeLocationCodeValueSelector(state),
     locations: getLocationsSelector(state).toJS(),
-    people: state.get('investigationPeople').toJS(),
+    people: contactForm.get('people').toJS(),
   }
 }
 

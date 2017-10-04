@@ -230,8 +230,8 @@ describe('ContactForm', () => {
 
   it('displays people present', () => {
     const people = [
-      {first_name: 'Ferris', last_name: 'Bueller'},
-      {first_name: 'Cameron', last_name: 'Fry'},
+      {name: 'Ferris Bueller', selected: true},
+      {name: 'Cameron Fry', selected: false},
     ]
     const component = renderContact({people})
     expect(component.html()).toContain('Ferris Bueller')
