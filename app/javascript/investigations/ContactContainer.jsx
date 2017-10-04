@@ -1,6 +1,5 @@
 import * as contactFormActions from 'actions/contactFormActions'
 import {create} from 'actions/contactActions'
-import {fetch as fetchPeople} from 'actions/investigationPeopleActions'
 import ContactFormValidator from 'investigations/contacts/ContactFormValidator'
 import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
@@ -46,7 +45,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
-  const actions = Object.assign(contactFormActions, {fetchPeople, create})
+  const actions = Object.assign(contactFormActions, {create})
   return {actions: bindActionCreators(actions, dispatch)}
 }
 

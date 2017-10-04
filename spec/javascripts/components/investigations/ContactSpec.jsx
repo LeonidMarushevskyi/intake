@@ -296,11 +296,10 @@ describe('Contact', () => {
 
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
-    const fetchPeople = jasmine.createSpy('fetchPeople')
     mount(
       <Contact
         investigationId='ABC123'
-        actions={{build, fetchPeople}}
+        actions={{build}}
         contact={{}}
         statuses={[]}
         purposes={[]}
@@ -310,6 +309,5 @@ describe('Contact', () => {
       />
     )
     expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
-    expect(fetchPeople).toHaveBeenCalledWith({investigationId: 'ABC123'})
   })
 })
