@@ -36,7 +36,11 @@ export default class ParticipantCardView extends React.Component {
       .update('phone_numbers', (phoneNumbers) =>
         phoneNumbers.map((phoneNumber) => phoneNumber.update('number', onlyNumbers)
         ))
-    this.props.onSave(sanitizedParticipant)
+    if (sanitizedParticipant.get('date_of_birth')) {
+      this.props.onSave(sanitizedParticipant.set('approximate_age', null).set('approximate_age_units', null))
+    } else {
+      this.props.onSave(sanitizedParticipant)
+    }
     this.setState({mode: 'show'})
   }
 
