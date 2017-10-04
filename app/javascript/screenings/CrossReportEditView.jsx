@@ -157,7 +157,7 @@ export default class CrossReportEditView extends React.Component {
             gridClassName='col-md-6'
             id='cross_report_county'
             onChange={(event) => {
-              this.props.actions.fetchCountyAgency(event.target.value)
+              this.props.actions.fetchCountyAgencies(event.target.value)
               this.props.onChange(
                 this.updatedCrossReports(null, 'county', event.target.value),
                 ['county']
@@ -238,6 +238,7 @@ export default class CrossReportEditView extends React.Component {
 CrossReportEditView.propTypes = {
   actions: PropTypes.object.isRequired,
   alertInfoMessage: PropTypes.string,
+  countyAgencies: PropTypes.object.isRequired,
   countyCodes: PropTypes.array.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,

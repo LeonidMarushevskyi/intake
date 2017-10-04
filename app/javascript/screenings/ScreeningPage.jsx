@@ -2,7 +2,7 @@ import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
 import {checkStaffPermission} from 'actions/staffActions'
-import {fetch as fetchCountyAgency} from 'actions/countyAgencyActions'
+import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
@@ -349,6 +349,7 @@ export class ScreeningPage extends React.Component {
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 countyCodes={this.props.countyCodes}
+                countyAgencies={this.props.countyAgencies}
                 crossReports={mergedScreening.get('cross_reports')}
                 editable={editable}
                 actions={this.props.actions}
@@ -398,6 +399,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  countyAgencies: PropTypes.object,
   countyCodes: PropTypes.array,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
@@ -412,6 +414,7 @@ ScreeningPage.propTypes = {
 
 ScreeningPage.defaultProps = {
   countyCodes: [],
+  countyAgencies: {},
   mode: 'show',
   hasAddSensitivePerson: false,
 }
@@ -420,6 +423,7 @@ export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     countyCodes: state.get('countyCodes').toJS(),
+    countyAgencies: state.get('countyAgencies').toJS(),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
@@ -431,7 +435,7 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, screeningActions, {checkStaffPermission}, {fetchCountyAgency})
+  const actions = Object.assign({}, screeningActions, {checkStaffPermission}, {fetchCountyAgencies})
   return {
     actions: bindActionCreators(actions, dispatch),
   }

@@ -7,7 +7,7 @@ describe('countyCodesReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('on FETCH_STATUS_CODES_SUCCESS', () => {
-    it('returns the system codes for communication_method category', () => {
+    it('returns the system codes for counties', () => {
       const action = fetchSuccess([
         {code: '123', value: 'San Francisco', category: 'county_type'},
         {code: '456', value: 'Monterey', category: 'county_type'},

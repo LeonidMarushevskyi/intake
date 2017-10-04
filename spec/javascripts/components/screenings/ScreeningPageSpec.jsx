@@ -15,9 +15,10 @@ export const requiredProps = {
   actions: {
     checkStaffPermission: () => null,
     fetchScreening: () => null,
-    fetchCountyAgency: () => null,
+    fetchCountyAgencies: () => null,
   },
   countyCodes: [{code: '123', value: 'county'}],
+  countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
@@ -127,11 +128,11 @@ describe('ScreeningPage', () => {
         {id: '2', first_name: 'Malory', last_name: 'Archer', roles: ['Perpetrator']},
       ])
       const fetchScreening = jasmine.createSpy('fetchScreening')
-      const fetchCountyAgency = jasmine.createSpy('fetchCountyAgency')
+      const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
       const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
       const props = {
         ...requiredProps,
-        actions: {fetchScreening, checkStaffPermission, fetchCountyAgency},
+        actions: {fetchScreening, checkStaffPermission, fetchCountyAgencies},
         participants: participants,
         mode: 'edit',
         screening: Immutable.fromJS({
@@ -153,9 +154,10 @@ describe('ScreeningPage', () => {
       expect(crossReportsCard.length).toEqual(1)
       expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
       expect(crossReportsCard.props().countyCodes).toEqual([{code: '123', value: 'county'}])
+      expect(crossReportsCard.props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
       expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
       expect(crossReportsCard.props().mode).toEqual('edit')
-      expect(crossReportsCard.props().actions.fetchCountyAgency).toEqual(fetchCountyAgency)
+      expect(crossReportsCard.props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
     })
 
     it('renders the relations card', () => {
