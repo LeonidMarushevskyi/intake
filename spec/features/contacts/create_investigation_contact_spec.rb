@@ -11,7 +11,7 @@ feature 'Create Investigation Contact' do
       { first_name: 'George', last_name: 'Knightley' }
     ]
     stub_request(
-      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people(investigation_id))
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people_path(investigation_id))
     ).and_return(json_body(people.to_json, status: 200))
     visit new_investigation_contact_path(investigation_id: investigation_id)
   end
@@ -37,25 +37,26 @@ feature 'Create Investigation Contact' do
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
     expect(page).to have_select('Purpose', selected: 'Investigate Referral')
 
-    stub_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts('123ABC')))
-      .and_return(
-        json_body(
-          {
-            id: 123,
-            started_at: '2016-08-17T10:00:00.000Z',
-            status: 'A',
-            note: 'This was an attempted contact',
-            purpose: '1',
-            communication_method: 'ABC',
-            location: '123',
-            people: []
-          }.to_json,
-          status: 201
-        )
+    stub_request(
+      :post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts_path('123ABC'))
+    ).and_return(
+      json_body(
+        {
+          id: 123,
+          started_at: '2016-08-17T10:00:00.000Z',
+          status: 'A',
+          note: 'This was an attempted contact',
+          purpose: '1',
+          communication_method: 'ABC',
+          location: '123',
+          people: []
+        }.to_json,
+        status: 201
       )
+    )
     click_button 'Save'
     expect(
-      a_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts('123ABC')))
+      a_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts_path('123ABC')))
       .with(
         body: {
           started_at: '2016-08-17T10:00:00.000Z',

@@ -10,7 +10,7 @@ module Api
       def screening
         screening_summary = FerbAPI.make_api_call(
           session['security_token'],
-          ExternalRoutes.ferb_api_investigations_screening(params[:id]),
+          ExternalRoutes.ferb_api_investigations_screening_path(params[:id]),
           :get
         )
         render json: screening_summary.body, status: screening_summary.status

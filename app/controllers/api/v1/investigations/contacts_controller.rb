@@ -21,7 +21,7 @@ module Api
         def create
           contact = FerbAPI.make_api_call(
             session['security_token'],
-            ExternalRoutes.ferb_api_investigations_contacts(params[:investigation_id]),
+            ExternalRoutes.ferb_api_investigations_contacts_path(params[:investigation_id]),
             :post,
             contact_params.as_json
           )

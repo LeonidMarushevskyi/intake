@@ -11,7 +11,7 @@ module Api
         def index
           response = FerbAPI.make_api_call(
             session['security_token'],
-            ExternalRoutes.ferb_api_investigations_people(params[:investigation_id]),
+            ExternalRoutes.ferb_api_investigations_people_path(params[:investigation_id]),
             :get
           )
           render json: response.body
