@@ -185,13 +185,13 @@ describe('Participant card view', () => {
 
         describe('when onDobBlur is called', () => {
           it('calls onChange from props with cleared approximate age values when given a non-empty value', () => {
-            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
             component.find('ParticipantEditView').props().onDobBlur('123')
             expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
           })
 
           it('does not call onChange when given an empty value', () => {
-            const updatedParticipant = participant.setIn(['approximate_age'], '').setIn(['approximate_age_units'], '')
+            const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
             component.find('ParticipantEditView').props().onDobBlur('')
             expect(onChange).not.toHaveBeenCalledWith(participantId, updatedParticipant)
           })
