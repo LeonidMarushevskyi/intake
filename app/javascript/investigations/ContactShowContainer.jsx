@@ -4,11 +4,11 @@ import {
   getPurposeValueSelector,
   getCommunicationMethodValueSelector,
   getLocationValueSelector,
-} from 'selectors/contactSelectors'
+} from 'selectors/contactFormSelectors'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state, ownProps) => {
-  const contact = state.get('contact')
+  const contact = state.get('contactForm')
   return {
     investigationId: ownProps.params.investigation_id,
     startedAt: contact.getIn(['started_at', 'value']),

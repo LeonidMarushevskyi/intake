@@ -22,7 +22,7 @@ describe('Store', () => {
       staff: {},
       screeningSummary: {},
       remoteError: {},
-      contact: {},
+      contactForm: {},
       contactStatuses: [],
       contactPurposes: [],
       communicationMethods: [],

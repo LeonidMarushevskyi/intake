@@ -6,7 +6,7 @@ import remoteError from 'reducers/remoteErrorReducer'
 import screening from 'reducers/screeningReducer'
 import staff from 'reducers/staffReducer'
 import screeningSummary from 'reducers/screeningSummaryReducer'
-import contact from 'reducers/contactReducer'
+import contactForm from 'reducers/contactFormReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
@@ -16,7 +16,7 @@ import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
   communicationMethods,
-  contact,
+  contactForm,
   contactPurposes,
   contactStatuses,
   investigationPeople,
