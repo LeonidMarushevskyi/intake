@@ -11,8 +11,8 @@ feature 'Create Investigation Contact' do
       { first_name: 'George', last_name: 'Knightley' }
     ]
     stub_request(
-      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people_path(investigation_id))
-    ).and_return(json_body(people.to_json, status: 200))
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
+    ).and_return(json_body({ people: people }.to_json, status: 200))
     visit new_investigation_contact_path(investigation_id: investigation_id)
   end
 

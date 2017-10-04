@@ -43,6 +43,10 @@ class ExternalRoutes
       "/api/v1/staff/#{id}"
     end
 
+    def ferb_api_investigation_path(id)
+      "/investigations/#{id}"
+    end
+
     def ferb_api_investigations_screening_path(id)
       "/investigations/#{id}/screening"
     end
