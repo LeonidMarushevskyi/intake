@@ -11,6 +11,7 @@ describe('CrossReportShowView', () => {
     onEdit = jasmine.createSpy()
     const props = {
       crossReports: Immutable.List(),
+      countyAgencies: {},
       onEdit: onEdit,
       errors: Immutable.Map(),
     }
@@ -33,19 +34,24 @@ describe('CrossReportShowView', () => {
     let component
     beforeEach(() => {
       const crossReports = Immutable.List([
-        {agency_type: 'District of attorney', agency_name: 'SCDA', reported_on: '2017-01-15'},
-        {agency_type: 'Licensing'},
+        {county: '123', agency_type: 'District attorney', agency_name: 'AGENCYCODE', reported_on: '2017-01-15'},
+        {county: '123', agency_type: 'Licensing'},
       ])
       const errors = Immutable.fromJS({
         Licensing: {agency_name: ['Error 1'], communication_method: ['Error 2']},
         'District of attorney': {reported_on: ['Error 3']},
       })
-      component = shallow(<CrossReportShowView crossReports={crossReports} errors={errors} onEdit={onEdit} />)
+      const countyAgencies = {
+        DISTRICT_ATTORNEY: [
+          {id: 'AGENCYCODE', name: 'SCDA'},
+        ],
+      }
+      component = shallow(<CrossReportShowView countyAgencies={countyAgencies} crossReports={crossReports} errors={errors} onEdit={onEdit} />)
     })
 
     it('renders the cross report agencies', () => {
       expect(component.find('ShowField[label="This report has cross reported to:"]').length).toEqual(1)
-      expect(component.html()).toContain('District of attorney - SCDA')
+      expect(component.html()).toContain('District attorney - SCDA')
       expect(component.html()).toContain('Licensing')
     })
 

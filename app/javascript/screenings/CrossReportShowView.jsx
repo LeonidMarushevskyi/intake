@@ -11,6 +11,22 @@ export default class CrossReportShowView extends React.Component {
     super(...arguments)
   }
 
+  agencyTypeAndName(agency_type, agency_code) {
+    const typeId = agency_type.replace(/ /gi, '_').toUpperCase()
+    const agencies = this.props.countyAgencies[typeId]
+    if (_.isEmpty(agencies)) {
+      return agency_type
+    } else {
+      const filteredAgencies = agencies.filter((countyAgency) => countyAgency.id === agency_code)
+      if (_.isEmpty(filteredAgencies)) {
+        return agency_type
+      } else {
+        const agencyName = filteredAgencies[0].name
+        return agencyName ? `${agency_type} - ${agencyName}` : agency_type
+      }
+    }
+  }
+
   render() {
     const crossReports = this.props.crossReports.toJS()
     const hasCrossReports = !_.isEmpty(crossReports)
@@ -33,17 +49,14 @@ export default class CrossReportShowView extends React.Component {
               crossReports &&
                 <ul className='unstyled-list'>
                   {
-                    crossReports.map(({agency_type, agency_name}, index) => {
-                      const agencyTypeAndName = agency_name ? `${agency_type} - ${agency_name}` : agency_type
-                      return (
-                        <div key={index}>
-                          <li>{agencyTypeAndName}</li>
-                          <ErrorMessages
-                            errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
-                          />
-                        </div>
-                      )
-                    })
+                    crossReports.map(({agency_type, agency_name}, index) => (
+                      <div key={index}>
+                        <li>{this.agencyTypeAndName(agency_type, agency_name)}</li>
+                        <ErrorMessages
+                          errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
+                        />
+                      </div>
+                    ))
                   }
                 </ul>
             }
@@ -77,6 +90,7 @@ export default class CrossReportShowView extends React.Component {
 
 CrossReportShowView.propTypes = {
   alertInfoMessage: PropTypes.string,
+  countyAgencies: PropTypes.object.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,

@@ -321,6 +321,7 @@ describe('CrossReportCardView', () => {
         it('renders the cross report show view', () => {
           component.find('button[children="Cancel"]').simulate('click')
           expect(component.find('CrossReportShowView').length).toEqual(1)
+          expect(component.find('CrossReportShowView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
         })
 
         it('validates all cross reports', () => {
