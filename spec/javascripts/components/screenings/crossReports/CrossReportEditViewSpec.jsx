@@ -179,8 +179,8 @@ describe('CrossReportEditView', () => {
   })
 
   it('renders labels for required fields as required', () => {
-    component.find('#type-District_attorney').simulate('click')
-    expect(component.find('InputField[label="District attorney agency name"]').props().required)
+    component.find('#type-DISTRICT_ATTORNEY').simulate('click')
+    expect(component.find('SelectField[label="District attorney agency name"]').props().required)
       .toEqual(true)
     expect(component.find('DateField[label="Cross Reported on Date"]').props().required)
       .toEqual(true)
@@ -197,6 +197,69 @@ describe('CrossReportEditView', () => {
       'Department of justice',
       'Licensing',
     ])
+  })
+
+  describe('when data is returned for county agency look up', () => {
+    beforeEach(() => {
+      props = {
+        actions: {fetchCountyAgencies},
+        countyCodes: [{code: '123', value: 'County Bob'}],
+        countyAgencies: {
+          DEPARTMENT_OF_JUSTICE: [{id: 'Ad213', name: 'CA DOJ'}],
+          DISTRICT_ATTORNEY: [{id: 'Ad214', name: 'I do exist'}],
+          LAW_ENFORCEMENT: [{id: 'Ad215', name: 'Tony\'s SWAT'}],
+          LICENSING: [{id: 'Ad216', name: 'Licensing palace'}],
+        },
+        crossReports: Immutable.fromJS([
+          {county: '1086', agency_type: 'District attorney', agency_name: '124'},
+          {county: '1086', agency_type: 'Law enforcement', agency_name: '125'},
+          {county: '1086', agency_type: 'Department of justice', agency_name: '126'},
+          {county: '1086', agency_type: 'Licensing', agency_name: '127'},
+        ]),
+        errors: Immutable.fromJS({}),
+        onBlur: jasmine.createSpy(),
+        onChange: jasmine.createSpy(),
+        onSave: jasmine.createSpy(),
+        onCancel: jasmine.createSpy(),
+        isAgencyRequired: jasmine.createSpy('isAgencyRequired').and.returnValue(true),
+      }
+      component = shallow(<CrossReportEditView {...props}/>)
+    })
+    it('enables the checkbox appropriately', () => {
+      const checkboxes = component.find('CheckboxField')
+      expect(checkboxes.length).toEqual(4)
+      checkboxes.nodes.map((checkbox) => {
+        expect(checkbox.props.disabled).toEqual(false)
+      })
+    })
+    it('passes the agencies to the checkbox appropriately', () => {
+      const daSelect = component.find('SelectField[id="DISTRICT_ATTORNEY-agency-name"]')
+      expect(daSelect.props().children[1][0].key).toEqual('Ad214')
+      expect(daSelect.props().children[1][0].props.value).toEqual('Ad214')
+      expect(daSelect.props().children[1][0].props.children).toEqual('I do exist')
+      const dojSelect = component.find('SelectField[id="DEPARTMENT_OF_JUSTICE-agency-name"]')
+      expect(dojSelect.props().children[1][0].key).toEqual('Ad213')
+      expect(dojSelect.props().children[1][0].props.value).toEqual('Ad213')
+      expect(dojSelect.props().children[1][0].props.children).toEqual('CA DOJ')
+      const leSelect = component.find('SelectField[id="LAW_ENFORCEMENT-agency-name"]')
+      expect(leSelect.props().children[1][0].key).toEqual('Ad215')
+      expect(leSelect.props().children[1][0].props.value).toEqual('Ad215')
+      expect(leSelect.props().children[1][0].props.children).toEqual('Tony\'s SWAT')
+      const lSelect = component.find('SelectField[id="LICENSING-agency-name"]')
+      expect(lSelect.props().children[1][0].key).toEqual('Ad216')
+      expect(lSelect.props().children[1][0].props.value).toEqual('Ad216')
+      expect(lSelect.props().children[1][0].props.children).toEqual('Licensing palace')
+    })
+  })
+
+  describe('when no data is returned for county agency look up', () => {
+    it('disables the checkbox appropriately', () => {
+      const checkboxes = component.find('CheckboxField')
+      expect(checkboxes.length).toEqual(4)
+      checkboxes.nodes.map((checkbox) => {
+        expect(checkbox.props.disabled).toEqual(true)
+      })
+    })
   })
 
   it('renders the save and cancel buttons', () => {
@@ -280,7 +343,7 @@ describe('CrossReportEditView', () => {
     })
 
     it('changes existing cross reports agency name when agency name is changed', () => {
-      const input = component.find('InputField[label="Department of justice agency name"]')
+      const input = component.find('SelectField[label="Department of justice agency name"]')
       input.simulate('change', {target: {value: 'DoJ Office'}})
       expect(props.onChange).toHaveBeenCalled()
       expect(props.onChange.calls.argsFor(0)[0].toJS()).toEqual([
@@ -431,36 +494,32 @@ describe('CrossReportEditView', () => {
     })
 
     it('renders DA agency field', () => {
-      const DAField = component.find('InputField[id="District_attorney-agency-name"]')
+      const DAField = component.find('SelectField[id="DISTRICT_ATTORNEY-agency-name"]')
       expect(DAField.props().value).toEqual('')
-      expect(DAField.props().maxLength).toEqual('128')
     })
 
     it('renders law enforcement agency field', () => {
-      const lawEnforcementAgencyField = component.find('InputField[id="Law_enforcement-agency-name"]')
+      const lawEnforcementAgencyField = component.find('SelectField[id="LAW_ENFORCEMENT-agency-name"]')
       expect(lawEnforcementAgencyField.props().value).toEqual('')
-      expect(lawEnforcementAgencyField.props().maxLength).toEqual('128')
     })
 
     it('renders DoJ agency field', () => {
-      const dojField = component.find('InputField[id="Department_of_justice-agency-name"]')
+      const dojField = component.find('SelectField[id="DEPARTMENT_OF_JUSTICE-agency-name"]')
       expect(dojField.props().value).toEqual('')
-      expect(dojField.props().maxLength).toEqual('128')
     })
 
     it('renders Licensing agency field', () => {
-      const licensingAgencyField = component.find('InputField[id="Licensing-agency-name"]')
+      const licensingAgencyField = component.find('SelectField[id="LICENSING-agency-name"]')
       expect(licensingAgencyField.props().value).toEqual('')
-      expect(licensingAgencyField.props().maxLength).toEqual('128')
     })
   })
 
   it('preselect cross report details passed to props', () => {
     expect(component.find('CheckboxField[value="District attorney"]').props().checked).toEqual(true)
     expect(component.find('CheckboxField[value="Department of justice"]').props().checked).toEqual(true)
-    expect(component.find('InputField').length).toEqual(2)
-    expect(component.find('InputField[id="District_attorney-agency-name"]').props().value).toEqual('SCDA Office')
-    expect(component.find('InputField[id="Department_of_justice-agency-name"]').props().value).toEqual('')
+    expect(component.find('SelectField').length).toEqual(3)
+    expect(component.find('SelectField[id="DISTRICT_ATTORNEY-agency-name"]').props().value).toEqual('SCDA Office')
+    expect(component.find('SelectField[id="DEPARTMENT_OF_JUSTICE-agency-name"]').props().value).toEqual('')
   })
 
   it('calls onSave', () => {
