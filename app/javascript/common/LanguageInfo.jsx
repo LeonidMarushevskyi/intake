@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+export const MAX_LANGUAGES = 2
+
 export const flagPrimaryLanguage = (languages) => {
   if (languages[0]) languages[0] += ' (Primary)'
   return languages

@@ -208,6 +208,17 @@ describe('ParticipantEditView', () => {
         language_container.find('Select[multi]').simulate('change', newSelectedLanguages)
         expect(onChange).toHaveBeenCalledWith(['languages'], Immutable.List(['farsi', 'english']))
       })
+
+      it('limits of number of picked languages to 2', () => {
+        const language_container = component.find('label[htmlFor="languages"]').parent()
+        const newSelectedLanguages = [
+          {label: 'Farsi', value: 'farsi'},
+          {label: 'Spanish', value: 'spanish'},
+          {label: 'English', value: 'english'},
+        ]
+        language_container.find('Select[multi]').simulate('change', newSelectedLanguages)
+        expect(onChange).toHaveBeenCalledWith(['languages'], Immutable.List(['farsi', 'spanish']))
+      })
     })
   })
 

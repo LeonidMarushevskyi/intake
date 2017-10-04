@@ -16,6 +16,7 @@ import Select from 'react-select'
 import SelectField from 'common/SelectField'
 import selectOptions from 'utils/selectHelper'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
+import {MAX_LANGUAGES} from 'common/LanguageInfo'
 import {ROLE_TYPE_REPORTER, ROLE_TYPE} from 'enums/RoleType'
 
 const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave}) => {
@@ -165,7 +166,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
             onChange={(languages) =>
               onChange(
                 ['languages'],
-                Immutable.List(languages.map((languages) => languages.value)) || []
+                Immutable.List(languages.slice(0, MAX_LANGUAGES).map((languages) => languages.value)) || []
               )
             }
           />
