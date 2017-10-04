@@ -24,6 +24,16 @@ import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {
+  DISTRICT_ATTORNEY,
+  DEPARTMENT_OF_JUSTICE,
+  LAW_ENFORCEMENT,
+  LICENSING,
+  getDistrictAttorneyAgencies,
+  getDepartmentOfJusticeAgencies,
+  getLawEnforcementAgencies,
+  getLicensingAgencies,
+} from 'selectors/countyAgenciesSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -423,7 +433,13 @@ export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     counties: state.get('counties').toJS(),
-    countyAgencies: state.get('countyAgencies').toJS(),
+    countyAgencies: {
+      stuff: state.get('countyAgencies').toJS(),
+      [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
+      [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
+      [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
+      [LICENSING]: getLicensingAgencies(state).toJS(),
+    },
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
