@@ -348,7 +348,7 @@ export class ScreeningPage extends React.Component {
               <CrossReportCardView
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
-                countyCodes={this.props.countyCodes}
+                counties={this.props.counties}
                 countyAgencies={this.props.countyAgencies}
                 crossReports={mergedScreening.get('cross_reports')}
                 editable={editable}
@@ -399,8 +399,8 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  counties: PropTypes.array,
   countyAgencies: PropTypes.object,
-  countyCodes: PropTypes.array,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
   involvements: PropTypes.object.isRequired,
@@ -413,7 +413,7 @@ ScreeningPage.propTypes = {
 }
 
 ScreeningPage.defaultProps = {
-  countyCodes: [],
+  counties: [],
   countyAgencies: {},
   mode: 'show',
   hasAddSensitivePerson: false,
@@ -422,7 +422,7 @@ ScreeningPage.defaultProps = {
 export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
-    countyCodes: state.get('countyCodes').toJS(),
+    counties: state.get('counties').toJS(),
     countyAgencies: state.get('countyAgencies').toJS(),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),

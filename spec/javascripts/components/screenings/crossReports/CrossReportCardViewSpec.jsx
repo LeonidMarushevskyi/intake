@@ -12,7 +12,7 @@ describe('CrossReportCardView', () => {
   const props = {
     areCrossReportsRequired: true,
     actions: {fetchCountyAgencies},
-    countyCodes: [{code: '123', value: 'county'}],
+    counties: [{code: '123', value: 'county'}],
     countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
     crossReports: Immutable.fromJS([
       {county: '123', agency_type: 'District attorney', agency_name: '1234'},
@@ -134,7 +134,7 @@ describe('CrossReportCardView', () => {
       it('renders the edit view', () => {
         expect(component.find('CrossReportEditView').length).toEqual(1)
         expect(component.find('CrossReportEditView').props().isAgencyRequired).toEqual(jasmine.any(Function))
-        expect(component.find('CrossReportEditView').props().countyCodes).toEqual([{code: '123', value: 'county'}])
+        expect(component.find('CrossReportEditView').props().counties).toEqual([{code: '123', value: 'county'}])
         expect(component.find('CrossReportEditView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
         expect(component.find('CrossReportEditView').props().crossReports.toJS()).toEqual([
           {county: '123', agency_type: 'District attorney', agency_name: '1234'},

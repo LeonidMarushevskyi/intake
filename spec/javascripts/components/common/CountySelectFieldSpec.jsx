@@ -4,14 +4,14 @@ import {shallow} from 'enzyme'
 
 describe('CountySelectField', () => {
   function renderCountySelectField({
-    countyCodes = [],
+    counties = [],
     gridClassName = 'gridClassName',
     id = 'county-select',
     onChange = () => null,
     value = null,
   }) {
     const props = {
-      countyCodes,
+      counties,
       gridClassName,
       id,
       onChange,
@@ -21,7 +21,7 @@ describe('CountySelectField', () => {
   }
 
   it('displays the select field', () => {
-    const component = renderCountySelectField({countyCodes: [
+    const component = renderCountySelectField({counties: [
       {code: '123', value: 'San Francisco'},
       {code: '456', value: 'Sacramento'},
     ]})
@@ -29,7 +29,7 @@ describe('CountySelectField', () => {
   })
 
   it('selects the value passed in', () => {
-    const component = renderCountySelectField({countyCodes: [
+    const component = renderCountySelectField({counties: [
       {code: '123', value: 'San Francisco'},
       {code: '456', value: 'Sacramento'},
     ],

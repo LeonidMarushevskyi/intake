@@ -166,7 +166,7 @@ export default class CrossReportEditView extends React.Component {
               this.setState({county: event.target.value})
             }}
             value={this.state.county}
-            countyCodes={this.props.countyCodes}
+            counties={this.props.counties}
           />
         </div>
         <div className='row gap-top'>
@@ -239,8 +239,8 @@ export default class CrossReportEditView extends React.Component {
 CrossReportEditView.propTypes = {
   actions: PropTypes.object.isRequired,
   alertInfoMessage: PropTypes.string,
+  counties: PropTypes.array.isRequired,
   countyAgencies: PropTypes.object.isRequired,
-  countyCodes: PropTypes.array.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   isAgencyRequired: PropTypes.func.isRequired,

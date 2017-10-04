@@ -10,7 +10,7 @@ import contactForm from 'reducers/contactFormReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
-import countyCodes from 'reducers/systemCodes/countyCodesReducer'
+import counties from 'reducers/systemCodes/countiesReducer'
 import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
 import routing from 'reducers/routerReducer'
@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   contactPurposes,
   contactStatuses,
   countyAgencies,
-  countyCodes,
+  counties,
   investigationPeople,
   involvements,
   locations,
