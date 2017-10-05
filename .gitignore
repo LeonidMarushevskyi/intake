@@ -26,3 +26,5 @@ binstubs/
 /public/packs
 /coverage
 /node_modules
+
+yarn-error.log
