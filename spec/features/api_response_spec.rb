@@ -16,7 +16,8 @@ feature 'api responses' do
     end
   end
 
-  scenario 'User is redirected to login with full callback path on API 403', accessibility: false do
+  scenario 'User is redirected to login with full callback path on API 403',
+    browser: :poltergeist do
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path)).and_return(

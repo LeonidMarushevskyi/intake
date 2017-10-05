@@ -21,7 +21,7 @@ test:
 	${INFO} "Pulling latest images..."
 	@ docker-compose $(TEST_ARGS) pull
 	${INFO} "Building images..."
-	@ docker-compose $(TEST_ARGS) build --pull rspec_test &
+	@ docker-compose $(TEST_ARGS) build rspec_test &
 	@ docker-compose $(TEST_ARGS) build lint &
 	@ docker-compose $(TEST_ARGS) build javascript_test &
 	@ wait
