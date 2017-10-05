@@ -6,8 +6,8 @@ export const TOUCH_CONTACT_FIELD = 'TOUCH_CONTACT_FIELD'
 export function build({investigation_id}) {
   return {type: BUILD_CONTACT, investigation_id}
 }
-export function buildSuccess({investigation_id}) {
-  return {type: BUILD_CONTACT_SUCCESS, investigation_id}
+export function buildSuccess({investigation_id, investigation_started_at}) {
+  return {type: BUILD_CONTACT_SUCCESS, investigation_id, investigation_started_at}
 }
 export function buildFailure(error) {
   return {type: BUILD_CONTACT_FAILURE, error}

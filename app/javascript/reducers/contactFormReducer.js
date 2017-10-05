@@ -8,13 +8,13 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [BUILD_CONTACT_SUCCESS](_state, {investigation_id}) {
-    const NEW_CONTACT = fromJS({
+  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at}) {
+    return fromJS({
       id: {
         value: null,
       },
       investigation_id: {
-        value: null,
+        value: investigation_id,
       },
       started_at: {
         value: null,
@@ -39,10 +39,10 @@ export default createReducer(Map(), {
         value: null,
         touched: false,
       },
+      investigation_started_at: {
+        value: investigation_started_at,
+      },
     })
-    return NEW_CONTACT.setIn(
-      ['investigation_id', 'value'], investigation_id
-    )
   },
   [SET_CONTACT_FIELD](state, {field, value}) {
     return state.setIn([field, 'value'], value)
