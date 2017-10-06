@@ -12,6 +12,11 @@ import {
   getInPersonCommunicationMethodValueSelector,
 } from 'selectors/systemCodeSelectors'
 
+import {
+  getTouchedFieldsSelector,
+  getFieldValuesSelector,
+} from 'selectors/contactFormSelectors'
+
 const filteredErrors = (touchedFields, errors) => (
   touchedFields.reduce((filteredErrors, field) => (
     Object.assign(filteredErrors, {[field]: errors[field]})
@@ -24,8 +29,8 @@ const errors = (contactForm) => (
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')
-  const contactValues = contactForm.map((field) => field.get('value')).toJS()
-  const contactTouchedFields = contactForm.filter((field) => field.get('touched')).keySeq().toJS()
+  const contactValues = getFieldValuesSelector(state).toJS()
+  const contactTouchedFields = getTouchedFieldsSelector(state).toJS()
   return {
     investigationId: ownProps.params.investigation_id,
     startedAt: contactForm.getIn(['started_at', 'value']),

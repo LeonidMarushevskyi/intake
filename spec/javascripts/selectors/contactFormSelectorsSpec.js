@@ -1,10 +1,13 @@
-import {fromJS} from 'immutable'
+import {fromJS, Seq, Map} from 'immutable'
 import {
   getStatusValueSelector,
   getPurposeValueSelector,
   getLocationValueSelector,
   getCommunicationMethodValueSelector,
+  getTouchedFieldsSelector,
+  getFieldValuesSelector,
 } from 'selectors/contactFormSelectors'
+import * as matchers from 'jasmine-immutable-matchers'
 
 describe('getStatusValueSelector', () => {
   const contactStatuses = [{code: 'A', value: 'Attempted'}]
@@ -67,6 +70,53 @@ describe('getCommunicationMethodValueSelector', () => {
     const contactForm = {communication_method: {value: null}}
     const state = fromJS({contactForm, communicationMethods})
     expect(getCommunicationMethodValueSelector(state)).toEqual(undefined)
+  })
+})
+
+describe('getTouchedFieldsSelector', () => {
+  beforeEach(() => jasmine.addMatchers(matchers))
+
+  it('returns the contactForm field names that are touched', () => {
+    const contactForm = {
+      fieldA: {touched: false},
+      fieldB: {touched: true},
+      fieldC: {},
+      fieldD: {touched: true},
+    }
+    const state = fromJS({contactForm})
+    expect(getTouchedFieldsSelector(state)).toEqualImmutable(Seq(['fieldB', 'fieldD']))
+  })
+
+  it('returns empty list when no contact', () => {
+    const contactForm = {}
+    const state = fromJS({contactForm})
+    expect(getTouchedFieldsSelector(state)).toEqualImmutable(Seq())
+  })
+})
+
+describe('getFieldValuesSelector', () => {
+  beforeEach(() => jasmine.addMatchers(matchers))
+
+  it('returns the contactForm field values', () => {
+    const contactForm = {
+      fieldA: {value: 1},
+      fieldB: {},
+      fieldC: {value: 2},
+    }
+    const state = fromJS({contactForm})
+    expect(getFieldValuesSelector(state)).toEqualImmutable(
+      fromJS({
+        fieldA: 1,
+        fieldB: undefined,
+        fieldC: 2,
+      })
+    )
+  })
+
+  it('returns empty map when no contact', () => {
+    const contactForm = {}
+    const state = fromJS({contactForm})
+    expect(getFieldValuesSelector(state)).toEqualImmutable(Map())
   })
 })
 
