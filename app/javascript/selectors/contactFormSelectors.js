@@ -32,3 +32,11 @@ export const getCommunicationMethodValueSelector = createSelector(
   getCommunicationMethodsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
+export const getTouchedFieldsSelector = createSelector(
+  (state) => state.get('contactForm'),
+  (contactForm) => contactForm.filter((field) => field.get('touched')).keySeq()
+)
+export const getFieldValuesSelector = createSelector(
+  (state) => state.get('contactForm'),
+  (contactForm) => contactForm.map((field) => field.get('value'))
+)

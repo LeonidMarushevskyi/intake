@@ -1,6 +1,5 @@
 import * as contactFormActions from 'actions/contactFormActions'
 import {create} from 'actions/contactActions'
-import {fetch as fetchPeople} from 'actions/investigationPeopleActions'
 import ContactFormValidator from 'investigations/contacts/ContactFormValidator'
 import Contact from 'investigations/Contact'
 import {bindActionCreators} from 'redux'
@@ -12,6 +11,11 @@ import {
   getCommunicationMethodsSelector,
   getInPersonCommunicationMethodValueSelector,
 } from 'selectors/systemCodeSelectors'
+
+import {
+  getTouchedFieldsSelector,
+  getFieldValuesSelector,
+} from 'selectors/contactFormSelectors'
 
 const filteredErrors = (touchedFields, errors) => (
   touchedFields.reduce((filteredErrors, field) => (
@@ -25,8 +29,8 @@ const errors = (contactForm) => (
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')
-  const contactValues = contactForm.map((field) => field.get('value')).toJS()
-  const contactTouchedFields = contactForm.filter((field) => field.get('touched')).keySeq().toJS()
+  const contactValues = getFieldValuesSelector(state).toJS()
+  const contactTouchedFields = getTouchedFieldsSelector(state).toJS()
   return {
     investigationId: ownProps.params.investigation_id,
     startedAt: contactForm.getIn(['started_at', 'value']),
@@ -46,7 +50,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
-  const actions = Object.assign(contactFormActions, {fetchPeople, create})
+  const actions = Object.assign(contactFormActions, {create})
   return {actions: bindActionCreators(actions, dispatch)}
 }
 

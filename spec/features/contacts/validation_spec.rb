@@ -3,11 +3,20 @@
 require 'rails_helper'
 
 feature 'Validate Investigation Contact' do
+  let(:investigation_started_at) { Time.parse('2017-08-15T14:00:00.000') }
   before do
     investigation_id = '123ABC'
     stub_request(
-      :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_people(investigation_id))
-    ).and_return(json_body([], status: 200))
+      :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
+    ).and_return(
+      json_body(
+        {
+          started_at: investigation_started_at.strftime('%Y-%m-%dT%H:%M:%S.%L'),
+          people: []
+        }.to_json,
+        status: 200
+      )
+    )
     visit new_investigation_contact_path(investigation_id: investigation_id)
 
     # TODO: remove this once we can consistently have a fresh page for these specs
@@ -40,6 +49,23 @@ feature 'Validate Investigation Contact' do
     fill_in_datepicker 'Date/Time', with: 2.years.ago
     expect(page).not_to have_content 'The date and time cannot be in the future'
     expect(page).not_to have_content 'Please enter a contact date'
+  end
+
+  scenario 'user sees that date/time cannot be before investigation started at' do
+    expect(page).not_to have_content(
+      'The contact date/time must be after the investigation start date of'
+    )
+
+    fill_in_datepicker 'Date/Time', with: (investigation_started_at - 1.day)
+    formatted_date = investigation_started_at.strftime('%m/%d/%Y %l:%M %p')
+    expect(page).to have_content(
+      "The contact date/time must be after the investigation start date of #{formatted_date}"
+    )
+
+    fill_in_datepicker 'Date/Time', with: investigation_started_at
+    expect(page).to_not have_content(
+      'The contact date/time must be after the investigation start date of'
+    )
   end
 
   scenario 'user sees that purpose is required' do

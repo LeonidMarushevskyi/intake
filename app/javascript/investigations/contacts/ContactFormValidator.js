@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {dateTimeFormatter} from 'utils/dateFormatter'
 
 class ContactValidator {
   constructor(contact) {
@@ -6,7 +7,14 @@ class ContactValidator {
   }
 
   validate() {
-    const {started_at, communication_method, location, status, purpose} = this.contact
+    const {
+      started_at,
+      communication_method,
+      location,
+      status,
+      purpose,
+      investigation_started_at,
+    } = this.contact
     const fields = ['started_at', 'communication_method', 'location', 'status', 'purpose']
     const errors = fields.reduce(
       (errors, field) => ({...errors, [field]: []}), {}
@@ -19,6 +27,12 @@ class ContactValidator {
     const now = moment().toISOString()
     if (started_at > now) {
       errors.started_at.push('The date and time cannot be in the future')
+    }
+
+    if (investigation_started_at && started_at < investigation_started_at) {
+      errors.started_at.push(
+        `The contact date/time must be after the investigation start date of ${dateTimeFormatter(investigation_started_at)}`
+      )
     }
 
     if (!communication_method) {

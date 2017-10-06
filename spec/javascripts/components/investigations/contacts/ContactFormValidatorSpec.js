@@ -29,6 +29,15 @@ describe('ContactFormValidator', () => {
         .toEqual(['The date and time cannot be in the future'])
     })
 
+    it('returns an error if started_at is before the investigation date', () => {
+      const contact = {
+        started_at: '2017-10-04T21:10:00.012',
+        investigation_started_at: '2017-10-05T21:10:00.000',
+      }
+      expect(new ContactValidator(contact).validate().started_at)
+        .toEqual(['The contact date/time must be after the investigation start date of 10/05/2017 9:10 PM'])
+    })
+
     it('returns an error if communication_method is missing from the contact', () => {
       const contact = {}
       expect(new ContactValidator(contact).validate().communication_method)

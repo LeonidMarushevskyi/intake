@@ -7,8 +7,7 @@ import FormField from 'common/FormField'
 
 class Contact extends React.Component {
   componentDidMount() {
-    const {investigationId, actions: {build, fetchPeople}} = this.props
-    fetchPeople({investigationId})
+    const {investigationId, actions: {build}} = this.props
     build({investigation_id: investigationId})
   }
   render() {

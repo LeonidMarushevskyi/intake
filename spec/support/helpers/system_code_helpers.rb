@@ -11,7 +11,7 @@ module SystemCodeHelpers
       { code: 'c41', value: 'State of California', category: 'county_type', sub_category: nil },
       { code: 'c42', value: 'Sacramento', category: 'county_type', sub_category: nil }
     ]
-    stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov)).and_return(
+    stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov_path)).and_return(
       json_body(system_codes, status: 200)
     )
   end
