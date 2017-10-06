@@ -36,7 +36,7 @@ feature 'Edit Screening' do
         {
           county: 'c42',
           agency_type: 'District attorney',
-          agency_name: '45Hvp7x00F'
+          agency_code: '45Hvp7x00F'
         },
         {
           county: 'c42',
@@ -292,7 +292,7 @@ feature 'individual card save' do
       {
         county: 'c41',
         agency_type: 'District attorney',
-        agency_name: '65Hvp7x01F'
+        agency_code: '65Hvp7x01F'
       }
     ]
 
@@ -333,7 +333,7 @@ feature 'individual card save' do
       {
         county: 'c41',
         agency_type: 'District attorney',
-        agency_name: '45Hvp7x00F'
+        agency_code: '45Hvp7x00F'
       }
     ]
 

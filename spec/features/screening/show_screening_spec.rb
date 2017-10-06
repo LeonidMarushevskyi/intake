@@ -33,7 +33,7 @@ feature 'Show Screening' do
       screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
-        { county: 'c41', agency_type: 'District attorney', agency_name: '45Hvp7x00F' },
+        { county: 'c41', agency_type: 'District attorney', agency_code: '45Hvp7x00F' },
         { county: 'c41', agency_type: 'Licensing' }
       ]
     )
@@ -148,7 +148,7 @@ feature 'Show Screening' do
         screening_decision_detail: 'consultation',
         started_at: '2016-08-13T10:00:00.000Z',
         cross_reports: [
-          { agency_type: 'District attorney', agency_name: '45Hvp7x00F' },
+          { agency_type: 'District attorney', agency_code: '45Hvp7x00F' },
           { agency_type: 'Licensing' }
         ]
       )

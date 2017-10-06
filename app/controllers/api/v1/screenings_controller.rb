@@ -28,7 +28,7 @@ module Api
           id
           county
           agency_type
-          agency_name
+          agency_code
           reported_on
           communication_method
         ],

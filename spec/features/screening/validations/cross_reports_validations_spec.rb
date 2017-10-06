@@ -46,7 +46,7 @@ feature 'Cross Reports Validations' do
           error_message: error_message,
           screening_updates:
           { cross_reports:
-            [county: 'c41', agency_type: 'Department of justice', agency_name: 'EYIS9Nh75C'] }
+            [county: 'c41', agency_type: 'Department of justice', agency_code: 'EYIS9Nh75C'] }
         ) do
           within '#cross-report-card.edit' do
             select 'DOJ Agency', from: 'Department of justice agency name'

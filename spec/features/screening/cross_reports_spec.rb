@@ -45,14 +45,14 @@ feature 'cross reports' do
             hash_including(
               'county' => 'c42',
               'agency_type' => 'Law enforcement',
-              'agency_name' => 'BMG2f3J75C',
+              'agency_code' => 'BMG2f3J75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
               'county' => 'c42',
               'agency_type' => 'Department of justice',
-              'agency_name' => 'EYIS9Nh75C',
+              'agency_code' => 'EYIS9Nh75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
@@ -70,14 +70,14 @@ feature 'cross reports' do
       CrossReport.new(
         county: 'c42',
         agency_type: 'Department of justice',
-        agency_name: 'EYIS9Nh75C',
+        agency_code: 'EYIS9Nh75C',
         communication_method: communication_method,
         reported_on: reported_on.to_s(:db)
       ),
       CrossReport.new(
         county: 'c42',
         agency_type: 'Law enforcement',
-        agency_name: 'BMG2f3J75C',
+        agency_code: 'BMG2f3J75C',
         communication_method: communication_method,
         reported_on: reported_on.to_s(:db)
       )
@@ -114,14 +114,14 @@ feature 'cross reports' do
             hash_including(
               'county' => 'c40',
               'agency_type' => 'Law enforcement',
-              'agency_name' => 'BMG2f3J75C',
+              'agency_code' => 'BMG2f3J75C',
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             ),
             hash_including(
               'county' => 'c40',
               'agency_type' => 'District attorney',
-              'agency_name' => nil,
+              'agency_code' => nil,
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
@@ -136,14 +136,14 @@ feature 'cross reports' do
       CrossReport.new(
         county: 'c42',
         agency_type: 'Department of justice',
-        agency_name: 'EYIS9Nh75C',
+        agency_code: 'EYIS9Nh75C',
         communication_method: 'Child Abuse Form',
         reported_on: Date.today.to_s(:db)
       ),
       CrossReport.new(
         county: 'c42',
         agency_type: 'Law enforcement',
-        agency_name: 'BMG2f3J75C',
+        agency_code: 'BMG2f3J75C',
         communication_method: 'Child Abuse Form',
         reported_on: Date.today.to_s(:db)
       )
@@ -222,7 +222,7 @@ feature 'cross reports' do
           'cross_reports' => array_including(
             hash_including(
               'agency_type' => 'Law enforcement',
-              'agency_name' => nil,
+              'agency_code' => nil,
               'reported_on' => reported_on.to_s(:db),
               'communication_method' => communication_method
             )
@@ -267,7 +267,7 @@ feature 'cross reports' do
           'cross_reports' => array_including(
             hash_including(
               'agency_type' => 'Law enforcement',
-              'agency_name' => nil,
+              'agency_code' => nil,
               'reported_on' => nil,
               'communication_method' => nil
             )

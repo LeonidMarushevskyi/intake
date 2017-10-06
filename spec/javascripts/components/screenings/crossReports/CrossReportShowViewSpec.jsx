@@ -34,11 +34,11 @@ describe('CrossReportShowView', () => {
     let component
     beforeEach(() => {
       const crossReports = Immutable.List([
-        {county: '123', agency_type: 'District attorney', agency_name: 'AGENCYCODE', reported_on: '2017-01-15'},
+        {county: '123', agency_type: 'District attorney', agency_code: 'AGENCYCODE', reported_on: '2017-01-15'},
         {county: '123', agency_type: 'Licensing'},
       ])
       const errors = Immutable.fromJS({
-        Licensing: {agency_name: ['Error 1'], communication_method: ['Error 2']},
+        Licensing: {agency_code: ['Error 1'], communication_method: ['Error 2']},
         'District of attorney': {reported_on: ['Error 3']},
       })
       const countyAgencies = {
@@ -66,7 +66,7 @@ describe('CrossReportShowView', () => {
       expect(field.props().required).toEqual(true)
     })
 
-    it('renders errors for Licensing.agency_name', () => {
+    it('renders errors for Licensing.agency_code', () => {
       expect(component.find('ShowField[label="This report has cross reported to:"]').html())
         .toContain('Error 1')
     })

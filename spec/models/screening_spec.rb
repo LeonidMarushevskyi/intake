@@ -64,11 +64,11 @@ describe Screening do
         cross_reports: [
           {
             agency_type: 'District attorney',
-            agency_name: 'SCDA Office'
+            agency_code: 'SCDAOFFCODE'
           },
           {
             agency_type: 'Law enforcement',
-            agency_name: nil
+            agency_code: nil
           }
         ],
         allegations: [
@@ -129,11 +129,11 @@ describe Screening do
         cross_reports: array_including(
           a_hash_including(
             agency_type: 'District attorney',
-            agency_name: 'SCDA Office'
+            agency_code: 'SCDAOFFCODE'
           ),
           a_hash_including(
             agency_type: 'Law enforcement',
-            agency_name: nil
+            agency_code: nil
           )
         ),
         address: a_hash_including(

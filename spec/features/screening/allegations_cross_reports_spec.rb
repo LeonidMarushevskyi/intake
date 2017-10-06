@@ -27,7 +27,7 @@ feature 'show cross reports' do
         CrossReport.new(
           county: 'c41',
           agency_type: 'Law enforcement',
-          agency_name: 'LA Office',
+          agency_code: 'LAOFFCODE',
           communication_method: 'Child Abuse Form'
         )
       ]
@@ -90,7 +90,7 @@ feature 'show cross reports' do
         CrossReport.new(
           county: 'c41',
           agency_type: 'Law enforcement',
-          agency_name: 'LA Office',
+          agency_code: 'LAOFFCODE',
           communication_method: 'Child Abuse Form'
         )
       ]

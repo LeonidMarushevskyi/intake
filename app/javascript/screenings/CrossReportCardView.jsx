@@ -27,7 +27,7 @@ export default class CrossReportCardView extends React.Component {
           message: 'Please indicate cross-reporting to law enforcement.',
           condition: () => this.isAgencyRequired('Law enforcement'),
         }],
-        agency_name: [{
+        agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
           condition: () => this.isAgencyChecked('Law enforcement'),
@@ -49,7 +49,7 @@ export default class CrossReportCardView extends React.Component {
           message: 'Please indicate cross-reporting to district attorney.',
           condition: () => this.isAgencyRequired('District attorney'),
         }],
-        agency_name: [{
+        agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
           condition: () => this.isAgencyChecked('District attorney'),
@@ -66,7 +66,7 @@ export default class CrossReportCardView extends React.Component {
         }],
       },
       'Department of justice': {
-        agency_name: [{
+        agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
           condition: () => this.isAgencyChecked('Department of justice'),
@@ -83,7 +83,7 @@ export default class CrossReportCardView extends React.Component {
         }],
       },
       Licensing: {
-        agency_name: [{
+        agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
           condition: () => this.isAgencyChecked('Licensing'),
@@ -154,11 +154,11 @@ export default class CrossReportCardView extends React.Component {
         updatedValue = (updatedReport !== undefined)
         errors = this.validateField(agencyType, fieldName, updatedValue)
         break
-      case 'agency_name':
+      case 'agency_code':
         updatedReport = reports.find((report) =>
           report.get('agency_type') === agencyType
         ) || Immutable.Map()
-        updatedValue = updatedReport.get('agency_name')
+        updatedValue = updatedReport.get('agency_code')
         errors = this.validateField(agencyType, fieldName, updatedValue)
         break
       case 'communication_method':

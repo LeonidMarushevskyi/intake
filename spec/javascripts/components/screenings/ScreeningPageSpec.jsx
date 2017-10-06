@@ -143,7 +143,7 @@ describe('ScreeningPage', () => {
           participants: participants,
           safety_alerts: [],
           cross_reports: [
-            {agency_type: 'District attorney', agency_name: 'SCDA Office'},
+            {agency_type: 'District attorney', agency_code: 'SCDAOFFCODE'},
             {agency_type: 'Department of justice'},
           ],
         }),
@@ -305,8 +305,8 @@ describe('ScreeningPage', () => {
         report_narrative: 'This is what happened',
         additional_information: 'Some more relevant information',
         cross_reports: [
-          {agency_type: 'District attorney', agency_name: 'SAC DA'},
-          {agency_type: 'Licensing', agency_name: ''},
+          {agency_type: 'District attorney', agency_code: 'SACDACODE'},
+          {agency_type: 'Licensing', agency_code: ''},
         ],
         safety_alerts: [
           'Firearms in Home',
@@ -337,7 +337,7 @@ describe('ScreeningPage', () => {
     it('cross_reports edits override the entire screeningEdits.cross_reports array', () => {
       const changeJS = {
         cross_reports: [
-          {agency_type: 'Gibberish', agency_name: 'Irrelevant'},
+          {agency_type: 'Gibberish', agency_code: 'IRRELEVANTCODE'},
         ],
       }
       const updated_screening = instance.mergeScreeningWithEdits(Immutable.fromJS(changeJS))
@@ -710,8 +710,8 @@ describe('ScreeningPage', () => {
           name: 'The old name',
           reference: 'old reference',
           cross_reports: [
-            {agency_name: 'a name', agency_type: 'Licensing'},
-            {agency_name: '', agency_type: 'District attorney'},
+            {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
+            {agency_code: '', agency_type: 'District attorney'},
           ],
           address: {city: 'Davis', county: 'Yolo'},
           report_narrative: 'I have things to say',
@@ -724,7 +724,7 @@ describe('ScreeningPage', () => {
       instance.setField(['report_narrative'], 'This is my new narrative')
       instance.setField(['name'], 'A name')
       instance.setField(['reference'], 'ABC123')
-      instance.setField(['cross_reports'], [{agency_name: 'new name', agency_type: 'District attorney'}])
+      instance.setField(['cross_reports'], [{agency_code: 'NEWNAMECODE', agency_type: 'District attorney'}])
       instance.setField(['address', 'city'], 'Sacramento')
     })
 
@@ -735,7 +735,7 @@ describe('ScreeningPage', () => {
         name: 'The old name',
         reference: 'old reference',
         cross_reports: [
-          {agency_name: 'new name', agency_type: 'District attorney'},
+          {agency_code: 'NEWNAMECODE', agency_type: 'District attorney'},
         ],
         address: {city: 'Davis', county: 'Yolo'},
         report_narrative: 'I have things to say',
@@ -749,8 +749,8 @@ describe('ScreeningPage', () => {
         name: 'The old name',
         reference: 'ABC123',
         cross_reports: [
-          {agency_name: 'a name', agency_type: 'Licensing'},
-          {agency_name: '', agency_type: 'District attorney'},
+          {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
+          {agency_code: '', agency_type: 'District attorney'},
         ],
         address: {city: 'Sacramento', county: 'Yolo'},
         report_narrative: 'I have things to say',
@@ -764,8 +764,8 @@ describe('ScreeningPage', () => {
         name: 'The old name',
         reference: 'old reference',
         cross_reports: [
-          {agency_name: 'a name', agency_type: 'Licensing'},
-          {agency_name: '', agency_type: 'District attorney'},
+          {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
+          {agency_code: '', agency_type: 'District attorney'},
         ],
         address: {city: 'Sacramento', county: 'Yolo'},
         report_narrative: 'I have things to say',
@@ -779,8 +779,8 @@ describe('ScreeningPage', () => {
         name: 'The old name',
         reference: 'old reference',
         cross_reports: [
-          {agency_name: 'a name', agency_type: 'Licensing'},
-          {agency_name: '', agency_type: 'District attorney'},
+          {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
+          {agency_code: '', agency_type: 'District attorney'},
         ],
         address: {city: 'Davis', county: 'Yolo'},
         report_narrative: 'This is my new narrative',
@@ -794,8 +794,8 @@ describe('ScreeningPage', () => {
         name: 'The old name',
         reference: 'old reference',
         cross_reports: [
-          {agency_name: 'a name', agency_type: 'Licensing'},
-          {agency_name: '', agency_type: 'District attorney'},
+          {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
+          {agency_code: '', agency_type: 'District attorney'},
         ],
         address: {city: 'Davis', county: 'Yolo'},
         report_narrative: 'I have things to say',

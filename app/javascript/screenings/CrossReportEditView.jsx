@@ -29,16 +29,16 @@ export default class CrossReportEditView extends React.Component {
       return {
         agencyType: agencyType,
         selected: Boolean(persistedInfo),
-        agencyName: persistedInfo && persistedInfo.agency_name,
+        agencyName: persistedInfo && persistedInfo.agency_code,
       }
     })
   }
 
   updatedCrossReports(agencyType, fieldName, value) {
     const {crossReports} = this.props
-    if (fieldName === 'agency_name') {
+    if (fieldName === 'agency_code') {
       const index = crossReports.toJS().findIndex((item) => item.agency_type === agencyType)
-      return crossReports.setIn([index, 'agency_name'], value || null)
+      return crossReports.setIn([index, 'agency_code'], value || null)
     }
     if (fieldName === 'agency_type') {
       const existingReport = crossReports.find((report) => report.get('agency_type') === agencyType)
@@ -50,7 +50,7 @@ export default class CrossReportEditView extends React.Component {
           Immutable.Map({
             county: this.state.county,
             agency_type: agencyType,
-            agency_name: null,
+            agency_code: null,
             reported_on: this.state.reportedOn,
             communication_method: this.state.communicationMethod,
           }))
@@ -103,19 +103,19 @@ export default class CrossReportEditView extends React.Component {
                     {
                       selected &&
                           <SelectField
-                            errors={errors.getIn([agencyType, 'agency_name']) && errors.getIn([agencyType, 'agency_name']).toJS()}
-                            id={`${typeId}-agency-name`}
+                            errors={errors.getIn([agencyType, 'agency_code']) && errors.getIn([agencyType, 'agency_code']).toJS()}
+                            id={`${typeId}-agency-code`}
                             label={`${agencyType} agency name`}
                             onBlur={(event) =>
                               this.props.onBlur(
-                                this.updatedCrossReports(agencyType, 'agency_name', event.target.value),
-                                ['agency_name', agencyType]
+                                this.updatedCrossReports(agencyType, 'agency_code', event.target.value),
+                                ['agency_code', agencyType]
                               )
                             }
                             onChange={(event) =>
                               this.props.onChange(
-                                this.updatedCrossReports(agencyType, 'agency_name', event.target.value),
-                                ['agency_name', agencyType]
+                                this.updatedCrossReports(agencyType, 'agency_code', event.target.value),
+                                ['agency_code', agencyType]
                               )
                             }
                             required

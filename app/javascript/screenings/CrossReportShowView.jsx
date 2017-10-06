@@ -34,11 +34,11 @@ export default class CrossReportShowView extends React.Component {
               crossReports &&
                 <ul className='unstyled-list'>
                   {
-                    crossReports.map(({agency_type, agency_name}, index) => (
+                    crossReports.map(({agency_type, agency_code}, index) => (
                       <div key={index}>
-                        <li>{agencyTypeAndName(agency_type, agency_name, this.props.countyAgencies)}</li>
+                        <li>{agencyTypeAndName(agency_type, agency_code, this.props.countyAgencies)}</li>
                         <ErrorMessages
-                          errors={this.props.errors.getIn([agency_type, 'agency_name']) && this.props.errors.getIn([agency_type, 'agency_name']).toJS()}
+                          errors={this.props.errors.getIn([agency_type, 'agency_code']) && this.props.errors.getIn([agency_type, 'agency_code']).toJS()}
                         />
                       </div>
                     ))
