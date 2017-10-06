@@ -8,13 +8,14 @@ module Api
       class ContactsController < ApiController # :nodoc:
         respond_to :json
 
-        PERMITTED_PARAMS = %i[
-          started_at
-          purpose
-          status
-          note
-          communication_method
-          location
+        PERMITTED_PARAMS = [
+          :started_at,
+          :purpose,
+          :status,
+          :note,
+          :communication_method,
+          :location,
+          people: []
         ].freeze
 
         def create

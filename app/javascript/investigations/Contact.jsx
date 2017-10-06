@@ -39,6 +39,7 @@ class Contact extends React.Component {
         status,
         note,
         purpose,
+        people: [],
       })
     }
     return (
