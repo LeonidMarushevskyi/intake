@@ -290,6 +290,7 @@ describe('Contact', () => {
       status: 'S',
       note: 'This is a new note',
       purpose: '1',
+      people: [],
     })
   })
 
