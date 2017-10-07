@@ -16,7 +16,7 @@ feature 'screening information card' do
     )
   end
 
-  let(:character_buffet) { 'C am-ron1234567890!@#$%^&*(),./;"[]' }
+  let(:character_buffet) { 'C am-r\'o’n1234567890!@#$%^&*(),./;"[]' }
 
   before(:each) do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -29,7 +29,7 @@ feature 'screening information card' do
     within '#screening-information-card.edit' do
       fill_in 'Title/Name of Screening', with: character_buffet
       fill_in 'Assigned Social Worker', with: character_buffet
-      expect(page).to have_field('Title/Name of Screening', with: 'C am-ron')
+      expect(page).to have_field('Title/Name of Screening', with: "C am-r'o’n")
       expect(page).to have_field('Assigned Social Worker', with: 'C amron')
     end
   end
