@@ -101,4 +101,31 @@ feature 'Validate Investigation Contact' do
     select 'School', from: 'Location'
     expect(page).not_to have_content 'Please enter the contact location'
   end
+
+  scenario 'user sees all validations after clicking save' do
+    expect(page).to_not have_content 'Please enter a contact status'
+    expect(page).to_not have_content 'Please enter a contact date'
+    expect(page).to_not have_content 'Please enter a contact purpose'
+    expect(page).to_not have_content 'Please enter the communication method'
+
+    click_on 'Save'
+
+    expect(page).to have_content 'Please enter a contact status'
+    expect(page).to have_content 'Please enter a contact date'
+    expect(page).to have_content 'Please enter a contact purpose'
+    expect(page).to have_content 'Please enter the communication method'
+
+    select 'Attempted', from: 'Status'
+    fill_in_datepicker 'Date/Time', with: 2.years.from_now
+    select 'Investigate Referral', from: 'Purpose'
+    select 'In person', from: 'Communication Method'
+    select 'School', from: 'Location'
+
+    click_on 'Save'
+
+    expect(page).to_not have_content 'Please enter a contact status'
+    expect(page).to_not have_content 'Please enter a contact date'
+    expect(page).to_not have_content 'Please enter a contact purpose'
+    expect(page).to_not have_content 'Please enter the communication method'
+  end
 end
