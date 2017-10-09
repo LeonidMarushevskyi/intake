@@ -260,6 +260,7 @@ export default class CrossReportCardView extends React.Component {
         onChange: this.onChange,
       },
       show: {
+        agencyCodeToName: this.props.agencyCodeToName,
         errors: errors,
         onEdit: this.onEdit,
         countyAgencies: this.props.countyAgencies,
@@ -283,6 +284,7 @@ export default class CrossReportCardView extends React.Component {
 }
 
 CrossReportCardView.defaultProps = {
+  agencyCodeToName: {},
   allegations: Immutable.fromJS([]),
   counties: [],
   countyAgencies: {},
@@ -290,6 +292,7 @@ CrossReportCardView.defaultProps = {
 
 CrossReportCardView.propTypes = {
   actions: PropTypes.object.isRequired,
+  agencyCodeToName: PropTypes.object,
   areCrossReportsRequired: PropTypes.bool.isRequired,
   counties: PropTypes.array,
   countyAgencies: PropTypes.object,

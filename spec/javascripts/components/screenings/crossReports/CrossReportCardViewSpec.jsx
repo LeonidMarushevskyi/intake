@@ -10,6 +10,7 @@ describe('CrossReportCardView', () => {
 
   const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
   const props = {
+    agencyCodeToName: {code123: 'Name of Agency'},
     areCrossReportsRequired: true,
     actions: {fetchCountyAgencies},
     counties: [{code: '123', value: 'county'}],
@@ -321,7 +322,7 @@ describe('CrossReportCardView', () => {
         it('renders the cross report show view', () => {
           component.find('button[children="Cancel"]').simulate('click')
           expect(component.find('CrossReportShowView').length).toEqual(1)
-          expect(component.find('CrossReportShowView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
+          expect(component.find('CrossReportShowView').props().agencyCodeToName).toEqual(props.agencyCodeToName)
         })
 
         it('validates all cross reports', () => {

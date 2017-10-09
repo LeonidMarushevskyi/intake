@@ -10,8 +10,8 @@ describe('CrossReportShowView', () => {
   beforeEach(() => {
     onEdit = jasmine.createSpy()
     const props = {
+      agencyCodeToName: {code123: 'Name of Agency'},
       crossReports: Immutable.List(),
-      countyAgencies: {},
       onEdit: onEdit,
       errors: Immutable.Map(),
     }
@@ -33,20 +33,19 @@ describe('CrossReportShowView', () => {
   describe('when cross reports are present', () => {
     let component
     beforeEach(() => {
-      const crossReports = Immutable.List([
-        {county: '123', agency_type: 'District attorney', agency_code: 'AGENCYCODE', reported_on: '2017-01-15'},
-        {county: '123', agency_type: 'Licensing'},
-      ])
-      const errors = Immutable.fromJS({
-        Licensing: {agency_code: ['Error 1'], communication_method: ['Error 2']},
-        'District of attorney': {reported_on: ['Error 3']},
-      })
-      const countyAgencies = {
-        DISTRICT_ATTORNEY: [
-          {id: 'AGENCYCODE', name: 'SCDA'},
-        ],
+      const props = {
+        crossReports: Immutable.List([
+          {county: '123', agency_type: 'District attorney', agency_code: 'AGENCYCODE', reported_on: '2017-01-15'},
+          {county: '123', agency_type: 'Licensing'},
+        ]),
+        errors: Immutable.fromJS({
+          Licensing: {agency_code: ['Error 1'], communication_method: ['Error 2']},
+          'District attorney': {reported_on: ['Error 3']},
+        }),
+        agencyCodeToName: {AGENCYCODE: 'District attorney - SCDA'},
+        onEdit: onEdit,
       }
-      component = shallow(<CrossReportShowView countyAgencies={countyAgencies} crossReports={crossReports} errors={errors} onEdit={onEdit} />)
+      component = shallow(<CrossReportShowView {...props} />)
     })
 
     it('renders the cross report agencies', () => {

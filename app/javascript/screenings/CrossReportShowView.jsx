@@ -5,7 +5,6 @@ import React from 'react'
 import ShowField from 'common/ShowField'
 import _ from 'lodash'
 import {dateFormatter} from 'utils/dateFormatter'
-import {agencyTypeAndName} from 'selectors/countyAgenciesSelectors'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -36,7 +35,7 @@ export default class CrossReportShowView extends React.Component {
                   {
                     crossReports.map(({agency_type, agency_code}, index) => (
                       <div key={index}>
-                        <li>{agencyTypeAndName(agency_type, agency_code, this.props.countyAgencies)}</li>
+                        <li>{agency_code ? this.props.agencyCodeToName[agency_code] : agency_type}</li>
                         <ErrorMessages
                           errors={this.props.errors.getIn([agency_type, 'agency_code']) && this.props.errors.getIn([agency_type, 'agency_code']).toJS()}
                         />
@@ -74,8 +73,8 @@ export default class CrossReportShowView extends React.Component {
 }
 
 CrossReportShowView.propTypes = {
+  agencyCodeToName: PropTypes.object,
   alertInfoMessage: PropTypes.string,
-  countyAgencies: PropTypes.object.isRequired,
   crossReports: PropTypes.object,
   errors: PropTypes.object.isRequired,
   onEdit: PropTypes.func.isRequired,

@@ -29,6 +29,7 @@ import {
   DEPARTMENT_OF_JUSTICE,
   LAW_ENFORCEMENT,
   LICENSING,
+  getAgencyCodeToName,
   getDistrictAttorneyAgencies,
   getDepartmentOfJusticeAgencies,
   getLawEnforcementAgencies,
@@ -348,6 +349,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <CrossReportCardView
+                agencyCodeToName={this.props.agencyCodeToName}
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 counties={this.props.counties}
@@ -401,6 +403,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  agencyCodeToName: PropTypes.object,
   counties: PropTypes.array,
   countyAgencies: PropTypes.object,
   editable: PropTypes.bool,
@@ -415,6 +418,7 @@ ScreeningPage.propTypes = {
 }
 
 ScreeningPage.defaultProps = {
+  agencyCodeToName: {},
   counties: [],
   countyAgencies: {},
   mode: 'show',
@@ -423,6 +427,7 @@ ScreeningPage.defaultProps = {
 
 export function mapStateToProps(state, ownProps) {
   return {
+    agencyCodeToName: getAgencyCodeToName(state),
     editable: !state.getIn(['screening', 'referral_id']),
     counties: state.get('counties').toJS(),
     countyAgencies: {
