@@ -244,6 +244,17 @@ describe('ContactForm', () => {
     expect(peopleCheckBoxes.at(1).props().id).toEqual('person_1')
   })
 
+  it('selecting an unchecked person fires selectContactPerson', () => {
+    const selectPerson = jasmine.createSpy('selectPerson')
+    const people = [
+      {name: 'Cameron Fry', selected: false},
+    ]
+    const component = renderContact({actions: {selectPerson}, people})
+    const personCheckBox = component.find('CheckboxField')
+    personCheckBox.simulate('change', {target: {checked: true}})
+    expect(selectPerson).toHaveBeenCalledWith(0)
+  })
+
   it('displays note', () => {
     const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')
