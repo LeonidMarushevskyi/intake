@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
 import SelectField from 'common/SelectField'
+import CheckboxField from 'common/CheckboxField'
 import FormField from 'common/FormField'
 
 class ContactForm extends React.Component {
@@ -105,10 +106,14 @@ class ContactForm extends React.Component {
                 }
                 <div className='row'>
                   <FormField gridClassName='col-md-12' label='People Present' id='people'>
-                    { <ul>
-                      {people.map((person, i) => <li key={i}>{person.name}</li>)}
-                    </ul>
-                    }
+                    { people.map((person, index) =>
+                      <CheckboxField
+                        key={`person_${index}`}
+                        id={`person_${index}`}
+                        value={person.name}
+                        checked={person.selected}
+                      />
+                    )}
                   </FormField>
                 </div>
                 <div className='row'>
@@ -184,6 +189,7 @@ ContactForm.propTypes = {
 
 ContactForm.defaultProps = {
   errors: {},
+  people: [],
 }
 
 export default ContactForm

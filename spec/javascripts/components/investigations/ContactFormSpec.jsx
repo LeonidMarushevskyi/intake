@@ -234,8 +234,14 @@ describe('ContactForm', () => {
       {name: 'Cameron Fry', selected: false},
     ]
     const component = renderContact({people})
-    expect(component.html()).toContain('Ferris Bueller')
-    expect(component.html()).toContain('Cameron Fry')
+    const peopleCheckBoxes = component.find('CheckboxField')
+    expect(peopleCheckBoxes.length).toEqual(2)
+    expect(peopleCheckBoxes.at(0).props().value).toEqual('Ferris Bueller')
+    expect(peopleCheckBoxes.at(0).props().checked).toEqual(true)
+    expect(peopleCheckBoxes.at(0).props().id).toEqual('person_0')
+    expect(peopleCheckBoxes.at(1).props().value).toEqual('Cameron Fry')
+    expect(peopleCheckBoxes.at(1).props().checked).toEqual(false)
+    expect(peopleCheckBoxes.at(1).props().id).toEqual('person_1')
   })
 
   it('displays note', () => {
