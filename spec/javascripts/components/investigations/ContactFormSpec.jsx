@@ -1,8 +1,8 @@
-import Contact from 'investigations/Contact'
+import ContactForm from 'investigations/ContactForm'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-describe('Contact', () => {
+describe('ContactForm', () => {
   function renderContact({
     investigationId = 'ABC123',
     actions = {},
@@ -41,7 +41,7 @@ describe('Contact', () => {
       people,
       valid,
     }
-    return shallow(<Contact {...props} />)
+    return shallow(<ContactForm {...props} />)
   }
 
   it('displays the investigation Id in the header', () => {
@@ -357,7 +357,7 @@ describe('Contact', () => {
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
     mount(
-      <Contact
+      <ContactForm
         investigationId='ABC123'
         actions={{build}}
         contact={{}}

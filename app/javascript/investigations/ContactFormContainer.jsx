@@ -1,6 +1,6 @@
 import * as contactFormActions from 'actions/contactFormActions'
 import {create} from 'actions/contactActions'
-import Contact from 'investigations/Contact'
+import ContactForm from 'investigations/ContactForm'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {
@@ -44,4 +44,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
   return {actions: bindActionCreators(actions, dispatch)}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contact)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)

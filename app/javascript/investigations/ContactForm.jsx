@@ -5,7 +5,7 @@ import nameFormatter from 'utils/nameFormatter'
 import SelectField from 'common/SelectField'
 import FormField from 'common/FormField'
 
-class Contact extends React.Component {
+class ContactForm extends React.Component {
   componentDidMount() {
     const {investigationId, actions: {build}} = this.props
     build({investigation_id: investigationId})
@@ -163,7 +163,7 @@ class Contact extends React.Component {
   }
 }
 
-Contact.propTypes = {
+ContactForm.propTypes = {
   actions: PropTypes.object,
   communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
@@ -183,8 +183,8 @@ Contact.propTypes = {
   valid: PropTypes.bool,
 }
 
-Contact.defaultProps = {
+ContactForm.defaultProps = {
   errors: {},
 }
 
-export default Contact
+export default ContactForm
