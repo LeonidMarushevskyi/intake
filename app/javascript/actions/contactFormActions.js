@@ -4,6 +4,7 @@ export const BUILD_CONTACT_FAILURE = 'BUILD_CONTACT_FAILURE'
 export const SET_CONTACT_FIELD = 'SET_CONTACT_FIELD'
 export const TOUCH_CONTACT_FIELD = 'TOUCH_CONTACT_FIELD'
 export const TOUCH_ALL_CONTACT_FIELDS = 'TOUCH_ALL_CONTACT_FIELDS'
+export const SELECT_CONTACT_PERSON = 'SELECT_CONTACT_PERSON'
 export function build({investigation_id}) {
   return {type: BUILD_CONTACT, investigation_id}
 }
@@ -15,6 +16,9 @@ export function buildFailure(error) {
 }
 export function setField(field, value) {
   return {type: SET_CONTACT_FIELD, field, value}
+}
+export function selectPerson(index) {
+  return {type: SELECT_CONTACT_PERSON, index}
 }
 export function touchField(field) {
   return {type: TOUCH_CONTACT_FIELD, field}
