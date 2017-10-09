@@ -255,6 +255,17 @@ describe('ContactForm', () => {
     expect(selectPerson).toHaveBeenCalledWith(0)
   })
 
+  it('deselecting a checked person fires deselectContactPerson', () => {
+    const deselectPerson = jasmine.createSpy('deselectPerson')
+    const people = [
+      {name: 'Ferris Bueller', selected: true},
+    ]
+    const component = renderContact({actions: {deselectPerson}, people})
+    const personCheckBox = component.find('CheckboxField')
+    personCheckBox.simulate('change', {target: {checked: false}})
+    expect(deselectPerson).toHaveBeenCalledWith(0)
+  })
+
   it('displays note', () => {
     const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')

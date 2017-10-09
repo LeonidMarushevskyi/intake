@@ -19,7 +19,7 @@ class ContactForm extends React.Component {
       status,
       note,
       purpose,
-      actions: {setField, touchField, create, touchAllFields, selectPerson},
+      actions: {setField, touchField, create, touchAllFields, selectPerson, deselectPerson},
       statuses,
       purposes,
       communicationMethods,
@@ -112,7 +112,13 @@ class ContactForm extends React.Component {
                         id={`person_${index}`}
                         value={person.name}
                         checked={person.selected}
-                        onChange={() => selectPerson(index)}
+                        onChange={({target: {checked}}) => {
+                          if (checked === true) {
+                            return selectPerson(index)
+                          } else {
+                            return deselectPerson(index)
+                          }
+                        }}
                       />
                     )}
                   </FormField>
