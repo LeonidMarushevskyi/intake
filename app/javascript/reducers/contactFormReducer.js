@@ -4,6 +4,7 @@ import {
   TOUCH_CONTACT_FIELD,
   TOUCH_ALL_CONTACT_FIELDS,
   SELECT_CONTACT_PERSON,
+  DESELECT_CONTACT_PERSON,
 } from 'actions/contactFormActions'
 import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
@@ -44,6 +45,9 @@ export default createReducer(Map(), {
   },
   [SELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], true)
+  },
+  [DESELECT_CONTACT_PERSON](state, {index}) {
+    return state.setIn(['people', index, 'selected'], false)
   },
   [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
     return state.setIn(['id', 'value'], id)

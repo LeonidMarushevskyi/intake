@@ -5,6 +5,7 @@ import {
   touchField,
   touchAllFields,
   selectPerson,
+  deselectPerson,
 } from 'actions/contactFormActions'
 import {createSuccess} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
@@ -132,6 +133,21 @@ describe('contactReducer', () => {
           people: [
             {selected: false},
             {selected: true},
+          ],
+        })
+      )
+    })
+  })
+
+  describe('on DESELECT_CONTACT_PERSON', () => {
+    it('changes the selected value for the passed index to false', () => {
+      const action = deselectPerson('1')
+      const state = fromJS({people: [{selected: true}, {selected: true}]})
+      expect(contactFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          people: [
+            {selected: true},
+            {selected: false},
           ],
         })
       )
