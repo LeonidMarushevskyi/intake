@@ -26,6 +26,7 @@ class Contact extends React.Component {
       locations,
       errors,
       inPersonCode,
+      officeLocationCode,
       people,
       valid,
     } = this.props
@@ -72,7 +73,12 @@ class Contact extends React.Component {
                     id='communication_method'
                     label='Communication Method'
                     value={communicationMethod}
-                    onChange={(event) => setField('communication_method', event.target.value)}
+                    onChange={({target: {value}}) => {
+                      setField('communication_method', value)
+                      if (value !== inPersonCode) {
+                        setField('location', officeLocationCode)
+                      }
+                    }}
                     onBlur={() => touchField('communication_method')}
                     errors={errors.communication_method}
                   >
@@ -165,6 +171,7 @@ Contact.propTypes = {
   location: PropTypes.string,
   locations: PropTypes.array.isRequired,
   note: PropTypes.string,
+  officeLocationCode: PropTypes.string,
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,

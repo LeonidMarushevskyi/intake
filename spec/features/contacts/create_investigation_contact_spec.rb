@@ -88,4 +88,34 @@ feature 'Create Investigation Contact' do
     select 'In person', from: 'Communication Method'
     expect(page).to have_select('Location')
   end
+
+  scenario "selecting communication method 'In person' resets value for location type" do
+    expect(page).to_not have_select('Location')
+    select 'Fax', from: 'Communication Method'
+    select 'In person', from: 'Communication Method'
+    expect(page).to have_select('Location', with_selected: '')
+  end
+
+  scenario 'saving with communication method not set to in-person save location as office' do
+    fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
+    select 'Attempted', from: 'Status'
+    select 'Fax', from: 'Communication Method'
+    select 'Investigate Referral', from: 'Purpose'
+    fill_in 'Contact Notes', with: 'This was an attempted contact'
+    click_button 'Save'
+    expect(
+      a_request(:post, ferb_api_url(ExternalRoutes.ferb_api_investigations_contacts_path('123ABC')))
+      .with(
+        body: {
+          started_at: '2016-08-17T10:00:00.000Z',
+          purpose: '1',
+          status: 'A',
+          note: 'This was an attempted contact',
+          communication_method: 'FAX',
+          location: 'OFFICE',
+          people: []
+        }.to_json
+      )
+    ).to have_been_made
+  end
 end

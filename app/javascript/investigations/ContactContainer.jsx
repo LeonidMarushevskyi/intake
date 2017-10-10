@@ -9,6 +9,7 @@ import {
   getLocationsSelector,
   getCommunicationMethodsSelector,
   getInPersonCommunicationMethodValueSelector,
+  getOfficeLocationCodeValueSelector,
 } from 'selectors/systemCodeSelectors'
 
 import {
@@ -32,6 +33,7 @@ const mapStateToProps = (state, ownProps) => {
     purposes: getPurposesSelector(state).toJS(),
     communicationMethods: getCommunicationMethodsSelector(state).toJS(),
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
+    officeLocationCode: getOfficeLocationCodeValueSelector(state),
     locations: getLocationsSelector(state).toJS(),
     people: state.get('investigationPeople').toJS(),
   }

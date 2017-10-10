@@ -18,6 +18,7 @@ describe('Contact', () => {
     communicationMethods = [],
     locations = [],
     inPersonCode = '',
+    officeLocationCode = '',
     people = [],
     valid = false,
   }) {
@@ -36,6 +37,7 @@ describe('Contact', () => {
       locations,
       errors,
       inPersonCode,
+      officeLocationCode,
       people,
       valid,
     }
@@ -135,6 +137,17 @@ describe('Contact', () => {
     const communicationMethodSelect = component.find("SelectField[id='communication_method']")
     communicationMethodSelect.simulate('change', {target: {value: '1'}})
     expect(setField).toHaveBeenCalledWith('communication_method', '1')
+  })
+
+  it("changing communication method to anything but 'in person code' sets location to 'office location code'", () => {
+    const setField = jasmine.createSpy('setField')
+    const officeLocationCode = 'officeLocationCode'
+    const inPersonCode = 'inPersonCode'
+    const component = renderContact({inPersonCode, officeLocationCode, actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: 'not inPersonCode'}})
+    expect(setField).toHaveBeenCalledWith('communication_method', 'not inPersonCode')
+    expect(setField).toHaveBeenCalledWith('location', officeLocationCode)
   })
 
   it('blurring communication method fires touchField with the proper parameter', () => {

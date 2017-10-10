@@ -6,7 +6,9 @@ module SystemCodeHelpers
       { code: 'A', value: 'Attempted', category: 'contact_status', sub_category: nil },
       { code: '1', value: 'Investigate Referral', category: 'contact_purpose', sub_category: nil },
       { code: 'ABC', value: 'In person', category: 'communication_method', sub_category: nil },
+      { code: 'FAX', value: 'Fax', category: 'communication_method', sub_category: nil },
       { code: '123', value: 'School', category: 'contact_location', sub_category: nil },
+      { code: 'OFFICE', value: 'CWS Office', category: 'contact_location', sub_category: nil },
       { code: 'c40', value: 'San Francisco', category: 'county_type', sub_category: nil },
       { code: 'c41', value: 'State of California', category: 'county_type', sub_category: nil },
       { code: 'c42', value: 'Sacramento', category: 'county_type', sub_category: nil }
