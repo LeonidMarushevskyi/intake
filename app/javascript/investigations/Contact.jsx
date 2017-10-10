@@ -19,7 +19,7 @@ class Contact extends React.Component {
       status,
       note,
       purpose,
-      actions: {setField, touchField, create},
+      actions: {setField, touchField, create, touchAllFields},
       statuses,
       purposes,
       communicationMethods,
@@ -42,6 +42,8 @@ class Contact extends React.Component {
           purpose,
           people: [],
         })
+      } else {
+        touchAllFields()
       }
     }
     return (

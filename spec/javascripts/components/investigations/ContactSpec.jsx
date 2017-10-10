@@ -277,7 +277,7 @@ describe('Contact', () => {
       create = jasmine.createSpy('create')
     })
 
-    it('when contact is valid calls create', () => {
+    it('when contact is valid creates a contact', () => {
       const component = renderContact({
         valid: true,
         investigationId: '123',
@@ -302,20 +302,32 @@ describe('Contact', () => {
       })
     })
 
-    it('when contact is invalid does not call create', () => {
-      const component = renderContact({
-        valid: false,
-        investigationId: '123',
-        startedAt: '2016-08-11T18:24:22.157Z',
-        status: 'S',
-        communicationMethod: '654',
-        location: '432',
-        note: 'This is a new note',
-        purpose: '1',
-        actions: {create},
+    describe('when contact is invalid', () => {
+      let touchAllFields
+
+      beforeEach(() => {
+        touchAllFields = jasmine.createSpy('touchAllFields')
+        const component = renderContact({
+          valid: false,
+          investigationId: '123',
+          startedAt: '2016-08-11T18:24:22.157Z',
+          status: 'S',
+          communicationMethod: '654',
+          location: '432',
+          note: 'This is a new note',
+          purpose: '1',
+          actions: {create, touchAllFields},
+        })
+        component.find('form').simulate('submit', event)
       })
-      component.find('form').simulate('submit', event)
-      expect(create).not.toHaveBeenCalled()
+
+      it('does not create a contact', () => {
+        expect(create).not.toHaveBeenCalled()
+      })
+
+      it('touches all contact fields to display all validations', () => {
+        expect(touchAllFields).toHaveBeenCalled()
+      })
     })
   })
 

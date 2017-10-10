@@ -2,6 +2,7 @@ import {
   BUILD_CONTACT_SUCCESS,
   SET_CONTACT_FIELD,
   TOUCH_CONTACT_FIELD,
+  TOUCH_ALL_CONTACT_FIELDS,
 } from 'actions/contactFormActions'
 import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
@@ -49,6 +50,13 @@ export default createReducer(Map(), {
   },
   [TOUCH_CONTACT_FIELD](state, {field}) {
     return state.setIn([field, 'touched'], true)
+  },
+  [TOUCH_ALL_CONTACT_FIELDS](state, _) {
+    return state.setIn(['started_at', 'touched'], true)
+      .setIn(['status', 'touched'], true)
+      .setIn(['purpose', 'touched'], true)
+      .setIn(['communication_method', 'touched'], true)
+      .setIn(['location', 'touched'], true)
   },
   [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
     return state.setIn(['id', 'value'], id)
