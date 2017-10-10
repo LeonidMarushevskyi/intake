@@ -10,39 +10,18 @@ import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
   [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at}) {
+    const fieldWithTouch = {value: null, touched: false}
+    const fieldWithValue = (value) => ({value: value})
     return fromJS({
-      id: {
-        value: null,
-      },
-      investigation_id: {
-        value: investigation_id,
-      },
-      started_at: {
-        value: null,
-        touched: false,
-      },
-      status: {
-        value: null,
-        touched: false,
-      },
-      note: {
-        value: null,
-      },
-      purpose: {
-        value: null,
-        touched: false,
-      },
-      communication_method: {
-        value: null,
-        touched: false,
-      },
-      location: {
-        value: null,
-        touched: false,
-      },
-      investigation_started_at: {
-        value: investigation_started_at,
-      },
+      id: fieldWithValue(null),
+      investigation_id: fieldWithValue(investigation_id),
+      started_at: fieldWithTouch,
+      status: fieldWithTouch,
+      note: fieldWithValue(null),
+      purpose: fieldWithTouch,
+      communication_method: fieldWithTouch,
+      location: fieldWithTouch,
+      investigation_started_at: fieldWithValue(investigation_started_at),
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {
