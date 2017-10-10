@@ -15,7 +15,7 @@ module Api
           :note,
           :communication_method,
           :location,
-          people: []
+          people: %i[legacy_id legacy_table_name]
         ].freeze
 
         def create
