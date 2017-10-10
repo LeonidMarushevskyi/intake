@@ -73,6 +73,7 @@ export class RacesEditView extends React.Component {
                     key={race}
                     id={`${id}-race-${raceId}`}
                     value={race}
+                    label={race}
                     checked={selected}
                     disabled={disabled}
                     onChange={(event) => this.changeRace(race, event.target.checked)}

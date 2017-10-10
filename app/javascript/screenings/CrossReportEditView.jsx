@@ -85,6 +85,7 @@ export default class CrossReportEditView extends React.Component {
                       checked={selected}
                       errors={errors.getIn([agencyType, 'agency_type']) && errors.getIn([agencyType, 'agency_type']).toJS()}
                       disabled={this.props.countyAgencies[typeId] === undefined || this.props.countyAgencies[typeId].length === 0}
+                      label={agencyType}
                       onBlur={(event) =>
                         this.props.onBlur(
                           this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),

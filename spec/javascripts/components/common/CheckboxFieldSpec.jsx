@@ -10,6 +10,7 @@ describe('CheckboxField', () => {
     errors: [],
     id: 'myCheckboxFieldId',
     value: 'this-is-my-value',
+    label: 'This is my label',
   }
   beforeEach(() => {
     onChange = jasmine.createSpy('onChange')
@@ -35,7 +36,7 @@ describe('CheckboxField', () => {
 
     it('renders the value', () => {
       expect(component.find('input').props().value).toEqual('this-is-my-value')
-      expect(component.find('label').text()).toEqual('this-is-my-value')
+      expect(component.find('label').text()).toEqual('This is my label')
     })
 
     it('renders with NO checked prop', () => {

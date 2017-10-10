@@ -116,6 +116,7 @@ class ContactForm extends React.Component {
                               key={`person_${index}`}
                               id={`person_${index}`}
                               value={person.name}
+                              label={person.name}
                               checked={person.selected}
                               onChange={({target: {checked}}) => {
                                 if (checked === true) {

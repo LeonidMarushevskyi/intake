@@ -8,6 +8,7 @@ const CheckboxField = ({
   value,
   checked,
   disabled,
+  label,
   onChange,
   onBlur,
   required,
@@ -23,7 +24,7 @@ const CheckboxField = ({
       onChange={onChange}
       onBlur={onBlur}
     />
-    <label className={required && 'required'} htmlFor={id}>{value}</label>
+    <label className={required && 'required'} htmlFor={id}>{label}</label>
     <ErrorMessages ariaDescribedBy={id} errors={errors}/>
   </div>
 )
@@ -33,6 +34,7 @@ CheckboxField.propTypes = {
   disabled: PropTypes.bool,
   errors: PropTypes.array,
   id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool,
