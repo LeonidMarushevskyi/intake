@@ -8,6 +8,7 @@ import {
   getTouchedFieldsSelector,
   getErrorsSelector,
   getVisibleErrorsSelector,
+  getHasErrorsValueSelector,
 } from 'selectors/contactFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -232,6 +233,30 @@ describe('contactFormSelectors', () => {
       const state = fromJS({contactForm})
       expect(getVisibleErrorsSelector(state).get('purpose'))
         .toEqualImmutable(List())
+    })
+  })
+
+  describe('getHasErrorsValueSelector', () => {
+    it('returns true if contact form has errors present', () => {
+      const contactForm = {
+        purpose: {value: undefined},
+      }
+      const state = fromJS({contactForm})
+      expect(getHasErrorsValueSelector(state)).toEqual(true)
+    })
+
+    it('does not return an error if the field has not been touched', () => {
+      const yesterday = moment().subtract(1, 'days').toISOString()
+      const contactForm = {
+        started_at: {value: yesterday},
+        investigation_started_at: {value: yesterday},
+        communication_method: {value: 'a value'},
+        location: {value: 'a value'},
+        status: {value: 'a value'},
+        purpose: {value: 'a value'},
+      }
+      const state = fromJS({contactForm})
+      expect(getHasErrorsValueSelector(state)).toEqual(false)
     })
   })
 })

@@ -27,19 +27,22 @@ class Contact extends React.Component {
       errors,
       inPersonCode,
       people,
+      valid,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
-      create({
-        investigation_id: investigationId,
-        started_at: startedAt,
-        communication_method: communicationMethod,
-        location,
-        status,
-        note,
-        purpose,
-        people: [],
-      })
+      if (valid) {
+        create({
+          investigation_id: investigationId,
+          started_at: startedAt,
+          communication_method: communicationMethod,
+          location,
+          status,
+          note,
+          purpose,
+          people: [],
+        })
+      }
     }
     return (
       <div className='card show double-gap-top'>
@@ -166,6 +169,7 @@ Contact.propTypes = {
   startedAt: PropTypes.string,
   status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
+  valid: PropTypes.bool,
 }
 
 Contact.defaultProps = {

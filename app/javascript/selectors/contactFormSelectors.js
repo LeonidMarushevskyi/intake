@@ -107,3 +107,8 @@ export const getVisibleErrorsSelector = createSelector(
     Map()
   )
 )
+
+export const getHasErrorsValueSelector = createSelector(
+  getErrorsSelector,
+  (errors) => errors.some((fieldErrors) => !fieldErrors.isEmpty())
+)

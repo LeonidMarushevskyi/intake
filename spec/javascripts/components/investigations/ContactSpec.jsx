@@ -19,6 +19,7 @@ describe('Contact', () => {
     locations = [],
     inPersonCode = '',
     people = [],
+    valid = false,
   }) {
     const props = {
       investigationId,
@@ -36,6 +37,7 @@ describe('Contact', () => {
       errors,
       inPersonCode,
       people,
+      valid,
     }
     return shallow(<Contact {...props} />)
   }
@@ -268,29 +270,52 @@ describe('Contact', () => {
     expect(saveButton.props().type).toEqual('submit')
   })
 
-  it('clicking save fires the create action', () => {
-    const create = jasmine.createSpy('create')
+  describe('clicking save', () => {
+    let create
     const event = jasmine.createSpyObj('event', ['preventDefault'])
-    const component = renderContact({
-      investigationId: '123',
-      startedAt: '2016-08-11T18:24:22.157Z',
-      status: 'S',
-      communicationMethod: '654',
-      location: '432',
-      note: 'This is a new note',
-      purpose: '1',
-      actions: {create},
+    beforeEach(() => {
+      create = jasmine.createSpy('create')
     })
-    component.find('form').simulate('submit', event)
-    expect(create).toHaveBeenCalledWith({
-      investigation_id: '123',
-      started_at: '2016-08-11T18:24:22.157Z',
-      communication_method: '654',
-      location: '432',
-      status: 'S',
-      note: 'This is a new note',
-      purpose: '1',
-      people: [],
+
+    it('when contact is valid calls create', () => {
+      const component = renderContact({
+        valid: true,
+        investigationId: '123',
+        startedAt: '2016-08-11T18:24:22.157Z',
+        status: 'S',
+        communicationMethod: '654',
+        location: '432',
+        note: 'This is a new note',
+        purpose: '1',
+        actions: {create},
+      })
+      component.find('form').simulate('submit', event)
+      expect(create).toHaveBeenCalledWith({
+        investigation_id: '123',
+        started_at: '2016-08-11T18:24:22.157Z',
+        communication_method: '654',
+        location: '432',
+        status: 'S',
+        note: 'This is a new note',
+        purpose: '1',
+        people: [],
+      })
+    })
+
+    it('when contact is invalid does not call create', () => {
+      const component = renderContact({
+        valid: false,
+        investigationId: '123',
+        startedAt: '2016-08-11T18:24:22.157Z',
+        status: 'S',
+        communicationMethod: '654',
+        location: '432',
+        note: 'This is a new note',
+        purpose: '1',
+        actions: {create},
+      })
+      component.find('form').simulate('submit', event)
+      expect(create).not.toHaveBeenCalled()
     })
   })
 

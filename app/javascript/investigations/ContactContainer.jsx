@@ -11,7 +11,10 @@ import {
   getInPersonCommunicationMethodValueSelector,
 } from 'selectors/systemCodeSelectors'
 
-import {getVisibleErrorsSelector} from 'selectors/contactFormSelectors'
+import {
+  getVisibleErrorsSelector,
+  getHasErrorsValueSelector,
+} from 'selectors/contactFormSelectors'
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')
@@ -24,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
     note: contactForm.getIn(['note', 'value']),
     purpose: contactForm.getIn(['purpose', 'value']),
     errors: getVisibleErrorsSelector(state).toJS(),
+    valid: !getHasErrorsValueSelector(state),
     statuses: getStatusesSelector(state).toJS(),
     purposes: getPurposesSelector(state).toJS(),
     communicationMethods: getCommunicationMethodsSelector(state).toJS(),
