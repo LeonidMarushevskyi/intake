@@ -7,8 +7,8 @@ feature 'Create Investigation Contact' do
 
   before do
     people = [
-      { first_name: 'Emma', last_name: 'Woodhouse' },
-      { first_name: 'George', last_name: 'Knightley' }
+      { first_name: 'Emma', last_name: 'Woodhouse', legacy_descriptor: { legacy_id: '1' } },
+      { first_name: 'George', last_name: 'Knightley', legacy_descriptor: { legacy_id: '2' } }
     ]
     stub_request(
       :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
@@ -50,7 +50,9 @@ feature 'Create Investigation Contact' do
           purpose: '1',
           communication_method: 'ABC',
           location: '123',
-          people: []
+          people: [
+            { first_name: 'Emma', last_name: 'Woodhouse', legacy_descriptor: { legacy_id: '1' } }
+          ]
         }.to_json,
         status: 201
       )
@@ -66,7 +68,7 @@ feature 'Create Investigation Contact' do
           note: 'This was an attempted contact',
           communication_method: 'ABC',
           location: '123',
-          people: []
+          people: [{ legacy_id: '1' }]
         }.to_json
       )
     ).to have_been_made
