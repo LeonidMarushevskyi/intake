@@ -75,7 +75,9 @@ class Contact extends React.Component {
                     value={communicationMethod}
                     onChange={({target: {value}}) => {
                       setField('communication_method', value)
-                      if (value !== inPersonCode) {
+                      if (value === inPersonCode) {
+                        setField('location', null)
+                      } else {
                         setField('location', officeLocationCode)
                       }
                     }}

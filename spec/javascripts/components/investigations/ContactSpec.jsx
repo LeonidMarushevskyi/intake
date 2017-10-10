@@ -150,6 +150,16 @@ describe('Contact', () => {
     expect(setField).toHaveBeenCalledWith('location', officeLocationCode)
   })
 
+  it("changing communication method to 'in person code' resets location", () => {
+    const setField = jasmine.createSpy('setField')
+    const inPersonCode = 'inPersonCode'
+    const component = renderContact({inPersonCode, actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: inPersonCode}})
+    expect(setField).toHaveBeenCalledWith('communication_method', inPersonCode)
+    expect(setField).toHaveBeenCalledWith('location', null)
+  })
+
   it('blurring communication method fires touchField with the proper parameter', () => {
     const touchField = jasmine.createSpy('touchField')
     const component = renderContact({actions: {touchField}})
