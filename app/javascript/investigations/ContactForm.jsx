@@ -29,6 +29,7 @@ class ContactForm extends React.Component {
       officeLocationCode,
       people,
       valid,
+      selectedPeopleIds,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
@@ -41,7 +42,7 @@ class ContactForm extends React.Component {
           status,
           note,
           purpose,
-          people: [],
+          people: selectedPeopleIds,
         })
       } else {
         touchAllFields()
@@ -188,6 +189,7 @@ ContactForm.propTypes = {
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
+  selectedPeopleIds: PropTypes.array,
   startedAt: PropTypes.string,
   status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
@@ -197,6 +199,7 @@ ContactForm.propTypes = {
 ContactForm.defaultProps = {
   errors: {},
   people: [],
+  selectedPeopleIds: [],
 }
 
 export default ContactForm

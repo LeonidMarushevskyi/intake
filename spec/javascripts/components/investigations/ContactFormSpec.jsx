@@ -21,6 +21,7 @@ describe('ContactForm', () => {
     officeLocationCode = '',
     people = [],
     valid = false,
+    selectedPeopleIds = [],
   }) {
     const props = {
       investigationId,
@@ -40,6 +41,7 @@ describe('ContactForm', () => {
       officeLocationCode,
       people,
       valid,
+      selectedPeopleIds,
     }
     return shallow(<ContactForm {...props} />)
   }
@@ -339,6 +341,7 @@ describe('ContactForm', () => {
         note: 'This is a new note',
         purpose: '1',
         actions: {create},
+        selectedPeopleIds: [{legacy_descriptor: '1'}],
       })
       component.find('form').simulate('submit', event)
       expect(create).toHaveBeenCalledWith({
@@ -349,7 +352,7 @@ describe('ContactForm', () => {
         status: 'S',
         note: 'This is a new note',
         purpose: '1',
-        people: [],
+        people: [{legacy_descriptor: '1'}],
       })
     })
 
