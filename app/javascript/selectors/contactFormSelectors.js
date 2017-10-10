@@ -92,3 +92,7 @@ export const getHasErrorsValueSelector = createSelector(
   getErrorsSelector,
   (errors) => errors.some((fieldErrors) => !fieldErrors.isEmpty())
 )
+export const getSelectedPeopleIdsSelector = createSelector(
+  (state) => state.getIn(['contactForm', 'people']),
+  (people = List()) => people.filter((person) => person.get('selected')).map((person) => person.get('id'))
+)

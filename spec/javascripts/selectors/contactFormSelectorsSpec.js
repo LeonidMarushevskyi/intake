@@ -9,6 +9,7 @@ import {
   getErrorsSelector,
   getVisibleErrorsSelector,
   getHasErrorsValueSelector,
+  getSelectedPeopleIdsSelector,
 } from 'selectors/contactFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -257,6 +258,33 @@ describe('contactFormSelectors', () => {
       }
       const state = fromJS({contactForm})
       expect(getHasErrorsValueSelector(state)).toEqual(false)
+    })
+  })
+
+  describe('getSelectedPeopleIdsSelector', () => {
+    beforeEach(() => jasmine.addMatchers(matchers))
+
+    it('returns the ids of all people where selected is true', () => {
+      const contactForm = {
+        people: [
+          {id: {legacy_id: '1'}, selected: true},
+          {id: {legacy_id: '2'}, selected: false},
+          {id: {legacy_id: '3'}, selected: true},
+        ],
+      }
+      const state = fromJS({contactForm})
+      expect(getSelectedPeopleIdsSelector(state)).toEqualImmutable(
+        fromJS([
+          {legacy_id: '1'},
+          {legacy_id: '3'},
+        ])
+      )
+    })
+
+    it('returns empty list when no people exist', () => {
+      const contactForm = {}
+      const state = fromJS({contactForm})
+      expect(getSelectedPeopleIdsSelector(state)).toEqualImmutable(List())
     })
   })
 })
