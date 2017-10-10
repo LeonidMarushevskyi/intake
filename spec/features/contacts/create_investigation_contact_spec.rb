@@ -25,13 +25,14 @@ feature 'Create Investigation Contact' do
       select 'Attempted', from: 'Status'
       select 'In person', from: 'Communication Method'
       select 'School', from: 'Location'
+      find('label', text: 'Emma Woodhouse').click
       select 'Investigate Referral', from: 'Purpose'
       fill_in 'Contact Notes', with: 'This was an attempted contact'
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
     expect(page).to have_select('Communication Method', selected: 'In person')
-    expect(page).to have_content('Emma Woodhouse')
-    expect(page).to have_content('George Knightley')
+    expect(page).to have_checked_field('Emma Woodhouse')
+    expect(page).to have_unchecked_field('George Knightley')
     expect(page).to have_select('Location', selected: 'School')
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
