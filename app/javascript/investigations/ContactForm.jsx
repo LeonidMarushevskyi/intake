@@ -198,8 +198,6 @@ ContactForm.propTypes = {
 
 ContactForm.defaultProps = {
   errors: {},
-  people: [],
-  selectedPeopleIds: [],
 }
 
 export default ContactForm
