@@ -2,6 +2,16 @@
 
 class JsonAPI # :nodoc:
   CONTENT_TYPE = 'application/json'
+
+  def self.connection
+    Faraday.new(url: api_url) do |connection|
+      connection.response :json, content_type: /\bjson$/
+      connection.adapter Faraday.default_adapter
+      connection.use IntakeFaradayMiddleware::RaiseHttpException
+      connection
+    end
+  end
+
   def self.make_api_call(security_token, url, method, payload = nil)
     connection.send(method) do |req|
       req.url url
