@@ -4,6 +4,7 @@ import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import matchers from 'jasmine-immutable-matchers'
 import {shallow, mount} from 'enzyme'
+import _ from 'lodash'
 
 describe('<Autocompleter />', () => {
   function stubSuggestions(suggestions) {
@@ -14,6 +15,9 @@ describe('<Autocompleter />', () => {
   }
 
   beforeEach(() => {
+    spyOn(_, 'debounce').and.callFake(
+      (callback) => () => { callback() }
+    )
     jasmine.addMatchers(matchers)
   })
 
@@ -32,12 +36,21 @@ describe('<Autocompleter />', () => {
   })
 
   describe('#onSuggestionsFetchRequested', () => {
-    it('uses the people search api to get the result for the search term', () => {
-      const bart_simpson = {first_name: 'Bart', last_name: 'Simpson'}
+    const bart_simpson = {first_name: 'Bart', last_name: 'Simpson'}
+    let component
+
+    beforeEach(() => {
       stubSuggestions([bart_simpson])
-      const component = shallow(<Autocompleter />)
+      component = shallow(<Autocompleter />)
       component.instance().onSuggestionsFetchRequested({value: 'Simpson'})
+    })
+
+    it('uses the people search api to get the result for the search term', () => {
       expect(component.state('suggestions')).toEqual([bart_simpson])
+    })
+
+    it('it debounces loadSuggestions for 100 ms', () => {
+      expect(_.debounce).toHaveBeenCalledWith(component.instance().loadSuggestions, 100)
     })
   })
 
