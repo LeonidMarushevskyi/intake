@@ -26,7 +26,7 @@ feature 'show cross reports' do
       cross_reports: [
         CrossReport.new(
           county: 'c41',
-          agency_type: 'Law enforcement',
+          agency_type: 'LAW_ENFORCEMENT',
           agency_code: 'LAOFFCODE',
           communication_method: 'Child Abuse Form'
         )
@@ -89,7 +89,7 @@ feature 'show cross reports' do
       cross_reports: [
         CrossReport.new(
           county: 'c41',
-          agency_type: 'Law enforcement',
+          agency_type: 'LAW_ENFORCEMENT',
           agency_code: 'LAOFFCODE',
           communication_method: 'Child Abuse Form'
         )
@@ -160,8 +160,8 @@ feature 'show cross reports' do
       expect(page).to_not have_content('must be cross-reported to law enforcement')
     end
 
-    screening.cross_reports << { county: 'c41', agency_type: 'Disctrict attorney' }
-    screening.cross_reports << { county: 'c41', agency_type: 'Law enforcement' }
+    screening.cross_reports << { county: 'c41', agency_type: 'DISCTRICT_ATTORNEY' }
+    screening.cross_reports << { county: 'c41', agency_type: 'LAW_ENFORCEMENT' }
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     within '#cross-report-card.edit' do

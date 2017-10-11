@@ -35,12 +35,12 @@ describe('CrossReportShowView', () => {
     beforeEach(() => {
       const props = {
         crossReports: Immutable.List([
-          {county: '123', agency_type: 'District attorney', agency_code: 'AGENCYCODE', reported_on: '2017-01-15'},
-          {county: '123', agency_type: 'Licensing'},
+          {county: '123', agency_type: 'DISTRICT_ATTORNEY', agency_code: 'AGENCYCODE', reported_on: '2017-01-15'},
+          {county: '123', agency_type: 'COUNTY_LICENSING'},
         ]),
         errors: Immutable.fromJS({
-          Licensing: {agency_code: ['Error 1'], communication_method: ['Error 2']},
-          'District attorney': {reported_on: ['Error 3']},
+          COUNTY_LICENSING: {agency_code: ['Error 1'], communication_method: ['Error 2']},
+          DISTRICT_ATTORNEY: {reported_on: ['Error 3']},
         }),
         agencyCodeToName: {AGENCYCODE: 'District attorney - SCDA'},
         onEdit: onEdit,
@@ -51,7 +51,7 @@ describe('CrossReportShowView', () => {
     it('renders the cross report agencies', () => {
       expect(component.find('ShowField[label="This report has cross reported to:"]').length).toEqual(1)
       expect(component.html()).toContain('District attorney - SCDA')
-      expect(component.html()).toContain('Licensing')
+      expect(component.html()).toContain('County licensing')
     })
 
     it('renders the reported on field as required', () => {
@@ -65,7 +65,7 @@ describe('CrossReportShowView', () => {
       expect(field.props().required).toEqual(true)
     })
 
-    it('renders errors for Licensing.agency_code', () => {
+    it('renders errors for county licensing.agency_code', () => {
       expect(component.find('ShowField[label="This report has cross reported to:"]').html())
         .toContain('Error 1')
     })
@@ -84,7 +84,7 @@ describe('CrossReportShowView', () => {
   describe('when cross reports are not present', () => {
     it("doesn't render the cross report agencies", () => {
       expect(component.html()).not.toContain('District of attorney')
-      expect(component.html()).not.toContain('Licensing')
+      expect(component.html()).not.toContain('County licensing')
     })
 
     it("doesn't render the reported on field", () => {

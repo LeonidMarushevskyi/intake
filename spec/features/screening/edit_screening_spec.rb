@@ -35,12 +35,12 @@ feature 'Edit Screening' do
       cross_reports: [
         {
           county: 'c42',
-          agency_type: 'District attorney',
+          agency_type: 'DISTRICT_ATTORNEY',
           agency_code: '45Hvp7x00F'
         },
         {
           county: 'c42',
-          agency_type: 'Law enforcement'
+          agency_type: 'LAW_ENFORCEMENT'
         }
       ]
     )
@@ -116,12 +116,12 @@ feature 'Edit Screening' do
 
       within '#cross-report-card.edit', text: 'Cross Report' do
         expect(page).to have_content('This report has cross reported to:')
-        expect(page.find('input[value="District attorney"]')).to be_checked
+        expect(page.find('input[value="DISTRICT_ATTORNEY"]')).to be_checked
         expect(page).to have_select(
           'District attorney agency name',
           selected: 'LA District Attorney'
         )
-        expect(page.find('input[value="Law enforcement"]')).to be_checked
+        expect(page.find('input[value="LAW_ENFORCEMENT"]')).to be_checked
         expect(page).to have_select('Law enforcement agency name', selected: '')
         expect(page).to have_button 'Save'
         expect(page).to have_button 'Cancel'
@@ -291,7 +291,7 @@ feature 'individual card save' do
     existing_screening.cross_reports = [
       {
         county: 'c41',
-        agency_type: 'District attorney',
+        agency_type: 'DISTRICT_ATTORNEY',
         agency_code: '65Hvp7x01F'
       }
     ]
@@ -332,7 +332,7 @@ feature 'individual card save' do
     existing_screening.cross_reports = [
       {
         county: 'c41',
-        agency_type: 'District attorney',
+        agency_type: 'DISTRICT_ATTORNEY',
         agency_code: '45Hvp7x00F'
       }
     ]

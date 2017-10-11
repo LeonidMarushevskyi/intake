@@ -28,12 +28,16 @@ import {
   DISTRICT_ATTORNEY,
   DEPARTMENT_OF_JUSTICE,
   LAW_ENFORCEMENT,
-  LICENSING,
+  COUNTY_LICENSING,
+  COMMUNITY_CARE_LICENSING,
+} from 'enums/CrossReport'
+import {
   getAgencyCodeToName,
   getDistrictAttorneyAgencies,
   getDepartmentOfJusticeAgencies,
   getLawEnforcementAgencies,
-  getLicensingAgencies,
+  getCountyLicensingAgencies,
+  getCommunityCareLicensingAgencies,
 } from 'selectors/countyAgenciesSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -435,7 +439,8 @@ export function mapStateToProps(state, ownProps) {
       [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
       [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
       [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
-      [LICENSING]: getLicensingAgencies(state).toJS(),
+      [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgencies(state).toJS(),
+      [COUNTY_LICENSING]: getCountyLicensingAgencies(state).toJS(),
     },
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),

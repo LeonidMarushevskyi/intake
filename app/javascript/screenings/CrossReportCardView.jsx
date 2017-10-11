@@ -5,8 +5,15 @@ import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {AGENCY_TYPES} from 'enums/CrossReport'
-import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'enums/CrossReport'
-import {CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS} from 'enums/CrossReport'
+import {
+  ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE,
+  CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
+  LAW_ENFORCEMENT,
+  DISTRICT_ATTORNEY,
+  DEPARTMENT_OF_JUSTICE,
+  COUNTY_LICENSING,
+  COMMUNITY_CARE_LICENSING,
+} from 'enums/CrossReport'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class CrossReportCardView extends React.Component {
@@ -21,82 +28,99 @@ export default class CrossReportCardView extends React.Component {
     this.onSave = this.onSave.bind(this)
     this.validateField = this.validateField.bind(this)
     this.fieldValidations = Immutable.fromJS({
-      'Law enforcement': {
+      [LAW_ENFORCEMENT]: {
         agency_type: [{
           rule: 'isRequiredIf',
           message: 'Please indicate cross-reporting to law enforcement.',
-          condition: () => this.isAgencyRequired('Law enforcement'),
+          condition: () => this.isAgencyRequired(LAW_ENFORCEMENT),
         }],
         agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
-          condition: () => this.isAgencyChecked('Law enforcement'),
+          condition: () => this.isAgencyChecked(LAW_ENFORCEMENT),
         }],
         communication_method: [{
           rule: 'isRequiredIf',
           message: 'Please select cross-report communication method.',
-          condition: () => this.isAgencyChecked('Law enforcement'),
+          condition: () => this.isAgencyChecked(LAW_ENFORCEMENT),
         }],
         reported_on: [{
           rule: 'isRequiredIf',
           message: 'Please enter a cross-report date.',
-          condition: () => this.isAgencyChecked('Law enforcement'),
+          condition: () => this.isAgencyChecked(LAW_ENFORCEMENT),
         }],
       },
-      'District attorney': {
+      [DISTRICT_ATTORNEY]: {
         agency_type: [{
           rule: 'isRequiredIf',
           message: 'Please indicate cross-reporting to district attorney.',
-          condition: () => this.isAgencyRequired('District attorney'),
+          condition: () => this.isAgencyRequired(DISTRICT_ATTORNEY),
         }],
         agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
-          condition: () => this.isAgencyChecked('District attorney'),
+          condition: () => this.isAgencyChecked(DISTRICT_ATTORNEY),
         }],
         communication_method: [{
           rule: 'isRequiredIf',
           message: 'Please select cross-report communication method.',
-          condition: () => this.isAgencyChecked('District attorney'),
+          condition: () => this.isAgencyChecked(DISTRICT_ATTORNEY),
         }],
         reported_on: [{
           rule: 'isRequiredIf',
           message: 'Please enter a cross-report date.',
-          condition: () => this.isAgencyChecked('District attorney'),
+          condition: () => this.isAgencyChecked(DISTRICT_ATTORNEY),
         }],
       },
-      'Department of justice': {
+      [DEPARTMENT_OF_JUSTICE]: {
         agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
-          condition: () => this.isAgencyChecked('Department of justice'),
+          condition: () => this.isAgencyChecked(DEPARTMENT_OF_JUSTICE),
         }],
         communication_method: [{
           rule: 'isRequiredIf',
           message: 'Please select cross-report communication method.',
-          condition: () => this.isAgencyChecked('Department of justice'),
+          condition: () => this.isAgencyChecked(DEPARTMENT_OF_JUSTICE),
         }],
         reported_on: [{
           rule: 'isRequiredIf',
           message: 'Please enter a cross-report date.',
-          condition: () => this.isAgencyChecked('Department of justice'),
+          condition: () => this.isAgencyChecked(DEPARTMENT_OF_JUSTICE),
         }],
       },
-      Licensing: {
+      [COUNTY_LICENSING]: {
         agency_code: [{
           rule: 'isRequiredIf',
           message: 'Please enter an agency name.',
-          condition: () => this.isAgencyChecked('Licensing'),
+          condition: () => this.isAgencyChecked(COUNTY_LICENSING),
         }],
         communication_method: [{
           rule: 'isRequiredIf',
           message: 'Please select cross-report communication method.',
-          condition: () => this.isAgencyChecked('Licensing'),
+          condition: () => this.isAgencyChecked(COUNTY_LICENSING),
         }],
         reported_on: [{
           rule: 'isRequiredIf',
           message: 'Please enter a cross-report date.',
-          condition: () => this.isAgencyChecked('Licensing'),
+          condition: () => this.isAgencyChecked(COUNTY_LICENSING),
+        }],
+      },
+      [COMMUNITY_CARE_LICENSING]: {
+        agency_code: [{
+          rule: 'isRequiredIf',
+          message: 'Please enter an agency name.',
+          condition: () => this.isAgencyChecked(COMMUNITY_CARE_LICENSING),
+        }],
+        communication_method: [{
+          rule: 'isRequiredIf',
+          message: 'Please select cross-report communication method.',
+          condition: () => this.isAgencyChecked(COMMUNITY_CARE_LICENSING),
+        }],
+        reported_on: [{
+          rule: 'isRequiredIf',
+          message: 'Please enter a cross-report date.',
+          condition: () => this.isAgencyChecked(COMMUNITY_CARE_LICENSING),
         }],
       },
     })
@@ -163,7 +187,7 @@ export default class CrossReportCardView extends React.Component {
         break
       case 'communication_method':
       case 'reported_on':
-        AGENCY_TYPES.map((agency) => {
+        Object.keys(AGENCY_TYPES).map((agency) => {
           updatedReport = reports.find((report) =>
             report.get('agency_type') === agency
           ) || Immutable.Map()

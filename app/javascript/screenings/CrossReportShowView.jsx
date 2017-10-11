@@ -5,6 +5,7 @@ import React from 'react'
 import ShowField from 'common/ShowField'
 import _ from 'lodash'
 import {dateFormatter} from 'utils/dateFormatter'
+import {AGENCY_TYPES} from 'enums/CrossReport'
 
 export default class CrossReportShowView extends React.Component {
   constructor() {
@@ -35,7 +36,7 @@ export default class CrossReportShowView extends React.Component {
                   {
                     crossReports.map(({agency_type, agency_code}, index) => (
                       <div key={index}>
-                        <li>{agency_code ? this.props.agencyCodeToName[agency_code] : agency_type}</li>
+                        <li>{agency_code ? this.props.agencyCodeToName[agency_code] : AGENCY_TYPES[agency_type]}</li>
                         <ErrorMessages
                           errors={this.props.errors.getIn([agency_type, 'agency_code']) && this.props.errors.getIn([agency_type, 'agency_code']).toJS()}
                         />

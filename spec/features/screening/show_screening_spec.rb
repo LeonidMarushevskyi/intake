@@ -33,8 +33,8 @@ feature 'Show Screening' do
       screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
-        { county: 'c41', agency_type: 'District attorney', agency_code: '45Hvp7x00F' },
-        { county: 'c41', agency_type: 'Licensing' }
+        { county: 'c41', agency_type: 'DISTRICT_ATTORNEY', agency_code: '45Hvp7x00F' },
+        { county: 'c41', agency_type: 'COUNTY_LICENSING' }
       ]
     )
   end
@@ -100,7 +100,7 @@ feature 'Show Screening' do
     within '#cross-report-card', text: 'Cross Report' do
       expect(page).to have_content 'District attorney'
       expect(page).to have_content 'LA District Attorney'
-      expect(page).to have_content 'Licensing'
+      expect(page).to have_content 'County licensing'
       click_link 'Edit cross report'
       expect(page).to have_select('District attorney agency name', selected: 'LA District Attorney')
       select '', from: 'District attorney agency name'
@@ -148,8 +148,8 @@ feature 'Show Screening' do
         screening_decision_detail: 'consultation',
         started_at: '2016-08-13T10:00:00.000Z',
         cross_reports: [
-          { agency_type: 'District attorney', agency_code: '45Hvp7x00F' },
-          { agency_type: 'Licensing' }
+          { agency_type: 'DISTRICT_ATTORNEY', agency_code: '45Hvp7x00F' },
+          { agency_type: 'COUNTY_LICENSING' }
         ]
       )
     end
