@@ -9,7 +9,6 @@ import {
 import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
-import nameFormatter from 'utils/nameFormatter'
 
 export default createReducer(Map(), {
   [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, people = []}) {
@@ -25,7 +24,13 @@ export default createReducer(Map(), {
       communication_method: fieldWithTouch,
       location: fieldWithTouch,
       investigation_started_at: fieldWithValue(investigation_started_at),
-      people: people.map((person) => ({name: nameFormatter(person), selected: false, id: person.legacy_descriptor})),
+      people: people.map(({first_name, last_name, middle_name, name_suffix, legacy_descriptor}) => ({
+        first_name,
+        last_name,
+        middle_name,
+        name_suffix,
+        selected: false,
+        id: legacy_descriptor})),
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {
