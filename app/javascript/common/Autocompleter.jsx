@@ -3,6 +3,7 @@ import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
+import _ from 'lodash'
 const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {
@@ -14,12 +15,16 @@ export default class Autocompleter extends React.Component {
       isLoading: false,
       isAutocompleterFocused: false,
     }
+
+    const debounceDelay = 100
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
     this.renderSuggestion = this.renderSuggestion.bind(this)
     this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.loadSuggestions = this.loadSuggestions.bind(this)
+    this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, debounceDelay)
   }
 
   loadSuggestions(value) {
@@ -38,7 +43,7 @@ export default class Autocompleter extends React.Component {
   }
 
   onSuggestionsFetchRequested({value}) {
-    this.loadSuggestions(value)
+    this.debouncedLoadSuggestions(value)
   }
 
   onSuggestionSelected(event, {suggestion}) {
