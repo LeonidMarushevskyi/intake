@@ -21,14 +21,16 @@ feature 'searching a person' do
       fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
     end
 
-    expect(
-      a_request(
-        :get,
-        intake_api_url(
-          ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa')
+    within '.react-autosuggest__suggestion' do
+      expect(
+        a_request(
+          :get,
+          intake_api_url(
+            ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa')
+          )
         )
-      )
-    ).to have_been_made
+      ).to have_been_made
+    end
   end
 end
 
