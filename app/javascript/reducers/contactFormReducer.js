@@ -29,8 +29,9 @@ export default createReducer(Map(), {
         last_name,
         middle_name,
         name_suffix,
+        legacy_descriptor,
         selected: false,
-        id: legacy_descriptor})),
+      })),
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {

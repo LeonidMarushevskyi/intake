@@ -303,16 +303,16 @@ describe('contactFormSelectors', () => {
     it('returns the ids of all people where selected is true', () => {
       const contactForm = {
         people: [
-          {id: {legacy_id: '1'}, selected: true},
-          {id: {legacy_id: '2'}, selected: false},
-          {id: {legacy_id: '3'}, selected: true},
+          {legacy_descriptor: {legacy_id: '1'}, selected: true},
+          {legacy_descriptor: {legacy_id: '2'}, selected: false},
+          {legacy_descriptor: {legacy_id: '3'}, selected: true},
         ],
       }
       const state = fromJS({contactForm})
       expect(getSelectedPeopleIdsSelector(state)).toEqualImmutable(
         fromJS([
-          {legacy_id: '1'},
-          {legacy_id: '3'},
+          {legacy_descriptor: {legacy_id: '1'}},
+          {legacy_descriptor: {legacy_id: '3'}},
         ])
       )
     })

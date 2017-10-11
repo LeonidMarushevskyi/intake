@@ -105,5 +105,8 @@ export const getFormattedContactPeople = createSelector(
 )
 export const getSelectedPeopleIdsSelector = createSelector(
   getPeopleSelector,
-  (people) => people.filter((person) => person.get('selected')).map((person) => person.get('id'))
+  (people = List()) => (
+    people.filter((person) => person.get('selected'))
+      .map((person) => Map({legacy_descriptor: person.get('legacy_descriptor')}))
+  )
 )

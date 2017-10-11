@@ -56,8 +56,21 @@ describe('contactReducer', () => {
             value: 'date time',
           },
           people: [
-            {first_name: 'Bob', last_name: 'Smith', middle_name: undefined, name_suffix: undefined, selected: false, id: '1'},
-            {first_name: 'Jane', last_name: 'Doe', middle_name: undefined, name_suffix: undefined, selected: false, id: '2'},
+            {
+              first_name: 'Bob',
+              last_name: 'Smith',
+              middle_name: undefined,
+              name_suffix: undefined,
+              selected: false,
+              legacy_descriptor: '1',
+            }, {
+              first_name: 'Jane',
+              last_name: 'Doe',
+              middle_name: undefined,
+              name_suffix: undefined,
+              selected: false,
+              legacy_descriptor: '2',
+            },
           ],
         })
       )
