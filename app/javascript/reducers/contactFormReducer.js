@@ -31,11 +31,13 @@ export default createReducer(Map(), {
     return state.setIn([field, 'touched'], true)
   },
   [TOUCH_ALL_CONTACT_FIELDS](state, _) {
-    return state.setIn(['started_at', 'touched'], true)
-      .setIn(['status', 'touched'], true)
-      .setIn(['purpose', 'touched'], true)
-      .setIn(['communication_method', 'touched'], true)
-      .setIn(['location', 'touched'], true)
+    const fieldsWithTouch = [
+      'started_at', 'status', 'purpose', 'communication_method', 'location',
+    ]
+    return fieldsWithTouch.reduce(
+      (contact, field) => contact.setIn([field, 'touched'], true),
+      state
+    )
   },
   [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
     return state.setIn(['id', 'value'], id)
