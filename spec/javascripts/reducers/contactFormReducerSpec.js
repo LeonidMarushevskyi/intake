@@ -3,6 +3,7 @@ import {
   buildSuccess,
   setField,
   touchField,
+  touchAllFields,
 } from 'actions/contactFormActions'
 import {createSuccess} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
@@ -78,6 +79,36 @@ describe('contactReducer', () => {
             value: '123',
             touched: true,
           },
+        })
+      )
+    })
+  })
+
+  describe('on TOUCH_ALL_CONTACT_FIELDS', () => {
+    it('returns the contact with all fields with touch touched set to true', () => {
+      const action = touchAllFields()
+      const initialContactForm = fromJS({
+        id: {value: '123'},
+        investigation_id: {value: '111'},
+        started_at: {value: 'a datetime', touched: false},
+        status: {value: 'a status value', touched: false},
+        note: {value: 'a sample note'},
+        purpose: {value: 'a purpose value', touched: false},
+        communication_method: {value: 'a communication method value', touched: false},
+        location: {value: 'a location value', touched: false},
+        investigation_started_at: {value: 'a datetime'},
+      })
+      expect(contactFormReducer(initialContactForm, action)).toEqualImmutable(
+        fromJS({
+          id: {value: '123'},
+          investigation_id: {value: '111'},
+          started_at: {value: 'a datetime', touched: true},
+          status: {value: 'a status value', touched: true},
+          note: {value: 'a sample note'},
+          purpose: {value: 'a purpose value', touched: true},
+          communication_method: {value: 'a communication method value', touched: true},
+          location: {value: 'a location value', touched: true},
+          investigation_started_at: {value: 'a datetime'},
         })
       )
     })

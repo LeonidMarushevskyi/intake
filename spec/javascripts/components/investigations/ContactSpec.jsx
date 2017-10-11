@@ -18,7 +18,9 @@ describe('Contact', () => {
     communicationMethods = [],
     locations = [],
     inPersonCode = '',
+    officeLocationCode = '',
     people = [],
+    valid = false,
   }) {
     const props = {
       investigationId,
@@ -35,7 +37,9 @@ describe('Contact', () => {
       locations,
       errors,
       inPersonCode,
+      officeLocationCode,
       people,
+      valid,
     }
     return shallow(<Contact {...props} />)
   }
@@ -133,6 +137,27 @@ describe('Contact', () => {
     const communicationMethodSelect = component.find("SelectField[id='communication_method']")
     communicationMethodSelect.simulate('change', {target: {value: '1'}})
     expect(setField).toHaveBeenCalledWith('communication_method', '1')
+  })
+
+  it("changing communication method to anything but 'in person code' sets location to 'office location code'", () => {
+    const setField = jasmine.createSpy('setField')
+    const officeLocationCode = 'officeLocationCode'
+    const inPersonCode = 'inPersonCode'
+    const component = renderContact({inPersonCode, officeLocationCode, actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: 'not inPersonCode'}})
+    expect(setField).toHaveBeenCalledWith('communication_method', 'not inPersonCode')
+    expect(setField).toHaveBeenCalledWith('location', officeLocationCode)
+  })
+
+  it("changing communication method to 'in person code' resets location", () => {
+    const setField = jasmine.createSpy('setField')
+    const inPersonCode = 'inPersonCode'
+    const component = renderContact({inPersonCode, actions: {setField}})
+    const communicationMethodSelect = component.find("SelectField[id='communication_method']")
+    communicationMethodSelect.simulate('change', {target: {value: inPersonCode}})
+    expect(setField).toHaveBeenCalledWith('communication_method', inPersonCode)
+    expect(setField).toHaveBeenCalledWith('location', null)
   })
 
   it('blurring communication method fires touchField with the proper parameter', () => {
@@ -268,29 +293,64 @@ describe('Contact', () => {
     expect(saveButton.props().type).toEqual('submit')
   })
 
-  it('clicking save fires the create action', () => {
-    const create = jasmine.createSpy('create')
+  describe('clicking save', () => {
+    let create
     const event = jasmine.createSpyObj('event', ['preventDefault'])
-    const component = renderContact({
-      investigationId: '123',
-      startedAt: '2016-08-11T18:24:22.157Z',
-      status: 'S',
-      communicationMethod: '654',
-      location: '432',
-      note: 'This is a new note',
-      purpose: '1',
-      actions: {create},
+    beforeEach(() => {
+      create = jasmine.createSpy('create')
     })
-    component.find('form').simulate('submit', event)
-    expect(create).toHaveBeenCalledWith({
-      investigation_id: '123',
-      started_at: '2016-08-11T18:24:22.157Z',
-      communication_method: '654',
-      location: '432',
-      status: 'S',
-      note: 'This is a new note',
-      purpose: '1',
-      people: [],
+
+    it('when contact is valid creates a contact', () => {
+      const component = renderContact({
+        valid: true,
+        investigationId: '123',
+        startedAt: '2016-08-11T18:24:22.157Z',
+        status: 'S',
+        communicationMethod: '654',
+        location: '432',
+        note: 'This is a new note',
+        purpose: '1',
+        actions: {create},
+      })
+      component.find('form').simulate('submit', event)
+      expect(create).toHaveBeenCalledWith({
+        investigation_id: '123',
+        started_at: '2016-08-11T18:24:22.157Z',
+        communication_method: '654',
+        location: '432',
+        status: 'S',
+        note: 'This is a new note',
+        purpose: '1',
+        people: [],
+      })
+    })
+
+    describe('when contact is invalid', () => {
+      let touchAllFields
+
+      beforeEach(() => {
+        touchAllFields = jasmine.createSpy('touchAllFields')
+        const component = renderContact({
+          valid: false,
+          investigationId: '123',
+          startedAt: '2016-08-11T18:24:22.157Z',
+          status: 'S',
+          communicationMethod: '654',
+          location: '432',
+          note: 'This is a new note',
+          purpose: '1',
+          actions: {create, touchAllFields},
+        })
+        component.find('form').simulate('submit', event)
+      })
+
+      it('does not create a contact', () => {
+        expect(create).not.toHaveBeenCalled()
+      })
+
+      it('touches all contact fields to display all validations', () => {
+        expect(touchAllFields).toHaveBeenCalled()
+      })
     })
   })
 

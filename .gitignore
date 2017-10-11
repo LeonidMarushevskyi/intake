@@ -28,3 +28,6 @@ binstubs/
 /node_modules
 
 yarn-error.log
+
+# Ignore package-lock file
+package-lock.json

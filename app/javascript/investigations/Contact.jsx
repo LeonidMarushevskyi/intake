@@ -19,27 +19,33 @@ class Contact extends React.Component {
       status,
       note,
       purpose,
-      actions: {setField, touchField, create},
+      actions: {setField, touchField, create, touchAllFields},
       statuses,
       purposes,
       communicationMethods,
       locations,
       errors,
       inPersonCode,
+      officeLocationCode,
       people,
+      valid,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
-      create({
-        investigation_id: investigationId,
-        started_at: startedAt,
-        communication_method: communicationMethod,
-        location,
-        status,
-        note,
-        purpose,
-        people: [],
-      })
+      if (valid) {
+        create({
+          investigation_id: investigationId,
+          started_at: startedAt,
+          communication_method: communicationMethod,
+          location,
+          status,
+          note,
+          purpose,
+          people: [],
+        })
+      } else {
+        touchAllFields()
+      }
     }
     return (
       <div className='card show double-gap-top'>
@@ -67,7 +73,14 @@ class Contact extends React.Component {
                     id='communication_method'
                     label='Communication Method'
                     value={communicationMethod}
-                    onChange={(event) => setField('communication_method', event.target.value)}
+                    onChange={({target: {value}}) => {
+                      setField('communication_method', value)
+                      if (value === inPersonCode) {
+                        setField('location', null)
+                      } else {
+                        setField('location', officeLocationCode)
+                      }
+                    }}
                     onBlur={() => touchField('communication_method')}
                     errors={errors.communication_method}
                   >
@@ -160,12 +173,14 @@ Contact.propTypes = {
   location: PropTypes.string,
   locations: PropTypes.array.isRequired,
   note: PropTypes.string,
+  officeLocationCode: PropTypes.string,
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
   startedAt: PropTypes.string,
   status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
+  valid: PropTypes.bool,
 }
 
 Contact.defaultProps = {

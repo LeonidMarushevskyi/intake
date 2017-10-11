@@ -14,4 +14,11 @@ export const getInPersonCommunicationMethodValueSelector = createSelector(
     return systemCode.get('code')
   }
 )
+export const getOfficeLocationCodeValueSelector = createSelector(
+  getLocationsSelector,
+  (systemCodes) => {
+    const systemCode = systemCodes.find((systemCode) => systemCode.get('value') === 'CWS Office', this, Map())
+    return systemCode.get('code')
+  }
+)
 /* eslint-enable no-invalid-this */

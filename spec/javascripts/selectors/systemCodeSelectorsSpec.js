@@ -1,4 +1,7 @@
-import {getInPersonCommunicationMethodValueSelector} from 'selectors/systemCodeSelectors'
+import {
+  getInPersonCommunicationMethodValueSelector,
+  getOfficeLocationCodeValueSelector,
+} from 'selectors/systemCodeSelectors'
 import {fromJS} from 'immutable'
 
 describe('getInPersonCommunicationMethodValueSelector', () => {
@@ -11,5 +14,18 @@ describe('getInPersonCommunicationMethodValueSelector', () => {
   it('returns undefined when communication methods are empty', () => {
     const state = fromJS({communicationMethods: []})
     expect(getInPersonCommunicationMethodValueSelector(state)).toEqual(undefined)
+  })
+})
+
+describe('getOfficeLocationCodeValueSelector', () => {
+  it("returns the code value for 'CWS Office' location", () => {
+    const locations = [{code: 'office_location_code', value: 'CWS Office'}]
+    const state = fromJS({locations})
+    expect(getOfficeLocationCodeValueSelector(state)).toEqual('office_location_code')
+  })
+
+  it('returns undefined when locations are empty', () => {
+    const state = fromJS({locations: []})
+    expect(getOfficeLocationCodeValueSelector(state)).toEqual(undefined)
   })
 })
