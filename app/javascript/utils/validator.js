@@ -8,6 +8,7 @@ const isRequired = ({value, errorMessage}) => {
   }
   return undefined
 }
+export const isRequiredCreate = (value, errorMessage) => () => isRequired({value, errorMessage})
 
 const isRequiredIf = ({value, errorMessage, condition}) => {
   if (condition()) {
@@ -24,6 +25,7 @@ const isNotInTheFuture = ({value, errorMessage}) => {
     return undefined
   }
 }
+export const isFutureDatetimeCreate = (value, errorMessage) => () => isNotInTheFuture({value, errorMessage})
 
 const isBeforeOtherDate = ({value, errorMessage, otherValue}) => {
   if (value && otherValue() && value >= otherValue()) {
@@ -31,6 +33,14 @@ const isBeforeOtherDate = ({value, errorMessage, otherValue}) => {
   }
   return undefined
 }
+export const isBeforeDatetimeCreate = (datetime, beforeTime, message) => () => {
+  if (beforeTime && datetime < beforeTime) {
+    return message
+  } else {
+    return undefined
+  }
+}
+export const combineCompact = (...funcs) => funcs.map((func) => func()).filter((x) => x)
 
 const VALIDATORS = Immutable.fromJS({
   isRequired: isRequired,
