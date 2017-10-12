@@ -18,9 +18,7 @@ feature 'Submit Screening' do
   context 'when referral submit is activated' do
     around do |example|
       Feature.run_with_activated(:referral_submit) do
-        Capybara::Accessible::Auditor.disable
         example.run
-        Capybara::Accessible::Auditor.enable
       end
     end
 
