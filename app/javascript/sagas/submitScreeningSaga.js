@@ -17,7 +17,7 @@ export function* submitScreening({id}) {
     yield call(alert, `Successfully created referral ${screening.get('referral_id')}`)
   } catch (error) {
     yield put(submitScreeningFailure(error.responseJSON))
-    yield call(alert, error.responseText)
+    yield call(console.log, error)
   }
 }
 export function* submitScreeningSaga() {

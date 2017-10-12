@@ -80,9 +80,6 @@ feature 'Submit Screening' do
           )
         ).to have_been_made
 
-        expect(alert_dialog.text).to include(error_json)
-        alert_dialog.accept
-
         expect(page).not_to have_content '#submitModal'
         expect(page).not_to have_content ' - Referral #'
       end

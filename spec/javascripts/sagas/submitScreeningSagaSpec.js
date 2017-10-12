@@ -48,7 +48,7 @@ describe('submitScreening', () => {
       put(submitScreeningFailure('some error json'))
     )
     expect(gen.next().value).toEqual(
-      call(alert, 'some error text')
+      call(console.log, error)
     )
   })
 })
