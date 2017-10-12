@@ -16,8 +16,8 @@ export function createFailure(error) {
 export function fetch(investigationId, id) {
   return {type: FETCH_CONTACT, investigation_id: investigationId, id}
 }
-export function fetchSuccess(investigationId, contact) {
-  return {type: FETCH_CONTACT_SUCCESS, ...contact, investigation_id: investigationId}
+export function fetchSuccess(investigationId, {id, started_at, status, note, purpose, communication_method, location}) {
+  return {type: FETCH_CONTACT_SUCCESS, investigation_id: investigationId, id, started_at, status, note, purpose, communication_method, location}
 }
 export function fetchFailure(error) {
   return {type: FETCH_CONTACT_FAILURE, error}
