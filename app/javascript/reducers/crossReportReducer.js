@@ -8,7 +8,7 @@ import {
 
 export default createReducer(Map(), {
   [SET_CROSS_REPORT_FIELD](state, {field, value}) {
-    return state.setIn([field, 'value'], value)
+    return state.setIn([field, 'value'], value).setIn([field, 'touched'], true)
   },
   [FETCH_SCREENING_SUCCESS](_state, {screening: {cross_reports}}) {
     if (cross_reports && cross_reports.length > 0) {
