@@ -40,9 +40,21 @@ export const getCommunicationMethodValueSelector = createSelector(
   getCommunicationMethodsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
 )
+export const getPeopleSelector = createSelector(
+  (state) => state.get('contactForm'),
+  (contactForm) => contactForm.get('people') || List()
+)
 export const getTouchedFieldsSelector = createSelector(
   (state) => state.get('contactForm'),
-  (contactForm) => contactForm.filter((field) => field.get('touched')).keySeq()
+  (contactForm) => (
+    contactForm.filter((field) => {
+      if (List.isList(field)) {
+        return field.some((item) => item.get('touched'))
+      } else {
+        return field.get('touched')
+      }
+    }).keySeq().toList()
+  )
 )
 export const getErrorsSelector = createSelector(
   (state) => state.getIn(['contactForm', 'started_at', 'value']),
@@ -51,7 +63,8 @@ export const getErrorsSelector = createSelector(
   (state) => state.getIn(['contactForm', 'location', 'value']),
   (state) => state.getIn(['contactForm', 'status', 'value']),
   (state) => state.getIn(['contactForm', 'purpose', 'value']),
-  (startedAt, investigationStartedAt, communicationMethod, location, status, purpose) => fromJS({
+  getPeopleSelector,
+  (startedAt, investigationStartedAt, communicationMethod, location, status, purpose, people) => fromJS({
     started_at: combineCompact(
       isRequiredCreate(startedAt, 'Please enter a contact date'),
       isFutureDatetimeCreate(startedAt, 'The date and time cannot be in the future'),
@@ -73,6 +86,15 @@ export const getErrorsSelector = createSelector(
     purpose: combineCompact(
       isRequiredCreate(purpose, 'Please enter a contact purpose')
     ),
+    people: combineCompact(
+      () => {
+        if (people.some((person) => person.get('selected'))) {
+          return undefined
+        } else {
+          return 'At least one person must be present for a contact'
+        }
+      }
+    ),
   })
 )
 export const getVisibleErrorsSelector = createSelector(
@@ -92,10 +114,6 @@ export const getVisibleErrorsSelector = createSelector(
 export const getHasErrorsValueSelector = createSelector(
   getErrorsSelector,
   (errors) => errors.some((fieldErrors) => !fieldErrors.isEmpty())
-)
-export const getPeopleSelector = createSelector(
-  (state) => state.get('contactForm'),
-  (contactForm) => contactForm.get('people') || List()
 )
 export const getFormattedContactPeople = createSelector(
   getPeopleSelector,
