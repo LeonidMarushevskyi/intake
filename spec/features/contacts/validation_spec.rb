@@ -4,6 +4,19 @@ require 'rails_helper'
 
 feature 'Validate Investigation Contact' do
   let(:investigation_started_at) { Time.parse('2017-08-15T14:00:00.000') }
+  let(:people) do
+    [
+      {
+        first_name: 'Emma',
+        last_name: 'Woodhouse',
+        legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
+      }, {
+        first_name: 'George',
+        last_name: 'Knightley',
+        legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
+      }
+    ]
+  end
   before do
     investigation_id = '123ABC'
     stub_request(
@@ -12,7 +25,7 @@ feature 'Validate Investigation Contact' do
       json_body(
         {
           started_at: investigation_started_at.strftime('%Y-%m-%dT%H:%M:%S.%L'),
-          people: []
+          people: people
         }.to_json,
         status: 200
       )
@@ -107,6 +120,7 @@ feature 'Validate Investigation Contact' do
     expect(page).to_not have_content 'Please enter a contact date'
     expect(page).to_not have_content 'Please enter a contact purpose'
     expect(page).to_not have_content 'Please enter the communication method'
+    expect(page).to_not have_content 'At least one person must be present for a contact'
 
     click_on 'Save'
 
@@ -114,12 +128,14 @@ feature 'Validate Investigation Contact' do
     expect(page).to have_content 'Please enter a contact date'
     expect(page).to have_content 'Please enter a contact purpose'
     expect(page).to have_content 'Please enter the communication method'
+    expect(page).to have_content 'At least one person must be present for a contact'
 
     select 'Attempted', from: 'Status'
     fill_in_datepicker 'Date/Time', with: 2.years.from_now
     select 'Investigate Referral', from: 'Purpose'
     select 'In person', from: 'Communication Method'
     select 'School', from: 'Location'
+    find('label', text: 'Emma Woodhouse').click
 
     click_on 'Save'
 
@@ -127,5 +143,6 @@ feature 'Validate Investigation Contact' do
     expect(page).to_not have_content 'Please enter a contact date'
     expect(page).to_not have_content 'Please enter a contact purpose'
     expect(page).to_not have_content 'Please enter the communication method'
+    expect(page).to_not have_content 'At least one person must be present for a contact'
   end
 end
