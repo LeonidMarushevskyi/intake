@@ -231,13 +231,14 @@ describe('contactFormSelectors', () => {
       const contactForm = {
         started_at: {value: yesterday},
         investigation_started_at: {value: yesterday},
-        communication_method: {value: 'a value'},
-        location: {value: 'a value'},
-        status: {value: 'a value'},
-        purpose: {value: 'a value'},
+        communication_method: {value: ''},
+        location: {value: ''},
+        status: {value: ''},
+        purpose: {value: ''},
       }
       const state = fromJS({contactForm})
-      expect(getHasErrorsValueSelector(state)).toEqual(false)
+      const errors = getVisibleErrorsSelector(state)
+      expect(errors.some((fieldErrors) => !fieldErrors.isEmpty())).toEqual(false)
     })
   })
 
