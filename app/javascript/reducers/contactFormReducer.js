@@ -31,6 +31,7 @@ export default createReducer(Map(), {
         name_suffix,
         legacy_descriptor,
         selected: false,
+        touched: false,
       })),
     })
   },
@@ -51,9 +52,11 @@ export default createReducer(Map(), {
   },
   [SELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], true)
+      .setIn(['people', index, 'touched'], true)
   },
   [DESELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], false)
+      .setIn(['people', index, 'touched'], true)
   },
   [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
     return state.setIn(['id', 'value'], id)

@@ -61,15 +61,17 @@ describe('contactReducer', () => {
               last_name: 'Smith',
               middle_name: undefined,
               name_suffix: undefined,
-              selected: false,
               legacy_descriptor: '1',
+              selected: false,
+              touched: false,
             }, {
               first_name: 'Jane',
               last_name: 'Doe',
               middle_name: undefined,
               name_suffix: undefined,
-              selected: false,
               legacy_descriptor: '2',
+              selected: false,
+              touched: false,
             },
           ],
         })
@@ -138,14 +140,14 @@ describe('contactReducer', () => {
   })
 
   describe('on SELECT_CONTACT_PERSON', () => {
-    it('changes the selected value for the passed index to true', () => {
+    it('changes the selected and touched flags for the passed index to true', () => {
       const action = selectPerson('1')
-      const state = fromJS({people: [{selected: false}, {selected: false}]})
+      const state = fromJS({people: [{selected: false, touched: false}, {selected: false, touched: false}]})
       expect(contactFormReducer(state, action)).toEqualImmutable(
         fromJS({
           people: [
-            {selected: false},
-            {selected: true},
+            {selected: false, touched: false},
+            {selected: true, touched: true},
           ],
         })
       )
@@ -153,14 +155,14 @@ describe('contactReducer', () => {
   })
 
   describe('on DESELECT_CONTACT_PERSON', () => {
-    it('changes the selected value for the passed index to false', () => {
+    it('changes the selected value for the passed index to false, and the touched flag to true', () => {
       const action = deselectPerson('1')
-      const state = fromJS({people: [{selected: true}, {selected: true}]})
+      const state = fromJS({people: [{selected: true, touched: false}, {selected: true, touched: false}]})
       expect(contactFormReducer(state, action)).toEqualImmutable(
         fromJS({
           people: [
-            {selected: true},
-            {selected: false},
+            {selected: true, touched: false},
+            {selected: false, touched: true},
           ],
         })
       )
