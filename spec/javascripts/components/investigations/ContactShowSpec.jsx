@@ -1,10 +1,14 @@
 import ContactShow from 'investigations/ContactShow'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('ContactShow', () => {
-  function renderContact(props) {
+  function renderContact({id = '123', investigationId = '456', ...otherProps}) {
+    const props = {id, investigationId, ...otherProps}
     return shallow(<ContactShow {...props} />)
+  }
+  function mountContact(props) {
+    return mount(<ContactShow {...props} />)
   }
 
   it('displays the investigation Id in the header', () => {
@@ -36,5 +40,13 @@ describe('ContactShow', () => {
   it('displays the location', () => {
     const component = renderContact({location: 'School'})
     expect(component.html()).toContain('School')
+  })
+
+  it('fetches the contact when the component mounts', () => {
+    const fetch = jasmine.createSpy('fetch')
+    const investigationId = 'INVESTIGATION_ID'
+    const id = 'CONTACT_ID'
+    mountContact({investigationId, id, actions: {fetch}})
+    expect(fetch).toHaveBeenCalledWith(investigationId, id)
   })
 })
