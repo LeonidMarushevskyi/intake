@@ -3,12 +3,13 @@
 require 'rails_helper'
 
 describe Api::V1::Investigations::ContactsController do
+  let(:security_token) { 'security_token' }
+  let(:session) do
+    { security_token => security_token }
+  end
+  let(:investigation_id) { '123' }
+
   describe '#create' do
-    let(:security_token) { 'security_token' }
-    let(:session) do
-      { security_token => security_token }
-    end
-    let(:investigation_id) { '123' }
     let(:response_object) do
       double(
         :response,
@@ -40,6 +41,31 @@ describe Api::V1::Investigations::ContactsController do
       }, session: session
       expect(JSON.parse(response.body)).to match a_hash_including('id' => '444')
       expect(response.status).to eq 201
+    end
+  end
+
+  describe '#show' do
+    let(:contact_id) { '456' }
+    let(:response_object) do
+      double(
+        :response,
+        body: '{"id":"456"}',
+        status: 200
+      )
+    end
+    before do
+      expect(FerbAPI).to receive(:make_api_call)
+        .with(security_token, '/investigations/123/contacts/456', :get)
+        .and_return(response_object)
+    end
+
+    it 'returns response from get contacts API' do
+      process :show, method: :post, params: {
+        investigation_id: investigation_id,
+        id: contact_id
+      }, session: session
+      expect(JSON.parse(response.body)).to match a_hash_including('id' => '456')
+      expect(response.status).to eq 200
     end
   end
 end
