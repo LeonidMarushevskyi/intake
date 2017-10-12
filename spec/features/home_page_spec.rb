@@ -41,22 +41,19 @@ feature 'home page' do
 
       fill_in_autocompleter 'People', with: 'Marge'
 
-      within '.react-autosuggest__suggestion' do
-        %w[M Ma Mar Marg].each do |search_text|
-          expect(
-            a_request(
-              :get,
-              intake_api_url(
-                ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text)
-              )
-            )
-          ).to_not have_been_made
-        end
-
+      expect(
+        a_request(
+          :get,
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'M'))
+        )
+      ).to_not have_been_made
+      %w[Ma Mar Marg Marge].each do |search_text|
         expect(
           a_request(
             :get,
-            intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Marge'))
+            intake_api_url(
+              ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text)
+            )
           )
         ).to have_been_made
       end

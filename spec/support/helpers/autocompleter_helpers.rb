@@ -18,7 +18,10 @@ module AutocompleterHelpers
       raise 'You need to tag your test with @javascript to use this step'
     end
 
-    value.split('').each { |c| find_field(locator).native.send_keys(c) }
+    value.split('').each do |character|
+      find_field(locator).native.send_keys(character)
+      sleep 0.15
+    end
 
     # Firefox doesn't trigger focus/blur when the window doesn't have system focus
     # So, we added a click handler to the autocompleter as an alternative way to
