@@ -9,6 +9,9 @@ import {
   getErrorsSelector,
   getVisibleErrorsSelector,
   getHasErrorsValueSelector,
+  getPeopleSelector,
+  getFormattedContactPeople,
+  getSelectedPeopleIdsSelector,
 } from 'selectors/contactFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -224,28 +227,6 @@ describe('contactFormSelectors', () => {
     })
 
     it('does not return an error if the field has not been touched', () => {
-      const contactForm = {
-        purpose: {
-          value: undefined,
-          touched: false,
-        },
-      }
-      const state = fromJS({contactForm})
-      expect(getVisibleErrorsSelector(state).get('purpose'))
-        .toEqualImmutable(List())
-    })
-  })
-
-  describe('getHasErrorsValueSelector', () => {
-    it('returns true if contact form has errors present', () => {
-      const contactForm = {
-        purpose: {value: undefined},
-      }
-      const state = fromJS({contactForm})
-      expect(getHasErrorsValueSelector(state)).toEqual(true)
-    })
-
-    it('does not return an error if the field has not been touched', () => {
       const yesterday = moment().subtract(1, 'days').toISOString()
       const contactForm = {
         started_at: {value: yesterday},
@@ -257,6 +238,89 @@ describe('contactFormSelectors', () => {
       }
       const state = fromJS({contactForm})
       expect(getHasErrorsValueSelector(state)).toEqual(false)
+    })
+  })
+
+  describe('getHasErrorsValueSelector', () => {
+    it('returns true if contact form has errors present', () => {
+      const contactForm = {
+        purpose: {value: undefined},
+      }
+      const state = fromJS({contactForm})
+      expect(getHasErrorsValueSelector(state)).toEqual(true)
+    })
+  })
+
+  describe('getPeopleSelector', () => {
+    it('returns the list of people on a contact form', () => {
+      const contactForm = {
+        people: [
+          {first_name: 'Bob'},
+          {first_name: 'Sally'},
+        ],
+      }
+      const state = fromJS({contactForm})
+      expect(getPeopleSelector(state)).toEqualImmutable(
+        fromJS([
+          {first_name: 'Bob'},
+          {first_name: 'Sally'},
+        ])
+      )
+    })
+
+    it('returns an empty list of the contact form is empty', () => {
+      const contactForm = {}
+      const state = fromJS({contactForm})
+      expect(getPeopleSelector(state)).toEqualImmutable(List())
+    })
+  })
+
+  describe('getFormattedContactPeople', () => {
+    it('returns the list of people on a contact form', () => {
+      const contactForm = {
+        people: [
+          {first_name: 'Bob', last_name: 'Smith', selected: true, legacy_descriptor: '1'},
+          {first_name: 'Sally', last_name: 'Doe', selected: false, legacy_descriptor: '2'},
+        ],
+      }
+      const state = fromJS({contactForm})
+      expect(getFormattedContactPeople(state)).toEqualImmutable(
+        fromJS([
+          {name: 'Bob Smith', selected: true},
+          {name: 'Sally Doe', selected: false},
+        ])
+      )
+    })
+
+    it('returns an empty list of the contact form is empty', () => {
+      const contactForm = {}
+      const state = fromJS({contactForm})
+      expect(getFormattedContactPeople(state)).toEqualImmutable(List())
+    })
+  })
+
+  describe('getSelectedPeopleIdsSelector', () => {
+    it('returns the ids of all people where selected is true', () => {
+      const contactForm = {
+        people: [
+          {legacy_descriptor: {legacy_id: '1'}, selected: true},
+          {legacy_descriptor: {legacy_id: '2'}, selected: false},
+          {legacy_descriptor: {legacy_id: '3'}, selected: true},
+        ],
+      }
+      const state = fromJS({contactForm})
+      expect(getSelectedPeopleIdsSelector(state)).toEqualImmutable(
+        fromJS([
+          {legacy_descriptor: {legacy_id: '1'}},
+          {legacy_descriptor: {legacy_id: '3'}},
+        ])
+      )
+    })
+
+    it('returns empty list when no people exist', () => {
+      const contactForm = {}
+      const state = fromJS({contactForm})
+      expect(getSelectedPeopleIdsSelector(state)).toEqualImmutable(List())
     })
   })
 })

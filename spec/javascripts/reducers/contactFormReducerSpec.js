@@ -4,6 +4,8 @@ import {
   setField,
   touchField,
   touchAllFields,
+  selectPerson,
+  deselectPerson,
 } from 'actions/contactFormActions'
 import {createSuccess} from 'actions/contactActions'
 import * as matchers from 'jasmine-immutable-matchers'
@@ -14,7 +16,11 @@ describe('contactReducer', () => {
 
   describe('on BUILD_CONTACT_SUCCESS', () => {
     it('returns the contact', () => {
-      const action = buildSuccess({investigation_id: '123', investigation_started_at: 'date time'})
+      const people = [
+        {first_name: 'Bob', last_name: 'Smith', legacy_descriptor: '1'},
+        {first_name: 'Jane', last_name: 'Doe', legacy_descriptor: '2'},
+      ]
+      const action = buildSuccess({investigation_id: '123', investigation_started_at: 'date time', people})
       expect(contactFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           id: {
@@ -49,6 +55,23 @@ describe('contactReducer', () => {
           investigation_started_at: {
             value: 'date time',
           },
+          people: [
+            {
+              first_name: 'Bob',
+              last_name: 'Smith',
+              middle_name: undefined,
+              name_suffix: undefined,
+              selected: false,
+              legacy_descriptor: '1',
+            }, {
+              first_name: 'Jane',
+              last_name: 'Doe',
+              middle_name: undefined,
+              name_suffix: undefined,
+              selected: false,
+              legacy_descriptor: '2',
+            },
+          ],
         })
       )
     })
@@ -109,6 +132,36 @@ describe('contactReducer', () => {
           communication_method: {value: 'a communication method value', touched: true},
           location: {value: 'a location value', touched: true},
           investigation_started_at: {value: 'a datetime'},
+        })
+      )
+    })
+  })
+
+  describe('on SELECT_CONTACT_PERSON', () => {
+    it('changes the selected value for the passed index to true', () => {
+      const action = selectPerson('1')
+      const state = fromJS({people: [{selected: false}, {selected: false}]})
+      expect(contactFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          people: [
+            {selected: false},
+            {selected: true},
+          ],
+        })
+      )
+    })
+  })
+
+  describe('on DESELECT_CONTACT_PERSON', () => {
+    it('changes the selected value for the passed index to false', () => {
+      const action = deselectPerson('1')
+      const state = fromJS({people: [{selected: true}, {selected: true}]})
+      expect(contactFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          people: [
+            {selected: true},
+            {selected: false},
+          ],
         })
       )
     })

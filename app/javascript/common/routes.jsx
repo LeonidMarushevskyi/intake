@@ -5,7 +5,7 @@ import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
-import ContactContainer from 'investigations/ContactContainer'
+import ContactFormContainer from 'investigations/ContactFormContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
 import {store} from 'store/configureStore'
 import {Provider} from 'react-redux'
@@ -29,7 +29,7 @@ export default (
         <Route path='screenings/:id' component={ScreeningPage}/>
         <Route path='screenings/:id/:mode' component={ScreeningPage} />
         <Route path='investigations/:id' component={InvestigationPage} />
-        <Route path='investigations/:investigation_id/contacts/new' component={ContactContainer} />
+        <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} />
         <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />
       </Route>
     </Router>

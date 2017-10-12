@@ -1,8 +1,8 @@
-import Contact from 'investigations/Contact'
+import ContactForm from 'investigations/ContactForm'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-describe('Contact', () => {
+describe('ContactForm', () => {
   function renderContact({
     investigationId = 'ABC123',
     actions = {},
@@ -21,6 +21,7 @@ describe('Contact', () => {
     officeLocationCode = '',
     people = [],
     valid = false,
+    selectedPeopleIds = [],
   }) {
     const props = {
       investigationId,
@@ -40,8 +41,9 @@ describe('Contact', () => {
       officeLocationCode,
       people,
       valid,
+      selectedPeopleIds,
     }
-    return shallow(<Contact {...props} />)
+    return shallow(<ContactForm {...props} />)
   }
 
   it('displays the investigation Id in the header', () => {
@@ -230,12 +232,40 @@ describe('Contact', () => {
 
   it('displays people present', () => {
     const people = [
-      {first_name: 'Ferris', last_name: 'Bueller'},
-      {first_name: 'Cameron', last_name: 'Fry'},
+      {name: 'Ferris Bueller', selected: true},
+      {name: 'Cameron Fry', selected: false},
     ]
     const component = renderContact({people})
-    expect(component.html()).toContain('Ferris Bueller')
-    expect(component.html()).toContain('Cameron Fry')
+    const peopleCheckBoxes = component.find('CheckboxField')
+    expect(peopleCheckBoxes.length).toEqual(2)
+    expect(peopleCheckBoxes.at(0).props().value).toEqual('Ferris Bueller')
+    expect(peopleCheckBoxes.at(0).props().checked).toEqual(true)
+    expect(peopleCheckBoxes.at(0).props().id).toEqual('person_0')
+    expect(peopleCheckBoxes.at(1).props().value).toEqual('Cameron Fry')
+    expect(peopleCheckBoxes.at(1).props().checked).toEqual(false)
+    expect(peopleCheckBoxes.at(1).props().id).toEqual('person_1')
+  })
+
+  it('selecting an unchecked person fires selectContactPerson', () => {
+    const selectPerson = jasmine.createSpy('selectPerson')
+    const people = [
+      {name: 'Cameron Fry', selected: false},
+    ]
+    const component = renderContact({actions: {selectPerson}, people})
+    const personCheckBox = component.find('CheckboxField')
+    personCheckBox.simulate('change', {target: {checked: true}})
+    expect(selectPerson).toHaveBeenCalledWith(0)
+  })
+
+  it('deselecting a checked person fires deselectContactPerson', () => {
+    const deselectPerson = jasmine.createSpy('deselectPerson')
+    const people = [
+      {name: 'Ferris Bueller', selected: true},
+    ]
+    const component = renderContact({actions: {deselectPerson}, people})
+    const personCheckBox = component.find('CheckboxField')
+    personCheckBox.simulate('change', {target: {checked: false}})
+    expect(deselectPerson).toHaveBeenCalledWith(0)
   })
 
   it('displays note', () => {
@@ -311,6 +341,7 @@ describe('Contact', () => {
         note: 'This is a new note',
         purpose: '1',
         actions: {create},
+        selectedPeopleIds: [{legacy_descriptor: '1'}],
       })
       component.find('form').simulate('submit', event)
       expect(create).toHaveBeenCalledWith({
@@ -321,7 +352,7 @@ describe('Contact', () => {
         status: 'S',
         note: 'This is a new note',
         purpose: '1',
-        people: [],
+        people: [{legacy_descriptor: '1'}],
       })
     })
 
@@ -357,7 +388,7 @@ describe('Contact', () => {
   it('calls build when the component mounts', () => {
     const build = jasmine.createSpy('build')
     mount(
-      <Contact
+      <ContactForm
         investigationId='ABC123'
         actions={{build}}
         contact={{}}

@@ -1,6 +1,6 @@
 import * as contactFormActions from 'actions/contactFormActions'
 import {create} from 'actions/contactActions'
-import Contact from 'investigations/Contact'
+import ContactForm from 'investigations/ContactForm'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {
@@ -15,6 +15,8 @@ import {
 import {
   getVisibleErrorsSelector,
   getHasErrorsValueSelector,
+  getFormattedContactPeople,
+  getSelectedPeopleIdsSelector,
 } from 'selectors/contactFormSelectors'
 
 const mapStateToProps = (state, ownProps) => {
@@ -35,7 +37,8 @@ const mapStateToProps = (state, ownProps) => {
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
     officeLocationCode: getOfficeLocationCodeValueSelector(state),
     locations: getLocationsSelector(state).toJS(),
-    people: state.get('investigationPeople').toJS(),
+    people: getFormattedContactPeople(state).toJS(),
+    selectedPeopleIds: getSelectedPeopleIdsSelector(state).toJS(),
   }
 }
 
@@ -44,4 +47,4 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
   return {actions: bindActionCreators(actions, dispatch)}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contact)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)

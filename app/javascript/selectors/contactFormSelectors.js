@@ -13,6 +13,7 @@ import {
   isBeforeDatetimeCreate,
   combineCompact,
 } from 'utils/validator'
+import nameFormatter from 'utils/nameFormatter'
 
 /* eslint-disable no-invalid-this */
 const systemCodeDisplayValue = (code, systemCodes, noSetValue = Map(), context = this) => systemCodes.find(
@@ -91,4 +92,21 @@ export const getVisibleErrorsSelector = createSelector(
 export const getHasErrorsValueSelector = createSelector(
   getErrorsSelector,
   (errors) => errors.some((fieldErrors) => !fieldErrors.isEmpty())
+)
+export const getPeopleSelector = createSelector(
+  (state) => state.get('contactForm'),
+  (contactForm) => contactForm.get('people') || List()
+)
+export const getFormattedContactPeople = createSelector(
+  getPeopleSelector,
+  (people) => (
+    people.map((person) => Map({name: nameFormatter(person.toJS()), selected: person.get('selected')}))
+  )
+)
+export const getSelectedPeopleIdsSelector = createSelector(
+  getPeopleSelector,
+  (people = List()) => (
+    people.filter((person) => person.get('selected'))
+      .map((person) => Map({legacy_descriptor: person.get('legacy_descriptor')}))
+  )
 )

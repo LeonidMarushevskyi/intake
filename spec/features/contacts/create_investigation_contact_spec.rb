@@ -7,8 +7,15 @@ feature 'Create Investigation Contact' do
 
   before do
     people = [
-      { first_name: 'Emma', last_name: 'Woodhouse' },
-      { first_name: 'George', last_name: 'Knightley' }
+      {
+        first_name: 'Emma',
+        last_name: 'Woodhouse',
+        legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
+      }, {
+        first_name: 'George',
+        last_name: 'Knightley',
+        legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
+      }
     ]
     stub_request(
       :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
@@ -25,13 +32,14 @@ feature 'Create Investigation Contact' do
       select 'Attempted', from: 'Status'
       select 'In person', from: 'Communication Method'
       select 'School', from: 'Location'
+      find('label', text: 'Emma Woodhouse').click
       select 'Investigate Referral', from: 'Purpose'
       fill_in 'Contact Notes', with: 'This was an attempted contact'
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
     expect(page).to have_select('Communication Method', selected: 'In person')
-    expect(page).to have_content('Emma Woodhouse')
-    expect(page).to have_content('George Knightley')
+    expect(page).to have_checked_field('Emma Woodhouse')
+    expect(page).to have_unchecked_field('George Knightley')
     expect(page).to have_select('Location', selected: 'School')
     expect(page).to have_select('Status', selected: 'Attempted')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
@@ -49,7 +57,13 @@ feature 'Create Investigation Contact' do
           purpose: '1',
           communication_method: 'ABC',
           location: '123',
-          people: []
+          people: [
+            {
+              first_name: 'Emma',
+              last_name: 'Woodhouse',
+              legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
+            }
+          ]
         }.to_json,
         status: 201
       )
@@ -65,7 +79,7 @@ feature 'Create Investigation Contact' do
           note: 'This was an attempted contact',
           communication_method: 'ABC',
           location: '123',
-          people: []
+          people: [{ legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' } }]
         }.to_json
       )
     ).to have_been_made

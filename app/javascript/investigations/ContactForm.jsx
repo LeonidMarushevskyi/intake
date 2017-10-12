@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import DateField from 'common/DateField'
-import nameFormatter from 'utils/nameFormatter'
 import SelectField from 'common/SelectField'
+import CheckboxField from 'common/CheckboxField'
 import FormField from 'common/FormField'
 
-class Contact extends React.Component {
+class ContactForm extends React.Component {
   componentDidMount() {
     const {investigationId, actions: {build}} = this.props
     build({investigation_id: investigationId})
@@ -19,7 +19,7 @@ class Contact extends React.Component {
       status,
       note,
       purpose,
-      actions: {setField, touchField, create, touchAllFields},
+      actions: {setField, touchField, create, touchAllFields, selectPerson, deselectPerson},
       statuses,
       purposes,
       communicationMethods,
@@ -29,6 +29,7 @@ class Contact extends React.Component {
       officeLocationCode,
       people,
       valid,
+      selectedPeopleIds,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
@@ -41,7 +42,7 @@ class Contact extends React.Component {
           status,
           note,
           purpose,
-          people: [],
+          people: selectedPeopleIds,
         })
       } else {
         touchAllFields()
@@ -106,10 +107,21 @@ class Contact extends React.Component {
                 }
                 <div className='row'>
                   <FormField gridClassName='col-md-12' label='People Present' id='people'>
-                    { <ul>
-                      {people.map((person, i) => <li key={i}>{nameFormatter(person)}</li>)}
-                    </ul>
-                    }
+                    { people.map((person, index) =>
+                      <CheckboxField
+                        key={`person_${index}`}
+                        id={`person_${index}`}
+                        value={person.name}
+                        checked={person.selected}
+                        onChange={({target: {checked}}) => {
+                          if (checked === true) {
+                            return selectPerson(index)
+                          } else {
+                            return deselectPerson(index)
+                          }
+                        }}
+                      />
+                    )}
                   </FormField>
                 </div>
                 <div className='row'>
@@ -163,7 +175,7 @@ class Contact extends React.Component {
   }
 }
 
-Contact.propTypes = {
+ContactForm.propTypes = {
   actions: PropTypes.object,
   communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
@@ -177,14 +189,15 @@ Contact.propTypes = {
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,
+  selectedPeopleIds: PropTypes.array,
   startedAt: PropTypes.string,
   status: PropTypes.string,
   statuses: PropTypes.array.isRequired,
   valid: PropTypes.bool,
 }
 
-Contact.defaultProps = {
+ContactForm.defaultProps = {
   errors: {},
 }
 
-export default Contact
+export default ContactForm
