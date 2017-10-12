@@ -32,7 +32,7 @@ describe('submitScreening', () => {
     )
     expect(gen.next().value).toEqual(select(getScreeningSelector))
     expect(gen.next(currentScreening).value).toEqual(
-      call(alert, 'Successfully created referral 444')
+      call(console.log, 'Successfully created referral 444')
     )
   })
 

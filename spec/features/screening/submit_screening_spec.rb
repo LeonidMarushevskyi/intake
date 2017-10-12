@@ -50,11 +50,6 @@ feature 'Submit Screening' do
           )
         ).to have_been_made
 
-        expect(alert_dialog.text).to eq(
-          "Successfully created referral #{referral_id}"
-        )
-        alert_dialog.accept
-
         expect(page).not_to have_content '#submitModal'
         expect(page).to have_content " - Referral ##{referral_id}"
         expect(page).not_to have_content 'Submit'
