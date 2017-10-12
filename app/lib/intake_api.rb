@@ -3,6 +3,8 @@
 # The connection object will be used to talk to the Intake API
 class IntakeAPI < JsonAPI
   class << self
-    attr_accessor :connection
+    def api_url
+      Rails.application.config.intake[:api_url]
+    end
   end
 end
