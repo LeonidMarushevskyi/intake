@@ -19,8 +19,8 @@ describe('CheckboxField', () => {
     component = shallow(<CheckboxField {...props} />)
   })
 
-  it('passes id to the ErrorMessages', () => {
-    expect(component.find('ErrorMessages').props().id).toEqual('myCheckboxFieldId')
+  it('passes ariaDescribedBy to the ErrorMessages', () => {
+    expect(component.find('ErrorMessages').props().ariaDescribedBy).toEqual('myCheckboxFieldId')
   })
 
   it('passes errors to the ErrorMessages', () => {

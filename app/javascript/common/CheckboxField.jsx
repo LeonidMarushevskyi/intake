@@ -24,7 +24,7 @@ const CheckboxField = ({
       onBlur={onBlur}
     />
     <label className={required && 'required'} htmlFor={id}>{value}</label>
-    <ErrorMessages id={id} errors={errors}/>
+    <ErrorMessages ariaDescribedBy={id} errors={errors}/>
   </div>
 )
 

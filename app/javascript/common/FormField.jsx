@@ -15,7 +15,7 @@ const FormField = ({children, errors, gridClassName, labelClassName, htmlFor, la
         {label}
       </label>
       {children}
-      <ErrorMessages id={htmlFor} errors={errors}/>
+      <ErrorMessages ariaDescribedBy={htmlFor} errors={errors}/>
     </div>
   )
 }
