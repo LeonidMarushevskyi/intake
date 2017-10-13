@@ -1,7 +1,7 @@
 import * as Validator from 'utils/validator'
 import Immutable from 'immutable'
 import NarrativeEditView from 'screenings/NarrativeEditView'
-import NarrativeShowView from 'screenings/NarrativeShowView'
+import NarrativeShowContainer from 'screenings/narrative/NarrativeShowContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
@@ -87,13 +87,9 @@ export default class NarrativeCardView extends React.Component {
         onChange: this.onChange,
         onSave: this.onSave,
       },
-      show: {
-        errors: errors.toJS(),
-        screening: this.props.screening,
-        onEdit: this.onEdit,
-      },
+      show: { },
     }
-    const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowView
+    const NarrativeView = (mode === 'edit') ? NarrativeEditView : NarrativeShowContainer
     const props = allProps[mode]
     return (
       <div className={`card ${mode} double-gap-top`} id='narrative-card'>
