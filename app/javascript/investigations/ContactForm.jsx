@@ -106,7 +106,7 @@ class ContactForm extends React.Component {
                   </div>
                 }
                 <div className='row'>
-                  <FormField gridClassName='col-md-12' label='People Present' htmlFor='people'>
+                  <FormField gridClassName='col-md-12' label='People Present' htmlFor='people' errors={errors.people}>
                     { people.map((person, index) =>
                       <CheckboxField
                         key={`person_${index}`}
