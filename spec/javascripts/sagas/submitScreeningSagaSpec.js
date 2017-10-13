@@ -32,7 +32,7 @@ describe('submitScreening', () => {
     )
     expect(gen.next().value).toEqual(select(getScreeningSelector))
     expect(gen.next(currentScreening).value).toEqual(
-      call(alert, 'Successfully created referral 444')
+      call(console.log, 'Successfully created referral 444')
     )
   })
 
@@ -48,7 +48,7 @@ describe('submitScreening', () => {
       put(submitScreeningFailure('some error json'))
     )
     expect(gen.next().value).toEqual(
-      call(alert, 'some error text')
+      call(console.log, error)
     )
   })
 })

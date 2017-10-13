@@ -18,9 +18,7 @@ feature 'Submit Screening' do
   context 'when referral submit is activated' do
     around do |example|
       Feature.run_with_activated(:referral_submit) do
-        Capybara::Accessible::Auditor.disable
         example.run
-        Capybara::Accessible::Auditor.enable
       end
     end
 
@@ -50,11 +48,6 @@ feature 'Submit Screening' do
           )
         ).to have_been_made
 
-        expect(alert_dialog.text).to eq(
-          "Successfully created referral #{referral_id}"
-        )
-        alert_dialog.accept
-
         expect(page).not_to have_content '#submitModal'
         expect(page).to have_content " - Referral ##{referral_id}"
         expect(page).not_to have_content 'Submit'
@@ -79,9 +72,6 @@ feature 'Submit Screening' do
             intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
           )
         ).to have_been_made
-
-        expect(alert_dialog.text).to include(error_json)
-        alert_dialog.accept
 
         expect(page).not_to have_content '#submitModal'
         expect(page).not_to have_content ' - Referral #'
