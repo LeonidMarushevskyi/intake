@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const SelectField = ({gridClassName, labelClassName, id, label, value, onChange, onBlur, children, required, errors}) => (
-  <FormField id={id} label={label} labelClassName={labelClassName} gridClassName={gridClassName}
+  <FormField htmlFor={id} label={label} labelClassName={labelClassName} gridClassName={gridClassName}
     errors={errors} required={required}
   >
     <select id={id} value={value || ''} onChange={onChange} onBlur={onBlur}

@@ -19,13 +19,13 @@ const InputField = ({
   disabled,
 }) => {
   const formFieldProps = {
-    disabled: disabled,
-    errors: errors,
-    gridClassName: gridClassName,
-    id: id,
-    label: label,
-    labelClassName: labelClassName,
-    required: required,
+    disabled,
+    errors,
+    gridClassName,
+    htmlFor: id,
+    label,
+    labelClassName,
+    required,
   }
 
   const sanitizeValue = (string, allowRegex) => {

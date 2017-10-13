@@ -29,7 +29,7 @@ describe('SelectField', () => {
   it('passes props to the FormField', () => {
     expect(formField.props().labelClassName).toEqual('myLabelTest')
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
-    expect(formField.props().id).toEqual('myDateFieldId')
+    expect(formField.props().htmlFor).toEqual('myDateFieldId')
     expect(formField.props().label).toEqual('this is my label')
     expect(formField.childAt(0).node.type).toEqual('select')
   })
