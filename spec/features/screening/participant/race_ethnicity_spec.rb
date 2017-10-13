@@ -6,9 +6,9 @@ require 'spec_helper'
 feature 'Race & Ethnicity' do
   let(:race_asian) { [{ race: 'Asian', race_detail: 'Hmong' }] }
   let(:race_unknown) { [{ race: 'Unknown', race_detail: nil }] }
-  let(:ethnicity_mexican) { { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Mexican' } }
+  let(:ethnicity_mexican) { { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican'] } }
   let(:ethnicity_declined) do
-    { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: nil }
+    { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: [] }
   end
   let(:phone_number) { FactoryGirl.create(:phone_number, number: '1234567890', type: 'Work') }
   let(:marge) do
