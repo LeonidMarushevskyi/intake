@@ -122,6 +122,7 @@ describe('contactReducer', () => {
         communication_method: {value: 'a communication method value', touched: false},
         location: {value: 'a location value', touched: false},
         investigation_started_at: {value: 'a datetime'},
+        people: [{selected: false}, {selected: true}],
       })
       expect(contactFormReducer(initialContactForm, action)).toEqualImmutable(
         fromJS({
@@ -134,6 +135,7 @@ describe('contactReducer', () => {
           communication_method: {value: 'a communication method value', touched: true},
           location: {value: 'a location value', touched: true},
           investigation_started_at: {value: 'a datetime'},
+          people: [{selected: false, touched: true}, {selected: true, touched: true}],
         })
       )
     })

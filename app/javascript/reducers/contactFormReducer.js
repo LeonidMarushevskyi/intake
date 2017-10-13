@@ -48,7 +48,7 @@ export default createReducer(Map(), {
     return fieldsWithTouch.reduce(
       (contact, field) => contact.setIn([field, 'touched'], true),
       state
-    )
+    ).set('people', state.get('people').map((person) => person.set('touched', true)))
   },
   [SELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], true)
