@@ -106,7 +106,7 @@ class ContactForm extends React.Component {
                   </div>
                 }
                 <div className='row'>
-                  <FormField gridClassName='col-md-12' label='People Present' id='people'>
+                  <FormField gridClassName='col-md-12' label='People Present' htmlFor='people'>
                     { people.map((person, index) =>
                       <CheckboxField
                         key={`person_${index}`}
@@ -155,7 +155,7 @@ class ContactForm extends React.Component {
               </div>
               <div className='col-md-6'>
                 <div className='row'>
-                  <FormField id='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
+                  <FormField htmlFor='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
                     <textarea id='note' onChange={(event) => setField('note', event.target.value)}>
                       {note}
                     </textarea>

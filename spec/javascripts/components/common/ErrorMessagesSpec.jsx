@@ -30,9 +30,9 @@ describe('ErrorMessages', () => {
 
   describe('when there are errors', () => {
     const errors = ['You have failed this city', 'Stick to the plan!']
-    describe('when id is passed', () => {
+    describe('when ariaDescribedBy is passed', () => {
       beforeEach(() => {
-        const props = {id: 'myInputFieldId', errors}
+        const props = {ariaDescribedBy: 'myInputFieldId', errors}
         component = shallow(<ErrorMessages {...props}/>)
       })
 
@@ -51,7 +51,7 @@ describe('ErrorMessages', () => {
       })
     })
 
-    describe('when id is not passed', () => {
+    describe('when ariaDescribedBy is not passed', () => {
       beforeEach(() => {
         component = shallow(<ErrorMessages errors={errors}/>)
       })

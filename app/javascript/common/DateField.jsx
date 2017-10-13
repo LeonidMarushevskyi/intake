@@ -58,7 +58,7 @@ const DateField = ({
   }
 
   return (
-    <FormField id={`${id}_input`} label={label} gridClassName={gridClassName} labelClassName={labelClassName}
+    <FormField htmlFor={`${id}_input`} label={label} gridClassName={gridClassName} labelClassName={labelClassName}
       required={required} errors={errors}
     >
       <DateTimePicker

@@ -8,7 +8,7 @@ const NarrativeEditView = ({errors, screening, onBlur, onCancel, onChange, onSav
       <FormField
         errors={errors.report_narrative}
         gridClassName='col-md-12'
-        id='report_narrative'
+        htmlFor='report_narrative'
         label='Report Narrative'
         required
       >

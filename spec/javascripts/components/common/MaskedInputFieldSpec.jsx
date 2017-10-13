@@ -37,7 +37,7 @@ describe('MaskedInputField', () => {
     it('passes props to the FormField', () => {
       expect(formField.props().labelClassName).toEqual('myLabelTest')
       expect(formField.props().gridClassName).toEqual('myWrapperTest')
-      expect(formField.props().id).toEqual('myInputFieldId')
+      expect(formField.props().htmlFor).toEqual('myInputFieldId')
       expect(formField.props().label).toEqual('this is my label')
       expect(formField.props().errors).toEqual([])
       expect(formField.props().required).toEqual(false)

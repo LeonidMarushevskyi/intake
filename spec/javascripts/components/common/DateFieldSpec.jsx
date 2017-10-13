@@ -25,7 +25,7 @@ describe('DateField', () => {
   it('passes props to the FormField', () => {
     expect(formField.props().labelClassName).toEqual('myLabelTest')
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
-    expect(formField.props().id).toEqual('myDateFieldId_input')
+    expect(formField.props().htmlFor).toEqual('myDateFieldId_input')
     expect(formField.props().label).toEqual('this is my label')
     expect(formField.find('DateTimePicker').exists()).toEqual(true)
   })

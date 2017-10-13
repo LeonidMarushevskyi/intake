@@ -18,7 +18,7 @@ const MaskedInputField = ({
   type,
   value,
 }) => {
-  const formFieldProps = {errors, gridClassName, id, label, labelClassName, required}
+  const formFieldProps = {errors, gridClassName, htmlFor: id, label, labelClassName, required}
 
   return (
     <FormField {...formFieldProps}>
