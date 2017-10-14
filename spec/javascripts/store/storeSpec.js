@@ -15,22 +15,23 @@ describe('Store', () => {
   beforeEach(() => {
     jasmine.addMatchers(matchers)
     initialState = fromJS({
-      screening: {},
-      participants: [],
-      relationships: [],
-      involvements: [],
-      staff: {},
-      screeningSummary: {},
-      remoteError: {},
-      contactForm: {},
-      contactStatuses: [],
-      contactPurposes: [],
       communicationMethods: [],
+      contactForm: {},
+      contactPurposes: [],
+      contactStatuses: [],
       counties: [],
       countyAgencies: [],
-      locations: [],
-      routing: {locationBeforeTransitions: null},
       investigationPeople: [],
+      involvements: [],
+      locations: [],
+      narrativeForm: {},
+      participants: [],
+      relationships: [],
+      remoteError: {},
+      routing: {locationBeforeTransitions: null},
+      screening: {},
+      screeningSummary: {},
+      staff: {},
     })
     store = createStore(rootReducer)
   })
