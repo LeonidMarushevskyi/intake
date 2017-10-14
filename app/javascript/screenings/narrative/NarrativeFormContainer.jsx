@@ -1,20 +1,24 @@
 import NarrativeForm from 'screenings/narrative/NarrativeForm'
-// import {getErrorsSelector} from 'selectors/narrativeFormSelectors'
+import {
+  getReportNarrativeValueSelector,
+  getScreeningSelector,
+  getScreeningWithEditsSelector,
+  getVisibleErrorsSelector,
+} from 'selectors/narrativeFormSelectors'
 import * as narrativeFormActions from 'actions/narrativeFormActions'
 import {saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-const mapStateToProps = (state, ownProps) => {
-  const reportNarrative = state.getIn(['narrativeForm', 'report_narrative', 'value'])
-  return {
+const mapStateToProps = (state, ownProps) => (
+  {
     onCancel: ownProps.onCancel,
-    errors: [],
-    reportNarrative,
-    screening: state.get('screening').toJS(),
-    screeningWithEdits: state.get('screening').set('report_narrative', reportNarrative).toJS(),
+    errors: getVisibleErrorsSelector(state).get('report_narrative').toJS(),
+    reportNarrative: getReportNarrativeValueSelector(state),
+    screening: getScreeningSelector(state).toJS(),
+    screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
   }
-}
+)
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
   const actions = {...narrativeFormActions, saveScreening}
@@ -22,4 +26,3 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NarrativeForm)
-
