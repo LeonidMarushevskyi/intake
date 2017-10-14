@@ -16,7 +16,7 @@ export default class Autocompleter extends React.Component {
       isAutocompleterFocused: false,
     }
 
-    const debounceDelay = 100
+    const debounceDelay = 400
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
