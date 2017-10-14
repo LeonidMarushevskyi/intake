@@ -298,15 +298,7 @@ export class ScreeningPage extends React.Component {
             />
           }
           {this.renderParticipantsCard()}
-          {
-            releaseTwoInactive &&
-            <NarrativeCardView
-              {...cardCallbacks}
-              editable={editable}
-              mode={mode}
-              screening={mergedScreening}
-            />
-          }
+          {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
           {
             releaseTwoInactive &&
             <IncidentInformationCardView

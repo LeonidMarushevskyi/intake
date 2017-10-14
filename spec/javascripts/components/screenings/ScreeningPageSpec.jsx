@@ -440,7 +440,7 @@ describe('ScreeningPage', () => {
 
       it('renders the narrative card after screening is loaded', () => {
         expect(component.find('NarrativeCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+          jasmine.objectContaining({mode: 'show'})
         )
       })
 
@@ -606,8 +606,10 @@ describe('ScreeningPage', () => {
         })
 
         it('renders the search card', () => {
-          expect(component.find('#search-card label').text()).toContain('Search for any person')
-          expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
+          const searchCard = component.find('#search-card')
+          const label = searchCard.children('.card-body').children('div').children('div').children('label')
+          expect(label.text()).toContain('Search for any person')
+          expect(label.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
         })
 
         describe('autocompleter', () => {

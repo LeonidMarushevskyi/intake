@@ -2,7 +2,7 @@ import * as IntakeConfig from 'common/config'
 import Immutable from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 import {requiredProps, requiredScreeningAttributes} from '../ScreeningPageSpec'
 
 describe('ScreeningPage', () => {
@@ -58,55 +58,12 @@ describe('ScreeningPage', () => {
     }
 
     it('renders persisted allegations', () => {
-      const component = mount(<ScreeningPage {...props} mode='show' />)
-      const allegationsCard = component.find('AllegationsShowView')
-      expect(allegationsCard.text()).toContain('Homer Simpson')
-      expect(allegationsCard.text()).toContain('Bart Simpson')
-      expect(allegationsCard.text()).toContain('General neglect')
-    })
-
-    it('builds and saves allegations after clicking save', () => {
-      const saveScreening = jasmine.createSpy('saveScreening')
-      const props = {
-        ...requiredProps,
-        actions: {
-          checkStaffPermission: () => null,
-          fetchScreening: () => Promise.resolve(),
-          fetchHistoryOfInvolvements: () => Promise.resolve(),
-          fetchRelationships: () => Promise.resolve(),
-          saveScreening,
-        },
-        participants: Immutable.fromJS([victim, perpetrator]),
-        mode: 'edit',
-        loaded: true,
-      }
-      const component = mount(<ScreeningPage {...props} />)
-      const allegationsCard = component.find('AllegationsEditView')
-      expect(allegationsCard.length).toEqual(1)
-
-      // React-Select doesn't fire an onChange when you simulate change on the component directly
-      // When in mount mode, simulate change on the input and then simulate tabbing out of the field
-      const allegationTypesSelector = allegationsCard.find('Select').find('input')
-      allegationTypesSelector.simulate('change', {target: {value: 'General neglect'}})
-      allegationTypesSelector.simulate('keyDown', {keyCode: 9, key: 'Tab'})
-
-      const saveButton = allegationsCard.find('button[children="Save"]')
-      expect(saveButton.length).toEqual(1)
-      saveButton.simulate('click')
-      expect(saveScreening).toHaveBeenCalledWith({
-        id: '123456',
-        allegations: [{
-          id: null,
-          perpetrator,
-          perpetrator_id: perpetrator.id,
-          screening_id: '123456',
-          victim,
-          victim_id: victim.id,
-          allegation_types: ['General neglect'],
-        }],
-        cross_reports: [],
-        safety_alerts: [],
-      })
+      const component = shallow(<ScreeningPage {...props} mode='show' />)
+      const allegationsCard = component.find('AllegationsCardView')
+      const allegation = allegationsCard.props().allegations.get(0).toJS()
+      expect(allegation.perpetrator).toEqual(perpetrator)
+      expect(allegation.victim).toEqual(victim)
+      expect(allegation.allegation_types).toEqual(['General neglect'])
     })
 
     it('generates new allegations for the participants when there are no persisted allegations', () => {
