@@ -113,7 +113,7 @@ feature 'Edit Screening' do
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
-    %w[Ho].each do |search_text|
+    %w[Ho Homer].each do |search_text|
       stub_request(
         :get,
         intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
