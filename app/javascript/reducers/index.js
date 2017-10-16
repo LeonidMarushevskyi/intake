@@ -7,6 +7,7 @@ import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
 import investigationPeople from 'reducers/investigationPeopleReducer'
 import involvements from 'reducers/involvementsReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
+import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import relationships from 'reducers/relationshipsReducer'
 import remoteError from 'reducers/remoteErrorReducer'
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   investigationPeople,
   involvements,
   locations,
+  narrativeForm,
   participants,
   relationships,
   remoteError,

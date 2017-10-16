@@ -61,6 +61,10 @@ feature 'Narrative Card Validations' do
       end
       blur_field
       should_not_have_content error_message, inside: '#narrative-card .card-body'
+      stub_screening_put_request_with_anything_and_return(
+        screening,
+        with_updated_attributes: { report_narrative: 'This has been filled in.' }
+      )
       save_card('narrative')
       should_not_have_content error_message, inside: '#narrative-card .card-body'
     end
