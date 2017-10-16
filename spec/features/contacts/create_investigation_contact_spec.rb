@@ -4,9 +4,8 @@ require 'rails_helper'
 
 feature 'Create Investigation Contact' do
   let(:investigation_id) { '123ABC' }
-
-  before do
-    people = [
+  let(:people) do
+    [
       {
         first_name: 'Emma',
         last_name: 'Woodhouse',
@@ -17,6 +16,9 @@ feature 'Create Investigation Contact' do
         legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
       }
     ]
+  end
+
+  before do
     stub_request(
       :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
     ).and_return(json_body({ people: people }.to_json, status: 200))
@@ -114,6 +116,7 @@ feature 'Create Investigation Contact' do
     fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
     select 'Attempted', from: 'Status'
     select 'Fax', from: 'Communication Method'
+    find('label', text: 'Emma Woodhouse').click
     select 'Investigate Referral', from: 'Purpose'
     fill_in 'Contact Notes', with: 'This was an attempted contact'
     click_button 'Save'
@@ -127,7 +130,7 @@ feature 'Create Investigation Contact' do
           note: 'This was an attempted contact',
           communication_method: 'FAX',
           location: 'OFFICE',
-          people: []
+          people: [{ legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' } }]
         }.to_json
       )
     ).to have_been_made

@@ -235,7 +235,9 @@ describe('ContactForm', () => {
       {name: 'Ferris Bueller', selected: true},
       {name: 'Cameron Fry', selected: false},
     ]
-    const component = renderContact({people})
+    const component = renderContact({people, errors: {people: ['No people present']}})
+    const peopleFormField = component.find('FormField[label="People Present"]')
+    expect(peopleFormField.props().errors).toEqual(['No people present'])
     const peopleCheckBoxes = component.find('CheckboxField')
     expect(peopleCheckBoxes.length).toEqual(2)
     expect(peopleCheckBoxes.at(0).props().value).toEqual('Ferris Bueller')

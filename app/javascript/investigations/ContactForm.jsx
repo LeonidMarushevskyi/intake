@@ -48,6 +48,7 @@ class ContactForm extends React.Component {
         touchAllFields()
       }
     }
+    const peopleAriaLabel = people.map((_person, index) => `person_${index}`).join(' ')
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
@@ -106,22 +107,28 @@ class ContactForm extends React.Component {
                   </div>
                 }
                 <div className='row'>
-                  <FormField gridClassName='col-md-12' label='People Present' htmlFor='people'>
-                    { people.map((person, index) =>
-                      <CheckboxField
-                        key={`person_${index}`}
-                        id={`person_${index}`}
-                        value={person.name}
-                        checked={person.selected}
-                        onChange={({target: {checked}}) => {
-                          if (checked === true) {
-                            return selectPerson(index)
-                          } else {
-                            return deselectPerson(index)
-                          }
-                        }}
-                      />
-                    )}
+                  <FormField gridClassName='col-md-12' label='People Present' htmlFor={peopleAriaLabel} errors={errors.people}>
+                    <ul className='unstyled-list'>
+                      {
+                        people.map((person, index) =>
+                          <li key={index}>
+                            <CheckboxField
+                              key={`person_${index}`}
+                              id={`person_${index}`}
+                              value={person.name}
+                              checked={person.selected}
+                              onChange={({target: {checked}}) => {
+                                if (checked === true) {
+                                  return selectPerson(index)
+                                } else {
+                                  return deselectPerson(index)
+                                }
+                              }}
+                            />
+                          </li>
+                        )
+                      }
+                    </ul>
                   </FormField>
                 </div>
                 <div className='row'>

@@ -31,6 +31,7 @@ export default createReducer(Map(), {
         name_suffix,
         legacy_descriptor,
         selected: false,
+        touched: false,
       })),
     })
   },
@@ -47,13 +48,15 @@ export default createReducer(Map(), {
     return fieldsWithTouch.reduce(
       (contact, field) => contact.setIn([field, 'touched'], true),
       state
-    )
+    ).set('people', state.get('people').map((person) => person.set('touched', true)))
   },
   [SELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], true)
+      .setIn(['people', index, 'touched'], true)
   },
   [DESELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], false)
+      .setIn(['people', index, 'touched'], true)
   },
   [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
     return state.setIn(['id', 'value'], id)

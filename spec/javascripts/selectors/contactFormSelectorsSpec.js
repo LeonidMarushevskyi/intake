@@ -83,15 +83,16 @@ describe('contactFormSelectors', () => {
   })
 
   describe('getTouchedFieldsSelector', () => {
-    it('returns the contactForm field names that are touched', () => {
+    it('returns the contactForm field names that are touched, including nested objects', () => {
       const contactForm = {
         fieldA: {touched: false},
         fieldB: {touched: true},
         fieldC: {},
         fieldD: {touched: true},
+        fieldE: [{touched: true}, {touched: false}],
       }
       const state = fromJS({contactForm})
-      expect(getTouchedFieldsSelector(state)).toEqualImmutable(Seq(['fieldB', 'fieldD']))
+      expect(getTouchedFieldsSelector(state)).toEqualImmutable(Seq(['fieldB', 'fieldD', 'fieldE']))
     })
 
     it('returns empty list when no contact', () => {
@@ -211,6 +212,29 @@ describe('contactFormSelectors', () => {
           .toEqualImmutable(List())
       })
     })
+
+    describe('people', () => {
+      it('returns an error if no people are present', () => {
+        const contactForm = {people: []}
+        const state = fromJS({contactForm})
+        expect(getErrorsSelector(state).get('people'))
+          .toEqualImmutable(List(['At least one person must be present for a contact']))
+      })
+
+      it('returns an error if people are present, but none are selected', () => {
+        const contactForm = {people: [{selected: false}, {selected: false}]}
+        const state = fromJS({contactForm})
+        expect(getErrorsSelector(state).get('people'))
+          .toEqualImmutable(List(['At least one person must be present for a contact']))
+      })
+
+      it('returns no error if at least one person is selected', () => {
+        const contactForm = {people: [{selected: true}, {selected: false}]}
+        const state = fromJS({contactForm})
+        expect(getErrorsSelector(state).get('people'))
+          .toEqualImmutable(List())
+      })
+    })
   })
 
   describe('getVisibleErrorsSelector', () => {
@@ -220,10 +244,14 @@ describe('contactFormSelectors', () => {
           value: undefined,
           touched: true,
         },
+        people: [{selected: false, touched: 'true'}],
       }
       const state = fromJS({contactForm})
-      expect(getVisibleErrorsSelector(state).get('purpose'))
+      const errors = getVisibleErrorsSelector(state)
+      expect(errors.get('purpose'))
         .toEqualImmutable(List(['Please enter a contact purpose']))
+      expect(errors.get('people'))
+        .toEqualImmutable(List(['At least one person must be present for a contact']))
     })
 
     it('does not return an error if the field has not been touched', () => {
@@ -231,13 +259,15 @@ describe('contactFormSelectors', () => {
       const contactForm = {
         started_at: {value: yesterday},
         investigation_started_at: {value: yesterday},
-        communication_method: {value: 'a value'},
-        location: {value: 'a value'},
-        status: {value: 'a value'},
-        purpose: {value: 'a value'},
+        communication_method: {value: ''},
+        location: {value: ''},
+        status: {value: ''},
+        purpose: {value: ''},
+        people: [],
       }
       const state = fromJS({contactForm})
-      expect(getHasErrorsValueSelector(state)).toEqual(false)
+      const errors = getVisibleErrorsSelector(state)
+      expect(errors.some((fieldErrors) => !fieldErrors.isEmpty())).toEqual(false)
     })
   })
 
