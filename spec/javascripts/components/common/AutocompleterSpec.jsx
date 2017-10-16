@@ -49,8 +49,8 @@ describe('<Autocompleter />', () => {
       expect(component.state('suggestions')).toEqual([bart_simpson])
     })
 
-    it('it debounces loadSuggestions for 100 ms', () => {
-      expect(_.debounce).toHaveBeenCalledWith(component.instance().loadSuggestions, 100)
+    it('it debounces loadSuggestions for 400 ms', () => {
+      expect(_.debounce).toHaveBeenCalledWith(component.instance().loadSuggestions, 400)
     })
   })
 

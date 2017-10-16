@@ -1,19 +1,11 @@
 pairs:
   aa: Aman Alshurafa; Aman.Alshurafa
-  as: Aaron Smith; Aaron.Smith
-  am: Andrew Marshall
   bf: Bruno Fagundez; Bruno.Fagundez
   jg: John Gedeon; John.Gedeon
-  jh: Johny Ho
   nj: Nate Jones; Nate.Jones
-  nl: Nora Lin; Nora.Lin
-  pg: Pema Geyleg; Pema.Geyleg
   pk: Pierre Klein; Pierre.Klein
-  ra: Rebecca Ackerman; Rebecca.Ackerman
   sb: Sara Bocciardi; Sara.Bocciardi
-  sg: Suman Gurung
-  sp: Sri Harsha Poosa; Sri.Poosa
-  sm: Siva Mukunda; Siva.Mukunda
+  tc: Tyler Clemens; Tyler.Clemens
   tr: Thomas Ramirez; Thomas.Ramirez
 email:
   prefix: pair

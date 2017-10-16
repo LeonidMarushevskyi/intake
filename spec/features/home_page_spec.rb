@@ -39,7 +39,7 @@ feature 'home page' do
 
       expect(page).to_not have_link 'Start Screening'
 
-      fill_in_autocompleter 'People', with: 'Marge'
+      fill_in_autocompleter 'People', with: 'Marge', split: true
 
       expect(
         a_request(

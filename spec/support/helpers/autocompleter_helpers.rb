@@ -7,20 +7,30 @@ module AutocompleterHelpers
   include KeyboardHelper
   RESULTS_CONTAINER = '.react-autosuggest__suggestions-container ul'
 
-  def fill_in_autocompleter(locator, with:, select_option_with: nil, skip_select: false)
+  def fill_in_autocompleter(
+    locator,
+    with:,
+    select_option_with: nil,
+    skip_select: false,
+    split: false
+  )
     select_option_with ||= with
-    populate_autocompleter_with_options(locator, with)
+    populate_autocompleter_with_options(locator, with, split)
     click_autocompleter_result(with, select_option_with) unless skip_select
   end
 
-  def populate_autocompleter_with_options(locator, value)
+  def populate_autocompleter_with_options(locator, value, split)
     unless /selenium|accessible/.match?(Capybara.current_driver.to_s)
       raise 'You need to tag your test with @javascript to use this step'
     end
-
-    value.split('').each do |character|
-      find_field(locator).native.send_keys(character)
-      sleep 0.15
+    if split
+      value.split('').each do |character|
+        find_field(locator).native.send_keys(character)
+        sleep 0.41
+      end
+    else
+      fill_in locator, with: value
+      sleep 0.5
     end
 
     # Firefox doesn't trigger focus/blur when the window doesn't have system focus
