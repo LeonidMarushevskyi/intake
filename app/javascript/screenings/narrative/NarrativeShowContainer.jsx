@@ -1,13 +1,13 @@
 import NarrativeShow from 'screenings/narrative/NarrativeShow'
 import {
-  getVisibleErrorsSelector,
+  getErrorsSelector,
   getReportNarrativeValueSelector,
-} from 'selectors/narrativeFormSelectors'
+} from 'selectors/narrativeShowSelectors'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state) => (
   {
-    errors: getVisibleErrorsSelector(state).get('report_narrative').toJS(),
+    errors: getErrorsSelector(state).get('report_narrative').toJS(),
     narrative: getReportNarrativeValueSelector(state),
   }
 )
