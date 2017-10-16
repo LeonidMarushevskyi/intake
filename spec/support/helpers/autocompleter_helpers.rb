@@ -12,18 +12,18 @@ module AutocompleterHelpers
     with:,
     select_option_with: nil,
     skip_select: false,
-    splitted: false
+    split: false
   )
     select_option_with ||= with
-    populate_autocompleter_with_options(locator, with, splitted)
+    populate_autocompleter_with_options(locator, with, split)
     click_autocompleter_result(with, select_option_with) unless skip_select
   end
 
-  def populate_autocompleter_with_options(locator, value, splitted)
+  def populate_autocompleter_with_options(locator, value, split)
     unless /selenium|accessible/.match?(Capybara.current_driver.to_s)
       raise 'You need to tag your test with @javascript to use this step'
     end
-    if splitted
+    if split
       value.split('').each do |character|
         find_field(locator).native.send_keys(character)
         sleep 0.41
