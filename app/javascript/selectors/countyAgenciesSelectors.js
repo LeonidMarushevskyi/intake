@@ -32,15 +32,15 @@ export const getCommunityCareLicensingAgencies = createSelector(
 )
 
 export const getAgencyCodeToName = createSelector(
-  (state) => state.getIn(['screening', 'cross_reports']) || List(),
+  (state) => state.getIn(['screening', 'cross_reports', 0, 'agencies']) || List(),
   getCountyAgencies,
-  (crossReports, countyAgencies) => crossReports.reduce((agencyCodeToName, crossReport) => {
-    const agencyTypeName = AGENCY_TYPES[crossReport.get('agency_type')]
-    const agencyCode = crossReport.get('agency_code')
+  (agencies, countyAgencies) => agencies.reduce((agencyCodeToName, agency) => {
+    const agencyTypeName = AGENCY_TYPES[agency.get('type')]
+    const agencyCode = agency.get('id')
     if (agencyCode) {
-      const agency = countyAgencies.find((countyAgency) => countyAgency.get('id') === agencyCode)
-      if (agency && agency.get('name')) {
-        agencyCodeToName[agencyCode] = `${agencyTypeName} - ${agency.get('name')}`
+      const agencyData = countyAgencies.find((countyAgency) => countyAgency.get('id') === agencyCode)
+      if (agencyData && agencyData.get('name')) {
+        agencyCodeToName[agencyCode] = `${agencyTypeName} - ${agencyData.get('name')}`
       } else {
         agencyCodeToName[agencyCode] = `${agencyTypeName} - ${agencyCode}`
       }
