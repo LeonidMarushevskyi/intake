@@ -113,25 +113,20 @@ describe Api::V1::ScreeningsController do
         id: '1',
         assignee: 'Robert Smith',
         additional_information: 'the new decision is updated',
-        incident_county: 'sacramento',
+        incident_county: '1234',
         name: '123 Report',
         screening_decision: 'evaluate_out',
         access_restrictions: 'sensitive',
         restrictions_rationale: 'Someone in this screening has sensitive information',
         cross_reports: [
           {
-            county: 'sacramento',
-            agency_type: 'Department of justice',
-            agency_code: 'SCDOFFCODE',
-            reported_on: '1990-01-15',
-            communication_method: 'Child Abuse Form'
-          },
-          {
-            county: 'sacramento',
-            agency_type: 'Licensing',
-            agency_code: 'SCDOFFCODE',
-            reported_on: '1990-01-15',
-            communication_method: 'Child Abuse Form'
+            inform_date: '1990-01-15',
+            method: 'Child Abuse Form',
+            county_id: '1234',
+            agencies: [
+              { type: 'DEPARTMENT_OF_JUSTICE', id: 'SCDOFFCODE' },
+              { type: 'COUNTY_LICENSING', id: 'SCDLICCODE' }
+            ]
           }
         ],
         address: {
