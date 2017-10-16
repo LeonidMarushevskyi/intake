@@ -16,6 +16,7 @@ describe('contactReducer', () => {
         purpose: 'a purpose code',
         communication_method: 'Shouting',
         location: 'School',
+        people: [{id: 1}],
       })
       const initialContact = Map()
       expect(contactReducer(initialContact, action)).toEqualImmutable(
@@ -28,6 +29,7 @@ describe('contactReducer', () => {
           purpose: 'a purpose code',
           communication_method: 'Shouting',
           location: 'School',
+          people: [{id: 1}],
         })
       )
     })

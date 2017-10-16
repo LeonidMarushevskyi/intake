@@ -5,24 +5,26 @@ import {Map, fromJS} from 'immutable'
 export default createReducer(Map(), {
   [FETCH_CONTACT_SUCCESS](_state, action) {
     const {
+      communication_method,
       id,
+      investigation_id,
+      location,
+      note,
+      people,
+      purpose,
       started_at,
       status,
-      note,
-      purpose,
-      communication_method,
-      location,
-      investigation_id,
     } = action
     return fromJS({
+      communication_method,
       id,
+      investigation_id,
+      location,
+      note,
+      people,
+      purpose,
       started_at,
       status,
-      note,
-      purpose,
-      communication_method,
-      location,
-      investigation_id,
     })
   },
 })
