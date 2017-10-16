@@ -42,6 +42,12 @@ describe('ContactShow', () => {
     expect(component.html()).toContain('School')
   })
 
+  it('displays the people present on the contact', () => {
+    const component = renderContact({people: ['Robert Smith', 'Stephanie Catherine Johns']})
+    expect(component.html()).toContain('Robert Smith')
+    expect(component.html()).toContain('Stephanie Catherine Johns')
+  })
+
   it('fetches the contact when the component mounts', () => {
     const fetch = jasmine.createSpy('fetch')
     const investigationId = 'INVESTIGATION_ID'

@@ -1,9 +1,10 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 import {
   getStatusValueSelector,
   getPurposeValueSelector,
   getLocationValueSelector,
   getCommunicationMethodValueSelector,
+  getFormattedPeopleSelector,
 } from 'selectors/contactSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -71,6 +72,30 @@ describe('contactSelectors', () => {
       const contact = {communication_method: null}
       const state = fromJS({contact, communicationMethods})
       expect(getCommunicationMethodValueSelector(state)).toEqual(undefined)
+    })
+  })
+
+  describe('getFormattedPeopleSelector', () => {
+    it('returns the list of formatted names of people present on contact', () => {
+      const contact = {
+        people: [
+          {first_name: 'Robert', middle_name: 'Dolf', last_name: 'Jones'},
+          {first_name: 'Sally', last_name: 'Doe'},
+        ],
+      }
+      const state = fromJS({contact})
+      expect(getFormattedPeopleSelector(state)).toEqualImmutable(
+        fromJS([
+          'Robert Dolf Jones',
+          'Sally Doe',
+        ])
+      )
+    })
+
+    it('returns an empty list if there are no contact people', () => {
+      const contact = {}
+      const state = fromJS({contact})
+      expect(getFormattedPeopleSelector(state)).toEqualImmutable(List())
     })
   })
 })

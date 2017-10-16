@@ -4,7 +4,8 @@ import {
   getLocationsSelector,
   getCommunicationMethodsSelector,
 } from 'selectors/systemCodeSelectors'
-import {Map} from 'immutable'
+import nameFormatter from 'utils/nameFormatter'
+import {Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 /* eslint-disable no-invalid-this */
 const systemCodeDisplayValue = (code, systemCodes, noSetValue = Map(), context = this) => systemCodes.find(
@@ -30,4 +31,9 @@ export const getCommunicationMethodValueSelector = createSelector(
   (state) => state.getIn(['contact', 'communication_method']),
   getCommunicationMethodsSelector,
   (code, systemCodes) => systemCodeDisplayValue(code, systemCodes)
+)
+
+export const getFormattedPeopleSelector = createSelector(
+  (state) => state.getIn(['contact', 'people']),
+  (people = List()) => people.map((person) => nameFormatter(person.toJS()))
 )

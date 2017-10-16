@@ -10,13 +10,14 @@ class ContactShow extends Component {
   }
   render() {
     const {
+      communicationMethod,
       investigationId,
+      location,
+      note,
+      people,
+      purpose,
       startedAt,
       status,
-      purpose,
-      note,
-      communicationMethod,
-      location,
     } = this.props
     return (
       <div className='card show double-gap-top'>
@@ -47,6 +48,13 @@ class ContactShow extends Component {
                 </ShowField>
               </div>
               <div className='row'>
+                <ShowField gridClassName='col-md-12' label='People present'>
+                  <ul className='list-unstyled'>
+                    {people && people.map((person, index) => (<li key={index}>{person}</li>))}
+                  </ul>
+                </ShowField>
+              </div>
+              <div className='row'>
                 <ShowField gridClassName='col-md-12' label='Location'>
                   {location}
                 </ShowField>
@@ -73,6 +81,7 @@ ContactShow.propTypes = {
   investigationId: PropTypes.string.isRequired,
   location: PropTypes.string,
   note: PropTypes.string,
+  people: PropTypes.array,
   purpose: PropTypes.string,
   startedAt: PropTypes.string,
   status: PropTypes.string,

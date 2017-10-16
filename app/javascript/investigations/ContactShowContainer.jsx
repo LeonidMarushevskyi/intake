@@ -1,9 +1,10 @@
 import ContactShow from 'investigations/ContactShow'
 import {
-  getStatusValueSelector,
-  getPurposeValueSelector,
   getCommunicationMethodValueSelector,
+  getFormattedPeopleSelector,
   getLocationValueSelector,
+  getPurposeValueSelector,
+  getStatusValueSelector,
 } from 'selectors/contactSelectors'
 import * as actions from 'actions/contactActions'
 import {bindActionCreators} from 'redux'
@@ -17,6 +18,7 @@ const mapStateToProps = (state, ownProps) => {
     investigationId: ownProps.params.investigation_id,
     location: getLocationValueSelector(state),
     note: contact.get('note'),
+    people: getFormattedPeopleSelector(state).toJS(),
     purpose: getPurposeValueSelector(state),
     startedAt: contact.get('started_at'),
     status: getStatusValueSelector(state),
