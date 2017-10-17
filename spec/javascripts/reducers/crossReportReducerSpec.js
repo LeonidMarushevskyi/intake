@@ -82,11 +82,11 @@ describe('crossReportReducer', () => {
   })
   describe('on SET_CROSS_REPORT_FIELD', () => {
     it('returns the cross report with the newly updated value, but touched remains the same', () => {
-      const action = setField('county', '123')
-      const state = fromJS({county: {value: '321', touched: false}})
+      const action = setField('county_id', '123')
+      const state = fromJS({county_id: {value: '321', touched: false}})
       expect(crossReportReducer(state, action)).toEqualImmutable(
         fromJS({
-          county: {
+          county_id: {
             value: '123',
             touched: true,
           },
