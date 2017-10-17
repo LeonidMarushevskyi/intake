@@ -1,17 +1,58 @@
+import {
+  AGENCY_TYPES,
+  DISTRICT_ATTORNEY,
+  DEPARTMENT_OF_JUSTICE,
+  LAW_ENFORCEMENT,
+  COUNTY_LICENSING,
+  COMMUNITY_CARE_LICENSING,
+} from 'enums/CrossReport'
+import {
+  getDistrictAttorneyAgencies,
+  getDepartmentOfJusticeAgencies,
+  getLawEnforcementAgencies,
+  getCountyLicensingAgencies,
+  getCommunityCareLicensingAgencies,
+} from 'selectors/countyAgenciesSelectors'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import CrossReportForm from 'screenings/CrossReportForm'
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
-import {setField} from 'actions/crossReportFormActions'
+import {
+  resetFieldValues,
+  setAgencyTypeField,
+  setField,
+  touchField,
+} from 'actions/crossReportFormActions'
 import {saveScreening} from 'actions/screeningActions'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {getScreeningWithEditsSelector} from 'selectors/crossReportFormSelectors'
 
-const mapStateToProps = (state, _ownProps) => ({
+const mapStateToProps = (state) => ({
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']),
-  screening: state.get('screening').toJS(),
+  countyAgencies: {
+    [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
+    [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
+    [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
+    [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgencies(state).toJS(),
+    [COUNTY_LICENSING]: getCountyLicensingAgencies(state).toJS(),
+  },
+  hasAgencies: Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false),
+  inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']),
+  method: state.getIn(['crossReportForm', 'method', 'value']),
+  districtAttorney: state.getIn(['crossReportForm', DISTRICT_ATTORNEY]),
+  screening: getScreeningSelector(state).toJS(),
+  screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
 })
-const mapDispatchToProps = (dispatch, _ownProps) => ({
-  actions: bindActionCreators({fetchCountyAgencies, setField, saveScreening}, dispatch),
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    fetchCountyAgencies,
+    resetFieldValues,
+    saveScreening,
+    setAgencyTypeField,
+    setField,
+    touchField,
+  }, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrossReportForm)
