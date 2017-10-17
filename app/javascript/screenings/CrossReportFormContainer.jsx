@@ -7,7 +7,8 @@ import {saveScreening} from 'actions/screeningActions'
 
 const mapStateToProps = (state, _ownProps) => ({
   counties: state.get('counties').toJS(),
-  county: state.getIn(['crossReport', 'county', 'value']),
+  county: state.getIn(['crossReport', 'county_id', 'value']),
+  screening: state.get('screening').toJS(),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators({fetchCountyAgencies, setField, saveScreening}, dispatch),

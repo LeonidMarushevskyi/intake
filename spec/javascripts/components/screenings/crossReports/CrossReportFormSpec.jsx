@@ -8,14 +8,18 @@ describe('CrossReportForm', () => {
     alertInfoMessage = undefined,
     counties = [{id: '1234', name: 'County One'}],
     county = '',
-    screeningWithCrossReportEdits = {},
+    screening = {},
+    screeningWithEdits = {},
+    toggleShow = () => null,
   }) {
     const props = {
       actions,
       alertInfoMessage,
       counties,
       county,
-      screeningWithCrossReportEdits,
+      screening,
+      screeningWithEdits,
+      toggleShow,
     }
     return shallow(<CrossReportForm {...props} />)
   }
@@ -59,15 +63,26 @@ describe('CrossReportForm', () => {
     const cancelButton = component.find('button.btn-default')
     expect(cancelButton.text()).toContain('Cancel')
   })
-  describe('fires action', () => {
-    describe('saveScreening', () => {
-      it('on clicking save button', () => {
-        const saveScreening = jasmine.createSpy('saveScreening')
-        const screeningWithCrossReportEdits = {id: 123, crossReports: []}
-        const component = renderCrossReportForm({actions: {saveScreening}, screeningWithCrossReportEdits})
-        component.find('button.btn-primary').simulate('click')
-        expect(saveScreening).toHaveBeenCalledWith(screeningWithCrossReportEdits)
-      })
+  describe('clicking on cancel', () => {
+    it('fires toggleShow, resetFieldValues', () => {
+      const screening = {cross_reports: [{type: 'COUNTY_LICENSING'}]}
+      const toggleShow = jasmine.createSpy('toggleShow')
+      const resetFieldValues = jasmine.createSpy('resetFieldValues')
+      const component = renderCrossReportForm({actions: {resetFieldValues}, screening, toggleShow})
+      component.find('.btn.btn-default').simulate('click')
+      expect(toggleShow).toHaveBeenCalledWith()
+      expect(resetFieldValues).toHaveBeenCalledWith(screening)
+    })
+  })
+  describe('clicking on save', () => {
+    it('fires toggleShow, saveScreening', () => {
+      const saveScreening = jasmine.createSpy('saveScreening')
+      const toggleShow = jasmine.createSpy('toggleShow')
+      const screeningWithEdits = {id: 123, crossReports: []}
+      const component = renderCrossReportForm({actions: {saveScreening}, screeningWithEdits, toggleShow})
+      component.find('button.btn-primary').simulate('click')
+      expect(saveScreening).toHaveBeenCalledWith(screeningWithEdits)
+      expect(toggleShow).toHaveBeenCalledWith()
     })
   })
 })
