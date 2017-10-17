@@ -33,18 +33,18 @@ class ContactShow extends Component {
                 </ShowField>
               </div>
               <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Status'>
-                  {status}
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Purpose'>
-                  {purpose}
-                </ShowField>
-              </div>
-              <div className='row'>
                 <ShowField gridClassName='col-md-12' label='Communication Method'>
                   {communicationMethod}
+                </ShowField>
+              </div>
+              <div className='row'>
+                <ShowField gridClassName='col-md-12' label='Location'>
+                  {location}
+                </ShowField>
+              </div>
+              <div className='row'>
+                <ShowField gridClassName='col-md-12' label='Status'>
+                  {status}
                 </ShowField>
               </div>
               <div className='row'>
@@ -55,8 +55,8 @@ class ContactShow extends Component {
                 </ShowField>
               </div>
               <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Location'>
-                  {location}
+                <ShowField gridClassName='col-md-12' label='Purpose'>
+                  {purpose}
                 </ShowField>
               </div>
             </div>
