@@ -39,7 +39,7 @@ describe('EthnicityEditView', () => {
     const props = {
       ethnicity: Immutable.Map({
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: 'Mexican',
+        ethnicity_detail: ['Mexican'],
       }),
       id: 'person-123',
       onChange: onChange,
@@ -104,7 +104,7 @@ describe('EthnicityEditView', () => {
         expect(onChange).toHaveBeenCalled()
         expect(onChange.calls.argsFor(0)[0].toJS()).toEqual({
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Mexican',
+          ethnicity_detail: ['Mexican'],
         })
       })
     })
