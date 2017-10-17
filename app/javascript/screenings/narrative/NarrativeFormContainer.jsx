@@ -1,10 +1,10 @@
 import NarrativeForm from 'screenings/narrative/NarrativeForm'
 import {
   getReportNarrativeValueSelector,
-  getScreeningSelector,
   getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
 } from 'selectors/narrativeFormSelectors'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/narrativeFormActions'
 import {saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
