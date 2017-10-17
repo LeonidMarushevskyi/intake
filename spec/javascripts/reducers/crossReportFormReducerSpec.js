@@ -1,10 +1,10 @@
 import {Map, fromJS} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
-import crossReportReducer from 'reducers/crossReportReducer'
-import {setField} from 'actions/crossReportActions'
+import crossReportFormReducer from 'reducers/crossReportFormReducer'
+import {setField} from 'actions/crossReportFormActions'
 import {fetchScreeningSuccess} from 'actions/screeningActions'
 
-describe('crossReportReducer', () => {
+describe('crossReportFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('on FETCH_SCREENING_SUCCESS', () => {
@@ -22,7 +22,7 @@ describe('crossReportReducer', () => {
           },
         ],
       })
-      expect(crossReportReducer(Map(), action)).toEqualImmutable(
+      expect(crossReportFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           county_id: {
             value: '1234',
@@ -84,7 +84,7 @@ describe('crossReportReducer', () => {
     it('returns the cross report with the newly updated value, but touched remains the same', () => {
       const action = setField('county_id', '123')
       const state = fromJS({county_id: {value: '321', touched: false}})
-      expect(crossReportReducer(state, action)).toEqualImmutable(
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
         fromJS({
           county_id: {
             value: '123',

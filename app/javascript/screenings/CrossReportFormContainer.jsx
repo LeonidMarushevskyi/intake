@@ -2,7 +2,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import CrossReportForm from 'screenings/CrossReportForm'
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
-import {setField} from 'actions/crossReportActions'
+import {setField} from 'actions/crossReportFormActions'
 import {saveScreening} from 'actions/screeningActions'
 
 const mapStateToProps = (state, _ownProps) => ({

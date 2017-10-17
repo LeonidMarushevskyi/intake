@@ -1,6 +1,6 @@
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
-import {SET_CROSS_REPORT_FIELD} from 'actions/crossReportActions'
+import {SET_CROSS_REPORT_FIELD} from 'actions/crossReportFormActions'
 import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
 import {
   AGENCY_TYPES,
