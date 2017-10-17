@@ -6,7 +6,6 @@ import {
   SELECT_CONTACT_PERSON,
   DESELECT_CONTACT_PERSON,
 } from 'actions/contactFormActions'
-import {CREATE_CONTACT_SUCCESS} from 'actions/contactActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -57,14 +56,5 @@ export default createReducer(Map(), {
   [DESELECT_CONTACT_PERSON](state, {index}) {
     return state.setIn(['people', index, 'selected'], false)
       .setIn(['people', index, 'touched'], true)
-  },
-  [CREATE_CONTACT_SUCCESS](state, {id, started_at, status, note, purpose, communication_method, location}) {
-    return state.setIn(['id', 'value'], id)
-      .setIn(['started_at', 'value'], started_at)
-      .setIn(['status', 'value'], status)
-      .setIn(['note', 'value'], note)
-      .setIn(['purpose', 'value'], purpose)
-      .setIn(['communication_method', 'value'], communication_method)
-      .setIn(['location', 'value'], location)
   },
 })

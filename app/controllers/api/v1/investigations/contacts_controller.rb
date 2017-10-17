@@ -21,14 +21,27 @@ module Api
         def create
           contact = FerbAPI.make_api_call(
             session['security_token'],
-            ExternalRoutes.ferb_api_investigations_contacts_path(params[:investigation_id]),
+            ExternalRoutes.ferb_api_investigations_contacts_path(investigation_id),
             :post,
             contact_params.as_json
           )
           render json: contact.body, status: contact.status
         end
 
+        def show
+          contact = FerbAPI.make_api_call(
+            session['security_token'],
+            ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, params[:id]),
+            :get
+          )
+          render json: contact.body, status: contact.status
+        end
+
         private
+
+        def investigation_id
+          params[:investigation_id]
+        end
 
         def contact_params
           params.require(:contact).permit(*PERMITTED_PARAMS)

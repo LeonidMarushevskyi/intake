@@ -16,6 +16,7 @@ describe('Store', () => {
     jasmine.addMatchers(matchers)
     initialState = fromJS({
       communicationMethods: [],
+      contact: {},
       contactForm: {},
       contactPurposes: [],
       contactStatuses: [],

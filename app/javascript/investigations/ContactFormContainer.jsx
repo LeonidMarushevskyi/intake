@@ -15,7 +15,7 @@ import {
 import {
   getVisibleErrorsSelector,
   getHasErrorsValueSelector,
-  getFormattedContactPeople,
+  getFormattedPeopleSelector,
   getSelectedPeopleIdsSelector,
 } from 'selectors/contactFormSelectors'
 
@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
     officeLocationCode: getOfficeLocationCodeValueSelector(state),
     locations: getLocationsSelector(state).toJS(),
-    people: getFormattedContactPeople(state).toJS(),
+    people: getFormattedPeopleSelector(state).toJS(),
     selectedPeopleIds: getSelectedPeopleIdsSelector(state).toJS(),
   }
 }

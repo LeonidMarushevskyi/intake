@@ -107,6 +107,20 @@ class ContactForm extends React.Component {
                   </div>
                 }
                 <div className='row'>
+                  <SelectField
+                    gridClassName='col-md-12'
+                    id='status'
+                    label='Status'
+                    value={status}
+                    onChange={(event) => setField('status', event.target.value)}
+                    onBlur={() => touchField('status')}
+                    errors={errors.status}
+                  >
+                    <option key='' value='' />
+                    {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
+                  </SelectField>
+                </div>
+                <div className='row'>
                   <FormField gridClassName='col-md-12' label='People Present' htmlFor={peopleAriaLabel} errors={errors.people}>
                     <ul className='unstyled-list'>
                       {
@@ -131,20 +145,6 @@ class ContactForm extends React.Component {
                       }
                     </ul>
                   </FormField>
-                </div>
-                <div className='row'>
-                  <SelectField
-                    gridClassName='col-md-12'
-                    id='status'
-                    label='Status'
-                    value={status}
-                    onChange={(event) => setField('status', event.target.value)}
-                    onBlur={() => touchField('status')}
-                    errors={errors.status}
-                  >
-                    <option key='' value='' />
-                    {statuses.map(({code, value}) => <option key={code} value={code}>{value}</option>)}
-                  </SelectField>
                 </div>
                 <div className='row'>
                   <SelectField

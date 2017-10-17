@@ -1,4 +1,5 @@
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
+import contact from 'reducers/contactReducer'
 import contactForm from 'reducers/contactFormReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
@@ -19,6 +20,7 @@ import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
   communicationMethods,
+  contact,
   contactForm,
   contactPurposes,
   contactStatuses,
