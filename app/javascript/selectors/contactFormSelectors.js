@@ -84,7 +84,7 @@ export const getHasErrorsValueSelector = createSelector(
   getErrorsSelector,
   (errors) => errors.some((fieldErrors) => !fieldErrors.isEmpty())
 )
-export const getFormattedContactPeople = createSelector(
+export const getFormattedPeopleSelector = createSelector(
   getPeopleSelector,
   (people) => (
     people.map((person) => Map({name: nameFormatter(person.toJS()), selected: person.get('selected')}))

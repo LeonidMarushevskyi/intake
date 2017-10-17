@@ -6,7 +6,7 @@ import {
   getVisibleErrorsSelector,
   getHasErrorsValueSelector,
   getPeopleSelector,
-  getFormattedContactPeople,
+  getFormattedPeopleSelector,
   getSelectedPeopleIdsSelector,
 } from 'selectors/contactFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
@@ -237,7 +237,7 @@ describe('contactFormSelectors', () => {
     })
   })
 
-  describe('getFormattedContactPeople', () => {
+  describe('getFormattedPeopleSelector', () => {
     it('returns the list of people on a contact form', () => {
       const contactForm = {
         people: [
@@ -246,7 +246,7 @@ describe('contactFormSelectors', () => {
         ],
       }
       const state = fromJS({contactForm})
-      expect(getFormattedContactPeople(state)).toEqualImmutable(
+      expect(getFormattedPeopleSelector(state)).toEqualImmutable(
         fromJS([
           {name: 'Bob Smith', selected: true},
           {name: 'Sally Doe', selected: false},
@@ -257,7 +257,7 @@ describe('contactFormSelectors', () => {
     it('returns an empty list of the contact form is empty', () => {
       const contactForm = {}
       const state = fromJS({contactForm})
-      expect(getFormattedContactPeople(state)).toEqualImmutable(List())
+      expect(getFormattedPeopleSelector(state)).toEqualImmutable(List())
     })
   })
 
