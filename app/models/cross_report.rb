@@ -6,7 +6,7 @@ class CrossReport
 
   attribute :county, String
   attribute :agency_type, String
-  attribute :agency_name, String
+  attribute :agency_code, String
   attribute :communication_method, String
   attribute :reported_on, String
 end

@@ -10,13 +10,14 @@ describe('CrossReportCardView', () => {
 
   const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
   const props = {
+    agencyCodeToName: {code123: 'Name of Agency'},
     areCrossReportsRequired: true,
     actions: {fetchCountyAgencies},
     counties: [{code: '123', value: 'county'}],
     countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
     crossReports: Immutable.fromJS([
-      {county: '123', agency_type: 'District attorney', agency_name: '1234'},
-      {county: '123', agency_type: 'Department of justice'},
+      {county: '123', agency_type: 'DISTRICT_ATTORNEY', agency_code: '1234'},
+      {county: '123', agency_type: 'DEPARTMENT_OF_JUSTICE'},
     ]),
     editable: true,
   }
@@ -84,7 +85,7 @@ describe('CrossReportCardView', () => {
     })
 
     it('returns a message when cross reports are required but district attorney has not been selected', () => {
-      const crossReports = Immutable.fromJS([{agency_type: 'Law enforcement'}])
+      const crossReports = Immutable.fromJS([{agency_type: 'LAW_ENFORCEMENT'}])
       const component = shallow(
         <CrossReportCardView
           {...props}
@@ -97,7 +98,7 @@ describe('CrossReportCardView', () => {
     })
 
     it('returns a message when cross reports are required but law enforcement has not been selected', () => {
-      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}])
+      const crossReports = Immutable.fromJS([{agency_type: 'DISTRICT_ATTORNEY'}])
       const component = shallow(
         <CrossReportCardView
           {...props}
@@ -110,7 +111,7 @@ describe('CrossReportCardView', () => {
     })
 
     it('returns a message when cross reports are required, and law enforcement and D.A. have both been selected', () => {
-      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}, {agency_type: 'Law enforcement'}])
+      const crossReports = Immutable.fromJS([{agency_type: 'DISTRICT_ATTORNEY'}, {agency_type: 'LAW_ENFORCEMENT'}])
       const component = shallow(
         <CrossReportCardView
           {...props}
@@ -137,24 +138,25 @@ describe('CrossReportCardView', () => {
         expect(component.find('CrossReportEditView').props().counties).toEqual([{code: '123', value: 'county'}])
         expect(component.find('CrossReportEditView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
         expect(component.find('CrossReportEditView').props().crossReports.toJS()).toEqual([
-          {county: '123', agency_type: 'District attorney', agency_name: '1234'},
-          {county: '123', agency_type: 'Department of justice'},
+          {county: '123', agency_type: 'DISTRICT_ATTORNEY', agency_code: '1234'},
+          {county: '123', agency_type: 'DEPARTMENT_OF_JUSTICE'},
         ])
         expect(component.find('CrossReportEditView').props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
       })
 
       describe('isAgencyRequired', () => {
         it('returns true if the agency is required and cross reporting is required', () => {
-          expect(component.instance().isAgencyRequired('District attorney')).toEqual(true)
+          expect(component.instance().isAgencyRequired('DISTRICT_ATTORNEY')).toEqual(true)
+          expect(component.instance().isAgencyRequired('LAW_ENFORCEMENT')).toEqual(true)
         })
 
         it('returns false if an agency is not required even if cross reporting is required', () => {
-          expect(component.instance().isAgencyRequired('Licensing')).toEqual(false)
+          expect(component.instance().isAgencyRequired('COUNTY_LICENSING')).toEqual(false)
         })
 
         it('returns false if cross reporting is not required', () => {
           component = shallow(<CrossReportCardView {...props} mode='edit' areCrossReportsRequired={false}/>)
-          expect(component.instance().isAgencyRequired('District attorney')).toEqual(false)
+          expect(component.instance().isAgencyRequired('DISTRICT_ATTORNEY')).toEqual(false)
         })
       })
 
@@ -187,8 +189,8 @@ describe('CrossReportCardView', () => {
             onSave: jasmine.createSpy('onSave'),
             areCrossReportsRequired: true,
             crossReports: Immutable.fromJS([
-              {agency_type: 'District attorney', agency_name: '1234'},
-              {agency_type: 'Department of justice'},
+              {agency_type: 'DISTRICT_ATTORNEY', agency_code: '1234'},
+              {agency_type: 'DEPARTMENT_OF_JUSTICE'},
             ]),
             editable: true,
           }
@@ -198,12 +200,12 @@ describe('CrossReportCardView', () => {
 
         it('is called by a child onChange', () => {
           const report = Immutable.fromJS([
-            {agency_type: 'District attorney', agency_name: 'LAPD'},
-            {agency_type: 'Department of justice'},
+            {agency_type: 'DISTRICT_ATTORNEY', agency_code: 'LAPD'},
+            {agency_type: 'DEPARTMENT_OF_JUSTICE'},
           ])
           component.find('CrossReportEditView').props().onChange(
             report,
-            ['agency_name', 'District attorney']
+            ['agency_code', 'DISTRICT_ATTORNEY']
           )
           expect(validationProps.onChange).toHaveBeenCalledWith(
             ['cross_reports'],
@@ -219,15 +221,15 @@ describe('CrossReportCardView', () => {
           beforeEach(() => {
             component.setState({
               errors: Immutable.fromJS({
-                'Law enforcement': {
+                LAW_ENFORCEMENT: {
                   agency_type: ['Please indicate cross-reporting to law enforcement.'],
-                  agency_name: [],
+                  agency_code: [],
                   communication_method: [],
                   reported_on: [],
                 },
-                'District attorney': {
+                DISTRICT_ATTORNEY: {
                   agency_type: [],
-                  agency_name: ['Please enter an agency name.'],
+                  agency_code: ['PLEASECODE'],
                   communication_method: ['Please select cross-report communication method.'],
                   reported_on: ['Please enter a cross-report date.'],
                 },
@@ -239,54 +241,54 @@ describe('CrossReportCardView', () => {
           it('handles agency_type if it got added', () => {
             component.instance().onChange(
               Immutable.fromJS([
-                {agency_type: 'District attorney', agency_name: 'LAPD'},
-                {agency_type: 'Law enforcement'},
+                {agency_type: 'DISTRICT_ATTORNEY', agency_code: 'LAPDCODE'},
+                {agency_type: 'LAW_ENFORCEMENT'},
               ]),
-              ['agency_type', 'Law enforcement']
+              ['agency_type', 'LAW_ENFORCEMENT']
             )
-            expect(validateFieldSpy).toHaveBeenCalledWith('Law enforcement', 'agency_type', true)
+            expect(validateFieldSpy).toHaveBeenCalledWith('LAW_ENFORCEMENT', 'agency_type', true)
           })
 
           it('handles agency_type if it got removed', () => {
             component.instance().onChange(
               Immutable.fromJS([
-                {agency_type: 'District attorney', agency_name: 'LAPD'},
-                {agency_type: 'Department of justice'},
+                {agency_type: 'DISTRICT_ATTORNEY', agency_code: 'LAPDCODE'},
+                {agency_type: 'DEPARTMENT_OF_JUSTICE'},
               ]),
-              ['agency_type', 'Law enforcement']
+              ['agency_type', 'LAW_ENFORCEMENT']
             )
-            expect(validateFieldSpy).toHaveBeenCalledWith('Law enforcement', 'agency_type', false)
+            expect(validateFieldSpy).toHaveBeenCalledWith('LAW_ENFORCEMENT', 'agency_type', false)
           })
 
           it('handles communication_method & reported_on', () => {
             component.instance().onChange(
               Immutable.fromJS([
-                {agency_type: 'District attorney', agency_name: 'LAPD'},
-                {agency_type: 'Department of justice'},
+                {agency_type: 'DISTRICT_ATTORNEY', agency_code: 'LAPDCODE'},
+                {agency_type: 'DEPARTMENT_OF_JUSTICE'},
               ]),
               ['communication_method']
             )
-            expect(validateFieldSpy.calls.count()).toEqual(4)
+            expect(validateFieldSpy.calls.count()).toEqual(5)
           })
 
-          it('handles agency_name', () => {
+          it('handles agency_code', () => {
             component.instance().onChange(
               Immutable.fromJS([
-                {agency_type: 'District attorney', agency_name: 'LAPD'},
-                {agency_type: 'Department of justice'},
+                {agency_type: 'DISTRICT_ATTORNEY', agency_code: 'LAPDCODE'},
+                {agency_type: 'DEPARTMENT_OF_JUSTICE'},
               ]),
-              ['agency_name', 'District attorney']
+              ['agency_code', 'DISTRICT_ATTORNEY']
             )
-            expect(validateFieldSpy).toHaveBeenCalledWith('District attorney', 'agency_name', 'LAPD')
+            expect(validateFieldSpy).toHaveBeenCalledWith('DISTRICT_ATTORNEY', 'agency_code', 'LAPDCODE')
           })
 
           it('does not make the call if there are no errors on the changed field', () => {
             component.instance().onChange(
               Immutable.fromJS([
-                {agency_type: 'Law enforcement', agency_name: 'LAPD'},
-                {agency_type: 'Department of justice'},
+                {agency_type: 'LAW_ENFORCEMENT', agency_code: 'LAPDCODE'},
+                {agency_type: 'DEPARTMENT_OF_JUSTICE'},
               ]),
-              ['agency_name', 'Law enforcement']
+              ['agency_code', 'LAW_ENFORCEMENT']
             )
             expect(validateFieldSpy).not.toHaveBeenCalled()
           })
@@ -295,17 +297,17 @@ describe('CrossReportCardView', () => {
 
       describe('validateField', () => {
         it('sets error if Law enforcement is required but not checked', () => {
-          const actualErrors = component.instance().validateField('Law enforcement', 'agency_type', false)
+          const actualErrors = component.instance().validateField('LAW_ENFORCEMENT', 'agency_type', false)
           const expectedErrors = {
-            'Law enforcement': {agency_type: ['Please indicate cross-reporting to law enforcement.']},
+            LAW_ENFORCEMENT: {agency_type: ['Please indicate cross-reporting to law enforcement.']},
           }
           expect(actualErrors.toJS()).toEqual(expectedErrors)
         })
 
         it('does not set a new error if Law enforcement is required and checked', () => {
-          const actualErrors = component.instance().validateField('Law enforcement', 'agency_type', true)
+          const actualErrors = component.instance().validateField('LAW_ENFORCEMENT', 'agency_type', true)
           const expectedErrors = {
-            'Law enforcement': {agency_type: []},
+            LAW_ENFORCEMENT: {agency_type: []},
           }
           expect(actualErrors.toJS()).toEqual(expectedErrors)
         })
@@ -321,7 +323,7 @@ describe('CrossReportCardView', () => {
         it('renders the cross report show view', () => {
           component.find('button[children="Cancel"]').simulate('click')
           expect(component.find('CrossReportShowView').length).toEqual(1)
-          expect(component.find('CrossReportShowView').props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
+          expect(component.find('CrossReportShowView').props().agencyCodeToName).toEqual(props.agencyCodeToName)
         })
 
         it('validates all cross reports', () => {
@@ -330,24 +332,25 @@ describe('CrossReportCardView', () => {
           expect(setStateSpy).toHaveBeenCalled()
           const actualErrors = setStateSpy.calls.argsFor(0)[0].errors
           const expectedErrors = {
-            'Law enforcement': {
+            LAW_ENFORCEMENT: {
               agency_type: ['Please indicate cross-reporting to law enforcement.'],
-              agency_name: [],
+              agency_code: [],
               communication_method: [],
               reported_on: [],
             },
-            'District attorney': {
+            DISTRICT_ATTORNEY: {
               agency_type: [],
-              agency_name: [],
+              agency_code: [],
               communication_method: ['Please select cross-report communication method.'],
               reported_on: ['Please enter a cross-report date.'],
             },
-            'Department of justice': {
-              agency_name: ['Please enter an agency name.'],
+            DEPARTMENT_OF_JUSTICE: {
+              agency_code: ['Please enter an agency name.'],
               communication_method: ['Please select cross-report communication method.'],
               reported_on: ['Please enter a cross-report date.'],
             },
-            Licensing: {agency_name: [], communication_method: [], reported_on: []},
+            COUNTY_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
+            COMMUNITY_CARE_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
           }
           expect(actualErrors.toJS()).toEqual(expectedErrors)
         })
@@ -364,24 +367,25 @@ describe('CrossReportCardView', () => {
         component = shallow(<CrossReportCardView {...props} mode='show'/>)
         const actualErrors = component.instance().validateAllCrossReports()
         const expectedErrors = {
-          'Law enforcement': {
+          LAW_ENFORCEMENT: {
             agency_type: ['Please indicate cross-reporting to law enforcement.'],
-            agency_name: [],
+            agency_code: [],
             communication_method: [],
             reported_on: [],
           },
-          'District attorney': {
+          DISTRICT_ATTORNEY: {
             agency_type: [],
-            agency_name: [],
+            agency_code: [],
             communication_method: ['Please select cross-report communication method.'],
             reported_on: ['Please enter a cross-report date.'],
           },
-          'Department of justice': {
-            agency_name: ['Please enter an agency name.'],
+          DEPARTMENT_OF_JUSTICE: {
+            agency_code: ['Please enter an agency name.'],
             communication_method: ['Please select cross-report communication method.'],
             reported_on: ['Please enter a cross-report date.'],
           },
-          Licensing: {agency_name: [], communication_method: [], reported_on: []},
+          COUNTY_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
+          COMMUNITY_CARE_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
         }
         expect(actualErrors.toJS()).toEqual(expectedErrors)
       })
@@ -398,24 +402,25 @@ describe('CrossReportCardView', () => {
 
       it('validates all fields and pass errors to show view', () => {
         const expectedErrors = {
-          'Law enforcement': {
+          LAW_ENFORCEMENT: {
             agency_type: ['Please indicate cross-reporting to law enforcement.'],
-            agency_name: [],
+            agency_code: [],
             communication_method: [],
             reported_on: [],
           },
-          'District attorney': {
+          DISTRICT_ATTORNEY: {
             agency_type: [],
-            agency_name: [],
+            agency_code: [],
             communication_method: ['Please select cross-report communication method.'],
             reported_on: ['Please enter a cross-report date.'],
           },
-          'Department of justice': {
-            agency_name: ['Please enter an agency name.'],
+          DEPARTMENT_OF_JUSTICE: {
+            agency_code: ['Please enter an agency name.'],
             communication_method: ['Please select cross-report communication method.'],
             reported_on: ['Please enter a cross-report date.'],
           },
-          Licensing: {agency_name: [], communication_method: [], reported_on: []},
+          COUNTY_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
+          COMMUNITY_CARE_LICENSING: {agency_code: [], communication_method: [], reported_on: []},
         }
         expect(component.find('CrossReportShowView').props().errors.toJS()).toEqual(expectedErrors)
       })

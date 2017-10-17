@@ -47,6 +47,7 @@ export class EthnicityEditView extends React.Component {
                     <CheckboxField
                       id={`${id}-ethnicity-${option.replace(/ /gi, '_')}`}
                       value={option}
+                      label={option}
                       checked={selected}
                       disabled={Boolean(disabled)}
                       onChange={(event) => this.changeEthnicity(option, event.target.checked)}

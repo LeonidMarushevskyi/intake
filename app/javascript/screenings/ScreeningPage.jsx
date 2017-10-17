@@ -28,11 +28,16 @@ import {
   DISTRICT_ATTORNEY,
   DEPARTMENT_OF_JUSTICE,
   LAW_ENFORCEMENT,
-  LICENSING,
+  COUNTY_LICENSING,
+  COMMUNITY_CARE_LICENSING,
+} from 'enums/CrossReport'
+import {
+  getAgencyCodeToName,
   getDistrictAttorneyAgencies,
   getDepartmentOfJusticeAgencies,
   getLawEnforcementAgencies,
-  getLicensingAgencies,
+  getCountyLicensingAgencies,
+  getCommunityCareLicensingAgencies,
 } from 'selectors/countyAgenciesSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -348,6 +353,7 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <CrossReportCardView
+                agencyCodeToName={this.props.agencyCodeToName}
                 areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 counties={this.props.counties}
@@ -401,6 +407,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  agencyCodeToName: PropTypes.object,
   counties: PropTypes.array,
   countyAgencies: PropTypes.object,
   editable: PropTypes.bool,
@@ -415,6 +422,7 @@ ScreeningPage.propTypes = {
 }
 
 ScreeningPage.defaultProps = {
+  agencyCodeToName: {},
   counties: [],
   countyAgencies: {},
   mode: 'show',
@@ -423,6 +431,7 @@ ScreeningPage.defaultProps = {
 
 export function mapStateToProps(state, ownProps) {
   return {
+    agencyCodeToName: getAgencyCodeToName(state),
     editable: !state.getIn(['screening', 'referral_id']),
     counties: state.get('counties').toJS(),
     countyAgencies: {
@@ -430,7 +439,8 @@ export function mapStateToProps(state, ownProps) {
       [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
       [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
       [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
-      [LICENSING]: getLicensingAgencies(state).toJS(),
+      [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgencies(state).toJS(),
+      [COUNTY_LICENSING]: getCountyLicensingAgencies(state).toJS(),
     },
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     involvements: state.get('involvements'),

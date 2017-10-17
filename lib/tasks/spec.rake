@@ -58,17 +58,10 @@ namespace :spec do # rubocop:disable BlockLength
   namespace :api do
     desc 'Run ALL THE SPECS, & RUBOCOP!!!'
     task :full do
-      Rake::Task['spec:api'].invoke
-      system 'docker-compose exec api rubocop'
+      system('rubocop ../intake_api') && Rake::Task['spec:api'].invoke
     end
   end
 
   desc 'Run specs and linters for both intake and api'
-  task :full do
-    Rake::Task['spec:intake:parallel'].invoke
-    system 'bin/lint'
-    system 'bin/karma'
-    Rake::Task['spec:api'].invoke
-    system 'docker-compose exec api rubocop'
-  end
+  task full: ['spec:api:full', 'spec:intake:full']
 end

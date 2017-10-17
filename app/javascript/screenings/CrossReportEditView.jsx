@@ -24,21 +24,21 @@ export default class CrossReportEditView extends React.Component {
   }
 
   crossReportData() {
-    return AGENCY_TYPES.map((agencyType) => {
+    return Object.keys(AGENCY_TYPES).map((agencyType) => {
       const persistedInfo = this.persistedInfo(agencyType)
       return {
         agencyType: agencyType,
         selected: Boolean(persistedInfo),
-        agencyName: persistedInfo && persistedInfo.agency_name,
+        agencyCode: persistedInfo && persistedInfo.agency_code,
       }
     })
   }
 
   updatedCrossReports(agencyType, fieldName, value) {
     const {crossReports} = this.props
-    if (fieldName === 'agency_name') {
+    if (fieldName === 'agency_code') {
       const index = crossReports.toJS().findIndex((item) => item.agency_type === agencyType)
-      return crossReports.setIn([index, 'agency_name'], value || null)
+      return crossReports.setIn([index, 'agency_code'], value || null)
     }
     if (fieldName === 'agency_type') {
       const existingReport = crossReports.find((report) => report.get('agency_type') === agencyType)
@@ -50,7 +50,7 @@ export default class CrossReportEditView extends React.Component {
           Immutable.Map({
             county: this.state.county,
             agency_type: agencyType,
-            agency_name: null,
+            agency_code: null,
             reported_on: this.state.reportedOn,
             communication_method: this.state.communicationMethod,
           }))
@@ -75,16 +75,16 @@ export default class CrossReportEditView extends React.Component {
         <ul className='unstyled-list'>
           {
             crossReportOptions.map((item) => {
-              const {agencyType, selected, agencyName} = item
-              const typeId = agencyType.replace(/ /gi, '_').toUpperCase()
+              const {agencyType, selected, agencyCode} = item
               return (
                 <li key={agencyType}>
                   <div className='half-gap-bottom'>
                     <CheckboxField
-                      id={`type-${typeId}`}
+                      id={`type-${agencyType}`}
                       checked={selected}
                       errors={errors.getIn([agencyType, 'agency_type']) && errors.getIn([agencyType, 'agency_type']).toJS()}
-                      disabled={this.props.countyAgencies[typeId] === undefined || this.props.countyAgencies[typeId].length === 0}
+                      disabled={this.props.countyAgencies[agencyType] === undefined || this.props.countyAgencies[agencyType].length === 0}
+                      label={AGENCY_TYPES[agencyType]}
                       onBlur={(event) =>
                         this.props.onBlur(
                           this.updatedCrossReports(agencyType, 'agency_type', event.target.checked),
@@ -103,26 +103,26 @@ export default class CrossReportEditView extends React.Component {
                     {
                       selected &&
                           <SelectField
-                            errors={errors.getIn([agencyType, 'agency_name']) && errors.getIn([agencyType, 'agency_name']).toJS()}
-                            id={`${typeId}-agency-name`}
-                            label={`${agencyType} agency name`}
+                            errors={errors.getIn([agencyType, 'agency_code']) && errors.getIn([agencyType, 'agency_code']).toJS()}
+                            id={`${agencyType}-agency-code`}
+                            label={`${AGENCY_TYPES[agencyType]} agency name`}
                             onBlur={(event) =>
                               this.props.onBlur(
-                                this.updatedCrossReports(agencyType, 'agency_name', event.target.value),
-                                ['agency_name', agencyType]
+                                this.updatedCrossReports(agencyType, 'agency_code', event.target.value),
+                                ['agency_code', agencyType]
                               )
                             }
                             onChange={(event) =>
                               this.props.onChange(
-                                this.updatedCrossReports(agencyType, 'agency_name', event.target.value),
-                                ['agency_name', agencyType]
+                                this.updatedCrossReports(agencyType, 'agency_code', event.target.value),
+                                ['agency_code', agencyType]
                               )
                             }
                             required
-                            value={agencyName || ''}
+                            value={agencyCode || ''}
                           >
                             <option key='' />
-                            {this.props.countyAgencies[typeId] !== undefined && this.props.countyAgencies[typeId].map((agency) => <option key={agency.id} value={agency.id}>{agency.name}</option>)}
+                            {this.props.countyAgencies[agencyType] !== undefined && this.props.countyAgencies[agencyType].map((agency) => <option key={agency.id} value={agency.id}>{agency.name}</option>)}
                           </SelectField>
                     }
                   </div>

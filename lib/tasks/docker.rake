@@ -9,6 +9,8 @@ namespace :docker do # rubocop:disable BlockLength
   task :reup do
     run_commands [
       'docker-compose down',
+      'docker-compose run --rm api bundle',
+      'docker-compose run --rm ca_intake bundle',
       'docker-compose up -d',
       'docker-compose exec api bundle exec rake db:migrate',
       'docker-compose exec api bundle exec rake db:test:prepare',
