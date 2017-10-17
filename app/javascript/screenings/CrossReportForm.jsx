@@ -12,6 +12,8 @@ class CrossReportForm extends React.Component {
         saveScreening,
         setField,
       },
+      counties,
+      county_id,
       screening,
       screeningWithEdits,
       toggleShow,
@@ -36,10 +38,10 @@ class CrossReportForm extends React.Component {
             id='cross_report_county'
             onChange={({target: {value}}) => {
               fetchCountyAgencies(value)
-              setField('county', value)
+              setField('county_id', value)
             }}
-            counties={this.props.counties}
-            value={this.props.county}
+            counties={counties}
+            value={county_id}
           />
         </div>
         <div className='row'>
@@ -57,7 +59,7 @@ CrossReportForm.propTypes = {
   actions: PropTypes.object.isRequired,
   alertInfoMessage: PropTypes.string,
   counties: PropTypes.array.isRequired,
-  county: PropTypes.string,
+  county_id: PropTypes.string,
   errors: PropTypes.object,
   screening: PropTypes.object,
   screeningWithEdits: PropTypes.object,

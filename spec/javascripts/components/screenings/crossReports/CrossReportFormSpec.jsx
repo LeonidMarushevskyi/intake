@@ -7,7 +7,7 @@ describe('CrossReportForm', () => {
     actions = {},
     alertInfoMessage = undefined,
     counties = [{id: '1234', name: 'County One'}],
-    county = '',
+    county_id = '',
     screening = {},
     screeningWithEdits = {},
     toggleShow = () => null,
@@ -16,7 +16,7 @@ describe('CrossReportForm', () => {
       actions,
       alertInfoMessage,
       counties,
-      county,
+      county_id,
       screening,
       screeningWithEdits,
       toggleShow,
@@ -31,7 +31,7 @@ describe('CrossReportForm', () => {
     const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
     const setField = jasmine.createSpy('setField')
     it('passes the selected county to county pull down', () => {
-      const component = renderCrossReportForm({county: '1234'})
+      const component = renderCrossReportForm({county_id: '1234'})
       expect(component.find('CountySelectField[id="cross_report_county"]').props().value).toEqual('1234')
     })
     it('triggers the fetchCountyAgencies action on change', () => {
@@ -42,7 +42,7 @@ describe('CrossReportForm', () => {
     it('triggers the setField action on change', () => {
       const component = renderCrossReportForm({actions: {fetchCountyAgencies, setField}})
       component.find('CountySelectField[id="cross_report_county"]').simulate('change', {target: {value: '1234'}})
-      expect(setField).toHaveBeenCalledWith('county', '1234')
+      expect(setField).toHaveBeenCalledWith('county_id', '1234')
     })
   })
   describe('Alert info messages', () => {
