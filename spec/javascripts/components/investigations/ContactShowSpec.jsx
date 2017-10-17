@@ -3,11 +3,12 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 
 describe('ContactShow', () => {
-  function renderContact({id = '123', investigationId = '456', ...otherProps}) {
-    const props = {id, investigationId, ...otherProps}
+  function renderContact({id = '123', investigationId = '456', people = [], ...otherProps}) {
+    const props = {id, investigationId, people, ...otherProps}
     return shallow(<ContactShow {...props} />)
   }
-  function mountContact(props) {
+  function mountContact({people = [], ...otherProps}) {
+    const props = {people, ...otherProps}
     return mount(<ContactShow {...props} />)
   }
 

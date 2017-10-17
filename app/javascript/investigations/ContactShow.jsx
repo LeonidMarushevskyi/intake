@@ -50,7 +50,7 @@ class ContactShow extends Component {
               <div className='row'>
                 <ShowField gridClassName='col-md-12' label='People present'>
                   <ul className='list-unstyled'>
-                    {people && people.map((person, index) => (<li key={index}>{person}</li>))}
+                    {people.map((person, index) => (<li key={index}>{person}</li>))}
                   </ul>
                 </ShowField>
               </div>
