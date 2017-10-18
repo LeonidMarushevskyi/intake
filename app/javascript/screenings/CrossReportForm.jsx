@@ -18,25 +18,27 @@ class CrossReportForm extends React.Component {
   render() {
     const {
       actions: {
+        clearAllAgencyFields,
+        clearAllFields,
         fetchCountyAgencies,
         resetFieldValues,
         saveScreening,
-        setAgencyTypeField,
         setAgencyField,
+        setAgencyTypeField,
         setField,
         touchAgencyField,
         touchField,
       },
+      communityCareLicensing,
       counties,
       county_id,
       countyAgencies,
+      countyLicensing,
       departmentOfJustice,
       districtAttorney,
-      countyLicensing,
-      communityCareLicensing,
-      lawEnforcement,
       hasAgencies,
       inform_date,
+      lawEnforcement,
       method,
       screening,
       screeningWithEdits,
@@ -53,6 +55,7 @@ class CrossReportForm extends React.Component {
     const agencyFieldActions = {
       setAgencyTypeField,
       setAgencyField,
+      clearAllAgencyFields,
       touchField,
       touchAgencyField,
     }
@@ -67,64 +70,70 @@ class CrossReportForm extends React.Component {
             gridClassName='col-md-6'
             id='cross_report_county'
             onChange={({target: {value}}) => {
-              fetchCountyAgencies(value)
+              if (value && value !== '') {
+                fetchCountyAgencies(value)
+              }
               setField('county_id', value)
+              clearAllFields()
             }}
             onBlur={() => touchField('county_id')}
             counties={counties}
             value={county_id}
           />
         </div>
-        <div className='row gap-top'>
-          <div className='col-md-6'>
-            <ul className='unstyled-list'>
-              <li key={DISTRICT_ATTORNEY}>
-                <AgencyField
-                  type={DISTRICT_ATTORNEY}
-                  data={districtAttorney}
-                  countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
-                  actions={agencyFieldActions}
-                />
-              </li>
-              <li key={LAW_ENFORCEMENT}>
-                <AgencyField
-                  type={LAW_ENFORCEMENT}
-                  data={lawEnforcement}
-                  countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
-                  actions={agencyFieldActions}
-                />
-              </li>
-            </ul>
+        {
+          county_id !== '' &&
+          <div className='row gap-top'>
+            <div className='col-md-6'>
+              <ul className='unstyled-list'>
+                <li key={DISTRICT_ATTORNEY}>
+                  <AgencyField
+                    type={DISTRICT_ATTORNEY}
+                    data={districtAttorney}
+                    countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
+                    actions={agencyFieldActions}
+                  />
+                </li>
+                <li key={LAW_ENFORCEMENT}>
+                  <AgencyField
+                    type={LAW_ENFORCEMENT}
+                    data={lawEnforcement}
+                    countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
+                    actions={agencyFieldActions}
+                  />
+                </li>
+              </ul>
+            </div>
+            <div className='col-md-6'>
+              <ul className='unstyled-list'>
+                <li key={DEPARTMENT_OF_JUSTICE}>
+                  <AgencyField
+                    type={DEPARTMENT_OF_JUSTICE}
+                    data={departmentOfJustice}
+                    countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
+                    actions={agencyFieldActions}
+                  />
+                </li>
+                <li key={COUNTY_LICENSING}>
+                  <AgencyField
+                    type={COUNTY_LICENSING}
+                    data={countyLicensing}
+                    countyAgencies={countyAgencies[COUNTY_LICENSING]}
+                    actions={agencyFieldActions}
+                  />
+                </li>
+                <li key={COMMUNITY_CARE_LICENSING}>
+                  <AgencyField
+                    type={COMMUNITY_CARE_LICENSING}
+                    data={communityCareLicensing}
+                    countyAgencies={countyAgencies[COMMUNITY_CARE_LICENSING]}
+                    actions={agencyFieldActions}
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className='col-md-6'>
-            <ul className='unstyled-list'>
-              <li key={DEPARTMENT_OF_JUSTICE}>
-                <AgencyField
-                  type={DEPARTMENT_OF_JUSTICE}
-                  data={departmentOfJustice}
-                  countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
-                  actions={agencyFieldActions}
-                />
-              </li>
-              <li key={COUNTY_LICENSING}>
-                <AgencyField
-                  type={COUNTY_LICENSING}
-                  data={countyLicensing}
-                  countyAgencies={countyAgencies[COUNTY_LICENSING]}
-                  actions={agencyFieldActions}
-                />
-              </li>
-              <li key={COMMUNITY_CARE_LICENSING}>
-                <AgencyField
-                  type={COMMUNITY_CARE_LICENSING}
-                  data={communityCareLicensing}
-                  countyAgencies={countyAgencies[COMMUNITY_CARE_LICENSING]}
-                  actions={agencyFieldActions}
-                />
-              </li>
-            </ul>
-          </div>
-        </div>
+        }
         <div className='row gap-top'>
           {
             hasAgencies &&

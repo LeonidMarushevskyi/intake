@@ -8,6 +8,7 @@ import {
 
 const AgencyField = ({
   actions: {
+    clearAllAgencyFields,
     setAgencyTypeField,
     setAgencyField,
     touchAgencyField,
@@ -29,6 +30,7 @@ const AgencyField = ({
       onChange={({target: {checked}}) => {
         setAgencyTypeField(type, checked)
         touchField(type)
+        clearAllAgencyFields(type)
       }}
       // required={this.props.isAgencyRequired(agencyType)}
       value={type}

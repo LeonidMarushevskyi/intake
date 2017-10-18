@@ -39,13 +39,16 @@ describe('AgencyField', () => {
     expect(component.find('CheckboxField[id="type-DISTRICT_ATTORNEY"]').exists()).toEqual(true)
     expect(component.find('CheckboxField[id="type-DISTRICT_ATTORNEY"]').props().disabled).toEqual(false)
   })
-  it('triggers the setAgencyTypeField and touchField actions on change', () => {
+  it('triggers the appropriate actions on change', () => {
     const setAgencyTypeField = jasmine.createSpy('setAgencyTypeField')
     const touchField = jasmine.createSpy('touchField')
-    const component = renderAgencyField({type: 'DISTRICT_ATTORNEY', actions: {setAgencyTypeField, touchField}})
+    const clearAllAgencyFields = jasmine.createSpy('clearAllAgencyFields')
+    const actions = {clearAllAgencyFields, touchField, setAgencyTypeField}
+    const component = renderAgencyField({type: 'DISTRICT_ATTORNEY', actions})
     component.find('CheckboxField[id="type-DISTRICT_ATTORNEY"]').simulate('change', {target: {checked: true}})
     expect(setAgencyTypeField).toHaveBeenCalledWith('DISTRICT_ATTORNEY', true)
     expect(touchField).toHaveBeenCalledWith('DISTRICT_ATTORNEY')
+    expect(clearAllAgencyFields).toHaveBeenCalledWith('DISTRICT_ATTORNEY')
   })
   it('does not render the select field by default', () => {
     const component = renderAgencyField({type: 'DISTRICT_ATTORNEY'})

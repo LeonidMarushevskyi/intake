@@ -138,9 +138,11 @@ describe('CrossReportForm', () => {
     const setAgencyField = jasmine.createSpy('setAgencyField')
     const touchField = jasmine.createSpy('touchField')
     const touchAgencyField = jasmine.createSpy('touchAgencyField')
-    const actions = {setAgencyField, setAgencyTypeField, touchAgencyField, touchField}
+    const clearAllAgencyFields = jasmine.createSpy('clearAllAgencyFields')
+    const actions = {setAgencyField, setAgencyTypeField, touchAgencyField, touchField, clearAllAgencyFields}
     it('renders DISTRICT_ATTORNEY agency field', () => {
       const component = renderCrossReportForm({
+        county_id: '12',
         districtAttorney: {data: '1234'},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
@@ -157,6 +159,7 @@ describe('CrossReportForm', () => {
     })
     it('renders LAW_ENFORCEMENT agency field', () => {
       const component = renderCrossReportForm({
+        county_id: '12',
         lawEnforcement: {data: '1234'},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
@@ -173,6 +176,7 @@ describe('CrossReportForm', () => {
     })
     it('renders DEPARTMENT_OF_JUSTICE agency field', () => {
       const component = renderCrossReportForm({
+        county_id: '12',
         departmentOfJustice: {data: '1234'},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
@@ -189,6 +193,7 @@ describe('CrossReportForm', () => {
     })
     it('renders COUNTY_LICENSING agency field', () => {
       const component = renderCrossReportForm({
+        county_id: '12',
         countyLicensing: {data: '1234'},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
@@ -205,6 +210,7 @@ describe('CrossReportForm', () => {
     })
     it('renders COMMUNITY_CARE_LICENSING agency field', () => {
       const component = renderCrossReportForm({
+        county_id: '12',
         communityCareLicensing: {data: '1234'},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [{id: '123', value: 'asdf'}],
@@ -221,21 +227,33 @@ describe('CrossReportForm', () => {
     })
   })
   describe('county selection', () => {
+    const clearAllFields = jasmine.createSpy('clearAllFields')
     const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
     const setField = jasmine.createSpy('setField')
+    const actions = {clearAllFields, fetchCountyAgencies, setField}
     it('passes the selected county to county pull down', () => {
       const component = renderCrossReportForm({county_id: '1234'})
       expect(component.find('CountySelectField[id="cross_report_county"]').props().value).toEqual('1234')
     })
+    it('does not triggers the fetchCountyAgencies action on change if default value selected', () => {
+      const component = renderCrossReportForm({actions})
+      component.find('CountySelectField[id="cross_report_county"]').simulate('change', {target: {value: ''}})
+      expect(fetchCountyAgencies).not.toHaveBeenCalled()
+    })
     it('triggers the fetchCountyAgencies action on change', () => {
-      const component = renderCrossReportForm({actions: {fetchCountyAgencies, setField}})
+      const component = renderCrossReportForm({actions})
       component.find('CountySelectField[id="cross_report_county"]').simulate('change', {target: {value: '1234'}})
       expect(fetchCountyAgencies).toHaveBeenCalledWith('1234')
     })
     it('triggers the setField action on change', () => {
-      const component = renderCrossReportForm({actions: {fetchCountyAgencies, setField}})
+      const component = renderCrossReportForm({actions})
       component.find('CountySelectField[id="cross_report_county"]').simulate('change', {target: {value: '1234'}})
       expect(setField).toHaveBeenCalledWith('county_id', '1234')
+    })
+    it('triggers the clearAllFields action on change', () => {
+      const component = renderCrossReportForm({actions})
+      component.find('CountySelectField[id="cross_report_county"]').simulate('change', {target: {value: '1234'}})
+      expect(clearAllFields).toHaveBeenCalled()
     })
     it('triggers the touchField action on blur', () => {
       const touchField = jasmine.createSpy('touchField')
