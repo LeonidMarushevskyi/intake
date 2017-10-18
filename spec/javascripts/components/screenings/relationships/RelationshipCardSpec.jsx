@@ -85,7 +85,7 @@ describe('RelationshipsCard', () => {
 
   describe('when there are no participants', () => {
     it('shows a message', () => {
-      expect(component.find('div#relationships-card .card-body').text()).toEqual('Add people to see their relationships here.')
+      expect(component.find('div#relationships-card .card-body').text()).toEqual('Search for people and add them to see their relationships.')
     })
 
     it('has a title', () => {

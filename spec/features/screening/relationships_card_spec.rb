@@ -20,7 +20,7 @@ feature 'Relationship card' do
       visit edit_screening_path(id: existing_screening.id)
 
       within '#relationships-card', text: 'Relationships' do
-        expect(page).to have_content('Add people to see their relationships here.')
+        expect(page).to have_content('Search for people and add them to see their relationships.')
       end
 
       expect(
@@ -46,7 +46,7 @@ feature 'Relationship card' do
       visit screening_path(id: existing_screening.id)
 
       within '#relationships-card', text: 'Relationships' do
-        expect(page).to have_content('Add people to see their relationships here.')
+        expect(page).to have_content('Search for people and add them to see their relationships.')
       end
 
       expect(
@@ -179,7 +179,7 @@ feature 'Relationship card' do
         ).to have_been_made.twice
 
         within '#relationships-card.card.show', text: 'Relationships' do
-          expect(page).to have_content('Add people to see their relationships here.')
+          expect(page).to have_content('Search for people and add them to see their relationships.')
         end
       end
 

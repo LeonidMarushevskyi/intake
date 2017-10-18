@@ -61,7 +61,12 @@ export default class RelationshipsCard extends React.Component {
     if (relationships.isEmpty()) {
       return (
         <div className='row'>
-          Add people to see their relationships here.
+          <div className='col-md-12'>
+            <div className='double-gap-top  centered'>
+              <a href="#search-card">Search for people</a>
+              <span className="c-dark-grey"> and add them to see their relationships.</span>
+            </div>
+          </div>
         </div>
       )
     } else {
