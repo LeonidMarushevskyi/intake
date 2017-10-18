@@ -10,10 +10,11 @@ export class InvestigationPage extends React.Component {
   }
 
   render() {
+    const {id} = this.props
     return (
       <div>
         <ScreeningSummaryContainer />
-        <ContactLogContainer />
+        <ContactLogContainer id={id}/>
       </div>
     )
   }
