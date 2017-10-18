@@ -19,7 +19,13 @@ describe('buildContact', () => {
       call(get, '/api/v1/investigations/123ABC')
     )
     expect(gen.next(investigation).value).toEqual(
-      put(buildSuccess({investigation_id: '123ABC', investigation_started_at: 'date time', people: ['bob']}))
+      put(
+        buildSuccess({
+          investigation_id: '123ABC',
+          investigation_started_at: 'date time',
+          investigation_people: ['bob']
+        })
+      )
     )
   })
 

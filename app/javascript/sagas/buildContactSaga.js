@@ -9,7 +9,7 @@ export function* buildContact({investigation_id}) {
       buildSuccess({
         investigation_id,
         investigation_started_at: investigation.started_at,
-        people: investigation.people,
+        investigation_people: investigation.people,
       })
     )
   } catch (error) {

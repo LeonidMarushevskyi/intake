@@ -10,9 +10,19 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, people = []}) {
+  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, investigation_people = []}) {
     const fieldWithTouch = {value: null, touched: false}
     const fieldWithValue = (value) => ({value: value})
+    const buildPerson = ({first_name, last_name, middle_name, name_suffix, legacy_descriptor}) => ({
+      first_name,
+      last_name,
+      middle_name,
+      name_suffix,
+      legacy_descriptor,
+      selected: false,
+      touched: false,
+    })
+    const buildPeople = (people) => people.map((person) => buildPerson(person))
     return fromJS({
       id: fieldWithValue(null),
       investigation_id: fieldWithValue(investigation_id),
@@ -23,15 +33,7 @@ export default createReducer(Map(), {
       communication_method: fieldWithTouch,
       location: fieldWithTouch,
       investigation_started_at: fieldWithValue(investigation_started_at),
-      people: people.map(({first_name, last_name, middle_name, name_suffix, legacy_descriptor}) => ({
-        first_name,
-        last_name,
-        middle_name,
-        name_suffix,
-        legacy_descriptor,
-        selected: false,
-        touched: false,
-      })),
+      people: buildPeople(investigation_people)
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {

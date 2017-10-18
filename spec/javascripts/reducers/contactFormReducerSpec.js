@@ -19,7 +19,11 @@ describe('contactReducer', () => {
         {first_name: 'Bob', last_name: 'Smith', legacy_descriptor: '1'},
         {first_name: 'Jane', last_name: 'Doe', legacy_descriptor: '2'},
       ]
-      const action = buildSuccess({investigation_id: '123', investigation_started_at: 'date time', people})
+      const action = buildSuccess({
+        investigation_id: '123',
+        investigation_started_at: 'date time',
+        investigation_people: people,
+      })
       expect(contactFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           id: {

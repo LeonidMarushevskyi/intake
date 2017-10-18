@@ -9,8 +9,8 @@ export const DESELECT_CONTACT_PERSON = 'DESELECT_CONTACT_PERSON'
 export function build({investigation_id}) {
   return {type: BUILD_CONTACT, investigation_id}
 }
-export function buildSuccess({investigation_id, investigation_started_at, people}) {
-  return {type: BUILD_CONTACT_SUCCESS, investigation_id, investigation_started_at, people}
+export function buildSuccess({investigation_id, investigation_started_at, investigation_people}) {
+  return {type: BUILD_CONTACT_SUCCESS, investigation_id, investigation_started_at, investigation_people}
 }
 export function buildFailure(error) {
   return {type: BUILD_CONTACT_FAILURE, error}
