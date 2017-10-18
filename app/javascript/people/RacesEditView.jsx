@@ -4,6 +4,7 @@ import RACES from 'enums/Races'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
+import bestMatchesByRace from 'utils/raceHelper'
 
 export class RacesEditView extends React.Component {
   constructor() {
@@ -11,7 +12,7 @@ export class RacesEditView extends React.Component {
   }
 
   changeRace(selectedRace, isChecked) {
-    const {races} = this.props
+    const races = bestMatchesByRace(this.props.races)
     if (isChecked) {
       let newRaces
       if (RACES[selectedRace].exclusive) {
@@ -26,7 +27,7 @@ export class RacesEditView extends React.Component {
   }
 
   changeRaceDetail(race, selectedRaceDetail) {
-    const {races} = this.props
+    const races = bestMatchesByRace(this.props.races)
     const index = races.toJS().findIndex((item) => item.race === race)
     let newRaces
     if (selectedRaceDetail) {
@@ -38,11 +39,11 @@ export class RacesEditView extends React.Component {
   }
 
   persistedRaceInfo(race) {
-    return this.props.races.toJS().find((item) => item.race === race)
+    return bestMatchesByRace(this.props.races).toJS().find((item) => item.race === race)
   }
 
   raceData() {
-    const persistedRaces = this.props.races.toJS()
+    const persistedRaces = bestMatchesByRace(this.props.races).toJS()
     const exclusiveRaceSelected = persistedRaces.find(({race}) => RACES[race].exclusive)
 
     const raceData = Object.keys(RACES).map((race) => {

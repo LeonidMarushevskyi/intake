@@ -39,7 +39,7 @@ describe('EthnicityEditView', () => {
     const props = {
       ethnicity: Immutable.Map({
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: ['Mexican'],
+        ethnicity_detail: ['Mexican', 'Hispanic'],
       }),
       id: 'person-123',
       onChange: onChange,
