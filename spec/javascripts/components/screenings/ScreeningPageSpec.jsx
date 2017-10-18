@@ -17,7 +17,6 @@ export const requiredProps = {
     fetchScreening: () => null,
     fetchCountyAgencies: () => null,
   },
-  agencyCodeToName: {code123: 'Name of Agency'},
   counties: [{code: '123', value: 'county'}],
   countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
   params: {id: '1'},
@@ -154,9 +153,6 @@ describe('ScreeningPage', () => {
       const crossReportsCard = component.find('CrossReportCardView')
       expect(crossReportsCard.length).toEqual(1)
       expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
-      expect(crossReportsCard.props().counties).toEqual([{code: '123', value: 'county'}])
-      expect(crossReportsCard.props().agencyCodeToName).toEqual(props.agencyCodeToName)
-      expect(crossReportsCard.props().countyAgencies).toEqual({DEPARTMENT_OF_JUSTICE: []})
       expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
       expect(crossReportsCard.props().mode).toEqual('edit')
       expect(crossReportsCard.props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
