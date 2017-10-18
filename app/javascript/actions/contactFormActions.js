@@ -6,6 +6,9 @@ export const TOUCH_CONTACT_FIELD = 'TOUCH_CONTACT_FIELD'
 export const TOUCH_ALL_CONTACT_FIELDS = 'TOUCH_ALL_CONTACT_FIELDS'
 export const SELECT_CONTACT_PERSON = 'SELECT_CONTACT_PERSON'
 export const DESELECT_CONTACT_PERSON = 'DESELECT_CONTACT_PERSON'
+export const EDIT_CONTACT = 'EDIT_CONTACT'
+export const EDIT_CONTACT_SUCCESS = 'EDIT_CONTACT_SUCCESS'
+export const EDIT_CONTACT_FAILURE = 'EDIT_CONTACT_FAILURE'
 export function build({investigation_id}) {
   return {type: BUILD_CONTACT, investigation_id}
 }
@@ -29,4 +32,13 @@ export function touchField(field) {
 }
 export function touchAllFields() {
   return {type: TOUCH_ALL_CONTACT_FIELDS}
+}
+export function edit({id, investigation_id}) {
+  return {type: EDIT_CONTACT, id, investigation_id}
+}
+export function editSuccess({investigation_id, investigation_started_at, investigation_people, contact}) {
+  return {type: EDIT_CONTACT_SUCCESS, investigation_id, investigation_started_at, investigation_people, contact}
+}
+export function editFailure(error) {
+  return {type: EDIT_CONTACT_FAILURE, error}
 }

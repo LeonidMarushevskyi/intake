@@ -5,34 +5,34 @@ require 'rails_helper'
 feature 'Edit Investigation Contact' do
   let(:investigation_id) { 'existing_investigation_id' }
   let(:contact_id) { 'existing_contact_id' }
-  let(:investigation) do
+  let(:started_at) { '2010-04-27T23:30:00.000Z' }
+  let(:emma_woodhouse) do
     {
-      started_at: '2010-04-27T23:30:00.000',
-      people: [{
-        first_name: 'Emma',
-        last_name: 'Woodhouse',
-        legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
-      }, {
-        first_name: 'George',
-        last_name: 'Knightley',
-        legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
-      }]
+      first_name: 'Emma',
+      last_name: 'Woodhouse',
+      legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
     }
+  end
+  let(:george_knightley) do
+    {
+      first_name: 'George',
+      last_name: 'Knightley',
+      legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
+    }
+  end
+  let(:investigation) do
+    { started_at: '2010-04-27T23:30:00.000Z', people: [emma_woodhouse, george_knightley] }
   end
   let(:contact) do
     {
       id: contact_id,
-      started_at: '2010-04-27T23:30:00.000',
+      started_at: '2010-04-27T23:30:00.000Z',
       purpose: '1',
       communication_method: 'ABC',
       status: 'A',
       location: '123',
       note: 'This was an attempted contact',
-      people: [{
-        first_name: 'Emma',
-        last_name: 'Woodhouse',
-        legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
-      }]
+      people: [emma_woodhouse]
     }
   end
   let(:investigation_show_url) do
@@ -57,7 +57,7 @@ feature 'Edit Investigation Contact' do
     within '.card-header' do
       expect(page).to have_content("New Contact - Investigation #{investigation_id}")
     end
-    expect(page).to have_field('Date/Time', with: '04/27/2010 11:30 PM')
+    expect(page).to have_field('Date/Time', with: '04/27/2010 4:30 PM')
     expect(page).to have_select('Communication Method', selected: 'In person')
     expect(page).to have_select('Location', selected: 'School')
     expect(page).to have_select('Status', selected: 'Attempted')
@@ -80,17 +80,16 @@ feature 'Edit Investigation Contact' do
       .with(
         json_body({
           id: contact_id,
-          started_at: '2016-08-17T03:00:00.000',
+          started_at: '2016-08-17T10:00:00.000Z',
           purpose: 'CONTACT_PURPOSE_2',
           status: 'CONTACT_STATUS_2',
           note: 'Updated contact note',
           communication_method: 'ABC',
           location: 'OFFICE',
-          people: [{
-            legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' }
-          }, {
-            legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' }
-          }]
+          people: [
+            { legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' } },
+            { legacy_descriptor: { legacy_id: '2', legacy_table_name: 'foo' } }
+          ]
         }.to_json)
       )
     ).to have_been_made
