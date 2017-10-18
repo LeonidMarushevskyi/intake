@@ -1,7 +1,14 @@
 import {Map, fromJS} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import crossReportFormReducer from 'reducers/crossReportFormReducer'
-import {resetFieldValues, setField, setAgencyTypeField, touchField} from 'actions/crossReportFormActions'
+import {
+  resetFieldValues,
+  setAgencyField,
+  setAgencyTypeField,
+  setField,
+  touchField,
+  touchAgencyField,
+} from 'actions/crossReportFormActions'
 import {fetchScreeningSuccess} from 'actions/screeningActions'
 
 describe('crossReportFormReducer', () => {
@@ -244,6 +251,60 @@ describe('crossReportFormReducer', () => {
           DISTRICT_ATTORNEY: {
             selected: true,
             touched: false,
+          },
+        })
+      )
+    })
+  })
+  describe('on TOUCH_CROSS_REPORT_AGENCY_FIELD', () => {
+    it('returns the cross report value with touched set to true', () => {
+      const action = touchAgencyField('DISTRICT_ATTORNEY')
+      const state = fromJS({
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '1234AAB',
+            touched: false,
+          },
+        },
+      })
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          DISTRICT_ATTORNEY: {
+            selected: true,
+            touched: false,
+            agency: {
+              value: '1234AAB',
+              touched: true,
+            },
+          },
+        })
+      )
+    })
+  })
+  describe('on SET_CROSS_REPORT_AGENCY_FIELD', () => {
+    it('sets the value of selected for the agency type', () => {
+      const action = setAgencyField('DISTRICT_ATTORNEY', '1234AAB')
+      const state = fromJS({
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+      })
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          DISTRICT_ATTORNEY: {
+            selected: true,
+            touched: false,
+            agency: {
+              value: '1234AAB',
+              touched: false,
+            },
           },
         })
       )

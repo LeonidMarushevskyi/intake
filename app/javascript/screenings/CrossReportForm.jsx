@@ -1,14 +1,17 @@
 import AlertInfoMessage from 'common/AlertInfoMessage'
-import CheckboxField from 'common/CheckboxField'
 import CountySelectField from 'common/CountySelectField'
 import DateField from 'common/DateField'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
+import AgencyField from 'screenings/crossReports/AgencyField'
 import {
-  AGENCY_TYPES,
-  DISTRICT_ATTORNEY,
   COMMUNICATION_METHODS,
+  COMMUNITY_CARE_LICENSING,
+  COUNTY_LICENSING,
+  DEPARTMENT_OF_JUSTICE,
+  DISTRICT_ATTORNEY,
+  LAW_ENFORCEMENT,
 } from 'enums/CrossReport'
 
 class CrossReportForm extends React.Component {
@@ -19,13 +22,19 @@ class CrossReportForm extends React.Component {
         resetFieldValues,
         saveScreening,
         setAgencyTypeField,
+        setAgencyField,
         setField,
+        touchAgencyField,
         touchField,
       },
       counties,
       county_id,
       countyAgencies,
+      departmentOfJustice,
       districtAttorney,
+      countyLicensing,
+      communityCareLicensing,
+      lawEnforcement,
       hasAgencies,
       inform_date,
       method,
@@ -40,6 +49,12 @@ class CrossReportForm extends React.Component {
     const save = () => {
       saveScreening(screeningWithEdits)
       toggleShow()
+    }
+    const agencyFieldActions = {
+      setAgencyTypeField,
+      setAgencyField,
+      touchField,
+      touchAgencyField,
     }
     return (
       <div className='card-body no-pad-top'>
@@ -64,23 +79,50 @@ class CrossReportForm extends React.Component {
           <div className='col-md-6'>
             <ul className='unstyled-list'>
               <li key={DISTRICT_ATTORNEY}>
-                <CheckboxField
-                  id='type-DISTRICT_ATTORNEY'
-                  checked={districtAttorney.selected}
-                  disabled={countyAgencies[DISTRICT_ATTORNEY] === undefined || countyAgencies[DISTRICT_ATTORNEY].length === 0}
-                  label={AGENCY_TYPES[DISTRICT_ATTORNEY]}
-                  onChange={({target: {checked}}) => {
-                    setAgencyTypeField(DISTRICT_ATTORNEY, checked)
-                    touchField(DISTRICT_ATTORNEY)
-                  }}
-                  // required={this.props.isAgencyRequired(agencyType)}
-                  value={DISTRICT_ATTORNEY}
+                <AgencyField
+                  type={DISTRICT_ATTORNEY}
+                  data={districtAttorney}
+                  countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
+                  actions={agencyFieldActions}
+                />
+              </li>
+              <li key={LAW_ENFORCEMENT}>
+                <AgencyField
+                  type={LAW_ENFORCEMENT}
+                  data={lawEnforcement}
+                  countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
+                  actions={agencyFieldActions}
                 />
               </li>
             </ul>
           </div>
           <div className='col-md-6'>
-            <ul className='unstyled-list' />
+            <ul className='unstyled-list'>
+              <li key={DEPARTMENT_OF_JUSTICE}>
+                <AgencyField
+                  type={DEPARTMENT_OF_JUSTICE}
+                  data={departmentOfJustice}
+                  countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
+                  actions={agencyFieldActions}
+                />
+              </li>
+              <li key={COUNTY_LICENSING}>
+                <AgencyField
+                  type={COUNTY_LICENSING}
+                  data={countyLicensing}
+                  countyAgencies={countyAgencies[COUNTY_LICENSING]}
+                  actions={agencyFieldActions}
+                />
+              </li>
+              <li key={COMMUNITY_CARE_LICENSING}>
+                <AgencyField
+                  type={COMMUNITY_CARE_LICENSING}
+                  data={communityCareLicensing}
+                  countyAgencies={countyAgencies[COMMUNITY_CARE_LICENSING]}
+                  actions={agencyFieldActions}
+                />
+              </li>
+            </ul>
           </div>
         </div>
         <div className='row gap-top'>
@@ -131,13 +173,17 @@ class CrossReportForm extends React.Component {
 CrossReportForm.propTypes = {
   actions: PropTypes.object.isRequired,
   alertInfoMessage: PropTypes.string,
+  communityCareLicensing: PropTypes.object.isRequired,
   counties: PropTypes.array.isRequired,
   countyAgencies: PropTypes.object,
-  county_id: PropTypes.string,
+  countyLicensing: PropTypes.object.isRequired,
+  county_id: PropTypes.string.isRequired,
+  departmentOfJustice: PropTypes.object.isRequired,
   districtAttorney: PropTypes.object.isRequired,
   errors: PropTypes.object,
   hasAgencies: PropTypes.bool.isRequired,
   inform_date: PropTypes.string,
+  lawEnforcement: PropTypes.object.isRequired,
   method: PropTypes.string,
   screening: PropTypes.object,
   screeningWithEdits: PropTypes.object,

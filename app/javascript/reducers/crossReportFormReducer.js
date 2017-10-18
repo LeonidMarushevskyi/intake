@@ -3,8 +3,10 @@ import {Map, fromJS} from 'immutable'
 import {
   RESET_CROSS_REPORT_FIELD_VALUES,
   SET_CROSS_REPORT_FIELD,
+  SET_CROSS_REPORT_AGENCY_FIELD,
   SET_CROSS_REPORT_AGENCY_TYPE_FIELD,
   TOUCH_CROSS_REPORT_FIELD,
+  TOUCH_CROSS_REPORT_AGENCY_FIELD,
 } from 'actions/crossReportFormActions'
 import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
 import {
@@ -81,11 +83,17 @@ export default createReducer(Map(), {
   [SET_CROSS_REPORT_AGENCY_TYPE_FIELD](state, {field, value}) {
     return state.setIn([field, 'selected'], value)
   },
+  [SET_CROSS_REPORT_AGENCY_FIELD](state, {agencyType, value}) {
+    return state.setIn([agencyType, 'agency', 'value'], value)
+  },
   [SET_CROSS_REPORT_FIELD](state, {field, value}) {
     return state.setIn([field, 'value'], value)
   },
   [TOUCH_CROSS_REPORT_FIELD](state, {field}) {
     return state.setIn([field, 'touched'], true)
+  },
+  [TOUCH_CROSS_REPORT_AGENCY_FIELD](state, {agencyType}) {
+    return state.setIn([agencyType, 'agency', 'touched'], true)
   },
   [FETCH_SCREENING_SUCCESS](_state, {screening}) {
     return build_cross_report_form_from_screening(screening)
