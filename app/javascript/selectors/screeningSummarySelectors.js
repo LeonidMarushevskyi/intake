@@ -1,7 +1,11 @@
 import {createSelector} from 'reselect'
-import {List, Set} from 'immutable'
+import {List, Map, Set} from 'immutable'
+import {getInvestigationSelector} from 'selectors/investigationSelectors'
 
-export const getScreeningSummarySelector = (state) => state.get('screeningSummary')
+export const getScreeningSummarySelector = createSelector(
+  getInvestigationSelector,
+  (investigation) => investigation.get('screening') || Map()
+)
 export const getAllegationTypesSelector = createSelector(
   getScreeningSummarySelector,
   (screeningSummary) => {
