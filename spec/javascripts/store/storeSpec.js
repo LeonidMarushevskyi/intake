@@ -23,7 +23,6 @@ describe('Store', () => {
       counties: [],
       countyAgencies: [],
       investigation: {},
-      investigationPeople: [],
       involvements: [],
       locations: [],
       narrativeForm: {},
@@ -32,7 +31,6 @@ describe('Store', () => {
       remoteError: {},
       routing: {locationBeforeTransitions: null},
       screening: {},
-      screeningSummary: {},
       staff: {},
     })
     store = createStore(rootReducer)
