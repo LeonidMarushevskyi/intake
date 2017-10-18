@@ -12,24 +12,24 @@ class ContactForm extends React.Component {
   }
   render() {
     const {
-      investigationId,
-      startedAt,
-      communicationMethod,
-      location,
-      status,
-      note,
-      purpose,
       actions: {setField, touchField, create, touchAllFields, selectPerson, deselectPerson},
-      statuses,
-      purposes,
+      communicationMethod,
       communicationMethods,
-      locations,
       errors,
       inPersonCode,
+      investigationId,
+      location,
+      locations,
+      note,
       officeLocationCode,
       people,
-      valid,
+      purpose,
+      purposes,
       selectedPeopleIds,
+      startedAt,
+      status,
+      statuses,
+      valid,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
