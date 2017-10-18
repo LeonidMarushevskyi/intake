@@ -25,6 +25,7 @@ const mapStateToProps = (state, ownProps) => {
     communicationMethod: contactForm.getIn(['communication_method', 'value']),
     communicationMethods: getCommunicationMethodsSelector(state).toJS(),
     errors: getVisibleErrorsSelector(state).toJS(),
+    id: ownProps.params.id,
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
     investigationId: ownProps.params.investigation_id,
     location: contactForm.getIn(['location', 'value']),

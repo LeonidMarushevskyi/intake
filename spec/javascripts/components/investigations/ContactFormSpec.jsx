@@ -46,6 +46,22 @@ describe('ContactForm', () => {
     return shallow(<ContactForm {...props} />)
   }
 
+  function mountContact({investigationId, id, actions}) {
+    return mount(
+      <ContactForm
+        investigationId={investigationId}
+        id={id}
+        actions={actions}
+        contact={{}}
+        statuses={[]}
+        purposes={[]}
+        communicationMethods={[]}
+        locations={[]}
+        people={[]}
+      />
+    )
+  }
+
   it('displays the investigation Id in the header', () => {
     const component = renderContact({investigationId: 'ABCD1234'})
     const header = component.find('.card-header')
@@ -387,20 +403,52 @@ describe('ContactForm', () => {
     })
   })
 
-  it('calls build when the component mounts', () => {
-    const build = jasmine.createSpy('build')
-    mount(
-      <ContactForm
-        investigationId='ABC123'
-        actions={{build}}
-        contact={{}}
-        statuses={[]}
-        purposes={[]}
-        communicationMethods={[]}
-        locations={[]}
-        people={[]}
-      />
-    )
-    expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
+  describe('#componentDidMount', () => {
+    let build
+    let edit
+    beforeEach(() => {
+      build = jasmine.createSpy('build')
+      edit = jasmine.createSpy('edit')
+    })
+
+    describe('when contact id is not present', () => {
+      beforeEach(() => {
+        mountContact({
+          investigationId: 'existing_investigation_id',
+          actions: {build, edit},
+        })
+      })
+
+      it('calls the build action', () => {
+        expect(build).toHaveBeenCalledWith({
+          investigation_id: 'existing_investigation_id',
+        })
+      })
+
+      it('does not call edit action', () => {
+        expect(edit).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when contact id is present', () => {
+      beforeEach(() => {
+        mountContact({
+          investigationId: 'existing_investigation_id',
+          id: 'existing_contact_id',
+          actions: {build, edit},
+        })
+      })
+
+      it('does not call the build action', () => {
+        expect(build).not.toHaveBeenCalled()
+      })
+
+      it('calls the edit action', () => {
+        expect(edit).toHaveBeenCalledWith({
+          id: 'existing_contact_id',
+          investigation_id: 'existing_investigation_id',
+        })
+      })
+    })
   })
 })

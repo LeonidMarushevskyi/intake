@@ -7,8 +7,16 @@ import FormField from 'common/FormField'
 
 class ContactForm extends React.Component {
   componentDidMount() {
-    const {investigationId, actions: {build}} = this.props
-    build({investigation_id: investigationId})
+    const {
+      id,
+      investigationId,
+      actions: {build, edit},
+    } = this.props
+    if (id) {
+      edit({investigation_id: investigationId, id})
+    } else {
+      build({investigation_id: investigationId})
+    }
   }
   render() {
     const {
@@ -188,6 +196,7 @@ ContactForm.propTypes = {
   communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
   errors: PropTypes.object,
+  id: PropTypes.string,
   inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
   location: PropTypes.string,
