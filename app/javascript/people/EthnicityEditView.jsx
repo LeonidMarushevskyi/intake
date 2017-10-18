@@ -34,7 +34,7 @@ export class EthnicityEditView extends React.Component {
   renderEthnicityAndDetails(ethnicityOptions) {
     const {id, ethnicity} = this.props
     const ethnicity_details = ethnicity.get('ethnicity_detail')
-    const ethnicity_detail = ethnicity_details ? ethnicity_details[0] : undefined
+    const ethnicity_detail = ethnicity_details ? ethnicity_details.first() : undefined
     return (
       <div className='col-md-6'>
         <ul className='unstyled-list'>

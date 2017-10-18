@@ -18,7 +18,7 @@ export class RacesEditView extends React.Component {
       if (RACES[selectedRace].exclusive) {
         newRaces = Immutable.fromJS([{race: selectedRace}])
       } else {
-        newRaces = this.props.races.push(Immutable.Map({race: selectedRace}))
+        newRaces = races.push(Immutable.Map({race: selectedRace}))
       }
       this.props.onChange(newRaces)
     } else {

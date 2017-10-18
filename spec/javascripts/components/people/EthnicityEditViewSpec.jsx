@@ -37,7 +37,7 @@ describe('EthnicityEditView', () => {
 
   it('prepopulates the values passed to props', () => {
     const props = {
-      ethnicity: Immutable.Map({
+      ethnicity: Immutable.fromJS({
         hispanic_latino_origin: 'Yes',
         ethnicity_detail: ['Mexican', 'Hispanic'],
       }),
