@@ -14,7 +14,7 @@ export default class WorkerSafetyEditView extends React.Component {
     return (
       <div className='card-body'>
         <div className='row'>
-          <div className='col-md-6'>
+          <div className='col-md-12'>
             <label htmlFor='safety_alerts'>Worker safety alerts</label>
             <Select
               multi
