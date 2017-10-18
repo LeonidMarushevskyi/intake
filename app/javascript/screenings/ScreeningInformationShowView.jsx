@@ -7,25 +7,23 @@ import {dateTimeFormatter} from 'utils/dateFormatter'
 const ScreeningInformationShowView = ({errors, screening}) => (
   <div className='card-body'>
     <div className='row'>
-      <ShowField gridClassName='col-md-6' label='Title/Name of Screening'>
+      <ShowField gridClassName='col-md-4' label='Title/Name of Screening'>
         {screening.get('name')}
       </ShowField>
-      <ShowField gridClassName='col-md-6' label='Assigned Social Worker'
+      <ShowField gridClassName='col-md-4' label='Assigned Social Worker'
         errors={errors.assignee} required
       >
         {screening.get('assignee')}
       </ShowField>
     </div>
-    <div className='row double-gap-top'>
-      <ShowField gridClassName='col-md-6' label='Screening Start Date/Time' errors={errors.started_at} required>
+    <div className='row'>
+      <ShowField gridClassName='col-md-4' label='Screening Start Date/Time' errors={errors.started_at} required>
         {dateTimeFormatter(screening.get('started_at'))}
       </ShowField>
-      <ShowField gridClassName='col-md-6' label='Screening End Date/Time' errors={errors.ended_at}>
+      <ShowField gridClassName='col-md-4' label='Screening End Date/Time' errors={errors.ended_at}>
         {dateTimeFormatter(screening.get('ended_at'))}
       </ShowField>
-    </div>
-    <div className='row double-gap-top'>
-      <ShowField gridClassName='col-md-6' label='Communication Method'
+      <ShowField gridClassName='col-md-4' label='Communication Method'
         errors={errors.communication_method} required
       >
         {COMMUNICATION_METHOD[screening.get('communication_method')]}

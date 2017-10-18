@@ -10,7 +10,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
     <div className='row'>
       <InputField
         allowCharacters={/[a-zA-Z\s'’-]/}
-        gridClassName='col-md-6'
+        gridClassName='col-md-4'
         id='name'
         label='Title/Name of Screening'
         maxLength='64'
@@ -22,7 +22,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         allowCharacters={/[a-zA-Z\s]/}
         disabled={Boolean(screening.get('assignee_staff_id'))}
         errors={errors.assignee}
-        gridClassName='col-md-6'
+        gridClassName='col-md-4'
         id='assignee'
         label='Assigned Social Worker'
         maxLength='64'
@@ -35,7 +35,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
     </div>
     <div className='row'>
       <DateField
-        gridClassName='col-md-6'
+        gridClassName='col-md-4'
         id='started_at'
         label='Screening Start Date/Time'
         required
@@ -45,7 +45,7 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         errors={errors.started_at}
       />
       <DateField
-        gridClassName='col-md-6'
+        gridClassName='col-md-4'
         id='ended_at'
         label='Screening End Date/Time'
         value={screening.get('ended_at')}
@@ -53,10 +53,8 @@ const ScreeningInformationEditView = ({screening, onCancel, onChange, onSave, va
         onBlur={(value) => validateField('ended_at', value)}
         errors={errors.ended_at}
       />
-    </div>
-    <div className='row'>
       <SelectField
-        gridClassName='col-md-6'
+        gridClassName='col-md-4'
         id='communication_method'
         label='Communication Method'
         required
