@@ -134,18 +134,13 @@ feature 'cross reports' do
   scenario 'viewing cross reports on an existing screening' do
     existing_screening.cross_reports = [
       CrossReport.new(
-        county: 'c42',
-        agency_type: 'DEPARTMENT_OF_JUSTICE',
-        agency_code: 'EYIS9Nh75C',
-        communication_method: 'Child Abuse Form',
-        reported_on: Date.today.to_s(:db)
-      ),
-      CrossReport.new(
-        county: 'c42',
-        agency_type: 'LAW_ENFORCEMENT',
-        agency_code: 'BMG2f3J75C',
-        communication_method: 'Child Abuse Form',
-        reported_on: Date.today.to_s(:db)
+        county_id: 'c42',
+        agencies: [
+          { id: 'EYIS9Nh75C', type: 'DEPARTMENT_OF_JUSTICE' },
+          { id: 'BMG2f3J75C', type: 'LAW_ENFORCEMENT' }
+        ],
+        method: 'Child Abuse Form',
+        inform_date: Date.today.to_s(:db)
       )
     ]
     stub_request(
