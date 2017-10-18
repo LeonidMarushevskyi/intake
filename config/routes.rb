@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     only: [:show],
     to: 'home#index',
     constraints: Routes::ActiveInvestigationsConstraint do
-    resources :contacts, only: %i[new show], to: 'home#index'
+    resources :contacts, only: %i[new show edit], to: 'home#index'
   end
 
   namespace :api, defaults: { format: :json } do
