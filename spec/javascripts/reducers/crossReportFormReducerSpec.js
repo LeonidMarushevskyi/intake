@@ -2,6 +2,8 @@ import {Map, fromJS} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import crossReportFormReducer from 'reducers/crossReportFormReducer'
 import {
+  clearAllFields,
+  clearAllAgencyFields,
   resetFieldValues,
   setAgencyField,
   setAgencyTypeField,
@@ -14,6 +16,236 @@ import {fetchScreeningSuccess} from 'actions/screeningActions'
 describe('crossReportFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
+  describe('on CLEAR_CROSS_REPORT_FIELD_VALUES', () => {
+    it('returns the cross report with the values reset to blank except county_id', () => {
+      const state = fromJS({
+        county_id: {
+          value: '1234',
+          touched: true,
+        },
+        inform_date: {
+          value: '2017-02-20',
+          touched: false,
+        },
+        method: {
+          value: 'Child Abuse Form',
+          touched: true,
+        },
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '1234',
+            touched: true,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '5234',
+            touched: true,
+          },
+        },
+        DEPARTMENT_OF_JUSTICE: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COUNTY_LICENSING: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COMMUNITY_CARE_LICENSING: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: 'asdf',
+            touched: false,
+          },
+        },
+      })
+      const action = clearAllFields()
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          county_id: {
+            value: '1234',
+            touched: false,
+          },
+          inform_date: {
+            value: '',
+            touched: false,
+          },
+          method: {
+            value: '',
+            touched: false,
+          },
+          DISTRICT_ATTORNEY: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          LAW_ENFORCEMENT: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          DEPARTMENT_OF_JUSTICE: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COUNTY_LICENSING: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COMMUNITY_CARE_LICENSING: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+        })
+      )
+    })
+  })
+  describe('on CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES', () => {
+    it('returns the cross report with the agency specific data blanked out', () => {
+      const state = fromJS({
+        county_id: {
+          value: '1234',
+          touched: true,
+        },
+        inform_date: {
+          value: '2017-02-20',
+          touched: false,
+        },
+        method: {
+          value: 'Child Abuse Form',
+          touched: true,
+        },
+        DISTRICT_ATTORNEY: {
+          selected: false,
+          touched: true,
+          agency: {
+            value: '1234',
+            touched: true,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '5234',
+            touched: true,
+          },
+        },
+        DEPARTMENT_OF_JUSTICE: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COUNTY_LICENSING: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COMMUNITY_CARE_LICENSING: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: 'asdf',
+            touched: false,
+          },
+        },
+      })
+      const action = clearAllAgencyFields('DISTRICT_ATTORNEY')
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          county_id: {
+            value: '1234',
+            touched: true,
+          },
+          inform_date: {
+            value: '2017-02-20',
+            touched: false,
+          },
+          method: {
+            value: 'Child Abuse Form',
+            touched: true,
+          },
+          DISTRICT_ATTORNEY: {
+            selected: false,
+            touched: true,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          LAW_ENFORCEMENT: {
+            selected: true,
+            touched: false,
+            agency: {
+              value: '5234',
+              touched: true,
+            },
+          },
+          DEPARTMENT_OF_JUSTICE: {
+            selected: true,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COUNTY_LICENSING: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COMMUNITY_CARE_LICENSING: {
+            selected: true,
+            touched: false,
+            agency: {
+              value: 'asdf',
+              touched: false,
+            },
+          },
+        })
+      )
+    })
+  })
   describe('on RESET_CROSS_REPORT_FIELD_VALUES', () => {
     it('updates the cross report form', () => {
       const action = resetFieldValues({

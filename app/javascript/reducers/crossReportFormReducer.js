@@ -1,6 +1,8 @@
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 import {
+  CLEAR_CROSS_REPORT_FIELD_VALUES,
+  CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES,
   RESET_CROSS_REPORT_FIELD_VALUES,
   SET_CROSS_REPORT_FIELD,
   SET_CROSS_REPORT_AGENCY_FIELD,
@@ -61,6 +63,12 @@ const build_cross_report_form_from_screening = ({cross_reports}) => {
   }
 }
 export default createReducer(Map(), {
+  [CLEAR_CROSS_REPORT_FIELD_VALUES](state) {
+    return build_cross_report_form({county_id: state.getIn(['county_id', 'value'])})
+  },
+  [CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES](state, {agencyType}) {
+    return state.setIn([agencyType, 'agency', 'value'], '').setIn([agencyType, 'agency', 'touched'], false)
+  },
   [RESET_CROSS_REPORT_FIELD_VALUES](state, {screening: {cross_reports}}) {
     if (cross_reports && cross_reports.length > 0) {
       const crossReport = cross_reports[0]
