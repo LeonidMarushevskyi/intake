@@ -1,11 +1,11 @@
 import * as Validator from 'utils/validator'
-import CrossReportEditView from 'screenings/CrossReportEditView'
-import CrossReportShowView from 'screenings/CrossReportShowView'
+import CrossReportFormContainer from 'screenings/CrossReportFormContainer'
+import CrossReportShowContainer from 'screenings/CrossReportShowContainer'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import {AGENCY_TYPES} from 'enums/CrossReport'
 import {
+  AGENCY_TYPES,
   ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE,
   CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
   LAW_ENFORCEMENT,
@@ -19,6 +19,7 @@ import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 export default class CrossReportCardView extends React.Component {
   constructor(props) {
     super(props)
+    this.toggleShow = this.toggleShow.bind(this)
     this.isAgencyChecked = this.isAgencyChecked.bind(this)
     this.isAgencyRequired = this.isAgencyRequired.bind(this)
     this.onEvent = this.onEvent.bind(this)
@@ -137,17 +138,14 @@ export default class CrossReportCardView extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const [firstCrossReport] = this.props.crossReports.toJS()
-    if (firstCrossReport && firstCrossReport.county) {
-      this.props.actions.fetchCountyAgencies(firstCrossReport.county)
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.mode === 'show') {
       this.setState({errors: this.validateAllCrossReports()})
     }
+  }
+
+  toggleShow() {
+    this.setState({mode: 'show'})
   }
 
   isAgencyChecked(agencyType) {
@@ -267,33 +265,6 @@ export default class CrossReportCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    const alertInfoMessage = this.alertInfoMessage()
-    const errors = this.state.errors
-    const allprops = {
-      edit: {
-        actions: this.props.actions,
-        errors: errors,
-        isAgencyRequired: this.isAgencyRequired,
-        counties: this.props.counties,
-        countyAgencies: this.props.countyAgencies,
-        crossReports: this.props.crossReports,
-        alertInfoMessage: alertInfoMessage,
-        onSave: this.onSave,
-        onBlur: this.onEvent,
-        onCancel: this.onCancel,
-        onChange: this.onChange,
-      },
-      show: {
-        agencyCodeToName: this.props.agencyCodeToName,
-        errors: errors,
-        onEdit: this.onEdit,
-        countyAgencies: this.props.countyAgencies,
-        crossReports: this.props.crossReports,
-        alertInfoMessage: alertInfoMessage,
-      },
-    }
-    const CrossReportView = (mode === 'edit') ? CrossReportEditView : CrossReportShowView
-    const props = allprops[mode]
     return (
       <div className={`card ${mode} double-gap-top`} id='cross-report-card'>
         <ScreeningCardHeader
@@ -301,25 +272,20 @@ export default class CrossReportCardView extends React.Component {
           title='Cross Report'
           showEdit={this.props.editable && mode === 'show'}
         />
-        <CrossReportView {...props} />
+        {mode === 'edit' && <CrossReportFormContainer toggleShow={this.toggleShow} />}
+        {mode === 'show' && <CrossReportShowContainer />}
       </div>
     )
   }
 }
 
 CrossReportCardView.defaultProps = {
-  agencyCodeToName: {},
   allegations: Immutable.fromJS([]),
-  counties: [],
-  countyAgencies: {},
 }
 
 CrossReportCardView.propTypes = {
   actions: PropTypes.object.isRequired,
-  agencyCodeToName: PropTypes.object,
   areCrossReportsRequired: PropTypes.bool.isRequired,
-  counties: PropTypes.array,
-  countyAgencies: PropTypes.object,
   crossReports: PropTypes.object,
   editable: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
