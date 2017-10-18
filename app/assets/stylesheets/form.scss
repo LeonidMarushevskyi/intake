@@ -58,7 +58,8 @@ select {
 }
 
 legend {
-  border-bottom: none;
+  border-bottom: 0.1rem solid $light-grey;
+  margin-bottom: 0;
 }
 
 .fieldset-inputs label {

@@ -17,28 +17,24 @@ const IncidentInformationShowView = ({screening, errors}) => {
         </ShowField>
       </div>
       <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Incident County'>
+        <ShowField gridClassName='col-md-4' label='Address'>
+          {screening.getIn(['address', 'street_address'])}
+        </ShowField>
+        <ShowField gridClassName='col-md-4' label='City'>
+          {screening.getIn(['address', 'city'])}
+        </ShowField>
+        <ShowField gridClassName='col-md-4' label='Incident County'>
           {COUNTIES[screening.get('incident_county')]}
         </ShowField>
       </div>
       <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Address'>
-          {screening.getIn(['address', 'street_address'])}
-        </ShowField>
-        <ShowField gridClassName='col-md-6' label='City'>
-          {screening.getIn(['address', 'city'])}
-        </ShowField>
-      </div>
-      <div className='row'>
-        <ShowField gridClassName='col-md-6' label='State'>
+        <ShowField gridClassName='col-md-4' label='State'>
           {state ? state.name : ''}
         </ShowField>
-        <ShowField gridClassName='col-md-6' label='Zip'>
+        <ShowField gridClassName='col-md-4' label='Zip'>
           {screening.getIn(['address', 'zip'])}
         </ShowField>
-      </div>
-      <div className='row'>
-        <ShowField gridClassName='col-md-6' label='Location Type'>
+        <ShowField gridClassName='col-md-4' label='Location Type'>
           {screening.get('location_type')}
         </ShowField>
       </div>
