@@ -150,7 +150,7 @@ feature 'show allegations' do
       .and_return(json_body(nil, status: 204))
 
     within show_participant_card_selector(marge.id) do
-      click_button 'Delete participant'
+      click_button 'Delete person'
     end
 
     within '#allegations-card.card.show' do
@@ -208,7 +208,7 @@ feature 'show allegations' do
     end
 
     within show_participant_card_selector(marge.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     marge.roles = ['Anonymous Reporter']
@@ -235,7 +235,7 @@ feature 'show allegations' do
     end
 
     within show_participant_card_selector(marge.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']

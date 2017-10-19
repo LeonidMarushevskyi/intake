@@ -132,7 +132,7 @@ feature 'edit allegations' do
     end
 
     within show_participant_card_selector(marge.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
@@ -246,7 +246,7 @@ feature 'edit allegations' do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
 
-      click_button 'Delete participant'
+      click_button 'Delete person'
     end
 
     within '#allegations-card.card.edit' do
@@ -441,7 +441,7 @@ feature 'edit allegations' do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
 
-      click_button 'Delete participant'
+      click_button 'Delete person'
     end
 
     within '#allegations-card.card.edit' do
@@ -516,7 +516,7 @@ feature 'edit allegations' do
     end
 
     within show_participant_card_selector(lisa.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     within '#allegations-card.card.show' do
@@ -615,7 +615,7 @@ feature 'edit allegations' do
     end
 
     within show_participant_card_selector(marge.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     within '#allegations-card.card.show' do

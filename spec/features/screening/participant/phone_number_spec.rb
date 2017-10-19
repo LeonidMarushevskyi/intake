@@ -74,7 +74,7 @@ feature 'Participant Phone Number' do
     within show_participant_card_selector(marge.id) do
       expect(page).to have_content('(917)555-5555')
 
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     marge.phone_numbers = []

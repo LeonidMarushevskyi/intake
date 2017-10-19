@@ -22,7 +22,7 @@ feature 'Delete Participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(participant.id) do
       within '.card-header' do
-        click_button 'Delete participant'
+        click_button 'Delete person'
       end
     end
     expect(
@@ -35,7 +35,7 @@ feature 'Delete Participant' do
     visit screening_path(id: screening.id)
     within show_participant_card_selector(participant.id) do
       within '.card-header' do
-        click_button 'Delete participant'
+        click_button 'Delete person'
       end
     end
     expect(
@@ -55,7 +55,7 @@ feature 'Delete Participant' do
       visit edit_screening_path(id: screening.id)
       within show_participant_card_selector(participant.id) do
         within '.card-header' do
-          click_button 'Delete participant'
+          click_button 'Delete person'
         end
       end
       expect(

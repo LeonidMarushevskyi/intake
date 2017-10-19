@@ -60,8 +60,8 @@ feature 'Show Screening' do
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
-        expect(page).to have_link 'Edit participant'
-        expect(page).to have_button 'Delete participant'
+        expect(page).to have_link 'Edit person'
+        expect(page).to have_button 'Delete person'
       end
 
       within '.card-body' do
@@ -128,7 +128,7 @@ feature 'Show Screening' do
     visit screening_path(id: existing_screening.id)
 
     within show_participant_card_selector(existing_participant.id) do
-      click_link 'Edit participant'
+      click_link 'Edit person'
     end
 
     expect(page).to have_css(edit_participant_card_selector(existing_participant.id))

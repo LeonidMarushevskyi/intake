@@ -102,7 +102,7 @@ export class RacesEditView extends React.Component {
   render() {
     const raceData = this.raceData()
     const startIndex = 0
-    const halfIndex = 4
+    const halfIndex = 5
     return (
       <div className='gap-top' id='race'>
         <fieldset className='fieldset-inputs'>

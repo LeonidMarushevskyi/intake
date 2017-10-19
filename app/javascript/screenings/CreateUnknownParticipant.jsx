@@ -3,7 +3,7 @@ import React from 'react'
 
 const CreateUnknownParticipant = ({saveCallback}) => (
   <div className='col-md-12'>
-    <button className='btn btn-default btn-block'
+    <button className='btn btn-default btn-block gap-bottom'
       aria-label='Create a new person'
       onClick={() => saveCallback({id: null})}
       data-autosuggest='true'

@@ -38,27 +38,27 @@ describe('ScreeningInformationShowView', () => {
 
     it('renders no screening name', () => {
       expect(component.find('ShowField[label="Title/Name of Screening"]').html())
-        .toContain('<div class="c-gray"></div>')
+        .toContain('<span></span>')
     })
 
     it('renders no social worker', () => {
       expect(component.find('ShowField[label="Assigned Social Worker"]').html())
-        .toContain('<div class="c-gray"></div>')
+        .toContain('<span></span>')
     })
 
     it('renders no start date/time', () => {
       expect(component.find('ShowField[label="Screening Start Date/Time"]').html())
-        .toContain('<div class="c-gray"></div>')
+        .toContain('<span></span>')
     })
 
     it('renders no end date/time', () => {
       expect(component.find('ShowField[label="Screening End Date/Time"]').html())
-        .toContain('<div class="c-gray"></div>')
+        .toContain('<span></span>')
     })
 
     it('renders no communication method', () => {
       expect(component.find('ShowField[label="Communication Method"]').html())
-        .toContain('<div class="c-gray"></div>')
+        .toContain('<span></span>')
     })
 
     it('renders errors for the Assigned Social Worker', () => {

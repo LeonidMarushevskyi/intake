@@ -203,7 +203,7 @@ feature 'Edit Screening' do
       within '.card-header' do
         expect(page).to_not have_content('Sensitive')
         expect(page).to have_content 'Homer Simpson'
-        expect(page).to have_button 'Delete participant'
+        expect(page).to have_button 'Delete person'
       end
 
       within '.card-body' do
@@ -368,7 +368,7 @@ feature 'Edit Screening' do
             within '.card-header' do
               expect(page).to have_content('Sensitive')
               expect(page).to have_content 'Marge Simpson'
-              expect(page).to have_button 'Delete participant'
+              expect(page).to have_button 'Delete person'
             end
           end
         end
@@ -432,8 +432,8 @@ feature 'Edit Screening' do
         within '.card-header' do
           expect(page).to_not have_content('Sensitive')
           expect(page).to have_content('Homer Simpson')
-          expect(page).to_not have_link 'Edit participant'
-          expect(page).to have_button 'Delete participant'
+          expect(page).to_not have_link 'Edit person'
+          expect(page).to have_button 'Delete person'
         end
 
         within '.card-body' do

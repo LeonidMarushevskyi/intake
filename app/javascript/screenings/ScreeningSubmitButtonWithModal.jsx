@@ -2,7 +2,7 @@ import React from 'react'
 
 const ScreeningSubmitButtonWithModal = () => (
   <div className='row'>
-    <div className='centered'>
+    <div className='centered double-gap-top double-gap-bottom'>
       <button
         className='btn btn-primary'
         data-toggle='modal'

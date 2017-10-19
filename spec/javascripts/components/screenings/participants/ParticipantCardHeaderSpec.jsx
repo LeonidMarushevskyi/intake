@@ -59,20 +59,20 @@ describe('ParticipantCardHeader', () => {
   describe('delete button', () => {
     it('displays if showDelete is true', () => {
       const component = renderComponent({showDelete: true})
-      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      const deleteButton = component.find('button[aria-label="Delete person"]')
       expect(deleteButton.exists()).toEqual(true)
     })
 
     it('calls the onDelete function from the props when clicked', () => {
       const component = renderComponent({showEdit: true})
-      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      const deleteButton = component.find('button[aria-label="Delete person"]')
       deleteButton.simulate('click')
       expect(onDelete).toHaveBeenCalled()
     })
 
     it('displays if showDelete is false', () => {
       const component = renderComponent({showDelete: false})
-      const deleteButton = component.find('button[aria-label="Delete participant"]')
+      const deleteButton = component.find('button[aria-label="Delete person"]')
       expect(deleteButton.exists()).toEqual(false)
     })
   })

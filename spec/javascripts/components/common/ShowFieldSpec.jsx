@@ -23,11 +23,11 @@ describe('ShowField', () => {
     expect(formField.props().labelClassName).toEqual('myLabelTest')
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
     expect(formField.props().label).toEqual('this is my label')
-    expect(formField.childAt(0).node.type).toEqual('div')
+    expect(formField.childAt(0).node.type).toEqual('span')
   })
 
   it('renders the show field value', () => {
-    expect(component.find('div.c-gray').text()).toEqual('This is the show field value')
+    expect(component.find('span').text()).toEqual('This is the show field value')
   })
 })
 

@@ -173,11 +173,13 @@ export default class CrossReportEditView extends React.Component {
           { this.state.county && this.renderCrossReport(crossReportData.slice(startIndex, halfIndex)) }
           { this.state.county && this.renderCrossReport(crossReportData.slice(halfIndex)) }
         </div>
-        <div className='row gap-top'>
+        <div className='row double-gap-top'>
           {
             hasCrossReport &&
               <fieldset className='fieldset-inputs'>
-                <legend>Communication Time and Method</legend>
+                <div className='col-md-12 double-gap-bottom'>
+                  <legend>Communication Time and Method</legend>
+                </div>
                 <DateField
                   errors={reportedOnErrors}
                   gridClassName='col-md-6'

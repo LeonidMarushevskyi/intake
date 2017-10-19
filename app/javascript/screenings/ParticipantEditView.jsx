@@ -47,47 +47,11 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
     <div className='card-body'>
       {legacySourceString !== '' && <div className='row'>
         <div className='col-md-12'>
-          <span>{legacySourceString}</span>
+          <div className='c-dark-grey double-gap-top'>{legacySourceString}</div>
         </div>
       </div>}
       <div className='row'>
-        <InputField
-          gridClassName='col-md-3'
-          id='first_name'
-          label='First Name'
-          maxLength='64'
-          onChange={(event) => onChange(['first_name'], event.target.value || null)}
-          value={participant.get('first_name') || ''}
-        />
-        <InputField
-          gridClassName='col-md-3'
-          id='middle_name'
-          label='Middle Name'
-          maxLength='64'
-          onChange={(event) => onChange(['middle_name'], event.target.value || null)}
-          value={participant.get('middle_name') || ''}
-        />
-        <InputField
-          gridClassName='col-md-3'
-          id='last_name'
-          label='Last Name'
-          maxLength='64'
-          onChange={(event) => onChange(['last_name'], event.target.value || null)}
-          value={participant.get('last_name') || ''}
-        />
-        <SelectField
-          gridClassName='col-md-3'
-          id='name_suffix'
-          label='Suffix'
-          value={participant.get('name_suffix')}
-          onChange={(event) => onChange(['name_suffix'], event.target.value || null)}
-        >
-          <option key='' value='' />
-          {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
-        </SelectField>
-      </div>
-      <div className='row'>
-        <div className='col-md-6'>
+        <div className='col-md-12'>
           <label htmlFor={`roles_${participant.get('id')}`}>Role</label>
           <Select
             multi
@@ -103,49 +67,93 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
           />
         </div>
       </div>
-      <PhoneNumbersEditView
-        phoneNumbers={participant.get('phone_numbers') || Immutable.List()}
-        onChange={(phone_numbers) => onChange(['phone_numbers'], phone_numbers || [])}
-      />
       <div className='row'>
-        <div className='col-md-6'>
-          <div className='row'>
-            <DateField
-              gridClassName='col-md-4'
-              id='date_of_birth'
-              label='Date of birth'
-              hasTime={false}
-              hasCalendar={false}
-              value={participant.get('date_of_birth')}
-              onChange={(value) => onChange(['date_of_birth'], value)}
-              onBlur={(value) => onDobBlur(value)}
-            />
-            <div className='col-md-1 text-between-inputs' >or</div>
-            <InputField
-              gridClassName='col-md-3'
-              id='approximate_age'
-              label='Approximate Age'
-              allowCharacters={/[0-9]/}
-              maxLength='3'
-              value={participant.get('approximate_age') || ''}
-              onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
-              disabled={haveDob}
-            />
-            <div className='col-md-4 input-no-header'>
-              <select
-                id='approximate_age_units'
-                aria-label='Approximate Age Units'
-                value={participant.get('approximate_age_units') || 'years'}
-                onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
-                disabled={haveDob}
-              >
-                {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
-              </select>
-            </div>
-          </div>
+        <InputField
+          gridClassName='col-md-4'
+          id='first_name'
+          label='First Name'
+          maxLength='64'
+          onChange={(event) => onChange(['first_name'], event.target.value || null)}
+          value={participant.get('first_name') || ''}
+        />
+        <InputField
+          gridClassName='col-md-4'
+          id='middle_name'
+          label='Middle Name'
+          maxLength='64'
+          onChange={(event) => onChange(['middle_name'], event.target.value || null)}
+          value={participant.get('middle_name') || ''}
+        />
+        <InputField
+          gridClassName='col-md-4'
+          id='last_name'
+          label='Last Name'
+          maxLength='64'
+          onChange={(event) => onChange(['last_name'], event.target.value || null)}
+          value={participant.get('last_name') || ''}
+        />
+      </div>
+      <div className='row'>
+        <SelectField
+          gridClassName='col-md-4'
+          id='name_suffix'
+          label='Suffix'
+          value={participant.get('name_suffix')}
+          onChange={(event) => onChange(['name_suffix'], event.target.value || null)}
+        >
+          <option key='' value='' />
+          {Object.keys(NAME_SUFFIXES).map((item) => <option key={item} value={item}>{NAME_SUFFIXES[item]}</option>)}
+        </SelectField>
+        <MaskedInputField
+          gridClassName='col-md-4'
+          id={`participant-${participant.get('id')}-ssn`}
+          label='Social security number'
+          mask='111-11-1111'
+          placeholder='___-__-____'
+          value={participant.get('ssn') || ''}
+          onChange={(event) => onChange(['ssn'], event.target.value || null)}
+        />
+      </div>
+      <div className='row'>
+        <div className='col-md-12 double-gap-top'>
+          <legend>Demographic Information</legend>
+        </div>
+      </div>
+      <div className='row'>
+        <DateField
+          gridClassName='col-md-3'
+          id='date_of_birth'
+          label='Date of birth'
+          hasTime={false}
+          hasCalendar={false}
+          value={participant.get('date_of_birth')}
+          onChange={(value) => onChange(['date_of_birth'], value)}
+          onBlur={(value) => onDobBlur(value)}
+        />
+        <div className='col-md-1 text-between-inputs' >or</div>
+        <InputField
+          gridClassName='col-md-2'
+          id='approximate_age'
+          label='Approximate Age'
+          allowCharacters={/[0-9]/}
+          maxLength='3'
+          value={participant.get('approximate_age') || ''}
+          onChange={(event) => onChange(['approximate_age'], event.target.value || null)}
+          disabled={haveDob}
+        />
+        <div className='col-md-2 input-no-header'>
+          <select
+            id='approximate_age_units'
+            aria-label='Approximate Age Units'
+            value={participant.get('approximate_age_units') || 'years'}
+            onChange={(event) => onChange(['approximate_age_units'], event.target.value || null)}
+            disabled={haveDob}
+          >
+            {Object.keys(APPROXIMATE_AGE_UNITS).map((item) => <option key={item} value={item}>{APPROXIMATE_AGE_UNITS[item]}</option>)}
+          </select>
         </div>
         <SelectField
-          gridClassName='col-md-6'
+          gridClassName='col-md-4'
           id='gender'
           label='Gender'
           value={participant.get('gender')}
@@ -156,7 +164,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
         </SelectField>
       </div>
       <div className='row'>
-        <div className='col-md-6'>
+        <div className='col-md-12'>
           <label htmlFor='languages'>Language(s) (Primary First)</label>
           <Select
             multi
@@ -173,29 +181,33 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
         </div>
       </div>
       <div className='row'>
-        <MaskedInputField
-          gridClassName='col-md-6'
-          id={`participant-${participant.get('id')}-ssn`}
-          label='Social security number'
-          mask='111-11-1111'
-          placeholder='___-__-____'
-          value={participant.get('ssn') || ''}
-          onChange={(event) => onChange(['ssn'], event.target.value || null)}
-        />
+        <div className='col-md-12 gap-top'>
+          <RacesEditView
+            id={`participant-${participant.get('id')}`}
+            races={participant.get('races') || Immutable.List()}
+            onChange={(races) => onChange(['races'], races)}
+          />
+        </div>
+        <div className='col-md-12 gap-top'>
+          <EthnicityEditView
+            id={`participant-${participant.get('id')}`}
+            ethnicity={participant.get('ethnicity') || Immutable.Map()}
+            onChange={(ethnicity) => onChange(['ethnicity'], ethnicity)}
+          />
+        </div>
       </div>
+      <div className='row'>
+        <div className='col-md-12 double-gap-top'>
+          <legend>Contact & Location Information</legend>
+        </div>
+      </div>
+      <PhoneNumbersEditView
+        phoneNumbers={participant.get('phone_numbers') || Immutable.List()}
+        onChange={(phone_numbers) => onChange(['phone_numbers'], phone_numbers || [])}
+      />
       <AddressesEditView
         addresses={participant.get('addresses') || Immutable.List()}
         onChange={(addresses) => onChange(['addresses'], addresses || [])}
-      />
-      <RacesEditView
-        id={`participant-${participant.get('id')}`}
-        races={participant.get('races') || Immutable.List()}
-        onChange={(races) => onChange(['races'], races)}
-      />
-      <EthnicityEditView
-        id={`participant-${participant.get('id')}`}
-        ethnicity={participant.get('ethnicity') || Immutable.Map()}
-        onChange={(ethnicity) => onChange(['ethnicity'], ethnicity)}
       />
       <div className='row'>
         <div className='centered'>

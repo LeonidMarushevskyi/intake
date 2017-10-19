@@ -7,16 +7,16 @@ const ParticipantCardHeader = ({informationFlag, title, onDelete, onEdit, showDe
     <span>{title}</span>
     { informationFlag && <span className='information-flag'>{informationFlag}</span>}
     { showDelete &&
-      <button aria-label='Delete participant'
-        className='pull-right delete-button'
+      <button aria-label='Delete person'
+        className='pull-right btn btn-warning'
         onClick={onDelete}
       >
-        <i className='fa fa-times' />
+        Delete
       </button>
     }
     { showEdit &&
       <EditLink
-        ariaLabel='Edit participant'
+        ariaLabel='Edit person'
         onClick={(event) => {
           event.preventDefault()
           onEdit()

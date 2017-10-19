@@ -59,7 +59,7 @@ feature 'Edit Screening' do
       within '.card-header' do
         expect(page).to have_content('Sensitive')
         expect(page).to have_content marge_formatted_name
-        expect(page).to have_button 'Delete participant'
+        expect(page).to have_button 'Delete person'
       end
 
       within '.card-body' do
@@ -228,7 +228,7 @@ feature 'Edit Screening' do
       end
 
       within '.card-header' do
-        click_link 'Edit participant'
+        click_link 'Edit person'
       end
     end
 
@@ -263,7 +263,7 @@ feature 'Edit Screening' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      within('.col-md-6', text: 'Language(s)') do
+      within('.col-md-12', text: 'Language(s)') do
         fill_in_react_select 'Language(s)', with: 'English'
         fill_in_react_select 'Language(s)', with: 'Farsi'
         remove_react_select_option('Language(s)', marge.languages.first)
@@ -315,7 +315,7 @@ feature 'Edit Screening' do
     end
 
     expect(page).to have_content marge_formatted_name
-    expect(page).to have_link 'Edit participant'
+    expect(page).to have_link 'Edit person'
     expect(page).to have_content old_ssn
   end
 
