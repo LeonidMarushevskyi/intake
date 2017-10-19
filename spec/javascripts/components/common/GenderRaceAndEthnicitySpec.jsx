@@ -30,7 +30,7 @@ describe('gender,race and ethnicity', () => {
     const props = {
       ethnicity: {
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: 'Central American',
+        ethnicity_detail: ['Central American'],
       },
     }
     const component = shallow(<GenderRaceAndEthnicity {...props} />)

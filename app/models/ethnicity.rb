@@ -5,5 +5,5 @@ class Ethnicity
   include Virtus.model
 
   attribute :hispanic_latino_origin, String
-  attribute :ethnicity_detail, String
+  attribute :ethnicity_detail, Array
 end

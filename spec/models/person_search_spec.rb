@@ -51,7 +51,7 @@ describe PersonSearch do
         races: %w[White Asian],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Mexican'
+          ethnicity_detail: ['Mexican']
         },
         highlight: {
           first_name: '<em>Hom</em>er'
@@ -102,7 +102,7 @@ describe PersonSearch do
         'races' => %w[White Asian],
         'ethnicity' => {
           'hispanic_latino_origin' => 'Yes',
-          'ethnicity_detail' => 'Mexican'
+          'ethnicity_detail' => ['Mexican']
         },
         'highlight' => {
           'first_name' => '<em>Hom</em>er'
