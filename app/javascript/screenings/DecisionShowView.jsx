@@ -37,6 +37,15 @@ const DecisionShowView = ({screening, errors}) => {
           >
             {decisionDetailText}
           </ShowField>
+        </div>
+        <div className='col-md-6'>
+          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
+          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
+          <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-md-12'>
           <ShowField label='Additional information'>
             {screening.get('additional_information')}
           </ShowField>
@@ -48,11 +57,6 @@ const DecisionShowView = ({screening, errors}) => {
               {screening.get('restrictions_rationale')}
             </ShowField>
           }
-        </div>
-        <div className='col-md-6'>
-          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
-          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
-          <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
         </div>
       </div>
     </div>

@@ -63,8 +63,8 @@ export default class RelationshipsCard extends React.Component {
         <div className='row'>
           <div className='col-md-12'>
             <div className='double-gap-top  centered'>
-              <a href="#search-card">Search for people</a>
-              <span className="c-dark-grey"> and add them to see their relationships.</span>
+              <a href='#search-card'>Search for people</a>
+              <span className='c-dark-grey'> and add them to see their relationships.</span>
             </div>
           </div>
         </div>

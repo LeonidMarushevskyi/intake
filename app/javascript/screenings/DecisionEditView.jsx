@@ -65,14 +65,21 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                 maxLength='64'
               />
           }
-          <div>
-            <label htmlFor='additional_information'>Additional information</label>
-            <textarea
-              id='additional_information'
-              onChange={(event) => onChange(['additional_information'], event.target.value || null)}
-              value={screening.get('additional_information') || ''}
-            />
-          </div>
+        </div>
+        <div className='col-md-6'>
+          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
+          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
+          <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-md-12'>
+          <label htmlFor='additional_information'>Additional information</label>
+          <textarea
+            id='additional_information'
+            onChange={(event) => onChange(['additional_information'], event.target.value || null)}
+            value={screening.get('additional_information') || ''}
+          />
           <SelectField
             id='access_restrictions'
             label= 'Access Restrictions'
@@ -94,11 +101,6 @@ const DecisionEditView = ({errors, screening, onCancel, onSave, onChange, onBlur
                   />
                 </div>
           }
-        </div>
-        <div className='col-md-6'>
-          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
-          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
-          <a href={IntakeConfig.sdmPath()} target='_blank' id='complete_sdm'>Complete SDM</a>
         </div>
       </div>
       <div className='row'>
