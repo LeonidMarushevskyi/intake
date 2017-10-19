@@ -1,11 +1,12 @@
 import {Map, fromJS} from 'immutable'
 import {
   buildSuccess,
-  setField,
-  touchField,
-  touchAllFields,
-  selectPerson,
   deselectPerson,
+  editSuccess,
+  selectPerson,
+  setField,
+  touchAllFields,
+  touchField,
 } from 'actions/contactFormActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import contactFormReducer from 'reducers/contactFormReducer'
@@ -168,6 +169,86 @@ describe('contactReducer', () => {
           people: [
             {selected: true, touched: false},
             {selected: false, touched: true},
+          ],
+        })
+      )
+    })
+  })
+
+  describe('on EDIT_CONTACT_SUCCESS', () => {
+    it('returns the contact with the investigation people merged', () => {
+      const investigationPeople = [
+        {first_name: 'Bob', legacy_descriptor: {legacy_id: 'bobs legacy id'}},
+        {first_name: 'Jane', last_name: 'Doe', legacy_descriptor: {legacy_id: 'janes legacy id'}},
+      ]
+      const contact = {
+        id: 'existing_contact_id',
+        started_at: 'a date time',
+        status: 'a contact status',
+        note: 'a sample note',
+        purpose: 'a contact purpose',
+        communication_method: 'a communication method',
+        location: 'a location',
+        people: [{first_name: 'Jane', last_name: 'Doe', legacy_descriptor: {legacy_id: 'janes legacy id'}}],
+      }
+      const action = editSuccess({
+        investigation_id: 'existing_investigation_id',
+        investigation_started_at: 'investigation date time',
+        investigation_people: investigationPeople,
+        contact,
+      })
+      expect(contactFormReducer(Map(), action)).toEqualImmutable(
+        fromJS({
+          id: {
+            value: 'existing_contact_id',
+          },
+          investigation_id: {
+            value: 'existing_investigation_id',
+          },
+          started_at: {
+            value: 'a date time',
+            touched: false,
+          },
+          status: {
+            value: 'a contact status',
+            touched: false,
+          },
+          note: {
+            value: 'a sample note',
+          },
+          purpose: {
+            value: 'a contact purpose',
+            touched: false,
+          },
+          communication_method: {
+            value: 'a communication method',
+            touched: false,
+          },
+          location: {
+            value: 'a location',
+            touched: false,
+          },
+          investigation_started_at: {
+            value: 'investigation date time',
+          },
+          people: [
+            {
+              first_name: 'Bob',
+              last_name: undefined,
+              middle_name: undefined,
+              name_suffix: undefined,
+              legacy_descriptor: {legacy_id: 'bobs legacy id'},
+              selected: false,
+              touched: false,
+            }, {
+              first_name: 'Jane',
+              last_name: 'Doe',
+              middle_name: undefined,
+              name_suffix: undefined,
+              legacy_descriptor: {legacy_id: 'janes legacy id'},
+              selected: true,
+              touched: false,
+            },
           ],
         })
       )

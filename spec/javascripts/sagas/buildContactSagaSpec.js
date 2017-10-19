@@ -23,7 +23,7 @@ describe('buildContact', () => {
         buildSuccess({
           investigation_id: '123ABC',
           investigation_started_at: 'date time',
-          investigation_people: ['bob']
+          investigation_people: ['bob'],
         })
       )
     )

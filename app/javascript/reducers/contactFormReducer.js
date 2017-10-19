@@ -1,5 +1,6 @@
 import {
   BUILD_CONTACT_SUCCESS,
+  EDIT_CONTACT_SUCCESS,
   SET_CONTACT_FIELD,
   TOUCH_CONTACT_FIELD,
   TOUCH_ALL_CONTACT_FIELDS,
@@ -9,31 +10,64 @@ import {
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
+const fieldWithTouch = (value) => ({value, touched: false})
+const fieldWithValue = (value) => ({value})
+const buildPerson = ({first_name, last_name, middle_name, name_suffix, legacy_descriptor, selected = false, touched = false}) => ({
+  first_name,
+  last_name,
+  middle_name,
+  name_suffix,
+  legacy_descriptor,
+  selected,
+  touched,
+})
+const personLegacyId = ({legacy_descriptor}) => legacy_descriptor && legacy_descriptor.legacy_id
+const buildSelectedPeople = (allPeople = [], selectedPeople = []) => {
+  const selectedLegacyIds = selectedPeople.map((person) => personLegacyId(person))
+  return allPeople.map((person) => {
+    const legacyId = personLegacyId(person)
+    const selected = legacyId && selectedLegacyIds.includes(legacyId)
+    return buildPerson({...person, selected})
+  })
+}
+
 export default createReducer(Map(), {
   [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, investigation_people = []}) {
-    const fieldWithTouch = {value: null, touched: false}
-    const fieldWithValue = (value) => ({value: value})
-    const buildPerson = ({first_name, last_name, middle_name, name_suffix, legacy_descriptor}) => ({
-      first_name,
-      last_name,
-      middle_name,
-      name_suffix,
-      legacy_descriptor,
-      selected: false,
-      touched: false,
-    })
-    const buildPeople = (people) => people.map((person) => buildPerson(person))
     return fromJS({
       id: fieldWithValue(null),
       investigation_id: fieldWithValue(investigation_id),
-      started_at: fieldWithTouch,
-      status: fieldWithTouch,
+      started_at: fieldWithTouch(null),
+      status: fieldWithTouch(null),
       note: fieldWithValue(null),
-      purpose: fieldWithTouch,
-      communication_method: fieldWithTouch,
-      location: fieldWithTouch,
+      purpose: fieldWithTouch(null),
+      communication_method: fieldWithTouch(null),
+      location: fieldWithTouch(null),
       investigation_started_at: fieldWithValue(investigation_started_at),
-      people: buildPeople(investigation_people)
+      people: buildSelectedPeople(investigation_people),
+    })
+  },
+  [EDIT_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, investigation_people, contact}) {
+    const {
+      communication_method,
+      id,
+      location,
+      note,
+      purpose,
+      started_at,
+      status,
+      people,
+    } = contact
+    return fromJS({
+      id: fieldWithValue(id),
+      investigation_id: fieldWithValue(investigation_id),
+      started_at: fieldWithTouch(started_at),
+      status: fieldWithTouch(status),
+      note: fieldWithValue(note),
+      purpose: fieldWithTouch(purpose),
+      communication_method: fieldWithTouch(communication_method),
+      location: fieldWithTouch(location),
+      investigation_started_at: fieldWithValue(investigation_started_at),
+      people: buildSelectedPeople(investigation_people, people),
     })
   },
   [SET_CONTACT_FIELD](state, {field, value}) {
