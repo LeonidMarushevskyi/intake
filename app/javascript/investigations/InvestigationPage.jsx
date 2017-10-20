@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
 import AllegationShowContainer from 'investigations/AllegationShowContainer'
+import HistoryOfInvolvementContainer from 'history/HistoryOfInvolvementContainer'
 
 export class InvestigationPage extends React.Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ export class InvestigationPage extends React.Component {
       <div>
         <ScreeningSummaryContainer />
         <AllegationShowContainer />
+        <HistoryOfInvolvementContainer />
         <ContactLogContainer id={id}/>
       </div>
     )

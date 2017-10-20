@@ -16,12 +16,12 @@ describe('HistoryOfInvolvement', () => {
   it('renders an empty history card when history is not present', () => {
     const component = renderHistoryOfInvolvement({historyIsEmpty: true})
     expect(component.find('EmptyHistory').exists()).toEqual(true)
-    expect(component.find('HistoryTable').exists()).toEqual(false)
+    expect(component.find('Connect(HistoryTable)').exists()).toEqual(false)
   })
 
   it('renders a history table when history is present', () => {
     const component = renderHistoryOfInvolvement({historyIsEmpty: false})
-    expect(component.find('HistoryTable').exists()).toEqual(true)
+    expect(component.find('Connect(HistoryTable)').exists()).toEqual(true)
     expect(component.find('EmptyHistory').exists()).toEqual(false)
   })
 })
