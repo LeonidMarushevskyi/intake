@@ -7,11 +7,11 @@ import {
   COMMUNITY_CARE_LICENSING,
 } from 'enums/CrossReport'
 import {
-  getDistrictAttorneyAgencies,
-  getDepartmentOfJusticeAgencies,
-  getLawEnforcementAgencies,
-  getCountyLicensingAgencies,
-  getCommunityCareLicensingAgencies,
+  getDistrictAttorneyAgenciesSelector,
+  getDepartmentOfJusticeAgenciesSelector,
+  getLawEnforcementAgenciesSelector,
+  getCountyLicensingAgenciesSelector,
+  getCommunityCareLicensingAgenciesSelector,
 } from 'selectors/countyAgenciesSelectors'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -26,11 +26,11 @@ const mapStateToProps = (state) => ({
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']),
   countyAgencies: {
-    [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgencies(state).toJS(),
-    [DISTRICT_ATTORNEY]: getDistrictAttorneyAgencies(state).toJS(),
-    [LAW_ENFORCEMENT]: getLawEnforcementAgencies(state).toJS(),
-    [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgencies(state).toJS(),
-    [COUNTY_LICENSING]: getCountyLicensingAgencies(state).toJS(),
+    [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgenciesSelector(state).toJS(),
+    [DISTRICT_ATTORNEY]: getDistrictAttorneyAgenciesSelector(state).toJS(),
+    [LAW_ENFORCEMENT]: getLawEnforcementAgenciesSelector(state).toJS(),
+    [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgenciesSelector(state).toJS(),
+    [COUNTY_LICENSING]: getCountyLicensingAgenciesSelector(state).toJS(),
   },
   hasAgencies: Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false),
   inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']),

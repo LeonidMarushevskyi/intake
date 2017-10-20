@@ -7,24 +7,24 @@ import {
   COUNTY_LICENSING,
 } from 'enums/CrossReport'
 
-export const getCountyAgencies = (state) => state.get('countyAgencies')
-export const getDistrictAttorneyAgencies = createSelector(
-  getCountyAgencies,
+export const getCountyAgenciesSelector = (state) => state.get('countyAgencies')
+export const getDistrictAttorneyAgenciesSelector = createSelector(
+  getCountyAgenciesSelector,
   (countyAgencies) => countyAgencies.filter((countyAgency) => countyAgency.get('type') === DISTRICT_ATTORNEY)
 )
-export const getDepartmentOfJusticeAgencies = createSelector(
-  getCountyAgencies,
+export const getDepartmentOfJusticeAgenciesSelector = createSelector(
+  getCountyAgenciesSelector,
   (countyAgencies) => countyAgencies.filter((countyAgency) => countyAgency.get('type') === DEPARTMENT_OF_JUSTICE)
 )
-export const getLawEnforcementAgencies = createSelector(
-  getCountyAgencies,
+export const getLawEnforcementAgenciesSelector = createSelector(
+  getCountyAgenciesSelector,
   (countyAgencies) => countyAgencies.filter((countyAgency) => countyAgency.get('type') === LAW_ENFORCEMENT)
 )
-export const getCountyLicensingAgencies = createSelector(
-  getCountyAgencies,
+export const getCountyLicensingAgenciesSelector = createSelector(
+  getCountyAgenciesSelector,
   (countyAgencies) => countyAgencies.filter((countyAgency) => countyAgency.get('type') === COUNTY_LICENSING)
 )
-export const getCommunityCareLicensingAgencies = createSelector(
-  getCountyAgencies,
+export const getCommunityCareLicensingAgenciesSelector = createSelector(
+  getCountyAgenciesSelector,
   (countyAgencies) => countyAgencies.filter((countyAgency) => countyAgency.get('type') === COMMUNITY_CARE_LICENSING)
 )
