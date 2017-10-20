@@ -172,9 +172,7 @@ class ContactForm extends React.Component {
               <div className='col-md-6'>
                 <div className='row'>
                   <FormField htmlFor='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
-                    <textarea id='note' onChange={(event) => setField('note', event.target.value)}>
-                      {note}
-                    </textarea>
+                    <textarea id='note' onChange={(event) => setField('note', event.target.value)} value={note || ''} />
                   </FormField>
                 </div>
               </div>

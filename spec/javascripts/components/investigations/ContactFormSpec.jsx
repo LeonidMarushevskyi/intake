@@ -289,7 +289,7 @@ describe('ContactForm', () => {
   it('displays note', () => {
     const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')
-    expect(noteField.text()).toContain('This is a simple contact note')
+    expect(noteField.props().value).toContain('This is a simple contact note')
   })
 
   it('changing note fires setField', () => {
