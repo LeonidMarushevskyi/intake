@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import ShowField from 'common/ShowField'
 import AlertInfoMessage from 'common/alertInfoMessage'
 import {dateFormatter} from 'utils/dateFormatter'
-import {AGENCY_TYPES} from 'enums/CrossReport'
 
 const CrossReportShow = ({
   agencies,
-  agencyCodeToName,
   alertInfoMessage,
   communicationMethod,
+  hasAgencies,
   reportedOn,
 }) => (
   <div className='card-body'>
@@ -17,19 +16,19 @@ const CrossReportShow = ({
     <div className='row'>
       <ShowField gridClassName='col-md-12' label='This report has cross reported to:' errors={[]}>
         {
-          agencies &&
-            <ul className='unstyled-list'>
-              {
-                agencies.map(({id, type}, index) => (
-                  <li key={index}>{id ? agencyCodeToName[id] || id : AGENCY_TYPES[type]}</li>
-                ))
-              }
-            </ul>
+          hasAgencies &&
+          <ul className='unstyled-list'>
+            {
+              agencies.map((name, index) => (
+                <li key={index}>{name}</li>
+              ))
+            }
+          </ul>
         }
       </ShowField>
     </div>
     {
-      agencies &&
+      hasAgencies &&
       <div className='row'>
         <ShowField
           gridClassName='col-md-6'
@@ -49,10 +48,10 @@ const CrossReportShow = ({
 )
 
 CrossReportShow.propTypes = {
-  agencies: PropTypes.array,
-  agencyCodeToName: PropTypes.object,
+  agencies: PropTypes.array.isRequired,
   alertInfoMessage: PropTypes.string,
   communicationMethod: PropTypes.string,
+  hasAgencies: PropTypes.bool.isRequired,
   reportedOn: PropTypes.string,
 }
 

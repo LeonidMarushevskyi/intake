@@ -4,19 +4,19 @@ import {shallow} from 'enzyme'
 
 describe('CrossReportShow', () => {
   function renderCrossReportShow({
-    agencies = undefined,
-    agencyCodeToName = {},
+    agencies = [],
     alertInfoMessage = undefined,
     communicationMethod = '',
     county = '',
+    hasAgencies = false,
     reportedOn = '',
   }) {
     const props = {
       agencies,
-      agencyCodeToName,
       alertInfoMessage,
       communicationMethod,
       county,
+      hasAgencies,
       reportedOn,
     }
     return shallow(<CrossReportShow {...props} />)
@@ -29,28 +29,28 @@ describe('CrossReportShow', () => {
   })
   describe('displays data for', () => {
     it('reportedOn', () => {
-      const agencies = [{type: 'DISTRICT_ATTORNEY'}]
+      const agencies = ['District attorney']
       const reportedOn = '2017-01-15'
-      const component = renderCrossReportShow({agencies, reportedOn})
+      const hasAgencies = true
+      const component = renderCrossReportShow({agencies, hasAgencies, reportedOn})
       const field = component.find('ShowField[label="Cross Reported on Date"]')
       expect(field.props().children).toEqual('01/15/2017')
     })
     it('communicationMethod', () => {
-      const agencies = [{type: 'DISTRICT_ATTORNEY'}]
+      const agencies = ['District attorney']
       const communicationMethod = 'Smoke Signal'
-      const component = renderCrossReportShow({agencies, communicationMethod})
+      const hasAgencies = true
+      const component = renderCrossReportShow({agencies, hasAgencies, communicationMethod})
       const field = component.find('ShowField[label="Communication Method"]')
       expect(field.props().children).toEqual('Smoke Signal')
     })
     it('cross report agency type and code names', () => {
       const agencies = [
-        {type: 'DISTRICT_ATTORNEY'},
-        {type: 'LAW_ENFORCEMENT', id: '1234'},
+        'District attorney',
+        'Law enforcement - Police Department',
       ]
-      const agencyCodeToName = {
-        1234: 'Law enforcement - Police Department',
-      }
-      const component = renderCrossReportShow({agencyCodeToName, agencies})
+      const hasAgencies = true
+      const component = renderCrossReportShow({agencies, hasAgencies})
       expect(component.find('li').first().text()).toEqual('District attorney')
       expect(component.find('li').last().text()).toEqual('Law enforcement - Police Department')
     })
