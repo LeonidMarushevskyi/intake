@@ -5,7 +5,7 @@ import ReferralContainer from 'history/ReferralContainer'
 import ScreeningContainer from 'history/ScreeningContainer'
 import {nTimesDo} from 'utils/arrayHelper'
 
-const HistoryTable = ({caseCount, referralCount, screeningCount}) => (
+const HistoryTable = ({casesCount, referralsCount, screeningsCount}) => (
   <div className='card-body no-pad-top'>
     <div className='table-responsive'>
       <table className='table table-hover'>
@@ -24,9 +24,9 @@ const HistoryTable = ({caseCount, referralCount, screeningCount}) => (
           </tr>
         </thead>
         <tbody>
-          {nTimesDo(screeningCount, (index) => <ScreeningContainer index={index} key={index} />)}
-          {nTimesDo(referralCount, (index) => <ReferralContainer index={index} key={index} />)}
-          {nTimesDo(caseCount, (index) => <CaseContainer index={index} key={index} />)}
+          {nTimesDo(screeningsCount, (index) => <ScreeningContainer index={index} key={index} />)}
+          {nTimesDo(referralsCount, (index) => <ReferralContainer index={index} key={index} />)}
+          {nTimesDo(casesCount, (index) => <CaseContainer index={index} key={index} />)}
         </tbody>
       </table>
     </div>
@@ -34,9 +34,9 @@ const HistoryTable = ({caseCount, referralCount, screeningCount}) => (
 )
 
 HistoryTable.propTypes = {
-  caseCount: PropTypes.number,
-  referralCount: PropTypes.number,
-  screeningCount: PropTypes.number,
+  casesCount: PropTypes.number,
+  referralsCount: PropTypes.number,
+  screeningsCount: PropTypes.number,
 }
 
 export default HistoryTable

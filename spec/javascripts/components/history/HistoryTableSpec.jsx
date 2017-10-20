@@ -23,17 +23,17 @@ describe('HistoryTable', () => {
     })
 
     it('renders a container for every screening', () => {
-      const component = renderHistoryTable({screeningCount: 1})
+      const component = renderHistoryTable({screeningsCount: 1})
       expect(component.find('Connect(ScreeningView)').length).toEqual(1)
     })
 
     it('renders a container for every referral', () => {
-      const component = renderHistoryTable({referralCount: 2})
+      const component = renderHistoryTable({referralsCount: 2})
       expect(component.find('Connect(ReferralView)').length).toEqual(2)
     })
 
     it('renders a container for every case', () => {
-      const component = renderHistoryTable({caseCount: 3})
+      const component = renderHistoryTable({casesCount: 3})
       expect(component.find('Connect(CaseView)').length).toEqual(3)
     })
   })
