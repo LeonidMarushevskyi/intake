@@ -9,7 +9,7 @@ import {createSelector} from 'reselect'
 import {fromJS, List} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
-const getSelectedAgencies =
+const getSelectedAgenciesSelector =
   (state) => fromJS({
     [DISTRICT_ATTORNEY]: state.getIn(['crossReportForm', DISTRICT_ATTORNEY]),
     [DEPARTMENT_OF_JUSTICE]: state.getIn(['crossReportForm', DEPARTMENT_OF_JUSTICE]),
@@ -26,7 +26,7 @@ export const getScreeningWithEditsSelector = createSelector(
   (state) => state.getIn(['crossReportForm', 'county_id', 'value']),
   (state) => state.getIn(['crossReportForm', 'inform_date', 'value']),
   (state) => state.getIn(['crossReportForm', 'method', 'value']),
-  getSelectedAgencies,
+  getSelectedAgenciesSelector,
   (
     screening,
     county_id,
