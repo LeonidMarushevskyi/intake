@@ -8,6 +8,7 @@ require File.join(File.dirname(__FILE__), 'routes/active_investigations_constrai
 
 Rails.application.routes.draw do
   root 'home#index'
+  get '/404', to: 'errors#not_found', via: :all
 
   resources :screenings,
     only: %i[edit],
