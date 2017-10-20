@@ -69,7 +69,7 @@ feature 'searching a participant in autocompleter' do
         { race: 'White', race_detail: 'European' },
         { race: 'American Indian or Alaska Native' }
       ],
-      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' },
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Central American'] },
       sensitive: true,
       sealed: false
     )
