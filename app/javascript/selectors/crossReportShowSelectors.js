@@ -3,12 +3,12 @@ import {getCountyAgenciesSelector} from 'selectors/countyAgenciesSelectors'
 import {Map, List} from 'immutable'
 import {AGENCY_TYPES} from 'enums/CrossReport'
 
-export const getCrossReport = (state) => state.getIn(['screening', 'cross_reports', 0]) || Map()
+export const getCrossReportSelector = (state) => state.getIn(['screening', 'cross_reports', 0]) || Map()
 
-export const getCrossReportAgencies = (state) => state.getIn(['screening', 'cross_reports', 0, 'agencies']) || List()
+export const getCrossReportAgenciesSelector = (state) => state.getIn(['screening', 'cross_reports', 0, 'agencies']) || List()
 
-export const getAgencyCodeToName = createSelector(
-  getCrossReportAgencies,
+export const getAgencyCodeToNameSelector = createSelector(
+  getCrossReportAgenciesSelector,
   getCountyAgenciesSelector,
   (agencies, countyAgencies) => agencies.reduce((agencyCodeToName, agency) => {
     const agencyTypeName = AGENCY_TYPES[agency.get('type')]
@@ -25,9 +25,9 @@ export const getAgencyCodeToName = createSelector(
   }, {})
 )
 
-export const getSelectedCrossReportAgencyNames = createSelector(
-  getCrossReportAgencies,
-  getAgencyCodeToName,
+export const getSelectedCrossReportAgencyNamesSelector = createSelector(
+  getCrossReportAgenciesSelector,
+  getAgencyCodeToNameSelector,
   (agencies, agencyCodeToName) => agencies.reduce((names, agency) => {
     const {type, id} = agency.toJS()
     return names.push(id ? agencyCodeToName[id] : AGENCY_TYPES[type])
