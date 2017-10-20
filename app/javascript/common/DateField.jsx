@@ -64,7 +64,7 @@ const DateField = ({
       <DateTimePicker
         aria-required={required}
         calendar={hasCalendar}
-        defaultValue={dateValue}
+        value={dateValue}
         format={format}
         id={id}
         onBlur={proxyOnBlur}

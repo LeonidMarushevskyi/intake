@@ -36,8 +36,8 @@ feature 'Show Investigation' do
         safety_information: 'Animal is a tiger'
       }
       stub_request(
-        :get, ferb_api_url(ExternalRoutes.ferb_api_investigations_screening_path(investigation_id))
-      ).and_return(json_body(screening_summary.to_json, status: 200))
+        :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
+      ).and_return(json_body({ screening: screening_summary }.to_json, status: 200))
       visit investigation_path(id: investigation_id)
       within '.card.show', text: 'Screening Summary' do
         within '.card-body' do
@@ -81,7 +81,7 @@ feature 'Show Investigation' do
       expect(
         a_request(
           :get,
-          intake_api_url(ExternalRoutes.ferb_api_investigations_screening_path(investigation_id))
+          intake_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
         )
       ).to_not have_been_made
       expect(page.status_code).to_not eq 200

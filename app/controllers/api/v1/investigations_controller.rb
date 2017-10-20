@@ -7,15 +7,6 @@ module Api
     class InvestigationsController < ApiController # :nodoc:
       respond_to :json
 
-      def screening
-        screening_summary = FerbAPI.make_api_call(
-          session['security_token'],
-          ExternalRoutes.ferb_api_investigations_screening_path(params[:id]),
-          :get
-        )
-        render json: screening_summary.body, status: screening_summary.status
-      end
-
       def show
         investigation = FerbAPI.make_api_call(
           session['security_token'],

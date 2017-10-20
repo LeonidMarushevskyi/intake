@@ -38,7 +38,7 @@ module Api
         races: %i[race race_detail],
         roles: [],
         languages: [],
-        ethnicity: %i[hispanic_latino_origin ethnicity_detail]
+        ethnicity: [:hispanic_latino_origin, ethnicity_detail: []]
       ].freeze
 
       def create

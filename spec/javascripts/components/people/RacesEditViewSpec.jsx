@@ -12,6 +12,7 @@ describe('RacesEditView', () => {
       id: 'person-123',
       races:
         Immutable.fromJS([
+          {race: 'Asian'},
           {race: 'Asian', race_detail: 'Chinese'},
           {race: 'White'},
         ]),

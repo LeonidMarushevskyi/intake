@@ -22,7 +22,7 @@ export class EthnicityEditView extends React.Component {
     if (selectedEthnicityDetail) {
       this.props.onChange(Immutable.fromJS({
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: selectedEthnicityDetail,
+        ethnicity_detail: [selectedEthnicityDetail],
       }))
     } else {
       this.props.onChange(Immutable.fromJS({
@@ -33,6 +33,8 @@ export class EthnicityEditView extends React.Component {
 
   renderEthnicityAndDetails(ethnicityOptions) {
     const {id, ethnicity} = this.props
+    const ethnicity_details = ethnicity.get('ethnicity_detail')
+    const ethnicity_detail = ethnicity_details ? ethnicity_details.first() : undefined
     return (
       <div className='col-md-6'>
         <ul className='unstyled-list'>
@@ -56,7 +58,7 @@ export class EthnicityEditView extends React.Component {
                     <SelectField
                       id={`${id}-ethnicity-detail`}
                       label={''}
-                      value={ethnicity.get('ethnicity_detail')}
+                      value={ethnicity_detail}
                       onChange={(event) => this.changeEthnicityDetail(event.target.value)}
                     >
                       <option key='' value='' />
