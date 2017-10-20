@@ -31,7 +31,7 @@ export const getScreeningWithEditsSelector = createSelector(
   getScreeningSelector,
   (state) => state.getIn(['crossReportForm', 'county_id', 'value']),
   (state) => state.getIn(['crossReportForm', 'inform_date', 'value']),
-  (state) => state.getIn(['crossReportForm', 'method', 'value']),
+  (state) => state.getIn(['crossReportForm', 'method', 'value']) || null,
   getSelectedAgenciesSelector,
   (
     screening,

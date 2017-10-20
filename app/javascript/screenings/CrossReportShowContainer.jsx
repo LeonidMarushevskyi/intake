@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     reportedOn: firstCrossReport.get('inform_date'),
     communicationMethod: firstCrossReport.get('method'),
     county: firstCrossReport.get('county_id'),
+    hasAgencies: getSelectedCrossReportAgencyNamesSelector(state).length !== 0,
   }
 }
 
