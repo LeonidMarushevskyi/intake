@@ -11,33 +11,27 @@ import {
   TOUCH_CROSS_REPORT_AGENCY_FIELD,
 } from 'actions/crossReportFormActions'
 import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
-import {
-  AGENCY_TYPES,
-} from 'enums/CrossReport'
+import {AGENCY_TYPES} from 'enums/CrossReport'
 
-const build_agency_information = (crossReport) => {
+const build_agency_information = ({agencies}) => {
   const agencyInformation = Object.keys(AGENCY_TYPES).reduce((info, type) => {
-    info[type] = {
-      selected: false,
-      touched: false,
-      agency: {
-        value: '',
+    const savedTypes = agencies.map(({type}) => type)
+    const savedIds = agencies.reduce((ids, {type, id}) => ({...ids, [type]: id}), {})
+    return {
+      ...info,
+      [type]: {
+        selected: savedTypes.includes(type),
         touched: false,
+        agency: {
+          value: savedIds[type] || '',
+          touched: false,
+        },
       },
     }
-    return info
   }, {})
-  if (crossReport.agencies) {
-    crossReport.agencies.map((agency) => {
-      agencyInformation[agency.type].selected = true
-      if (agency.id) {
-        agencyInformation[agency.type].agency.value = agency.id
-      }
-    })
-  }
   return agencyInformation
 }
-const build_cross_report_form = (crossReport) => {
+const build_cross_report_form = (crossReport = {agencies: []}) => {
   const agencyInformation = build_agency_information(crossReport)
   return fromJS({
     county_id: {
@@ -59,12 +53,12 @@ const build_cross_report_form_from_screening = ({cross_reports}) => {
   if (cross_reports && cross_reports.length > 0) {
     return build_cross_report_form(cross_reports[0])
   } else {
-    return build_cross_report_form({})
+    return build_cross_report_form()
   }
 }
 export default createReducer(Map(), {
   [CLEAR_CROSS_REPORT_FIELD_VALUES](state) {
-    return build_cross_report_form({county_id: state.getIn(['county_id', 'value'])})
+    return build_cross_report_form({agencies: [], county_id: state.getIn(['county_id', 'value'])})
   },
   [CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES](state, {agencyType}) {
     return state.setIn([agencyType, 'agency', 'value'], '').setIn([agencyType, 'agency', 'touched'], false)
@@ -85,7 +79,7 @@ export default createReducer(Map(), {
         .setIn(['inform_date', 'value'], crossReport.inform_date)
         .setIn(['method', 'value'], crossReport.method)
     } else {
-      return build_cross_report_form({})
+      return build_cross_report_form()
     }
   },
   [SET_CROSS_REPORT_AGENCY_TYPE_FIELD](state, {field, value}) {
