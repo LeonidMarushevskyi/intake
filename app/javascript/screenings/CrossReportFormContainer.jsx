@@ -20,7 +20,14 @@ import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import * as crossReportActions from 'actions/crossReportFormActions'
 import {saveScreening} from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {getScreeningWithEditsSelector} from 'selectors/crossReportFormSelectors'
+import {
+  getScreeningWithEditsSelector,
+  getDistrictAttorneyFormSelector,
+  getDepartmentOfJusticeFormSelector,
+  getLawEnforcementFormSelector,
+  getCountyLicensingFormSelector,
+  getCommunityCareLicensingFormSelector,
+} from 'selectors/crossReportFormSelectors'
 
 const mapStateToProps = (state) => ({
   counties: state.get('counties').toJS(),
@@ -35,11 +42,11 @@ const mapStateToProps = (state) => ({
   hasAgencies: Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false),
   inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']),
   method: state.getIn(['crossReportForm', 'method', 'value']),
-  districtAttorney: state.getIn(['crossReportForm', DISTRICT_ATTORNEY]).toJS(),
-  departmentOfJustice: state.getIn(['crossReportForm', DEPARTMENT_OF_JUSTICE]).toJS(),
-  lawEnforcement: state.getIn(['crossReportForm', LAW_ENFORCEMENT]).toJS(),
-  countyLicensing: state.getIn(['crossReportForm', COUNTY_LICENSING]).toJS(),
-  communityCareLicensing: state.getIn(['crossReportForm', COMMUNITY_CARE_LICENSING]).toJS(),
+  districtAttorney: getDistrictAttorneyFormSelector(state).toJS(),
+  departmentOfJustice: getDepartmentOfJusticeFormSelector(state).toJS(),
+  lawEnforcement: getLawEnforcementFormSelector(state).toJS(),
+  countyLicensing: getCountyLicensingFormSelector(state).toJS(),
+  communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   screening: getScreeningSelector(state).toJS(),
   screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
 })

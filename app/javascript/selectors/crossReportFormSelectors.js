@@ -6,7 +6,7 @@ import {
   COMMUNITY_CARE_LICENSING,
 } from 'enums/CrossReport'
 import {createSelector} from 'reselect'
-import {fromJS, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
 const getSelectedAgenciesSelector =
@@ -20,6 +20,12 @@ const getSelectedAgenciesSelector =
     .reduce((agencies, agencyForm, type) => (
       agencies.push(fromJS({type, id: agencyForm.getIn(['agency', 'value'])}))
     ), List())
+
+export const getDistrictAttorneyFormSelector = (state) => (state.getIn(['crossReportForm', DISTRICT_ATTORNEY]) || Map())
+export const getDepartmentOfJusticeFormSelector = (state) => (state.getIn(['crossReportForm', DEPARTMENT_OF_JUSTICE]) || Map())
+export const getLawEnforcementFormSelector = (state) => (state.getIn(['crossReportForm', LAW_ENFORCEMENT]) || Map())
+export const getCountyLicensingFormSelector = (state) => (state.getIn(['crossReportForm', COUNTY_LICENSING]) || Map())
+export const getCommunityCareLicensingFormSelector = (state) => (state.getIn(['crossReportForm', COMMUNITY_CARE_LICENSING]) || Map())
 
 export const getScreeningWithEditsSelector = createSelector(
   getScreeningSelector,
