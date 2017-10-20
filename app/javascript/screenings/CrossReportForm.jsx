@@ -89,7 +89,8 @@ class CrossReportForm extends React.Component {
                 <li key={DISTRICT_ATTORNEY}>
                   <AgencyField
                     type={DISTRICT_ATTORNEY}
-                    data={districtAttorney}
+                    selected={districtAttorney.selected}
+                    value={districtAttorney.agency.value}
                     countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
                     actions={agencyFieldActions}
                   />
@@ -97,7 +98,8 @@ class CrossReportForm extends React.Component {
                 <li key={LAW_ENFORCEMENT}>
                   <AgencyField
                     type={LAW_ENFORCEMENT}
-                    data={lawEnforcement}
+                    selected={lawEnforcement.selected}
+                    value={lawEnforcement.agency.value}
                     countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
                     actions={agencyFieldActions}
                   />
@@ -109,7 +111,8 @@ class CrossReportForm extends React.Component {
                 <li key={DEPARTMENT_OF_JUSTICE}>
                   <AgencyField
                     type={DEPARTMENT_OF_JUSTICE}
-                    data={departmentOfJustice}
+                    selected={departmentOfJustice.selected}
+                    value={departmentOfJustice.agency.value}
                     countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
                     actions={agencyFieldActions}
                   />
@@ -117,7 +120,8 @@ class CrossReportForm extends React.Component {
                 <li key={COUNTY_LICENSING}>
                   <AgencyField
                     type={COUNTY_LICENSING}
-                    data={countyLicensing}
+                    selected={countyLicensing.selected}
+                    value={countyLicensing.agency.value}
                     countyAgencies={countyAgencies[COUNTY_LICENSING]}
                     actions={agencyFieldActions}
                   />
@@ -125,7 +129,8 @@ class CrossReportForm extends React.Component {
                 <li key={COMMUNITY_CARE_LICENSING}>
                   <AgencyField
                     type={COMMUNITY_CARE_LICENSING}
-                    data={communityCareLicensing}
+                    selected={communityCareLicensing.selected}
+                    value={communityCareLicensing.agency.value}
                     countyAgencies={countyAgencies[COMMUNITY_CARE_LICENSING]}
                     actions={agencyFieldActions}
                   />

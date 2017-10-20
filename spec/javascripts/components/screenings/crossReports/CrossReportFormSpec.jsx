@@ -143,7 +143,7 @@ describe('CrossReportForm', () => {
     it('renders DISTRICT_ATTORNEY agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
-        districtAttorney: {data: '1234'},
+        districtAttorney: {selected: true, agency: {value: '1234'}},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [],
@@ -153,14 +153,15 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().data).toEqual({data: '1234'})
+      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().selected).toEqual(true)
+      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().value).toEqual('1234')
       expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
       expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().actions).toEqual(actions)
     })
     it('renders LAW_ENFORCEMENT agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
-        lawEnforcement: {data: '1234'},
+        lawEnforcement: {selected: true, agency: {value: '1234'}},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [],
@@ -170,14 +171,15 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().data).toEqual({data: '1234'})
+      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().selected).toEqual(true)
+      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().value).toEqual('1234')
       expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
       expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().actions).toEqual(actions)
     })
     it('renders DEPARTMENT_OF_JUSTICE agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
-        departmentOfJustice: {data: '1234'},
+        departmentOfJustice: {selected: true, agency: {value: '1234'}},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [],
@@ -187,14 +189,15 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().data).toEqual({data: '1234'})
+      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().selected).toEqual(true)
+      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().value).toEqual('1234')
       expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
       expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().actions).toEqual(actions)
     })
     it('renders COUNTY_LICENSING agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
-        countyLicensing: {data: '1234'},
+        countyLicensing: {selected: true, agency: {value: '1234'}},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [{id: '123', value: 'asdf'}],
@@ -204,14 +207,15 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().data).toEqual({data: '1234'})
+      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().selected).toEqual(true)
+      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().value).toEqual('1234')
       expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
       expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().actions).toEqual(actions)
     })
     it('renders COMMUNITY_CARE_LICENSING agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
-        communityCareLicensing: {data: '1234'},
+        communityCareLicensing: {selected: true, agency: {value: '1234'}},
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [{id: '123', value: 'asdf'}],
           COUNTY_LICENSING: [],
@@ -221,7 +225,8 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().data).toEqual({data: '1234'})
+      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().selected).toEqual(true)
+      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().value).toEqual('1234')
       expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
       expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().actions).toEqual(actions)
     })

@@ -2,9 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import CheckboxField from 'common/CheckboxField'
 import SelectField from 'common/SelectField'
-import {
-  AGENCY_TYPES,
-} from 'enums/CrossReport'
+import {AGENCY_TYPES} from 'enums/CrossReport'
 
 const AgencyField = ({
   actions: {
@@ -16,10 +14,8 @@ const AgencyField = ({
   },
   type,
   countyAgencies,
-  data: {
-    selected,
-    agency: {value},
-  },
+  selected,
+  value,
 }) => (
   <div>
     <CheckboxField
@@ -56,8 +52,9 @@ const AgencyField = ({
 AgencyField.propTypes = {
   actions: PropTypes.object.isRequired,
   countyAgencies: PropTypes.array.isRequired,
-  data: PropTypes.object.isRequired,
+  selected: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 }
 
 export default AgencyField
