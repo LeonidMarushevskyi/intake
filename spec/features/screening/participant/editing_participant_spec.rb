@@ -25,7 +25,7 @@ feature 'Edit Screening' do
       languages: ['Russian'],
       ethnicity: {
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: 'Mexican'
+        ethnicity_detail: ['Mexican']
       }
     )
   end

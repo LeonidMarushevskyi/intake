@@ -5,7 +5,7 @@ import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import counties from 'reducers/systemCodes/countiesReducer'
 import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
-import investigationPeople from 'reducers/investigationPeopleReducer'
+import investigation from 'reducers/investigationReducer'
 import involvements from 'reducers/involvementsReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
@@ -14,7 +14,6 @@ import relationships from 'reducers/relationshipsReducer'
 import remoteError from 'reducers/remoteErrorReducer'
 import routing from 'reducers/routerReducer'
 import screening from 'reducers/screeningReducer'
-import screeningSummary from 'reducers/screeningSummaryReducer'
 import staff from 'reducers/staffReducer'
 import {combineReducers} from 'redux-immutable'
 
@@ -26,7 +25,7 @@ const rootReducer = combineReducers({
   contactStatuses,
   counties,
   countyAgencies,
-  investigationPeople,
+  investigation,
   involvements,
   locations,
   narrativeForm,
@@ -35,7 +34,6 @@ const rootReducer = combineReducers({
   remoteError,
   routing,
   screening,
-  screeningSummary,
   staff,
 })
 

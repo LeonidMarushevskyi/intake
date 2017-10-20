@@ -184,7 +184,7 @@ describe('<Autocompleter />', () => {
         ],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Central American',
+          ethnicity_detail: ['Central American'],
         },
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
@@ -225,7 +225,7 @@ describe('<Autocompleter />', () => {
       ])
       expect(attributes.ethnicity).toEqual({
         hispanic_latino_origin: 'Yes',
-        ethnicity_detail: 'Central American',
+        ethnicity_detail: ['Central American'],
       })
       expect(attributes.dateOfBirth).toEqual('1990-02-13')
       expect(attributes.ssn).toEqual('6789')
@@ -348,7 +348,7 @@ describe('<Autocompleter />', () => {
         ],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Central American',
+          ethnicity_detail: ['Central American'],
         },
         date_of_birth: '1990-02-13',
         ssn: '123-45-6789',
@@ -387,7 +387,7 @@ describe('<Autocompleter />', () => {
         ],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Central American',
+          ethnicity_detail: ['Central American'],
         },
         dateOfBirth: '1990-02-13',
         ssn: '6789',

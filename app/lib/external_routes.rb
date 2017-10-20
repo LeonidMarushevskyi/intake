@@ -47,20 +47,12 @@ class ExternalRoutes
       "/investigations/#{id}"
     end
 
-    def ferb_api_investigations_screening_path(id)
-      "/investigations/#{id}/screening"
-    end
-
     def ferb_api_investigations_contacts_path(id)
       "/investigations/#{id}/contacts"
     end
 
     def ferb_api_investigations_contact_path(investigation_id, contact_id)
       "/investigations/#{investigation_id}/contacts/#{contact_id}"
-    end
-
-    def ferb_api_investigations_people_path(id)
-      "/investigations/#{id}/people"
     end
 
     def ferb_api_lov_path

@@ -74,7 +74,7 @@ feature 'Edit Screening' do
         { race: 'White', race_detail: 'European' },
         { race: 'American Indian or Alaska Native' }
       ],
-      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Central American'] }
     )
   end
   let(:homer) do
@@ -93,10 +93,14 @@ feature 'Edit Screening' do
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
-        { race: 'White', race_detail: 'European' },
+        { race: 'Asian' },
+        { race: 'White', race_detail: 'Romanian' },
+        { race: 'White' },
+        { race: 'Asian', race_detail: 'Hmong' },
+        { race: 'Asian', race_detail: 'Chinese' },
         { race: 'American Indian or Alaska Native' }
       ],
-      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: 'Central American' }
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: %w[Hispanic Mexican] }
     )
   end
 
@@ -206,7 +210,7 @@ feature 'Edit Screening' do
         expect(page).to have_field('First Name', with: homer.first_name)
         expect(page).to have_field('Last Name', with: homer.last_name)
         expect(page).to have_field('Phone Number', with: '(971)287-6774')
-        expect(page).to have_field('Phone Number Type', with: homer.phone_numbers.first.type)
+        expect(page).to have_select('Phone Number Type', selected: homer.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: homer.gender)
         has_react_select_field('Language(s) (Primary First)', with: homer.languages)
         expect(page).to have_field('Date of birth', with: homer_date_of_birth.strftime('%m/%d/%Y'))
@@ -215,7 +219,27 @@ feature 'Edit Screening' do
         expect(page).to have_field('City', with: homer.addresses.first.city)
         expect(page).to have_field('State', with: homer.addresses.first.state)
         expect(page).to have_field('Zip', with: homer.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: homer.addresses.first.type)
+        expect(page).to have_select('Address Type', selected: homer.addresses.first.type)
+        within '#race' do
+          expect(page.find('input[value="Asian"]')).to be_checked
+          expect(page).to have_select(
+            "participant-#{created_participant_homer.id}-Asian-race-detail",
+            selected: 'Hmong'
+          )
+          expect(page.find('input[value="White"]')).to be_checked
+          expect(page).to have_select(
+            "participant-#{created_participant_homer.id}-White-race-detail",
+            selected: 'Romanian'
+          )
+          expect(page.find('input[value="American Indian or Alaska Native"]')).to be_checked
+        end
+        within '#ethnicity' do
+          expect(page.find('input[value="Yes"]')).to be_checked
+          expect(page).to have_select(
+            "participant-#{created_participant_homer.id}-ethnicity-detail",
+            selected: 'Hispanic'
+          )
+        end
         expect(page).to have_button 'Cancel'
         expect(page).to have_button 'Save'
       end

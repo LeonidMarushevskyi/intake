@@ -47,7 +47,7 @@ describe Participant do
         roles: ['Victim'],
         ethnicity: {
           hispanic_latino_origin: 'Yes',
-          ethnicity_detail: 'Mexican'
+          ethnicity_detail: ['Mexican']
         }
       }.with_indifferent_access
       expect(
@@ -87,7 +87,7 @@ describe Participant do
                              ]),
           ethnicity: a_hash_including(
             hispanic_latino_origin: 'Yes',
-            ethnicity_detail: 'Mexican'
+            ethnicity_detail: ['Mexican']
           ),
           legacy_id: '1',
           legacy_source_table: 'CLIENT_T',

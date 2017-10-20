@@ -60,13 +60,8 @@ Rails.application.routes.draw do
       end
 
       resources :investigations,
-        only: %i[screening show],
+        only: %i[show],
         constraints: Routes::ActiveInvestigationsConstraint do
-
-        resources :people, only: [:index], module: 'investigations'
-        member do
-          get :screening
-        end
         resources :contacts, only: %i[create show], module: :investigations
       end
 
