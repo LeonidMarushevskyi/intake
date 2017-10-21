@@ -17,7 +17,7 @@ feature 'error pages' do
 
     scenario 'renders 404 page' do
       visit page_path('this_page_does_not_exist')
-      expect(page).to have_text('Sorry, this is not the page you want')
+      expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
         "It may have been deleted or doesn't exist. Please check the address or"
       )

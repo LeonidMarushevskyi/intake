@@ -1,10 +1,25 @@
 !!!
 %html
   %head
-    %title Sorry, this is not the page you want
+    %title Sorry, this is not the page you want.
+    %link{ rel:'stylesheet', href:'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' }
+    %link{ rel:'stylesheet', href:'https://fonts.googleapis.com/css?family=Source+Sans+Pro' }
+    :css
+      body { background-color: #e8e8e8; color: #050505; font-family: 'Source Sans Pro',
+        'Helvetica Neue', 'Helvetica', 'Roboto', 'Arial', sans-serif; font-size: 1.7rem; height: 100vh }
+      .c-red { color: #e3263d; }
+      .centered { text-align: center }
+      h1 { font-face: source sans pro font-size: 2.4rem; font-weight: 600; margin-bottom: 2rem; margin-top: 0; }
+      .gap-right { margin-right: 1.5rem }
+      .gap-top { margin-top: 1.5rem }
+      .error-panel { display: -webkit-box; display: -ms-flexbox; display: flex; height: 100%; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; flex-direction: column; }
   %body
-    %h1 Sorry, this is not the page you want
-    %span It may have been deleted or doesn't exist. Please check the address or
-    %br
-    %a{ href:'#' } return to your dashboard
-    %span .
+    .error-panel.centered
+      %h1<
+        %i.fa.fa-warning.c-red.gap-right
+        Sorry, this is not the page you want.
+      .gap-top<
+        %span It may have been deleted or doesn't exist. Please check the address or
+        %br
+        %a{ href:'#' } return to your dashboard
+        %span> .
