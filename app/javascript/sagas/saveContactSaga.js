@@ -1,26 +1,33 @@
 import {takeEvery, put, call} from 'redux-saga/effects'
 import {push} from 'react-router-redux'
-import {post} from 'utils/http'
+import * as api from 'utils/http'
 import {
-  createSuccess,
-  createFailure,
-  CREATE_CONTACT,
+  saveSuccess,
+  saveFailure,
+  SAVE_CONTACT,
 } from 'actions/contactActions'
 
 export function* saveContact(contact) {
   try {
     const investigationId = contact.investigation_id
-    const response = yield call(
-      post, `/api/v1/investigations/${investigationId}/contacts`, contact
-    )
-    yield put(createSuccess(response))
-    const {id} = response
-    const show_contact_path = `/investigations/${investigationId}/contacts/${id}`
+    const id = contact.id
+    let path
+    let method
+    if (id) {
+      path = `/api/v1/investigations/${investigationId}/contacts/${id}`
+      method = api.put
+    } else {
+      path = `/api/v1/investigations/${investigationId}/contacts`
+      method = api.post
+    }
+    const response = yield call(method, path, contact)
+    yield put(saveSuccess(response))
+    const show_contact_path = `/investigations/${investigationId}/contacts/${response.id}`
     yield put(push(show_contact_path))
   } catch (error) {
-    yield put(createFailure(error.responseJSON))
+    yield put(saveFailure(error.responseJSON))
   }
 }
 export function* saveContactSaga() {
-  yield takeEvery(CREATE_CONTACT, saveContact)
+  yield takeEvery(SAVE_CONTACT, saveContact)
 }
