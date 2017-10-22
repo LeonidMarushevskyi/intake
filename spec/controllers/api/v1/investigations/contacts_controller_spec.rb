@@ -44,6 +44,47 @@ describe Api::V1::Investigations::ContactsController do
     end
   end
 
+  describe '#update' do
+    let(:response_object) do
+      double(
+        :response,
+        body: '{"id":"444"}',
+        status: 200
+      )
+    end
+    let(:contact_id) { 'existing_contact_id' }
+    let(:contact_params) do
+      {
+        'id' => contact_id,
+        'started_at' => 'A Date Format',
+        'purpose' => '123',
+        'status' => 'C',
+        'note' => 'This is a note',
+        'communication_method' => 'Shouting',
+        'location' => 'Somewhere shire'
+      }
+    end
+    let(:update_path) do
+      "/investigations/#{investigation_id}/contacts/#{contact_id}"
+    end
+
+    before do
+      expect(FerbAPI).to receive(:make_api_call)
+        .with(security_token, update_path, :put, contact_params)
+        .and_return(response_object)
+    end
+
+    it 'returns response from contact update API' do
+      process :update, method: :put, params: {
+        investigation_id: investigation_id,
+        id: contact_id,
+        contact: contact_params
+      }, session: session
+      expect(JSON.parse(response.body)).to match a_hash_including('id' => '444')
+      expect(response.status).to eq 200
+    end
+  end
+
   describe '#show' do
     let(:contact_id) { '456' }
     let(:response_object) do

@@ -65,7 +65,7 @@ Rails.application.routes.draw do
       resources :investigations,
         only: %i[show],
         constraints: Routes::ActiveInvestigationsConstraint do
-        resources :contacts, only: %i[create show], module: :investigations
+        resources :contacts, only: %i[create show update], module: :investigations
       end
 
       resources :system_codes,
