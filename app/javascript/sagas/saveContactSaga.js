@@ -7,7 +7,7 @@ import {
   CREATE_CONTACT,
 } from 'actions/contactActions'
 
-export function* createContact(contact) {
+export function* saveContact(contact) {
   try {
     const investigationId = contact.investigation_id
     const response = yield call(
@@ -21,6 +21,6 @@ export function* createContact(contact) {
     yield put(createFailure(error.responseJSON))
   }
 }
-export function* createContactSaga() {
-  yield takeEvery(CREATE_CONTACT, createContact)
+export function* saveContactSaga() {
+  yield takeEvery(CREATE_CONTACT, saveContact)
 }

@@ -2,9 +2,9 @@ import 'babel-polyfill'
 import {takeEvery, put, call} from 'redux-saga/effects'
 import {post} from 'utils/http'
 import {
-  createContactSaga,
-  createContact,
-} from 'sagas/createContactSaga'
+  saveContactSaga,
+  saveContact,
+} from 'sagas/saveContactSaga'
 import {
   createSuccess,
   createFailure,
@@ -12,18 +12,18 @@ import {
 } from 'actions/contactActions'
 import {push} from 'react-router-redux'
 
-describe('createContactSaga', () => {
+describe('saveContactSaga', () => {
   it('creates contact on CREATE_CONTACT', () => {
-    const gen = createContactSaga()
-    expect(gen.next().value).toEqual(takeEvery(CREATE_CONTACT, createContact))
+    const gen = saveContactSaga()
+    expect(gen.next().value).toEqual(takeEvery(CREATE_CONTACT, saveContact))
   })
 })
 
-describe('createContact', () => {
+describe('saveContact', () => {
   it('creates and puts contact', () => {
     const contact = {investigation_id: '123'}
     const contactResponse = {id: '222'}
-    const gen = createContact(contact)
+    const gen = saveContact(contact)
     expect(gen.next().value).toEqual(
       call(post, '/api/v1/investigations/123/contacts', contact)
     )
@@ -38,7 +38,7 @@ describe('createContact', () => {
   it('puts errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
     const contact = {investigation_id: '123'}
-    const gen = createContact(contact)
+    const gen = saveContact(contact)
     expect(gen.next().value).toEqual(
       call(post, '/api/v1/investigations/123/contacts', contact)
     )
