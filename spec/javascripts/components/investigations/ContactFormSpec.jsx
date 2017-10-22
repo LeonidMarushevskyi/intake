@@ -4,6 +4,7 @@ import {shallow, mount} from 'enzyme'
 
 describe('ContactForm', () => {
   function renderContact({
+    id,
     investigationId = 'ABC123',
     actions = {},
     startedAt = null,
@@ -24,6 +25,7 @@ describe('ContactForm', () => {
     selectedPeopleIds = [],
   }) {
     const props = {
+      id,
       investigationId,
       actions,
       startedAt,
@@ -342,15 +344,16 @@ describe('ContactForm', () => {
   })
 
   describe('clicking save', () => {
-    let create
+    let save
     const event = jasmine.createSpyObj('event', ['preventDefault'])
     beforeEach(() => {
-      create = jasmine.createSpy('create')
+      save = jasmine.createSpy('save')
     })
 
-    it('when contact is valid creates a contact', () => {
+    it('when contact is valid saves a contact', () => {
       const component = renderContact({
         valid: true,
+        id: null,
         investigationId: '123',
         startedAt: '2016-08-11T18:24:22.157Z',
         status: 'S',
@@ -358,11 +361,12 @@ describe('ContactForm', () => {
         location: '432',
         note: 'This is a new note',
         purpose: '1',
-        actions: {create},
+        actions: {save},
         selectedPeopleIds: [{legacy_descriptor: '1'}],
       })
       component.find('form').simulate('submit', event)
-      expect(create).toHaveBeenCalledWith({
+      expect(save).toHaveBeenCalledWith({
+        id: null,
         investigation_id: '123',
         started_at: '2016-08-11T18:24:22.157Z',
         communication_method: '654',
@@ -388,13 +392,13 @@ describe('ContactForm', () => {
           location: '432',
           note: 'This is a new note',
           purpose: '1',
-          actions: {create, touchAllFields},
+          actions: {save, touchAllFields},
         })
         component.find('form').simulate('submit', event)
       })
 
-      it('does not create a contact', () => {
-        expect(create).not.toHaveBeenCalled()
+      it('does not save a contact', () => {
+        expect(save).not.toHaveBeenCalled()
       })
 
       it('touches all contact fields to display all validations', () => {

@@ -20,10 +20,11 @@ class ContactForm extends React.Component {
   }
   render() {
     const {
-      actions: {setField, touchField, create, touchAllFields, selectPerson, deselectPerson},
+      actions: {setField, touchField, save, touchAllFields, selectPerson, deselectPerson},
       communicationMethod,
       communicationMethods,
       errors,
+      id,
       inPersonCode,
       investigationId,
       location,
@@ -42,7 +43,8 @@ class ContactForm extends React.Component {
     const onSubmit = (event) => {
       event.preventDefault()
       if (valid) {
-        create({
+        save({
+          id,
           investigation_id: investigationId,
           started_at: startedAt,
           communication_method: communicationMethod,

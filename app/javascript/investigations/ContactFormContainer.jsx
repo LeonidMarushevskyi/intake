@@ -1,5 +1,5 @@
 import * as contactFormActions from 'actions/contactFormActions'
-import {create} from 'actions/contactActions'
+import {save} from 'actions/contactActions'
 import ContactForm from 'investigations/ContactForm'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
-  const actions = Object.assign(contactFormActions, {create})
+  const actions = Object.assign(contactFormActions, {save})
   return {actions: bindActionCreators(actions, dispatch)}
 }
 
