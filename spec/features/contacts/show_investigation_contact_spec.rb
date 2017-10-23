@@ -8,7 +8,7 @@ feature 'Show Investigation Contact' do
   let(:contact) do
     {
       id: contact_id,
-      started_at: '2010-04-27T23:30:00.000',
+      started_at: '2010-04-27T23:30:00.000Z',
       purpose: '1',
       communication_method: 'ABC',
       status: 'A',
@@ -36,7 +36,7 @@ feature 'Show Investigation Contact' do
       expect(page).to have_content("Contact - Investigation #{investigation_id}")
     end
     within '.card-body' do
-      expect(page).to have_content 'Date & Time (04/27/2010 11:30 PM)'
+      expect(page).to have_content 'Date & Time (04/27/2010 4:30 PM)'
       expect(page).to have_content 'Status Attempted'
       expect(page).to have_content 'Purpose Investigate Referral'
       expect(page).to have_content 'Contact Notes (Optional) a sample note'
