@@ -12,6 +12,7 @@ services:
       RAILS_ENV: ${RAILS_ENV:-development}
       API_URL: "http://api:3000"
       FERB_API_URL: "https://ferbapi.preint.cwds.io"
+      DASHBOARD_URL: 'https://web.preint.cwds.io/dashboard/'
       NODE_ENV: development
       AUTHENTICATION_URL: "https://perry.preint.cwds.io/perry"
       AUTHENTICATION: ${AUTHENTICATION:-true}
