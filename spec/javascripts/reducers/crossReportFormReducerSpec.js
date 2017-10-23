@@ -16,7 +16,7 @@ import {fetchScreeningSuccess} from 'actions/screeningActions'
 describe('crossReportFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on CLEAR_CROSS_REPORT_FIELD_VALUES', () => {
+  describe('on CLEAR_CROSS_REPORT_VALUES', () => {
     it('returns the cross report with the values reset to blank except county_id', () => {
       const state = fromJS({
         county_id: {
@@ -131,7 +131,7 @@ describe('crossReportFormReducer', () => {
       )
     })
   })
-  describe('on CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES', () => {
+  describe('on CLEAR_CROSS_REPORT_AGENCY_VALUES', () => {
     it('returns the cross report with the agency specific data blanked out', () => {
       const state = fromJS({
         county_id: {
@@ -246,7 +246,7 @@ describe('crossReportFormReducer', () => {
       )
     })
   })
-  describe('on RESET_CROSS_REPORT_FIELD_VALUES', () => {
+  describe('on RESET_CROSS_REPORT_VALUES', () => {
     it('updates the cross report form', () => {
       const action = resetFieldValues({
         cross_reports: [
@@ -474,7 +474,7 @@ describe('crossReportFormReducer', () => {
       )
     })
   })
-  describe('on SET_CROSS_REPORT_AGENCY_TYPE_FIELD', () => {
+  describe('on SET_CROSS_REPORT_AGENCY_TYPE', () => {
     it('sets the value of selected for the agency type', () => {
       const action = setAgencyTypeField('DISTRICT_ATTORNEY', true)
       const state = fromJS({DISTRICT_ATTORNEY: {selected: false, touched: false}})
@@ -515,7 +515,7 @@ describe('crossReportFormReducer', () => {
       )
     })
   })
-  describe('on SET_CROSS_REPORT_AGENCY_FIELD', () => {
+  describe('on SET_CROSS_REPORT_AGENCY', () => {
     it('sets the value of selected for the agency type', () => {
       const action = setAgencyField('DISTRICT_ATTORNEY', '1234AAB')
       const state = fromJS({

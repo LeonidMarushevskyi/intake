@@ -1,12 +1,12 @@
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 import {
-  CLEAR_CROSS_REPORT_FIELD_VALUES,
-  CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES,
-  RESET_CROSS_REPORT_FIELD_VALUES,
+  CLEAR_CROSS_REPORT_VALUES,
+  CLEAR_CROSS_REPORT_AGENCY_VALUES,
+  RESET_CROSS_REPORT_VALUES,
   SET_CROSS_REPORT_FIELD,
-  SET_CROSS_REPORT_AGENCY_FIELD,
-  SET_CROSS_REPORT_AGENCY_TYPE_FIELD,
+  SET_CROSS_REPORT_AGENCY,
+  SET_CROSS_REPORT_AGENCY_TYPE,
   TOUCH_CROSS_REPORT_FIELD,
   TOUCH_CROSS_REPORT_AGENCY_FIELD,
 } from 'actions/crossReportFormActions'
@@ -57,13 +57,13 @@ const buildCrossReportFormFromScreening = ({cross_reports}) => {
   }
 }
 export default createReducer(Map(), {
-  [CLEAR_CROSS_REPORT_FIELD_VALUES](state) {
+  [CLEAR_CROSS_REPORT_VALUES](state) {
     return buildCrossReportForm({agencies: [], county_id: state.getIn(['county_id', 'value'])})
   },
-  [CLEAR_CROSS_REPORT_AGENCY_FIELD_VALUES](state, {agencyType}) {
+  [CLEAR_CROSS_REPORT_AGENCY_VALUES](state, {agencyType}) {
     return state.setIn([agencyType, 'agency', 'value'], '').setIn([agencyType, 'agency', 'touched'], false)
   },
-  [RESET_CROSS_REPORT_FIELD_VALUES](state, {screening: {cross_reports}}) {
+  [RESET_CROSS_REPORT_VALUES](state, {screening: {cross_reports}}) {
     if (cross_reports && cross_reports.length > 0) {
       const crossReport = cross_reports[0]
       let newState = fromJS(AGENCY_TYPES).reduce(
@@ -82,10 +82,10 @@ export default createReducer(Map(), {
       return buildCrossReportForm()
     }
   },
-  [SET_CROSS_REPORT_AGENCY_TYPE_FIELD](state, {field, value}) {
+  [SET_CROSS_REPORT_AGENCY_TYPE](state, {field, value}) {
     return state.setIn([field, 'selected'], value)
   },
-  [SET_CROSS_REPORT_AGENCY_FIELD](state, {agencyType, value}) {
+  [SET_CROSS_REPORT_AGENCY](state, {agencyType, value}) {
     return state.setIn([agencyType, 'agency', 'value'], value)
   },
   [SET_CROSS_REPORT_FIELD](state, {field, value}) {
