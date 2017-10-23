@@ -30,10 +30,11 @@ module CaIntake # :nodoc:
     URL
 
     config.intake = {
-      base_path: ENV.fetch('BASE_PATH', ''),
+      api_url: ENV.fetch('API_URL', nil),
       authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
       authentication_login_url: authentication_login_url,
-      api_url: ENV.fetch('API_URL', nil),
+      base_path: ENV.fetch('BASE_PATH', ''),
+      dashboard_url: ENV.fetch('DASHBOARD_URL', ''),
       ferb_api_url: ENV.fetch('FERB_API_URL', nil),
       sdm_path: ExternalRoutes.sdm_path
     }
