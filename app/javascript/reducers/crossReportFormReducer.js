@@ -14,22 +14,19 @@ import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
 import {AGENCY_TYPES} from 'enums/CrossReport'
 
 const buildAgencyInformation = ({agencies}) => {
-  const agencyInformation = Object.keys(AGENCY_TYPES).reduce((info, type) => {
-    const savedTypes = agencies.map(({type}) => type)
-    const savedIds = agencies.reduce((ids, {type, id}) => ({...ids, [type]: id}), {})
-    return {
-      ...info,
-      [type]: {
-        selected: savedTypes.includes(type),
+  const selectedAgencyTypes = agencies.map(({type}) => type)
+  const agencyTypeToSelectedAgencyId = agencies.reduce((ids, {type, id}) => ({...ids, [type]: id}), {})
+  return Object.keys(AGENCY_TYPES).reduce((info, type) => ({
+    ...info,
+    [type]: {
+      selected: selectedAgencyTypes.includes(type),
+      touched: false,
+      agency: {
+        value: agencyTypeToSelectedAgencyId[type] || '',
         touched: false,
-        agency: {
-          value: savedIds[type] || '',
-          touched: false,
-        },
       },
-    }
-  }, {})
-  return agencyInformation
+    },
+  }), {})
 }
 const buildCrossReportForm = (crossReport = {agencies: []}) => {
   const agencyInformation = buildAgencyInformation(crossReport)
