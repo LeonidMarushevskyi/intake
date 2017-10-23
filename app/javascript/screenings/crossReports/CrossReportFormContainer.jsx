@@ -15,7 +15,7 @@ import {
 } from 'selectors/countyAgenciesSelectors'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import CrossReportForm from 'screenings/CrossReportForm'
+import CrossReportForm from 'screenings/crossReports/CrossReportForm'
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import {
   clearAllAgencyFields,

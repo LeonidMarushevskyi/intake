@@ -1,4 +1,4 @@
-import CrossReportForm from 'screenings/CrossReportForm'
+import CrossReportForm from 'screenings/crossReports/CrossReportForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 

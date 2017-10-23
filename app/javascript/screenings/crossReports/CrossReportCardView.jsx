@@ -1,6 +1,6 @@
 import * as Validator from 'utils/validator'
-import CrossReportFormContainer from 'screenings/CrossReportFormContainer'
-import CrossReportShowContainer from 'screenings/CrossReportShowContainer'
+import CrossReportFormContainer from 'screenings/crossReports/CrossReportFormContainer'
+import CrossReportShowContainer from 'screenings/crossReports/CrossReportShowContainer'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'

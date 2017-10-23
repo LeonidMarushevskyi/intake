@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import CrossReportShow from 'screenings/CrossReportShow'
+import CrossReportShow from 'screenings/crossReports/CrossReportShow'
 import {getCrossReportSelector, getSelectedCrossReportAgencyNamesSelector} from 'selectors/crossReportShowSelectors'
 
 const mapStateToProps = (state) => {
