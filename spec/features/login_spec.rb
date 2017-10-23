@@ -63,6 +63,24 @@ feature 'login' do
         expect(page).to have_current_path(root_path(token: 123))
       end
     end
+
+    scenario 'user sees his name on the global header' do
+      Feature.run_with_activated(:authentication) do
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body(auth_artifact.to_json, status: 200))
+        stub_request(:get, staff_url)
+          .and_return(json_body(staff_info.to_json, status: 200))
+        visit root_path(token: 123)
+        expect(a_request(:get, auth_validation_url)).to have_been_made
+        expect(a_request(:get, staff_url)).to have_been_made
+        expect(page).to have_css 'header', text: 'Joe Cool'
+      end
+    end
+
+    scenario 'user sees "Not Available" if there is no user on session' do
+      visit root_path(token: 123)
+      expect(page).to have_css 'header', text: 'Not Available'
+    end
   end
 
   scenario 'user provides invalid security token', browser: :poltergeist do

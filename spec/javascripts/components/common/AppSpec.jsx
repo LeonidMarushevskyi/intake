@@ -17,6 +17,11 @@ describe('App', () => {
     expect(actions.fetch).toHaveBeenCalled()
   })
 
+  it('renders the global header component on all app views', () => {
+    component = shallow(<App actions={actions} />)
+    expect(component.find('GlobalHeader').exists()).toEqual(true)
+  })
+
   describe('error banner', () => {
     it('is not rendered when no errors', () => {
       component = shallow(<App actions={actions} hasError={false} errorCount={0}><div/></App>)

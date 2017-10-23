@@ -8,6 +8,7 @@ import {
 } from 'selectors/errorsSelectors'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
+import {GlobalHeader} from 'react-wood-duck'
 
 export class App extends React.Component {
   componentDidMount() {
@@ -18,6 +19,7 @@ export class App extends React.Component {
     return (
       <div>
         {(hasError) && <PageError errorCount={errorCount} />}
+        <GlobalHeader profileName='Will Robinson'/>
         {this.props.children}
       </div>
     )
