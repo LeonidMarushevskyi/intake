@@ -1,6 +1,5 @@
-import {Map, List, fromJS} from 'immutable'
+import {List, fromJS} from 'immutable'
 import {
-  getScreeningSelector,
   getErrorsSelector,
   getReportNarrativeValueSelector,
 } from 'selectors/narrativeShowSelectors'
@@ -8,19 +7,6 @@ import * as matchers from 'jasmine-immutable-matchers'
 
 describe('contactFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
-
-  describe('getScreeningSelector', () => {
-    it('returns the screening when one is present', () => {
-      const screening = {report_narrative: 'ABC'}
-      const state = fromJS({screening})
-      expect(getScreeningSelector(state)).toEqualImmutable(fromJS(screening))
-    })
-
-    it('returns an empty map when screening is not present', () => {
-      const state = Map()
-      expect(getScreeningSelector(state)).toEqualImmutable(Map())
-    })
-  })
 
   describe('getReportNarrativeValueSelector', () => {
     it('returns a value when one is present', () => {

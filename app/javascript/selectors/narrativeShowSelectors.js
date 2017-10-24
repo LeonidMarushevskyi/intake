@@ -1,8 +1,7 @@
 import {createSelector} from 'reselect'
 import {isRequiredCreate, combineCompact} from 'utils/validator'
-import {Map, fromJS} from 'immutable'
-
-export const getScreeningSelector = (state) => (state.get('screening') || Map())
+import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {fromJS} from 'immutable'
 
 export const getReportNarrativeValueSelector = createSelector(
   getScreeningSelector,
