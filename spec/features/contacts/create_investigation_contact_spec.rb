@@ -62,7 +62,7 @@ feature 'Create Investigation Contact' do
       purpose: 'CONTACT_PURPOSE_1',
       status: 'CONTACT_STATUS_1',
       note: 'This was an attempted contact',
-      communication_method: 'ABC',
+      communication_method: 'COMMUNICATION_METHOD_1',
       location: '123',
       people: [{ legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' } }]
     }
@@ -82,7 +82,7 @@ feature 'Create Investigation Contact' do
 
   scenario "selecting communication method 'In person' resets value for location type" do
     expect(page).to_not have_select('Location')
-    select 'Fax', from: 'Communication Method'
+    select 'Communication method 2', from: 'Communication Method'
     select 'In person', from: 'Communication Method'
     expect(page).to have_select('Location', with_selected: '')
   end
@@ -90,7 +90,7 @@ feature 'Create Investigation Contact' do
   scenario 'saving with communication method not set to in-person save location as office' do
     fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
     select 'Contact status 1', from: 'Status'
-    select 'Fax', from: 'Communication Method'
+    select 'Communication method 2', from: 'Communication Method'
     find('label', text: 'Emma Woodhouse').click
     select 'Contact purpose 1', from: 'Purpose'
     fill_in 'Contact Notes', with: 'This was an attempted contact'
@@ -103,7 +103,7 @@ feature 'Create Investigation Contact' do
           purpose: 'CONTACT_PURPOSE_1',
           status: 'CONTACT_STATUS_1',
           note: 'This was an attempted contact',
-          communication_method: 'FAX',
+          communication_method: 'COMMUNICATION_METHOD_2',
           location: 'OFFICE',
           people: [{ legacy_descriptor: { legacy_id: '1', legacy_table_name: 'foo' } }]
         }.to_json
