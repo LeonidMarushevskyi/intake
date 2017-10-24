@@ -6,26 +6,37 @@ describe('AgencyField', () => {
   function renderAgencyField({
     actions = {},
     countyAgencies = [],
+    errors = [],
     type = '',
+    required = false,
     selected = false,
     value = '',
   }) {
     const props = {
       actions,
       countyAgencies,
+      errors,
       type,
+      required,
       selected,
       value,
     }
     return shallow(<AgencyField {...props} />)
   }
 
+  it('renders errors', () => {
+    const component = renderAgencyField({type: 'DISTRICT_ATTORNEY', errors: ['errors go here']})
+    const errors = component.find('ErrorMessages')
+    expect(errors.exists()).toEqual(true)
+    expect(errors.props().errors).toEqual(['errors go here'])
+  })
   it('renders the checkbox', () => {
-    const component = renderAgencyField({type: 'DISTRICT_ATTORNEY'})
+    const component = renderAgencyField({type: 'DISTRICT_ATTORNEY', required: true})
     const checkbox = component.find('CheckboxField[id="type-DISTRICT_ATTORNEY"]')
     expect(checkbox.exists()).toEqual(true)
     expect(checkbox.props().checked).toEqual(false)
     expect(checkbox.props().disabled).toEqual(true)
+    expect(checkbox.props().required).toEqual(true)
     expect(checkbox.props().label).toEqual('District attorney')
     expect(checkbox.props().value).toEqual('DISTRICT_ATTORNEY')
   })
@@ -56,7 +67,26 @@ describe('AgencyField', () => {
   describe('when selected', () => {
     const setAgencyField = jasmine.createSpy('setAgencyField')
     const touchAgencyField = jasmine.createSpy('touchAgencyField')
-    it('triggers setAgencyField on change', () => {
+    it('triggers touchAgencyField on blur', () => {
+      const component = renderAgencyField({
+        actions: {
+          setAgencyField,
+          touchAgencyField,
+        },
+        type: 'LAW_ENFORCEMENT',
+        countyAgencies: [
+          {id: '1', name: 'Agency 1'},
+          {id: '2', name: 'Agency 2'},
+          {id: '3', name: 'Agency 3'},
+        ],
+        selected: true,
+        value: '2',
+      })
+      const selectField = component.find('SelectField[id="LAW_ENFORCEMENT-agency-code"]')
+      selectField.simulate('blur')
+      expect(touchAgencyField).toHaveBeenCalledWith('LAW_ENFORCEMENT')
+    })
+    it('triggers setAgencyField & touchAgencyField on change', () => {
       const component = renderAgencyField({
         actions: {
           setAgencyField,
@@ -87,12 +117,14 @@ describe('AgencyField', () => {
         countyAgencies,
         selected: true,
         value: '12345',
+        errors: ['I has error'],
       })
       const selectField = component.find('SelectField[id="LAW_ENFORCEMENT-agency-code"]')
       expect(selectField.exists()).toEqual(true)
       expect(selectField.props().label).toEqual('Law enforcement agency name')
       expect(selectField.props().required).toEqual(true)
       expect(selectField.props().value).toEqual('12345')
+      expect(selectField.props().gridClassName).toEqual('input-error')
       const children = selectField.props().children[1]
       expect(children[0].key).toEqual('1')
       expect(children[0].props.value).toEqual('1')
