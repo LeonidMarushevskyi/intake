@@ -22,11 +22,13 @@ import {
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')
+  const id = ownProps.params.id
   return {
     communicationMethod: contactForm.getIn(['communication_method', 'value']),
     communicationMethods: getCommunicationMethodsSelector(state).toJS(),
     errors: getVisibleErrorsSelector(state).toJS(),
-    id: ownProps.params.id,
+    hasCancel: Boolean(id),
+    id,
     inPersonCode: getInPersonCommunicationMethodValueSelector(state),
     investigationId: ownProps.params.investigation_id,
     location: contactForm.getIn(['location', 'value']),
@@ -52,7 +54,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     actions: bindActionCreators(actions, dispatch),
     onCancel: () => dispatch(push(contactShowPath)),
-    hasCancel: Boolean(id),
   }
 }
 
