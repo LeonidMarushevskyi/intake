@@ -43,7 +43,7 @@ feature 'Validate Investigation Contact' do
     blur_field
     expect(page).to have_content 'Please enter a contact status'
 
-    select 'Attempted', from: 'Status'
+    select 'Contact status 1', from: 'Status'
     expect(page).not_to have_content 'Please enter a contact status'
   end
 
@@ -88,7 +88,7 @@ feature 'Validate Investigation Contact' do
     blur_field
     expect(page).to have_content 'Please enter a contact purpose'
 
-    select 'Investigate Referral', from: 'Purpose'
+    select 'Contact purpose 1', from: 'Purpose'
     expect(page).not_to have_content 'Please enter a contact purpose'
   end
 
@@ -130,9 +130,9 @@ feature 'Validate Investigation Contact' do
     expect(page).to have_content 'Please enter the communication method'
     expect(page).to have_content 'At least one person must be present for a contact'
 
-    select 'Attempted', from: 'Status'
+    select 'Contact status 2', from: 'Status'
     fill_in_datepicker 'Date/Time', with: 2.years.from_now
-    select 'Investigate Referral', from: 'Purpose'
+    select 'Contact purpose 1', from: 'Purpose'
     select 'In person', from: 'Communication Method'
     select 'School', from: 'Location'
     find('label', text: 'Emma Woodhouse').click

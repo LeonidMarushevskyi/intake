@@ -31,11 +31,11 @@ feature 'Create Investigation Contact' do
     end
     within '.card-body' do
       fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
-      select 'Attempted', from: 'Status'
+      select 'Contact status 1', from: 'Status'
       select 'In person', from: 'Communication Method'
       select 'School', from: 'Location'
       find('label', text: 'Emma Woodhouse').click
-      select 'Investigate Referral', from: 'Purpose'
+      select 'Contact purpose 1', from: 'Purpose'
       fill_in 'Contact Notes', with: 'This was an attempted contact'
     end
     expect(page).to have_field('Date/Time', with: '08/17/2016 3:00 AM')
@@ -43,9 +43,9 @@ feature 'Create Investigation Contact' do
     expect(page).to have_checked_field('Emma Woodhouse')
     expect(page).to have_unchecked_field('George Knightley')
     expect(page).to have_select('Location', selected: 'School')
-    expect(page).to have_select('Status', selected: 'Attempted')
+    expect(page).to have_select('Status', selected: 'Contact status 1')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
-    expect(page).to have_select('Purpose', selected: 'Investigate Referral')
+    expect(page).to have_select('Purpose', selected: 'Contact purpose 1')
 
     contact_id = 'new_contact_id'
     show_path = ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, contact_id)
@@ -59,8 +59,8 @@ feature 'Create Investigation Contact' do
 
     expected_contact = {
       started_at: '2016-08-17T10:00:00.000Z',
-      purpose: '1',
-      status: 'A',
+      purpose: 'CONTACT_PURPOSE_1',
+      status: 'CONTACT_STATUS_1',
       note: 'This was an attempted contact',
       communication_method: 'ABC',
       location: '123',
@@ -89,10 +89,10 @@ feature 'Create Investigation Contact' do
 
   scenario 'saving with communication method not set to in-person save location as office' do
     fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
-    select 'Attempted', from: 'Status'
+    select 'Contact status 1', from: 'Status'
     select 'Fax', from: 'Communication Method'
     find('label', text: 'Emma Woodhouse').click
-    select 'Investigate Referral', from: 'Purpose'
+    select 'Contact purpose 1', from: 'Purpose'
     fill_in 'Contact Notes', with: 'This was an attempted contact'
     click_button 'Save'
     expect(
@@ -100,8 +100,8 @@ feature 'Create Investigation Contact' do
       .with(
         body: {
           started_at: '2016-08-17T10:00:00.000Z',
-          purpose: '1',
-          status: 'A',
+          purpose: 'CONTACT_PURPOSE_1',
+          status: 'CONTACT_STATUS_1',
           note: 'This was an attempted contact',
           communication_method: 'FAX',
           location: 'OFFICE',

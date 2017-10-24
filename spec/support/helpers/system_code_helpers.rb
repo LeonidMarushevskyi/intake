@@ -3,8 +3,8 @@
 module SystemCodeHelpers
   def contact_purpose_codes
     [{
-      code: '1',
-      value: 'Investigate Referral',
+      code: 'CONTACT_PURPOSE_1',
+      value: 'Contact purpose 1',
       category: 'contact_purpose',
       sub_category: nil
     }, {
@@ -17,8 +17,8 @@ module SystemCodeHelpers
 
   def contact_status_codes
     [{
-      code: 'A',
-      value: 'Attempted',
+      code: 'CONTACT_STATUS_1',
+      value: 'Contact status 1',
       category: 'contact_status',
       sub_category: nil
     }, {

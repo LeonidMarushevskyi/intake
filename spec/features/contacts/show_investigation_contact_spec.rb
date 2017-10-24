@@ -20,9 +20,9 @@ feature 'Show Investigation Contact' do
     {
       id: contact_id,
       started_at: '2010-04-27T23:30:00.000Z',
-      purpose: '1',
+      purpose: 'CONTACT_PURPOSE_1',
       communication_method: 'ABC',
-      status: 'A',
+      status: 'CONTACT_STATUS_1',
       location: '123',
       note: 'a sample note',
       people: [john_jones]
@@ -54,9 +54,9 @@ feature 'Show Investigation Contact' do
       expect(page).to have_content 'Date & Time (04/27/2010 4:30 PM)'
       expect(page).to have_content 'Communication Method In person'
       expect(page).to have_content 'Location School'
-      expect(page).to have_content 'Status Attempted'
+      expect(page).to have_content 'Status Contact status 1'
       expect(page).to have_content 'John Bob Jones'
-      expect(page).to have_content 'Purpose Investigate Referral'
+      expect(page).to have_content 'Purpose Contact purpose 1'
       expect(page).to have_content 'Contact Notes (Optional) a sample note'
     end
 
@@ -69,9 +69,9 @@ feature 'Show Investigation Contact' do
     expect(page).to have_field('Date/Time', with: '04/27/2010 4:30 PM')
     expect(page).to have_select('Communication Method', selected: 'In person')
     expect(page).to have_select('Location', selected: 'School')
-    expect(page).to have_select('Status', selected: 'Attempted')
+    expect(page).to have_select('Status', selected: 'Contact status 1')
     expect(page).to have_checked_field('John Bob Jones')
-    expect(page).to have_select('Purpose', selected: 'Investigate Referral')
+    expect(page).to have_select('Purpose', selected: 'Contact purpose 1')
     expect(page).to have_field('Contact Notes', with: 'a sample note')
   end
 end

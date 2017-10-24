@@ -27,9 +27,9 @@ feature 'Edit Investigation Contact' do
     {
       id: contact_id,
       started_at: '2010-04-27T23:30:00.000Z',
-      purpose: '1',
+      purpose: 'CONTACT_PURPOSE_1',
       communication_method: 'ABC',
-      status: 'A',
+      status: 'CONTACT_STATUS_1',
       location: '123',
       note: 'This was an attempted contact',
       people: [emma_woodhouse]
@@ -60,10 +60,10 @@ feature 'Edit Investigation Contact' do
     expect(page).to have_field('Date/Time', with: '04/27/2010 4:30 PM')
     expect(page).to have_select('Communication Method', selected: 'In person')
     expect(page).to have_select('Location', selected: 'School')
-    expect(page).to have_select('Status', selected: 'Attempted')
+    expect(page).to have_select('Status', selected: 'Contact status 1')
     expect(page).to have_checked_field('Emma Woodhouse')
     expect(page).to have_unchecked_field('George Knightley')
-    expect(page).to have_select('Purpose', selected: 'Investigate Referral')
+    expect(page).to have_select('Purpose', selected: 'Contact purpose 1')
     expect(page).to have_field('Contact Notes', with: 'This was an attempted contact')
 
     fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
@@ -105,8 +105,8 @@ feature 'Edit Investigation Contact' do
       expect(page).to have_content 'Date & Time (04/27/2010 4:30 PM)'
       expect(page).to have_content 'Communication Method In person'
       expect(page).to have_content 'Location School'
-      expect(page).to have_content 'Status Attempted'
-      expect(page).to have_content 'Purpose Investigate Referral'
+      expect(page).to have_content 'Status Contact status 1'
+      expect(page).to have_content 'Purpose Contact purpose 1'
       expect(page).to have_content 'Emma Woodhouse'
       expect(page).to_not have_content 'George Knightley'
       expect(page).to have_content 'Contact Notes (Optional) This was an attempted contact'
