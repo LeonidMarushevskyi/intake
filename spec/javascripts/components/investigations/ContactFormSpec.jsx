@@ -4,6 +4,7 @@ import {shallow, mount} from 'enzyme'
 
 describe('ContactForm', () => {
   function renderContact({
+    id,
     investigationId = 'ABC123',
     actions = {},
     startedAt = null,
@@ -22,8 +23,11 @@ describe('ContactForm', () => {
     people = [],
     valid = false,
     selectedPeopleIds = [],
+    hasCancel,
+    onCancel,
   }) {
     const props = {
+      id,
       investigationId,
       actions,
       startedAt,
@@ -42,14 +46,32 @@ describe('ContactForm', () => {
       people,
       valid,
       selectedPeopleIds,
+      hasCancel,
+      onCancel,
     }
     return shallow(<ContactForm {...props} />)
+  }
+
+  function mountContact({investigationId, id, actions}) {
+    return mount(
+      <ContactForm
+        investigationId={investigationId}
+        id={id}
+        actions={actions}
+        contact={{}}
+        statuses={[]}
+        purposes={[]}
+        communicationMethods={[]}
+        locations={[]}
+        people={[]}
+      />
+    )
   }
 
   it('displays the investigation Id in the header', () => {
     const component = renderContact({investigationId: 'ABCD1234'})
     const header = component.find('.card-header')
-    expect(header.text()).toEqual('New Contact - Investigation ABCD1234')
+    expect(header.text()).toEqual('Contact - Investigation ABCD1234')
   })
 
   it('displays the started at datetime picker', () => {
@@ -273,7 +295,7 @@ describe('ContactForm', () => {
   it('displays note', () => {
     const component = renderContact({note: 'This is a simple contact note'})
     const noteField = component.find('textarea')
-    expect(noteField.text()).toContain('This is a simple contact note')
+    expect(noteField.props().value).toContain('This is a simple contact note')
   })
 
   it('changing note fires setField', () => {
@@ -319,22 +341,23 @@ describe('ContactForm', () => {
   })
 
   it('displays the save button', () => {
-    const component = renderContact({})
-    const saveButton = component.find('button')
-    expect(saveButton.text()).toContain('Save')
-    expect(saveButton.props().type).toEqual('submit')
+    const primaryButton = renderContact({})
+      .find('button[className="btn btn-primary"]')
+    expect(primaryButton.text()).toContain('Save')
+    expect(primaryButton.props().type).toEqual('submit')
   })
 
   describe('clicking save', () => {
-    let create
+    let save
     const event = jasmine.createSpyObj('event', ['preventDefault'])
     beforeEach(() => {
-      create = jasmine.createSpy('create')
+      save = jasmine.createSpy('save')
     })
 
-    it('when contact is valid creates a contact', () => {
+    it('when contact is valid saves a contact', () => {
       const component = renderContact({
         valid: true,
+        id: null,
         investigationId: '123',
         startedAt: '2016-08-11T18:24:22.157Z',
         status: 'S',
@@ -342,11 +365,12 @@ describe('ContactForm', () => {
         location: '432',
         note: 'This is a new note',
         purpose: '1',
-        actions: {create},
+        actions: {save},
         selectedPeopleIds: [{legacy_descriptor: '1'}],
       })
       component.find('form').simulate('submit', event)
-      expect(create).toHaveBeenCalledWith({
+      expect(save).toHaveBeenCalledWith({
+        id: null,
         investigation_id: '123',
         started_at: '2016-08-11T18:24:22.157Z',
         communication_method: '654',
@@ -372,13 +396,13 @@ describe('ContactForm', () => {
           location: '432',
           note: 'This is a new note',
           purpose: '1',
-          actions: {create, touchAllFields},
+          actions: {save, touchAllFields},
         })
         component.find('form').simulate('submit', event)
       })
 
-      it('does not create a contact', () => {
-        expect(create).not.toHaveBeenCalled()
+      it('does not save a contact', () => {
+        expect(save).not.toHaveBeenCalled()
       })
 
       it('touches all contact fields to display all validations', () => {
@@ -387,20 +411,74 @@ describe('ContactForm', () => {
     })
   })
 
-  it('calls build when the component mounts', () => {
-    const build = jasmine.createSpy('build')
-    mount(
-      <ContactForm
-        investigationId='ABC123'
-        actions={{build}}
-        contact={{}}
-        statuses={[]}
-        purposes={[]}
-        communicationMethods={[]}
-        locations={[]}
-        people={[]}
-      />
-    )
-    expect(build).toHaveBeenCalledWith({investigation_id: 'ABC123'})
+  it('does not display cancel button when hasCancel is false', () => {
+    const defaultButton = renderContact({hasCancel: false})
+      .find('button[className="btn btn-default"]')
+    expect(defaultButton.exists()).toBeFalsy()
+  })
+
+  it('displays the cancel button when hasCancel is true', () => {
+    const defaultButton = renderContact({hasCancel: true})
+      .find('button[className="btn btn-default"]')
+    expect(defaultButton.text()).toContain('Cancel')
+  })
+
+  it('clicking cancel calls onCancel', () => {
+    const onCancel = jasmine.createSpy('onCancel')
+    const event = jasmine.createSpyObj('event', ['preventDefault'])
+    const cancelButton = renderContact({hasCancel: true, onCancel})
+      .find('button[className="btn btn-default"]')
+    cancelButton.simulate('click', event)
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(onCancel).toHaveBeenCalled()
+  })
+
+  describe('#componentDidMount', () => {
+    let build
+    let edit
+    beforeEach(() => {
+      build = jasmine.createSpy('build')
+      edit = jasmine.createSpy('edit')
+    })
+
+    describe('when contact id is not present', () => {
+      beforeEach(() => {
+        mountContact({
+          investigationId: 'existing_investigation_id',
+          actions: {build, edit},
+        })
+      })
+
+      it('calls the build action', () => {
+        expect(build).toHaveBeenCalledWith({
+          investigation_id: 'existing_investigation_id',
+        })
+      })
+
+      it('does not call edit action', () => {
+        expect(edit).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when contact id is present', () => {
+      beforeEach(() => {
+        mountContact({
+          investigationId: 'existing_investigation_id',
+          id: 'existing_contact_id',
+          actions: {build, edit},
+        })
+      })
+
+      it('does not call the build action', () => {
+        expect(build).not.toHaveBeenCalled()
+      })
+
+      it('calls the edit action', () => {
+        expect(edit).toHaveBeenCalledWith({
+          id: 'existing_contact_id',
+          investigation_id: 'existing_investigation_id',
+        })
+      })
+    })
   })
 })

@@ -9,6 +9,7 @@ module Api
         respond_to :json
 
         PERMITTED_PARAMS = [
+          :id,
           :started_at,
           :purpose,
           :status,
@@ -33,6 +34,16 @@ module Api
             session['security_token'],
             ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, params[:id]),
             :get
+          )
+          render json: contact.body, status: contact.status
+        end
+
+        def update
+          contact = FerbAPI.make_api_call(
+            session['security_token'],
+            ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, params[:id]),
+            :put,
+            contact_params.as_json
           )
           render json: contact.body, status: contact.status
         end

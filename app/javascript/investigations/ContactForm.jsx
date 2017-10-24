@@ -7,34 +7,53 @@ import FormField from 'common/FormField'
 
 class ContactForm extends React.Component {
   componentDidMount() {
-    const {investigationId, actions: {build}} = this.props
-    build({investigation_id: investigationId})
+    const {
+      id,
+      investigationId,
+      actions: {build, edit},
+    } = this.props
+    if (id) {
+      edit({investigation_id: investigationId, id})
+    } else {
+      build({investigation_id: investigationId})
+    }
   }
   render() {
     const {
-      investigationId,
-      startedAt,
+      actions: {
+        deselectPerson,
+        save,
+        selectPerson,
+        setField,
+        touchAllFields,
+        touchField,
+      },
       communicationMethod,
-      location,
-      status,
-      note,
-      purpose,
-      actions: {setField, touchField, create, touchAllFields, selectPerson, deselectPerson},
-      statuses,
-      purposes,
       communicationMethods,
-      locations,
       errors,
+      hasCancel,
+      id,
       inPersonCode,
+      investigationId,
+      location,
+      locations,
+      note,
       officeLocationCode,
+      onCancel,
       people,
-      valid,
+      purpose,
+      purposes,
       selectedPeopleIds,
+      startedAt,
+      status,
+      statuses,
+      valid,
     } = this.props
     const onSubmit = (event) => {
       event.preventDefault()
       if (valid) {
-        create({
+        save({
+          id,
           investigation_id: investigationId,
           started_at: startedAt,
           communication_method: communicationMethod,
@@ -52,7 +71,7 @@ class ContactForm extends React.Component {
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
-          <span>{`New Contact - Investigation ${investigationId}`}</span>
+          <span>{`Contact - Investigation ${investigationId}`}</span>
         </div>
         <div className='card-body'>
           <form onSubmit={onSubmit}>
@@ -164,9 +183,7 @@ class ContactForm extends React.Component {
               <div className='col-md-6'>
                 <div className='row'>
                   <FormField htmlFor='note' gridClassName='col-md-12' label='Contact Notes (Optional)'>
-                    <textarea id='note' onChange={(event) => setField('note', event.target.value)}>
-                      {note}
-                    </textarea>
+                    <textarea id='note' onChange={(event) => setField('note', event.target.value)} value={note || ''} />
                   </FormField>
                 </div>
               </div>
@@ -174,6 +191,15 @@ class ContactForm extends React.Component {
             <div className='row'>
               <div className='centered'>
                 <button className='btn btn-primary' type='submit'>Save</button>
+                { hasCancel &&
+                  <button
+                    className='btn btn-default'
+                    onClick={(event) => {
+                      event.preventDefault()
+                      onCancel()
+                    }}
+                  >Cancel</button>
+                }
               </div>
             </div>
           </form>
@@ -188,12 +214,15 @@ ContactForm.propTypes = {
   communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
   errors: PropTypes.object,
+  hasCancel: PropTypes.bool,
+  id: PropTypes.string,
   inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
   location: PropTypes.string,
   locations: PropTypes.array.isRequired,
   note: PropTypes.string,
   officeLocationCode: PropTypes.string,
+  onCancel: PropTypes.func,
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,

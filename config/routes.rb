@@ -11,18 +11,21 @@ Rails.application.routes.draw do
 
   resources :screenings,
     only: %i[edit],
+    to: 'home#index',
     constraints: Routes::InactiveReleaseOneConstraint do
   end
 
   resources :screenings,
     only: %i[show],
+    to: 'home#index',
     constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
 
   resources :investigations,
     only: [:show],
+    to: 'home#index',
     constraints: Routes::ActiveInvestigationsConstraint do
-    resources :contacts, only: %i[new show]
+    resources :contacts, only: %i[new show edit], to: 'home#index'
   end
 
   namespace :api, defaults: { format: :json } do
@@ -62,7 +65,7 @@ Rails.application.routes.draw do
       resources :investigations,
         only: %i[show],
         constraints: Routes::ActiveInvestigationsConstraint do
-        resources :contacts, only: %i[create show], module: :investigations
+        resources :contacts, only: %i[create show update], module: :investigations
       end
 
       resources :system_codes,

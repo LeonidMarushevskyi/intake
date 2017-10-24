@@ -6,6 +6,7 @@ import {
   getPurposeValueSelector,
   getStatusValueSelector,
 } from 'selectors/contactSelectors'
+import {push} from 'react-router-redux'
 import * as actions from 'actions/contactActions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -25,6 +26,14 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, _ownProps) => ({actions: bindActionCreators(actions, dispatch)})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const investigationId = ownProps.params.investigation_id
+  const id = ownProps.params.id
+  const contactEditPath = `/investigations/${investigationId}/contacts/${id}/edit`
+  return {
+    onEdit: () => dispatch(push(contactEditPath)),
+    actions: bindActionCreators(actions, dispatch),
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactShow)

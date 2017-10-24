@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ShowField from 'common/ShowField'
 import {dateTimeFormatter} from 'utils/dateFormatter'
+import EditLink from 'common/EditLink'
 
 class ContactShow extends Component {
   componentDidMount() {
@@ -18,11 +19,19 @@ class ContactShow extends Component {
       purpose,
       startedAt,
       status,
+      onEdit,
     } = this.props
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
           <span>{`Contact - Investigation ${investigationId}`}</span>
+          <EditLink
+            ariaLabel='Edit contact'
+            onClick={(event) => {
+              event.preventDefault()
+              onEdit()
+            }}
+          />
         </div>
         <div className='card-body'>
           <div className='row'>
@@ -81,6 +90,7 @@ ContactShow.propTypes = {
   investigationId: PropTypes.string.isRequired,
   location: PropTypes.string,
   note: PropTypes.string,
+  onEdit: PropTypes.func,
   people: PropTypes.array,
   purpose: PropTypes.string,
   startedAt: PropTypes.string,

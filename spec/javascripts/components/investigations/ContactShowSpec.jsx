@@ -15,7 +15,7 @@ describe('ContactShow', () => {
   it('displays the investigation Id in the header', () => {
     const component = renderContact({investigationId: 'ABCD1234'})
     const header = component.find('.card-header')
-    expect(header.text()).toEqual('Contact - Investigation ABCD1234')
+    expect(header.text()).toContain('Contact - Investigation ABCD1234')
   })
 
   it('displays the Date & Time', () => {
@@ -55,5 +55,20 @@ describe('ContactShow', () => {
     const id = 'CONTACT_ID'
     mountContact({investigationId, id, actions: {fetch}})
     expect(fetch).toHaveBeenCalledWith(investigationId, id)
+  })
+
+  it('displays an edit link', () => {
+    const editLink = renderContact({}).find('EditLink')
+    expect(editLink.exists()).toEqual(true)
+    expect(editLink.props().ariaLabel).toEqual('Edit contact')
+  })
+
+  it('clicking edit calls onEdit', () => {
+    const onEdit = jasmine.createSpy('onEdit')
+    const editLink = renderContact({onEdit}).find('EditLink')
+    const event = jasmine.createSpyObj('event', ['preventDefault'])
+    editLink.simulate('click', event)
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(onEdit).toHaveBeenCalled()
   })
 })

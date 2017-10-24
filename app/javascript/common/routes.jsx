@@ -24,6 +24,7 @@ export default (
         <Route path='investigations/:id' component={InvestigationPageContainer} />
         <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} />
         <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />
+        <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} />
       </Route>
     </Router>
   </Provider>
