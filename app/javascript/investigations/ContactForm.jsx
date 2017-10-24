@@ -20,10 +20,18 @@ class ContactForm extends React.Component {
   }
   render() {
     const {
-      actions: {setField, touchField, save, touchAllFields, selectPerson, deselectPerson},
+      actions: {
+        deselectPerson,
+        save,
+        selectPerson,
+        setField,
+        touchAllFields,
+        touchField,
+      },
       communicationMethod,
       communicationMethods,
       errors,
+      hasCancel,
       id,
       inPersonCode,
       investigationId,
@@ -31,6 +39,7 @@ class ContactForm extends React.Component {
       locations,
       note,
       officeLocationCode,
+      onCancel,
       people,
       purpose,
       purposes,
@@ -182,6 +191,15 @@ class ContactForm extends React.Component {
             <div className='row'>
               <div className='centered'>
                 <button className='btn btn-primary' type='submit'>Save</button>
+                { hasCancel &&
+                  <button
+                    className='btn btn-default'
+                    onClick={(event) => {
+                      event.preventDefault()
+                      onCancel()
+                    }}
+                  >Cancel</button>
+                }
               </div>
             </div>
           </form>
@@ -196,6 +214,7 @@ ContactForm.propTypes = {
   communicationMethod: PropTypes.string,
   communicationMethods: PropTypes.array.isRequired,
   errors: PropTypes.object,
+  hasCancel: PropTypes.bool,
   id: PropTypes.string,
   inPersonCode: PropTypes.string,
   investigationId: PropTypes.string.isRequired,
@@ -203,6 +222,7 @@ ContactForm.propTypes = {
   locations: PropTypes.array.isRequired,
   note: PropTypes.string,
   officeLocationCode: PropTypes.string,
+  onCancel: PropTypes.func,
   people: PropTypes.array.isRequired,
   purpose: PropTypes.string,
   purposes: PropTypes.array.isRequired,

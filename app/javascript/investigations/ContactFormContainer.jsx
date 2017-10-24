@@ -3,6 +3,7 @@ import {save} from 'actions/contactActions'
 import ContactForm from 'investigations/ContactForm'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {push} from 'react-router-redux'
 import {
   getStatusesSelector,
   getPurposesSelector,
@@ -43,9 +44,16 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, _ownProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const investigationId = ownProps.params.investigation_id
+  const id = ownProps.params.id
+  const contactShowPath = `/investigations/${investigationId}/contacts/${id}`
   const actions = Object.assign(contactFormActions, {save})
-  return {actions: bindActionCreators(actions, dispatch)}
+  return {
+    actions: bindActionCreators(actions, dispatch),
+    onCancel: () => dispatch(push(contactShowPath)),
+    hasCancel: Boolean(id),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)

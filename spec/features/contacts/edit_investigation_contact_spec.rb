@@ -94,4 +94,22 @@ feature 'Edit Investigation Contact' do
       )
     ).to have_been_made
   end
+
+  scenario 'user clicks cancel' do
+    click_button 'Cancel'
+
+    within '.card-header' do
+      expect(page).to have_content("Contact - Investigation #{investigation_id}")
+    end
+    within '.card-body' do
+      expect(page).to have_content 'Date & Time (04/27/2010 4:30 PM)'
+      expect(page).to have_content 'Communication Method In person'
+      expect(page).to have_content 'Location School'
+      expect(page).to have_content 'Status Attempted'
+      expect(page).to have_content 'Purpose Investigate Referral'
+      expect(page).to have_content 'Emma Woodhouse'
+      expect(page).to_not have_content 'George Knightley'
+      expect(page).to have_content 'Contact Notes (Optional) This was an attempted contact'
+    end
+  end
 end

@@ -23,6 +23,8 @@ describe('ContactForm', () => {
     people = [],
     valid = false,
     selectedPeopleIds = [],
+    hasCancel,
+    onCancel,
   }) {
     const props = {
       id,
@@ -44,6 +46,8 @@ describe('ContactForm', () => {
       people,
       valid,
       selectedPeopleIds,
+      hasCancel,
+      onCancel,
     }
     return shallow(<ContactForm {...props} />)
   }
@@ -337,10 +341,10 @@ describe('ContactForm', () => {
   })
 
   it('displays the save button', () => {
-    const component = renderContact({})
-    const saveButton = component.find('button')
-    expect(saveButton.text()).toContain('Save')
-    expect(saveButton.props().type).toEqual('submit')
+    const primaryButton = renderContact({})
+      .find('button[className="btn btn-primary"]')
+    expect(primaryButton.text()).toContain('Save')
+    expect(primaryButton.props().type).toEqual('submit')
   })
 
   describe('clicking save', () => {
@@ -405,6 +409,28 @@ describe('ContactForm', () => {
         expect(touchAllFields).toHaveBeenCalled()
       })
     })
+  })
+
+  it('does not display cancel button when hasCancel is false', () => {
+    const defaultButton = renderContact({hasCancel: false})
+      .find('button[className="btn btn-default"]')
+    expect(defaultButton.exists()).toBeFalsy()
+  })
+
+  it('displays the cancel button when hasCancel is true', () => {
+    const defaultButton = renderContact({hasCancel: true})
+      .find('button[className="btn btn-default"]')
+    expect(defaultButton.text()).toContain('Cancel')
+  })
+
+  it('clicking cancel calls onCancel', () => {
+    const onCancel = jasmine.createSpy('onCancel')
+    const event = jasmine.createSpyObj('event', ['preventDefault'])
+    const cancelButton = renderContact({hasCancel: true, onCancel})
+      .find('button[className="btn btn-default"]')
+    cancelButton.simulate('click', event)
+    expect(event.preventDefault).toHaveBeenCalled()
+    expect(onCancel).toHaveBeenCalled()
   })
 
   describe('#componentDidMount', () => {
