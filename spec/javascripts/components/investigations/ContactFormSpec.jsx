@@ -71,7 +71,7 @@ describe('ContactForm', () => {
   it('displays the investigation Id in the header', () => {
     const component = renderContact({investigationId: 'ABCD1234'})
     const header = component.find('.card-header')
-    expect(header.text()).toEqual('New Contact - Investigation ABCD1234')
+    expect(header.text()).toEqual('Contact - Investigation ABCD1234')
   })
 
   it('displays the started at datetime picker', () => {

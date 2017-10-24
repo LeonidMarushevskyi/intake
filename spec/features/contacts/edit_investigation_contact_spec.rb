@@ -55,7 +55,7 @@ feature 'Edit Investigation Contact' do
 
   scenario 'user can edit an existing contact' do
     within '.card-header' do
-      expect(page).to have_content("New Contact - Investigation #{investigation_id}")
+      expect(page).to have_content("Contact - Investigation #{investigation_id}")
     end
     expect(page).to have_field('Date/Time', with: '04/27/2010 4:30 PM')
     expect(page).to have_select('Communication Method', selected: 'In person')

@@ -27,7 +27,7 @@ feature 'Create Investigation Contact' do
 
   scenario 'user can add new contact' do
     within '.card-header' do
-      expect(page).to have_content("New Contact - Investigation #{investigation_id}")
+      expect(page).to have_content("Contact - Investigation #{investigation_id}")
     end
     within '.card-body' do
       fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'

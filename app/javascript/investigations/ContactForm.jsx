@@ -71,7 +71,7 @@ class ContactForm extends React.Component {
     return (
       <div className='card show double-gap-top'>
         <div className='card-header'>
-          <span>{`New Contact - Investigation ${investigationId}`}</span>
+          <span>{`Contact - Investigation ${investigationId}`}</span>
         </div>
         <div className='card-body'>
           <form onSubmit={onSubmit}>
