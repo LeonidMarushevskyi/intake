@@ -9,16 +9,14 @@ feature 'error pages' do
     around do |example|
       Rails.application.config.consider_all_requests_local = false
       Rails.application.config.action_dispatch.show_exceptions = true
-      load 'application_controller.rb'
       example.run
       Rails.application.config.consider_all_requests_local = true
       Rails.application.config.action_dispatch.show_exceptions = false
-      load 'application_controller.rb'
     end
 
     scenario 'renders 404 page' do
       allow(Rails.configuration).to receive(:intake).and_return(dashboard_url: dashboard_url)
-      visit page_path('this_page_does_not_exist')
+      visit '/this_page_does_not_exist'
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
         "It may have been deleted or doesn't exist. Please check the address or"
