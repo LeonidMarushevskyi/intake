@@ -79,31 +79,34 @@ node('Slave') {
                     reportName: 'Ruby Code Coverage'
                 ])
             }
-        } 
+        }
         catch(e) {
             pipelineStatus = 'FAILED'
             currentBuild.result = 'FAILURE'
         }
 
-        try {
-            emailext (
-                to: emailList,
-                subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
-                body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
-                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-            )
+        // disabling slack alerts when using a branch different from master.
+        if (branch == 'master') {
+          try {
+              emailext (
+                  to: emailList,
+                  subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
+                  body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
+                  <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+              )
 
-            slackAlertColor = successColor
-            slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
+              slackAlertColor = successColor
+              slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
 
-            if(pipelineStatus == 'FAILED') {
-              slackAlertColor = failureColor
-              slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
-            }
+              if(pipelineStatus == 'FAILED') {
+                slackAlertColor = failureColor
+                slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
+              }
 
-            slackSend (color: slackAlertColor, message: slackMessage)
-        } 
-        catch(e) { /* Nothing to do */ }
+              slackSend (color: slackAlertColor, message: slackMessage)
+          }
+          catch(e) { /* Nothing to do */ }
+        }
 
         stage('Clean') {
             retry(2) {
