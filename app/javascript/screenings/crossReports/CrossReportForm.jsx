@@ -24,6 +24,7 @@ const CrossReportForm = ({
   departmentOfJustice,
   districtAttorney,
   hasAgencies,
+  errors,
   inform_date,
   lawEnforcement,
   method,
@@ -91,6 +92,7 @@ const CrossReportForm = ({
                   selected={districtAttorney.selected}
                   value={districtAttorney.agency.value}
                   countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
+                  errors={errors[DISTRICT_ATTORNEY]}
                   actions={agencyFieldActions}
                 />
               </li>
@@ -100,6 +102,7 @@ const CrossReportForm = ({
                   selected={lawEnforcement.selected}
                   value={lawEnforcement.agency.value}
                   countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
+                  errors={errors[LAW_ENFORCEMENT]}
                   actions={agencyFieldActions}
                 />
               </li>
@@ -113,6 +116,7 @@ const CrossReportForm = ({
                   selected={departmentOfJustice.selected}
                   value={departmentOfJustice.agency.value}
                   countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
+                  errors={errors[DEPARTMENT_OF_JUSTICE]}
                   actions={agencyFieldActions}
                 />
               </li>
@@ -122,6 +126,7 @@ const CrossReportForm = ({
                   selected={countyLicensing.selected}
                   value={countyLicensing.agency.value}
                   countyAgencies={countyAgencies[COUNTY_LICENSING]}
+                  errors={errors[COUNTY_LICENSING]}
                   actions={agencyFieldActions}
                 />
               </li>
@@ -131,6 +136,7 @@ const CrossReportForm = ({
                   selected={communityCareLicensing.selected}
                   value={communityCareLicensing.agency.value}
                   countyAgencies={countyAgencies[COMMUNITY_CARE_LICENSING]}
+                  errors={errors[COMMUNITY_CARE_LICENSING]}
                   actions={agencyFieldActions}
                 />
               </li>
@@ -150,6 +156,7 @@ const CrossReportForm = ({
               id='cross_report_inform_date'
               label='Cross Reported on Date'
               hasTime={false}
+              errors={errors.inform_date}
               onChange={({target: {value}}) => {
                 setField('inform_date', value)
               }}
@@ -160,6 +167,7 @@ const CrossReportForm = ({
             <SelectField
               gridClassName='col-md-6'
               id='cross_report_method'
+              errors={errors.method}
               label='Communication Method'
               onChange={({target: {value}}) => {
                 setField('method', value)
@@ -194,7 +202,7 @@ CrossReportForm.propTypes = {
   county_id: PropTypes.string.isRequired,
   departmentOfJustice: PropTypes.object.isRequired,
   districtAttorney: PropTypes.object.isRequired,
-  errors: PropTypes.object,
+  errors: PropTypes.object.isRequired,
   hasAgencies: PropTypes.bool.isRequired,
   inform_date: PropTypes.string,
   lawEnforcement: PropTypes.object.isRequired,

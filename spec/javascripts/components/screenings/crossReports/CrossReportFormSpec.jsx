@@ -55,6 +55,15 @@ describe('CrossReportForm', () => {
         touched: false,
       },
     },
+    errors = {
+      inform_date: [],
+      method: [],
+      COMMUNITY_CARE_LICENSING: [],
+      COUNTY_LICENSING: [],
+      DEPARTMENT_OF_JUSTICE: [],
+      DISTRICT_ATTORNEY: [],
+      LAW_ENFORCEMENT: [],
+    },
     inform_date = '',
     method = '',
     hasAgencies = false,
@@ -70,6 +79,7 @@ describe('CrossReportForm', () => {
       countyAgencies,
       departmentOfJustice,
       districtAttorney,
+      errors,
       lawEnforcement,
       countyLicensing,
       communityCareLicensing,
@@ -87,6 +97,16 @@ describe('CrossReportForm', () => {
     expect(component.find('div label').html()).toContain('This report has cross reported to:')
   })
   describe('inform_date', () => {
+    it('passes errors to component', () => {
+      const component = renderCrossReportForm({
+        hasAgencies: true,
+        inform_date: '',
+        errors: {
+          inform_date: ['Date error'],
+        },
+      })
+      expect(component.find('DateField[id="cross_report_inform_date"]').props().errors).toEqual(['Date error'])
+    })
     it('does not render DateField if no agencies selected', () => {
       const component = renderCrossReportForm({hasAgencies: false, inform_date: '2017-02-20'})
       expect(component.find('DateField[id="cross_report_inform_date"]').exists()).toEqual(false)
@@ -114,6 +134,14 @@ describe('CrossReportForm', () => {
   describe('method', () => {
     const setField = jasmine.createSpy('setField')
     const touchField = jasmine.createSpy('touchField')
+    it('passes errors to component', () => {
+      const component = renderCrossReportForm({
+        hasAgencies: true,
+        method: '1234',
+        errors: {method: ['Method error']},
+      })
+      expect(component.find('SelectField[id="cross_report_method"]').props().errors).toEqual(['Method error'])
+    })
     it('does not render SelectField if no agencies selected', () => {
       const component = renderCrossReportForm({hasAgencies: false, method: '2017'})
       expect(component.find('SelectField[id="cross_report_method"]').exists()).toEqual(false)
@@ -151,12 +179,17 @@ describe('CrossReportForm', () => {
           DISTRICT_ATTORNEY: [{id: '123', value: 'asdf'}],
           LAW_ENFORCEMENT: [],
         },
+        errors: {
+          DISTRICT_ATTORNEY: ['da is missing'],
+        },
         actions,
       })
-      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().selected).toEqual(true)
-      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().value).toEqual('1234')
-      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(component.find('AgencyField[type="DISTRICT_ATTORNEY"]').props().actions).toEqual(actions)
+      const field = component.find('AgencyField[type="DISTRICT_ATTORNEY"]')
+      expect(field.props().selected).toEqual(true)
+      expect(field.props().value).toEqual('1234')
+      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
+      expect(field.props().actions).toEqual(actions)
+      expect(field.props().errors).toEqual(['da is missing'])
     })
     it('renders LAW_ENFORCEMENT agency field', () => {
       const component = renderCrossReportForm({
@@ -169,12 +202,17 @@ describe('CrossReportForm', () => {
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [{id: '123', value: 'asdf'}],
         },
+        errors: {
+          LAW_ENFORCEMENT: ['le is missing'],
+        },
         actions,
       })
-      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().selected).toEqual(true)
-      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().value).toEqual('1234')
-      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(component.find('AgencyField[type="LAW_ENFORCEMENT"]').props().actions).toEqual(actions)
+      const field = component.find('AgencyField[type="LAW_ENFORCEMENT"]')
+      expect(field.props().selected).toEqual(true)
+      expect(field.props().value).toEqual('1234')
+      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
+      expect(field.props().actions).toEqual(actions)
+      expect(field.props().errors).toEqual(['le is missing'])
     })
     it('renders DEPARTMENT_OF_JUSTICE agency field', () => {
       const component = renderCrossReportForm({
@@ -187,12 +225,17 @@ describe('CrossReportForm', () => {
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [],
         },
+        errors: {
+          DEPARTMENT_OF_JUSTICE: ['doj is missing'],
+        },
         actions,
       })
-      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().selected).toEqual(true)
-      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().value).toEqual('1234')
-      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]').props().actions).toEqual(actions)
+      const field = component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]')
+      expect(field.props().selected).toEqual(true)
+      expect(field.props().value).toEqual('1234')
+      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
+      expect(field.props().actions).toEqual(actions)
+      expect(field.props().errors).toEqual(['doj is missing'])
     })
     it('renders COUNTY_LICENSING agency field', () => {
       const component = renderCrossReportForm({
@@ -205,12 +248,17 @@ describe('CrossReportForm', () => {
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [],
         },
+        errors: {
+          COUNTY_LICENSING: ['cl is missing'],
+        },
         actions,
       })
-      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().selected).toEqual(true)
-      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().value).toEqual('1234')
-      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(component.find('AgencyField[type="COUNTY_LICENSING"]').props().actions).toEqual(actions)
+      const field = component.find('AgencyField[type="COUNTY_LICENSING"]')
+      expect(field.props().selected).toEqual(true)
+      expect(field.props().value).toEqual('1234')
+      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
+      expect(field.props().actions).toEqual(actions)
+      expect(field.props().errors).toEqual(['cl is missing'])
     })
     it('renders COMMUNITY_CARE_LICENSING agency field', () => {
       const component = renderCrossReportForm({
@@ -223,12 +271,17 @@ describe('CrossReportForm', () => {
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [],
         },
+        errors: {
+          COMMUNITY_CARE_LICENSING: ['ccl is missing'],
+        },
         actions,
       })
-      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().selected).toEqual(true)
-      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().value).toEqual('1234')
-      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]').props().actions).toEqual(actions)
+      const field = component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]')
+      expect(field.props().selected).toEqual(true)
+      expect(field.props().value).toEqual('1234')
+      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
+      expect(field.props().actions).toEqual(actions)
+      expect(field.props().errors).toEqual(['ccl is missing'])
     })
   })
   describe('county selection', () => {

@@ -30,6 +30,7 @@ import {
 import {saveScreening} from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
+  getVisibleErrorsSelector,
   getScreeningWithEditsSelector,
   getDistrictAttorneyFormSelector,
   getDepartmentOfJusticeFormSelector,
@@ -39,6 +40,7 @@ import {
 } from 'selectors/crossReportFormSelectors'
 
 const mapStateToProps = (state) => ({
+  communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']) || '',
   countyAgencies: {
@@ -48,14 +50,14 @@ const mapStateToProps = (state) => ({
     [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgenciesSelector(state).toJS(),
     [COUNTY_LICENSING]: getCountyLicensingAgenciesSelector(state).toJS(),
   },
-  hasAgencies: Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false),
-  inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']) || '',
-  method: state.getIn(['crossReportForm', 'method', 'value']) || '',
-  districtAttorney: getDistrictAttorneyFormSelector(state).toJS(),
-  departmentOfJustice: getDepartmentOfJusticeFormSelector(state).toJS(),
-  lawEnforcement: getLawEnforcementFormSelector(state).toJS(),
   countyLicensing: getCountyLicensingFormSelector(state).toJS(),
-  communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
+  departmentOfJustice: getDepartmentOfJusticeFormSelector(state).toJS(),
+  districtAttorney: getDistrictAttorneyFormSelector(state).toJS(),
+  hasAgencies: Boolean(Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false)),
+  errors: getVisibleErrorsSelector(state).toJS(),
+  inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']) || '',
+  lawEnforcement: getLawEnforcementFormSelector(state).toJS(),
+  method: state.getIn(['crossReportForm', 'method', 'value']) || '',
   screening: getScreeningSelector(state).toJS(),
   screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
 })
