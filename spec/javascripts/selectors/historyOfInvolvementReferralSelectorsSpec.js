@@ -11,6 +11,8 @@ import {
   getCountySelector,
   getPeopleAndRolesSelector,
   getStatusAndResponseTimeSelector,
+  getWorkerSelector,
+  getReporterSelector,
 } from 'selectors/historyOfInvolvementReferralSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -198,6 +200,38 @@ describe('historyOfInvolvementReferralSelectors', () => {
       const state = fromJS({investigation})
       expect(getCountySelector(state, 0)).toEqual('Yolo')
       expect(getCountySelector(emptyState, 0)).toEqual('')
+    })
+  })
+
+  describe('getWorkerSelector', () => {
+    it('returns the worker or empty string if it doesnt exist', () => {
+      const referrals = [
+        {
+          assigned_social_worker: {first_name: 'John', last_name: 'Smith'},
+        },
+      ]
+      const investigation = {
+        history_of_involvement: {referrals},
+      }
+      const state = fromJS({investigation})
+      expect(getWorkerSelector(state, 0)).toEqual('John Smith')
+      expect(getWorkerSelector(emptyState, 0)).toEqual('')
+    })
+  })
+
+  describe('getReporterSelector', () => {
+    it('returns the reporter or empty string if it doesnt exist', () => {
+      const referrals = [
+        {
+          reporter: {first_name: 'Sally', last_name: 'Herman'},
+        },
+      ]
+      const investigation = {
+        history_of_involvement: {referrals},
+      }
+      const state = fromJS({investigation})
+      expect(getReporterSelector(state, 0)).toEqual('Sally Herman')
+      expect(getReporterSelector(emptyState, 0)).toEqual('')
     })
   })
 

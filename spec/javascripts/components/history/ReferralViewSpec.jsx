@@ -85,5 +85,13 @@ describe('ReferralView', () => {
       expect(component.find('.people-and-roles').find('tbody tr').at(0).find('td.allegations.disposition').text()).toEqual('allegations one (pending)')
       expect(component.find('.people-and-roles').find('tbody tr').at(1).find('td.allegations.disposition').text()).toEqual('allegations two (not pending)')
     })
+
+    it('renders the reporter and worker below the table', () => {
+      const worker = 'Bob'
+      const reporter = 'Sally'
+      const component = renderReferralView({worker, reporter})
+      expect(component.find('.reporter').text()).toEqual(`Reporter: ${reporter}`)
+      expect(component.find('.assignee').text()).toEqual(`Worker: ${worker}`)
+    })
   })
 })

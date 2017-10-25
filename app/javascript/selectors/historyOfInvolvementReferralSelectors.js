@@ -71,6 +71,15 @@ export const getAllegationsSelector = createSelector(
   (referral) => referral.get('allegations', List())
 )
 
+export const getWorkerSelector = createSelector(
+  getReferralAtIndexSelector,
+  (referral) => nameFormatter({name_default: '', ...referral.get('assigned_social_worker', Map()).toJS()})
+)
+export const getReporterSelector = createSelector(
+  getReferralAtIndexSelector,
+  (referral) => nameFormatter({name_default: '', ...referral.get('reporter', Map()).toJS()})
+)
+
 export const getPeopleAndRolesSelector = createSelector(
   getAllegationsSelector,
   (allegations) => allegations.map((allegation) => (Map({

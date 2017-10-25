@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 
-const ReferralView = ({startDate, endDate, referralId, status, notification, county, peopleAndRoles}) => (
+const ReferralView = ({startDate, endDate, referralId, status, notification, county, peopleAndRoles, reporter, worker}) => (
   <tr>
     <td>{dateRangeFormatter({start_date: startDate, end_date: endDate})}</td>
     <td>
@@ -42,6 +42,14 @@ const ReferralView = ({startDate, endDate, referralId, status, notification, cou
           </table>
         </div>
       </div>
+      <div className='row'>
+        <span className='col-md-6 reporter'>
+          Reporter: {reporter}
+        </span>
+        <span className='col-md-6 assignee'>
+          Worker: {worker}
+        </span>
+      </div>
     </td>
   </tr>
 )
@@ -57,8 +65,10 @@ ReferralView.propTypes = {
     victim: PropTypes.string,
   })),
   referralId: PropTypes.string,
+  reporter: PropTypes.string,
   startDate: PropTypes.string,
   status: PropTypes.string,
+  worker: PropTypes.string,
 }
 
 export default ReferralView

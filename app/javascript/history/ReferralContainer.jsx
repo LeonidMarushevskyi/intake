@@ -8,6 +8,8 @@ import {
   getCountySelector,
   getPeopleAndRolesSelector,
   getStatusAndResponseTimeSelector,
+  getWorkerSelector,
+  getReporterSelector,
 } from 'selectors/historyOfInvolvementReferralSelectors'
 
 const mapStateToProps = (state, {index}) => (
@@ -19,6 +21,8 @@ const mapStateToProps = (state, {index}) => (
     notification: getNotificationSelector(state, index),
     county: getCountySelector(state, index),
     peopleAndRoles: getPeopleAndRolesSelector(state, index).toJS(),
+    worker: getWorkerSelector(state, index),
+    reporter: getReporterSelector(state, index),
   }
 )
 
