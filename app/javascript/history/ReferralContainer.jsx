@@ -4,10 +4,10 @@ import {
   getStartDateSelector,
   getEndDateSelector,
   getReferralIdSelector,
-  getStatusSelector,
   getNotificationSelector,
   getCountySelector,
   getPeopleAndRolesSelector,
+  getStatusAndResponseTimeSelector,
 } from 'selectors/historyOfInvolvementReferralSelectors'
 
 const mapStateToProps = (state, {index}) => (
@@ -15,7 +15,7 @@ const mapStateToProps = (state, {index}) => (
     startDate: getStartDateSelector(state, index),
     endDate: getEndDateSelector(state, index),
     referralId: getReferralIdSelector(state, index),
-    status: getStatusSelector(state, index),
+    status: getStatusAndResponseTimeSelector(state, index),
     notification: getNotificationSelector(state, index),
     county: getCountySelector(state, index),
     peopleAndRoles: getPeopleAndRolesSelector(state, index).toJS(),

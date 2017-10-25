@@ -44,6 +44,18 @@ export const getResponseTimeSelector = createSelector(
   (referral) => referral.get('response_time', '')
 )
 
+export const getStatusAndResponseTimeSelector = createSelector(
+  getStatusSelector,
+  getResponseTimeSelector,
+  (status, responseTime) => {
+    if (responseTime) {
+      return List([status, responseTime]).join(' - ')
+    } else {
+      return status
+    }
+  }
+)
+
 export const getNotificationSelector = createSelector(
   getReferralAtIndexSelector,
   (referral) => accessDescription(referral.getIn(['access_limitation', 'limited_access_code'], ''))

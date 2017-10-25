@@ -10,6 +10,7 @@ import {
   getNotificationSelector,
   getCountySelector,
   getPeopleAndRolesSelector,
+  getStatusAndResponseTimeSelector,
 } from 'selectors/historyOfInvolvementReferralSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -140,6 +141,20 @@ describe('historyOfInvolvementReferralSelectors', () => {
       const state = fromJS({investigation})
       expect(getResponseTimeSelector(state, 0)).toEqual('12:01AM')
       expect(getResponseTimeSelector(emptyState, 0)).toEqual('')
+    })
+  })
+
+  describe('getStatusAndResponseTimeSelector', () => {
+    it('returns a status joined with an optional response time', () => {
+      const referrals = [
+        {response_time: '12:01AM'},
+      ]
+      const investigation = {
+        history_of_involvement: {referrals},
+      }
+      const state = fromJS({investigation})
+      expect(getStatusAndResponseTimeSelector(state, 0)).toEqual('Open - 12:01AM')
+      expect(getStatusAndResponseTimeSelector(emptyState, 0)).toEqual('Open')
     })
   })
 
