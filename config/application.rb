@@ -29,12 +29,14 @@ module CaIntake # :nodoc:
       #{ENV.fetch('AUTHENTICATION_URL', '').chomp('/')}/authn/login?callback=
     URL
 
+    base_path = ENV.fetch('BASE_PATH', '')
+
     config.intake = {
       api_url: ENV.fetch('API_URL', nil),
       authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
       authentication_login_url: authentication_login_url,
-      base_path: ENV.fetch('BASE_PATH', ''),
-      dashboard_url: ENV.fetch('DASHBOARD_URL', ''),
+      base_path: base_path,
+      dashboard_url: Rails.root.join(base_path),
       ferb_api_url: ENV.fetch('FERB_API_URL', nil),
       sdm_path: ExternalRoutes.sdm_path
     }
