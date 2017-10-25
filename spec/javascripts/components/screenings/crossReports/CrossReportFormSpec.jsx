@@ -121,7 +121,7 @@ describe('CrossReportForm', () => {
     it('triggers the setField action on change', () => {
       const setField = jasmine.createSpy('setField')
       const component = renderCrossReportForm({hasAgencies: true, inform_date: '', actions: {setField}})
-      component.find('DateField[id="cross_report_inform_date"]').simulate('change', {target: {value: '2016-01-23'}})
+      component.find('DateField[id="cross_report_inform_date"]').simulate('change', '2016-01-23')
       expect(setField).toHaveBeenCalledWith('inform_date', '2016-01-23')
     })
     it('triggers the touchField action on blur', () => {

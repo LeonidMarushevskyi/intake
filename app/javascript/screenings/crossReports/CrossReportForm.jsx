@@ -157,7 +157,7 @@ const CrossReportForm = ({
               label='Cross Reported on Date'
               hasTime={false}
               errors={errors.inform_date}
-              onChange={({target: {value}}) => {
+              onChange={(value) => {
                 setField('inform_date', value)
               }}
               onBlur={() => touchField('inform_date')}
