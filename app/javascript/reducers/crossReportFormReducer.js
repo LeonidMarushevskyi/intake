@@ -4,6 +4,7 @@ import {
   CLEAR_CROSS_REPORT_VALUES,
   CLEAR_CROSS_REPORT_AGENCY_VALUES,
   RESET_CROSS_REPORT_VALUES,
+  SAVE_CROSS_REPORT,
   SET_CROSS_REPORT_FIELD,
   SET_CROSS_REPORT_AGENCY,
   SET_CROSS_REPORT_AGENCY_TYPE,
@@ -30,6 +31,10 @@ const buildAgencyInformation = ({agencies}) => {
 }
 const buildCrossReportForm = (crossReport = {agencies: []}) => {
   const agencyInformation = buildAgencyInformation(crossReport)
+  if (crossReport.agencies.length === 0) {
+    crossReport.inform_date = ''
+    crossReport.method = ''
+  }
   return fromJS({
     county_id: {
       value: crossReport.county_id || '',
@@ -95,6 +100,9 @@ export default createReducer(Map(), {
     return state.setIn([agencyType, 'agency', 'touched'], true)
   },
   [FETCH_SCREENING_SUCCESS](_state, {screening}) {
+    return buildCrossReportFormFromScreening(screening)
+  },
+  [SAVE_CROSS_REPORT](_state, {screening}) {
     return buildCrossReportFormFromScreening(screening)
   },
 })

@@ -5,6 +5,7 @@ import {
   clearAllFields,
   clearAllAgencyFields,
   resetFieldValues,
+  save as saveCrossReport,
   setAgencyField,
   setAgencyTypeField,
   setField,
@@ -415,6 +416,76 @@ describe('crossReportFormReducer', () => {
             touched: false,
             agency: {
               value: '5234',
+              touched: false,
+            },
+          },
+          DEPARTMENT_OF_JUSTICE: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COUNTY_LICENSING: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          COMMUNITY_CARE_LICENSING: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+        })
+      )
+    })
+  })
+  describe('on SAVE_CROSS_REPORT', () => {
+    it('returns the cross report with the values from screening', () => {
+      const action = saveCrossReport({
+        cross_reports: [
+          {
+            county_id: '1234',
+            inform_date: '2017-02-20',
+            method: 'Child Abuse Form',
+            agencies: [],
+          },
+        ],
+      })
+      expect(crossReportFormReducer(Map(), action)).toEqualImmutable(
+        fromJS({
+          county_id: {
+            value: '1234',
+            touched: false,
+          },
+          inform_date: {
+            value: '',
+            touched: false,
+          },
+          method: {
+            value: '',
+            touched: false,
+          },
+          DISTRICT_ATTORNEY: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
+              touched: false,
+            },
+          },
+          LAW_ENFORCEMENT: {
+            selected: false,
+            touched: false,
+            agency: {
+              value: '',
               touched: false,
             },
           },

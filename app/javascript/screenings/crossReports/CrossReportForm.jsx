@@ -36,6 +36,7 @@ const CrossReportForm = ({
     clearAllFields,
     fetchCountyAgencies,
     resetFieldValues,
+    saveCrossReport,
     saveScreening,
     setAgencyField,
     setAgencyTypeField,
@@ -50,6 +51,7 @@ const CrossReportForm = ({
   }
   const save = () => {
     saveScreening(screeningWithEdits)
+    saveCrossReport(screeningWithEdits)
     toggleShow()
   }
   const agencyFieldActions = {

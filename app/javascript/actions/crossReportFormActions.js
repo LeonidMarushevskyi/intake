@@ -1,6 +1,7 @@
 export const CLEAR_CROSS_REPORT_AGENCY_VALUES = 'CLEAR_CROSS_REPORT_AGENCY_VALUES'
 export const CLEAR_CROSS_REPORT_VALUES = 'CLEAR_CROSS_REPORT_VALUES'
 export const RESET_CROSS_REPORT_VALUES = 'RESET_CROSS_REPORT_VALUES'
+export const SAVE_CROSS_REPORT = 'SAVE_CROSS_REPORT'
 export const SET_CROSS_REPORT_AGENCY = 'SET_CROSS_REPORT_AGENCY'
 export const SET_CROSS_REPORT_AGENCY_TYPE = 'SET_CROSS_REPORT_AGENCY_TYPE'
 export const SET_CROSS_REPORT_FIELD = 'SET_CROSS_REPORT_FIELD'
@@ -15,6 +16,9 @@ export function clearAllAgencyFields(agencyType) {
 }
 export function resetFieldValues(screening) {
   return {type: RESET_CROSS_REPORT_VALUES, screening}
+}
+export function save(screening) {
+  return {type: SAVE_CROSS_REPORT, screening}
 }
 export function setField(field, value) {
   return {type: SET_CROSS_REPORT_FIELD, field, value}
