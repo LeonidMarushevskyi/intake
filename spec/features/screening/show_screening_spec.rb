@@ -33,8 +33,13 @@ feature 'Show Screening' do
       screening_decision_detail: 'consultation',
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
-        { county: 'c41', agency_type: 'DISTRICT_ATTORNEY', agency_code: '45Hvp7x00F' },
-        { county: 'c41', agency_type: 'COUNTY_LICENSING' }
+        {
+          county_id: 'c41',
+          agencies: [
+            { id: '45Hvp7x00F', type: 'DISTRICT_ATTORNEY' },
+            { type: 'COUNTY_LICENSING' }
+          ]
+        }
       ]
     )
   end

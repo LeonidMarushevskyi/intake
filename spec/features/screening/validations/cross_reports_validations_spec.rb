@@ -10,9 +10,10 @@ feature 'Cross Reports Validations' do
       :screening, cross_reports: [
         FactoryGirl.create(
           :cross_report,
-          :invalid,
-          county: 'c41',
-          agency_type: 'DEPARTMENT_OF_JUSTICE'
+          county_id: 'c41',
+          agencies: [
+            FactoryGirl.create(:agency, id: nil, type: 'DEPARTMENT_OF_JUSTICE')
+          ]
         )
       ]
     )
@@ -45,8 +46,14 @@ feature 'Cross Reports Validations' do
           card_name: 'cross-report',
           error_message: error_message,
           screening_updates:
-          { cross_reports:
-            [county: 'c41', agency_type: 'DEPARTMENT_OF_JUSTICE', agency_code: 'EYIS9Nh75C'] }
+          {
+            cross_reports: [
+              county_id: 'c41',
+              agencies: [
+                { type: 'DEPARTMENT_OF_JUSTICE', id: 'EYIS9Nh75C' }
+              ]
+            ]
+          }
         ) do
           within '#cross-report-card.edit' do
             select 'DOJ Agency', from: 'Department of justice agency name'
