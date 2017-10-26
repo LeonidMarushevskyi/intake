@@ -42,6 +42,7 @@ const CrossReportForm = ({
     setAgencyTypeField,
     setField,
     touchAgencyField,
+    touchAllFields,
     touchField,
   },
 }) => {
@@ -52,6 +53,7 @@ const CrossReportForm = ({
   const save = () => {
     saveScreening(screeningWithEdits)
     saveCrossReport(screeningWithEdits)
+    touchAllFields()
     toggleShow()
   }
   const agencyFieldActions = {

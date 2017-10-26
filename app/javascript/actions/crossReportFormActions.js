@@ -7,6 +7,7 @@ export const SET_CROSS_REPORT_AGENCY_TYPE = 'SET_CROSS_REPORT_AGENCY_TYPE'
 export const SET_CROSS_REPORT_FIELD = 'SET_CROSS_REPORT_FIELD'
 export const TOUCH_CROSS_REPORT_AGENCY_FIELD = 'TOUCH_CROSS_REPORT_AGENCY_FIELD'
 export const TOUCH_CROSS_REPORT_FIELD = 'TOUCH_CROSS_REPORT_FIELD'
+export const TOUCH_ALL_CROSS_REPORT_FIELDS = 'TOUCH_ALL_CROSS_REPORT_FIELDS'
 
 export function clearAllFields() {
   return {type: CLEAR_CROSS_REPORT_VALUES}
@@ -28,6 +29,9 @@ export function touchField(field) {
 }
 export function touchAgencyField(agencyType) {
   return {type: TOUCH_CROSS_REPORT_AGENCY_FIELD, agencyType}
+}
+export function touchAllFields() {
+  return {type: TOUCH_ALL_CROSS_REPORT_FIELDS}
 }
 export function setAgencyTypeField(field, value) {
   return {type: SET_CROSS_REPORT_AGENCY_TYPE, field, value}

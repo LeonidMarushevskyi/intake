@@ -9,6 +9,7 @@ import {
   setAgencyField,
   setAgencyTypeField,
   setField,
+  touchAllFields,
   touchField,
   touchAgencyField,
 } from 'actions/crossReportFormActions'
@@ -526,6 +527,133 @@ describe('crossReportFormReducer', () => {
           county_id: {
             value: '123',
             touched: false,
+          },
+        })
+      )
+    })
+  })
+  describe('on TOUCH_ALL_CROSS_REPORT_FIELDS', () => {
+    it('returns the form with all fields touched', () => {
+      const action = touchAllFields({
+        cross_reports: [
+          {
+            county_id: '4234',
+            inform_date: '2017-02-20',
+            method: '',
+            agencies: [
+              {type: 'DISTRICT_ATTORNEY'},
+              {type: 'LAW_ENFORCEMENT'},
+            ],
+          },
+        ],
+      })
+      const state = fromJS({
+        county_id: {
+          value: '1234',
+          touched: true,
+        },
+        inform_date: {
+          value: '2017-02-20',
+          touched: false,
+        },
+        method: {
+          value: 'Child Abuse Form',
+          touched: true,
+        },
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '1234',
+            touched: true,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '5234',
+            touched: true,
+          },
+        },
+        DEPARTMENT_OF_JUSTICE: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COUNTY_LICENSING: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        COMMUNITY_CARE_LICENSING: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+      })
+      expect(crossReportFormReducer(state, action)).toEqualImmutable(
+        fromJS({
+          county_id: {
+            value: '1234',
+            touched: true,
+          },
+          inform_date: {
+            value: '2017-02-20',
+            touched: true,
+          },
+          method: {
+            value: 'Child Abuse Form',
+            touched: true,
+          },
+          DISTRICT_ATTORNEY: {
+            selected: true,
+            touched: true,
+            agency: {
+              value: '1234',
+              touched: true,
+            },
+          },
+          LAW_ENFORCEMENT: {
+            selected: true,
+            touched: true,
+            agency: {
+              value: '5234',
+              touched: true,
+            },
+          },
+          DEPARTMENT_OF_JUSTICE: {
+            selected: false,
+            touched: true,
+            agency: {
+              value: '',
+              touched: true,
+            },
+          },
+          COUNTY_LICENSING: {
+            selected: false,
+            touched: true,
+            agency: {
+              value: '',
+              touched: true,
+            },
+          },
+          COMMUNITY_CARE_LICENSING: {
+            selected: false,
+            touched: true,
+            agency: {
+              value: '',
+              touched: true,
+            },
           },
         })
       )

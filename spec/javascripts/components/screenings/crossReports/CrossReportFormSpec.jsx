@@ -353,12 +353,14 @@ describe('CrossReportForm', () => {
     it('fires toggleShow, saveScreening', () => {
       const saveScreening = jasmine.createSpy('saveScreening')
       const toggleShow = jasmine.createSpy('toggleShow')
+      const touchAllFields = jasmine.createSpy('touchAllFields')
       const saveCrossReport = jasmine.createSpy('saveCrossReport')
       const screeningWithEdits = {id: 123, crossReports: []}
-      const component = renderCrossReportForm({actions: {saveScreening, saveCrossReport}, screeningWithEdits, toggleShow})
+      const component = renderCrossReportForm({actions: {saveScreening, saveCrossReport, touchAllFields}, screeningWithEdits, toggleShow})
       component.find('button.btn-primary').simulate('click')
       expect(saveScreening).toHaveBeenCalledWith(screeningWithEdits)
       expect(saveCrossReport).toHaveBeenCalledWith(screeningWithEdits)
+      expect(touchAllFields).toHaveBeenCalled()
       expect(toggleShow).toHaveBeenCalledWith()
     })
   })

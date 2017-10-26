@@ -8,6 +8,7 @@ import {
   SET_CROSS_REPORT_FIELD,
   SET_CROSS_REPORT_AGENCY,
   SET_CROSS_REPORT_AGENCY_TYPE,
+  TOUCH_ALL_CROSS_REPORT_FIELDS,
   TOUCH_CROSS_REPORT_FIELD,
   TOUCH_CROSS_REPORT_AGENCY_FIELD,
 } from 'actions/crossReportFormActions'
@@ -92,6 +93,19 @@ export default createReducer(Map(), {
   },
   [SET_CROSS_REPORT_FIELD](state, {field, value}) {
     return state.setIn([field, 'value'], value)
+  },
+  [TOUCH_ALL_CROSS_REPORT_FIELDS](state) {
+    const agencyTypes = Object.keys(AGENCY_TYPES)
+    const fieldsWithTouch = [
+      'inform_date', 'method', 'county_id', ...agencyTypes,
+    ]
+    return fieldsWithTouch.reduce((state, field) => {
+      if (agencyTypes.includes(field)) {
+        return state.setIn([field, 'touched'], true).setIn([field, 'agency', 'touched'], true)
+      } else {
+        return state.setIn([field, 'touched'], true)
+      }
+    }, state)
   },
   [TOUCH_CROSS_REPORT_FIELD](state, {field}) {
     return state.setIn([field, 'touched'], true)

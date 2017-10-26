@@ -26,6 +26,7 @@ import {
   setAgencyTypeField,
   setField,
   touchAgencyField,
+  touchAllFields,
   touchField,
 } from 'actions/crossReportFormActions'
 import {saveScreening} from 'actions/screeningActions'
@@ -72,6 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
     setAgencyTypeField,
     setField,
     touchAgencyField,
+    touchAllFields,
     touchField,
     saveScreening,
     fetchCountyAgencies,
