@@ -1,6 +1,11 @@
 import {createSelector} from 'reselect'
-import {List, Map} from 'immutable'
+import {Map, List} from 'immutable'
 
+/* eslint-disable no-invalid-this */
+export const systemCodeDisplayValue = (code, systemCodes = List(), noSetValue = Map(), context = this) => systemCodes.find(
+  (systemCode) => systemCode.get('code') === code, context, noSetValue
+).get('value')
+/* eslint-enable no-invalid-this */
 export const getStatusesSelector = (state) => state.get('contactStatuses')
 export const getPurposesSelector = (state) => state.get('contactPurposes')
 export const getLocationsSelector = (state) => state.get('locations')
