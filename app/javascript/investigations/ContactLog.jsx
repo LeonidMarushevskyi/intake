@@ -1,15 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router'
-
-const ContactLogRow = ({}) => (
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-)
+import ContactLogRow from 'investigations/ContactLogRow'
 
 const ContactLog = ({investigationId, contactLogs}) => (
   <div className='card show double-gap-top'>
