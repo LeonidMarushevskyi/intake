@@ -1,10 +1,11 @@
 import {createSelector} from 'reselect'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 export const getStatusesSelector = (state) => state.get('contactStatuses')
 export const getPurposesSelector = (state) => state.get('contactPurposes')
 export const getLocationsSelector = (state) => state.get('locations')
 export const getCommunicationMethodsSelector = (state) => state.get('communicationMethods')
+export const getAllegationTypesSelector = (state) => state.get('allegationTypes', List())
 
 /* eslint-disable no-invalid-this */
 export const getInPersonCommunicationMethodValueSelector = createSelector(
