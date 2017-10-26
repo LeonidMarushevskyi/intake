@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 module SystemCodeHelpers
+  def allegation_type_codes
+    [{
+      code: 'ALLEGATION_TYPE_1',
+      value: 'Allegation Type 1',
+      category: 'allegation_type',
+      subcategory: nil
+    }, {
+      code: 'ALLEGATION_TYPE_2',
+      value: 'Allegation Type 2',
+      category: 'allegation_type',
+      subcategory: nil
+    }]
+  end
+
   def contact_purpose_codes
     [{
       code: 'CONTACT_PURPOSE_1',
@@ -53,6 +67,7 @@ module SystemCodeHelpers
 
   def stub_system_codes
     system_codes = [
+      *allegation_type_codes,
       *contact_purpose_codes,
       *contact_status_codes,
       *communication_method_codes,
