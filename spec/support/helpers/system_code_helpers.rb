@@ -74,7 +74,7 @@ module SystemCodeHelpers
       *contact_location_codes,
       *county_type_codes
     ]
-    stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov_path)).and_return(
+    stub_request(:get, /#{ExternalRoutes.ferb_api_lov_path}/).and_return(
       json_body(system_codes, status: 200)
     )
   end
