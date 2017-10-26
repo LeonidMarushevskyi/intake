@@ -30,7 +30,7 @@ const ReferralView = ({startDate, endDate, referralId, status, notification, cou
             </thead>
             <tbody>
               {
-                peopleAndRoles && peopleAndRoles.map(({victim, perpetrator, allegations, disposition}, index) => (
+                peopleAndRoles.map(({victim, perpetrator, allegations, disposition}, index) => (
                   <tr key={index}>
                     <td className='victim'>{victim}</td>
                     <td className='perpetrator'>{perpetrator}</td>

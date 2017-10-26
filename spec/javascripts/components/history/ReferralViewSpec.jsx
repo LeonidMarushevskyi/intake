@@ -3,9 +3,10 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('ReferralView', () => {
-  const renderReferralView = ({...props}) => (
-    shallow(<ReferralView {...props}/>)
-  )
+  const renderReferralView = ({peopleAndRoles = [], ...args}) => {
+    const props = {peopleAndRoles, ...args}
+    return shallow(<ReferralView {...props}/>)
+  }
 
   it('renders a single date for the history entry in the first column', () => {
     const startDate = '2008-01-02'
@@ -21,7 +22,7 @@ describe('ReferralView', () => {
   })
 
   it('renders a history entry of type Referral with its id, status, and access notification in the second column', () => {
-    const referralId = 1
+    const referralId = '1'
     const status = 'open'
     const component = renderReferralView({referralId, status})
     expect(component.find('td').at(1).find('.referral').text()).toEqual('Referral')
@@ -33,7 +34,7 @@ describe('ReferralView', () => {
     const notification = 'notification'
     const componentWithNotification = renderReferralView({notification})
     expect(componentWithNotification.find('td').at(1).find('.information-flag').text()).toEqual(notification)
-    const componentWithoutNotification = renderReferralView()
+    const componentWithoutNotification = renderReferralView({})
     expect(componentWithoutNotification.find('td').at(1).text()).not.toContain(notification)
   })
 
@@ -44,13 +45,13 @@ describe('ReferralView', () => {
   })
 
   it('renders a table for people and roles in the fourth column', () => {
-    const component = renderReferralView()
-    expect(component.find('td').at(3).find('table').isEmpty()).toBeFalsy()
+    const component = renderReferralView({})
+    expect(component.find('td').at(3).find('table').exists()).toEqual(true)
   })
 
   describe('for people and roles', () => {
     it('renders a header for victims, perpetrators, and allegations/disposition', () => {
-      const component = renderReferralView()
+      const component = renderReferralView({})
       expect(component.find('.people-and-roles').find('th.victim').text()).toEqual('Victim')
       expect(component.find('.people-and-roles').find('th.perpetrator').text()).toEqual('Perpetrator')
       expect(component.find('.people-and-roles').find('th.allegations.disposition').text()).toEqual('Allegation(s) & Disposition')

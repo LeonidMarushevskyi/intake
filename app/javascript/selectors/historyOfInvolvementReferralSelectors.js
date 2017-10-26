@@ -97,5 +97,5 @@ export const getPeopleAndRolesSelector = createSelector(
       name_default: ''}) || '',
     allegations: allegation.get('allegation_description', ''),
     disposition: allegation.get('disposition_description', ''),
-  })), List())
+  })))
 )
