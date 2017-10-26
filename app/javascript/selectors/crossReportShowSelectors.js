@@ -3,6 +3,7 @@ import {getCountyAgenciesSelector} from 'selectors/countyAgenciesSelectors'
 import {Map, List, fromJS} from 'immutable'
 import {
   AGENCY_TYPES,
+  CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
   DISTRICT_ATTORNEY,
   DEPARTMENT_OF_JUSTICE,
   COUNTY_LICENSING,
@@ -57,13 +58,16 @@ const findAgencyData = (agencies, agencyType) => {
 
 const isBlank = (value) => (value === undefined || value === '')
 
-export const getDistrictAttorneyErrors = (agencies, allegations) => {
+export const getAgencyRequiredErrors = (type, agencies, allegations) => {
+  const {selectedType, id} = findAgencyData(agencies, type)
+  if (areCrossReportsRequired(allegations) && isBlank(selectedType) && isBlank(id)) {
+    return `Please indicate cross-reporting to ${AGENCY_TYPES[type].toLowerCase()}.`
+  }
+  return undefined
+}
+export const getDistrictAttorneyErrors = (agencies) => {
   const {type, id} = findAgencyData(agencies, DISTRICT_ATTORNEY)
-  if (!isBlank(type) && !isBlank(id)) {
-    return undefined
-  } else if (isBlank(type) && areCrossReportsRequired(allegations)) {
-    return 'Please indicate cross-reporting to district attorney.'
-  } else if (isBlank(type) || id) {
+  if (isBlank(type) || id) {
     return undefined
   } else {
     return 'Please enter an agency name.'
@@ -79,13 +83,9 @@ export const getDepartmentOfJusticeErrors = (agencies) => {
   }
 }
 
-export const getLawEnforcementErrors = (agencies, allegations) => {
+export const getLawEnforcementErrors = (agencies) => {
   const {type, id} = findAgencyData(agencies, LAW_ENFORCEMENT)
-  if (!isBlank(type) && !isBlank(id)) {
-    return undefined
-  } else if (isBlank(type) && areCrossReportsRequired(allegations)) {
-    return 'Please indicate cross-reporting to law enforcement.'
-  } else if (isBlank(type) || id) {
+  if (isBlank(type) || id) {
     return undefined
   } else {
     return 'Please enter an agency name.'
@@ -110,6 +110,14 @@ export const getCommunityCareLicensingErrors = (agencies) => {
   }
 }
 
+export const getAllegationsRequireCrossReportsValueSelector = createSelector(
+  getCrossReportAgenciesSelector,
+  (state) => state.getIn(['screening', 'allegations']),
+  (agencies, allegations) => areCrossReportsRequired(allegations) && !CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.reduce((hasRequiredAgencies, requiredAgencyType) => hasRequiredAgencies && Boolean(agencies.find((agency) => (
+    agency.get('type') === requiredAgencyType
+  ))), true)
+)
+
 export const getErrorsSelector = createSelector(
   getCrossReportSelector,
   getCrossReportAgenciesSelector,
@@ -120,7 +128,23 @@ export const getErrorsSelector = createSelector(
     [COMMUNITY_CARE_LICENSING]: combineCompact(() => (getCommunityCareLicensingErrors(agencies))),
     [COUNTY_LICENSING]: combineCompact(() => (getCountyLicensingErrors(agencies))),
     [DEPARTMENT_OF_JUSTICE]: combineCompact(() => (getDepartmentOfJusticeErrors(agencies))),
-    [DISTRICT_ATTORNEY]: combineCompact(() => (getDistrictAttorneyErrors(agencies, allegations))),
-    [LAW_ENFORCEMENT]: combineCompact(() => (getLawEnforcementErrors(agencies, allegations))),
+    [DISTRICT_ATTORNEY]: combineCompact(() => (getDistrictAttorneyErrors(agencies))),
+    [LAW_ENFORCEMENT]: combineCompact(() => (getLawEnforcementErrors(agencies))),
+    agencyRequired: combineCompact(
+      () => {
+        if (getDistrictAttorneyErrors(agencies)) {
+          return undefined
+        } else {
+          return getAgencyRequiredErrors(DISTRICT_ATTORNEY, agencies, allegations)
+        }
+      },
+      () => {
+        if (getLawEnforcementErrors(agencies)) {
+          return undefined
+        } else {
+          return getAgencyRequiredErrors(LAW_ENFORCEMENT, agencies, allegations)
+        }
+      }
+    ),
   })
 )

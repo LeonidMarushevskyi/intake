@@ -5,7 +5,8 @@ import {shallow} from 'enzyme'
 describe('CrossReportForm', () => {
   function renderCrossReportForm({
     actions = {},
-    alertInfoMessage = undefined,
+    allegationsRequireCrossReports = false,
+    areCrossReportsRequired = false,
     counties = [{id: '1234', name: 'County One'}],
     county_id = '',
     countyAgencies = {
@@ -73,7 +74,8 @@ describe('CrossReportForm', () => {
   }) {
     const props = {
       actions,
-      alertInfoMessage,
+      allegationsRequireCrossReports,
+      areCrossReportsRequired,
       counties,
       county_id,
       countyAgencies,
@@ -168,6 +170,40 @@ describe('CrossReportForm', () => {
     const touchAgencyField = jasmine.createSpy('touchAgencyField')
     const clearAllAgencyFields = jasmine.createSpy('clearAllAgencyFields')
     const actions = {setAgencyField, setAgencyTypeField, touchAgencyField, touchField, clearAllAgencyFields}
+    describe('when allegations require cross reports', () => {
+      it('makes DISTRICT_ATTORNEY required', () => {
+        const component = renderCrossReportForm({
+          allegationsRequireCrossReports: true,
+          county_id: '12',
+          districtAttorney: {selected: true, agency: {value: '1234'}},
+          countyAgencies: {
+            COMMUNITY_CARE_LICENSING: [],
+            COUNTY_LICENSING: [],
+            DEPARTMENT_OF_JUSTICE: [],
+            DISTRICT_ATTORNEY: [{id: '123', value: 'asdf'}],
+            LAW_ENFORCEMENT: [],
+          },
+        })
+        const field = component.find('AgencyField[type="DISTRICT_ATTORNEY"]')
+        expect(field.props().required).toEqual(true)
+      })
+      it('makes LAW_ENFORCEMENT required', () => {
+        const component = renderCrossReportForm({
+          allegationsRequireCrossReports: true,
+          county_id: '12',
+          lawEnforcement: {selected: true, agency: {value: '1234'}},
+          countyAgencies: {
+            COMMUNITY_CARE_LICENSING: [],
+            COUNTY_LICENSING: [],
+            DEPARTMENT_OF_JUSTICE: [],
+            DISTRICT_ATTORNEY: [],
+            LAW_ENFORCEMENT: [{id: '123', value: 'asdf'}],
+          },
+        })
+        const field = component.find('AgencyField[type="LAW_ENFORCEMENT"]')
+        expect(field.props().required).toEqual(true)
+      })
+    })
     it('renders DISTRICT_ATTORNEY agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
@@ -322,12 +358,14 @@ describe('CrossReportForm', () => {
   })
   describe('Alert info messages', () => {
     it('renders an alert info message when passed', () => {
-      const component = renderCrossReportForm({alertInfoMessage: 'Help me, Obi-Wan Kenobi!'})
+      const component = renderCrossReportForm({areCrossReportsRequired: true})
       expect(component.find('AlertInfoMessage').exists()).toEqual(true)
-      expect(component.find('AlertInfoMessage').props().message).toEqual('Help me, Obi-Wan Kenobi!')
+      expect(component.find('AlertInfoMessage').props().message).toEqual(
+        'Any report that includes allegations (except General Neglect, Caretaker Absence, or "At risk, sibling abused") must be cross-reported to law enforcement and the district attorney.'
+      )
     })
     it('does not render an alert info message when none are present', () => {
-      const component = renderCrossReportForm({})
+      const component = renderCrossReportForm({areCrossReportsRequired: false})
       expect(component.find('AlertInfoMessage').exists()).toEqual(false)
     })
   })

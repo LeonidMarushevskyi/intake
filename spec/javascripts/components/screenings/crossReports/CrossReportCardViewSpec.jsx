@@ -42,7 +42,7 @@ describe('CrossReportCardView', () => {
     })
 
     it('returns false if cross reports do not include the agency type passed', () => {
-      const crossReports = Immutable.fromJS([{agency_type: 'Disctrict attorney'}])
+      const crossReports = Immutable.fromJS([{agency_type: 'District attorney'}])
       const component = shallow(<CrossReportCardView {...props} mode='show' crossReports={crossReports} />)
       expect(component.instance().crossReportsInclude('Law enforcement')).toEqual(false)
     })

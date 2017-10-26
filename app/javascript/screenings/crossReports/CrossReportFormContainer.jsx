@@ -32,6 +32,7 @@ import {
 import {saveScreening} from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
+  getAllegationsRequireCrossReportsValueSelector,
   getVisibleErrorsSelector,
   getScreeningWithEditsSelector,
   getDistrictAttorneyFormSelector,
@@ -40,8 +41,11 @@ import {
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
 } from 'selectors/crossReportFormSelectors'
+import {areCrossReportsRequired} from 'utils/allegationsHelper'
 
 const mapStateToProps = (state) => ({
+  allegationsRequireCrossReports: areCrossReportsRequired(state.getIn(['screening', 'allegations'])),
+  areCrossReportsRequired: getAllegationsRequireCrossReportsValueSelector(state),
   communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']) || '',

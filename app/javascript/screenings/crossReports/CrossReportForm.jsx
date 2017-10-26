@@ -6,6 +6,7 @@ import React from 'react'
 import SelectField from 'common/SelectField'
 import AgencyField from 'screenings/crossReports/AgencyField'
 import {
+  ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE,
   COMMUNICATION_METHODS,
   COMMUNITY_CARE_LICENSING,
   COUNTY_LICENSING,
@@ -15,7 +16,8 @@ import {
 } from 'enums/CrossReport'
 
 const CrossReportForm = ({
-  alertInfoMessage,
+  allegationsRequireCrossReports,
+  areCrossReportsRequired,
   communityCareLicensing,
   counties,
   county_id,
@@ -65,7 +67,7 @@ const CrossReportForm = ({
   }
   return (
     <div className='card-body no-pad-top'>
-      { alertInfoMessage && <AlertInfoMessage message={alertInfoMessage} /> }
+      { areCrossReportsRequired && <AlertInfoMessage message={ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} /> }
       <div className='row col-md-12'>
         <label>This report has cross reported to:</label>
       </div>
@@ -98,6 +100,7 @@ const CrossReportForm = ({
                   countyAgencies={countyAgencies[DISTRICT_ATTORNEY]}
                   errors={errors[DISTRICT_ATTORNEY]}
                   actions={agencyFieldActions}
+                  required={allegationsRequireCrossReports}
                 />
               </li>
               <li key={LAW_ENFORCEMENT}>
@@ -108,6 +111,7 @@ const CrossReportForm = ({
                   countyAgencies={countyAgencies[LAW_ENFORCEMENT]}
                   errors={errors[LAW_ENFORCEMENT]}
                   actions={agencyFieldActions}
+                  required={allegationsRequireCrossReports}
                 />
               </li>
             </ul>
@@ -198,7 +202,8 @@ const CrossReportForm = ({
 
 CrossReportForm.propTypes = {
   actions: PropTypes.object.isRequired,
-  alertInfoMessage: PropTypes.string,
+  allegationsRequireCrossReports: PropTypes.bool.isRequired,
+  areCrossReportsRequired: PropTypes.bool.isRequired,
   communityCareLicensing: PropTypes.object.isRequired,
   counties: PropTypes.array.isRequired,
   countyAgencies: PropTypes.object,

@@ -4,22 +4,21 @@ import ShowField from 'common/ShowField'
 import AlertInfoMessage from 'common/AlertInfoMessage'
 import ErrorMessages from 'common/ErrorMessages'
 import {dateFormatter} from 'utils/dateFormatter'
+import {ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} from 'enums/CrossReport'
 
 const CrossReportShow = ({
   agencies,
   areCrossReportsRequired,
-  alertInfoMessage,
   communicationMethod,
   errors,
   hasAgencies,
   hasCrossReport,
   reportedOn,
-  requiredCrossReportErrors,
 }) => (
   <div className='card-body'>
-    { alertInfoMessage && <AlertInfoMessage message={alertInfoMessage} /> }
+    { areCrossReportsRequired && <AlertInfoMessage message={ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE} /> }
     <div className='row'>
-      <ShowField gridClassName='col-md-12' label='This report has cross reported to:' errors={requiredCrossReportErrors} required={areCrossReportsRequired}>
+      <ShowField gridClassName='col-md-12' label='This report has cross reported to:' errors={errors.agencyRequired}>
         {
           hasCrossReport && hasAgencies &&
           <ul className='unstyled-list'>
@@ -36,7 +35,7 @@ const CrossReportShow = ({
       </ShowField>
     </div>
     {
-      hasCrossReport &&
+      hasCrossReport && hasAgencies &&
       <div className='row'>
         <ShowField
           gridClassName='col-md-6'
@@ -61,14 +60,12 @@ const CrossReportShow = ({
 
 CrossReportShow.propTypes = {
   agencies: PropTypes.object.isRequired,
-  alertInfoMessage: PropTypes.string,
   areCrossReportsRequired: PropTypes.bool.isRequired,
   communicationMethod: PropTypes.string,
   errors: PropTypes.object.isRequired,
   hasAgencies: PropTypes.bool.isRequired,
   hasCrossReport: PropTypes.bool.isRequired,
   reportedOn: PropTypes.string,
-  requiredCrossReportErrors: PropTypes.array.isRequired,
 }
 
 export default CrossReportShow

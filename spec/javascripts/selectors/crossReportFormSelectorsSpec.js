@@ -1,5 +1,6 @@
 import {fromJS, List, Seq} from 'immutable'
 import {
+  getAllegationsRequireCrossReportsValueSelector,
   getVisibleErrorsSelector,
   getTouchedFieldsSelector,
   getTouchedAgenciesSelector,
@@ -81,7 +82,111 @@ describe('crossReportFormSelectors', () => {
       LAW_ENFORCEMENT,
     }
   }
-
+  describe('getAllegationsRequireCrossReportsValueSelector', () => {
+    it('returns false if allegations require crossReports but are satisfied', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReportForm = getCrossReportState({
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '123',
+            touched: false,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '124',
+            touched: false,
+          },
+        },
+      })
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'Severe neglect',
+          'Physical abuse',
+        ],
+      }]
+      const screening = {allegations}
+      const state = fromJS({crossReportForm, countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
+    })
+    it('returns true if allegations require crossReports', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReportForm = getCrossReportState({
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+      })
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'Severe neglect',
+          'Physical abuse',
+        ],
+      }]
+      const screening = {allegations}
+      const state = fromJS({crossReportForm, countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(true)
+    })
+    it('returns false if allegations do not require crossReports', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReportForm = getCrossReportState({
+        DISTRICT_ATTORNEY: {
+          selected: true,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+        LAW_ENFORCEMENT: {
+          selected: false,
+          touched: false,
+          agency: {
+            value: '',
+            touched: false,
+          },
+        },
+      })
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'General neglect',
+          'Caretaker absent/incapacity',
+          'At risk, sibling abused',
+        ],
+      }]
+      const screening = {allegations}
+      const state = fromJS({crossReportForm, countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
+    })
+  })
   describe('getTouchedAgenciesSelector', () => {
     it('returns the CrossReportForm agency names that are touched', () => {
       const state = fromJS({crossReportForm: getCrossReportState({
@@ -166,6 +271,32 @@ describe('crossReportFormSelectors', () => {
         },
       })
       const screening = {allegations}
+      describe('with no fields touched', () => {
+        const crossReportForm = getCrossReportState({
+          DISTRICT_ATTORNEY: {
+            selected: false,
+            touched: false,
+            agency: {
+              id: '',
+              touched: false,
+            },
+          },
+          LAW_ENFORCEMENT: {
+            selected: false,
+            touched: false,
+            agency: {
+              id: '',
+              touched: false,
+            },
+          },
+        })
+        it('returns no errors', () => {
+          expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
+            .toEqualImmutable(List([]))
+          expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('LAW_ENFORCEMENT'))
+            .toEqualImmutable(List([]))
+        })
+      })
       it('returns an error on missing district attorney and law enforement', () => {
         expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
           .toEqualImmutable(List([

@@ -1,16 +1,18 @@
 import {
   AGENCY_TYPES,
-  DISTRICT_ATTORNEY,
-  DEPARTMENT_OF_JUSTICE,
-  LAW_ENFORCEMENT,
-  COUNTY_LICENSING,
   COMMUNITY_CARE_LICENSING,
+  COUNTY_LICENSING,
+  CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
+  DEPARTMENT_OF_JUSTICE,
+  DISTRICT_ATTORNEY,
+  LAW_ENFORCEMENT,
 } from 'enums/CrossReport'
 import {
   isRequiredIfCreate,
   combineCompact,
 } from 'utils/validator'
 import {
+  getAgencyRequiredErrors,
   getCommunityCareLicensingErrors,
   getCountyLicensingErrors,
   getDepartmentOfJusticeErrors,
@@ -76,8 +78,14 @@ export const getErrorsSelector = createSelector(
     [COMMUNITY_CARE_LICENSING]: combineCompact(() => (getCommunityCareLicensingErrors(agencies))),
     [COUNTY_LICENSING]: combineCompact(() => (getCountyLicensingErrors(agencies))),
     [DEPARTMENT_OF_JUSTICE]: combineCompact(() => (getDepartmentOfJusticeErrors(agencies))),
-    [DISTRICT_ATTORNEY]: combineCompact(() => (getDistrictAttorneyErrors(agencies, allegations))),
-    [LAW_ENFORCEMENT]: combineCompact(() => (getLawEnforcementErrors(agencies, allegations))),
+    [DISTRICT_ATTORNEY]: combineCompact(() => (
+      getDistrictAttorneyErrors(agencies) ||
+      getAgencyRequiredErrors(DISTRICT_ATTORNEY, agencies, allegations)
+    )),
+    [LAW_ENFORCEMENT]: combineCompact(() => (
+      getLawEnforcementErrors(agencies) ||
+      getAgencyRequiredErrors(LAW_ENFORCEMENT, agencies, allegations)
+    )),
   })
 )
 
@@ -97,8 +105,10 @@ export const getVisibleErrorsSelector = createSelector(
   (state) => state.getIn(['screening', 'allegations']),
   (errors, touchedFields, touchedAgencies, allegations) => errors.reduce(
     (filteredErrors, fieldErrors, field) => {
-      if (AGENCY_TYPES[field]) {
-        if (areCrossReportsRequired(allegations) || touchedAgencies.includes(field)) {
+      if (touchedAgencies.includes(field)) {
+        return filteredErrors.set(field, fieldErrors)
+      } else if (AGENCY_TYPES[field]) {
+        if (areCrossReportsRequired(allegations) && touchedFields.includes(field)) {
           return filteredErrors.set(field, fieldErrors)
         }
       } else if (touchedFields.includes(field)) {
@@ -106,4 +116,12 @@ export const getVisibleErrorsSelector = createSelector(
       }
       return filteredErrors.set(field, List())
     }, Map())
+)
+
+export const getAllegationsRequireCrossReportsValueSelector = createSelector(
+  getSelectedAgenciesSelector,
+  (state) => state.getIn(['screening', 'allegations']),
+  (agencies, allegations) => areCrossReportsRequired(allegations) && !CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.reduce((hasRequiredAgencies, requiredAgencyType) => hasRequiredAgencies && Boolean(agencies.find((agency) => (
+    agency.get('type') === requiredAgencyType
+  ))), true)
 )

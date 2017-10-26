@@ -1,6 +1,7 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import {
   getAgencyCodeToNameSelector,
+  getAllegationsRequireCrossReportsValueSelector,
   getErrorsSelector,
   getSelectedCrossReportAgencyNamesSelector,
 } from 'selectors/crossReportShowSelectors'
@@ -9,6 +10,63 @@ import {List, fromJS} from 'immutable'
 describe('crossReportShowSelectors', () => {
   beforeEach(() => {
     jasmine.addMatchers(matchers)
+  })
+  describe('getAllegationsRequireCrossReportsValueSelector', () => {
+    it('returns false if allegations require crossReports but are satisfied', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReports = [{agencies: [
+        {type: 'DISTRICT_ATTORNEY', id: '123'},
+        {type: 'LAW_ENFORCEMENT', id: '124'},
+      ]}]
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'Severe neglect',
+          'Physical abuse',
+        ],
+      }]
+      const screening = {allegations, cross_reports: crossReports}
+      const state = fromJS({countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
+    })
+    it('returns true if allegations require crossReports', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReports = [{agencies: [{type: 'DISTRICT_ATTORNEY'}]}]
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'Severe neglect',
+          'Physical abuse',
+        ],
+      }]
+      const screening = {allegations, cross_reports: crossReports}
+      const state = fromJS({countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(true)
+    })
+    it('returns false if allegations do not require crossReports', () => {
+      const countyAgencies = [{id: 'A324ad', name: 'County Agency'}]
+      const crossReports = [{agencies: [{type: 'DISTRICT_ATTORNEY'}]}]
+      const allegations = [{
+        id: '123',
+        screening_id: '124',
+        perpetrator_id: '125',
+        victim_id: '126',
+        allegation_types: [
+          'General neglect',
+          'Caretaker absent/incapacity',
+          'At risk, sibling abused',
+        ],
+      }]
+      const screening = {allegations, cross_reports: crossReports}
+      const state = fromJS({countyAgencies, screening})
+      expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
+    })
   })
   describe('getErrorsSelector', () => {
     describe('with allegations that require crossReports', () => {
@@ -33,16 +91,19 @@ describe('crossReportShowSelectors', () => {
         ],
       }]
       it('returns an error on missing district attorney and law enforement', () => {
-        expect(getErrorsSelector(fromJS({screening})).get('DISTRICT_ATTORNEY'))
+        expect(getErrorsSelector(fromJS({screening})).get('agencyRequired'))
           .toEqualImmutable(List([
             'Please indicate cross-reporting to district attorney.',
-          ]))
-        expect(getErrorsSelector(fromJS({screening})).get('LAW_ENFORCEMENT'))
-          .toEqualImmutable(List([
             'Please indicate cross-reporting to law enforcement.',
           ]))
+        expect(getErrorsSelector(fromJS({screening})).get('DISTRICT_ATTORNEY'))
+          .toEqualImmutable(List([]))
+        expect(getErrorsSelector(fromJS({screening})).get('LAW_ENFORCEMENT'))
+          .toEqualImmutable(List([]))
       })
       it('returns an error on missing agency', () => {
+        expect(getErrorsSelector(fromJS({screening: {cross_reports: crossReports, allegations}})).get('agencyRequired'))
+          .toEqualImmutable(List([]))
         expect(getErrorsSelector(fromJS({screening: {cross_reports: crossReports, allegations}})).get('DISTRICT_ATTORNEY'))
           .toEqualImmutable(List([
             'Please enter an agency name.',
