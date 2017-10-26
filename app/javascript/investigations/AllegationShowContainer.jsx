@@ -1,5 +1,5 @@
 import AllegationShow from 'allegations/AllegationShow'
-import {getFormattedAllegationsSelector} from 'selectors/AllegationShowSelectors'
+import {getFormattedAllegationsSelector} from 'selectors/allegationShowSelectors'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state) => (
