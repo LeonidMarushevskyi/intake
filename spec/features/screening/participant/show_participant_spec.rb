@@ -34,7 +34,7 @@ feature 'Show Screening' do
     phone_numbers: [phone_number],
     ethnicity: {
       hispanic_latino_origin: 'Yes',
-      ethnicity_detail: 'Mexican'
+      ethnicity_detail: ['Mexican']
     },
     languages: %w[Korean Lao Hawaiian]
   )
