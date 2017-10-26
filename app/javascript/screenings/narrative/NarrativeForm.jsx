@@ -3,65 +3,52 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const NarrativeForm = ({
+  onBlur,
+  onCancel,
+  onChange,
+  onSave,
   reportNarrative,
-  errors,
-  toggleShow,
-  screening,
-  screeningWithEdits,
-  actions: {
-    setField,
-    touchAllFields,
-    touchField,
-    resetFieldValues,
-    saveScreening,
-  },
-}) => {
-  const cancel = () => {
-    resetFieldValues(screening)
-    touchAllFields()
-    toggleShow()
-  }
-  const save = () => {
-    saveScreening(screeningWithEdits)
-    touchAllFields()
-    toggleShow()
-  }
-  return (
-    <div className='card-body'>
-      <div className='row'>
-        <FormField
-          errors={errors}
-          gridClassName='col-md-12'
-          htmlFor='report_narrative'
-          label='Report Narrative'
+}) => (
+  <div className='card-body'>
+    <div className='row'>
+      <FormField
+        errors={reportNarrative.errors}
+        gridClassName='col-md-12'
+        htmlFor='report_narrative'
+        label='Report Narrative'
+        required
+      >
+        <textarea
+          id='report_narrative'
+          onChange={({target: {value}}) => onChange('report_narrative', value)}
+          onBlur={() => onBlur('report_narrative')}
           required
-        >
-          <textarea
-            id='report_narrative'
-            onChange={({target: {value}}) => setField('report_narrative', value)}
-            onBlur={() => touchField('report_narrative')}
-            required
-            value={reportNarrative}
-          />
-        </FormField>
-      </div>
-      <div className='row'>
-        <div className='centered'>
-          <button className='btn btn-primary' onClick={save}>Save</button>
-          <button className='btn btn-default' onClick={cancel}>Cancel</button>
-        </div>
+          value={reportNarrative.value}
+        />
+      </FormField>
+    </div>
+    <div className='row'>
+      <div className='centered'>
+        <button className='btn btn-primary' onClick={onSave}>Save</button>
+        <button className='btn btn-default' onClick={onCancel}>Cancel</button>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 NarrativeForm.propTypes = {
-  actions: PropTypes.object.isRequired,
-  errors: PropTypes.array,
-  reportNarrative: PropTypes.string,
-  screening: PropTypes.object,
-  screeningWithEdits: PropTypes.object,
-  toggleShow: PropTypes.func,
+  onBlur: PropTypes.func,
+  onCancel: PropTypes.func,
+  onChange: PropTypes.func,
+  onSave: PropTypes.func,
+  reportNarrative: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.array,
+  }),
+}
+
+NarrativeForm.defaultProps = {
+  reportNarrative: {},
 }
 
 export default NarrativeForm

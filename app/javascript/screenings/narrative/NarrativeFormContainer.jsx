@@ -5,24 +5,45 @@ import {
   getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
 } from 'selectors/narrativeFormSelectors'
-import * as narrativeFormActions from 'actions/narrativeFormActions'
+import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/narrativeFormActions'
 import {saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 
-const mapStateToProps = (state, ownProps) => (
+const mapStateToProps = (state, _ownProps) => (
   {
-    onCancel: ownProps.onCancel,
-    errors: getVisibleErrorsSelector(state).get('report_narrative').toJS(),
-    reportNarrative: getReportNarrativeValueSelector(state),
     screening: getScreeningSelector(state).toJS(),
     screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
+    reportNarrative: {
+      value: getReportNarrativeValueSelector(state),
+      errors: getVisibleErrorsSelector(state).get('report_narrative').toJS(),
+    },
   }
 )
 
-const mapDispatchToProps = (dispatch, _ownProps) => {
-  const actions = {...narrativeFormActions, saveScreening}
-  return {actions: bindActionCreators(actions, dispatch)}
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const {dispatch} = dispatchProps
+  const {reportNarrative, screening, screeningWithEdits} = stateProps
+  const {toggleShow} = ownProps
+
+  const onCancel = () => {
+    dispatch(resetFieldValues(screening))
+    dispatch(touchAllFields())
+    toggleShow()
+  }
+
+  const onSave = () => {
+    dispatch(saveScreening(screeningWithEdits))
+    dispatch(touchAllFields())
+    toggleShow()
+  }
+
+  return {
+    onBlur: (fieldName) => dispatch(touchField(fieldName)),
+    onCancel,
+    onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
+    onSave,
+    reportNarrative,
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NarrativeForm)
+export default connect(mapStateToProps, null, mergeProps)(NarrativeForm)
