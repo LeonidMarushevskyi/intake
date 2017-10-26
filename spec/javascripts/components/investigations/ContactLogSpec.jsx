@@ -35,4 +35,46 @@ describe('ContactLog', () => {
     expect(tableHeadings.text()).toContain('Method/Status')
     expect(tableHeadings.text()).toContain('Notes')
   })
+
+  it('displays each contact log', () => {
+    const contactLogRows = renderContactLog({
+      contactLogs: [{
+        id: 'contact_one',
+        investigationId: 'investigationId',
+        startedAt: 'some datetime 1',
+        people: ['one', 'two'],
+        method: 'method 1',
+        status: 'status 1',
+        note: 'sample note 1',
+      }, {
+        id: 'contact_two',
+        investigationId: 'investigationId',
+        startedAt: 'some datetime 2',
+        people: ['three'],
+        method: 'method 2',
+        status: 'status 2',
+        note: 'sample note 2',
+      }],
+    }).find('ContactLogRow')
+    expect(contactLogRows.length).toEqual(2)
+    const [contactLogOne, contactLogTwo] = contactLogRows.nodes
+    expect(contactLogOne.props).toEqual({
+      id: 'contact_one',
+      investigationId: 'investigationId',
+      startedAt: 'some datetime 1',
+      people: ['one', 'two'],
+      method: 'method 1',
+      status: 'status 1',
+      note: 'sample note 1',
+    })
+    expect(contactLogTwo.props).toEqual({
+      id: 'contact_two',
+      investigationId: 'investigationId',
+      startedAt: 'some datetime 2',
+      people: ['three'],
+      method: 'method 2',
+      status: 'status 2',
+      note: 'sample note 2',
+    })
+  })
 })

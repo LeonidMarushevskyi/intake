@@ -2,6 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 
+const ContactLogRow = ({}) => (
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+)
+
 const ContactLog = ({investigationId, contactLogs}) => (
   <div className='card show double-gap-top'>
     <div className='card-header'>
@@ -24,6 +33,22 @@ const ContactLog = ({investigationId, contactLogs}) => (
               <th scope='col'>Notes</th>
             </tr>
           </thead>
+          <tbody>
+            {
+              contactLogs.map(({id, investigationId, startedAt, people, method, status, note}, index) => {
+                const props = {
+                  id,
+                  investigationId,
+                  startedAt,
+                  people,
+                  method,
+                  status,
+                  note,
+                }
+                return (<ContactLogRow key={index} {...props} />)
+              })
+            }
+          </tbody>
         </table>
       </div>
       <div className='row'>
