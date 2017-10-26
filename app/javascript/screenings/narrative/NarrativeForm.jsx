@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const NarrativeForm = ({
-  errors,
   onBlur,
   onCancel,
   onChange,
@@ -13,7 +12,7 @@ const NarrativeForm = ({
   <div className='card-body'>
     <div className='row'>
       <FormField
-        errors={errors.report_narrative}
+        errors={reportNarrative.errors}
         gridClassName='col-md-12'
         htmlFor='report_narrative'
         label='Report Narrative'
@@ -24,7 +23,7 @@ const NarrativeForm = ({
           onChange={({target: {value}}) => onChange('report_narrative', value)}
           onBlur={() => onBlur('report_narrative')}
           required
-          value={reportNarrative}
+          value={reportNarrative.value}
         />
       </FormField>
     </div>
@@ -38,16 +37,18 @@ const NarrativeForm = ({
 )
 
 NarrativeForm.propTypes = {
-  errors: PropTypes.object,
   onBlur: PropTypes.func,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
   onSave: PropTypes.func,
-  reportNarrative: PropTypes.string,
+  reportNarrative: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.array,
+  }),
 }
 
 NarrativeForm.defaultProps = {
-  errors: [],
+  reportNarrative: {},
 }
 
 export default NarrativeForm

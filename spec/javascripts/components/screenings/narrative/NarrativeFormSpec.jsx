@@ -8,13 +8,13 @@ describe('NarrativeForm', () => {
   )
 
   it('displays the narrative text field', () => {
-    const component = renderNarrative({reportNarrative: 'This is my favorite screening'})
+    const component = renderNarrative({reportNarrative: {value: 'This is my favorite screening'}})
     const narrativeField = component.find('FormField').childAt(0)
     expect(narrativeField.props().value).toEqual('This is my favorite screening')
   })
 
   it('displays errors', () => {
-    const component = renderNarrative({errors: {report_narrative: ['missing a thing']}})
+    const component = renderNarrative({reportNarrative: {errors: ['missing a thing']}})
     const narrativeField = component.find('FormField')
     expect(narrativeField.props().errors).toEqual(['missing a thing'])
   })
@@ -47,4 +47,3 @@ describe('NarrativeForm', () => {
     expect(onSave).toHaveBeenCalled()
   })
 })
-
