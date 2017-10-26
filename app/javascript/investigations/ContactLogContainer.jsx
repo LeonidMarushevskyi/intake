@@ -1,8 +1,11 @@
 import ContactLog from 'investigations/ContactLog'
 import {connect} from 'react-redux'
 
-const mapStateToProps = (_state, ownProps) => (
-  {id: ownProps.id}
-)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    investigationId: ownProps.id,
+    contactLogs: state.getIn(['investigation', 'contacts']).toJS(),
+  }
+}
 
 export default connect(mapStateToProps)(ContactLog)
