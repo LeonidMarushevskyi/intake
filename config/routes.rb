@@ -9,6 +9,7 @@ require File.join(File.dirname(__FILE__), 'routes/active_investigations_constrai
 Rails.application.routes.draw do
   root 'home#index'
   get '/404', to: 'errors#not_found', via: :all
+  get '/500', to: 'errors#server_error', via: :all
 
   resources :screenings,
     only: %i[edit],
