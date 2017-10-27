@@ -20,7 +20,7 @@ describe('saveContactSaga', () => {
 })
 
 describe('saveContact', () => {
-  const contactResponse = {id: 'existing_contact_id'}
+  const contactResponse = {legacy_descriptor: {legacy_id: 'existing_contact_id'}}
 
   describe('when id is present', () => {
     const contact = {

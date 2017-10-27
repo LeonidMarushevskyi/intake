@@ -22,7 +22,8 @@ export function* saveContact(contact) {
     }
     const response = yield call(method, path, contact)
     yield put(saveSuccess(response))
-    const show_contact_path = `/investigations/${investigationId}/contacts/${response.id}`
+    const contactId = response.legacy_descriptor.legacy_id
+    const show_contact_path = `/investigations/${investigationId}/contacts/${contactId}`
     yield put(push(show_contact_path))
   } catch (error) {
     yield put(saveFailure(error.responseJSON))
