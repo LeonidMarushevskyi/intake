@@ -50,7 +50,7 @@ feature 'Create Investigation Contact' do
     contact_id = 'new_contact_id'
     show_path = ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, contact_id)
     create_path = ExternalRoutes.ferb_api_investigations_contacts_path(investigation_id)
-    persisted_contact = { id: contact_id }
+    persisted_contact = { legacy_descriptor: { legacy_id: contact_id } }
     stub_request(:post, ferb_api_url(create_path)).and_return(
       json_body(persisted_contact.to_json, status: 201)
     )
