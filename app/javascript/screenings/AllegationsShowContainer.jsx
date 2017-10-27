@@ -3,11 +3,12 @@ import AllegationShow from 'allegations/AllegationShow'
 import {
   getFormattedAllegationsSelector,
   getAllegationsRequiredValueSelector,
+  getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationShowSelectors'
 
-const mapStateToProps = (state, {alertErrorMessage, toggleMode}) => (
+const mapStateToProps = (state, {toggleMode}) => (
   {
-    alertErrorMessage,
+    alertErrorMessage: getAllegationsAlertErrorMessageSelector(state),
     allegations: getFormattedAllegationsSelector(state).toJS(),
     onEdit: () => toggleMode(),
     required: getAllegationsRequiredValueSelector(state),
