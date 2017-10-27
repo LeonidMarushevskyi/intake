@@ -7,7 +7,7 @@ const ServerErrorPage = () => (
       Sorry, something went wrong.
     </h4>
     <div className='gap-top'>
-      <span>It&apos;s nothing you did. Due to an entirely internal error, your request could not be completred. Please try refreshing the page.</span>
+      <span>It&apos;s nothing you did. Due to an entirely internal error, your request could not be completed. Please try refreshing the page.</span>
     </div>
   </div>
 )
