@@ -34,7 +34,7 @@ describe Api::V1::ScreeningsController do
     let(:blank_screening) { double(:screening) }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      expect(ScreeningRepository).to receive(:create).at_least(:once).at_most(2).times
+      expect(ScreeningRepository).to receive(:create)
         .with(security_token, blank_screening)
         .and_return(created_screening)
     end
@@ -90,6 +90,10 @@ describe Api::V1::ScreeningsController do
         end
 
         it 'returns the same name if run more than once' do
+          # Added second expectation as in the before so both create calls are properly expected
+          expect(ScreeningRepository).to receive(:create)
+            .with(security_token, blank_screening)
+            .and_return(created_screening)
           staff = FactoryGirl.build(:staff, staff_id: '789')
           assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
           session = {
