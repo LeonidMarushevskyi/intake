@@ -12,6 +12,14 @@ describe('AllegationsEditView', () => {
     required: false,
   }
 
+  it('renders the card header', () => {
+    const component = shallow(<AllegationsEditView {...requiredProps}/>)
+    const header = component.find('ScreeningCardHeader')
+    expect(header.length).toEqual(1)
+    expect(header.props().showEdit).toEqual(false)
+    expect(header.props().title).toEqual('Allegations')
+  })
+
   it('renders allegations card view headings', () => {
     const component = shallow(<AllegationsEditView {...requiredProps} />)
     expect(component.find('tr').text()).toContain('Alleged Victim/Children')
