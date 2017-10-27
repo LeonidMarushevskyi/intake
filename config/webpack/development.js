@@ -3,6 +3,7 @@
 const merge = require('webpack-merge')
 const sharedConfig = require('./shared.js')
 const { settings, output } = require('./configuration.js')
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 
 module.exports = merge(sharedConfig, {
   devtool: 'source-map',
@@ -14,6 +15,10 @@ module.exports = merge(sharedConfig, {
   output: {
     pathinfo: true
   },
+
+  plugins: [
+    new CaseSensitivePathsPlugin()
+  ],
 
   devServer: {
     clientLogLevel: 'none',
