@@ -1,6 +1,7 @@
 import {fromJS, List} from 'immutable'
 import {
   getFormattedAllegationsSelector,
+  getAllegationsRequiredValueSelector,
 } from 'selectors/screening/allegationShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -38,6 +39,18 @@ describe('allegationShowSelectors', () => {
         {victim: 'John Smith', perpetrator: 'Jane Doe', type: 'Severe neglect'},
         {victim: 'Sally Smith', perpetrator: 'John Doe', type: 'Physical abuse'},
       ]))
+    })
+  })
+
+  describe('getAllegationsRequiredValueSelector', () => {
+    it('returns false when the screening decision is not promote_to_referral', () => {
+      const state = fromJS({screening: {screening_decision: 'blah'}})
+      expect(getAllegationsRequiredValueSelector(state)).toEqual(false)
+    })
+
+    it('returns true when screening decision is promote_to_referral', () => {
+      const state = fromJS({screening: {screening_decision: 'promote_to_referral'}})
+      expect(getAllegationsRequiredValueSelector(state)).toEqual(true)
     })
   })
 })

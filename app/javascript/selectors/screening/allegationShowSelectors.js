@@ -39,3 +39,7 @@ export const getFormattedAllegationsSelector = createSelector(
   )
 )
 
+export const getAllegationsRequiredValueSelector = createSelector(
+  getScreeningSelector,
+  (screening) => screening.get('screening_decision') === 'promote_to_referral'
+)
