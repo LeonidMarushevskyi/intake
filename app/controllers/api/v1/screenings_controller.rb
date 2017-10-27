@@ -105,7 +105,7 @@ module Api
 
         middle_initial = user_details['middle_initial']
 
-        assignee_name = user_details.first_name
+        assignee_name = user_details.first_name.dup
         assignee_name << " #{middle_initial}." unless middle_initial.blank?
         assignee_name << " #{user_details.last_name}"
         assignee_name << " - #{user_details.county}"

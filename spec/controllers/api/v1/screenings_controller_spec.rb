@@ -88,6 +88,27 @@ describe Api::V1::ScreeningsController do
           process :create, method: :post, session: session
           expect(response).to be_successful
         end
+
+        it 'returns the same name if run more than once' do
+          # Added second expectation as in the before so both create calls are properly expected
+          expect(ScreeningRepository).to receive(:create)
+            .with(security_token, blank_screening)
+            .and_return(created_screening)
+          staff = FactoryGirl.build(:staff, staff_id: '789')
+          assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
+          session = {
+            'security_token' => security_token,
+            'user_details' => staff
+          }
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
+        end
       end
     end
   end
