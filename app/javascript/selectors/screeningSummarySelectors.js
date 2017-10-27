@@ -4,7 +4,7 @@ import {getInvestigationSelector} from 'selectors/investigationSelectors'
 
 export const getScreeningSummarySelector = createSelector(
   getInvestigationSelector,
-  (investigation) => investigation.get('screening') || Map()
+  (investigation) => investigation.get('screening_summary') || Map()
 )
 export const getAllegationTypesSelector = createSelector(
   getScreeningSummarySelector,
