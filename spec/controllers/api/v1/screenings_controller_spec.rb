@@ -34,7 +34,7 @@ describe Api::V1::ScreeningsController do
     let(:blank_screening) { double(:screening) }
     before do
       allow(LUID).to receive(:generate).and_return(['123ABC'])
-      expect(ScreeningRepository).to receive(:create)
+      expect(ScreeningRepository).to receive(:create).at_least(:once).at_most(2).times
         .with(security_token, blank_screening)
         .and_return(created_screening)
     end
@@ -87,6 +87,23 @@ describe Api::V1::ScreeningsController do
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
+        end
+
+        it 'returns the same name if run more than once' do
+          staff = FactoryGirl.build(:staff, staff_id: '789')
+          assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
+          session = {
+            'security_token' => security_token,
+            'user_details' => staff
+          }
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
+          expect(Screening).to receive(:new)
+            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .and_return(blank_screening)
+          process :create, method: :post, session: session
         end
       end
     end
