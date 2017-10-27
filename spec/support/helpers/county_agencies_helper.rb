@@ -42,7 +42,7 @@ module CountyAgenciesHelpers
     ]
     stub_request(
       :get,
-      ferb_api_url("#{ExternalRoutes.ferb_api_cross_report_agency}?countyId=#{county_id}")
+      /#{ExternalRoutes.ferb_api_cross_report_agency}\?countyId=#{county_id}/
     ).and_return(
       json_body(county_agencies, status: 200)
     )

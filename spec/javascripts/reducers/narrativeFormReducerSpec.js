@@ -24,6 +24,17 @@ describe('contactReducer', () => {
         })
       )
     })
+    it('returns the narrative form with default empty string', () => {
+      const action = fetchScreeningSuccess({report_narrative: null})
+      expect(narrativeFormReducer(Map(), action)).toEqualImmutable(
+        fromJS({
+          report_narrative: {
+            value: '',
+            touched: false,
+          },
+        })
+      )
+    })
   })
 
   describe('on RESET_NARRATIVE_FIELD_VALUES', () => {
@@ -86,4 +97,3 @@ describe('contactReducer', () => {
     })
   })
 })
-

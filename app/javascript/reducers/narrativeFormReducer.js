@@ -12,7 +12,7 @@ export default createReducer(Map(), {
   [FETCH_SCREENING_SUCCESS](_state, {screening: {report_narrative}}) {
     return fromJS({
       report_narrative: {
-        value: report_narrative,
+        value: report_narrative || '',
         touched: false,
       },
     })

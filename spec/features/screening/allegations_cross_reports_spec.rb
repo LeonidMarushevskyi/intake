@@ -25,10 +25,11 @@ feature 'show cross reports' do
       }],
       cross_reports: [
         CrossReport.new(
-          county: 'c41',
-          agency_type: 'LAW_ENFORCEMENT',
-          agency_code: 'LAOFFCODE',
-          communication_method: 'Child Abuse Form'
+          county_id: 'c41',
+          agencies: [
+            { type: 'LAW_ENFORCEMENT', id: 'LAOFFCODE' }
+          ],
+          method: 'Child Abuse Form'
         )
       ]
     )
@@ -88,10 +89,11 @@ feature 'show cross reports' do
       ],
       cross_reports: [
         CrossReport.new(
-          county: 'c41',
-          agency_type: 'LAW_ENFORCEMENT',
-          agency_code: 'LAOFFCODE',
-          communication_method: 'Child Abuse Form'
+          county_id: 'c41',
+          agencies: [
+            { type: 'LAW_ENFORCEMENT', id: 'LAOFFCODE' }
+          ],
+          method: 'Child Abuse Form'
         )
       ]
     )
@@ -152,16 +154,23 @@ feature 'show cross reports' do
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
-      select 'State of California', from: 'County'
       expect(page).to have_content('must be cross-reported to law enforcement')
+      select 'State of California', from: 'County'
       find('label', text: /\ADistrict attorney\z/).click
       expect(page).to have_content('must be cross-reported to law enforcement')
+      select 'LA District Attorney - Criminal Division', from: 'District attorney agency name'
       find('label', text: /\ALaw enforcement\z/).click
       expect(page).to_not have_content('must be cross-reported to law enforcement')
+      select 'The Sheriff', from: 'Law enforcement agency name'
     end
 
-    screening.cross_reports << { county: 'c41', agency_type: 'DISCTRICT_ATTORNEY' }
-    screening.cross_reports << { county: 'c41', agency_type: 'LAW_ENFORCEMENT' }
+    screening.cross_reports << {
+      county_id: 'c41',
+      agencies: [
+        { type: 'DISTRICT_ATTORNEY', id: '65Hvp7x01F' },
+        { type: 'LAW_ENFORCEMENT', id: 'BMG2f3J75C' }
+      ]
+    }
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     within '#cross-report-card.edit' do

@@ -34,13 +34,11 @@ feature 'Edit Screening' do
       started_at: '2016-08-13T10:00:00.000Z',
       cross_reports: [
         {
-          county: 'c42',
-          agency_type: 'DISTRICT_ATTORNEY',
-          agency_code: '45Hvp7x00F'
-        },
-        {
-          county: 'c42',
-          agency_type: 'LAW_ENFORCEMENT'
+          county_id: 'c42',
+          agencies: [
+            { id: '45Hvp7x00F', type: 'DISTRICT_ATTORNEY' },
+            { type: 'LAW_ENFORCEMENT' }
+          ]
         }
       ]
     )
@@ -290,9 +288,10 @@ feature 'individual card save' do
   scenario 'cross report save and edits' do
     existing_screening.cross_reports = [
       {
-        county: 'c41',
-        agency_type: 'DISTRICT_ATTORNEY',
-        agency_code: '65Hvp7x01F'
+        county_id: 'c41',
+        agencies: [
+          { id: '65Hvp7x01F', type: 'DISTRICT_ATTORNEY' }
+        ]
       }
     ]
 
@@ -331,9 +330,10 @@ feature 'individual card save' do
 
     existing_screening.cross_reports = [
       {
-        county: 'c41',
-        agency_type: 'DISTRICT_ATTORNEY',
-        agency_code: '45Hvp7x00F'
+        county_id: 'c41',
+        agencies: [
+          { id: '45Hvp7x00F', type: 'DISTRICT_ATTORNEY' }
+        ]
       }
     ]
 

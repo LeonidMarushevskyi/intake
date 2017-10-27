@@ -24,21 +24,14 @@ module Api
         :restrictions_rationale,
         :assignee_staff_id,
         :started_at,
-        cross_reports: %i[
-          id
-          county
-          agency_type
-          agency_code
-          reported_on
-          communication_method
+        cross_reports: [
+          :id,
+          :county_id,
+          :inform_date,
+          :method,
+          agencies: %i[id type]
         ],
-        address: %i[
-          id
-          city
-          state
-          street_address
-          zip
-        ],
+        address: %i[id city state street_address zip],
         allegations: [
           :id,
           :screening_id,

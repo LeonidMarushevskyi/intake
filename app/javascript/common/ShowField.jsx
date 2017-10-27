@@ -11,11 +11,7 @@ const ShowField = ({gridClassName, labelClassName, label, children, required, er
 )
 
 ShowField.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.element,
-  ]),
+  children: PropTypes.any,
   errors: PropTypes.array,
   gridClassName: PropTypes.string,
   label: PropTypes.string.isRequired,

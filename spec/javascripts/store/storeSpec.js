@@ -23,6 +23,7 @@ describe('Store', () => {
       contactStatuses: [],
       counties: [],
       countyAgencies: [],
+      crossReportForm: {},
       investigation: {},
       involvements: [],
       locations: [],

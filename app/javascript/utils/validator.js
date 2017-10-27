@@ -17,6 +17,8 @@ const isRequiredIf = ({value, errorMessage, condition}) => {
   return undefined
 }
 
+export const isRequiredIfCreate = (value, errorMessage, condition) => () => isRequiredIf({value, errorMessage, condition})
+
 const isNotInTheFuture = ({value, errorMessage}) => {
   const now = moment().toISOString()
   if (value > now) {
@@ -78,4 +80,3 @@ export function validateAllFields({screening, fieldValidations}) {
   })
   return Immutable.Map(errors)
 }
-

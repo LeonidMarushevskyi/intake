@@ -44,4 +44,3 @@ describe('when field is required and has errors', () => {
     expect(formField.props().errors).toEqual(['Error 1', 'Error 2'])
   })
 })
-

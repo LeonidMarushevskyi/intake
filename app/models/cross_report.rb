@@ -4,9 +4,9 @@
 class CrossReport
   include Virtus.model
 
-  attribute :county, String
-  attribute :agency_type, String
-  attribute :agency_code, String
-  attribute :communication_method, String
-  attribute :reported_on, String
+  attribute :filed_out_of_state, Boolean, default: false
+  attribute :method, String
+  attribute :county_id, String
+  attribute :agencies, Array[Agency]
+  attribute :inform_date, String
 end

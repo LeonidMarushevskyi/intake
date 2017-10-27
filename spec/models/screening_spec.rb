@@ -63,12 +63,13 @@ describe Screening do
         },
         cross_reports: [
           {
-            agency_type: 'District attorney',
-            agency_code: 'SCDAOFFCODE'
-          },
-          {
-            agency_type: 'Law enforcement',
-            agency_code: nil
+            county_id: '1234',
+            method: 'Smoke Signal',
+            inform_date: '2017-02-21',
+            agencies: [
+              { id: 'SCDAOFFCODE', type: 'DISTRICT_ATTORNEY' },
+              { id: nil, type: 'LAW_ENFORCEMENT' }
+            ]
           }
         ],
         allegations: [
@@ -128,12 +129,14 @@ describe Screening do
         started_at: '2016-08-13T10:00:00.000Z',
         cross_reports: array_including(
           a_hash_including(
-            agency_type: 'District attorney',
-            agency_code: 'SCDAOFFCODE'
-          ),
-          a_hash_including(
-            agency_type: 'Law enforcement',
-            agency_code: nil
+            filed_out_of_state: false,
+            county_id: '1234',
+            method: 'Smoke Signal',
+            inform_date: '2017-02-21',
+            agencies: array_including(
+              a_hash_including(id: 'SCDAOFFCODE', type: 'DISTRICT_ATTORNEY'),
+              a_hash_including(id: nil, type: 'LAW_ENFORCEMENT')
+            )
           )
         ),
         address: a_hash_including(
