@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'feature/testing'
 
-feature 'error pages', :skip => true do
+feature 'error pages', skip: true do
   around do |example|
     Rails.application.config.consider_all_requests_local = false
     Rails.application.config.action_dispatch.show_exceptions = true
