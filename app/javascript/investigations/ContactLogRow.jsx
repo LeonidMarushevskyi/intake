@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router'
+import {nWords} from 'utils/textFormatter'
 
+const MAX_NUMBER_OF_WORDS = 30
 const ContactLogRow = ({id, investigationId, startedAt, people, method, status, note}) => {
   const contactPath = `/investigations/${investigationId}/contacts/${id}`
   return (
@@ -13,7 +15,7 @@ const ContactLogRow = ({id, investigationId, startedAt, people, method, status, 
         <div>({status})</div>
       </td>
       <td>
-        <div>{note}</div>
+        <div>{nWords(note, MAX_NUMBER_OF_WORDS)}</div>
         <Link to={contactPath} target='_blank'>View contact</Link>
       </td>
     </tr>

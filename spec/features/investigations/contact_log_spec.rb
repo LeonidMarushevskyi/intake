@@ -25,6 +25,9 @@ feature 'Contact Log' do
       last_name: 'Hughes'
     }
   end
+  let(:note_first_30_words) { FFaker::Lorem.words(30).join(' ') }
+  let(:note_more_than_30_words) { "#{note_first_30_words} 31st_word" }
+  let(:note_with_line_breaks) { "A sample note \n \n \n \n including line breaks" }
   let(:investigation) do
     {
       id: investigation_id,
@@ -33,14 +36,14 @@ feature 'Contact Log' do
         started_at: '2017-01-26T10:00:00.000Z',
         communication_method: 'COMMUNICATION_METHOD_2',
         status: 'CONTACT_STATUS_2',
-        note: 'Sample contact note #1',
+        note: note_with_line_breaks,
         people: [sam_jones, dave_hughes]
       }, {
         legacy_descriptor: { legacy_id: 'existing_contact_2' },
         started_at: '2017-01-27T14:00:00.000Z',
         communication_method: 'COMMUNICATION_METHOD_1',
         status: 'CONTACT_STATUS_1',
-        note: 'Sample contact note #2',
+        note: note_more_than_30_words,
         people: [robert_smith, dave_hughes]
       }]
     }
@@ -70,6 +73,7 @@ feature 'Contact Log' do
           expect(page).to have_content('01/26/2017 3:00 AM')
           expect(page).to have_content('Sam L. Jones, Dave William Hughes')
           expect(page).to have_content 'Communication method 2 (Contact status 2)'
+          expect(page).to have_content note_with_line_breaks.strip
           expect(page).to have_link(
             'View contact',
             href: investigation_contact_path(
@@ -81,6 +85,8 @@ feature 'Contact Log' do
           expect(page).to have_content '01/27/2017 7:00 AM'
           expect(page).to have_content 'Robert Hughes Smith, Dave William Hughes'
           expect(page).to have_content 'In person (Contact status 1)'
+          expect(page).to have_content "#{note_first_30_words}..."
+          expect(page).to_not have_content note_more_than_30_words
           expect(page).to have_link(
             'View contact',
             href: investigation_contact_path(
