@@ -1,5 +1,8 @@
 import {fromJS, Map} from 'immutable'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {
+  getScreeningSelector,
+  getScreeningIdValueSelector,
+} from 'selectors/screeningSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('screeningSelectors', () => {
@@ -15,6 +18,13 @@ describe('screeningSelectors', () => {
     it('returns an empty map when screening is not present', () => {
       const state = Map()
       expect(getScreeningSelector(state)).toEqualImmutable(Map())
+    })
+  })
+
+  describe('getScreeningIdValueSelector', () => {
+    it('returns the id for the screening currently in the store', () => {
+      const state = fromJS({screening: {id: '123ABC'}})
+      expect(getScreeningIdValueSelector(state)).toEqual('123ABC')
     })
   })
 })
