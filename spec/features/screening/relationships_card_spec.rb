@@ -176,7 +176,7 @@ feature 'Relationship card' do
               ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
             )
           )
-        ).to have_been_made.twice
+        ).to have_been_made.at_least_times(2)
 
         within '#relationships-card.card.show', text: 'Relationships' do
           expect(page).to have_content('Search for people and add them to see their relationships.')

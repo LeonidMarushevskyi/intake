@@ -47,7 +47,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Cancel'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
         click_link 'Edit'
       end
@@ -71,7 +71,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Save'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         click_link 'Edit'
       end
@@ -100,7 +100,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Save'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
       end
     end
@@ -137,7 +137,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Cancel'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         click_link 'Edit'
       end
@@ -164,7 +164,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Save'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
       end
     end
@@ -201,7 +201,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Cancel'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
       end
     end
@@ -231,7 +231,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Cancel'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
       end
     end
@@ -265,7 +265,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Save'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
       end
     end
@@ -302,18 +302,27 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Cancel'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
       end
     end
 
     scenario 'User can fix error' do
+      new_allegation = FactoryGirl.create(
+        :allegation,
+        victim_id: victim2.id,
+        perpetrator_id: perpetrator.id,
+        screening_id: screening.id,
+        allegation_types: ['Physical abuse']
+      )
+
       within '#allegations-card.edit' do
         expect(page).to have_content(sibling_at_risk_error)
         fill_in_react_select "allegations_#{victim2.id}_#{perpetrator.id}", with: 'Physical abuse'
         expect(page).not_to have_content(sibling_at_risk_error)
         allegations.first.allegation_types = ['At risk, sibling abused', 'General neglect']
         allegations.second.allegation_types = ['Exploitation', 'Physical abuse']
+        allegations << new_allegation
         stub_screening_put_request_with_anything_and_return(
           screening,
           with_updated_attributes: {
@@ -326,7 +335,7 @@ feature 'Allegations Sibling At Risk Validations' do
         click_button 'Save'
       end
 
-      within '#allegations-card.show' do
+      within '.card.show', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
       end
     end

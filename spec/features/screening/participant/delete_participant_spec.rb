@@ -20,6 +20,11 @@ feature 'Delete Participant' do
 
   scenario 'removing a participant from an existing screening in edit mode' do
     visit edit_screening_path(id: screening.id)
+
+    screening.participants = []
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within edit_participant_card_selector(participant.id) do
       within '.card-header' do
         click_button 'Delete person'
@@ -33,6 +38,11 @@ feature 'Delete Participant' do
 
   scenario 'removing a participant from an existing screening in show mode' do
     visit screening_path(id: screening.id)
+
+    screening.participants = []
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within show_participant_card_selector(participant.id) do
       within '.card-header' do
         click_button 'Delete person'

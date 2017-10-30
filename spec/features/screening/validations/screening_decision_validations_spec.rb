@@ -166,7 +166,7 @@ feature 'Screening Decision Validations' do
           expect(page).to have_content(error_message)
         end
 
-        within '#allegations-card.show' do
+        within '.card.show', text: 'Allegations' do
           click_link 'Edit'
         end
 

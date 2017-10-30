@@ -88,7 +88,7 @@ feature 'Show Screening' do
       expect(page).to have_content 'The reasoning for this decision'
     end
 
-    within '#allegations-card.show', text: 'Allegations' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_css('th', text: 'Alleged Victim/Children')
       expect(page).to have_css('th', text: 'Alleged Perpetrator')
       expect(page).to have_css('th', text: 'Allegation(s)')

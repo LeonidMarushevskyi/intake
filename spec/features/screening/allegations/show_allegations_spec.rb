@@ -37,7 +37,7 @@ feature 'show allegations' do
 
     visit screening_path(id: screening.id)
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'thead' do
         expect(page).to have_content('Alleged Victim/Children')
         expect(page).to have_content('Alleged Perpetrator')
@@ -61,9 +61,6 @@ feature 'show allegations' do
           expect(page).to have_content('Severe neglect')
         end
       end
-    end
-
-    within '#allegations-card.card.show' do
       click_link 'Edit allegations'
     end
 
@@ -138,7 +135,7 @@ feature 'show allegations' do
 
     visit screening_path(id: screening.id)
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
@@ -149,11 +146,15 @@ feature 'show allegations' do
     stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .and_return(json_body(nil, status: 204))
 
+    screening.allegations = []
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within show_participant_card_selector(marge.id) do
       click_button 'Delete person'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody', visible: false do
         expect(page).to_not have_content('Marge')
         expect(page).to_not have_content('Lisa')
@@ -199,7 +200,7 @@ feature 'show allegations' do
 
     visit screening_path(id: screening.id)
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
@@ -226,7 +227,7 @@ feature 'show allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody', visible: false do
         expect(page).to_not have_content('Marge')
         expect(page).to_not have_content('Lisa')
@@ -252,7 +253,7 @@ feature 'show allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody', visible: false do
         expect(page).to_not have_content('Marge')
         expect(page).to_not have_content('Lisa')
@@ -286,7 +287,7 @@ feature 'show allegations' do
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       click_link 'Edit allegations'
     end
 
@@ -334,7 +335,7 @@ feature 'show allegations' do
 
     visit screening_path(id: screening.id)
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       click_link 'Edit allegations'
     end
 
