@@ -3,12 +3,13 @@ import {shallow} from 'enzyme'
 import {EmptyRelationships, Relationships} from 'investigations/Relationships'
 
 describe('Relationships', () => {
-  const renderRelationships = ({relationships = [], ...args}) => {
-    const props = {relationships, ...args}
-    return shallow(<Relationships {...props} />)
-  }
-  it('renders people', () => {
-    const people = ['Sally Jones', 'Nate Starbringer', 'Jim Johnson']
+  const renderRelationships = (props) => shallow(<Relationships {...props} />)
+  it('renders people with no relationships', () => {
+    const people = [
+      {name: 'Sally Jones', relationships: []},
+      {name: 'Nate Starbringer', relationships: []},
+      {name: 'Jim Johnson', relationships: []},
+    ]
     const component = renderRelationships({people})
     expect(component.find('.person').at(0).text()).toEqual('Sally Jones')
     expect(component.find('.person').at(1).text()).toEqual('Nate Starbringer')
@@ -16,14 +17,28 @@ describe('Relationships', () => {
   })
 
   it('renders relationships for each person', () => {
-    const people = ['Sally Jones', 'Nate Starbringer', 'Jim Johnson']
-    const relationships = [
-      {person: 'Sally Jones', relatee: 'Jim Johnson', relationship: 'mother'},
-      {person: 'Nate Starbringer', relatee: 'Jim Johnson', relationship: 'father'},
-      {person: 'Jim Johnson', relatee: 'Nate Starbringer', relationship: 'son'},
-      {person: 'Jim Johnson', relatee: 'Sally Jones', relationship: 'son'},
+    const people = [
+      {
+        name: 'Sally Jones',
+        relationships: [
+          {relatee: 'Jim Johnson', type: 'mother'},
+        ],
+      },
+      {
+        name: 'Nate Starbringer',
+        relationships: [
+          {relatee: 'Jim Johnson', type: 'father'},
+        ],
+      },
+      {
+        name: 'Jim Johnson',
+        relationships: [
+          {relatee: 'Nate Starbringer', type: 'son'},
+          {relatee: 'Sally Jones', type: 'son'},
+        ],
+      },
     ]
-    const component = renderRelationships({people, relationships})
+    const component = renderRelationships({people})
     expect(component.find('.relationships').at(0).find('li').at(0).text()).toEqual('mother of Jim Johnson')
     expect(component.find('.relationships').at(1).find('li').at(0).text()).toEqual('father of Jim Johnson')
     expect(component.find('.relationships').at(2).find('li').at(1).text()).toEqual('son of Sally Jones')

@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-export const Relationships = ({people, relationships}) => (
+export const Relationships = ({people}) => (
   <div className='card-body no-pad-top'>
     {
       people.map((person) => (
         <div className='row' key={1}>
           <div className='col-md-6 gap-top'>
-            <span className='person'>{person}</span>
+            <span className='person'>{person.name}</span>
             <span>
               <strong> is the...</strong>
               <ul className='relationships'>
                 {
-                  relationships.map((relationship, index) => (relationship.person === person && (
+                  person.relationships.map((relationship, index) => (
                     <li key={index}>
-                      <strong>{ relationship.relationship }</strong> &nbsp; of { relationship.relatee }
+                      <strong>{ relationship.type }</strong> &nbsp; of { relationship.relatee }
                     </li>
-                  )))
+                  ))
                 }
               </ul>
             </span>
@@ -27,11 +27,12 @@ export const Relationships = ({people, relationships}) => (
 )
 
 Relationships.propTypes = {
-  people: PropTypes.array,
-  relationships: PropTypes.arrayOf(PropTypes.shape({
-    person: PropTypes.string,
-    relatedTo: PropTypes.string,
-    relationship: PropTypes.string,
+  people: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    relationships: PropTypes.arrayOf(PropTypes.shape({
+      relatee: PropTypes.string,
+      type: PropTypes.string,
+    })),
   })),
 }
 
