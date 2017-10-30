@@ -1,7 +1,6 @@
 import {fromJS} from 'immutable'
 import {
   getPeopleSelector,
-  getRelationshipsSelector,
 } from 'selectors/RelationshipsSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -25,13 +24,24 @@ describe('relationshipsViewSelectors', () => {
       ]
       const investigation = {investigation: {relationships}}
       const state = fromJS(investigation)
-      expect(getPeopleSelector(state)).toEqualImmutable(fromJS(['Ricky Robinson', 'Johny Robinson', 'Will Carlson']))
+      expect(getPeopleSelector(state)).toEqualImmutable(fromJS([
+        {
+          name: 'Ricky Robinson',
+          relationships: [],
+        },
+        {
+          name: 'Johny Robinson',
+          relationships: [],
+        },
+        {
+          name: 'Will Carlson',
+          relationships: [],
+        },
+      ]))
       expect(getPeopleSelector(emptyState)).toEqualImmutable(fromJS([]))
     })
-  })
 
-  describe('getRelationshipsSelector', () => {
-    it('returns a list of relationships or an empty list if there are no relationships', () => {
+    it('returns a list of relationships for each person', () => {
       const relationships = [
         {
           first_name: 'Ricky',
@@ -73,13 +83,22 @@ describe('relationshipsViewSelectors', () => {
       const investigation = {investigation: {relationships}}
       const state = fromJS(investigation)
 
-      expect(getRelationshipsSelector(state)).toEqualImmutable(fromJS([
-        {person: 'Ricky Robinson', relatee: 'Johny Robinson', relationship: 'Brother'},
-        {person: 'Ricky Robinson', relatee: 'Will Carlson', relationship: 'Friend'},
-        {person: 'Johny Robinson', relatee: 'Ricky Robinson', relationship: 'Brother'},
-        {person: 'Johny Robinson', relatee: 'Will Carlson', relationship: 'Friend'},
+      expect(getPeopleSelector(state)).toEqualImmutable(fromJS([
+        {
+          name: 'Ricky Robinson',
+          relationships: [
+            {relatee: 'Johny Robinson', type: 'Brother'},
+            {relatee: 'Will Carlson', type: 'Friend'},
+          ],
+        },
+        {
+          name: 'Johny Robinson',
+          relationships: [
+            {relatee: 'Ricky Robinson', type: 'Brother'},
+            {relatee: 'Will Carlson', type: 'Friend'},
+          ],
+        },
       ]))
-      expect(getPeopleSelector(emptyState)).toEqualImmutable(fromJS([]))
     })
   })
 })

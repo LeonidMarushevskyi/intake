@@ -1,9 +1,9 @@
 import {connect} from 'react-redux'
 import RelationshipsCard from 'investigations/RelationshipsCard'
-import {getRelationshipsSelector} from 'selectors/relationshipsSelectors'
+import {getPeopleSelector} from 'selectors/relationshipsSelectors'
 
 const mapStateToProps = (state, _ownProps) => ({
-  areRelationshipsEmpty: getRelationshipsSelector(state).isEmpty(),
+  areRelationshipsEmpty: getPeopleSelector(state).isEmpty(),
 })
 
 export default connect(mapStateToProps)(RelationshipsCard)
