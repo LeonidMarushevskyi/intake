@@ -13,7 +13,7 @@ const namesOfPeople = (people = List()) => people.map((person) => nameFormatter(
 export const getContactLogsSelector = createSelector(
   getStatusesSelector,
   getCommunicationMethodsSelector,
-  (state) => state.getIn(['investigation', 'id']),
+  (state) => state.getIn(['investigation', 'legacy_descriptor', 'legacy_id']),
   (state) => state.getIn(['investigation', 'contacts'], List()),
   (contactStatuses, communicationMethods, investigationId, contacts) => contacts.map(
     (contact) => fromJS({

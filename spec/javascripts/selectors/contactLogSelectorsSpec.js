@@ -21,7 +21,9 @@ describe('contactLogSelectors', () => {
 
     it('returns investigation id', () => {
       const investigation = {
-        id: 'existing_investigation_id',
+        legacy_descriptor: {
+          legacy_id: 'existing_investigation_id',
+        },
         contacts: [{}, {}],
       }
       const state = fromJS({investigation})

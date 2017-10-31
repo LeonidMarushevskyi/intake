@@ -30,7 +30,7 @@ feature 'Contact Log' do
   let(:note_with_line_breaks) { "A sample note \n \n \n \n including line breaks" }
   let(:investigation) do
     {
-      id: investigation_id,
+      legacy_descriptor: { legacy_id: investigation_id },
       contacts: [{
         legacy_descriptor: { legacy_id: 'existing_contact_1' },
         started_at: '2017-01-26T10:00:00.000Z',
