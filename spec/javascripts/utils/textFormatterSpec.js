@@ -1,12 +1,10 @@
 import {nWords} from 'utils/textFormatter'
 
 describe('nWords', () => {
-  const ntimes = (n) => Array.from(Array(n).keys())
-  const fourWords = ntimes(4).map(() => 'word').join(' ')
-  const threeWords = ntimes(3).map(() => 'word').join(' ')
-  const twoWords = ntimes(2).map(() => 'word').join(' ')
+  const threeWords = 'word word word'
 
   describe('when the number of words is greater than n', () => {
+    const fourWords = 'word word word word'
     it('returns n words followed by ...', () => {
       expect(nWords(fourWords, 3)).toEqual(
         `${threeWords}...`
@@ -15,6 +13,7 @@ describe('nWords', () => {
   })
 
   describe('when the number of words is less than n', () => {
+    const twoWords = 'word word'
     it('returns text provided', () => {
       expect(nWords(twoWords, 3)).toEqual(twoWords)
     })
