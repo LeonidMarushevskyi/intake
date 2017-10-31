@@ -1,17 +1,13 @@
 import {
+  systemCodeDisplayValue,
   getStatusesSelector,
   getPurposesSelector,
   getLocationsSelector,
   getCommunicationMethodsSelector,
 } from 'selectors/systemCodeSelectors'
 import nameFormatter from 'utils/nameFormatter'
-import {Map, List} from 'immutable'
+import {List} from 'immutable'
 import {createSelector} from 'reselect'
-/* eslint-disable no-invalid-this */
-const systemCodeDisplayValue = (code, systemCodes, noSetValue = Map(), context = this) => systemCodes.find(
-  (systemCode) => systemCode.get('code') === code, context, noSetValue
-).get('value')
-/* eslint-enable no-invalid-this */
 export const getStatusValueSelector = createSelector(
   (state) => state.getIn(['contact', 'status']),
   getStatusesSelector,

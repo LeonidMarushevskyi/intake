@@ -21,7 +21,7 @@ feature 'Show Investigation Contact' do
       id: contact_id,
       started_at: '2010-04-27T23:30:00.000Z',
       purpose: 'CONTACT_PURPOSE_1',
-      communication_method: 'ABC',
+      communication_method: 'COMMUNICATION_METHOD_1',
       status: 'CONTACT_STATUS_1',
       location: '123',
       note: 'a sample note',

@@ -44,10 +44,17 @@ module SystemCodeHelpers
   end
 
   def communication_method_codes
-    [
-      { code: 'ABC', value: 'In person', category: 'communication_method', sub_category: nil },
-      { code: 'FAX', value: 'Fax', category: 'communication_method', sub_category: nil }
-    ]
+    [{
+      code: 'COMMUNICATION_METHOD_1',
+      value: 'In person',
+      category: 'communication_method',
+      sub_category: nil
+    }, {
+      code: 'COMMUNICATION_METHOD_2',
+      value: 'Communication method 2',
+      category: 'communication_method',
+      sub_category: nil
+    }]
   end
 
   def contact_location_codes
