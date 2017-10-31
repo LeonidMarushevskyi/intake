@@ -48,7 +48,7 @@ describe Api::V1::Investigations::ContactsController do
     let(:response_object) do
       double(
         :response,
-        body: '{"id":"444"}',
+        body: '{"legacy_descriptor": {"legacy_id": "444"}}',
         status: 200
       )
     end
@@ -70,7 +70,7 @@ describe Api::V1::Investigations::ContactsController do
 
     before do
       expect(FerbAPI).to receive(:make_api_call)
-        .with(security_token, update_path, :put, contact_params)
+        .with(security_token, update_path, :put, contact_params.except('id'))
         .and_return(response_object)
     end
 
@@ -80,7 +80,9 @@ describe Api::V1::Investigations::ContactsController do
         id: contact_id,
         contact: contact_params
       }, session: session
-      expect(JSON.parse(response.body)).to match a_hash_including('id' => '444')
+      expect(JSON.parse(response.body)).to match a_hash_including(
+        'legacy_descriptor' => a_hash_including('legacy_id' => '444')
+      )
       expect(response.status).to eq 200
     end
   end
