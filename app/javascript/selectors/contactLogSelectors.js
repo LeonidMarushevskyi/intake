@@ -8,7 +8,7 @@ import {
   systemCodeDisplayValue,
 } from 'selectors/systemCodeSelectors'
 
-const namesOfPeople = (people = List()) => people.map((person) => nameFormatter(person.toJS()))
+const namesOfPeople = (people) => people.map((person) => nameFormatter(person))
 
 export const getContactLogsSelector = createSelector(
   getStatusesSelector,
@@ -19,7 +19,7 @@ export const getContactLogsSelector = createSelector(
     (contact) => fromJS({
       id: contact.getIn(['legacy_descriptor', 'legacy_id']),
       investigationId,
-      people: namesOfPeople(contact.get('people')),
+      people: namesOfPeople(contact.get('people', List()).toJS()),
       startedAt: dateTimeFormatter(contact.get('started_at')),
       status: systemCodeDisplayValue(contact.get('status'), contactStatuses),
       method: systemCodeDisplayValue(contact.get('communication_method'), communicationMethods),
