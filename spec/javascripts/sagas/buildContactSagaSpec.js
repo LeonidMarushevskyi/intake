@@ -2,7 +2,12 @@ import 'babel-polyfill'
 import {takeEvery, put, call} from 'redux-saga/effects'
 import {get} from 'utils/http'
 import {buildContactSaga, buildContact} from 'sagas/buildContactSaga'
-import {BUILD_CONTACT, buildSuccess, buildFailure} from 'actions/contactFormActions'
+import {
+  BUILD_CONTACT,
+  build,
+  buildSuccess,
+  buildFailure,
+} from 'actions/contactFormActions'
 
 describe('buildContactSaga', () => {
   it('builds a contact on BUILD_CONTACT', () => {
@@ -12,8 +17,10 @@ describe('buildContactSaga', () => {
 })
 
 describe('buildContact', () => {
+  const action = build({investigation_id: '123ABC'})
+
   it('fetches the contacts investigation', () => {
-    const gen = buildContact({investigation_id: '123ABC'})
+    const gen = buildContact(action)
     const investigation = {id: '123ABC', started_at: 'date time', people: ['bob']}
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/investigations/123ABC')
@@ -31,7 +38,7 @@ describe('buildContact', () => {
 
   it('dispatches BUILD_CONTACT_FAILURE when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
-    const gen = buildContact({investigation_id: '123ABC'})
+    const gen = buildContact(action)
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/investigations/123ABC')
     )
