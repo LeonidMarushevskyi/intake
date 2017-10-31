@@ -2890,6 +2890,12 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
+flux-standard-action@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/flux-standard-action/-/flux-standard-action-1.2.0.tgz#d2d41612dde4cebddd11a76cfead8e84fc69ebdc"
+  dependencies:
+    lodash "^4.0.0"
+
 font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
