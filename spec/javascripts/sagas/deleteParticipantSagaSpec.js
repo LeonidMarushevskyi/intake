@@ -11,6 +11,7 @@ import {
   deleteParticipantSuccess,
   deleteParticipantFailure,
   fetchScreening,
+  fetchRelationships,
 } from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
@@ -21,7 +22,7 @@ describe('deleteParticipantSaga', () => {
 })
 
 describe('deleteParticipant', () => {
-  it('deletes and puts participant and fetches a screening', () => {
+  it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
     const id = '123'
     const gen = deleteParticipant({id})
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
@@ -31,6 +32,9 @@ describe('deleteParticipant', () => {
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
       put(fetchScreening('444'))
+    )
+    expect(gen.next('444').value).toEqual(
+      put(fetchRelationships('444'))
     )
   })
 
