@@ -27,7 +27,7 @@ Capybara.register_driver :accessible_selenium do |app|
 end
 
 Capybara.register_driver :accessible_poltergeist do |app|
-  driver = Capybara::Poltergeist::Driver.new(app, js_errors: false)
+  driver = Capybara::Poltergeist::Driver.new(app, js_errors: false, inspector: true)
   adaptor = Capybara::Accessible::PoltergeistDriverAdapter.new
   Capybara::Accessible.setup(driver, adaptor)
 end
