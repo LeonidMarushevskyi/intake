@@ -21,6 +21,10 @@ feature 'Delete Participant' do
   scenario 'removing a participant from an existing screening in edit mode' do
     visit edit_screening_path(id: screening.id)
 
+    within edit_participant_card_selector(participant.id) do
+      expect(page).to have_content(participant.first_name)
+    end
+
     screening.participants = []
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
