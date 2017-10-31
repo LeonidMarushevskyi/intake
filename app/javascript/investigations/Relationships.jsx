@@ -8,18 +8,25 @@ export const Relationships = ({people}) => (
         <div className='row' key={1}>
           <div className='col-md-6 gap-top'>
             <span className='person'>{person.name}</span>
-            <span>
-              <strong> is the...</strong>
-              <ul className='relationships'>
-                {
-                  person.relationships.map((relationship, index) => (
-                    <li key={index}>
-                      <strong>{ relationship.type }</strong> &nbsp; of { relationship.relatee }
-                    </li>
-                  ))
-                }
-              </ul>
-            </span>
+            {
+              (person.relationships.length > 0) &&
+              <span>
+                <strong> is the...</strong>
+                <ul className='relationships'>
+                  {
+                    person.relationships.map((relationship, index) => (
+                      <li key={index}>
+                        <strong>{ relationship.type }</strong> &nbsp; of { relationship.relatee }
+                      </li>
+                    ))
+                  }
+                </ul>
+              </span>
+            }
+            {
+              (person.relationships.length === 0) &&
+              <strong className='relationships'> has no known relationships</strong>
+            }
           </div>
         </div>))
     }

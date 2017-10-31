@@ -5,7 +5,7 @@ require 'feature/testing'
 
 feature 'Investigation Relationship Card' do
   let(:investigation_id) { '1234' }
-  let(:relationships) { [{}] }
+  let(:relationships) { [] }
 
   before do
     stub_request(
@@ -14,7 +14,7 @@ feature 'Investigation Relationship Card' do
     ).and_return(json_body({ relationships: relationships }.to_json), status: 200)
   end
 
-  context 'an investigation without participants' do
+  context 'an investigation without people' do
     scenario 'the relationships card displays the empty relationship message' do
       visit investigation_path(id: investigation_id)
       within '.card.show', text: 'Relationships' do
@@ -23,7 +23,7 @@ feature 'Investigation Relationship Card' do
     end
   end
 
-  context 'an investigation with participants' do
+  context 'an investigation with people and relationships' do
     let(:relationship) do
     end
 
@@ -58,6 +58,7 @@ feature 'Investigation Relationship Card' do
         }
       ]
     end
+
     scenario 'displays the relationships on page load' do
       visit investigation_path(id: investigation_id)
       within '.card.show', text: 'Relationships' do
@@ -66,6 +67,25 @@ feature 'Investigation Relationship Card' do
         expect(page.find('.relationships li', text: 'Spouse of Missy R.')).to be_truthy
         expect(page.find('.relationships li', text: 'Father of Roland W.')).to be_truthy
         expect(page.find('.relationships li', text: 'Father of Sharon W.')).to be_truthy
+      end
+    end
+  end
+
+  context 'an investigation with people that dont have relationships' do
+    let(:relationships) do
+      [
+        {
+          first_name: 'Ricky',
+          last_name: 'W.',
+          middle_name: '',
+          relationship_to: []
+        }
+      ]
+    end
+    scenario 'displays people without relationships' do
+      visit investigation_path(id: investigation_id)
+      within '.card.show', text: 'Relationships' do
+        expect(page.find('.relationships')).to have_content('has no known relationships')
       end
     end
   end
