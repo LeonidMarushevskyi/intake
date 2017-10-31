@@ -7,10 +7,10 @@ import {
   SAVE_CONTACT,
 } from 'actions/contactActions'
 
-export function* saveContact(contact) {
+export function* saveContact({payload}) {
   try {
-    const investigationId = contact.investigation_id
-    const id = contact.id
+    const investigationId = payload.investigation_id
+    const id = payload.id
     let path
     let method
     if (id) {
@@ -20,7 +20,7 @@ export function* saveContact(contact) {
       path = `/api/v1/investigations/${investigationId}/contacts`
       method = api.post
     }
-    const response = yield call(method, path, contact)
+    const response = yield call(method, path, payload)
     yield put(saveSuccess(response))
     const contactId = response.legacy_descriptor.legacy_id
     const show_contact_path = `/investigations/${investigationId}/contacts/${contactId}`

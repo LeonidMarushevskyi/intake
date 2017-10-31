@@ -6,6 +6,7 @@ import {
   saveContact,
 } from 'sagas/saveContactSaga'
 import {
+  save,
   saveSuccess,
   saveFailure,
   SAVE_CONTACT,
@@ -23,23 +24,31 @@ describe('saveContact', () => {
   const contactResponse = {legacy_descriptor: {legacy_id: 'existing_contact_id'}}
 
   describe('when id is present', () => {
-    const contact = {
+    const action = save({
       investigation_id: 'existing_investigation_id',
       id: 'existing_contact_id',
-    }
+    })
 
     it('calls update API and puts saveSuccess action', () => {
-      const gen = saveContact(contact)
+      const gen = saveContact(action)
       expect(gen.next().value).toEqual(
         call(
           api.put,
           '/api/v1/investigations/existing_investigation_id/contacts/existing_contact_id',
-          contact
+          {
+            investigation_id: 'existing_investigation_id',
+            id: 'existing_contact_id',
+            started_at: undefined,
+            status: undefined,
+            note: undefined,
+            purpose: undefined,
+            communication_method: undefined,
+            location: undefined,
+            people: undefined,
+          }
         )
       )
-      expect(gen.next(contactResponse).value).toEqual(
-        put(saveSuccess(contactResponse))
-      )
+      expect(gen.next(contactResponse).value).toEqual(put(saveSuccess(contactResponse)))
       expect(gen.next().value).toEqual(
         put(
           push(
@@ -50,18 +59,28 @@ describe('saveContact', () => {
     })
   })
   describe('when id is not present', () => {
-    const contact = {
+    const action = save({
       investigation_id: 'existing_investigation_id',
       id: null,
-    }
+    })
 
     it('calls create API and puts saveSuccess action', () => {
-      const gen = saveContact(contact)
+      const gen = saveContact(action)
       expect(gen.next().value).toEqual(
         call(
           api.post,
           '/api/v1/investigations/existing_investigation_id/contacts',
-          contact
+          {
+            investigation_id: 'existing_investigation_id',
+            id: null,
+            started_at: undefined,
+            status: undefined,
+            note: undefined,
+            purpose: undefined,
+            communication_method: undefined,
+            location: undefined,
+            people: undefined,
+          }
         )
       )
       expect(gen.next(contactResponse).value).toEqual(
@@ -77,10 +96,24 @@ describe('saveContact', () => {
 
   it('puts errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
-    const contact = {investigation_id: 'existing_investigation_id'}
-    const gen = saveContact(contact)
+    const action = save({investigation_id: 'existing_investigation_id'})
+    const gen = saveContact(action)
     expect(gen.next().value).toEqual(
-      call(api.post, '/api/v1/investigations/existing_investigation_id/contacts', contact)
+      call(
+        api.post,
+        '/api/v1/investigations/existing_investigation_id/contacts',
+        {
+          investigation_id: 'existing_investigation_id',
+          id: undefined,
+          started_at: undefined,
+          status: undefined,
+          note: undefined,
+          purpose: undefined,
+          communication_method: undefined,
+          location: undefined,
+          people: undefined,
+        }
+      )
     )
     expect(gen.throw(error).value).toEqual(
       put(saveFailure('some error'))
