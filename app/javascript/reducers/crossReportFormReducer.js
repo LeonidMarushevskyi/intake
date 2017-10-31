@@ -63,10 +63,10 @@ export default createReducer(Map(), {
   [CLEAR_CROSS_REPORT_VALUES](state) {
     return buildCrossReportForm({agencies: [], county_id: state.getIn(['county_id', 'value'])})
   },
-  [CLEAR_CROSS_REPORT_AGENCY_VALUES](state, {agencyType}) {
+  [CLEAR_CROSS_REPORT_AGENCY_VALUES](state, {payload: {agencyType}}) {
     return state.setIn([agencyType, 'agency', 'value'], '').setIn([agencyType, 'agency', 'touched'], false)
   },
-  [RESET_CROSS_REPORT_VALUES](state, {screening: {cross_reports}}) {
+  [RESET_CROSS_REPORT_VALUES](state, {payload: {screening: {cross_reports}}}) {
     if (cross_reports && cross_reports.length > 0) {
       const crossReport = cross_reports[0]
       let newState = fromJS(AGENCY_TYPES).reduce(
@@ -85,13 +85,13 @@ export default createReducer(Map(), {
       return buildCrossReportForm()
     }
   },
-  [SET_CROSS_REPORT_AGENCY_TYPE](state, {field, value}) {
+  [SET_CROSS_REPORT_AGENCY_TYPE](state, {payload: {field, value}}) {
     return state.setIn([field, 'selected'], value)
   },
-  [SET_CROSS_REPORT_AGENCY](state, {agencyType, value}) {
+  [SET_CROSS_REPORT_AGENCY](state, {payload: {agencyType, value}}) {
     return state.setIn([agencyType, 'agency', 'value'], value)
   },
-  [SET_CROSS_REPORT_FIELD](state, {field, value}) {
+  [SET_CROSS_REPORT_FIELD](state, {payload: {field, value}}) {
     return state.setIn([field, 'value'], value)
   },
   [TOUCH_ALL_CROSS_REPORT_FIELDS](state) {
@@ -107,16 +107,16 @@ export default createReducer(Map(), {
       }
     }, state)
   },
-  [TOUCH_CROSS_REPORT_FIELD](state, {field}) {
+  [TOUCH_CROSS_REPORT_FIELD](state, {payload: {field}}) {
     return state.setIn([field, 'touched'], true)
   },
-  [TOUCH_CROSS_REPORT_AGENCY_FIELD](state, {agencyType}) {
+  [TOUCH_CROSS_REPORT_AGENCY_FIELD](state, {payload: {agencyType}}) {
     return state.setIn([agencyType, 'agency', 'touched'], true)
   },
   [FETCH_SCREENING_SUCCESS](_state, {screening}) {
     return buildCrossReportFormFromScreening(screening)
   },
-  [SAVE_CROSS_REPORT](_state, {screening}) {
+  [SAVE_CROSS_REPORT](_state, {payload: {screening}}) {
     return buildCrossReportFormFromScreening(screening)
   },
 })
