@@ -27,18 +27,18 @@ const ContactLog = ({investigationId, contactLogs}) => (
           </thead>
           <tbody>
             {
-              contactLogs.map(({id, investigationId, startedAt, people, method, status, note}, index) => {
-                const props = {
-                  id,
-                  investigationId,
-                  startedAt,
-                  people,
-                  method,
-                  status,
-                  note,
-                }
-                return (<ContactLogRow key={index} {...props} />)
-              })
+              contactLogs.map(({id, investigationId, startedAt, people, method, status, note}, index) => (
+                <ContactLogRow
+                  id={id}
+                  investigationId={investigationId}
+                  key={index}
+                  method={method}
+                  note={note}
+                  people={people}
+                  startedAt={startedAt}
+                  status={status}
+                />
+              ))
             }
           </tbody>
         </table>
