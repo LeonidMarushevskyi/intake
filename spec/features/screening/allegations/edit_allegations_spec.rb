@@ -124,7 +124,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody', visible: false do
         expect(page).to_not have_content('Marge')
         expect(page).to_not have_content('Lisa')
@@ -149,7 +149,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'tbody', visible: false do
         expect(page).to_not have_content('Marge')
         expect(page).to_not have_content('Lisa')
@@ -242,6 +242,10 @@ feature 'edit allegations' do
       end
     end
 
+    screening.participants = [lisa]
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within edit_participant_card_selector(marge.id) do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
@@ -300,7 +304,7 @@ feature 'edit allegations' do
       ).merge('participants' => []))
     ).to have_been_made
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within 'table tbody tr' do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Marge')
@@ -325,7 +329,7 @@ feature 'edit allegations' do
       click_button 'Cancel'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within('table') do
         expect(page).to have_no_content('Lisa')
         expect(page).to have_no_content('Marge')
@@ -361,7 +365,7 @@ feature 'edit allegations' do
       click_button 'Cancel'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       within('table') do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Marge')
@@ -495,7 +499,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_content('Lisa')
       expect(page).to have_content('Marge')
       expect(page).to have_content('General neglect')
@@ -519,7 +523,7 @@ feature 'edit allegations' do
       click_link 'Edit person'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_no_content('Lisa')
       expect(page).to have_no_content('Marge')
       expect(page).to have_no_content('General neglect')
@@ -594,7 +598,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_content('Lisa')
       expect(page).to have_content('Marge')
       expect(page).to have_content('General neglect')
@@ -618,7 +622,7 @@ feature 'edit allegations' do
       click_link 'Edit person'
     end
 
-    within '#allegations-card.card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_no_content('Lisa')
       expect(page).to have_no_content('Marge')
       expect(page).to have_no_content('General neglect')

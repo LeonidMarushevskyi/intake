@@ -27,19 +27,6 @@ describe('AllegationsCardView', () => {
     requiredProps.onCancel = jasmine.createSpy('onCancel')
   })
 
-  it('renders the card header', () => {
-    const props = {
-      ...requiredProps,
-      editable: false,
-    }
-    const component = shallow(<AllegationsCardView {...props}/>)
-    const header = component.find('ScreeningCardHeader')
-    expect(header.length).toEqual(1)
-    expect(header.props().onEdit).toEqual(component.instance().onEdit)
-    expect(header.props().showEdit).toEqual(false)
-    expect(header.props().title).toEqual('Allegations')
-  })
-
   describe('#onCancel', () => {
     beforeEach(() => {
       requiredProps.onCancel = jasmine.createSpy('onCancel')
@@ -54,15 +41,6 @@ describe('AllegationsCardView', () => {
 
     it('clears edits for the allegations card', () => {
       expect(requiredProps.onCancel).toHaveBeenCalledWith(['allegations'])
-    })
-  })
-
-  describe('#onEdit', () => {
-    it('toggles the mode to edit', () => {
-      component = shallow(<AllegationsCardView {...requiredProps} mode={'show'}/>)
-      instance = component.instance()
-      instance.onEdit()
-      expect(instance.state.mode).toEqual('edit')
     })
   })
 
@@ -181,21 +159,12 @@ describe('AllegationsCardView', () => {
 
     it('renders the allegations show view', () => {
       component = shallow(<AllegationsCardView {...requiredProps} />)
-      expect(component.find('AllegationsShowView').length).toEqual(1)
-    })
-
-    it("renders only allegations with persisted id's", () => {
-      const expectedAllegations = [{id: '1', allegation_types: []}, {id: '2', allegation_types: []}]
-      component = shallow(<AllegationsCardView {...requiredProps} allegations={allegations} />)
-      const renderedAllegations = component.find('AllegationsShowView').props().allegations
-
-      expect(renderedAllegations.toJS()).toEqual(expectedAllegations)
-      expect(Immutable.is(renderedAllegations, Immutable.fromJS(expectedAllegations))).toEqual(true)
+      expect(component.find('Connect(AllegationShow)').length).toEqual(1)
     })
 
     it('knows whether or not allegations are required', () => {
       component = shallow(<AllegationsCardView {...requiredProps} />)
-      expect(component.find('AllegationsShowView').props().required).toEqual(false)
+      expect(component.find('Connect(AllegationShow)').props().required).toEqual(false)
     })
   })
 

@@ -5,6 +5,7 @@ require 'spec_helper'
 
 feature 'Allegations Validations' do
   scenario 'User sees that allegations are required when decision is promote to referral' do
+    pending 'Redux refactor so we can pull the screening decision from the store'
     perpetrator = FactoryGirl.create(:participant, :perpetrator)
     victim = FactoryGirl.create(:participant, :victim)
     screening = FactoryGirl.create(
@@ -33,7 +34,7 @@ feature 'Allegations Validations' do
       click_button 'Cancel'
     end
 
-    within '#allegations-card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).to have_content(error_message)
       click_link 'Edit'
     end
@@ -54,7 +55,7 @@ feature 'Allegations Validations' do
       click_button 'Cancel'
     end
 
-    within '#allegations-card.show' do
+    within '.card.show', text: 'Allegations' do
       expect(page).not_to have_content(error_message)
     end
   end

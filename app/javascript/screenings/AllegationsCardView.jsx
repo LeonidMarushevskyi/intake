@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationsEditView from 'screenings/AllegationsEditView'
-import AllegationsShowView from 'screenings/AllegationsShowView'
+import AllegationsShowContainer from 'screenings/AllegationsShowContainer'
 import * as AllegationsHelper from 'utils/allegationsHelper'
-import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class AllegationsCardView extends React.Component {
   constructor(props, context) {
@@ -14,9 +13,9 @@ export default class AllegationsCardView extends React.Component {
     }
 
     this.onCancel = this.onCancel.bind(this)
-    this.onEdit = this.onEdit.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.toggleMode = this.toggleMode.bind(this)
   }
 
   onCancel() {
@@ -28,13 +27,15 @@ export default class AllegationsCardView extends React.Component {
     this.props.onChange(['allegations', victimId, perpetratorId], allegationTypes)
   }
 
-  onEdit() {
-    this.setState({mode: 'edit'})
-  }
-
   onSave() {
     this.props.onSave(['allegations'])
     this.setState({mode: 'show'})
+  }
+
+  toggleMode() {
+    const currentMode = this.state.mode
+    const newMode = currentMode === 'show' ? 'edit' : 'show'
+    this.setState({mode: newMode})
   }
 
   alertErrorMessage() {
@@ -64,22 +65,15 @@ export default class AllegationsCardView extends React.Component {
       allegations: allegations,
       required: this.props.required,
       onCancel: this.onCancel,
-      onEdit: this.onEdit,
       onSave: this.onSave,
       onChange: this.onChange,
+      toggleMode: this.toggleMode,
     }
 
-    const AllegationsView = (mode === 'show') ? AllegationsShowView : AllegationsEditView
+    const AllegationsView = (mode === 'show') ? AllegationsShowContainer : AllegationsEditView
 
     return (
-      <div className={`card ${mode} double-gap-top`} id='allegations-card'>
-        <ScreeningCardHeader
-          onEdit={this.onEdit}
-          title='Allegations'
-          showEdit={this.props.editable && mode === 'show'}
-        />
-        <AllegationsView {...props} />
-      </div>
+      <AllegationsView {...props} />
     )
   }
 }
