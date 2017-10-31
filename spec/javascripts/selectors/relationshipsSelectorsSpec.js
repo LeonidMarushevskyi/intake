@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import {
   getPeopleSelector,
-} from 'selectors/RelationshipsSelectors'
+} from 'selectors/relationshipsSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('relationshipsViewSelectors', () => {
