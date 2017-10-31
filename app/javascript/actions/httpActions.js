@@ -1,7 +1,5 @@
-import {
-  HTTP_FAILURE,
-} from 'actions/actionTypes'
+import {HTTP_FAILURE} from 'actions/actionTypes'
 
 export function httpError(responseJSON) {
-  return {type: HTTP_FAILURE, responseJSON}
+  return {type: HTTP_FAILURE, payload: responseJSON}
 }

@@ -1,6 +1,7 @@
 import * as Http from 'utils/http'
 import * as Config from 'common/config'
 import {store} from 'store/configureStore'
+import {httpError} from 'actions/httpActions'
 
 describe('request', () => {
   beforeEach(() => {
@@ -22,10 +23,9 @@ describe('request', () => {
         status: 500,
         responseText: JSON.stringify({why: 'Did not stick to the plan'}),
       })
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: 'HTTP_FAILURE',
-        responseJSON: {why: 'Did not stick to the plan'},
-      })
+      expect(store.dispatch).toHaveBeenCalledWith(
+        httpError({why: 'Did not stick to the plan'})
+      )
     })
   })
 })
