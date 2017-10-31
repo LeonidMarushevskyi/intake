@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import {takeEvery, put, call} from 'redux-saga/effects'
+import {takeEvery, put, call, select} from 'redux-saga/effects'
 import {post} from 'utils/http'
 import {
   createParticipant,
@@ -9,7 +9,9 @@ import {CREATE_PARTICIPANT} from 'actions/actionTypes'
 import {
   createParticipantSuccess,
   createParticipantFailure,
+  fetchRelationships,
 } from 'actions/screeningActions'
+import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 
 describe('createParticipantSaga', () => {
   it('creates participant on CREATE_PARTICIPANT', () => {
@@ -19,12 +21,19 @@ describe('createParticipantSaga', () => {
 })
 
 describe('createParticipant', () => {
-  it('creates and puts participant', () => {
+  it('creates and puts participant and fetches relationships', () => {
     const participant = {first_name: 'Michael'}
     const gen = createParticipant({participant})
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     expect(gen.next(participant).value).toEqual(
       put(createParticipantSuccess(participant))
+    )
+    expect(gen.next().value).toEqual(
+      select(getScreeningIdValueSelector)
+    )
+    const screeningId = '444'
+    expect(gen.next(screeningId).value).toEqual(
+      put(fetchRelationships(screeningId))
     )
   })
 
