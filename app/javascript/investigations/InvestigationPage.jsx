@@ -4,6 +4,7 @@ import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
 import AllegationShowContainer from 'investigations/AllegationShowContainer'
 import HistoryOfInvolvementContainer from 'history/HistoryOfInvolvementContainer'
+import RelationshipsCardContainer from 'investigations/RelationshipsCardContainer'
 
 export class InvestigationPage extends React.Component {
   componentDidMount() {
@@ -17,6 +18,7 @@ export class InvestigationPage extends React.Component {
       <div>
         <ScreeningSummaryContainer />
         <AllegationShowContainer />
+        <RelationshipsCardContainer />
         <HistoryOfInvolvementContainer />
         <ContactLogContainer id={id}/>
       </div>
