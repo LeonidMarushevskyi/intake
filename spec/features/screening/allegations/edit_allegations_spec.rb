@@ -293,6 +293,8 @@ feature 'edit allegations' do
 
     within '#allegations-card.card.edit' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
+      fill_in_react_select "allegations_#{lisa.id}_#{marge.id}",
+        with: 'Severe neglect', exit_key: :tab
       has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: ['General neglect']
       click_button 'Save'
     end

@@ -11,6 +11,7 @@ const AllegationRow = ({victim, perpetrator, displayVictim, onChange, allegation
     <td>{nameFormatter(perpetrator.toJS())}</td>
     <td>
       <Select
+        tabSelectsValue={false}
         aria-label={`allegations ${nameFormatter(victim.toJS())} ${nameFormatter(perpetrator.toJS())}`}
         multi
         inputProps={{id: `allegations_${victim.get('id')}_${perpetrator.get('id')}`}}
