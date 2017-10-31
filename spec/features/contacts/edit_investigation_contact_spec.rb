@@ -25,7 +25,7 @@ feature 'Edit Investigation Contact' do
   end
   let(:contact) do
     {
-      id: contact_id,
+      legacy_descriptor: { legacy_id: contact_id },
       started_at: '2010-04-27T23:30:00.000Z',
       purpose: 'CONTACT_PURPOSE_1',
       communication_method: 'COMMUNICATION_METHOD_1',
@@ -79,7 +79,6 @@ feature 'Edit Investigation Contact' do
       a_request(:put, contact_show_url)
       .with(
         json_body({
-          id: contact_id,
           started_at: '2016-08-17T10:00:00.000Z',
           purpose: 'CONTACT_PURPOSE_2',
           status: 'CONTACT_STATUS_2',

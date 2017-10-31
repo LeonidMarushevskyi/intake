@@ -9,7 +9,6 @@ module Api
         respond_to :json
 
         PERMITTED_PARAMS = [
-          :id,
           :started_at,
           :purpose,
           :status,
