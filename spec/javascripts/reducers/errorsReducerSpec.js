@@ -9,7 +9,7 @@ describe('errorsReducer', () => {
   describe('on httpError', () => {
     it('returns the error object', () => {
       const state = fromJS({
-        '/another/path/here': {
+        ACTION_TYPE: {
           stuff: 'Did not have a plan',
         },
       })
@@ -21,11 +21,13 @@ describe('errorsReducer', () => {
       )
       expect(errorsReducer(state, action)).toEqualImmutable(
         fromJS({
-          '/another/path/here': {
+          ACTION_TYPE: {
             stuff: 'Did not have a plan',
           },
-          '/path/to/some/where': {
-            stuff: 'Did not have a plan',
+          unknown: {
+            '/path/to/some/where': {
+              stuff: 'Did not have a plan',
+            },
           },
         })
       )
@@ -35,11 +37,13 @@ describe('errorsReducer', () => {
   describe('on httpSuccess', () => {
     it('returns an empty object', () => {
       const state = fromJS({
-        '/another/path/here': {
+        ACTION_TYPE: {
           stuff: 'Did not have a plan',
         },
-        '/path/to/some/where': {
-          stuff: 'Did not have a plan',
+        unknown: {
+          '/path/to/some/where': {
+            stuff: 'Did not have a plan',
+          },
         },
       })
       const action = httpSuccess(
@@ -50,9 +54,10 @@ describe('errorsReducer', () => {
       )
       expect(errorsReducer(state, action)).toEqualImmutable(
         fromJS({
-          '/another/path/here': {
+          ACTION_TYPE: {
             stuff: 'Did not have a plan',
           },
+          unknown: {},
         })
       )
     })

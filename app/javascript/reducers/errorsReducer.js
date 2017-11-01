@@ -4,6 +4,6 @@ import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
   [HTTP_COMPLETE](state, {payload: {url, response}, error}) {
-    return error ? state.set(url, fromJS(response)) : state.delete(url)
+    return error ? state.set('unknown', fromJS({[url]: response})) : state.deleteIn(['unknown', url])
   },
 })
