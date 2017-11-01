@@ -1,5 +1,9 @@
-import {HTTP_FAILURE} from 'actions/actionTypes'
+export const HTTP_COMPLETE = 'HTTP_COMPLETE'
 
-export function httpError(responseJSON) {
-  return {type: HTTP_FAILURE, payload: responseJSON}
+export function httpError(url, response) {
+  return {type: HTTP_COMPLETE, payload: {url, response}, error: true}
+}
+
+export function httpSuccess(url, response) {
+  return {type: HTTP_COMPLETE, payload: {url, response}}
 }
