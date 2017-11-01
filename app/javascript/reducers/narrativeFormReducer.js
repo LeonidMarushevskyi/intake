@@ -17,13 +17,13 @@ export default createReducer(Map(), {
       },
     })
   },
-  [RESET_NARRATIVE_FIELD_VALUES](state, {screening: {report_narrative}}) {
+  [RESET_NARRATIVE_FIELD_VALUES](state, {payload: {screening: {report_narrative}}}) {
     return state.setIn(['report_narrative', 'value'], report_narrative)
   },
-  [SET_NARRATIVE_FIELD](state, {field, value}) {
+  [SET_NARRATIVE_FIELD](state, {payload: {field, value}}) {
     return state.setIn([field, 'value'], value)
   },
-  [TOUCH_NARRATIVE_FIELD](state, {field}) {
+  [TOUCH_NARRATIVE_FIELD](state, {payload: {field}}) {
     return state.setIn([field, 'touched'], true)
   },
   [TOUCH_ALL_NARRATIVE_FIELDS](state, _) {
