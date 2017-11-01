@@ -7,7 +7,7 @@ import {
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import {FETCH_SCREENING} from 'actions/actionTypes'
 
-export function* fetchScreening({id}) {
+export function* fetchScreening({payload: {id}}) {
   try {
     const response = yield call(get, `/api/v1/screenings/${id}`)
     const {cross_reports} = response

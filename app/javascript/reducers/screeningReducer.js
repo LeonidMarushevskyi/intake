@@ -8,7 +8,7 @@ import {
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
-const getScreening = (state, {screening}) => fromJS({
+const getScreening = (state, {payload: {screening}}) => fromJS({
   ...screening,
   fetch_status: 'FETCHED',
 })

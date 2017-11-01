@@ -1,8 +1,8 @@
 import * as matchers from 'jasmine-immutable-matchers'
-import {SUBMIT_SCREENING_SUCCESS} from 'actions/actionTypes'
 import {
   createScreeningSuccess,
   fetchScreeningSuccess,
+  submitScreeningSuccess,
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import {FETCH_SCREENING} from 'actions/actionTypes'
@@ -54,7 +54,7 @@ describe('screeningReducer', () => {
   describe('on SUBMIT_SCREENING_SUCCESS', () => {
     it('returns the screening from the action', () => {
       const screening = {id: '1'}
-      const action = {type: SUBMIT_SCREENING_SUCCESS, screening}
+      const action = submitScreeningSuccess(screening)
       expect(screeningReducer(Map(), action)).toEqualImmutable(
         Map({id: '1', fetch_status: 'FETCHED'})
       )

@@ -8,7 +8,7 @@ import {
   FETCH_HISTORY_OF_INVOLVEMENTS,
 } from 'actions/actionTypes'
 
-export function* fetchHistoryOfInvolvements({id}) {
+export function* fetchHistoryOfInvolvements({payload: {id}}) {
   try {
     const response = yield call(get, `/api/v1/screenings/${id}/history_of_involvements`)
     yield put(fetchHistoryOfInvolvementsSuccess(response))

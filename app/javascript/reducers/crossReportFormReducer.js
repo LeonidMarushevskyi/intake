@@ -113,7 +113,7 @@ export default createReducer(Map(), {
   [TOUCH_CROSS_REPORT_AGENCY_FIELD](state, {payload: {agencyType}}) {
     return state.setIn([agencyType, 'agency', 'touched'], true)
   },
-  [FETCH_SCREENING_SUCCESS](_state, {screening}) {
+  [FETCH_SCREENING_SUCCESS](_state, {payload: {screening}}) {
     return buildCrossReportFormFromScreening(screening)
   },
   [SAVE_CROSS_REPORT](_state, {payload: {screening}}) {

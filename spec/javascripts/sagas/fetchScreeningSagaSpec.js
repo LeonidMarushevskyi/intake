@@ -3,10 +3,7 @@ import {takeEvery, put, call} from 'redux-saga/effects'
 import {get} from 'utils/http'
 import {fetchScreeningSaga, fetchScreening} from 'sagas/fetchScreeningSaga'
 import {FETCH_SCREENING} from 'actions/actionTypes'
-import {
-  fetchScreeningSuccess,
-  fetchScreeningFailure,
-} from 'actions/screeningActions'
+import * as actions from 'actions/screeningActions'
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 
 describe('fetchScreeningSaga', () => {
@@ -17,52 +14,49 @@ describe('fetchScreeningSaga', () => {
 })
 
 describe('fetchScreening', () => {
+  const id = '123'
+  const action = actions.fetchScreening(id)
   describe('when successful', () => {
     it('fetches and puts screening with cross report data', () => {
-      const id = '123'
-      const screening = {id, cross_reports: [{county_id: '1234'}]}
-      const gen = fetchScreening({id})
+      const gen = fetchScreening(action)
       expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const screening = {id, cross_reports: [{county_id: '1234'}]}
       expect(gen.next(screening).value).toEqual(put(fetchCountyAgencies('1234')))
       expect(gen.next(screening).value).toEqual(
-        put(fetchScreeningSuccess(screening))
+        put(actions.fetchScreeningSuccess(screening))
       )
     })
     it('fetches and puts screening without county info data', () => {
-      const id = '123'
-      const screening = {id, cross_reports: [{county_id: ''}]}
-      const gen = fetchScreening({id})
+      const gen = fetchScreening(action)
       expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const screening = {id, cross_reports: [{county_id: ''}]}
       expect(gen.next(screening).value).toEqual(
-        put(fetchScreeningSuccess(screening))
+        put(actions.fetchScreeningSuccess(screening))
       )
     })
     it('fetches and puts screening without a cross report', () => {
-      const id = '123'
-      const screening = {id, cross_reports: []}
-      const gen = fetchScreening({id})
+      const gen = fetchScreening(action)
       expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const screening = {id, cross_reports: []}
       expect(gen.next(screening).value).toEqual(
-        put(fetchScreeningSuccess(screening))
+        put(actions.fetchScreeningSuccess(screening))
       )
     })
     it('fetches and puts screening without cross report key', () => {
-      const id = '123'
-      const screening = {id}
-      const gen = fetchScreening({id})
+      const gen = fetchScreening(action)
       expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const screening = {id}
       expect(gen.next(screening).value).toEqual(
-        put(fetchScreeningSuccess(screening))
+        put(actions.fetchScreeningSuccess(screening))
       )
     })
   })
   it('puts errors when errors are thrown', () => {
-    const id = '123'
-    const error = {responseJSON: 'some error'}
-    const gen = fetchScreening({id})
+    const gen = fetchScreening(action)
     expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+    const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(fetchScreeningFailure('some error'))
+      put(actions.fetchScreeningFailure('some error'))
     )
   })
 })

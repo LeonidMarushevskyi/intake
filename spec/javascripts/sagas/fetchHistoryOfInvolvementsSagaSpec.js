@@ -6,10 +6,7 @@ import {
   fetchHistoryOfInvolvements,
 } from 'sagas/fetchHistoryOfInvolvementsSaga'
 import {FETCH_HISTORY_OF_INVOLVEMENTS} from 'actions/actionTypes'
-import {
-  fetchHistoryOfInvolvementsSuccess,
-  fetchHistoryOfInvolvementsFailure,
-} from 'actions/screeningActions'
+import * as actions from 'actions/screeningActions'
 
 describe('fetchHistoryOfInvolvementsSaga', () => {
   it('fetches involvements on FETCH_HISTORY_OF_INVOLVEMENTS', () => {
@@ -21,27 +18,28 @@ describe('fetchHistoryOfInvolvementsSaga', () => {
 })
 
 describe('fetchHistoryOfInvolvements', () => {
+  const id = '123'
+  const action = actions.fetchHistoryOfInvolvements(id)
+
   it('fetches and puts involvements', () => {
-    const id = '123'
-    const involvements = [{id: '2'}]
-    const gen = fetchHistoryOfInvolvements({id})
+    const gen = fetchHistoryOfInvolvements(action)
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/screenings/123/history_of_involvements')
     )
+    const involvements = [{id: '2'}]
     expect(gen.next(involvements).value).toEqual(
-      put(fetchHistoryOfInvolvementsSuccess(involvements))
+      put(actions.fetchHistoryOfInvolvementsSuccess(involvements))
     )
   })
 
   it('puts errors when errors are thrown', () => {
-    const id = '123'
-    const error = {responseJSON: 'some error'}
-    const gen = fetchHistoryOfInvolvements({id})
+    const gen = fetchHistoryOfInvolvements(action)
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/screenings/123/history_of_involvements')
     )
+    const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(fetchHistoryOfInvolvementsFailure('some error'))
+      put(actions.fetchHistoryOfInvolvementsFailure('some error'))
     )
   })
 })

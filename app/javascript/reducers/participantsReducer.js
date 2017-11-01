@@ -9,7 +9,7 @@ import {
 import {createReducer} from 'utils/createReducer'
 import {List, fromJS} from 'immutable'
 
-const getParticipantsOnScreening = (state, {screening: {participants}}) => (
+const getParticipantsOnScreening = (state, {payload: {screening: {participants}}}) => (
   fromJS(participants)
 )
 
@@ -17,15 +17,15 @@ export default createReducer(List(), {
   [CREATE_SCREENING_SUCCESS]: getParticipantsOnScreening,
   [FETCH_SCREENING_SUCCESS]: getParticipantsOnScreening,
   [UPDATE_SCREENING_SUCCESS]: getParticipantsOnScreening,
-  [CREATE_PARTICIPANT_SUCCESS](state, action) {
-    const newParticipant = fromJS(action.participant)
+  [CREATE_PARTICIPANT_SUCCESS](state, {payload: {participant}}) {
+    const newParticipant = fromJS(participant)
     return state.unshift(newParticipant)
   },
-  [DELETE_PARTICIPANT_SUCCESS](state, action) {
-    return state.filterNot((x) => x.get('id') === action.id)
+  [DELETE_PARTICIPANT_SUCCESS](state, {payload: {id}}) {
+    return state.filterNot((x) => x.get('id') === id)
   },
-  [UPDATE_PARTICIPANT_SUCCESS](state, action) {
-    const updatedParticipant = fromJS(action.participant)
+  [UPDATE_PARTICIPANT_SUCCESS](state, {payload: {participant}}) {
+    const updatedParticipant = fromJS(participant)
     const participantIndex = state.findIndex((x) => x.get('id') === updatedParticipant.get('id'))
     return state.setIn([participantIndex], updatedParticipant)
   },

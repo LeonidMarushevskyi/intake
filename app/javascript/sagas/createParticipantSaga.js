@@ -9,7 +9,7 @@ import {
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import {CREATE_PARTICIPANT} from 'actions/actionTypes'
 
-export function* createParticipant({participant}) {
+export function* createParticipant({payload: {participant}}) {
   try {
     const response = yield call(post, '/api/v1/participants', participant)
     yield put(createParticipantSuccess(response))

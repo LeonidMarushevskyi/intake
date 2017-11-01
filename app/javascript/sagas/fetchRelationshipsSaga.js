@@ -8,7 +8,7 @@ import {
   FETCH_RELATIONSHIPS,
 } from 'actions/actionTypes'
 
-export function* fetchRelationships({id}) {
+export function* fetchRelationships({payload: {id}}) {
   try {
     const response = yield call(get, `/api/v1/screenings/${id}/relationships`)
     yield put(fetchRelationshipsSuccess(response))

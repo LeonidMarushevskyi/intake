@@ -7,7 +7,7 @@ import {List, fromJS} from 'immutable'
 
 export default createReducer(List(), {
   [CREATE_SCREENING_SUCCESS](_state, _action) { return List() },
-  [FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS](_state, action) {
-    return fromJS(action.history_of_involvements)
+  [FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS](_state, {payload: {history_of_involvements}}) {
+    return fromJS(history_of_involvements)
   },
 })

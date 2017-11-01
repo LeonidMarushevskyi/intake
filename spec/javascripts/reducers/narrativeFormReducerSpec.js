@@ -9,7 +9,7 @@ import {fetchScreeningSuccess} from 'actions/screeningActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import narrativeFormReducer from 'reducers/narrativeFormReducer'
 
-describe('contactReducer', () => {
+describe('narrativeFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('on FETCH_SCREENING_SUCCESS', () => {

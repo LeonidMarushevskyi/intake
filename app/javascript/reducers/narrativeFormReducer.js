@@ -9,7 +9,7 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [FETCH_SCREENING_SUCCESS](_state, {screening: {report_narrative}}) {
+  [FETCH_SCREENING_SUCCESS](_state, {payload: {screening: {report_narrative}}}) {
     return fromJS({
       report_narrative: {
         value: report_narrative || '',
