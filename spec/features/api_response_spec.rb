@@ -45,6 +45,7 @@ feature 'api responses' do
   scenario 'API returns a 500 and display an error message' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body('I failed', status: 500))
+    stub_empty_relationships_for_screening(screening)
     visit root_path
     expect(page).to have_content 'Something went wrong, sorry! Please try your last action again.'
   end
@@ -52,6 +53,7 @@ feature 'api responses' do
   scenario 'API returns a success' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
     visit screening_path(id: screening.id)
     expect(page.current_url).to have_content screening_path(screening.id)
   end
