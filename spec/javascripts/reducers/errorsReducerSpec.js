@@ -1,9 +1,9 @@
 import {fromJS} from 'immutable'
 import {httpError, httpSuccess} from 'actions/httpActions'
 import * as matchers from 'jasmine-immutable-matchers'
-import remoteErrorReducer from 'reducers/remoteErrorReducer'
+import errorsReducer from 'reducers/errorsReducer'
 
-describe('remoteErrorReducer', () => {
+describe('errorsReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('on httpError', () => {
@@ -19,7 +19,7 @@ describe('remoteErrorReducer', () => {
           stuff: 'Did not have a plan',
         }
       )
-      expect(remoteErrorReducer(state, action)).toEqualImmutable(
+      expect(errorsReducer(state, action)).toEqualImmutable(
         fromJS({
           '/another/path/here': {
             stuff: 'Did not have a plan',
@@ -48,7 +48,7 @@ describe('remoteErrorReducer', () => {
           stuff: 'Did have a plan',
         }
       )
-      expect(remoteErrorReducer(state, action)).toEqualImmutable(
+      expect(errorsReducer(state, action)).toEqualImmutable(
         fromJS({
           '/another/path/here': {
             stuff: 'Did not have a plan',
