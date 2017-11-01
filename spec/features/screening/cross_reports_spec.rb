@@ -17,6 +17,7 @@ feature 'cross reports' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today
@@ -77,6 +78,7 @@ feature 'cross reports' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
 
     within '#cross-report-card' do
@@ -134,6 +136,7 @@ feature 'cross reports' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
@@ -166,6 +169,7 @@ feature 'cross reports' do
       intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit screening_path(id: existing_screening.id)
 
     within '#cross-report-card', text: 'Cross Report' do
@@ -181,6 +185,7 @@ feature 'cross reports' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today
@@ -223,6 +228,7 @@ feature 'cross reports' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today
@@ -273,6 +279,7 @@ feature 'cross reports' do
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
 
     reported_on = Date.today

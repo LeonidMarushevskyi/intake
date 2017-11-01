@@ -51,6 +51,7 @@ feature 'Edit Screening' do
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).and_return(json_body(existing_screening.to_json, status: 200))
       stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
       visit edit_screening_path(id: existing_screening.id)
       expect(page).to have_content 'Edit Screening #My Bad!'
     end
@@ -183,6 +184,7 @@ feature 'Edit Screening' do
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).and_return(json_body(existing_screening.to_json, status: 200))
       stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
       visit edit_screening_path(id: existing_screening.id)
 
       within '#snapshot-card' do
@@ -244,6 +246,7 @@ feature 'individual card save' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
     visit edit_screening_path(id: existing_screening.id)
     within '#screening-information-card' do
       fill_in 'Title/Name of Screening', with: 'This should not save'
@@ -260,6 +263,7 @@ feature 'individual card save' do
       ).with(json_body(as_json_without_root_id(updated_screening)))
         .and_return(json_body(updated_screening.to_json))
       stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
       fill_in_datepicker 'Incident Date', with: '02/12/1996'
       click_button 'Save'
       expect(
@@ -280,6 +284,8 @@ feature 'individual card save' do
       ).with(json_body(updated_screening))
         .and_return(json_body(updated_screening))
       stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
+
       fill_in 'Report Narrative', with: 'This is the updated narrative'
       click_button 'Save'
       expect(
@@ -306,6 +312,7 @@ feature 'individual card save' do
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#cross-report-card' do
       select 'State of California', from: 'County'
@@ -348,6 +355,7 @@ feature 'individual card save' do
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#cross-report-card' do
       click_button 'Save'
@@ -368,6 +376,7 @@ feature 'individual card save' do
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#worker-safety-card' do
       fill_in_react_select 'Worker safety alerts', with: 'Dangerous Animal on Premises'
@@ -397,6 +406,7 @@ feature 'individual card save' do
       ).with(json_body(as_json_without_root_id(existing_screening)))
         .and_return(json_body(existing_screening.to_json))
       stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
 
       fill_in_datepicker 'Incident Date', with: '02-12-1996'
       fill_in 'Address', with: '33 Whatever Rd'
