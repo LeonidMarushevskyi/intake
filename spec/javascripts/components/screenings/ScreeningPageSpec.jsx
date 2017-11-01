@@ -170,8 +170,6 @@ describe('ScreeningPage', () => {
       expect(component.find('RelationshipsCard').length).toEqual(1)
       expect(component.find('RelationshipsCard').props().participants).toEqual(Immutable.fromJS([]))
       expect(component.find('RelationshipsCard').props().relationships).toEqual(props.relationships)
-      expect(component.find('RelationshipsCard').props().screeningId).toEqual(props.params.id)
-      expect(component.find('RelationshipsCard').props().actions).toEqual(props.actions)
     })
 
     it('renders the worker safety card', () => {
@@ -217,13 +215,14 @@ describe('ScreeningPage', () => {
 
   describe('componentDidMount', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
+    const fetchRelationships = jasmine.createSpy('fetchRelationships')
     const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
     const fetchHistoryOfInvolvements = () => Promise.resolve()
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
+        actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
       }
       fetchScreening.and.returnValue(promiseSpyObj)
@@ -233,6 +232,10 @@ describe('ScreeningPage', () => {
 
     it('GETs the screening from the server', () => {
       expect(fetchScreening).toHaveBeenCalledWith('222')
+    })
+
+    it('GETs the felationships from the server', () => {
+      expect(fetchRelationships).toHaveBeenCalledWith('222')
     })
 
     it('GETs the staff permission from the server', () => {
@@ -247,13 +250,14 @@ describe('ScreeningPage', () => {
 
     beforeEach(() => {
       const fetchScreening = jasmine.createSpy('fetchScreening')
+      const fetchRelationships = jasmine.createSpy('fetchRelationships')
       const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
       fetchScreening.and.returnValue(Promise.resolve())
       checkStaffPermission.and.returnValue(Promise.resolve())
       const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
-        actions: {fetchScreening, fetchHistoryOfInvolvements, checkStaffPermission},
+        actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements, checkStaffPermission},
         params: {id: '222'},
         screening: Immutable.fromJS({
           report_narrative: 'my narrative',
@@ -457,10 +461,8 @@ describe('ScreeningPage', () => {
 
       it('renders the relationships card', () => {
         expect(component.find('RelationshipsCard').props()).toEqual(jasmine.objectContaining({
-          actions: props.actions,
           participants: props.participants,
           relationships: props.relationships,
-          screeningId: props.params.id,
         }))
       })
 

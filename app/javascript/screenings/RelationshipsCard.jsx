@@ -3,20 +3,6 @@ import React from 'react'
 import nameFormatter from 'utils/nameFormatter'
 
 export default class RelationshipsCard extends React.Component {
-  componentDidMount() {
-    const {actions, participants, screeningId} = this.props
-    if (!participants.isEmpty()) {
-      actions.fetchRelationships(screeningId)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {participants, actions, screeningId} = this.props
-    if (participants !== nextProps.participants) {
-      actions.fetchRelationships(screeningId)
-    }
-  }
-
   renderParticipantRelationships(participant) {
     const relationships = participant.get('relationships')
 
@@ -102,8 +88,6 @@ export default class RelationshipsCard extends React.Component {
 }
 
 RelationshipsCard.propTypes = {
-  actions: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
   relationships: PropTypes.object.isRequired,
-  screeningId: PropTypes.string.isRequired,
 }

@@ -22,15 +22,6 @@ feature 'Relationship card' do
       within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Search for people and add them to see their relationships.')
       end
-
-      expect(
-        a_request(
-          :get,
-          intake_api_url(
-            ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id)
-          )
-        )
-      ).to_not have_been_made
     end
 
     scenario 'view an existing screening' do
@@ -48,15 +39,6 @@ feature 'Relationship card' do
       within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Search for people and add them to see their relationships.')
       end
-
-      expect(
-        a_request(
-          :get,
-          intake_api_url(
-            ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id)
-          )
-        )
-      ).to_not have_been_made
     end
   end
 
