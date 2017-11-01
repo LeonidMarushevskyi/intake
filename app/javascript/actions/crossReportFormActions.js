@@ -13,29 +13,29 @@ export function clearAllFields() {
   return {type: CLEAR_CROSS_REPORT_VALUES}
 }
 export function clearAllAgencyFields(agencyType) {
-  return {type: CLEAR_CROSS_REPORT_AGENCY_VALUES, agencyType}
+  return {type: CLEAR_CROSS_REPORT_AGENCY_VALUES, payload: {agencyType}}
 }
 export function resetFieldValues(screening) {
-  return {type: RESET_CROSS_REPORT_VALUES, screening}
+  return {type: RESET_CROSS_REPORT_VALUES, payload: {screening}}
 }
 export function save(screening) {
-  return {type: SAVE_CROSS_REPORT, screening}
+  return {type: SAVE_CROSS_REPORT, payload: {screening}}
 }
 export function setField(field, value) {
-  return {type: SET_CROSS_REPORT_FIELD, field, value}
+  return {type: SET_CROSS_REPORT_FIELD, payload: {field, value}}
 }
 export function touchField(field) {
-  return {type: TOUCH_CROSS_REPORT_FIELD, field}
+  return {type: TOUCH_CROSS_REPORT_FIELD, payload: {field}}
 }
 export function touchAgencyField(agencyType) {
-  return {type: TOUCH_CROSS_REPORT_AGENCY_FIELD, agencyType}
+  return {type: TOUCH_CROSS_REPORT_AGENCY_FIELD, payload: {agencyType}}
 }
 export function touchAllFields() {
   return {type: TOUCH_ALL_CROSS_REPORT_FIELDS}
 }
 export function setAgencyTypeField(field, value) {
-  return {type: SET_CROSS_REPORT_AGENCY_TYPE, field, value}
+  return {type: SET_CROSS_REPORT_AGENCY_TYPE, payload: {field, value}}
 }
 export function setAgencyField(agencyType, value) {
-  return {type: SET_CROSS_REPORT_AGENCY, agencyType, value}
+  return {type: SET_CROSS_REPORT_AGENCY, payload: {agencyType, value}}
 }

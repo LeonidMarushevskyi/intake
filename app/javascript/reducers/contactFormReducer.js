@@ -32,7 +32,7 @@ const buildSelectedPeople = (allPeople = [], selectedPeople = []) => {
 }
 
 export default createReducer(Map(), {
-  [BUILD_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, investigation_people = []}) {
+  [BUILD_CONTACT_SUCCESS](_state, {payload: {investigation_id, investigation_started_at, investigation_people = []}}) {
     return fromJS({
       id: fieldWithValue(null),
       investigation_id: fieldWithValue(investigation_id),
@@ -46,7 +46,7 @@ export default createReducer(Map(), {
       people: buildSelectedPeople(investigation_people),
     })
   },
-  [EDIT_CONTACT_SUCCESS](_state, {investigation_id, investigation_started_at, investigation_people, contact}) {
+  [EDIT_CONTACT_SUCCESS](_state, {payload: {investigation_id, investigation_started_at, investigation_people, contact}}) {
     const {
       communication_method,
       id,
@@ -70,10 +70,10 @@ export default createReducer(Map(), {
       people: buildSelectedPeople(investigation_people, people),
     })
   },
-  [SET_CONTACT_FIELD](state, {field, value}) {
+  [SET_CONTACT_FIELD](state, {payload: {field, value}}) {
     return state.setIn([field, 'value'], value)
   },
-  [TOUCH_CONTACT_FIELD](state, {field}) {
+  [TOUCH_CONTACT_FIELD](state, {payload: {field}}) {
     return state.setIn([field, 'touched'], true)
   },
   [TOUCH_ALL_CONTACT_FIELDS](state, _) {
@@ -85,11 +85,11 @@ export default createReducer(Map(), {
       state
     ).set('people', state.get('people').map((person) => person.set('touched', true)))
   },
-  [SELECT_CONTACT_PERSON](state, {index}) {
+  [SELECT_CONTACT_PERSON](state, {payload: {index}}) {
     return state.setIn(['people', index, 'selected'], true)
       .setIn(['people', index, 'touched'], true)
   },
-  [DESELECT_CONTACT_PERSON](state, {index}) {
+  [DESELECT_CONTACT_PERSON](state, {payload: {index}}) {
     return state.setIn(['people', index, 'selected'], false)
       .setIn(['people', index, 'touched'], true)
   },

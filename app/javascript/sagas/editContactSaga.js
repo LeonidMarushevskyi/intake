@@ -2,7 +2,7 @@ import {takeEvery, call, put} from 'redux-saga/effects'
 import {EDIT_CONTACT, editSuccess, editFailure} from 'actions/contactFormActions'
 import {get} from 'utils/http'
 
-export function* editContact({id, investigation_id}) {
+export function* editContact({payload: {id, investigation_id}}) {
   try {
     const contact = yield call(get, `/api/v1/investigations/${investigation_id}/contacts/${id}`)
     const {people, started_at} = yield call(get, `/api/v1/investigations/${investigation_id}`)

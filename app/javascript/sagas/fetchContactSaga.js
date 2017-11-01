@@ -6,7 +6,7 @@ import {
   FETCH_CONTACT,
 } from 'actions/contactActions'
 
-export function* fetchContact({investigation_id, id}) {
+export function* fetchContact({payload: {investigation_id, id}}) {
   try {
     const contact = yield call(
       get, `/api/v1/investigations/${investigation_id}/contacts/${id}`)

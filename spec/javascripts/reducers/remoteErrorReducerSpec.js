@@ -8,13 +8,9 @@ describe('remoteErrorReducer', () => {
 
   describe('on HTTP_ERROR', () => {
     it('returns the error object', () => {
-      const action = httpError({
-        why: 'Did not have a plan',
-      })
-      expect(remoteErrorReducer(Map(), action)).toEqual(
-        Map({
-          why: 'Did not have a plan',
-        })
+      const action = httpError({why: 'Did not have a plan'})
+      expect(remoteErrorReducer(Map(), action)).toEqualImmutable(
+        Map({why: 'Did not have a plan'})
       )
     })
   })

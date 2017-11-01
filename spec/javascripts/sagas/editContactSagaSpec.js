@@ -2,7 +2,12 @@ import 'babel-polyfill'
 import {takeEvery, call, put} from 'redux-saga/effects'
 import {get} from 'utils/http'
 import {editContactSaga, editContact} from 'sagas/editContactSaga'
-import {EDIT_CONTACT, editSuccess, editFailure} from 'actions/contactFormActions'
+import {
+  EDIT_CONTACT,
+  edit,
+  editSuccess,
+  editFailure,
+} from 'actions/contactFormActions'
 
 describe('editContactSaga', () => {
   it('calls editContact on EDIT_CONTACT', () => {
@@ -13,15 +18,15 @@ describe('editContactSaga', () => {
 
 describe('editContact', () => {
   const id = 'existing_contact_id'
-  const investigationId = 'existing_investigation_id'
   const investigation = {
     started_at: 'date time',
     people: ['sally', 'bob'],
   }
-  const contact = {id: 'existing_contact_id', people: ['bob']}
+  const contact = {id, people: ['bob']}
+  const action = edit({id, investigation_id: 'existing_investigation_id'})
 
   it('fetches the contacts investigation', () => {
-    const gen = editContact({id, investigation_id: investigationId})
+    const gen = editContact(action)
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/investigations/existing_investigation_id/contacts/existing_contact_id')
     )
@@ -42,7 +47,7 @@ describe('editContact', () => {
 
   it('puts errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
-    const gen = editContact({id, investigation_id: investigationId})
+    const gen = editContact(action)
     expect(gen.next().value).toEqual(
       call(get, '/api/v1/investigations/existing_investigation_id/contacts/existing_contact_id')
     )

@@ -6,7 +6,7 @@ import {
   CHECK_STAFF_PERMISSION,
 } from 'actions/staffActions'
 
-export function* checkStaffPermission({permission}) {
+export function* checkStaffPermission({payload: {permission}}) {
   try {
     const response = yield call(get, `/api/v1/security/check_permission?permission=${permission}`)
     yield put(checkStaffPermissionSuccess(permission, response))

@@ -2,7 +2,7 @@ import {takeEvery, put, call} from 'redux-saga/effects'
 import {get} from 'utils/http'
 import {fetchSuccess, fetchFailure, FETCH_COUNTY_AGENCIES} from 'actions/countyAgenciesActions'
 
-export function* fetchCountyAgencies({countyId}) {
+export function* fetchCountyAgencies({payload: {countyId}}) {
   try {
     const response = yield call(get, `/api/v1/cross_report_agency/${countyId}`)
     yield put(fetchSuccess(response))

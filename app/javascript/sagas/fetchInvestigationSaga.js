@@ -6,7 +6,7 @@ import {
   FETCH_INVESTIGATION,
 } from 'actions/investigationActions'
 
-export function* loadInvestigation({id}) {
+export function* loadInvestigation({payload: {id}}) {
   try {
     const response = yield call(get, `/api/v1/investigations/${id}`)
     yield put(fetchSuccess(response))

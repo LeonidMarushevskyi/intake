@@ -5,37 +5,34 @@ import {
   checkStaffPermissionSaga,
   checkStaffPermission,
 } from 'sagas/checkStaffPermissionSaga'
-import {
-  checkStaffPermissionSuccess,
-  checkStaffPermissionFailure,
-  CHECK_STAFF_PERMISSION,
-} from 'actions/staffActions'
+import * as actions from 'actions/staffActions'
 
 describe('checkStaffPermissionSaga', () => {
   it('checks staff permission on CHECK_STAFF_PERMISSION', () => {
     const gen = checkStaffPermissionSaga()
-    expect(gen.next().value).toEqual(takeLatest(CHECK_STAFF_PERMISSION, checkStaffPermission))
+    expect(gen.next().value).toEqual(takeLatest(actions.CHECK_STAFF_PERMISSION, checkStaffPermission))
   })
 })
 
 describe('checkStaffPermission', () => {
+  const permission = 'add_sensitive_person'
+  const hasPermission = true
+  const action = actions.checkStaffPermission(permission)
+
   it('checks and puts staff permission', () => {
-    const permission = 'add_sensitive_person'
-    const hasPermission = true
-    const gen = checkStaffPermission({permission})
+    const gen = checkStaffPermission(action)
     expect(gen.next().value).toEqual(call(get, `/api/v1/security/check_permission?permission=${permission}`))
     expect(gen.next(hasPermission).value).toEqual(
-      put(checkStaffPermissionSuccess(permission, hasPermission))
+      put(actions.checkStaffPermissionSuccess(permission, hasPermission))
     )
   })
 
   it('puts errors when errors are thrown', () => {
-    const permission = 'add_sensitive_person'
     const error = {responseJSON: 'some error'}
-    const gen = checkStaffPermission({permission})
+    const gen = checkStaffPermission(action)
     expect(gen.next().value).toEqual(call(get, `/api/v1/security/check_permission?permission=${permission}`))
     expect(gen.throw(error).value).toEqual(
-      put(checkStaffPermissionFailure('some error'))
+      put(actions.checkStaffPermissionFailure('some error'))
     )
   })
 })
