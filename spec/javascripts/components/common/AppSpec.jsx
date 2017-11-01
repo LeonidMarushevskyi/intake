@@ -3,39 +3,45 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 
 describe('App', () => {
-  let actions
-  let component
+  function mountApp({actions: {fetch = () => null, fetchUserInfoAction = () => null}}) {
+    return mount(<App actions={{fetch, fetchUserInfoAction}}><div/></App>)
+  }
 
-  beforeEach(() => {
-    actions = {
-      fetch: jasmine.createSpy('fetch'),
-    }
-  })
+  function renderApp({actions, hasError = null, errorCount = null}) {
+    return shallow(<App actions={actions} hasError={hasError} errorCount={errorCount} ><div/></App>)
+  }
 
   it('fetches the system codes when the component mounts', () => {
-    mount(<App actions={actions}><div/></App>)
-    expect(actions.fetch).toHaveBeenCalled()
+    const fetchSpy = jasmine.createSpy('fetch')
+    mountApp({actions: {fetch: fetchSpy}})
+    expect(fetchSpy).toHaveBeenCalled()
+  })
+
+  it('fetches user info when the component mounts', () => {
+    const fetchUserInfoActionSpy = jasmine.createSpy('fetchUserInfoAction')
+    mountApp({actions: {fetchUserInfoAction: fetchUserInfoActionSpy}})
+    expect(fetchUserInfoActionSpy).toHaveBeenCalled()
   })
 
   it('renders the global header component on all app views', () => {
-    component = shallow(<App actions={actions} />)
-    expect(component.find('GlobalHeader').exists()).toEqual(true)
+    const app = renderApp({hasError: false})
+    expect(app.find('GlobalHeader').exists()).toEqual(true)
   })
 
   describe('error banner', () => {
     it('is not rendered when no errors', () => {
-      component = shallow(<App actions={actions} hasError={false} errorCount={0}><div/></App>)
+      const component = renderApp({hasError: false, errorCount: 0})
       expect(component.find('PageError').exists()).toEqual(false)
     })
     describe('generic errors', () => {
       it('is rendered when generic error occurs', () => {
-        component = shallow(<App actions={actions} hasError={true}><div/></App>)
+        const component = renderApp({hasError: true})
         expect(component.find('PageError').exists()).toEqual(true)
       })
     })
     describe('countable errors', () => {
       it('is rendered when errors count is passed', () => {
-        component = shallow(<App actions={actions} hasError={true} errorCount={15}><div/></App>)
+        const component = renderApp({hasError: true, errorCount: 15})
         expect(component.find('PageError').exists()).toEqual(true)
         expect(component.find('PageError').props().errorCount).toEqual(15)
       })
