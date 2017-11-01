@@ -12,20 +12,6 @@ export default class HistoryCard extends React.Component {
     super(props, context)
   }
 
-  componentDidMount() {
-    const {actions, participants, screeningId} = this.props
-    if (!participants.isEmpty()) {
-      actions.fetchHistoryOfInvolvements(screeningId)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {participants, actions, screeningId} = this.props
-    if (participants !== nextProps.participants) {
-      actions.fetchHistoryOfInvolvements(screeningId)
-    }
-  }
-
   render() {
     const {involvements} = this.props
     const screenings = involvements.get('screenings')
