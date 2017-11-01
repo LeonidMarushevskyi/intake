@@ -50,7 +50,7 @@ export default class WorkerSafetyCardView extends React.Component {
       safetyInformation: this.props.screening.get('safety_information'),
     }
     return (
-      <div className='card show double-gap-top' id='worker-safety-card'>
+      <div className={`card ${mode} double-gap-top`} id='worker-safety-card'>
         <ScreeningCardHeader
           onEdit={this.onEdit}
           title='Worker Safety'
