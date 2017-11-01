@@ -32,19 +32,19 @@ feature 'Contact Log' do
     {
       legacy_descriptor: { legacy_id: investigation_id },
       contacts: [{
-        legacy_descriptor: { legacy_id: 'existing_contact_1' },
-        started_at: '2017-01-26T10:00:00.000Z',
-        communication_method: 'COMMUNICATION_METHOD_2',
-        status: 'CONTACT_STATUS_2',
-        note: note_with_line_breaks,
-        people: [sam_jones, dave_hughes]
-      }, {
         legacy_descriptor: { legacy_id: 'existing_contact_2' },
         started_at: '2017-01-27T14:00:00.000Z',
         communication_method: 'COMMUNICATION_METHOD_1',
         status: 'CONTACT_STATUS_1',
         note: note_more_than_30_words,
         people: [robert_smith, dave_hughes]
+      }, {
+        legacy_descriptor: { legacy_id: 'existing_contact_1' },
+        started_at: '2017-01-26T10:00:00.000Z',
+        communication_method: 'COMMUNICATION_METHOD_2',
+        status: 'CONTACT_STATUS_2',
+        note: note_with_line_breaks,
+        people: [sam_jones, dave_hughes]
       }]
     }
   end
@@ -55,7 +55,7 @@ feature 'Contact Log' do
     stub_request(:get, investigation_show_url)
       .and_return(json_body(investigation.to_json, status: 200))
   end
-  scenario 'lists the investigations contacts' do
+  scenario 'lists the investigations contacts in chronological order' do
     visit investigation_path(id: investigation_id)
 
     within '.card.show', text: 'Contact Log' do

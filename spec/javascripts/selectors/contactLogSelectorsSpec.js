@@ -62,15 +62,15 @@ describe('contactLogSelectors', () => {
     it("returns contact 'started_at' as a formatted startedAt datetime", () => {
       const investigation = {
         contacts: [{
-          started_at: '2017-01-26T10:00:00.000Z',
-        }, {
           started_at: '',
+        }, {
+          started_at: '2017-01-26T10:00:00.000Z',
         }],
       }
       const state = fromJS({investigation})
       const contacts = getContactLogsSelector(state)
-      expect(contacts.getIn([0, 'startedAt'])).toEqual('01/26/2017 3:00 AM')
-      expect(contacts.getIn([1, 'startedAt'])).toEqual('')
+      expect(contacts.getIn([0, 'startedAt'])).toEqual('')
+      expect(contacts.getIn([1, 'startedAt'])).toEqual('01/26/2017 3:00 AM')
     })
 
     it("returns contact 'status' as the contact status value", () => {
@@ -122,6 +122,19 @@ describe('contactLogSelectors', () => {
       const contacts = getContactLogsSelector(state)
       expect(contacts.getIn([0, 'note'])).toEqual('A sample note 1')
       expect(contacts.getIn([1, 'note'])).toEqual('A sample note 2')
+    })
+
+    it('sorts contacts in chronological order by started_at', () => {
+      const investigation = {
+        contacts: [
+          {legacy_descriptor: {legacy_id: 'legacy_id_1'}, started_at: '2010-04-27T23:30:14.001Z'},
+          {legacy_descriptor: {legacy_id: 'legacy_id_2'}, started_at: '2010-04-27T23:30:14.000Z'},
+        ],
+      }
+      const state = fromJS({investigation})
+      const contacts = getContactLogsSelector(state)
+      expect(contacts.getIn([0, 'id'])).toEqual('legacy_id_2')
+      expect(contacts.getIn([1, 'id'])).toEqual('legacy_id_1')
     })
   })
 })
