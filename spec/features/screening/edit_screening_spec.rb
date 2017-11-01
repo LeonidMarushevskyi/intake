@@ -278,8 +278,8 @@ feature 'individual card save' do
       stub_request(
         :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
       ).with(json_body(updated_screening))
-      stub_empty_relationships_for_screening(existing_screening)
         .and_return(json_body(updated_screening))
+      stub_empty_relationships_for_screening(existing_screening)
       fill_in 'Report Narrative', with: 'This is the updated narrative'
       click_button 'Save'
       expect(
