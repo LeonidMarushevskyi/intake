@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CaseContainer from 'history/CaseContainer'
-import ReferralContainer from 'history/ReferralContainer'
-import ScreeningContainer from 'history/ScreeningContainer'
+import CaseContainer from 'investigations/CaseContainer'
+import ReferralContainer from 'investigations/ReferralContainer'
+import ScreeningContainer from 'investigations/ScreeningContainer'
 import {nTimesDo} from 'utils/arrayHelper'
 
 const HistoryTable = ({casesCount, referralsCount, screeningsCount}) => (

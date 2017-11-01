@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
 import AllegationShowContainer from 'investigations/AllegationShowContainer'
-import HistoryOfInvolvementContainer from 'history/HistoryOfInvolvementContainer'
+import HistoryOfInvolvementContainer from 'investigations/HistoryOfInvolvementContainer'
 import RelationshipsCardContainer from 'investigations/RelationshipsCardContainer'
 
 export class InvestigationPage extends React.Component {

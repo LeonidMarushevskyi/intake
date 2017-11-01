@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import EmptyHistory from 'history/EmptyHistory'
-import HistoryTableContainer from 'history/HistoryTableContainer'
+import HistoryTableContainer from 'investigations/HistoryTableContainer'
 
 class HistoryOfInvolvement extends React.Component {
   render() {
