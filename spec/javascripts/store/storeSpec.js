@@ -33,6 +33,7 @@ describe('Store', () => {
       remoteError: {},
       routing: {locationBeforeTransitions: null},
       screening: {},
+      screenings: [],
       staff: {},
     })
     store = createStore(rootReducer)

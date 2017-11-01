@@ -16,6 +16,7 @@ import relationships from 'reducers/relationshipsReducer'
 import remoteError from 'reducers/remoteErrorReducer'
 import routing from 'reducers/routerReducer'
 import screening from 'reducers/screeningReducer'
+import screenings from 'reducers/screeningsReducer'
 import staff from 'reducers/staffReducer'
 import {combineReducers} from 'redux-immutable'
 
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   remoteError,
   routing,
   screening,
+  screenings,
   staff,
 })
 

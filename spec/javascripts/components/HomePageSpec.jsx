@@ -1,16 +1,14 @@
-import * as Utils from 'utils/http'
-import {Map} from 'immutable'
 import React from 'react'
 import {HomePage} from 'home/HomePage'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import * as IntakeConfig from 'common/config'
 
 describe('HomePage', () => {
   let component
-  const requiredProps = {
-    actions: {},
-    screening: Map(),
-    router: {},
+  const requiredProps = {actions: {}}
+  function mountHomePage({actions = {}}) {
+    const props = {actions, screenings: []}
+    mount(<HomePage {...props} />)
   }
 
   describe('when release_two is inactive', () => {
@@ -20,21 +18,13 @@ describe('HomePage', () => {
     })
 
     describe('#componentDidMount', () => {
-      const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
-      let instance
-      beforeEach((done) => {
-        spyOn(Utils, 'get').and.returnValue(Promise.resolve(mockScreenings))
-        instance = shallow(<HomePage {...requiredProps}/>).instance()
-        spyOn(instance, 'setState').and.callFake(done)
-        instance.componentDidMount()
+      const fetchScreenings = jasmine.createSpy('fetchScreenings')
+      beforeEach(() => {
+        mountHomePage({actions: {fetchScreenings}})
       })
 
       it('fetches the screenings', () => {
-        expect(Utils.get).toHaveBeenCalledWith('/api/v1/screenings')
-      })
-
-      it('sets the screening state with the fetched screenings', () => {
-        expect(instance.setState).toHaveBeenCalledWith({screenings: mockScreenings})
+        expect(fetchScreenings).toHaveBeenCalled()
       })
     })
 
@@ -50,24 +40,18 @@ describe('HomePage', () => {
     })
 
     it('renders the screening index table when screenings are present', () => {
-      const mockScreenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
-      component = shallow(<HomePage {...requiredProps} />)
-      component.setState({screenings: mockScreenings})
+      const screenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
+      const props = {...requiredProps, screenings}
+      component = shallow(<HomePage {...props} />)
       const table = component.find('ScreeningsTable')
-      expect(table.props().screenings).toEqual(mockScreenings)
+      expect(table.props().screenings).toEqual(screenings)
     })
 
     describe('when a user creates a new screening', () => {
       let createScreening
       beforeEach(() => {
         createScreening = jasmine.createSpy('createScreening')
-        component = shallow(
-          <HomePage
-            actions={{createScreening}}
-            screening={Map({id: '1'})}
-            router={{}}
-          />
-        )
+        component = shallow(<HomePage actions={{createScreening}} />)
         const createScreeningLink = component.find('Link')
         createScreeningLink.simulate('click')
       })
@@ -91,14 +75,13 @@ describe('HomePage', () => {
     })
 
     describe('#componentDidMount', () => {
+      const fetchScreenings = jasmine.createSpy('fetchScreenings')
       beforeEach(() => {
-        spyOn(Utils, 'get')
-        const instance = shallow(<HomePage {...requiredProps}/>).instance()
-        instance.componentDidMount()
+        mountHomePage({actions: {fetchScreenings}})
       })
 
-      it('does not fetch the screenings', () => {
-        expect(Utils.get).not.toHaveBeenCalledWith('/api/v1/screenings')
+      it('does not fetch screenings', () => {
+        expect(fetchScreenings).not.toHaveBeenCalled()
       })
     })
   })
