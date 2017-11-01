@@ -55,6 +55,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
           <label htmlFor={`roles_${participant.get('id')}`}>Role</label>
           <Select
             multi
+            tabSelectsValue={false}
             inputProps={{id: `roles_${participant.get('id')}`}}
             value={participant.get('roles').toJS()}
             onChange={(roles) => {
@@ -168,6 +169,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
           <label htmlFor='languages'>Language(s) (Primary First)</label>
           <Select
             multi
+            tabSelectsValue={false}
             inputProps={{id: 'languages'}}
             options={selectOptions(LANGUAGES)}
             value={(participant.get('languages') || Immutable.List()).toJS()}

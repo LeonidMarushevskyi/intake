@@ -283,6 +283,17 @@ feature 'Edit Screening' do
     end
   end
 
+  scenario 'when a user tabs out of the language multi-select' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      within('.col-md-12', text: 'Language(s)') do
+        fill_in_react_select 'Language(s)', with: 'English', exit_key: :tab
+        has_react_select_field 'Language(s)', with: ['Russian']
+      end
+    end
+  end
+
   scenario 'canceling edits for a screening participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
@@ -343,6 +354,15 @@ feature 'Edit Screening' do
     ).to have_been_made
 
     expect(page).to have_selector(show_participant_card_selector(marge.id))
+  end
+
+  scenario 'when a user tabs out of the role multi-select' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      fill_in_react_select 'Role', with: 'Family Member', exit_key: :tab
+      has_react_select_field 'Role', with: %w[Victim Perpetrator]
+    end
   end
 
   context 'A participant has an existing reporter role' do
