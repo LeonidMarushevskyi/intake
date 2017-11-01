@@ -1,8 +1,10 @@
 import {Map, fromJS} from 'immutable'
 import {
   buildSuccess,
+  buildFailure,
   deselectPerson,
   editSuccess,
+  editFailure,
   selectPerson,
   setField,
   touchAllFields,
@@ -11,11 +13,11 @@ import {
 import * as matchers from 'jasmine-immutable-matchers'
 import contactFormReducer from 'reducers/contactFormReducer'
 
-describe('contactReducer', () => {
+describe('contactFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on BUILD_CONTACT_SUCCESS', () => {
-    it('returns the contact', () => {
+  describe('on BUILD_CONTACT_COMPLETE', () => {
+    it('returns the contact when successful', () => {
       const people = [
         {first_name: 'Bob', last_name: 'Smith', legacy_descriptor: '1'},
         {first_name: 'Jane', last_name: 'Doe', legacy_descriptor: '2'},
@@ -79,6 +81,13 @@ describe('contactReducer', () => {
             },
           ],
         })
+      )
+    })
+
+    it('returns last state on failure', () => {
+      const action = buildFailure()
+      expect(contactFormReducer(Map(), action)).toEqualImmutable(
+        Map()
       )
     })
   })
@@ -175,7 +184,7 @@ describe('contactReducer', () => {
     })
   })
 
-  describe('on EDIT_CONTACT_SUCCESS', () => {
+  describe('on EDIT_CONTACT_COMPLETE', () => {
     it('returns the contact with the investigation people merged', () => {
       const investigationPeople = [
         {first_name: 'Bob', legacy_descriptor: {legacy_id: 'bobs legacy id'}},
@@ -251,6 +260,12 @@ describe('contactReducer', () => {
             },
           ],
         })
+      )
+    })
+    it('returns last state on failure', () => {
+      const action = editFailure()
+      expect(contactFormReducer(Map(), action)).toEqualImmutable(
+        Map()
       )
     })
   })

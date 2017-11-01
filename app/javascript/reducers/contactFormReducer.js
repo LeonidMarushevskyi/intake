@@ -1,6 +1,6 @@
 import {
-  BUILD_CONTACT_SUCCESS,
-  EDIT_CONTACT_SUCCESS,
+  BUILD_CONTACT_COMPLETE,
+  EDIT_CONTACT_COMPLETE,
   SET_CONTACT_FIELD,
   TOUCH_CONTACT_FIELD,
   TOUCH_ALL_CONTACT_FIELDS,
@@ -30,45 +30,50 @@ const buildSelectedPeople = (allPeople = [], selectedPeople = []) => {
     return buildPerson({...person, selected})
   })
 }
+const buildContact = (payload) => {
+  const {
+    investigation_id,
+    investigation_people,
+    investigation_started_at,
+    contact: {
+      id = null,
+      started_at = null,
+      status = null,
+      note = null,
+      purpose = null,
+      communication_method = null,
+      location = null,
+      people = [],
+    } = {},
+  } = payload
+  return fromJS({
+    id: fieldWithValue(id),
+    investigation_id: fieldWithValue(investigation_id),
+    started_at: fieldWithTouch(started_at),
+    status: fieldWithTouch(status),
+    note: fieldWithValue(note),
+    purpose: fieldWithTouch(purpose),
+    communication_method: fieldWithTouch(communication_method),
+    location: fieldWithTouch(location),
+    investigation_started_at: fieldWithValue(investigation_started_at),
+    people: buildSelectedPeople(investigation_people, people),
+  })
+}
 
 export default createReducer(Map(), {
-  [BUILD_CONTACT_SUCCESS](_state, {payload: {investigation_id, investigation_started_at, investigation_people = []}}) {
-    return fromJS({
-      id: fieldWithValue(null),
-      investigation_id: fieldWithValue(investigation_id),
-      started_at: fieldWithTouch(null),
-      status: fieldWithTouch(null),
-      note: fieldWithValue(null),
-      purpose: fieldWithTouch(null),
-      communication_method: fieldWithTouch(null),
-      location: fieldWithTouch(null),
-      investigation_started_at: fieldWithValue(investigation_started_at),
-      people: buildSelectedPeople(investigation_people),
-    })
+  [BUILD_CONTACT_COMPLETE](state, {payload, error}) {
+    if (error) {
+      return state
+    } else {
+      return buildContact(payload)
+    }
   },
-  [EDIT_CONTACT_SUCCESS](_state, {payload: {investigation_id, investigation_started_at, investigation_people, contact}}) {
-    const {
-      communication_method,
-      id,
-      location,
-      note,
-      purpose,
-      started_at,
-      status,
-      people,
-    } = contact
-    return fromJS({
-      id: fieldWithValue(id),
-      investigation_id: fieldWithValue(investigation_id),
-      started_at: fieldWithTouch(started_at),
-      status: fieldWithTouch(status),
-      note: fieldWithValue(note),
-      purpose: fieldWithTouch(purpose),
-      communication_method: fieldWithTouch(communication_method),
-      location: fieldWithTouch(location),
-      investigation_started_at: fieldWithValue(investigation_started_at),
-      people: buildSelectedPeople(investigation_people, people),
-    })
+  [EDIT_CONTACT_COMPLETE](state, {payload, error}) {
+    if (error) {
+      return state
+    } else {
+      return buildContact(payload)
+    }
   },
   [SET_CONTACT_FIELD](state, {payload: {field, value}}) {
     return state.setIn([field, 'value'], value)
