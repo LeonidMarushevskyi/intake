@@ -1,12 +1,12 @@
 import {List, fromJS} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import allegationTypesReducer from 'reducers/systemCodes/allegationTypesReducer'
-import {fetchSuccess} from 'actions/systemCodesActions'
+import {fetchSuccess, fetchFailure} from 'actions/systemCodesActions'
 
 describe('allegationTypesReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on FETCH_STATUS_CODES_SUCCESS', () => {
+  describe('on FETCH_STATUS_CODES_COMPLETE', () => {
     it('returns the system codes for allegation_type category', () => {
       const action = fetchSuccess([
         {code: '123', value: 'General Neglect', category: 'allegation_type'},
@@ -19,6 +19,10 @@ describe('allegationTypesReducer', () => {
         {code: '456', value: 'Severe Neglect', category: 'allegation_type'},
         {code: '789', value: 'Physical Abuse', category: 'allegation_type'},
       ]))
+    })
+    it('returns the last state on failure', () => {
+      const action = fetchFailure()
+      expect(allegationTypesReducer(List(), action)).toEqualImmutable(List())
     })
   })
 })
