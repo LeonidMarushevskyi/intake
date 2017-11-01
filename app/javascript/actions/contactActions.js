@@ -1,9 +1,7 @@
 export const SAVE_CONTACT = 'SAVE_CONTACT'
-export const SAVE_CONTACT_SUCCESS = 'SAVE_CONTACT_SUCCESS'
-export const SAVE_CONTACT_FAILURE = 'SAVE_CONTACT_FAILURE'
+export const SAVE_CONTACT_COMPLETE = 'SAVE_CONTACT_COMPLETE'
 export const FETCH_CONTACT = 'FETCH_CONTACT'
-export const FETCH_CONTACT_SUCCESS = 'FETCH_CONTACT_SUCCESS'
-export const FETCH_CONTACT_FAILURE = 'FETCH_CONTACT_FAILURE'
+export const FETCH_CONTACT_COMPLETE = 'FETCH_CONTACT_COMPLETE'
 export function save({id, investigation_id, started_at, status, note, purpose, communication_method, location, people}) {
   return {
     type: SAVE_CONTACT,
@@ -22,7 +20,7 @@ export function save({id, investigation_id, started_at, status, note, purpose, c
 }
 export function saveSuccess({id, started_at, status, note, purpose, communication_method, location}) {
   return {
-    type: SAVE_CONTACT_SUCCESS,
+    type: SAVE_CONTACT_COMPLETE,
     payload: {
       id,
       started_at,
@@ -35,7 +33,7 @@ export function saveSuccess({id, started_at, status, note, purpose, communicatio
   }
 }
 export function saveFailure(error) {
-  return {type: SAVE_CONTACT_FAILURE, payload: {error}}
+  return {type: SAVE_CONTACT_COMPLETE, payload: {error}, error: true}
 }
 export function fetch(investigationId, id) {
   return {
@@ -45,7 +43,7 @@ export function fetch(investigationId, id) {
 }
 export function fetchSuccess(investigationId, {id, started_at, status, note, purpose, communication_method, location, people}) {
   return {
-    type: FETCH_CONTACT_SUCCESS,
+    type: FETCH_CONTACT_COMPLETE,
     payload: {
       investigation_id: investigationId,
       id, started_at,
@@ -59,5 +57,5 @@ export function fetchSuccess(investigationId, {id, started_at, status, note, pur
   }
 }
 export function fetchFailure(error) {
-  return {type: FETCH_CONTACT_FAILURE, payload: {error}}
+  return {type: FETCH_CONTACT_COMPLETE, payload: {error}, error: true}
 }
