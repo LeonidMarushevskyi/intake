@@ -18,6 +18,7 @@ export default class WorkerSafetyEditView extends React.Component {
             <label htmlFor='safety_alerts'>Worker safety alerts</label>
             <Select
               multi
+              tabSelectsValue={false}
               inputProps={{id: 'safety_alerts'}}
               options={selectOptions(SAFETY_ALERT)}
               value={this.props.safetyAlerts.toJS()}

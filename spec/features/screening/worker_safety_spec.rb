@@ -70,7 +70,7 @@ feature 'worker safety card' do
     existing_screening = FactoryGirl.create(
       :screening,
       safety_information: 'Important safety stuff',
-      safety_alerts: ['Dangerous Environment']      
+      safety_alerts: ['Dangerous Environment']
     )
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
@@ -87,7 +87,7 @@ feature 'worker safety card' do
     end
 
     existing_screening.safety_information = 'Something else'
-    existing_screening.safety_alerts = ['Dangerous Environment','Firearms in Home']
+    existing_screening.safety_alerts = ['Dangerous Environment', 'Firearms in Home']
     stub_request(
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
@@ -114,7 +114,7 @@ feature 'worker safety card' do
     existing_screening = FactoryGirl.create(
       :screening,
       safety_information: 'Important safety stuff',
-      safety_alerts: ['Dangerous Environment']      
+      safety_alerts: ['Dangerous Environment']
     )
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
@@ -127,10 +127,12 @@ feature 'worker safety card' do
       has_react_select_field('Worker safety alerts', with: ['Dangerous Environment'])
       fill_in 'Additional safety information', with: 'Something else'
       fill_in_react_select 'Worker safety alerts', with: ['Firearms in Home']
+      fill_in_react_select 'Worker safety alerts',
+        with: ['Severe Mental Health Status'], exit_key: :tab
     end
 
     existing_screening.safety_information = 'Something else'
-    existing_screening.safety_alerts = ['Dangerous Environment','Firearms in Home']
+    existing_screening.safety_alerts = ['Dangerous Environment', 'Firearms in Home']
     stub_request(
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
