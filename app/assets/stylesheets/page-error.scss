@@ -1,11 +1,9 @@
 @import 'colors';
 
 .page-error {
-  background: $red;
+  background: $error-red;
   color: $white-smoke;
-  font-size: 1.2rem;
   left: 0;
-  padding-bottom: 2rem;
   position: fixed;
   top: 0;
   width: 100%;
