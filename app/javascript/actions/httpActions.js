@@ -1,9 +1,9 @@
 export const HTTP_COMPLETE = 'HTTP_COMPLETE'
 
-export function httpError(response) {
-  return {type: HTTP_COMPLETE, payload: response, error: true}
+export function httpError(url, response) {
+  return {type: HTTP_COMPLETE, payload: {url, response}, error: true}
 }
 
-export function httpSuccess(response) {
-  return {type: HTTP_COMPLETE, payload: response}
+export function httpSuccess(url, response) {
+  return {type: HTTP_COMPLETE, payload: {url, response}}
 }

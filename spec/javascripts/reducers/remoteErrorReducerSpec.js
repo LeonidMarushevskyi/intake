@@ -10,22 +10,21 @@ describe('remoteErrorReducer', () => {
     it('returns the error object', () => {
       const state = fromJS({
         '/another/path/here': {
-          url: '/another/path/here',
+          stuff: 'Did not have a plan',
         },
       })
-      const action = httpError({
-        url: '/path/to/some/where',
-        status: 500,
-        stuff: 'Did not have a plan',
-      })
+      const action = httpError(
+        '/path/to/some/where',
+        {
+          stuff: 'Did not have a plan',
+        }
+      )
       expect(remoteErrorReducer(state, action)).toEqualImmutable(
         fromJS({
           '/another/path/here': {
-            url: '/another/path/here',
+            stuff: 'Did not have a plan',
           },
           '/path/to/some/where': {
-            url: '/path/to/some/where',
-            status: 500,
             stuff: 'Did not have a plan',
           },
         })
@@ -37,22 +36,22 @@ describe('remoteErrorReducer', () => {
     it('returns an empty object', () => {
       const state = fromJS({
         '/another/path/here': {
-          url: '/another/path/here',
+          stuff: 'Did not have a plan',
         },
         '/path/to/some/where': {
-          url: '/path/to/some/where',
-          status: 500,
           stuff: 'Did not have a plan',
         },
       })
-      const action = httpSuccess({
-        url: '/path/to/some/where',
-        status: 200,
-      })
+      const action = httpSuccess(
+        '/path/to/some/where',
+        {
+          stuff: 'Did have a plan',
+        }
+      )
       expect(remoteErrorReducer(state, action)).toEqualImmutable(
         fromJS({
           '/another/path/here': {
-            url: '/another/path/here',
+            stuff: 'Did not have a plan',
           },
         })
       )

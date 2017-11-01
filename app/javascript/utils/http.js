@@ -90,11 +90,11 @@ export function request(method, url, data, options) {
       headers: {'X-CSRF-Token': getCSRFToken()},
     }, options || {}))
       .done((response) => {
-        store.dispatch(httpSuccess(response))
+        store.dispatch(httpSuccess(url, response))
         resolve(response)
       })
       .fail((response) => {
-        store.dispatch(httpError(response.responseJSON))
+        store.dispatch(httpError(url, response.responseJSON))
         if (response.status === STATUS_CODES.forbidden) {
           const firstIndex = 0
           const currentLocation = encodeURIComponent(window.location.href.split('?')[firstIndex])

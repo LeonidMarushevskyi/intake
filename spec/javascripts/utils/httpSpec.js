@@ -4,6 +4,7 @@ import {store} from 'store/configureStore'
 import {httpError, httpSuccess} from 'actions/httpActions'
 
 describe('request', () => {
+  const url = '/sample/url'
   beforeEach(() => {
     jasmine.Ajax.install()
     const fakeConfig = {base_path: ''}
@@ -18,13 +19,13 @@ describe('request', () => {
     })
 
     it('dispatches the http success action', () => {
-      Http.request('GET', '/').catch(() => null)
+      Http.request('GET', url).catch(() => null)
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: 200,
         responseText: JSON.stringify({why: 'Did stick to the plan'}),
       })
       expect(store.dispatch).toHaveBeenCalledWith(
-        httpSuccess({why: 'Did stick to the plan'})
+        httpSuccess(url, {why: 'Did stick to the plan'})
       )
     })
   })
@@ -34,13 +35,13 @@ describe('request', () => {
     })
 
     it('dispatches the http error action', () => {
-      Http.request('GET', '/').catch(() => null)
+      Http.request('GET', url).catch(() => null)
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: 500,
         responseText: JSON.stringify({why: 'Did not stick to the plan'}),
       })
       expect(store.dispatch).toHaveBeenCalledWith(
-        httpError({why: 'Did not stick to the plan'})
+        httpError(url, {why: 'Did not stick to the plan'})
       )
     })
   })
