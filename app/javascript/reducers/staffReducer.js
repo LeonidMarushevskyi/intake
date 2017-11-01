@@ -3,5 +3,7 @@ import {Map, fromJS} from 'immutable'
 import {createReducer} from 'utils/createReducer'
 
 export default createReducer(Map(), {
-  [CHECK_STAFF_PERMISSION_SUCCESS]: (_state, {permission, hasPermission}) => fromJS({[permission]: hasPermission}),
+  [CHECK_STAFF_PERMISSION_SUCCESS]: (_state, {payload: {permission, hasPermission}}) => (
+    fromJS({[permission]: hasPermission})
+  ),
 })
