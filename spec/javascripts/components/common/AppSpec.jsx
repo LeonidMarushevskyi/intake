@@ -3,8 +3,8 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 
 describe('App', () => {
-  function mountApp({actions: {fetch = () => null, fetchUserInfoAction = () => null}}) {
-    return mount(<App actions={{fetch, fetchUserInfoAction}}><div/></App>)
+  function mountApp({actions: {fetchSystemCodesAction = () => null, fetchUserInfoAction = () => null}}) {
+    return mount(<App actions={{fetchSystemCodesAction, fetchUserInfoAction}}><div/></App>)
   }
 
   function renderApp({actions, hasError = null, errorCount = null}) {
@@ -12,9 +12,9 @@ describe('App', () => {
   }
 
   it('fetches the system codes when the component mounts', () => {
-    const fetchSpy = jasmine.createSpy('fetch')
-    mountApp({actions: {fetch: fetchSpy}})
-    expect(fetchSpy).toHaveBeenCalled()
+    const fetchSystemCodesActionSpy = jasmine.createSpy('fetchSystemCodesAction')
+    mountApp({actions: {fetchSystemCodesAction: fetchSystemCodesActionSpy}})
+    expect(fetchSystemCodesActionSpy).toHaveBeenCalled()
   })
 
   it('fetches user info when the component mounts', () => {

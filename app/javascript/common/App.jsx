@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
-import * as systemCodesActions from 'actions/systemCodesActions'
 import {
   getHasGenericErrorValueSelector,
   getTotalScreeningSubmissionErrorValueSelector,
 } from 'selectors/errorsSelectors'
+import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
 import {fetch as fetchUserInfoAction} from 'actions/userInfoActions'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
@@ -13,7 +13,7 @@ import {GlobalHeader} from 'react-wood-duck'
 
 export class App extends React.Component {
   componentDidMount() {
-    this.props.actions.fetch()
+    this.props.actions.fetchSystemCodesAction()
     this.props.actions.fetchUserInfoAction()
   }
   render() {
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators({
-    systemCodesActions,
+    fetchSystemCodesAction,
     fetchUserInfoAction,
   }, dispatch),
 })
