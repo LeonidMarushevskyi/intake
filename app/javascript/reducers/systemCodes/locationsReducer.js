@@ -5,7 +5,7 @@ import {findByCategory} from 'selectors'
 const CONTACT_LOCATION = 'contact_location'
 
 export default createReducer(List(), {
-  [FETCH_SYSTEM_CODES_SUCCESS](state, {systemCodes}) {
+  [FETCH_SYSTEM_CODES_SUCCESS](state, {payload: {systemCodes}}) {
     return fromJS(findByCategory(systemCodes, CONTACT_LOCATION))
   },
 })
