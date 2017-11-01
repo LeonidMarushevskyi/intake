@@ -54,6 +54,7 @@ export class ScreeningPage extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
+    this.props.actions.fetchRelationships(this.props.params.id)
     this.props.actions.checkStaffPermission('add_sensitive_people')
   }
 
@@ -311,11 +312,9 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
             <RelationshipsCard
-              actions={this.props.actions}
               editable={editable}
               participants={this.props.participants}
               relationships={this.props.relationships}
-              screeningId={this.props.params.id}
             />
           }
           {

@@ -21,21 +21,6 @@ describe('RelationshipsCard', () => {
       fetchRelationships = jasmine.createSpy('fetchRelationships')
     })
 
-    describe('when participants are not empty', () => {
-      it('fetch relationships', () => {
-        const props = {
-          ...requiredProps,
-          actions: {fetchRelationships},
-          participants: Immutable.fromJS([
-            {id: 1},
-            {id: 2},
-          ]),
-        }
-        component = mount(<RelationshipsCard {...props}/>)
-        expect(fetchRelationships).toHaveBeenCalledWith(props.screeningId)
-      })
-    })
-
     describe('when participants are empty', () => {
       it('does not fetch relationships', () => {
         const props = {
@@ -58,20 +43,6 @@ describe('RelationshipsCard', () => {
         actions: {fetchRelationships},
       }
       component = shallow(<RelationshipsCard {...updatedProps}/>)
-    })
-
-    describe('when participants change', () => {
-      it('fetch relationships', () => {
-        const newProps = {
-          ...requiredProps,
-          participants: Immutable.fromJS([
-            {id: 1},
-            {id: 2},
-          ]),
-        }
-        component.setProps(newProps)
-        expect(fetchRelationships).toHaveBeenCalledWith(newProps.screeningId)
-      })
     })
 
     describe('when participants are the same', () => {

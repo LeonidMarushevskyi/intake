@@ -4,6 +4,7 @@ import {
   deleteParticipantSuccess,
   deleteParticipantFailure,
   fetchScreening,
+  fetchRelationships,
 } from 'actions/screeningActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import {DELETE_PARTICIPANT} from 'actions/actionTypes'
@@ -14,6 +15,7 @@ export function* deleteParticipant({id}) {
     yield put(deleteParticipantSuccess(id))
     const screeningId = yield select(getScreeningIdValueSelector)
     yield put(fetchScreening(screeningId))
+    yield put(fetchRelationships(screeningId))
   } catch (error) {
     yield put(deleteParticipantFailure(error.responseJSON))
   }
