@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {dateRangeFormatter} from 'utils/dateFormatter'
 
-const ScreeningView = ({startDate, endDate, status, county, people, reporter, worker}) => (
+const ScreeningView = ({dateRange, status, county, people, reporter, worker}) => (
   <tr>
-    <td>{dateRangeFormatter({start_date: startDate, end_date: endDate})}</td>
+    <td>{dateRange}</td>
     <td>
       <div className='row'>Screening</div>
       <div className='row'>({status})</div>
@@ -24,10 +23,9 @@ const ScreeningView = ({startDate, endDate, status, county, people, reporter, wo
 
 ScreeningView.propTypes = {
   county: PropTypes.string,
-  endDate: PropTypes.string,
+  dateRange: PropTypes.string,
   people: PropTypes.string,
   reporter: PropTypes.string,
-  startDate: PropTypes.string,
   status: PropTypes.string,
   worker: PropTypes.string,
 }
