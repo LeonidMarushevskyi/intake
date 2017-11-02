@@ -108,9 +108,5 @@ export const getHistoryIsEmptySelector = createSelector(
   getCasesSelector,
   getReferralsSelector,
   getScreeningsSelector,
-  (cases, referrals, screenings) => (
-    [cases.size, referrals.size, screenings.size].reduce(
-      (itemCount, sum) => sum + itemCount
-    ) === 0
-  )
+  (cases, referrals, screenings) => !List([cases, referrals, screenings]).some((hoi) => !hoi.isEmpty())
 )
