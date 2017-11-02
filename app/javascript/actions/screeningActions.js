@@ -1,38 +1,30 @@
 import {put} from 'utils/http'
 import {
   CREATE_SCREENING,
-  CREATE_SCREENING_SUCCESS,
-  CREATE_SCREENING_FAILURE,
-  UPDATE_SCREENING_SUCCESS,
+  CREATE_SCREENING_COMPLETE,
+  UPDATE_SCREENING_COMPLETE,
   FETCH_SCREENING,
-  FETCH_SCREENING_SUCCESS,
-  FETCH_SCREENING_FAILURE,
+  FETCH_SCREENING_COMPLETE,
   CREATE_PARTICIPANT,
-  CREATE_PARTICIPANT_SUCCESS,
-  CREATE_PARTICIPANT_FAILURE,
+  CREATE_PARTICIPANT_COMPLETE,
   DELETE_PARTICIPANT,
-  DELETE_PARTICIPANT_SUCCESS,
-  DELETE_PARTICIPANT_FAILURE,
+  DELETE_PARTICIPANT_COMPLETE,
   UPDATE_PARTICIPANT,
-  UPDATE_PARTICIPANT_SUCCESS,
-  UPDATE_PARTICIPANT_FAILURE,
+  UPDATE_PARTICIPANT_COMPLETE,
   FETCH_HISTORY_OF_INVOLVEMENTS,
-  FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS,
-  FETCH_HISTORY_OF_INVOLVEMENTS_FAILURE,
+  FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE,
   FETCH_RELATIONSHIPS,
-  FETCH_RELATIONSHIPS_SUCCESS,
-  FETCH_RELATIONSHIPS_FAILURE,
+  FETCH_RELATIONSHIPS_COMPLETE,
   SUBMIT_SCREENING,
-  SUBMIT_SCREENING_SUCCESS,
-  SUBMIT_SCREENING_FAILURE,
+  SUBMIT_SCREENING_COMPLETE,
 } from 'actions/actionTypes'
 
 export function createScreeningSuccess(screening) {
-  return {type: CREATE_SCREENING_SUCCESS, screening}
+  return {type: CREATE_SCREENING_COMPLETE, payload: {screening}}
 }
 
 export function createScreeningFailure(error) {
-  return {type: CREATE_SCREENING_FAILURE, error}
+  return {type: CREATE_SCREENING_COMPLETE, payload: {error}, error: true}
 }
 
 export function createScreening() {
@@ -40,19 +32,19 @@ export function createScreening() {
 }
 
 export function fetchScreeningSuccess(screening) {
-  return {type: FETCH_SCREENING_SUCCESS, screening}
+  return {type: FETCH_SCREENING_COMPLETE, payload: {screening}}
 }
 
 export function fetchScreeningFailure(error) {
-  return {type: FETCH_SCREENING_FAILURE, error}
+  return {type: FETCH_SCREENING_COMPLETE, payload: {error}, error: true}
 }
 
 export function fetchScreening(id) {
-  return {type: FETCH_SCREENING, id}
+  return {type: FETCH_SCREENING, payload: {id}}
 }
 
 export function updateScreeningSuccess(screening) {
-  return {type: UPDATE_SCREENING_SUCCESS, screening}
+  return {type: UPDATE_SCREENING_COMPLETE, payload: {screening}}
 }
 
 export function saveScreening(screening) {
@@ -63,73 +55,73 @@ export function saveScreening(screening) {
 }
 
 export function updateParticipantSuccess(participant) {
-  return {type: UPDATE_PARTICIPANT_SUCCESS, participant}
+  return {type: UPDATE_PARTICIPANT_COMPLETE, payload: {participant}}
 }
 
 export function updateParticipantFailure(error) {
-  return {type: UPDATE_PARTICIPANT_FAILURE, error}
+  return {type: UPDATE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
 }
 
 export function saveParticipant(participant) {
-  return {type: UPDATE_PARTICIPANT, participant}
+  return {type: UPDATE_PARTICIPANT, payload: {participant}}
 }
 
 export function createParticipantSuccess(participant) {
-  return {type: CREATE_PARTICIPANT_SUCCESS, participant}
+  return {type: CREATE_PARTICIPANT_COMPLETE, payload: {participant}}
 }
 
 export function createParticipantFailure(error) {
-  return {type: CREATE_PARTICIPANT_FAILURE, error}
+  return {type: CREATE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
 }
 
 export function createParticipant(participant) {
-  return {type: CREATE_PARTICIPANT, participant}
+  return {type: CREATE_PARTICIPANT, payload: {participant}}
 }
 
 export function deleteParticipantSuccess(id) {
-  return {type: DELETE_PARTICIPANT_SUCCESS, id}
+  return {type: DELETE_PARTICIPANT_COMPLETE, payload: {id}}
 }
 
 export function deleteParticipantFailure(error) {
-  return {type: DELETE_PARTICIPANT_FAILURE, error}
+  return {type: DELETE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
 }
 
 export function deleteParticipant(id) {
-  return {type: DELETE_PARTICIPANT, id}
+  return {type: DELETE_PARTICIPANT, payload: {id}}
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {
-  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_SUCCESS, history_of_involvements}
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE, payload: {history_of_involvements}}
 }
 
 export function fetchHistoryOfInvolvementsFailure(error) {
-  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_FAILURE, error}
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE, payload: {error}, error: true}
 }
 
 export function fetchHistoryOfInvolvements(id) {
-  return {type: FETCH_HISTORY_OF_INVOLVEMENTS, id}
+  return {type: FETCH_HISTORY_OF_INVOLVEMENTS, payload: {id}}
 }
 
 export function submitScreeningSuccess(screening) {
-  return {type: SUBMIT_SCREENING_SUCCESS, screening}
+  return {type: SUBMIT_SCREENING_COMPLETE, payload: {screening}}
 }
 
 export function submitScreeningFailure(error) {
-  return {type: SUBMIT_SCREENING_FAILURE, error}
+  return {type: SUBMIT_SCREENING_COMPLETE, payload: {error}, error: true}
 }
 
 export function submitScreening(id) {
-  return {type: SUBMIT_SCREENING, id}
+  return {type: SUBMIT_SCREENING, payload: {id}}
 }
 
 export function fetchRelationshipsSuccess(relationships) {
-  return {type: FETCH_RELATIONSHIPS_SUCCESS, relationships}
+  return {type: FETCH_RELATIONSHIPS_COMPLETE, payload: {relationships}}
 }
 
 export function fetchRelationshipsFailure(error) {
-  return {type: FETCH_RELATIONSHIPS_FAILURE, error}
+  return {type: FETCH_RELATIONSHIPS_COMPLETE, payload: {error}, error: true}
 }
 
 export function fetchRelationships(id) {
-  return {type: FETCH_RELATIONSHIPS, id}
+  return {type: FETCH_RELATIONSHIPS, payload: {id}}
 }

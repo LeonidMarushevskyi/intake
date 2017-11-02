@@ -10,7 +10,7 @@ import {
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import {DELETE_PARTICIPANT} from 'actions/actionTypes'
 
-export function* deleteParticipant({id}) {
+export function* deleteParticipant({payload: {id}}) {
   try {
     yield call(destroy, `/api/v1/participants/${id}`)
     yield put(deleteParticipantSuccess(id))

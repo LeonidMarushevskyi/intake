@@ -5,14 +5,14 @@ import {
   touchField,
   touchAllFields,
 } from 'actions/narrativeFormActions'
-import {fetchScreeningSuccess} from 'actions/screeningActions'
+import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
 import * as matchers from 'jasmine-immutable-matchers'
 import narrativeFormReducer from 'reducers/narrativeFormReducer'
 
-describe('contactReducer', () => {
+describe('narrativeFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on FETCH_SCREENING_SUCCESS', () => {
+  describe('on FETCH_SCREENING_COMPLETE', () => {
     it('returns the narrative form', () => {
       const action = fetchScreeningSuccess({report_narrative: 'ABC'})
       expect(narrativeFormReducer(Map(), action)).toEqualImmutable(
@@ -24,7 +24,7 @@ describe('contactReducer', () => {
         })
       )
     })
-    it('returns the narrative form with default empty string', () => {
+    it('returns the narrative form with default empty string on success', () => {
       const action = fetchScreeningSuccess({report_narrative: null})
       expect(narrativeFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
@@ -34,6 +34,11 @@ describe('contactReducer', () => {
           },
         })
       )
+    })
+    it('returns the last state on failure', () => {
+      const action = fetchScreeningFailure()
+      expect(narrativeFormReducer(Map(), action))
+        .toEqualImmutable(Map())
     })
   })
 

@@ -5,11 +5,9 @@ import {
   submitScreeningFailure,
 } from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {
-  SUBMIT_SCREENING,
-} from 'actions/actionTypes'
+import {SUBMIT_SCREENING} from 'actions/actionTypes'
 
-export function* submitScreening({id}) {
+export function* submitScreening({payload: {id}}) {
   try {
     const response = yield call(post, `/api/v1/screenings/${id}/submit`)
     yield put(submitScreeningSuccess(response))

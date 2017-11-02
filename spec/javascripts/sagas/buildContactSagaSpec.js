@@ -36,7 +36,7 @@ describe('buildContact', () => {
     )
   })
 
-  it('dispatches BUILD_CONTACT_FAILURE when errors are thrown', () => {
+  it('puts BUILD_CONTACT_COMPLETE with errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
     const gen = buildContact(action)
     expect(gen.next().value).toEqual(

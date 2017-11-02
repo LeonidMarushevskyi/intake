@@ -6,11 +6,9 @@ import {
   fetchScreeningSuccess,
 } from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {
-  UPDATE_PARTICIPANT,
-} from 'actions/actionTypes'
+import {UPDATE_PARTICIPANT} from 'actions/actionTypes'
 
-export function* saveParticipant({participant}) {
+export function* saveParticipant({payload: {participant}}) {
   try {
     let response = yield call(Utils.put, `/api/v1/participants/${participant.id}`, participant)
     yield put(updateParticipantSuccess(response))

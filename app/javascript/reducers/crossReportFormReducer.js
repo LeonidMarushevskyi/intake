@@ -12,7 +12,7 @@ import {
   TOUCH_CROSS_REPORT_FIELD,
   TOUCH_CROSS_REPORT_AGENCY_FIELD,
 } from 'actions/crossReportFormActions'
-import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
+import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {AGENCY_TYPES} from 'enums/CrossReport'
 
 const buildAgencyInformation = ({agencies}) => {
@@ -113,8 +113,12 @@ export default createReducer(Map(), {
   [TOUCH_CROSS_REPORT_AGENCY_FIELD](state, {payload: {agencyType}}) {
     return state.setIn([agencyType, 'agency', 'touched'], true)
   },
-  [FETCH_SCREENING_SUCCESS](_state, {screening}) {
-    return buildCrossReportFormFromScreening(screening)
+  [FETCH_SCREENING_COMPLETE](state, {payload: {screening}, error}) {
+    if (error) {
+      return state
+    } else {
+      return buildCrossReportFormFromScreening(screening)
+    }
   },
   [SAVE_CROSS_REPORT](_state, {payload: {screening}}) {
     return buildCrossReportFormFromScreening(screening)

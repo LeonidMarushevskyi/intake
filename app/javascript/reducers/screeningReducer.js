@@ -1,22 +1,25 @@
 import {
   FETCH_SCREENING,
-  CREATE_SCREENING_SUCCESS,
-  FETCH_SCREENING_SUCCESS,
-  UPDATE_SCREENING_SUCCESS,
-  SUBMIT_SCREENING_SUCCESS,
+  CREATE_SCREENING_COMPLETE,
+  FETCH_SCREENING_COMPLETE,
+  UPDATE_SCREENING_COMPLETE,
+  SUBMIT_SCREENING_COMPLETE,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
-const getScreening = (state, {screening}) => fromJS({
-  ...screening,
-  fetch_status: 'FETCHED',
-})
+const getScreening = (state, {payload: {screening}, error}) => {
+  if (error) {
+    return state
+  } else {
+    return fromJS({...screening, fetch_status: 'FETCHED'})
+  }
+}
 
 export default createReducer(Map(), {
   [FETCH_SCREENING]: (_state, _action) => Map({fetch_status: 'FETCHING'}),
-  [CREATE_SCREENING_SUCCESS]: getScreening,
-  [FETCH_SCREENING_SUCCESS]: getScreening,
-  [UPDATE_SCREENING_SUCCESS]: getScreening,
-  [SUBMIT_SCREENING_SUCCESS]: getScreening,
+  [CREATE_SCREENING_COMPLETE]: getScreening,
+  [FETCH_SCREENING_COMPLETE]: getScreening,
+  [UPDATE_SCREENING_COMPLETE]: getScreening,
+  [SUBMIT_SCREENING_COMPLETE]: getScreening,
 })

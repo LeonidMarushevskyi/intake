@@ -6,13 +6,8 @@ import {
   createParticipantSaga,
 } from 'sagas/createParticipantSaga'
 import {CREATE_PARTICIPANT} from 'actions/actionTypes'
-import {
-  createParticipantSuccess,
-  createParticipantFailure,
-  fetchRelationships,
-  fetchHistoryOfInvolvements,
-} from 'actions/screeningActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
+import * as actions from 'actions/screeningActions'
 
 describe('createParticipantSaga', () => {
   it('creates participant on CREATE_PARTICIPANT', () => {
@@ -22,32 +17,33 @@ describe('createParticipantSaga', () => {
 })
 
 describe('createParticipant', () => {
+  const participant = {first_name: 'Michael'}
+  const action = actions.createParticipant(participant)
+
   it('creates and puts participant and fetches relationships and history', () => {
-    const participant = {first_name: 'Michael'}
-    const gen = createParticipant({participant})
+    const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     expect(gen.next(participant).value).toEqual(
-      put(createParticipantSuccess(participant))
+      put(actions.createParticipantSuccess(participant))
     )
     expect(gen.next().value).toEqual(
       select(getScreeningIdValueSelector)
     )
     const screeningId = '444'
     expect(gen.next(screeningId).value).toEqual(
-      put(fetchRelationships(screeningId))
+      put(actions.fetchRelationships(screeningId))
     )
     expect(gen.next(screeningId).value).toEqual(
-      put(fetchHistoryOfInvolvements(screeningId))
+      put(actions.fetchHistoryOfInvolvements(screeningId))
     )
   })
 
   it('puts errors when errors are thrown', () => {
-    const participant = {first_name: 'Michael'}
-    const error = {responseJSON: 'some error'}
-    const gen = createParticipant({participant})
+    const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
+    const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(createParticipantFailure('some error'))
+      put(actions.createParticipantFailure('some error'))
     )
   })
 })

@@ -1,5 +1,5 @@
 import * as screeningActions from 'actions/screeningActions'
-import {get} from 'utils/http'
+import {fetch as fetchScreenings} from 'actions/screeningsActions'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningsTable from 'screenings/ScreeningsTable'
@@ -11,18 +11,12 @@ import * as IntakeConfig from 'common/config'
 export class HomePage extends React.Component {
   constructor() {
     super(...arguments)
-    this.getScreenings = this.getScreenings.bind(this)
-    this.state = {screenings: []}
   }
 
   componentDidMount() {
     if (IntakeConfig.isFeatureInactive('release_two')) {
-      this.getScreenings()
+      this.props.actions.fetchScreenings()
     }
-  }
-
-  getScreenings() {
-    get('/api/v1/screenings').then((screenings) => this.setState({screenings}))
   }
 
   render() {
@@ -32,7 +26,7 @@ export class HomePage extends React.Component {
           <Link to='#' onClick={() => { this.props.actions.createScreening() }}>Start Screening</Link>
         </div>
         <div className='col-md-9'>
-          { IntakeConfig.isFeatureInactive('release_two') && <ScreeningsTable screenings={this.state.screenings} /> }
+          { IntakeConfig.isFeatureInactive('release_two') && <ScreeningsTable screenings={this.props.screenings} /> }
         </div>
       </div>
     )
@@ -41,20 +35,19 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   actions: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  screening: PropTypes.object.isRequired,
+  screenings: PropTypes.array,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, _ownProps) {
   return {
-    screening: state.get('screening'),
-    router: ownProps.router,
+    screenings: state.get('screenings').toJS(),
   }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
+  const actions = Object.assign({}, screeningActions, {fetchScreenings})
   return {
-    actions: bindActionCreators(screeningActions, dispatch),
+    actions: bindActionCreators(actions, dispatch),
   }
 }
 

@@ -1,13 +1,13 @@
 import {List, fromJS} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import countyAgenciesReducer from 'reducers/systemCodes/countyAgenciesReducer'
-import {fetchSuccess} from 'actions/countyAgenciesActions'
+import {fetchSuccess, fetchFailure} from 'actions/countyAgenciesActions'
 
 describe('countyAgenciesReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on FETCH_COUNTY_AGENCIES_SUCCESS', () => {
-    it('returns the system codes for county agencies', () => {
+  describe('on FETCH_COUNTY_AGENCIES_COMPLETE', () => {
+    it('returns the system codes for county agencies on success', () => {
       const action = fetchSuccess([
         {
           id: 'PaV1yNy00E',
@@ -74,6 +74,12 @@ describe('countyAgenciesReducer', () => {
           },
         ]
       ))
+    })
+
+    it('returns the last state on failure', () => {
+      const action = fetchFailure()
+      expect(countyAgenciesReducer(List(), action))
+        .toEqualImmutable(List())
     })
   })
 })

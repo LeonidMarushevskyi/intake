@@ -7,13 +7,7 @@ import {
 } from 'sagas/deleteParticipantSaga'
 import {DELETE_PARTICIPANT} from 'actions/actionTypes'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import {
-  deleteParticipantSuccess,
-  deleteParticipantFailure,
-  fetchScreening,
-  fetchRelationships,
-  fetchHistoryOfInvolvements,
-} from 'actions/screeningActions'
+import * as actions from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
   it('deletes participant on DELETE_PARTICIPANT', () => {
@@ -23,32 +17,33 @@ describe('deleteParticipantSaga', () => {
 })
 
 describe('deleteParticipant', () => {
+  const id = '123'
+  const action = actions.deleteParticipant(id)
+
   it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
-    const id = '123'
-    const gen = deleteParticipant({id})
+    const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.next().value).toEqual(
-      put(deleteParticipantSuccess(id))
+      put(actions.deleteParticipantSuccess(id))
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
-      put(fetchScreening('444'))
+      put(actions.fetchScreening('444'))
     )
     expect(gen.next('444').value).toEqual(
-      put(fetchRelationships('444'))
+      put(actions.fetchRelationships('444'))
     )
     expect(gen.next('444').value).toEqual(
-      put(fetchHistoryOfInvolvements('444'))
+      put(actions.fetchHistoryOfInvolvements('444'))
     )
   })
 
   it('puts errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
-    const id = '123'
-    const gen = deleteParticipant({id})
+    const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.throw(error).value).toEqual(
-      put(deleteParticipantFailure('some error'))
+      put(actions.deleteParticipantFailure('some error'))
     )
   })
 })
