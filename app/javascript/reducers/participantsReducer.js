@@ -1,32 +1,48 @@
 import {
-  CREATE_SCREENING_SUCCESS,
-  FETCH_SCREENING_SUCCESS,
-  UPDATE_SCREENING_SUCCESS,
-  CREATE_PARTICIPANT_SUCCESS,
-  DELETE_PARTICIPANT_SUCCESS,
-  UPDATE_PARTICIPANT_SUCCESS,
+  CREATE_SCREENING_COMPLETE,
+  FETCH_SCREENING_COMPLETE,
+  UPDATE_SCREENING_COMPLETE,
+  CREATE_PARTICIPANT_COMPLETE,
+  DELETE_PARTICIPANT_COMPLETE,
+  UPDATE_PARTICIPANT_COMPLETE,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
 import {List, fromJS} from 'immutable'
 
-const getParticipantsOnScreening = (state, {payload: {screening: {participants}}}) => (
-  fromJS(participants)
-)
+const getParticipantsOnScreening = (state, {payload, error}) => {
+  if (error) {
+    return state
+  } else {
+    return fromJS(payload.screening.participants)
+  }
+}
 
 export default createReducer(List(), {
-  [CREATE_SCREENING_SUCCESS]: getParticipantsOnScreening,
-  [FETCH_SCREENING_SUCCESS]: getParticipantsOnScreening,
-  [UPDATE_SCREENING_SUCCESS]: getParticipantsOnScreening,
-  [CREATE_PARTICIPANT_SUCCESS](state, {payload: {participant}}) {
-    const newParticipant = fromJS(participant)
-    return state.unshift(newParticipant)
+  [CREATE_SCREENING_COMPLETE]: getParticipantsOnScreening,
+  [FETCH_SCREENING_COMPLETE]: getParticipantsOnScreening,
+  [UPDATE_SCREENING_COMPLETE]: getParticipantsOnScreening,
+  [CREATE_PARTICIPANT_COMPLETE](state, {payload: {participant}, error}) {
+    if (error) {
+      return state
+    } else {
+      const newParticipant = fromJS(participant)
+      return state.unshift(newParticipant)
+    }
   },
-  [DELETE_PARTICIPANT_SUCCESS](state, {payload: {id}}) {
-    return state.filterNot((x) => x.get('id') === id)
+  [DELETE_PARTICIPANT_COMPLETE](state, {payload: {id}, error}) {
+    if (error) {
+      return state
+    } else {
+      return state.filterNot((x) => x.get('id') === id)
+    }
   },
-  [UPDATE_PARTICIPANT_SUCCESS](state, {payload: {participant}}) {
-    const updatedParticipant = fromJS(participant)
-    const participantIndex = state.findIndex((x) => x.get('id') === updatedParticipant.get('id'))
-    return state.setIn([participantIndex], updatedParticipant)
+  [UPDATE_PARTICIPANT_COMPLETE](state, {payload: {participant}, error}) {
+    if (error) {
+      return state
+    } else {
+      const updatedParticipant = fromJS(participant)
+      const participantIndex = state.findIndex((x) => x.get('id') === updatedParticipant.get('id'))
+      return state.setIn([participantIndex], updatedParticipant)
+    }
   },
 })

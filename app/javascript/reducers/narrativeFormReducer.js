@@ -4,18 +4,23 @@ import {
   TOUCH_NARRATIVE_FIELD,
   TOUCH_ALL_NARRATIVE_FIELDS,
 } from 'actions/narrativeFormActions'
-import {FETCH_SCREENING_SUCCESS} from 'actions/actionTypes'
+import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
 export default createReducer(Map(), {
-  [FETCH_SCREENING_SUCCESS](_state, {payload: {screening: {report_narrative}}}) {
-    return fromJS({
-      report_narrative: {
-        value: report_narrative || '',
-        touched: false,
-      },
-    })
+  [FETCH_SCREENING_COMPLETE](state, {payload: {screening}, error}) {
+    if (error) {
+      return state
+    } else {
+      const {report_narrative} = screening
+      return fromJS({
+        report_narrative: {
+          value: report_narrative || '',
+          touched: false,
+        },
+      })
+    }
   },
   [RESET_NARRATIVE_FIELD_VALUES](state, {payload: {screening: {report_narrative}}}) {
     return state.setIn(['report_narrative', 'value'], report_narrative)

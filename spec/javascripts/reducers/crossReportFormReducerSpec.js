@@ -13,7 +13,7 @@ import {
   touchField,
   touchAgencyField,
 } from 'actions/crossReportFormActions'
-import {fetchScreeningSuccess} from 'actions/screeningActions'
+import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
 
 describe('crossReportFormReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -375,8 +375,8 @@ describe('crossReportFormReducer', () => {
       )
     })
   })
-  describe('on FETCH_SCREENING_SUCCESS', () => {
-    it('returns the cross report with the values from screening', () => {
+  describe('on FETCH_SCREENING_COMPLETE', () => {
+    it('returns the cross report with the values from screening on success', () => {
       const action = fetchScreeningSuccess({
         cross_reports: [
           {
@@ -446,6 +446,11 @@ describe('crossReportFormReducer', () => {
           },
         })
       )
+    })
+    it('returns the last state on failure', () => {
+      const action = fetchScreeningFailure()
+      expect(crossReportFormReducer(Map(), action))
+        .toEqualImmutable(Map())
     })
   })
   describe('on SAVE_CROSS_REPORT', () => {
