@@ -5,6 +5,7 @@ import EthnicityEditView from 'people/EthnicityEditView'
 import Genders from 'enums/Genders'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import Immutable from 'immutable'
+import InlineHeader from 'common/InlineHeader'
 import InputField from 'common/InputField'
 import MaskedInputField from 'common/MaskedInputField'
 import LANGUAGES from 'enums/Languages'
@@ -116,9 +117,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
         />
       </div>
       <div className='row'>
-        <div className='col-md-12 double-gap-top'>
-          <legend>Demographic Information</legend>
-        </div>
+        <InlineHeader heading='Demographic Information' />
       </div>
       <div className='row'>
         <DateField
@@ -199,9 +198,7 @@ const ParticipantEditView = ({participant, onCancel, onChange, onDobBlur, onSave
         </div>
       </div>
       <div className='row'>
-        <div className='col-md-12 double-gap-top'>
-          <legend>Contact & Location Information</legend>
-        </div>
+        <InlineHeader heading='Contact & Location Information' />
       </div>
       <PhoneNumbersEditView
         phoneNumbers={participant.get('phone_numbers') || Immutable.List()}

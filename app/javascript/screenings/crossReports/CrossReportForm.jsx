@@ -1,6 +1,7 @@
 import AlertInfoMessage from 'common/AlertInfoMessage'
 import CountySelectField from 'common/CountySelectField'
 import DateField from 'common/DateField'
+import InlineHeader from 'common/InlineHeader'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
@@ -156,9 +157,7 @@ const CrossReportForm = ({
         {
           hasAgencies &&
           <fieldset className='fieldset-inputs'>
-            <div className='col-md-12 double-gap-bottom'>
-              <legend>Communication Time and Method</legend>
-            </div>
+            <InlineHeader heading='Communication Time and Method' />
             <DateField
               gridClassName='col-md-6'
               id='cross_report_inform_date'
