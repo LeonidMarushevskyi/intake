@@ -14,7 +14,7 @@ import NarrativeCardView from 'screenings/NarrativeCardView'
 import ParticipantCardView from 'screenings/ParticipantCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
-import RelationshipsCard from 'screenings/RelationshipsCard'
+import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
@@ -312,11 +312,7 @@ export class ScreeningPage extends React.Component {
           }
           {
             releaseTwoInactive &&
-            <RelationshipsCard
-              editable={editable}
-              participants={this.props.participants}
-              relationships={this.props.relationships}
-            />
+            <RelationshipsCardContainer />
           }
           {
             releaseTwoInactive &&
