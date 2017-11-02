@@ -8,9 +8,9 @@ import {
 
 const mapStateToProps = (state) => (
   {
-    casesCount: getCasesCountSelector(state),
-    referralsCount: getReferralsCountSelector(state),
-    screeningsCount: getScreeningsCountSelector(state),
+    'case': [],
+    referrals: [],
+    screenings: [],
   }
 )
 
