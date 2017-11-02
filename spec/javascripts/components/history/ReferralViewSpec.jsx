@@ -8,17 +8,10 @@ describe('ReferralView', () => {
     return shallow(<ReferralView {...props}/>)
   }
 
-  it('renders a single date for the history entry in the first column', () => {
-    const startDate = '2008-01-02'
-    const component = renderReferralView({startDate})
-    expect(component.find('td').at(0).text()).toEqual('01/02/2008')
-  })
-
   it('renders a date range for the history entry in the first column', () => {
-    const startDate = '2008-01-02'
-    const endDate = '2009-01-02'
-    const component = renderReferralView({startDate, endDate})
-    expect(component.find('td').at(0).text()).toEqual('01/02/2008 - 01/02/2009')
+    const dateRange = '01/02/2002 - 01/03/2002'
+    const component = renderReferralView({dateRange})
+    expect(component.find('td').at(0).text()).toEqual('01/02/2002 - 01/03/2002')
   })
 
   it('renders a history entry of type Referral with its id, status, and access notification in the second column', () => {
