@@ -55,6 +55,7 @@ export class ScreeningPage extends React.Component {
   componentDidMount() {
     this.props.actions.fetchScreening(this.props.params.id)
     this.props.actions.fetchRelationships(this.props.params.id)
+    this.props.actions.fetchHistoryOfInvolvements(this.props.params.id)
     this.props.actions.checkStaffPermission('add_sensitive_people')
   }
 

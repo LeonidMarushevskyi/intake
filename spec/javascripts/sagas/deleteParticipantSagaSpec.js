@@ -12,6 +12,7 @@ import {
   deleteParticipantFailure,
   fetchScreening,
   fetchRelationships,
+  fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
@@ -35,6 +36,9 @@ describe('deleteParticipant', () => {
     )
     expect(gen.next('444').value).toEqual(
       put(fetchRelationships('444'))
+    )
+    expect(gen.next('444').value).toEqual(
+      put(fetchHistoryOfInvolvements('444'))
     )
   })
 

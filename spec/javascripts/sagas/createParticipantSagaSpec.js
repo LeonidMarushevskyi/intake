@@ -10,6 +10,7 @@ import {
   createParticipantSuccess,
   createParticipantFailure,
   fetchRelationships,
+  fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 
@@ -21,7 +22,7 @@ describe('createParticipantSaga', () => {
 })
 
 describe('createParticipant', () => {
-  it('creates and puts participant and fetches relationships', () => {
+  it('creates and puts participant and fetches relationships and history', () => {
     const participant = {first_name: 'Michael'}
     const gen = createParticipant({participant})
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
@@ -34,6 +35,9 @@ describe('createParticipant', () => {
     const screeningId = '444'
     expect(gen.next(screeningId).value).toEqual(
       put(fetchRelationships(screeningId))
+    )
+    expect(gen.next(screeningId).value).toEqual(
+      put(fetchHistoryOfInvolvements(screeningId))
     )
   })
 

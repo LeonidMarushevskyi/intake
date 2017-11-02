@@ -14,6 +14,7 @@ feature 'screening narrative card' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     visit screening_path(id: existing_screening.id)
     click_link 'Edit narrative'
@@ -44,6 +45,7 @@ feature 'screening narrative card' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     visit edit_screening_path(id: existing_screening.id)
 
@@ -67,6 +69,7 @@ feature 'screening narrative card' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     visit screening_path(id: existing_screening.id)
     click_link 'Edit narrative'
@@ -82,6 +85,7 @@ feature 'screening narrative card' do
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#narrative-card.edit' do
       click_button 'Save'
@@ -93,6 +97,7 @@ feature 'screening narrative card' do
       ).with(json_body(as_json_without_root_id(existing_screening)))
     ).to have_been_made
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#narrative-card.show' do
       expect(page).to have_content 'Trying to fill in with changes'
@@ -108,6 +113,7 @@ feature 'screening narrative card' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     visit edit_screening_path(id: existing_screening.id)
 
@@ -122,6 +128,7 @@ feature 'screening narrative card' do
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
     stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
 
     within '#narrative-card.edit' do
       click_button 'Save'

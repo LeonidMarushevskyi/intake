@@ -217,7 +217,7 @@ describe('ScreeningPage', () => {
     const fetchScreening = jasmine.createSpy('fetchScreening')
     const fetchRelationships = jasmine.createSpy('fetchRelationships')
     const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-    const fetchHistoryOfInvolvements = () => Promise.resolve()
+    const fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
     const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
     beforeEach(() => {
       const props = {
@@ -238,6 +238,10 @@ describe('ScreeningPage', () => {
       expect(fetchRelationships).toHaveBeenCalledWith('222')
     })
 
+    it('GETs the history of involvement from the server', () => {
+      expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith('222')
+    })
+
     it('GETs the staff permission from the server', () => {
       expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
@@ -251,10 +255,10 @@ describe('ScreeningPage', () => {
     beforeEach(() => {
       const fetchScreening = jasmine.createSpy('fetchScreening')
       const fetchRelationships = jasmine.createSpy('fetchRelationships')
+      const fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
       const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
       fetchScreening.and.returnValue(Promise.resolve())
       checkStaffPermission.and.returnValue(Promise.resolve())
-      const fetchHistoryOfInvolvements = () => Promise.resolve()
       props = {
         ...requiredProps,
         actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements, checkStaffPermission},
