@@ -2,14 +2,14 @@ import {connect} from 'react-redux'
 import HistoryTable from 'history/HistoryTable'
 import {
   getFormattedCasesSelector,
-  getReferralsCountSelector,
+  getFormattedReferralsSelector,
   getFormattedScreeningsSelector,
 } from 'selectors/historyOfInvolvementSelectors'
 
 const mapStateToProps = (state) => (
   {
     cases: getFormattedCasesSelector(state).toJS(),
-    referrals: [],
+    referrals: getFormattedReferralsSelector(state).toJS(),
     screenings: getFormattedScreeningsSelector(state).toJS(),
   }
 )

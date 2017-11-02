@@ -36,14 +36,44 @@ export const getFormattedCasesSelector = createSelector(
   })
 )
 
-export const getReferralsSelector = createSelector(
+const getReferralsSelector = createSelector(
   getHistoryOfInvolvementSelector,
   (hoi) => hoi.get('referrals') || List()
 )
 
-export const getReferralsCountSelector = createSelector(
+export const getFormattedReferralsSelector = createSelector(
   getReferralsSelector,
-  (referrals) => referrals.size
+  (referrals) => referrals.map((referral) => {
+    const status = referral.get('end_date') ? 'Closed' : 'Open'
+    const responseTime = referral.get('response_time')
+    const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'N')
+    const peopleAndRoles = referral.get('allegations', List()).map((allegation) => (Map({
+      victim: nameFormatter({
+        first_name: allegation.get('victim_first_name'),
+        middle_name: allegation.get('victim_middle_name'),
+        last_name: allegation.get('victim_last_name'),
+        name_suffix: allegation.get('victim_name_suffix'),
+        name_default: ''}),
+      perpetrator: nameFormatter({
+        first_name: allegation.get('perpetrator_first_name'),
+        middle_name: allegation.get('perpetrator_middle_name'),
+        last_name: allegation.get('perpetrator_last_name'),
+        name_suffix: allegation.get('perpetrator_name_suffix'),
+        name_default: ''}),
+      allegations: allegation.get('allegation_description', ''),
+      disposition: allegation.get('disposition_description', ''),
+    })))
+    return fromJS({
+      dateRange: dateRangeFormatter(referral.toJS()),
+      referralId: referral.getIn(['legacy_descriptor', 'legacy_ui_id']),
+      status: [status, responseTime].filter((n) => n).join(' - '),
+      notification: accessDescription(limitedAccessCode),
+      county: referral.get('county_name'),
+      peopleAndRoles: peopleAndRoles,
+      worker: nameFormatter({name_default: '', ...referral.get('assigned_social_worker', Map()).toJS()}),
+      reporter: nameFormatter({name_default: '', ...referral.get('reporter', Map()).toJS()}),
+    })
+  })
 )
 
 const getScreeningsSelector = createSelector(
@@ -76,10 +106,10 @@ export const getScreeningsCountSelector = createSelector(
 
 export const getHistoryIsEmptySelector = createSelector(
   getCasesSelector,
-  getReferralsCountSelector,
+  getReferralsSelector,
   getScreeningsSelector,
-  (cases, referralsCount, screenings) => (
-    [cases.size, referralsCount, screenings.size].reduce(
+  (cases, referrals, screenings) => (
+    [cases.size, referrals.size, screenings.size].reduce(
       (itemCount, sum) => sum + itemCount
     ) === 0
   )
