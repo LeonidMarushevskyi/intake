@@ -4,6 +4,8 @@ import {getInvestigationSelector} from 'selectors/investigationSelectors'
 import nameFormatter from 'utils/nameFormatter'
 import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'
+import {ROLE_TYPE_NON_REPORTER} from 'enums/RoleType'
+import COUNTIES from 'enums/Counties'
 
 export const getHistoryOfInvolvementSelector = createSelector(
   getInvestigationSelector,
@@ -44,9 +46,27 @@ export const getReferralsCountSelector = createSelector(
   (referrals) => referrals.size
 )
 
-export const getScreeningsSelector = createSelector(
+const getScreeningsSelector = createSelector(
   getHistoryOfInvolvementSelector,
-  (hoi) => hoi.get('screenings') || List()
+  (hoi) => hoi.get('screenings', List())
+)
+
+export const getFormattedScreeningsSelector = createSelector(
+  getScreeningsSelector,
+  (screenings) => screenings.map((screening) => {
+    const notJustReporters = screening.get('all_people', List()).filter((person) => {
+      const roles = person.get('roles', List())
+      return roles.some((role) => ROLE_TYPE_NON_REPORTER.includes(role)) || roles.isEmpty()
+    })
+    return fromJS({
+      county: COUNTIES[screening.get('county_name')] || '',
+      dateRange: dateRangeFormatter(screening.toJS()),
+      people: notJustReporters.map((person) => nameFormatter(person.toJS())).join(', '),
+      reporter: nameFormatter({name_default: '', ...screening.get('reporter', Map()).toJS()}),
+      status: screening.get('end_date') ? 'Closed' : 'In Progress',
+      worker: screening.getIn(['assigned_social_worker', 'last_name'], ''),
+    })
+  })
 )
 
 export const getScreeningsCountSelector = createSelector(
@@ -57,9 +77,9 @@ export const getScreeningsCountSelector = createSelector(
 export const getHistoryIsEmptySelector = createSelector(
   getCasesSelector,
   getReferralsCountSelector,
-  getScreeningsCountSelector,
-  (cases, referralsCount, screeningsCount) => (
-    [cases.size, referralsCount, screeningsCount].reduce(
+  getScreeningsSelector,
+  (cases, referralsCount, screenings) => (
+    [cases.size, referralsCount, screenings.size].reduce(
       (itemCount, sum) => sum + itemCount
     ) === 0
   )

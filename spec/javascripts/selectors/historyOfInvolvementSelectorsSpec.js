@@ -4,8 +4,7 @@ import {
   getFormattedCasesSelector,
   getReferralsSelector,
   getReferralsCountSelector,
-  getScreeningsSelector,
-  getScreeningsCountSelector,
+  getFormattedScreeningsSelector,
 } from 'selectors/historyOfInvolvementSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -142,27 +141,111 @@ describe('historyOfInvolvementSelectors', () => {
     })
   })
 
-  describe('getScreeningsSelector', () => {
-    it('returns the current history of involvement cases', () => {
-      const state = fromJS({investigation: {history_of_involvement}})
-      expect(getScreeningsSelector(state)).toEqualImmutable(fromJS(['D', 'E', 'F']))
+  describe('getFormattedScreeningsSelector', () => {
+    it('returns names of people who do not have reporter as their only role', () => {
+      const screenings = [
+        {all_people: [{first_name: 'John', last_name: 'Smith', roles: ['Victim', 'Anonymous Reporter']}]},
+      ]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'people']))
+        .toEqual('John Smith')
+    })
+
+    it('returns names of people who have no roles', () => {
+      const screenings = [
+        {all_people: [{first_name: 'John', last_name: 'Smith', roles: []}]},
+      ]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'people']))
+        .toEqual('John Smith')
+    })
+
+    it('joins names of multiple people into a comma-separated list', () => {
+      const screenings = [
+        {all_people: [
+          {first_name: 'John', last_name: 'Smith', roles: []},
+          {first_name: 'Jane', last_name: 'Doe', roles: []},
+        ]},
+      ]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'people']))
+        .toEqual('John Smith, Jane Doe')
+    })
+
+    it('does not return names of people who only have a role of reporter', () => {
+      const screenings = [
+        {all_people: [{first_name: 'John', last_name: 'Smith', roles: ['Mandated Reporter']}]},
+      ]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'people']))
+        .toEqual('')
+    })
+
+    it('returns an empty string for people if no people are present', () => {
+      const screenings = [
+        {all_people: []},
+      ]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'people'])).toEqual('')
+    })
+
+    it('returns an empty string if the reporter is an empty object', () => {
+      const screenings = [{reporter: {}}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'reporter'])).toEqual('')
+    })
+
+    it('returns a formatted name for the reporter when one is present', () => {
+      const screenings = [{reporter: {first_name: 'John', last_name: 'Smith'}}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'reporter'])).toEqual('John Smith')
+    })
+
+    it('returns the enum mapped value for the county', () => {
+      const screenings = [{county_name: 'amador'}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'county'])).toEqual('Amador')
+    })
+
+    it('returns an empty string when county is empty', () => {
+      const screenings = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'county'])).toEqual('')
+    })
+
+    it('returns the start_date and end_date as a formatted date range', () => {
+      const screenings = [{start_date: '2002-01-02', end_date: '2002-02-03'}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'dateRange'])).toEqual('01/02/2002 - 02/03/2002')
+    })
+
+    it('returns the last name for the worker when present', () => {
+      const screenings = [{assigned_social_worker: {last_name: 'John Smith'}}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
+    })
+
+    it('returns an empty string when the worker is not present', () => {
+      const screenings = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'worker'])).toEqual('')
+    })
+
+    it('Returns a status of Closed if there is an end_date', () => {
+      const screenings = [{end_date: '2009-01-02'}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'status'])).toEqual('Closed')
+    })
+
+    it('Returns a status of In Progress if there is no end_date', () => {
+      const screenings = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {screenings}}})
+      expect(getFormattedScreeningsSelector(state).getIn([0, 'status'])).toEqual('In Progress')
     })
 
     it('returns an empty map when history of involvement does not exist', () => {
       const state = fromJS({investigation: {}})
-      expect(getScreeningsSelector(state)).toEqualImmutable(fromJS([]))
-    })
-  })
-
-  describe('getScreeningsCountSelector', () => {
-    it('returns the number of current history of involvement screenings', () => {
-      const state = fromJS({investigation: {history_of_involvement}})
-      expect(getScreeningsCountSelector(state)).toEqual(3)
-    })
-
-    it('returns 0 when history of involvement does not exist', () => {
-      const state = fromJS({investigation: {}})
-      expect(getScreeningsCountSelector(state)).toEqualImmutable(0)
+      expect(getFormattedScreeningsSelector(state)).toEqualImmutable(fromJS([]))
     })
   })
 })

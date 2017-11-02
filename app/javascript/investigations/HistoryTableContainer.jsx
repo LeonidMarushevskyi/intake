@@ -3,14 +3,14 @@ import HistoryTable from 'history/HistoryTable'
 import {
   getFormattedCasesSelector,
   getReferralsCountSelector,
-  getScreeningsCountSelector,
+  getFormattedScreeningsSelector,
 } from 'selectors/historyOfInvolvementSelectors'
 
 const mapStateToProps = (state) => (
   {
     cases: getFormattedCasesSelector(state).toJS(),
     referrals: [],
-    screenings: [],
+    screenings: getFormattedScreeningsSelector(state).toJS(),
   }
 )
 
