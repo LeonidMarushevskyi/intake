@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import AllegationShow from 'allegations/AllegationShow'
+import AllegationShow from 'views/allegations/AllegationShow'
 import {
   getFormattedAllegationsSelector,
   getAllegationsRequiredValueSelector,
