@@ -1,20 +1,37 @@
 import {createSelector} from 'reselect'
-import {Map, List} from 'immutable'
+import {Map, List, fromJS} from 'immutable'
 import {getInvestigationSelector} from 'selectors/investigationSelectors'
+import nameFormatter from 'utils/nameFormatter'
+import {accessDescription} from 'utils/accessIndicator'
+import {dateRangeFormatter} from 'utils/dateFormatter'
 
 export const getHistoryOfInvolvementSelector = createSelector(
   getInvestigationSelector,
   (investigation) => investigation.get('history_of_involvement') || Map()
 )
 
-export const getCasesSelector = createSelector(
+const getCasesSelector = createSelector(
   getHistoryOfInvolvementSelector,
-  (hoi) => hoi.get('cases') || List()
+  (hoi) => hoi.get('cases', List())
 )
 
-export const getCasesCountSelector = createSelector(
+export const getFormattedCasesSelector = createSelector(
   getCasesSelector,
-  (cases) => cases.size
+  (cases) => cases.map((hoiCase) => {
+    const limitedAccessCode = hoiCase.getIn(['access_limitation', 'limited_access_code'], 'N')
+    const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
+    const serviceComponent = hoiCase.get('service_component')
+    return fromJS({
+      caseId: hoiCase.getIn(['legacy_descriptor', 'legacy_ui_id']),
+      county: hoiCase.get('county_name'),
+      dateRange: dateRangeFormatter(hoiCase.toJS()),
+      focusChild: nameFormatter(hoiCase.get('focus_child', Map()).toJS()),
+      parents: hoiCase.get('parents', List()).map((parent) => nameFormatter(parent.toJS())).join(', '),
+      restrictedAccessStatus: accessDescription(limitedAccessCode),
+      status: [status, serviceComponent].filter((n) => n).join(' - '),
+      worker: nameFormatter({name_default: '', ...hoiCase.get('assigned_social_worker', Map()).toJS()}),
+    })
+  })
 )
 
 export const getReferralsSelector = createSelector(
@@ -38,11 +55,11 @@ export const getScreeningsCountSelector = createSelector(
 )
 
 export const getHistoryIsEmptySelector = createSelector(
-  getCasesCountSelector,
+  getCasesSelector,
   getReferralsCountSelector,
   getScreeningsCountSelector,
-  (casesCount, referralsCount, screeningsCount) => (
-    [casesCount, referralsCount, screeningsCount].reduce(
+  (cases, referralsCount, screeningsCount) => (
+    [cases.size, referralsCount, screeningsCount].reduce(
       (itemCount, sum) => sum + itemCount
     ) === 0
   )

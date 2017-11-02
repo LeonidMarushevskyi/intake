@@ -1,8 +1,7 @@
 import {fromJS} from 'immutable'
 import {
   getHistoryIsEmptySelector,
-  getCasesSelector,
-  getCasesCountSelector,
+  getFormattedCasesSelector,
   getReferralsSelector,
   getReferralsCountSelector,
   getScreeningsSelector,
@@ -32,27 +31,90 @@ describe('historyOfInvolvementSelectors', () => {
     })
   })
 
-  describe('getCasesSelector', () => {
-    it('returns the current history of involvement cases', () => {
-      const state = fromJS({investigation: {history_of_involvement}})
-      expect(getCasesSelector(state)).toEqualImmutable(fromJS(['A']))
+  describe('getFormattedCasesSelector', () => {
+    it('returns the legacy_ui_id as caseId', () => {
+      const cases = [{legacy_descriptor: {legacy_ui_id: 'ABC123'}}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'caseId'])).toEqual('ABC123')
+    })
+
+    it('returns the county_name as county', () => {
+      const cases = [{county_name: 'Amador'}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'county'])).toEqual('Amador')
+    })
+
+    it('returns the start_date and end_date as a formatted date range', () => {
+      const cases = [{start_date: '2002-01-02', end_date: '2002-02-03'}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'dateRange'])).toEqual('01/02/2002 - 02/03/2002')
+    })
+
+    it('returns the formatted name for the focus child', () => {
+      const cases = [{focus_child: {first_name: 'John', last_name: 'Smith'}}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'focusChild'])).toEqual('John Smith')
+    })
+
+    it('returns the formatted names for all parents present', () => {
+      const cases = [{parents: [
+        {first_name: 'John', last_name: 'Smith'},
+        {first_name: 'Jane', last_name: 'Doe'},
+      ]}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'parents'])).toEqual('John Smith, Jane Doe')
+    })
+
+    it('returns an empty string if no parents are present', () => {
+      const cases = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'parents'])).toEqual('')
+    })
+
+    it('returns Sealed if the access indicator is R', () => {
+      const cases = [{access_limitation: {limited_access_code: 'R'}}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'restrictedAccessStatus'])).toEqual('Sealed')
+    })
+
+    it('returns undefined if no access indicator is present', () => {
+      const cases = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'restrictedAccessStatus'])).toEqual(undefined)
+    })
+    it('returns a status of "Closed" if there is an end date, but no service component', () => {
+      const cases = [{end_date: '2003-01-01'}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'status'])).toEqual('Closed')
+    })
+
+    it('returns a status of "Open" if there is an end date present, but no service component', () => {
+      const cases = [{}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'status'])).toEqual('Open')
+    })
+
+    it('adds the service component to the status if one exists', () => {
+      const cases = [{end_date: '2003-01-01', service_component: 'Family reunification'}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'status'])).toEqual('Closed - Family reunification')
+    })
+
+    it('returns the formatted name for the worker', () => {
+      const cases = [{assigned_social_worker: {first_name: 'John', last_name: 'Smith'}}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
+    })
+
+    it('returns an empty string if no social worker is present', () => {
+      const cases = [{assigned_social_worker: {}}]
+      const state = fromJS({investigation: {history_of_involvement: {cases}}})
+      expect(getFormattedCasesSelector(state).getIn([0, 'worker'])).toEqual('')
     })
 
     it('returns an empty map when history of involvement does not exist', () => {
       const state = fromJS({investigation: {}})
-      expect(getCasesSelector(state)).toEqualImmutable(fromJS([]))
-    })
-  })
-
-  describe('getCasesCountSelector', () => {
-    it('returns the number of current history of involvement cases', () => {
-      const state = fromJS({investigation: {history_of_involvement}})
-      expect(getCasesCountSelector(state)).toEqual(1)
-    })
-
-    it('returns 0 when history of involvement does not exist', () => {
-      const state = fromJS({investigation: {}})
-      expect(getCasesCountSelector(state)).toEqualImmutable(0)
+      expect(getFormattedCasesSelector(state)).toEqualImmutable(fromJS([]))
     })
   })
 
