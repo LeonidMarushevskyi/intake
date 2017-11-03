@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import AllegationsEditView from 'screenings/AllegationsEditView'
 import AllegationsShowContainer from 'containers/screenings/AllegationsShowContainer'
+import AllegationsFormContainer from 'containers/screenings/AllegationsFormContainer'
 import * as AllegationsHelper from 'utils/allegationsHelper'
 
 export default class AllegationsCardView extends React.Component {
@@ -54,27 +55,8 @@ export default class AllegationsCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    let allegations
-    if (mode === 'edit') {
-      allegations = this.props.allegations
-    } else {
-      allegations = this.props.allegations.filter((allegation) => allegation.get('id'))
-    }
-    const props = {
-      alertErrorMessage: this.alertErrorMessage(),
-      allegations: allegations,
-      required: this.props.required,
-      onCancel: this.onCancel,
-      onSave: this.onSave,
-      onChange: this.onChange,
-      toggleMode: this.toggleMode,
-    }
-
-    const AllegationsView = (mode === 'show') ? AllegationsShowContainer : AllegationsEditView
-
-    return (
-      <AllegationsView {...props} />
-    )
+    const AllegationsView = (mode === 'show') ? AllegationsShowContainer : AllegationsFormContainer
+    return (<AllegationsView toggleMode={this.toggleMode} />)
   }
 }
 
