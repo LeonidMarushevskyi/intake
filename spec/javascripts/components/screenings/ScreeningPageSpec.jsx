@@ -162,14 +162,10 @@ describe('ScreeningPage', () => {
       const props = {
         ...requiredProps,
         mode: 'edit',
-        participants: Immutable.fromJS([]),
-        relationships: Immutable.fromJS([{id: '123'}]),
         loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      expect(component.find('RelationshipsCard').length).toEqual(1)
-      expect(component.find('RelationshipsCard').props().participants).toEqual(Immutable.fromJS([]))
-      expect(component.find('RelationshipsCard').props().relationships).toEqual(props.relationships)
+      expect(component.find('Connect(RelationshipsCard)').length).toEqual(1)
     })
 
     it('renders the worker safety card', () => {
@@ -461,13 +457,6 @@ describe('ScreeningPage', () => {
         expect(allegationsCard.props()).toEqual(
           jasmine.objectContaining({...cardCallbacks, mode: 'show', allegations: Immutable.List()})
         )
-      })
-
-      it('renders the relationships card', () => {
-        expect(component.find('RelationshipsCard').props()).toEqual(jasmine.objectContaining({
-          participants: props.participants,
-          relationships: props.relationships,
-        }))
       })
 
       it('renders the worker safety card', () => {
