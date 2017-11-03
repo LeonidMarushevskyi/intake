@@ -2,7 +2,7 @@ import WorkerSafetyShow from 'screenings/workerSafety/WorkerSafetyShow'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-fdescribe('WorkerSafetyShow', () => {
+describe('WorkerSafetyShow', () => {
   function renderWorkerSafety(props) {
     return shallow(<WorkerSafetyShow {...props} />)
   }

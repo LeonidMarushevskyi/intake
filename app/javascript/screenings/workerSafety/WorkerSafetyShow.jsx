@@ -30,4 +30,3 @@ WorkerSafetyShow.propTypes = {
 }
 
 export default WorkerSafetyShow
-
