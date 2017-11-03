@@ -14,7 +14,7 @@ export default class ParticipantCardView extends React.Component {
       mode: this.props.mode,
     }
 
-    this.onEdit = this.onEdit.bind(this)
+    this.toggleMode = this.toggleMode.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onDobBlur = this.onDobBlur.bind(this)
@@ -22,12 +22,8 @@ export default class ParticipantCardView extends React.Component {
     this.stripApproximateAge = this.stripApproximateAge.bind(this)
   }
 
-  onEdit() {
-    this.setState({mode: 'edit'})
-  }
-
   onCancel() {
-    this.setState({mode: 'show'})
+    this.toggleMode()
     this.props.onCancel(this.props.participant.get('id'))
   }
 
@@ -42,7 +38,7 @@ export default class ParticipantCardView extends React.Component {
     } else {
       this.props.onSave(sanitizedParticipant)
     }
-    this.setState({mode: 'show'})
+    this.toggleMode()
   }
 
   onChange(fieldSeq, value) {
@@ -60,6 +56,12 @@ export default class ParticipantCardView extends React.Component {
     const cleanedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
     this.props.onChange(cleanedParticipant.get('id'), cleanedParticipant)
     return cleanedParticipant
+  }
+
+  toggleMode() {
+    const currentMode = this.state.mode
+    const newMode = currentMode === 'show' ? 'edit' : 'show'
+    this.setState({mode: newMode})
   }
 
   render() {
@@ -80,7 +82,7 @@ export default class ParticipantCardView extends React.Component {
       },
       show: {
         ...sharedProps,
-        onEdit: this.onEdit,
+        onEdit: this.toggleMode,
       },
     }
 
@@ -93,7 +95,7 @@ export default class ParticipantCardView extends React.Component {
           informationFlag={informationFlag}
           onDelete={() => this.props.onDelete(participant.get('id'))}
           showDelete={editable}
-          onEdit={this.onEdit}
+          onEdit={this.toggleMode}
           showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
           title={nameFormatter(participant.toJS())}
         />

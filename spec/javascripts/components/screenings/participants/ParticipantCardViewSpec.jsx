@@ -28,16 +28,16 @@ describe('Participant card view', () => {
         expect(header.props().informationFlag).toEqual('Sealed')
         expect(header.props().onDelete).toEqual(jasmine.any(Function))
         expect(header.props().showDelete).toEqual(true)
-        expect(header.props().onEdit).toEqual(component.instance().onEdit)
+        expect(header.props().onEdit).toEqual(component.instance().toggleMode)
         expect(header.props().showEdit).toEqual(true)
         expect(header.props().title).toEqual('Alex Doe')
       })
 
-      describe('#onEdit', () => {
+      describe('#toggleMode', () => {
         it('toggles the mode to edit', () => {
           const component = shallow(<ParticipantCardView participant={Immutable.Map()} mode={'show'} editable={true}/>)
           const instance = component.instance()
-          instance.onEdit()
+          instance.toggleMode()
           expect(instance.state.mode).toEqual('edit')
         })
       })
