@@ -16,10 +16,23 @@ namespace :spec do # rubocop:disable BlockLength
     'bin/webpack &&' if run_webpack
   end
 
+  def run_in_intake_container(command)
+    # docker-compose supports ENV vars for run, but not exec (yet?)
+    # We need to set RAILS_ENV because the spawned spec processes pick up
+    # RAILS_ENV=development from our dev environment.
+    <<~END.tr("\n", ' ')
+      docker-compose run
+      -e AUTHENTICATION=false
+      -e RAILS_ENV=test
+      --no-deps
+      --rm ca_intake
+      #{command}
+    END
+  end
+
   desc 'Run specs in ca_intake container'
   task :intake do
-    command = "AUTHENTICATION=false RAILS_ENV=test bundle exec rspec #{file_list}"
-    system "#{webpack?} docker-compose exec ca_intake bash -c '#{command}'"
+    system "#{webpack?} #{run_in_intake_container('bundle exec rspec')} #{file_list}"
   end
 
   namespace :intake do
@@ -29,17 +42,7 @@ namespace :spec do # rubocop:disable BlockLength
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do
-      # docker-compose supports ENV vars for run, but not exec (yet?)
-      # We need to set RAILS_ENV because the spawned spec processes pick up
-      # RAILS_ENV=development from our dev environment.
-      docker_cmd = <<~END.tr("\n", ' ')
-        docker-compose run
-        -e AUTHENTICATION=false
-        -e RAILS_ENV=test
-        --rm ca_intake
-        bundle exec parallel_rspec
-      END
-      system "#{webpack?} #{docker_cmd} #{file_list}"
+      system "#{webpack?} #{run_in_intake_container('bundle exec parallel_rspec')} #{file_list}"
     end
 
     desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
