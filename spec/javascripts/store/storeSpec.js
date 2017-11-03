@@ -15,6 +15,7 @@ describe('Store', () => {
   beforeEach(() => {
     jasmine.addMatchers(matchers)
     initialState = fromJS({
+      allegationsForm: [],
       allegationTypes: [],
       communicationMethods: [],
       contact: {},
@@ -48,6 +49,7 @@ describe('Store', () => {
       id: '1',
       name: 'Mock screening',
       participants: [{id: '2', legacy_id: '3', screening_id: '1'}],
+      allegations: [],
     })
     const participants = screening.get('participants')
     const action = fetchScreeningSuccess(screening.toJS())
