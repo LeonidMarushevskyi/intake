@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
 import {Map, List, fromJS} from 'immutable'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
 import nameFormatter from 'utils/nameFormatter'
 
 const FLATTEN_LEVEL = 1
@@ -14,6 +15,23 @@ const getVictimsSelector = createSelector(
 const getPerpetratorsSelector = createSelector(
   getPeopleSelector,
   (people) => people.filter((person) => person.get('roles', List()).includes('Perpetrator'))
+)
+
+const getAllegationsToSaveSelector = createSelector(
+  getAllegationsFormSelector,
+  (allegations) => allegations.filterNot((allegation) => (
+    allegation.get('allegationTypes').filterNot((type) => type === '').isEmpty()
+  )).map((allegation) => Map({
+    victim_id: allegation.get('victimId'),
+    perpetrator_id: allegation.get('perpetratorId'),
+    allegation_types: allegation.get('allegationTypes'),
+  }))
+)
+
+export const getScreeningWithAllegationsEditsSelector = createSelector(
+  getScreeningSelector,
+  getAllegationsToSaveSelector,
+  (screening, allegations) => screening.set('allegations', allegations)
 )
 
 export const getFormattedAllegationsSelector = createSelector(
