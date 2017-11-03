@@ -17,6 +17,8 @@ namespace :spec do # rubocop:disable BlockLength
   end
 
   def run_in_intake_container(command)
+    # for some reason ca_intake requires redis for feature tests
+    system 'docker-compose up -d redis'
     # docker-compose supports ENV vars for run, but not exec (yet?)
     # We need to set RAILS_ENV because the spawned spec processes pick up
     # RAILS_ENV=development from our dev environment.
