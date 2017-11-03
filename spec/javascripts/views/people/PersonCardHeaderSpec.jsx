@@ -1,8 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import ParticipantCardHeader from 'screenings/ParticipantCardHeader'
+import PersonCardHeader from 'views/people/PersonCardHeader'
 
-describe('ParticipantCardHeader', () => {
+describe('PersonCardHeader', () => {
   let onDelete
   let onEdit
 
@@ -13,7 +13,7 @@ describe('ParticipantCardHeader', () => {
 
   function renderComponent({title = 'J Doe', showEdit = true, showDelete = true, informationFlag = null}) {
     const props = {informationFlag, title, showDelete, showEdit, onEdit, onDelete}
-    return shallow(<ParticipantCardHeader {...props} />)
+    return shallow(<PersonCardHeader {...props} />)
   }
 
   it('displays the name passed in the props', () => {

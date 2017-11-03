@@ -1,7 +1,7 @@
 import * as IntakeConfig from 'common/config'
 import nameFormatter from 'utils/nameFormatter'
 import {participantFlag} from 'utils/accessIndicator'
-import ParticipantCardHeader from 'screenings/ParticipantCardHeader'
+import PersonCardHeader from 'views/people/PersonCardHeader'
 import ParticipantEditView from 'screenings/ParticipantEditView'
 import ParticipantShowView from 'screenings/ParticipantShowView'
 import PropTypes from 'prop-types'
@@ -89,7 +89,7 @@ export default class ParticipantCardView extends React.Component {
     const informationFlag = participantFlag(participant.toJS())
     return (
       <div className={`card ${mode} double-gap-top`} id={`participants-card-${participant.get('id')}`}>
-        <ParticipantCardHeader
+        <PersonCardHeader
           informationFlag={informationFlag}
           onDelete={() => this.props.onDelete(participant.get('id'))}
           showDelete={editable}

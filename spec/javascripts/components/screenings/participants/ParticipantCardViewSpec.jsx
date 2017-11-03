@@ -23,7 +23,7 @@ describe('Participant card view', () => {
         const editable = true
         const props = {participant, onCancel, mode, editable}
         const component = shallow(<ParticipantCardView {...props} />)
-        const header = component.find('ParticipantCardHeader')
+        const header = component.find('PersonCardHeader')
         expect(header.length).toEqual(1)
         expect(header.props().informationFlag).toEqual('Sealed')
         expect(header.props().onDelete).toEqual(jasmine.any(Function))
@@ -218,7 +218,7 @@ describe('Participant card view', () => {
       const editable = true
       const props = {participant, onCancel, mode, editable}
       const component = shallow(<ParticipantCardView {...props} />)
-      const header = component.find('ParticipantCardHeader')
+      const header = component.find('PersonCardHeader')
       expect(header.length).toEqual(1)
       expect(header.props().showEdit).toEqual(false)
     })
