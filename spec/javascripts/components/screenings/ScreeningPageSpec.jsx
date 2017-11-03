@@ -420,7 +420,7 @@ describe('ScreeningPage', () => {
 
       it('renders the screening information show card', () => {
         expect(component.find('ScreeningInformationCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+          jasmine.objectContaining({mode: 'show'})
         )
       })
 
