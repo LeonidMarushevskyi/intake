@@ -8,10 +8,9 @@ describe('ScreeningView', () => {
   )
 
   it('renders a date range for the screening in the first column', () => {
-    const startDate = '2008-01-02'
-    const endDate = '2009-01-02'
-    const component = renderScreeningView({startDate, endDate})
-    expect(component.find('td').at(0).text()).toEqual('01/02/2008 - 01/02/2009')
+    const dateRange = '01/02/2002 - 02/03/2002'
+    const component = renderScreeningView({dateRange})
+    expect(component.find('td').at(0).text()).toEqual('01/02/2002 - 02/03/2002')
   })
 
   it('renders a type/status for the screening in the second column', () => {

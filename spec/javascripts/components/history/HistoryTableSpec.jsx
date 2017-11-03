@@ -3,7 +3,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('HistoryTable', () => {
-  function renderHistoryTable({...props}) {
+  function renderHistoryTable({
+    cases = [],
+    referrals = [],
+    screenings = [],
+  }) {
+    const props = {cases, referrals, screenings}
     return shallow(<HistoryTable {...props}/>)
   }
 
@@ -22,19 +27,19 @@ describe('HistoryTable', () => {
       expect(component.find('tbody').exists()).toEqual(true)
     })
 
-    it('renders a container for every screening', () => {
-      const component = renderHistoryTable({screeningsCount: 1})
-      expect(component.find('Connect(ScreeningView)').length).toEqual(1)
+    it('renders a view for every screening', () => {
+      const component = renderHistoryTable({screenings: [{}]})
+      expect(component.find('ScreeningView').length).toEqual(1)
     })
 
-    it('renders a container for every referral', () => {
-      const component = renderHistoryTable({referralsCount: 2})
-      expect(component.find('Connect(ReferralView)').length).toEqual(2)
+    it('renders a view for every referral', () => {
+      const component = renderHistoryTable({referrals: [{}, {}]})
+      expect(component.find('ReferralView').length).toEqual(2)
     })
 
-    it('renders a container for every case', () => {
-      const component = renderHistoryTable({casesCount: 3})
-      expect(component.find('Connect(CaseView)').length).toEqual(3)
+    it('renders a view for every case', () => {
+      const component = renderHistoryTable({cases: [{}, {}, {}]})
+      expect(component.find('CaseView').length).toEqual(3)
     })
   })
 })

@@ -14,14 +14,26 @@ describe('HistoryOfInvolvement', () => {
   })
 
   it('renders an empty history card when history is not present', () => {
-    const component = renderHistoryOfInvolvement({historyIsEmpty: true})
-    expect(component.find('EmptyHistory').exists()).toEqual(true)
-    expect(component.find('Connect(HistoryTable)').exists()).toEqual(false)
+    const component = shallow(
+      <HistoryOfInvolvement
+        historyIsEmpty={true}
+        empty={<p>Hello!</p>}
+        notEmpty={<p>Goodbye!</p>}
+      />
+    )
+    expect(component.children('p').at(0).text()).toEqual('Hello!')
+    expect(component.text()).not.toContain('Goodbye!')
   })
 
   it('renders a history table when history is present', () => {
-    const component = renderHistoryOfInvolvement({historyIsEmpty: false})
-    expect(component.find('Connect(HistoryTable)').exists()).toEqual(true)
-    expect(component.find('EmptyHistory').exists()).toEqual(false)
+    const component = shallow(
+      <HistoryOfInvolvement
+        historyIsEmpty={false}
+        empty={<p>Hello!</p>}
+        notEmpty={<p>Goodbye!</p>}
+      />
+    )
+    expect(component.children('p').at(0).text()).toEqual('Goodbye!')
+    expect(component.text()).not.toContain('Hello!')
   })
 })
