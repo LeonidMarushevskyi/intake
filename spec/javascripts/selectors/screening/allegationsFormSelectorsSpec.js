@@ -2,8 +2,11 @@ import {fromJS} from 'immutable'
 import {
   getScreeningWithAllegationsEditsSelector,
   getFormattedAllegationsSelector,
+  getAllegationsRequiredValueSelector,
+  getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
+import * as AllegationsHelper from 'utils/allegationsHelper'
 
 describe('allegationsFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -96,6 +99,74 @@ describe('allegationsFormSelectors', () => {
         perpetratorId: '2',
         allegationTypes: ['General neglect'],
       }]))
+    })
+  })
+
+  describe('getAllegationsRequiredValueSelector', () => {
+    it('returns false when the screening decision is not promote_to_referral', () => {
+      const state = fromJS({screening: {screening_decision: 'blah'}})
+      expect(getAllegationsRequiredValueSelector(state)).toEqual(false)
+    })
+
+    it('returns true when screening decision is promote_to_referral', () => {
+      const state = fromJS({screening: {screening_decision: 'promote_to_referral'}})
+      expect(getAllegationsRequiredValueSelector(state)).toEqual(true)
+    })
+  })
+
+  describe('getAllegationsAlertErrorMessageSelector', () => {
+    describe('when allegations are not required', () => {
+      it('returns undefined when allegations are not required', () => {
+        const state = fromJS({screening: {screening_decision: 'blah'}})
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        expect(getAllegationsAlertErrorMessageSelector(state)).toEqual(undefined)
+      })
+
+      it('returns a message when at risk is required and not present', () => {
+        const state = fromJS({screening: {screening_decision: 'foo'}})
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
+        expect(getAllegationsAlertErrorMessageSelector(state)).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
+      })
+    })
+
+    describe('when allegations are required', () => {
+      const screening_decision = 'promote_to_referral'
+
+      it('returns undefined when allegation are required but valid allegations exist', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        const allegationsForm = [{
+          id: 1,
+          victimId: '123abc',
+          perpetratorId: 'cba321',
+          allegationTypes: ['Physical abuse'],
+        }]
+        const state = fromJS({allegationsForm, screening: {screening_decision}})
+        expect(getAllegationsAlertErrorMessageSelector(state)).toEqual(undefined)
+      })
+
+      it('returns a message when allegations are required and no allegations are valid', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(true)
+        const allegationsForm = [{
+          id: 1,
+          victimId: '123abc',
+          perpetratorId: 'cba321',
+          allegationTypes: [''],
+        }]
+        const state = fromJS({allegationsForm, screening: {screening_decision}})
+        expect(getAllegationsAlertErrorMessageSelector(state)).toContain('must include at least one allegation.')
+      })
+
+      it('returns a message when at risk is only allegation', () => {
+        spyOn(AllegationsHelper, 'siblingAtRiskHasRequiredComplementaryAllegations').and.returnValue(false)
+        const allegationsForm = [{
+          id: 1,
+          victimId: '123abc',
+          perpetratorId: 'cba321',
+          allegationTypes: ['At risk, sibling abused'],
+        }]
+        const state = fromJS({allegationsForm, screening: {screening_decision}})
+        expect(getAllegationsAlertErrorMessageSelector(state)).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
+      })
     })
   })
 })

@@ -1,28 +1,39 @@
 import {connect} from 'react-redux'
 import AllegationsForm from 'views/allegations/AllegationsForm'
 import {
+  getAllegationTypesSelector,
   getFormattedAllegationsSelector,
   getScreeningWithAllegationsEditsSelector,
+  getAllegationsRequiredValueSelector,
+  getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
 import {saveScreening} from 'actions/screeningActions'
 import {
   resetAllegations,
   setAllegationTypes,
 } from 'actions/allegationsFormActions'
-import ALLEGATION_TYPES from 'enums/AllegationTypes'
 
 const mapStateToProps = (state) => (
   {
+    alertErrorMessage: getAllegationsAlertErrorMessageSelector(state),
     allegations: getFormattedAllegationsSelector(state).toJS(),
-    allegationTypes: ALLEGATION_TYPES.map((type) => ({label: type.value, value: type.value})),
+    allegationTypes: getAllegationTypesSelector(state).toJS(),
     persistedAllegations: state.get('screening').get('allegations').toJS(),
+    required: getAllegationsRequiredValueSelector(state),
     screeningWithEdits: getScreeningWithAllegationsEditsSelector(state).toJS(),
   }
 )
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const {dispatch} = dispatchProps
-  const {allegations, allegationTypes, persistedAllegations, screeningWithEdits} = stateProps
+  const {
+    alertErrorMessage,
+    allegations,
+    allegationTypes,
+    persistedAllegations,
+    required,
+    screeningWithEdits,
+  } = stateProps
   const {toggleMode} = ownProps
 
   const onSave = () => {
@@ -40,11 +51,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 
   return {
+    alertErrorMessage,
     allegations,
     allegationTypes,
     onCancel,
     onChange,
     onSave,
+    required,
   }
 }
 
