@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import HistoryOfInvolvement from 'history/HistoryOfInvolvement'
+import HistoryOfInvolvement from 'views/history/HistoryOfInvolvement'
 import {getHistoryIsEmptySelector} from 'selectors/historyOfInvolvementSelectors'
 
 const mapStateToProps = (state) => (

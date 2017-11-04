@@ -1,4 +1,4 @@
-import HistoryTable from 'history/HistoryTable'
+import HistoryTable from 'views/history/HistoryTable'
 import React from 'react'
 import {shallow} from 'enzyme'
 

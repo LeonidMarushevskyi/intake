@@ -1,4 +1,4 @@
-import ReferralView from 'history/ReferralView'
+import ReferralView from 'views/history/ReferralView'
 import React from 'react'
 import {shallow} from 'enzyme'
 

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import HistoryTable from 'history/HistoryTable'
+import HistoryTable from 'views/history/HistoryTable'
 import {
   getFormattedCasesSelector,
   getFormattedReferralsSelector,

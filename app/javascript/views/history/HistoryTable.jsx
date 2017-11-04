@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CaseView from 'history/CaseView'
-import ReferralView from 'history/ReferralView'
-import ScreeningView from 'history/ScreeningView'
+import CaseView from 'views/history/CaseView'
+import ReferralView from 'views/history/ReferralView'
+import ScreeningView from 'views/history/ScreeningView'
 
 const HistoryTable = ({cases, referrals, screenings}) => (
   <div className='card-body no-pad-top'>
