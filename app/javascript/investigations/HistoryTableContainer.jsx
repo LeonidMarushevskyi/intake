@@ -4,7 +4,7 @@ import {
   getFormattedCasesSelector,
   getFormattedReferralsSelector,
   getFormattedScreeningsSelector,
-} from 'selectors/historyOfInvolvementSelectors'
+} from 'selectors/investigation/historyOfInvolvementSelectors'
 
 const mapStateToProps = (state) => (
   {
