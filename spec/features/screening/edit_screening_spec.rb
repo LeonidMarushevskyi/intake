@@ -86,7 +86,7 @@ feature 'Edit Screening' do
         expect(page).to have_content('Cancel')
       end
 
-      within '#allegations-card.edit', text: 'Allegations' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_css('th', text: 'Alleged Victim/Children')
         expect(page).to have_css('th', text: 'Alleged Perpetrator')
         expect(page).to have_css('th', text: 'Allegation(s)')
