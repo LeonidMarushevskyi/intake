@@ -5,14 +5,20 @@ import {
   getFormattedReferralsSelector,
   getFormattedScreeningsSelector,
 } from 'selectors/screening/historyOfInvolvementSelectors'
+import * as IntakeConfig from 'common/config'
 
-const mapStateToProps = (state) => (
-  {
+const mapStateToProps = (state) => {
+  const props = {
     cases: getFormattedCasesSelector(state).toJS(),
     referrals: getFormattedReferralsSelector(state).toJS(),
-    screenings: getFormattedScreeningsSelector(state).toJS(),
+    screenings: [],
   }
-)
+  if (IntakeConfig.isFeatureActive('release_two')) {
+    return props
+  } else {
+    return {...props, screenings: getFormattedScreeningsSelector(state).toJS()}
+  }
+}
 
 export default connect(mapStateToProps)(HistoryTable)
 
