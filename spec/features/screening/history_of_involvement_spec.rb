@@ -243,11 +243,11 @@ feature 'History card' do
       visit screening_path(id: existing_screening.id)
 
       within '#history-card.card.show', text: 'History' do
-        within 'tbody#history-of-involvement' do
-          rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 6
+        within first('tbody') do
+          screenings = page.all('tr', text: 'Screening')
+          expect(screenings.length).to eq 2
 
-          within rows[0] do
+          within screenings.first do
             expect(page).to have_content('09/10/2016')
             expect(page).to have_no_content('09/10/2016 -')
             expect(page).to have_content('Screening (In Progress)')
@@ -259,14 +259,17 @@ feature 'History card' do
             expect(page).to have_content('Worker: Bob Smith')
           end
 
-          within rows[1] do
+          within screenings.last do
             expect(page).to have_content('08/10/2016 - 11/12/2016')
             expect(page).to have_content('Screening (Closed)')
             expect(page).to have_content('Reporter: ')
             expect(page).to have_content('Worker: ')
           end
 
-          within rows[2] do
+          referrals = page.all('tr', text: 'Referral')
+          expect(referrals.length).to eq 2
+
+          within referrals.first do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
             expect(page).to have_content('Referral')
             expect(page).to have_content('0853-2115-5670-6000802')
@@ -294,7 +297,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
-          within rows[3] do
+          within referrals.last do
             expect(page).to have_content('05/06/2016')
             expect(page).to have_content('Referral')
             expect(page).to have_content('0202-9769-1248-2000283')
@@ -322,7 +325,10 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social2 s2LastName')
           end
 
-          within rows[4] do
+          cases = page.all('tr', text: 'Case')
+          expect(cases.length).to eq 2
+
+          within cases.first do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('0393-5909-1798-6027230')
@@ -334,7 +340,7 @@ feature 'History card' do
             expect(page).to have_content('Sealed')
           end
 
-          within rows[5] do
+          within cases.last do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('2016 -')
             expect(page).to have_content('Case')
@@ -373,11 +379,11 @@ feature 'History card' do
       ).to have_been_made
 
       within '#history-card.card.show', text: 'History' do
-        within 'tbody#history-of-involvement' do
-          rows = page.all('#history-of-involvement > tr')
-          expect(rows.count).to eq 6
+        within first('tbody') do
+          screenings = page.all('tr', text: 'Screening')
+          expect(screenings.length).to eq 2
 
-          within rows[0] do
+          within screenings.first do
             expect(page).to have_content('09/10/2016')
             expect(page).to have_no_content('09/10/2016 -')
             expect(page).to have_content('Screening (In Progress)')
@@ -389,14 +395,17 @@ feature 'History card' do
             expect(page).to have_content('Worker: Bob Smith')
           end
 
-          within rows[1] do
+          within screenings.last do
             expect(page).to have_content('08/10/2016 - 11/12/2016')
             expect(page).to have_content('Screening (Closed)')
             expect(page).to have_content('Reporter: ')
             expect(page).to have_content('Worker: ')
           end
 
-          within rows[2] do
+          referrals = page.all('tr', text: 'Referral')
+          expect(referrals.length).to eq 2
+
+          within referrals.first do
             expect(page).to have_content('11/14/2016 - 12/14/2016')
             expect(page).to have_content('Referral')
             expect(page).to have_content('0853-2115-5670-6000802')
@@ -424,7 +433,7 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social1 s1LastName')
           end
 
-          within rows[3] do
+          within referrals.last do
             expect(page).to have_content('05/06/2016')
             expect(page).to have_content('Referral')
             expect(page).to have_content('0202-9769-1248-2000283')
@@ -452,7 +461,10 @@ feature 'History card' do
             expect(page).to have_content('Worker: Social2 s2LastName')
           end
 
-          within rows[4] do
+          cases = page.all('tr', text: 'Case')
+          expect(cases.length).to eq 2
+
+          within cases.first do
             expect(page).to have_content('01/01/2016 - 11/01/2016')
             expect(page).to have_content('Case')
             expect(page).to have_content('0393-5909-1798-6027230')
@@ -464,7 +476,7 @@ feature 'History card' do
             expect(page).to have_content('Sealed')
           end
 
-          within rows[5] do
+          within cases.last do
             expect(page).to have_content('02/03/2016')
             expect(page).to have_no_content('2016 -')
             expect(page).to have_content('Case')
@@ -501,12 +513,14 @@ feature 'History card' do
         ).to have_been_made
 
         within '#history-card.card.show', text: 'History' do
-          within 'tbody#history-of-involvement' do
-            rows = page.all('#history-of-involvement > tr')
+          within first('tbody') do
             expect(page).to have_no_content('Screening (In Progress)')
             expect(page).to have_no_content('Screening (Closed)')
 
-            within rows[0] do
+            referrals = page.all('tr', text: 'Referral')
+            expect(referrals.length).to eq 2
+
+            within referrals.first do
               expect(page).to have_content('11/14/2016 - 12/14/2016')
               expect(page).to have_content('Referral')
               expect(page).to have_content('0853-2115-5670-6000802')
@@ -534,7 +548,7 @@ feature 'History card' do
               expect(page).to have_content('Worker: Social1 s1LastName')
             end
 
-            within rows[1] do
+            within referrals.last do
               expect(page).to have_content('05/06/2016')
               expect(page).to have_content('Referral')
               expect(page).to have_content('0202-9769-1248-2000283')
@@ -562,7 +576,10 @@ feature 'History card' do
               expect(page).to have_content('Worker: Social2 s2LastName')
             end
 
-            within rows[2] do
+            cases = page.all('tr', text: 'Case')
+            expect(cases.length).to eq 2
+
+            within cases.first do
               expect(page).to have_content('01/01/2016 - 11/01/2016')
               expect(page).to have_content('Case')
               expect(page).to have_content('0393-5909-1798-6027230')
@@ -574,7 +591,7 @@ feature 'History card' do
               expect(page).to have_content('Worker: SocialWorker1 sw1LastName')
             end
 
-            within rows[3] do
+            within cases.last do
               expect(page).to have_content('02/03/2016')
               expect(page).to have_no_content('2016 -')
               expect(page).to have_content('Case')
