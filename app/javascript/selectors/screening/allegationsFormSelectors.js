@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect'
 import {Map, List, fromJS} from 'immutable'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {getScreeningSelector, getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import nameFormatter from 'utils/nameFormatter'
 import {siblingAtRiskHasRequiredComplementaryAllegations} from 'utils/allegationsHelper'
 import ALLEGATION_TYPES from 'enums/AllegationTypes'
@@ -46,10 +46,13 @@ const getAllegationsWithTypesSelector = createSelector(
 
 const getAllegationsToSaveSelector = createSelector(
   getAllegationsWithTypesSelector,
-  (allegations) => allegations.map((allegation) => Map({
+  getScreeningIdValueSelector,
+  (allegations, screeningId) => allegations.map((allegation) => Map({
     victim_id: allegation.get('victimId'),
     perpetrator_id: allegation.get('perpetratorId'),
     allegation_types: allegation.get('allegationTypes'),
+    screening_id: screeningId,
+    id: allegation.get('id'),
   }))
 )
 
