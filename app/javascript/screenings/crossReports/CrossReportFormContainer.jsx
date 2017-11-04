@@ -41,10 +41,9 @@ import {
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
 } from 'selectors/crossReportFormSelectors'
-import {areCrossReportsRequired} from 'utils/allegationsHelper'
 
 const mapStateToProps = (state) => ({
-  allegationsRequireCrossReports: areCrossReportsRequired(state.getIn(['screening', 'allegations'])),
+  allegationsRequireCrossReports: getAllegationsRequireCrossReportsValueSelector(state),
   areCrossReportsRequired: getAllegationsRequireCrossReportsValueSelector(state),
   communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   counties: state.get('counties').toJS(),
