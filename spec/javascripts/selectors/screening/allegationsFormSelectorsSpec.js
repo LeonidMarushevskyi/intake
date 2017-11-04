@@ -4,6 +4,8 @@ import {
   getFormattedAllegationsSelector,
   getAllegationsRequiredValueSelector,
   getAllegationsAlertErrorMessageSelector,
+  getSortedVictimsSelector,
+  getSortedPerpetratorsSelector,
 } from 'selectors/screening/allegationsFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 import * as AllegationsHelper from 'utils/allegationsHelper'
@@ -100,6 +102,30 @@ describe('allegationsFormSelectors', () => {
         allegationTypes: ['General neglect'],
       }]))
     })
+
+    it('does not build allegations where a victim and perpetrator are the same person', () => {
+      const participants = [
+        {id: '1', first_name: 'John', last_name: 'Smith', roles: ['Victim', 'Perpetrator']},
+        {id: '2', first_name: 'Jane', last_name: 'Doe', roles: ['Perpetrator']},
+        {id: '3', first_name: 'Bob', last_name: 'Smith', roles: ['Perpetrator']},
+      ]
+      const state = fromJS({participants})
+      expect(getFormattedAllegationsSelector(state)).toEqualImmutable(fromJS([
+        {
+          victimName: 'John Smith',
+          victimId: '1',
+          perpetratorName: 'Jane Doe',
+          perpetratorId: '2',
+          allegationTypes: [],
+        }, {
+          victimName: '',
+          victimId: '1',
+          perpetratorName: 'Bob Smith',
+          perpetratorId: '3',
+          allegationTypes: [],
+        },
+      ]))
+    })
   })
 
   describe('getAllegationsRequiredValueSelector', () => {
@@ -167,6 +193,122 @@ describe('allegationsFormSelectors', () => {
         const state = fromJS({allegationsForm, screening: {screening_decision}})
         expect(getAllegationsAlertErrorMessageSelector(state)).toEqual('Any allegations of Sibling at Risk must be accompanied by another allegation.')
       })
+    })
+  })
+
+  describe('getSortedVictimsSelector', () => {
+    it('sorts victims based on their birth date', () => {
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts victims with birth dates ahead of victims without birth dates', () => {
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim']}
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts victims with the same birth date based on last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [cyril, archer]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([archer, cyril]))
+    })
+
+    it('sorts victims with the same birth date when one victim has no last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts victims with the same birth date when both victims have no last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts victims with the same birth date and last name based on first name', () => {
+      const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [archer, malory]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([malory, archer]))
+    })
+
+    it('sorts victims with the same birth date and last name based when one victim has no first name', () => {
+      const malory = {id: '2', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Victim']}
+
+      const state = fromJS({participants: [malory, archer]})
+      expect(getSortedVictimsSelector(state)).toEqualImmutable(fromJS([archer, malory]))
+    })
+  })
+
+  describe('getSortedPerpetratorsSelector', () => {
+    it('sorts perpetrators based on their birth date', () => {
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts perpetrators with birth dates ahead of perpetrators without birth dates', () => {
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Perpetrator']}
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2010-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts perpetrators with the same birth date based on last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [cyril, archer]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([archer, cyril]))
+    })
+
+    it('sorts perpetrators with the same birth date when one perpetrator has no last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', last_name: 'Figgus', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts perpetrators with the same birth date when both perpetrators have no last name', () => {
+      const cyril = {id: '4', first_name: 'Cyril', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const archer = {id: '1', first_name: 'Sterling', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [archer, cyril]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([cyril, archer]))
+    })
+
+    it('sorts perpetrators with the same birth date and last name based on first name', () => {
+      const malory = {id: '2', first_name: 'Malory', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [archer, malory]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([malory, archer]))
+    })
+
+    it('sorts perpetrators with the same birth date and last name based when one perpetrator has no first name', () => {
+      const malory = {id: '2', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+      const archer = {id: '1', first_name: 'Sterling', last_name: 'Archer', date_of_birth: '2005-01-01', roles: ['Perpetrator']}
+
+      const state = fromJS({participants: [malory, archer]})
+      expect(getSortedPerpetratorsSelector(state)).toEqualImmutable(fromJS([archer, malory]))
     })
   })
 })

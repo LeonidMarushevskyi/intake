@@ -4,7 +4,10 @@ import {getScreeningSelector} from 'selectors/screeningSelectors'
 import nameFormatter from 'utils/nameFormatter'
 import {siblingAtRiskHasRequiredComplementaryAllegations} from 'utils/allegationsHelper'
 import ALLEGATION_TYPES from 'enums/AllegationTypes'
+import _ from 'lodash'
 const FLATTEN_LEVEL = 1
+const sortFields = [(person) => (person.date_of_birth || ''), 'last_name', 'first_name']
+const sortOrder = ['desc', 'asc', 'asc']
 
 const getPeopleSelector = (state) => state.get('participants', List())
 const getAllegationsFormSelector = (state) => state.get('allegationsForm', List())
@@ -12,14 +15,26 @@ export const getAllegationTypesSelector = () => (
   fromJS(ALLEGATION_TYPES.map((type) => ({label: type.value, value: type.value})))
 )
 
-const getVictimsSelector = createSelector(
+export const getSortedVictimsSelector = createSelector(
   getPeopleSelector,
-  (people) => people.filter((person) => person.get('roles', List()).includes('Victim'))
+  (people) => (fromJS(
+    _.orderBy(
+      people.filter((person) => person.get('roles', List()).includes('Victim')).toJS(),
+      sortFields,
+      sortOrder
+    )
+  ))
 )
 
-const getPerpetratorsSelector = createSelector(
+export const getSortedPerpetratorsSelector = createSelector(
   getPeopleSelector,
-  (people) => people.filter((person) => person.get('roles', List()).includes('Perpetrator'))
+  (people) => (fromJS(
+    _.orderBy(
+      people.filter((person) => person.get('roles', List()).includes('Perpetrator')).toJS(),
+      sortFields,
+      sortOrder
+    )
+  ))
 )
 
 const getAllegationsWithTypesSelector = createSelector(
@@ -45,26 +60,30 @@ export const getScreeningWithAllegationsEditsSelector = createSelector(
 )
 
 export const getFormattedAllegationsSelector = createSelector(
-  getVictimsSelector,
-  getPerpetratorsSelector,
+  getSortedVictimsSelector,
+  getSortedPerpetratorsSelector,
   getAllegationsFormSelector,
   (victims, perpetrators, allegations) => (
     victims.map((victim) => (
       perpetrators.map((perpetrator, index) => {
         const victimId = victim.get('id')
         const perpetratorId = perpetrator.get('id')
-        const allegationTypes = allegations.find((allegation) => (
-          allegation.get('victimId') === victimId && allegation.get('perpetratorId') === perpetratorId
-        ), null, Map()).get('allegationTypes', List())
-        return fromJS({
-          victimName: index === 0 ? nameFormatter(victim.toJS()) : '',
-          victimId,
-          perpetratorName: nameFormatter(perpetrator.toJS()),
-          perpetratorId,
-          allegationTypes,
-        })
+        if (victimId === perpetratorId) {
+          return null
+        } else {
+          const allegationTypes = allegations.find((allegation) => (
+            allegation.get('victimId') === victimId && allegation.get('perpetratorId') === perpetratorId
+          ), null, Map()).get('allegationTypes', List())
+          return fromJS({
+            victimName: index === 0 ? nameFormatter(victim.toJS()) : '',
+            victimId,
+            perpetratorName: nameFormatter(perpetrator.toJS()),
+            perpetratorId,
+            allegationTypes,
+          })
+        }
       })
-    )).flatten(FLATTEN_LEVEL)
+    )).flatten(FLATTEN_LEVEL).filterNot((allegation) => allegation === null)
   )
 )
 
