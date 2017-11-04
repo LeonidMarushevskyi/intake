@@ -77,14 +77,14 @@ describe('allegationsFormSelectors', () => {
 
     it('only includes the victim name in the first allegation for that victim', () => {
       const participants = [
-        {id: '1', first_name: 'John', last_name: 'Smith', roles: ['Victim']},
-        {id: '2', first_name: 'Jane', last_name: 'Doe', roles: ['Perpetrator']},
+        {id: '1', first_name: 'John', last_name: 'Aaron', roles: ['Victim', 'Perpetrator']},
+        {id: '2', first_name: 'Jane', last_name: 'Doe', roles: ['Victim', 'Perpetrator']},
         {id: '3', first_name: 'Bob', last_name: 'Smith', roles: ['Perpetrator']},
       ]
       const state = fromJS({participants})
       expect(getFormattedAllegationsSelector(state)).toEqualImmutable(fromJS([
         {
-          victimName: 'John Smith',
+          victimName: 'John Aaron',
           victimId: '1',
           perpetratorName: 'Jane Doe',
           perpetratorId: '2',
@@ -92,6 +92,18 @@ describe('allegationsFormSelectors', () => {
         }, {
           victimName: '',
           victimId: '1',
+          perpetratorName: 'Bob Smith',
+          perpetratorId: '3',
+          allegationTypes: [],
+        }, {
+          victimName: 'Jane Doe',
+          victimId: '2',
+          perpetratorName: 'John Aaron',
+          perpetratorId: '1',
+          allegationTypes: [],
+        }, {
+          victimName: '',
+          victimId: '2',
           perpetratorName: 'Bob Smith',
           perpetratorId: '3',
           allegationTypes: [],
