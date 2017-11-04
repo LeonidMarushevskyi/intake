@@ -99,11 +99,7 @@ describe('ScreeningPage', () => {
         loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      expect(component.find('HistoryCard').length).toEqual(1)
-      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
-      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
-      expect(component.find('HistoryCard').props().participants).toEqual(participants)
-      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
+      expect(component.find('Connect(HistoryOfInvolvement)').exists()).toEqual(true)
     })
 
     it('renders the allegations card and specifies if allegations are required', () => {
@@ -468,12 +464,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the history card', () => {
-        expect(component.find('HistoryCard').props()).toEqual(jasmine.objectContaining({
-          actions: props.actions,
-          involvements: props.involvements,
-          participants: props.participants,
-          screeningId: props.params.id,
-        }))
+        expect(component.find('Connect(HistoryOfInvolvement)').exists()).toEqual(true)
       })
 
       it('renders the cross report show card', () => {

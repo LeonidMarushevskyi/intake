@@ -7,7 +7,6 @@ import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
-import HistoryCard from 'screenings/HistoryCard'
 import Immutable from 'immutable'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import NarrativeCardView from 'screenings/NarrativeCardView'
@@ -23,6 +22,9 @@ import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import HistoryOfInvolvementContainer from 'containers/screening/HistoryOfInvolvementContainer'
+import HistoryTableContainer from 'containers/screening/HistoryTableContainer'
+import EmptyHistory from 'views/history/EmptyHistory'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -323,12 +325,9 @@ export class ScreeningPage extends React.Component {
                 screening={mergedScreening}
               />
           }
-          <HistoryCard
-            actions={this.props.actions}
-            editable={editable}
-            involvements={this.props.involvements}
-            participants={this.props.participants}
-            screeningId={this.props.params.id}
+          <HistoryOfInvolvementContainer
+            empty={<EmptyHistory />}
+            notEmpty={<HistoryTableContainer />}
           />
           {
             releaseTwoInactive &&
@@ -386,7 +385,6 @@ ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
-  involvements: PropTypes.object.isRequired,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
@@ -404,7 +402,6 @@ export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
-    involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
     relationships: state.get('relationships'),
