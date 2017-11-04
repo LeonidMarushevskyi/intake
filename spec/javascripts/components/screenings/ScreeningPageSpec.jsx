@@ -102,20 +102,16 @@ describe('ScreeningPage', () => {
       expect(component.find('Connect(HistoryOfInvolvement)').exists()).toEqual(true)
     })
 
-    it('renders the allegations card and specifies if allegations are required', () => {
+    it('renders the allegations card', () => {
       const props = {
         ...requiredProps,
-        allegations: Immutable.List(),
         mode: 'edit',
         loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
       const allegationsCard = component.find('AllegationsCardView')
-      expect(allegationsCard.length).toEqual(1)
-      expect(allegationsCard.props().allegations).toEqual(Immutable.List())
+      expect(allegationsCard.exists()).toEqual(true)
       expect(allegationsCard.props().mode).toEqual('edit')
-      expect(allegationsCard.props().onCancel).toEqual(component.instance().cancelEdit)
-      expect(allegationsCard.props().required).toEqual(false)
     })
 
     it('renders to Cross Report Card and specifies if cross reporting is required', () => {
@@ -148,7 +144,6 @@ describe('ScreeningPage', () => {
       const component = shallow(<ScreeningPage {...props} />)
       const crossReportsCard = component.find('CrossReportCardView')
       expect(crossReportsCard.length).toEqual(1)
-      expect(crossReportsCard.props().areCrossReportsRequired).toEqual(true)
       expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
       expect(crossReportsCard.props().mode).toEqual('edit')
       expect(crossReportsCard.props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
@@ -445,13 +440,6 @@ describe('ScreeningPage', () => {
       it('renders the incident information show card', () => {
         expect(component.find('IncidentInformationCardView').props()).toEqual(
           jasmine.objectContaining({...cardCallbacks, mode: 'show'})
-        )
-      })
-
-      it('renders the allegations card', () => {
-        const allegationsCard = component.find('AllegationsCardView')
-        expect(allegationsCard.props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show', allegations: Immutable.List()})
         )
       })
 
@@ -768,30 +756,6 @@ describe('ScreeningPage', () => {
         ],
         address: {city: 'Davis', county: 'Yolo'},
         report_narrative: 'This is my new narrative',
-      })
-    })
-
-    it('builds allegations that have allegation types when allegations is part of the fieldList', () => {
-      instance.cardSave(['allegations'])
-      expect(saveScreening).toHaveBeenCalledWith({
-        ...requiredScreeningAttributes,
-        name: 'The old name',
-        reference: 'old reference',
-        cross_reports: [
-          {agency_code: 'ANAMECODE', agency_type: 'Licensing'},
-          {agency_code: '', agency_type: 'District attorney'},
-        ],
-        address: {city: 'Davis', county: 'Yolo'},
-        report_narrative: 'I have things to say',
-        allegations: [{
-          id: null,
-          screening_id: '123456',
-          victim: lisa,
-          victim_id: lisa.id,
-          perpetrator: marge,
-          perpetrator_id: marge.id,
-          allegation_types: ['General neglect'],
-        }],
       })
     })
   })
