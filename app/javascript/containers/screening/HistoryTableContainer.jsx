@@ -9,6 +9,7 @@ import * as IntakeConfig from 'common/config'
 
 const mapStateToProps = (state) => {
   const props = {
+    showCopyButton: IntakeConfig.jsClipboardSupported(),
     cases: getFormattedCasesSelector(state).toJS(),
     referrals: getFormattedReferralsSelector(state).toJS(),
     screenings: [],
