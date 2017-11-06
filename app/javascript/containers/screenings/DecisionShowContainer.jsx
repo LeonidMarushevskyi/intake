@@ -7,11 +7,12 @@ import {
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import * as IntakeConfig from 'common/config'
 import {getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
+import _ from 'lodash'
 
 const mapStateToProps = (state, ownProps) => {
   let props = {
     accessRestriction: {
-      value: getScreeningSelector(state).get('access_restrictions'),
+      value: _.capitalize(getScreeningSelector(state).get('access_restrictions')),
     },
     additionalInformation: {
       value: getScreeningSelector(state).get('additional_information'),
