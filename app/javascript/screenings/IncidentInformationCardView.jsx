@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import IncidentInformationEditView from 'screenings/IncidentInformationEditView'
-import IncidentInformationShowView from 'screenings/IncidentInformationShowView'
+import IncidentInformationShowContainer from 'containers/screenings/incidentInformation/IncidentInformationShowContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
@@ -77,7 +77,7 @@ export default class IncidentInformationCardView extends React.Component {
         screening: this.props.screening,
       },
     }
-    const IncidentInformationView = (mode === 'edit') ? IncidentInformationEditView : IncidentInformationShowView
+    const IncidentInformationView = (mode === 'edit') ? IncidentInformationEditView : IncidentInformationShowContainer
     const props = allProps[mode]
     return (
       <div className={`card ${mode} double-gap-top`} id='incident-information-card'>
