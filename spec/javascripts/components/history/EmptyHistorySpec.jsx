@@ -1,4 +1,4 @@
-import EmptyHistory from 'history/EmptyHistory'
+import EmptyHistory from 'views/history/EmptyHistory'
 import React from 'react'
 import {shallow} from 'enzyme'
 

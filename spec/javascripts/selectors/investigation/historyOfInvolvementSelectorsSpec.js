@@ -4,7 +4,7 @@ import {
   getFormattedCasesSelector,
   getFormattedReferralsSelector,
   getFormattedScreeningsSelector,
-} from 'selectors/historyOfInvolvementSelectors'
+} from 'selectors/investigation/historyOfInvolvementSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('historyOfInvolvementSelectors', () => {

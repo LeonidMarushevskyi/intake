@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import CaseView from 'history/CaseView'
+import CaseView from 'views/history/CaseView'
 
 describe('History Case View', () => {
   const renderCaseView = ({...props}) => (

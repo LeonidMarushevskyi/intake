@@ -1,4 +1,4 @@
-import HistoryOfInvolvement from 'history/HistoryOfInvolvement'
+import HistoryOfInvolvement from 'views/history/HistoryOfInvolvement'
 import React from 'react'
 import {shallow} from 'enzyme'
 

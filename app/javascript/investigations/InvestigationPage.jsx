@@ -6,7 +6,7 @@ import AllegationShowContainer from 'investigations/AllegationShowContainer'
 import HistoryOfInvolvementContainer from 'investigations/HistoryOfInvolvementContainer'
 import RelationshipsCardContainer from 'investigations/RelationshipsCardContainer'
 import HistoryTableContainer from 'investigations/HistoryTableContainer'
-import EmptyHistory from 'history/EmptyHistory'
+import EmptyHistory from 'views/history/EmptyHistory'
 
 export class InvestigationPage extends React.Component {
   componentDidMount() {

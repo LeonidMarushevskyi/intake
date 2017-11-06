@@ -1,4 +1,4 @@
-import ScreeningView from 'history/ScreeningView'
+import ScreeningView from 'views/history/ScreeningView'
 import React from 'react'
 import {shallow} from 'enzyme'
 
