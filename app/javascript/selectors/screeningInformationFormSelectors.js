@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
-import {fromJS, List, Map} from 'Immutable'
+import {fromJS, List, Map} from 'immutable'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
   isRequiredCreate,
   isFutureDatetimeCreate,
@@ -7,6 +8,20 @@ import {
   combineCompact,
 } from 'utils/validator'
 
+export const getScreeningInformationFormSelector = (state) => state.get('screeningInformationForm')
+export const getScreeningWithEditsSelector = createSelector(
+  getScreeningSelector,
+  (state) => state.getIn(['screeningInformationForm', 'name', 'value']),
+  (state) => state.getIn(['screeningInformationForm', 'assignee', 'value']),
+  (state) => state.getIn(['screeningInformationForm', 'communication_method', 'value']),
+  (state) => state.getIn(['screeningInformationForm', 'started_at', 'value']),
+  (state) => state.getIn(['screeningInformationForm', 'ended_at', 'value']),
+  (screening, name, assignee, communicationMethod, startedAt, endedAt) => screening.set('name', name)
+    .set('assignee', assignee)
+    .set('communication_method', communicationMethod)
+    .set('started_at', startedAt)
+    .set('ended_at', endedAt)
+)
 const getErrorsSelector = createSelector(
   (state) => state.getIn(['screeningInformationForm', 'assignee', 'value']),
   (state) => state.getIn(['screeningInformationForm', 'communication_method', 'value']),

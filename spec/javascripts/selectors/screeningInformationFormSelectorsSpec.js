@@ -1,10 +1,45 @@
-import {getVisibleErrorsSelector} from 'selectors/screeningInformationFormSelectors'
-import {fromJS, List} from 'Immutable'
+import {
+  getScreeningWithEditsSelector,
+  getVisibleErrorsSelector,
+} from 'selectors/screeningInformationFormSelectors'
+import {fromJS, List} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import moment from 'moment'
 
 describe('screeningInformationFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
+
+  describe('getScreeningWithEditsSelector', () => {
+    it('returns a screening with updated screening information form field values', () => {
+      const screening = {
+        id: 'existing_screening_id',
+        name: 'old value',
+        started_at: 'old value',
+        ended_at: 'old value',
+        assignee: 'old value',
+        communication_method: 'old value',
+      }
+      const screeningInformationForm = {
+        name: {value: 'an edited name'},
+        started_at: {value: 'an edited start date time'},
+        ended_at: {value: 'an edited end date time'},
+        assignee: {value: 'an edited assignee'},
+        communication_method: {value: 'an edited communication method'},
+      }
+      const state = fromJS({screening, screeningInformationForm})
+      expect(getScreeningWithEditsSelector(state))
+        .toEqualImmutable(
+          fromJS({
+            id: 'existing_screening_id',
+            name: 'an edited name',
+            started_at: 'an edited start date time',
+            ended_at: 'an edited end date time',
+            assignee: 'an edited assignee',
+            communication_method: 'an edited communication method',
+          })
+        )
+    })
+  })
 
   describe('getVisibleErrorsSelector', () => {
     describe('assignee', () => {
