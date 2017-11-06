@@ -5,9 +5,9 @@ import {
   deleteParticipantSaga,
   deleteParticipant,
 } from 'sagas/deleteParticipantSaga'
-import {DELETE_PERSON} from 'actions/personActions'
+import {DELETE_PERSON} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import * as personActions from 'actions/personActions'
+import * as personCardActions from 'actions/personCardActions'
 import * as screeningActions from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
@@ -19,13 +19,13 @@ describe('deleteParticipantSaga', () => {
 
 describe('deleteParticipant', () => {
   const id = '123'
-  const action = personActions.deleteParticipant(id)
+  const action = personCardActions.deleteParticipant(id)
 
   it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.next().value).toEqual(
-      put(personActions.deleteParticipantSuccess(id))
+      put(personCardActions.deleteParticipantSuccess(id))
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
@@ -44,7 +44,7 @@ describe('deleteParticipant', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.throw(error).value).toEqual(
-      put(personActions.deleteParticipantFailure('some error'))
+      put(personCardActions.deleteParticipantFailure('some error'))
     )
   })
 })

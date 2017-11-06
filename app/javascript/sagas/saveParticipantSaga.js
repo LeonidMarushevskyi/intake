@@ -4,7 +4,7 @@ import {
   UPDATE_PERSON,
   updateParticipantSuccess,
   updateParticipantFailure,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import {
   fetchScreeningSuccess,
 } from 'actions/screeningActions'

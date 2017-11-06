@@ -4,7 +4,7 @@ import {
   CREATE_PERSON,
   createParticipantSuccess,
   createParticipantFailure,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import {
   fetchRelationships,
   fetchHistoryOfInvolvements,

@@ -1,7 +1,7 @@
-import * as actions from 'actions/personActions'
+import * as actions from 'actions/personCardActions'
 import {isFSA} from 'flux-standard-action'
 
-describe('personActions', () => {
+describe('personCardActions', () => {
   const actionNames = Object.keys(actions)
   const actionFuncs = actionNames.filter((actionName) => (
     typeof (actions[actionName]) === 'function'

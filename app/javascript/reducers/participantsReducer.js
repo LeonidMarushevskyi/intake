@@ -7,7 +7,7 @@ import {
   CREATE_PERSON_COMPLETE,
   DELETE_PERSON_COMPLETE,
   UPDATE_PERSON_COMPLETE,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import {createReducer} from 'utils/createReducer'
 import {List, fromJS} from 'immutable'
 

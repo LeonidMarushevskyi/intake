@@ -5,10 +5,10 @@ import {
   createParticipant,
   createParticipantSaga,
 } from 'sagas/createParticipantSaga'
-import {CREATE_PERSON} from 'actions/personActions'
+import {CREATE_PERSON} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import * as screeningActions from 'actions/screeningActions'
-import * as personActions from 'actions/personActions'
+import * as personCardActions from 'actions/personCardActions'
 
 describe('createParticipantSaga', () => {
   it('creates participant on CREATE_PERSON', () => {
@@ -19,13 +19,13 @@ describe('createParticipantSaga', () => {
 
 describe('createParticipant', () => {
   const participant = {first_name: 'Michael'}
-  const action = personActions.createParticipant(participant)
+  const action = personCardActions.createParticipant(participant)
 
   it('creates and puts participant and fetches relationships and history', () => {
     const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     expect(gen.next(participant).value).toEqual(
-      put(personActions.createParticipantSuccess(participant))
+      put(personCardActions.createParticipantSuccess(participant))
     )
     expect(gen.next().value).toEqual(
       select(getScreeningIdValueSelector)
@@ -44,7 +44,7 @@ describe('createParticipant', () => {
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(personActions.createParticipantFailure('some error'))
+      put(personCardActions.createParticipantFailure('some error'))
     )
   })
 })

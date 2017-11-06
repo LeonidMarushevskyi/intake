@@ -13,7 +13,7 @@ import {
   deleteParticipantFailure,
   updateParticipantSuccess,
   updateParticipantFailure,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import participantsReducer from 'reducers/participantsReducer'
 import {List, fromJS} from 'immutable'
 

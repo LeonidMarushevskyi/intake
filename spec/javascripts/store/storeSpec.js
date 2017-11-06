@@ -6,7 +6,7 @@ import {
 } from 'actions/screeningActions'
 import {
   createParticipantSuccess,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import {fromJS} from 'immutable'
 import rootReducer from 'reducers'
 import {createStore} from 'redux'

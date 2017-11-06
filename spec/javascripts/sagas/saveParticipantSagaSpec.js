@@ -7,9 +7,9 @@ import {
   saveParticipant,
 } from 'sagas/saveParticipantSaga'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {UPDATE_PERSON} from 'actions/personActions'
+import {UPDATE_PERSON} from 'actions/personCardActions'
 import * as screeningActions from 'actions/screeningActions'
-import * as personActions from 'actions/personActions'
+import * as personCardActions from 'actions/personCardActions'
 
 describe('saveParticipantSaga', () => {
   it('updates participant on UPDATE_PERSON', () => {
@@ -21,7 +21,7 @@ describe('saveParticipantSaga', () => {
 describe('saveParticipant', () => {
   const id = '123'
   const participant = {id}
-  const action = personActions.saveParticipant(participant)
+  const action = personCardActions.saveParticipant(participant)
 
   it('saves and puts participant and fetches a screening', () => {
     const gen = saveParticipant(action)
@@ -29,7 +29,7 @@ describe('saveParticipant', () => {
       call(Utils.put, '/api/v1/participants/123', participant)
     )
     expect(gen.next(participant).value).toEqual(
-      put(personActions.updateParticipantSuccess(participant))
+      put(personCardActions.updateParticipantSuccess(participant))
     )
     expect(gen.next().value).toEqual(select(getScreeningSelector))
     const currentScreening = fromJS({id: '444'})
@@ -49,7 +49,7 @@ describe('saveParticipant', () => {
     )
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(personActions.updateParticipantFailure('some error'))
+      put(personCardActions.updateParticipantFailure('some error'))
     )
   })
 })

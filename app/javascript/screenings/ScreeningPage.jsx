@@ -1,7 +1,7 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
-import * as personActions from 'actions/personActions'
+import * as personCardActions from 'actions/personCardActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
@@ -386,7 +386,7 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, personActions, screeningActions, {checkStaffPermission})
+  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission})
   return {
     actions: bindActionCreators(actions, dispatch),
   }

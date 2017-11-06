@@ -4,7 +4,7 @@ import {
   DELETE_PERSON,
   deleteParticipantSuccess,
   deleteParticipantFailure,
-} from 'actions/personActions'
+} from 'actions/personCardActions'
 import {
   fetchScreening,
   fetchRelationships,
