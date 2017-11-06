@@ -1,9 +1,8 @@
 import DecisionEditView from 'screenings/DecisionEditView'
-import DecisionShowView from 'screenings/DecisionShowView'
+import DecisionShowContainer from 'containers/screenings/DecisionShowContainer'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React from 'react'
-import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 
 export default class DecisionCardView extends React.Component {
   constructor(props) {
@@ -13,6 +12,7 @@ export default class DecisionCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.toggleMode = this.toggleMode.bind(this)
 
     this.fields = Immutable.fromJS([
       'screening_decision_detail',
@@ -61,6 +61,12 @@ export default class DecisionCardView extends React.Component {
     )).toJS()
   }
 
+  toggleMode() {
+    const currentMode = this.state.mode
+    const newMode = currentMode === 'show' ? 'edit' : 'show'
+    this.setState({mode: newMode})
+  }
+
   render() {
     const {mode} = this.state
     const errors = this.filteredErrors()
@@ -74,23 +80,12 @@ export default class DecisionCardView extends React.Component {
         onBlur: this.onBlur,
       },
       show: {
-        errors: errors,
-        onEdit: this.onEdit,
-        screening: this.props.screening,
+        toggleMode: this.toggleMode,
       },
     }
-    const DecisionView = (mode === 'edit') ? DecisionEditView : DecisionShowView
+    const DecisionView = (mode === 'edit') ? DecisionEditView : DecisionShowContainer
     const props = allProps[mode]
-    return (
-      <div className={`card ${mode} double-gap-top`} id='decision-card'>
-        <ScreeningCardHeader
-          onEdit={this.onEdit}
-          title='Decision'
-          showEdit={this.props.editable && mode === 'show'}
-        />
-        <DecisionView {...props} />
-      </div>
-    )
+    return (<DecisionView {...props} />)
   }
 }
 
