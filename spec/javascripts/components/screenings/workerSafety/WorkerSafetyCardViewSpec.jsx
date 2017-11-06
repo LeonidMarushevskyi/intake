@@ -18,6 +18,15 @@ describe('WorkerSafetyCardView', () => {
   })
 
   describe('render', () => {
+    describe('when the mode is set to edit', () => {
+      it('renders the edit view', () => {
+        const component = renderWorkerSafetyCard({mode: 'edit'})
+        const workerSafetyForm = component.find('Connect(WorkerSafetyForm)')
+        expect(workerSafetyForm.exists()).toEqual(true)
+        expect(workerSafetyForm.props().toggleShow).toEqual(component.instance().toggleShow)
+      })
+    })
+
     describe('when the mode is set to show', () => {
       it('renders the show view', () => {
         const component = renderWorkerSafetyCard({mode: 'show'})

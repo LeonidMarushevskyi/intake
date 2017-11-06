@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 import WorkerSafetyShowContainer from 'screenings/workerSafety/WorkerSafetyShowContainer'
+import WorkerSafetyFormContainer from 'screenings/workerSafety/WorkerSafetyFormContainer'
 
 export default class WorkerSafetyCardView extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class WorkerSafetyCardView extends React.Component {
           title='Worker Safety'
           showEdit={this.props.editable && mode === 'show'}
         />
+        {mode === 'edit' && <WorkerSafetyFormContainer toggleMode={this.toggleMode} />}
         {mode === 'show' && <WorkerSafetyShowContainer />}
       </div>
     )
