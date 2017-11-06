@@ -6,9 +6,10 @@ import {
 } from 'selectors/screening/decisionShowSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import * as IntakeConfig from 'common/config'
+import {getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
 
-const mapStateToProps = (state, ownProps) => (
-  {
+const mapStateToProps = (state, ownProps) => {
+  let props = {
     accessRestriction: {
       value: getScreeningSelector(state).get('access_restrictions'),
     },
@@ -17,12 +18,18 @@ const mapStateToProps = (state, ownProps) => (
     },
     decision: getDecisionSelector(state).toJS(),
     decisionDetail: getDecisionDetailSelector(state).toJS(),
-    onEdit: ownProps.onEdit,
     restrictionRationale: {
       value: getScreeningSelector(state).get('restrictions_rationale'),
     },
     sdmLink: IntakeConfig.sdmPath(),
   }
-)
+  if (!getScreeningIsReadOnlySelector(state)) {
+    props = {
+      ...props,
+      onEdit: ownProps.toggleMode,
+    }
+  }
+  return props
+}
 
 export default connect(mapStateToProps)(ScreeningDecisionShow)

@@ -12,6 +12,7 @@ export default class DecisionCardView extends React.Component {
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.toggleMode = this.toggleMode.bind(this)
 
     this.fields = Immutable.fromJS([
       'screening_decision_detail',
@@ -60,6 +61,12 @@ export default class DecisionCardView extends React.Component {
     )).toJS()
   }
 
+  toggleMode() {
+    const currentMode = this.state.mode
+    const newMode = currentMode === 'show' ? 'edit' : 'show'
+    this.setState({mode: newMode})
+  }
+
   render() {
     const {mode} = this.state
     const errors = this.filteredErrors()
@@ -73,9 +80,7 @@ export default class DecisionCardView extends React.Component {
         onBlur: this.onBlur,
       },
       show: {
-        errors: errors,
-        onEdit: this.onEdit,
-        screening: this.props.screening,
+        toggleMode: this.toggleMode,
       },
     }
     const DecisionView = (mode === 'edit') ? DecisionEditView : DecisionShowContainer
