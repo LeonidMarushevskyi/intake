@@ -24,15 +24,6 @@ describe('DecisionCardView', () => {
     }
   })
 
-  it('renders the card header', () => {
-    const component = shallow(<DecisionCardView {...props} mode='edit'/>)
-    const header = component.find('ScreeningCardHeader')
-    expect(header.length).toEqual(1)
-    expect(header.props().onEdit).toEqual(component.instance().onEdit)
-    expect(header.props().showEdit).toEqual(false)
-    expect(header.props().title).toEqual('Decision')
-  })
-
   describe('in edit mode', () => {
     beforeEach(() => {
       component = mount(<DecisionCardView {...props} mode='edit' />)
@@ -75,41 +66,11 @@ describe('DecisionCardView', () => {
         ]))
       })
     })
-    describe('cancel button', () => {
-      beforeEach(() => {
-        component.find('#additional_information').simulate(
-          'change', {target: {value: 'the decision is changed'}}
-        )
-        component.find('.btn.btn-default').simulate('click')
-      })
-      it('cancels the correct fields', () => {
-        expect(props.onCancel).toHaveBeenCalledWith(Immutable.fromJS([
-          'screening_decision_detail',
-          'screening_decision',
-          'additional_information',
-          'access_restrictions',
-          'restrictions_rationale',
-        ]))
-      })
-      it('discards changes on cancel', () => {
-        component.setState({mode: 'edit'})
-        expect(component.find('DecisionEditView').props().screening.name)
-          .not.toEqual('the decision is changed!')
-      })
-    })
   })
 
-  describe('in show mode', () => {
-    beforeEach(() => {
-      component = mount(<DecisionCardView {...props} mode='show' />)
-    })
-    it('renders the show card', () => {
-      expect(component.find('DecisionShowView').length).toEqual(1)
-    })
-
-    it('passes errors from the state', () => {
-      expect(component.find('DecisionShowView').props().errors).toEqual({})
-    })
+  it('renders the show card', () => {
+    component = shallow(<DecisionCardView {...props} mode='show' />)
+    expect(component.find('Connect(ScreeningDecisionShow)').length).toEqual(1)
   })
 
   describe('onBlur', () => {
