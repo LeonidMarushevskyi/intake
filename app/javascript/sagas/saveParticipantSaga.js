@@ -1,7 +1,7 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
 import * as Utils from 'utils/http'
 import {
-  UPDATE_PARTICIPANT,
+  UPDATE_PERSON,
   updateParticipantSuccess,
   updateParticipantFailure,
 } from 'actions/personActions'
@@ -22,5 +22,5 @@ export function* saveParticipant({payload: {participant}}) {
   }
 }
 export function* saveParticipantSaga() {
-  yield takeEvery(UPDATE_PARTICIPANT, saveParticipant)
+  yield takeEvery(UPDATE_PERSON, saveParticipant)
 }

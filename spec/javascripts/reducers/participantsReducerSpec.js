@@ -54,7 +54,7 @@ describe('participantsReducer', () => {
     })
   })
 
-  describe('on CREATE_PARTICIPANT_COMPLETE', () => {
+  describe('on CREATE_PERSON_COMPLETE', () => {
     it('returns the screening with new participant from the action on success', () => {
       const newParticipant = fromJS({id: '2'})
       const action = createParticipantSuccess(newParticipant.toJS())
@@ -76,7 +76,7 @@ describe('participantsReducer', () => {
     })
   })
 
-  describe('on UPDATE_PARTICIPANT_COMPLETE', () => {
+  describe('on UPDATE_PERSON_COMPLETE', () => {
     it('returns the screening with updated participants from the action on success', () => {
       const newParticipant = {id: '1', first_name: 'John'}
       const oldParticipant = {id: '1'}
@@ -91,7 +91,7 @@ describe('participantsReducer', () => {
     })
   })
 
-  describe('on DELETE_PARTICIPANT_COMPLETE', () => {
+  describe('on DELETE_PERSON_COMPLETE', () => {
     it('returns the screening without the deleted participant from the action on success', () => {
       const firstParticipant = {id: '2'}
       const secondParticipant = {id: '3'}

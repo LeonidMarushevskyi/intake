@@ -5,15 +5,15 @@ import {
   deleteParticipantSaga,
   deleteParticipant,
 } from 'sagas/deleteParticipantSaga'
-import {DELETE_PARTICIPANT} from 'actions/personActions'
+import {DELETE_PERSON} from 'actions/personActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import * as personActions from 'actions/personActions'
 import * as screeningActions from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
-  it('deletes participant on DELETE_PARTICIPANT', () => {
+  it('deletes participant on DELETE_PERSON', () => {
     const gen = deleteParticipantSaga()
-    expect(gen.next().value).toEqual(takeEvery(DELETE_PARTICIPANT, deleteParticipant))
+    expect(gen.next().value).toEqual(takeEvery(DELETE_PERSON, deleteParticipant))
   })
 })
 

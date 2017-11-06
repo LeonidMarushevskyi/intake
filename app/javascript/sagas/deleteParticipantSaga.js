@@ -1,7 +1,7 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
 import {destroy} from 'utils/http'
 import {
-  DELETE_PARTICIPANT,
+  DELETE_PERSON,
   deleteParticipantSuccess,
   deleteParticipantFailure,
 } from 'actions/personActions'
@@ -25,5 +25,5 @@ export function* deleteParticipant({payload: {id}}) {
   }
 }
 export function* deleteParticipantSaga() {
-  yield takeEvery(DELETE_PARTICIPANT, deleteParticipant)
+  yield takeEvery(DELETE_PERSON, deleteParticipant)
 }

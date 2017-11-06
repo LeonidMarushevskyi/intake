@@ -7,14 +7,14 @@ import {
   saveParticipant,
 } from 'sagas/saveParticipantSaga'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {UPDATE_PARTICIPANT} from 'actions/personActions'
+import {UPDATE_PERSON} from 'actions/personActions'
 import * as screeningActions from 'actions/screeningActions'
 import * as personActions from 'actions/personActions'
 
 describe('saveParticipantSaga', () => {
-  it('updates participant on UPDATE_PARTICIPANT', () => {
+  it('updates participant on UPDATE_PERSON', () => {
     const gen = saveParticipantSaga()
-    expect(gen.next().value).toEqual(takeEvery(UPDATE_PARTICIPANT, saveParticipant))
+    expect(gen.next().value).toEqual(takeEvery(UPDATE_PERSON, saveParticipant))
   })
 })
 
