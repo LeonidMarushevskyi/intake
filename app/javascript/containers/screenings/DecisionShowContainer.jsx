@@ -1,29 +1,27 @@
 import {connect} from 'react-redux'
 import ScreeningDecisionShow from 'views/screening_decision/ScreeningDecisionShow'
+import {
+  getDecisionSelector,
+  getDecisionDetailSelector,
+} from 'selectors/screening/decisionShowSelectors'
+import {getScreeningSelector} from 'selectors/screeningSelectors'
+import * as IntakeConfig from 'common/config'
 
 const mapStateToProps = (state, ownProps) => (
   {
     accessRestriction: {
-      value: '',
+      value: getScreeningSelector(state).get('access_restrictions'),
     },
     additionalInformation: {
-      value: '',
+      value: getScreeningSelector(state).get('additional_information'),
     },
-    decision: {
-      errors: [],
-      value: '',
-    },
-    decisionDetail: {
-      errors: [],
-      label: 'Decision detail',
-      required: false,
-      value: '',
-    },
+    decision: getDecisionSelector(state).toJS(),
+    decisionDetail: getDecisionDetailSelector(state).toJS(),
     onEdit: ownProps.onEdit,
     restrictionRationale: {
-      value: '',
+      value: getScreeningSelector(state).get('restrictions_rationale'),
     },
-    sdmLink: ''
+    sdmLink: IntakeConfig.sdmPath(),
   }
 )
 
