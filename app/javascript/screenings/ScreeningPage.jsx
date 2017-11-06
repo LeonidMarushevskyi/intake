@@ -114,15 +114,15 @@ export class ScreeningPage extends React.Component {
       legacy_id: person.id,
       id: null,
     })
-    this.props.actions.createParticipant(participant)
+    this.props.actions.createPerson(participant)
   }
 
   deleteParticipant(id) {
-    this.props.actions.deleteParticipant(id)
+    this.props.actions.deletePerson(id)
   }
 
   saveParticipant(participant) {
-    this.props.actions.saveParticipant(participant.toJS())
+    this.props.actions.savePerson(participant.toJS())
   }
 
   mergeScreeningWithEdits(changes) {

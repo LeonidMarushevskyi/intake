@@ -7,12 +7,12 @@ import {
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import {
-  createParticipantSuccess,
-  createParticipantFailure,
-  deleteParticipantSuccess,
-  deleteParticipantFailure,
-  updateParticipantSuccess,
-  updateParticipantFailure,
+  createPersonSuccess,
+  createPersonFailure,
+  deletePersonSuccess,
+  deletePersonFailure,
+  updatePersonSuccess,
+  updatePersonFailure,
 } from 'actions/personCardActions'
 import participantsReducer from 'reducers/participantsReducer'
 import {List, fromJS} from 'immutable'
@@ -57,21 +57,21 @@ describe('participantsReducer', () => {
   describe('on CREATE_PERSON_COMPLETE', () => {
     it('returns the screening with new participant from the action on success', () => {
       const newParticipant = fromJS({id: '2'})
-      const action = createParticipantSuccess(newParticipant.toJS())
+      const action = createPersonSuccess(newParticipant.toJS())
       const newParticipants = fromJS([newParticipant])
       expect(participantsReducer(List(), action)).toEqualImmutable(newParticipants)
     })
 
     it('adds new participants to the beginning of the list', () => {
       const newParticipant = fromJS({id: '2'})
-      const action = createParticipantSuccess(newParticipant.toJS())
+      const action = createPersonSuccess(newParticipant.toJS())
       const oldParticipant = {id: '3'}
       const oldState = fromJS([oldParticipant])
       const newParticipants = fromJS([newParticipant, oldParticipant])
       expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
     it('returns the last state on failure', () => {
-      const action = createParticipantFailure()
+      const action = createPersonFailure()
       expect(participantsReducer(List(), action)).toEqual(List())
     })
   })
@@ -82,11 +82,11 @@ describe('participantsReducer', () => {
       const oldParticipant = {id: '1'}
       const oldState = fromJS([oldParticipant])
       const newParticipants = fromJS([newParticipant])
-      const action = updateParticipantSuccess(newParticipant)
+      const action = updatePersonSuccess(newParticipant)
       expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
     it('returns the last state on failure', () => {
-      const action = updateParticipantFailure()
+      const action = updatePersonFailure()
       expect(participantsReducer(List(), action)).toEqual(List())
     })
   })
@@ -96,12 +96,12 @@ describe('participantsReducer', () => {
       const firstParticipant = {id: '2'}
       const secondParticipant = {id: '3'}
       const oldState = fromJS([firstParticipant, secondParticipant])
-      const action = deleteParticipantSuccess(secondParticipant.id)
+      const action = deletePersonSuccess(secondParticipant.id)
       const newParticipants = fromJS([firstParticipant])
       expect(participantsReducer(oldState, action)).toEqualImmutable(newParticipants)
     })
     it('returns the last state on failure', () => {
-      const action = deleteParticipantFailure()
+      const action = deletePersonFailure()
       expect(participantsReducer(List(), action)).toEqual(List())
     })
   })

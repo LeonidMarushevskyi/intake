@@ -23,12 +23,12 @@ export default createReducer(List(), {
   [CREATE_SCREENING_COMPLETE]: getParticipantsOnScreening,
   [FETCH_SCREENING_COMPLETE]: getParticipantsOnScreening,
   [UPDATE_SCREENING_COMPLETE]: getParticipantsOnScreening,
-  [CREATE_PERSON_COMPLETE](state, {payload: {participant}, error}) {
+  [CREATE_PERSON_COMPLETE](state, {payload: {person}, error}) {
     if (error) {
       return state
     } else {
-      const newParticipant = fromJS(participant)
-      return state.unshift(newParticipant)
+      const newPerson = fromJS(person)
+      return state.unshift(newPerson)
     }
   },
   [DELETE_PERSON_COMPLETE](state, {payload: {id}, error}) {
@@ -38,13 +38,13 @@ export default createReducer(List(), {
       return state.filterNot((x) => x.get('id') === id)
     }
   },
-  [UPDATE_PERSON_COMPLETE](state, {payload: {participant}, error}) {
+  [UPDATE_PERSON_COMPLETE](state, {payload: {person}, error}) {
     if (error) {
       return state
     } else {
-      const updatedParticipant = fromJS(participant)
-      const participantIndex = state.findIndex((x) => x.get('id') === updatedParticipant.get('id'))
-      return state.setIn([participantIndex], updatedParticipant)
+      const updatedPerson = fromJS(person)
+      const personIndex = state.findIndex((x) => x.get('id') === updatedPerson.get('id'))
+      return state.setIn([personIndex], updatedPerson)
     }
   },
 })

@@ -19,13 +19,13 @@ describe('deleteParticipantSaga', () => {
 
 describe('deleteParticipant', () => {
   const id = '123'
-  const action = personCardActions.deleteParticipant(id)
+  const action = personCardActions.deletePerson(id)
 
   it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.next().value).toEqual(
-      put(personCardActions.deleteParticipantSuccess(id))
+      put(personCardActions.deletePersonSuccess(id))
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
@@ -44,7 +44,7 @@ describe('deleteParticipant', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.throw(error).value).toEqual(
-      put(personCardActions.deleteParticipantFailure('some error'))
+      put(personCardActions.deletePersonFailure('some error'))
     )
   })
 })

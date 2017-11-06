@@ -5,7 +5,7 @@ import {
   updateScreeningSuccess,
 } from 'actions/screeningActions'
 import {
-  createParticipantSuccess,
+  createPersonSuccess,
 } from 'actions/personCardActions'
 import {fromJS} from 'immutable'
 import rootReducer from 'reducers'
@@ -103,7 +103,7 @@ describe('Store', () => {
     it('handles create participant', () => {
       const participant = {id: '2', legacy_id: '3', screening_id: '1'}
       const participants = fromJS([participant])
-      const action = createParticipantSuccess(participant)
+      const action = createPersonSuccess(participant)
       store.dispatch(action)
       expect(store.getState().get('participants')).toEqualImmutable(participants)
     })

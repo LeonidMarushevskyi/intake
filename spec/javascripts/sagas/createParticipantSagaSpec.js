@@ -19,13 +19,13 @@ describe('createParticipantSaga', () => {
 
 describe('createParticipant', () => {
   const participant = {first_name: 'Michael'}
-  const action = personCardActions.createParticipant(participant)
+  const action = personCardActions.createPerson(participant)
 
   it('creates and puts participant and fetches relationships and history', () => {
     const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     expect(gen.next(participant).value).toEqual(
-      put(personCardActions.createParticipantSuccess(participant))
+      put(personCardActions.createPersonSuccess(participant))
     )
     expect(gen.next().value).toEqual(
       select(getScreeningIdValueSelector)
@@ -44,7 +44,7 @@ describe('createParticipant', () => {
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(personCardActions.createParticipantFailure('some error'))
+      put(personCardActions.createPersonFailure('some error'))
     )
   })
 })

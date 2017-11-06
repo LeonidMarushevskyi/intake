@@ -21,7 +21,7 @@ describe('saveParticipantSaga', () => {
 describe('saveParticipant', () => {
   const id = '123'
   const participant = {id}
-  const action = personCardActions.saveParticipant(participant)
+  const action = personCardActions.savePerson(participant)
 
   it('saves and puts participant and fetches a screening', () => {
     const gen = saveParticipant(action)
@@ -29,7 +29,7 @@ describe('saveParticipant', () => {
       call(Utils.put, '/api/v1/participants/123', participant)
     )
     expect(gen.next(participant).value).toEqual(
-      put(personCardActions.updateParticipantSuccess(participant))
+      put(personCardActions.updatePersonSuccess(participant))
     )
     expect(gen.next().value).toEqual(select(getScreeningSelector))
     const currentScreening = fromJS({id: '444'})
@@ -49,7 +49,7 @@ describe('saveParticipant', () => {
     )
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(personCardActions.updateParticipantFailure('some error'))
+      put(personCardActions.updatePersonFailure('some error'))
     )
   })
 })
