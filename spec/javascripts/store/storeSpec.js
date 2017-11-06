@@ -39,6 +39,7 @@ describe('Store', () => {
       screeningInformationForm: {},
       screenings: [],
       staff: {},
+      workerSafetyForm: {},
     })
     store = createStore(rootReducer)
   })
