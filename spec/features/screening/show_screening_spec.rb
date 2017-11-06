@@ -83,7 +83,7 @@ feature 'Show Screening' do
     end
 
     within '#decision-card.show', text: 'Decision' do
-      expect(page.find('label', text: 'Screening Decision')[:class]).to include('required')
+      expect(page.find('label', text: 'Screening decision')[:class]).to include('required')
       expect(page).to have_content 'Screen out'
       expect(page).to have_content 'Category'
       expect(page).to have_content 'Consultation'

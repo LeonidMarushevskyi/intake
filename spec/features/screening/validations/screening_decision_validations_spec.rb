@@ -163,7 +163,6 @@ feature 'Screening Decision Validations' do
       end
 
       scenario 'Adding and removing allegations shows or hides error message' do
-        pending 'Refactor of screening decision to use redux store'
         within '#decision-card.show' do
           expect(page).to have_content(error_message)
         end

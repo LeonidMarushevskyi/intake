@@ -119,7 +119,7 @@ feature 'decision card' do
         'Determine Decision and Response Time by using Structured Decision Making'
       )
       expect(page).to have_content('Complete SDM')
-      expect(page).to have_content('Screening Decision')
+      expect(page).to have_content('Screening decision')
       expect(page).to have_content('Differential response')
       expect(page).to have_content('Service name')
       expect(page).to have_content('An arbitrary string')
