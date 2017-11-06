@@ -5,9 +5,10 @@ import {
   createParticipant,
   createParticipantSaga,
 } from 'sagas/createParticipantSaga'
-import {CREATE_PARTICIPANT} from 'actions/actionTypes'
+import {CREATE_PARTICIPANT} from 'actions/personActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import * as actions from 'actions/screeningActions'
+import * as screeningActions from 'actions/screeningActions'
+import * as personActions from 'actions/personActions'
 
 describe('createParticipantSaga', () => {
   it('creates participant on CREATE_PARTICIPANT', () => {
@@ -18,23 +19,23 @@ describe('createParticipantSaga', () => {
 
 describe('createParticipant', () => {
   const participant = {first_name: 'Michael'}
-  const action = actions.createParticipant(participant)
+  const action = personActions.createParticipant(participant)
 
   it('creates and puts participant and fetches relationships and history', () => {
     const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     expect(gen.next(participant).value).toEqual(
-      put(actions.createParticipantSuccess(participant))
+      put(personActions.createParticipantSuccess(participant))
     )
     expect(gen.next().value).toEqual(
       select(getScreeningIdValueSelector)
     )
     const screeningId = '444'
     expect(gen.next(screeningId).value).toEqual(
-      put(actions.fetchRelationships(screeningId))
+      put(screeningActions.fetchRelationships(screeningId))
     )
     expect(gen.next(screeningId).value).toEqual(
-      put(actions.fetchHistoryOfInvolvements(screeningId))
+      put(screeningActions.fetchHistoryOfInvolvements(screeningId))
     )
   })
 
@@ -43,7 +44,7 @@ describe('createParticipant', () => {
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(actions.createParticipantFailure('some error'))
+      put(personActions.createParticipantFailure('some error'))
     )
   })
 })

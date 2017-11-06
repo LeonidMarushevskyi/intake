@@ -2,10 +2,12 @@ import {
   CREATE_SCREENING_COMPLETE,
   FETCH_SCREENING_COMPLETE,
   UPDATE_SCREENING_COMPLETE,
+} from 'actions/actionTypes'
+import {
   CREATE_PARTICIPANT_COMPLETE,
   DELETE_PARTICIPANT_COMPLETE,
   UPDATE_PARTICIPANT_COMPLETE,
-} from 'actions/actionTypes'
+} from 'actions/personActions'
 import {createReducer} from 'utils/createReducer'
 import {List, fromJS} from 'immutable'
 

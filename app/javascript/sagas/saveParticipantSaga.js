@@ -1,12 +1,14 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
 import * as Utils from 'utils/http'
 import {
+  UPDATE_PARTICIPANT,
   updateParticipantSuccess,
   updateParticipantFailure,
+} from 'actions/personActions'
+import {
   fetchScreeningSuccess,
 } from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {UPDATE_PARTICIPANT} from 'actions/actionTypes'
 
 export function* saveParticipant({payload: {participant}}) {
   try {

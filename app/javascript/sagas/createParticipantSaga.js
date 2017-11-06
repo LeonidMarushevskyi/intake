@@ -1,13 +1,15 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
 import {post} from 'utils/http'
 import {
+  CREATE_PARTICIPANT,
   createParticipantSuccess,
   createParticipantFailure,
+} from 'actions/personActions'
+import {
   fetchRelationships,
   fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import {CREATE_PARTICIPANT} from 'actions/actionTypes'
 
 export function* createParticipant({payload: {participant}}) {
   try {

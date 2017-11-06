@@ -5,13 +5,15 @@ import {
   fetchScreeningSuccess,
   fetchScreeningFailure,
   updateScreeningSuccess,
+} from 'actions/screeningActions'
+import {
   createParticipantSuccess,
   createParticipantFailure,
   deleteParticipantSuccess,
   deleteParticipantFailure,
   updateParticipantSuccess,
   updateParticipantFailure,
-} from 'actions/screeningActions'
+} from 'actions/personActions'
 import participantsReducer from 'reducers/participantsReducer'
 import {List, fromJS} from 'immutable'
 

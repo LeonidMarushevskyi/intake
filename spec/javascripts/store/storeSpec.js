@@ -3,8 +3,10 @@ import {
   fetchScreeningSuccess,
   createScreeningSuccess,
   updateScreeningSuccess,
-  createParticipantSuccess,
 } from 'actions/screeningActions'
+import {
+  createParticipantSuccess,
+} from 'actions/personActions'
 import {fromJS} from 'immutable'
 import rootReducer from 'reducers'
 import {createStore} from 'redux'

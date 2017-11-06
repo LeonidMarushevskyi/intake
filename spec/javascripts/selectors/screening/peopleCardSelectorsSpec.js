@@ -5,7 +5,7 @@ import {
 } from 'selectors/screening/peopleCardSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
-fdescribe('peopleCardSelectors', () => {
+describe('peopleCardSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getPersonNamesSelector', () => {

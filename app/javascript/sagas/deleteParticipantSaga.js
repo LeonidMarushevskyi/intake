@@ -1,14 +1,16 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
 import {destroy} from 'utils/http'
 import {
+  DELETE_PARTICIPANT,
   deleteParticipantSuccess,
   deleteParticipantFailure,
+} from 'actions/personActions'
+import {
   fetchScreening,
   fetchRelationships,
   fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import {DELETE_PARTICIPANT} from 'actions/actionTypes'
 
 export function* deleteParticipant({payload: {id}}) {
   try {
