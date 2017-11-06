@@ -15,9 +15,9 @@ describe('ScreeningPage', () => {
     const promiseObj = jasmine.createSpyObj('promise', ['then'])
     promiseObj.then.and.callFake((thenFunction) => thenFunction())
 
-    const saveParticipant = jasmine.createSpy('saveParticipant').and.returnValue(promiseObj)
-    const deleteParticipant = jasmine.createSpy('deleteParticipant')
-    const createParticipant = jasmine.createSpy('createParticipant')
+    const savePerson = jasmine.createSpy('savePerson').and.returnValue(promiseObj)
+    const deletePerson = jasmine.createSpy('deletePerson')
+    const createPerson = jasmine.createSpy('createPerson')
 
     const address1 = Immutable.Map({
       city: 'Sacramento',
@@ -66,7 +66,7 @@ describe('ScreeningPage', () => {
 
     const props = {
       ...requiredProps,
-      actions: {createParticipant, saveParticipant, deleteParticipant},
+      actions: {createPerson, savePerson, deletePerson},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
       editable: true,
@@ -93,14 +93,14 @@ describe('ScreeningPage', () => {
 
       it('calls the createParticipant action', () => {
         component.instance().createParticipant(person)
-        expect(createParticipant).toHaveBeenCalledWith(participant)
+        expect(createPerson).toHaveBeenCalledWith(participant)
       })
     })
 
     describe('deleteParticipant', () => {
       it('calls the deleteParticipant action', () => {
         component.instance().deleteParticipant('1')
-        expect(deleteParticipant).toHaveBeenCalledWith('1')
+        expect(deletePerson).toHaveBeenCalledWith('1')
       })
     })
 
@@ -135,7 +135,7 @@ describe('ScreeningPage', () => {
       it('uses the appropriate data and makes an API request', () => {
         const updatedParticipant = participant1.setIn(['first_name'], 'shere khan')
         component.instance().saveParticipant(updatedParticipant)
-        expect(saveParticipant).toHaveBeenCalledWith(updatedParticipant.toJS())
+        expect(savePerson).toHaveBeenCalledWith(updatedParticipant.toJS())
       })
     })
 

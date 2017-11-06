@@ -1,6 +1,7 @@
 import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
+import * as personCardActions from 'actions/personCardActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
@@ -113,15 +114,15 @@ export class ScreeningPage extends React.Component {
       legacy_id: person.id,
       id: null,
     })
-    this.props.actions.createParticipant(participant)
+    this.props.actions.createPerson(participant)
   }
 
   deleteParticipant(id) {
-    this.props.actions.deleteParticipant(id)
+    this.props.actions.deletePerson(id)
   }
 
   saveParticipant(participant) {
-    this.props.actions.saveParticipant(participant.toJS())
+    this.props.actions.savePerson(participant.toJS())
   }
 
   mergeScreeningWithEdits(changes) {
@@ -385,7 +386,7 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, screeningActions, {checkStaffPermission})
+  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission})
   return {
     actions: bindActionCreators(actions, dispatch),
   }

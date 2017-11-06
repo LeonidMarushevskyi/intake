@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import EditLink from 'common/EditLink'
 
-const ParticipantCardHeader = ({informationFlag, title, onDelete, onEdit, showDelete, showEdit}) => (
+const PersonCardHeader = ({informationFlag, title, onDelete, onEdit, showDelete, showEdit}) => (
   <div className='card-header'>
     <span>{title}</span>
     { informationFlag && <span className='information-flag'>{informationFlag}</span>}
@@ -26,7 +26,7 @@ const ParticipantCardHeader = ({informationFlag, title, onDelete, onEdit, showDe
   </div>
 )
 
-ParticipantCardHeader.propTypes = {
+PersonCardHeader.propTypes = {
   informationFlag: PropTypes.string,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
@@ -35,5 +35,4 @@ ParticipantCardHeader.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
-export default ParticipantCardHeader
-
+export default PersonCardHeader

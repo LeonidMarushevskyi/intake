@@ -5,36 +5,37 @@ import {
   deleteParticipantSaga,
   deleteParticipant,
 } from 'sagas/deleteParticipantSaga'
-import {DELETE_PARTICIPANT} from 'actions/actionTypes'
+import {DELETE_PERSON} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import * as actions from 'actions/screeningActions'
+import * as personCardActions from 'actions/personCardActions'
+import * as screeningActions from 'actions/screeningActions'
 
 describe('deleteParticipantSaga', () => {
-  it('deletes participant on DELETE_PARTICIPANT', () => {
+  it('deletes participant on DELETE_PERSON', () => {
     const gen = deleteParticipantSaga()
-    expect(gen.next().value).toEqual(takeEvery(DELETE_PARTICIPANT, deleteParticipant))
+    expect(gen.next().value).toEqual(takeEvery(DELETE_PERSON, deleteParticipant))
   })
 })
 
 describe('deleteParticipant', () => {
   const id = '123'
-  const action = actions.deleteParticipant(id)
+  const action = personCardActions.deletePerson(id)
 
   it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.next().value).toEqual(
-      put(actions.deleteParticipantSuccess(id))
+      put(personCardActions.deletePersonSuccess(id))
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
-      put(actions.fetchScreening('444'))
+      put(screeningActions.fetchScreening('444'))
     )
     expect(gen.next('444').value).toEqual(
-      put(actions.fetchRelationships('444'))
+      put(screeningActions.fetchRelationships('444'))
     )
     expect(gen.next('444').value).toEqual(
-      put(actions.fetchHistoryOfInvolvements('444'))
+      put(screeningActions.fetchHistoryOfInvolvements('444'))
     )
   })
 
@@ -43,7 +44,7 @@ describe('deleteParticipant', () => {
     const gen = deleteParticipant(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.throw(error).value).toEqual(
-      put(actions.deleteParticipantFailure('some error'))
+      put(personCardActions.deletePersonFailure('some error'))
     )
   })
 })
