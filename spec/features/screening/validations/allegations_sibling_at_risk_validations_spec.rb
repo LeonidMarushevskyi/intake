@@ -42,7 +42,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees no sibling error' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
         click_button 'Cancel'
       end
@@ -54,7 +54,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees error when adding at risk allegation' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}",
           with: 'At risk, sibling abused'
         expect(page).to have_content(sibling_at_risk_error)
@@ -78,7 +78,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User can make the error go away' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}",
           with: 'At risk, sibling abused'
         expect(page).to have_content(sibling_at_risk_error)
@@ -132,7 +132,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees warning about sibling at risk' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         click_button 'Cancel'
       end
@@ -144,7 +144,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User can fix warning about at risk' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}", with: 'Physical abuse'
         expect(page).to have_content(sibling_at_risk_error)
@@ -196,7 +196,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees no warning about sibling at risk' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).not_to have_content(sibling_at_risk_error)
         click_button 'Cancel'
       end
@@ -226,7 +226,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees error about sibling at risk' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         click_button 'Cancel'
       end
@@ -237,7 +237,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User can fix error' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}", with: 'Exploitation'
         expect(page).to have_content(sibling_at_risk_error)
@@ -297,7 +297,7 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees error about sibling at risk' do
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         click_button 'Cancel'
       end
@@ -316,7 +316,7 @@ feature 'Allegations Sibling At Risk Validations' do
         allegation_types: ['Physical abuse']
       )
 
-      within '#allegations-card.edit' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_content(sibling_at_risk_error)
         fill_in_react_select "allegations_#{victim2.id}_#{perpetrator.id}", with: 'Physical abuse'
         expect(page).not_to have_content(sibling_at_risk_error)

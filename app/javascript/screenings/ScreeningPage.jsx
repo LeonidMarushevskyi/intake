@@ -85,22 +85,10 @@ export class ScreeningPage extends React.Component {
   }
 
   cardSave(fieldList) {
-    let screening
-    if (fieldList.includes('allegations')) {
-      const allegations = AllegationsHelper.sortedAllegationsList(
-        this.props.screening.get('id'),
-        this.props.participants,
-        this.props.screening.get('allegations'),
-        this.state.screeningEdits.get('allegations')
-      ).filterNot((allegation) => allegation.get('allegation_types').isEmpty())
-
-      screening = this.state.screening.set('allegations', allegations)
-    } else {
-      const changes = this.state.screeningEdits.filter((value, key) =>
-        fieldList.includes(key) && value !== undefined
-      )
-      screening = this.mergeScreeningWithEdits(changes)
-    }
+    const changes = this.state.screeningEdits.filter((value, key) =>
+      fieldList.includes(key) && value !== undefined
+    )
+    const screening = this.mergeScreeningWithEdits(changes)
     return this.props.actions.saveScreening(screening.toJS())
   }
 
@@ -134,10 +122,6 @@ export class ScreeningPage extends React.Component {
 
   saveParticipant(participant) {
     this.props.actions.saveParticipant(participant.toJS())
-    this.setField(
-      ['allegations'],
-      AllegationsHelper.removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations'))
-    )
   }
 
   mergeScreeningWithEdits(changes) {
@@ -229,25 +213,17 @@ export class ScreeningPage extends React.Component {
       onChange: this.setField,
       onSave: this.cardSave,
     }
-    const {screening} = this.state
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const editable = this.props.editable
     const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
-    let sortedAllegations
     let cardErrors
     if (releaseTwoInactive) {
-      sortedAllegations = AllegationsHelper.sortedAllegationsList(
-        screening.get('id'),
-        this.props.participants,
-        screening.get('allegations'),
-        this.state.screeningEdits.get('allegations')
-      )
       const screeningValidator = new ScreeningValidator({
         screening: mergedScreening,
-        allegations: sortedAllegations,
+        allegations: [],
       })
       cardErrors = screeningValidator.validateScreening()
     }
@@ -305,7 +281,6 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <AllegationsCardView
-                allegations={sortedAllegations}
                 required={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
                 {...cardCallbacks}
                 editable={editable}
@@ -332,7 +307,6 @@ export class ScreeningPage extends React.Component {
           {
             releaseTwoInactive &&
               <CrossReportCardView
-                areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
                 {...cardCallbacks}
                 crossReports={mergedScreening.get('cross_reports')}
                 editable={editable}

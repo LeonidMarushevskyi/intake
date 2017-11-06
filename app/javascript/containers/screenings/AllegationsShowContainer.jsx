@@ -1,10 +1,12 @@
 import {connect} from 'react-redux'
-import AllegationShow from 'allegations/AllegationShow'
+import AllegationShow from 'views/allegations/AllegationShow'
 import {
   getFormattedAllegationsSelector,
+} from 'selectors/screening/allegationShowSelectors'
+import {
   getAllegationsRequiredValueSelector,
   getAllegationsAlertErrorMessageSelector,
-} from 'selectors/screening/allegationShowSelectors'
+} from 'selectors/screening/allegationsFormSelectors'
 import {getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
 
 const mapStateToProps = (state, {toggleMode}) => {

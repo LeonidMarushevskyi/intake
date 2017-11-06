@@ -1,3 +1,4 @@
+import allegationsForm from 'reducers/allegationsFormReducer'
 import allegationTypes from 'reducers/systemCodes/allegationTypesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
 import contact from 'reducers/contactReducer'
@@ -21,6 +22,7 @@ import staff from 'reducers/staffReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
+  allegationsForm,
   allegationTypes,
   communicationMethods,
   contact,

@@ -1,4 +1,4 @@
-import AllegationShow from 'allegations/AllegationShow'
+import AllegationShow from 'views/allegations/AllegationShow'
 import {getFormattedAllegationsSelector} from 'selectors/allegationShowSelectors'
 import {connect} from 'react-redux'
 

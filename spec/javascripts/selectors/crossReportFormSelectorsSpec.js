@@ -103,18 +103,15 @@ describe('crossReportFormSelectors', () => {
           },
         },
       })
-      const allegations = [{
-        id: '123',
-        screening_id: '124',
-        perpetrator_id: '125',
-        victim_id: '126',
-        allegation_types: [
+      const allegationsForm = [{
+        perpetratorId: '125',
+        victimId: '126',
+        allegationTypes: [
           'Severe neglect',
           'Physical abuse',
         ],
       }]
-      const screening = {allegations}
-      const state = fromJS({crossReportForm, countyAgencies, screening})
+      const state = fromJS({crossReportForm, countyAgencies, allegationsForm})
       expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
     })
     it('returns true if allegations require crossReports', () => {
@@ -137,18 +134,15 @@ describe('crossReportFormSelectors', () => {
           },
         },
       })
-      const allegations = [{
-        id: '123',
-        screening_id: '124',
-        perpetrator_id: '125',
-        victim_id: '126',
-        allegation_types: [
+      const allegationsForm = [{
+        perpetratorId: '125',
+        victimId: '126',
+        allegationTypes: [
           'Severe neglect',
           'Physical abuse',
         ],
       }]
-      const screening = {allegations}
-      const state = fromJS({crossReportForm, countyAgencies, screening})
+      const state = fromJS({crossReportForm, countyAgencies, allegationsForm})
       expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(true)
     })
     it('returns false if allegations do not require crossReports', () => {
@@ -171,19 +165,16 @@ describe('crossReportFormSelectors', () => {
           },
         },
       })
-      const allegations = [{
-        id: '123',
-        screening_id: '124',
-        perpetrator_id: '125',
-        victim_id: '126',
-        allegation_types: [
+      const allegationsForm = [{
+        perpetratorId: '125',
+        victimId: '126',
+        allegationTypes: [
           'General neglect',
           'Caretaker absent/incapacity',
           'At risk, sibling abused',
         ],
       }]
-      const screening = {allegations}
-      const state = fromJS({crossReportForm, countyAgencies, screening})
+      const state = fromJS({crossReportForm, countyAgencies, allegationsForm})
       expect(getAllegationsRequireCrossReportsValueSelector(state)).toEqual(false)
     })
   })
@@ -242,12 +233,10 @@ describe('crossReportFormSelectors', () => {
   })
   describe('getVisibleErrorsSelector', () => {
     describe('with allegations that require cross reports', () => {
-      const allegations = [{
-        id: '123',
-        screening_id: '124',
-        perpetrator_id: '125',
-        victim_id: '126',
-        allegation_types: [
+      const allegationsForm = [{
+        perpetratorId: '125',
+        victimId: '126',
+        allegationTypes: [
           'Severe neglect',
           'Physical abuse',
         ],
@@ -270,7 +259,6 @@ describe('crossReportFormSelectors', () => {
           },
         },
       })
-      const screening = {allegations}
       describe('with no fields touched', () => {
         const crossReportForm = getCrossReportState({
           DISTRICT_ATTORNEY: {
@@ -291,18 +279,18 @@ describe('crossReportFormSelectors', () => {
           },
         })
         it('returns no errors', () => {
-          expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
+          expect(getVisibleErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('DISTRICT_ATTORNEY'))
             .toEqualImmutable(List([]))
-          expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('LAW_ENFORCEMENT'))
+          expect(getVisibleErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('LAW_ENFORCEMENT'))
             .toEqualImmutable(List([]))
         })
       })
       it('returns an error on missing district attorney and law enforement', () => {
-        expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
+        expect(getVisibleErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('DISTRICT_ATTORNEY'))
           .toEqualImmutable(List([
             'Please indicate cross-reporting to district attorney.',
           ]))
-        expect(getVisibleErrorsSelector(fromJS({crossReportForm, screening})).get('LAW_ENFORCEMENT'))
+        expect(getVisibleErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('LAW_ENFORCEMENT'))
           .toEqualImmutable(List([
             'Please indicate cross-reporting to law enforcement.',
           ]))
@@ -345,26 +333,21 @@ describe('crossReportFormSelectors', () => {
   })
   describe('getErrorsSelector', () => {
     describe('with allegations that require crossReports', () => {
-      const allegations = [{
-        id: '123',
-        screening_id: '124',
-        perpetrator_id: '125',
-        victim_id: '126',
-        allegation_types: [
+      const allegationsForm = [{
+        perpetratorId: '125',
+        victimId: '126',
+        allegationTypes: [
           'Severe neglect',
           'Physical abuse',
         ],
       }]
       const crossReportForm = getCrossReportState({})
-      const screening = {
-        allegations,
-      }
       it('returns an error on missing district attorney and law enforement', () => {
-        expect(getErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
+        expect(getErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('DISTRICT_ATTORNEY'))
           .toEqualImmutable(List([
             'Please indicate cross-reporting to district attorney.',
           ]))
-        expect(getErrorsSelector(fromJS({crossReportForm, screening})).get('LAW_ENFORCEMENT'))
+        expect(getErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('LAW_ENFORCEMENT'))
           .toEqualImmutable(List([
             'Please indicate cross-reporting to law enforcement.',
           ]))
@@ -388,11 +371,11 @@ describe('crossReportFormSelectors', () => {
             },
           },
         })
-        expect(getErrorsSelector(fromJS({crossReportForm, screening})).get('DISTRICT_ATTORNEY'))
+        expect(getErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('DISTRICT_ATTORNEY'))
           .toEqualImmutable(List([
             'Please enter an agency name.',
           ]))
-        expect(getErrorsSelector(fromJS({crossReportForm, screening})).get('LAW_ENFORCEMENT'))
+        expect(getErrorsSelector(fromJS({crossReportForm, allegationsForm})).get('LAW_ENFORCEMENT'))
           .toEqualImmutable(List([]))
       })
     })
