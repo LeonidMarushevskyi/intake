@@ -1,22 +1,55 @@
 import {createSelector} from 'reselect'
-import {List, Map} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
+import {isRequiredCreate, combineCompact} from 'utils/validator'
+
+export const getErrorsSelector = createSelector(
+  (state) => state.getIn(['screening', 'screening_decision']),
+  (state) => state.getIn(['screening', 'screening_decision_detail']),
+  (state) => state.get('allegationsForm', List()),
+  (decision, decisionDetail, allegations) => (
+    fromJS({
+      screening_decision: combineCompact(
+        isRequiredCreate(decision, 'Please enter a decision'),
+        () => {
+          if (decision === 'promote_to_referral' &&
+            allegations.every((allegation) => allegation.get('allegationTypes').isEmpty())) {
+            return 'Please enter at least one allegation to promote to referral.'
+          } else {
+            return undefined
+          }
+        }
+      ),
+      screening_decision_detail: combineCompact(
+        () => {
+          if (decision === 'promote_to_referral' && !decisionDetail) {
+            return 'Please enter a response time'
+          } else {
+            return undefined
+          }
+        }
+      ),
+    })
+  )
+)
 
 export const getDecisionSelector = createSelector(
   getScreeningSelector,
-  (screening) => (
+  getErrorsSelector,
+  (screening, errors) => (
     Map({
       value: SCREENING_DECISION[screening.get('screening_decision')],
-      errors: List(),
+      errors: errors.get('screening_decision'),
     })
   )
 )
 
 export const getDecisionDetailSelector = createSelector(
   getScreeningSelector,
-  (screening) => {
+  getErrorsSelector,
+  (screening, errors) => {
     const decision = screening.get('screening_decision')
     let decisionDetail = screening.get('screening_decision_detail')
 
@@ -25,8 +58,8 @@ export const getDecisionDetailSelector = createSelector(
     }
     return Map({
       value: decisionDetail,
-      errors: List(),
       label: SCREENING_DECISION_OPTIONS[decision] ? SCREENING_DECISION_OPTIONS[decision].label : '',
+      errors: errors.get('screening_decision_detail'),
       required: decision === 'promote_to_referral',
     })
   }
