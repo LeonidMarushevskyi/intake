@@ -4,7 +4,6 @@ import Select from 'react-select'
 
 const WorkerSafetyForm = ({
   alertOptions,
-  onBlur,
   onCancel,
   onChange,
   onSave,
@@ -21,7 +20,6 @@ const WorkerSafetyForm = ({
           inputProps={{id: 'safety_alerts'}}
           options={alertOptions}
           value={safetyAlerts.value}
-          onBlur={() => onBlur('safety_alerts')}
           onChange={
             (alerts) => onChange('safety_alerts',
               alerts.map((alert) => alert.value) || [])
@@ -34,7 +32,6 @@ const WorkerSafetyForm = ({
         <label className='no-gap' htmlFor='safety_information'>Additional safety information</label>
         <textarea
           id='safety_information'
-          onBlur={() => onBlur('safety_information')}
           onChange={({target: {value}}) => onChange('safety_information', value || null)}
           value={safetyInformation.value || ''}
         />
@@ -51,7 +48,6 @@ const WorkerSafetyForm = ({
 
 WorkerSafetyForm.propTypes = {
   alertOptions: PropTypes.array.isRequired,
-  onBlur: PropTypes.func,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
   onSave: PropTypes.func,

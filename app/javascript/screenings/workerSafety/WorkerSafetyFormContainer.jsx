@@ -42,7 +42,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 
   return {
-    onBlur: (fieldName) => dispatch(touchField(fieldName)),
     onCancel,
     onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
     onSave,

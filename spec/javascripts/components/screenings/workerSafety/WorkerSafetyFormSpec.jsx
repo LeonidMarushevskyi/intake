@@ -8,7 +8,6 @@ describe('WorkerSafetyForm', () => {
     safetyInformation = {value: ''},
     alertOptions = [],
     onChange,
-    onBlur,
     onCancel,
     onSave,
   }) {
@@ -17,7 +16,6 @@ describe('WorkerSafetyForm', () => {
       safetyAlerts,
       safetyInformation,
       onChange,
-      onBlur,
       onCancel,
       onSave,
     }
@@ -58,20 +56,6 @@ describe('WorkerSafetyForm', () => {
     const component = renderWorkerSafety({onChange})
     component.find('textarea').simulate('change', {target: {value: 'something dangerous'}})
     expect(onChange).toHaveBeenCalledWith('safety_information', 'something dangerous')
-  })
-
-  it('blurring worker safety alerts calls onBlur with the proper parameter', () => {
-    const onBlur = jasmine.createSpy('onBlur')
-    const component = renderWorkerSafety({onBlur})
-    component.find('Select[multi]').simulate('blur')
-    expect(onBlur).toHaveBeenCalledWith('safety_alerts')
-  })
-
-  it('blurring additional safety information calls onBlur with the proper parameter', () => {
-    const onBlur = jasmine.createSpy('onBlur')
-    const component = renderWorkerSafety({onBlur})
-    component.find('textarea').simulate('blur')
-    expect(onBlur).toHaveBeenCalledWith('safety_information')
   })
 
   it('canceling edit calls onCancel', () => {
