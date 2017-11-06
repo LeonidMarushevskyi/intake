@@ -66,7 +66,7 @@ describe('PersonCard', () => {
       it('renders div with id', () => {
         const component = renderPersonCard({
           mode: 'show',
-          personId: '42'
+          personId: '42',
         })
         const div = component.find('div.card')
         expect(div.props().className).toContain('show')
@@ -118,7 +118,7 @@ describe('PersonCard', () => {
       it('renders div with id', () => {
         const component = renderPersonCard({
           mode: 'edit',
-          personId: '42'
+          personId: '42',
         })
         const div = component.find('div.card')
         expect(div.props().className).toContain('edit')
