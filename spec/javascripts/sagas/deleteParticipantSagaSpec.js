@@ -6,6 +6,7 @@ import {
   deleteParticipant,
 } from 'sagas/deleteParticipantSaga'
 import {DELETE_PERSON} from 'actions/personCardActions'
+import {fetch as fetchAllegations} from 'actions/screeningAllegationsActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import * as personCardActions from 'actions/personCardActions'
 import * as screeningActions from 'actions/screeningActions'
@@ -29,7 +30,7 @@ describe('deleteParticipant', () => {
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
     expect(gen.next('444').value).toEqual(
-      put(screeningActions.fetchScreening('444'))
+      put(fetchAllegations('444'))
     )
     expect(gen.next('444').value).toEqual(
       put(screeningActions.fetchRelationships('444'))

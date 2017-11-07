@@ -5,6 +5,7 @@ import {
   UPDATE_SCREENING_COMPLETE,
   SUBMIT_SCREENING_COMPLETE,
 } from 'actions/actionTypes'
+import {FETCH_SCREENING_ALLEGATIONS_COMPLETE} from 'actions/screeningAllegationsActions'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -22,4 +23,11 @@ export default createReducer(Map(), {
   [FETCH_SCREENING_COMPLETE]: getScreening,
   [UPDATE_SCREENING_COMPLETE]: getScreening,
   [SUBMIT_SCREENING_COMPLETE]: getScreening,
+  [FETCH_SCREENING_ALLEGATIONS_COMPLETE]: (state, {payload: {allegations}, error}) => {
+    if (error) {
+      return state
+    } else {
+      return state.set('allegations', fromJS(allegations))
+    }
+  },
 })

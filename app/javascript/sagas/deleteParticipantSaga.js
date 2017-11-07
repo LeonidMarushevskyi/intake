@@ -6,10 +6,10 @@ import {
   deletePersonFailure,
 } from 'actions/personCardActions'
 import {
-  fetchScreening,
   fetchRelationships,
   fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
+import {fetch as fetchAllegations} from 'actions/screeningAllegationsActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 
 export function* deleteParticipant({payload: {id}}) {
@@ -17,7 +17,7 @@ export function* deleteParticipant({payload: {id}}) {
     yield call(destroy, `/api/v1/participants/${id}`)
     yield put(deletePersonSuccess(id))
     const screeningId = yield select(getScreeningIdValueSelector)
-    yield put(fetchScreening(screeningId))
+    yield put(fetchAllegations(screeningId))
     yield put(fetchRelationships(screeningId))
     yield put(fetchHistoryOfInvolvements(screeningId))
   } catch (error) {
