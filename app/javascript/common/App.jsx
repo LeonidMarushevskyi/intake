@@ -33,6 +33,7 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
   errorCount: PropTypes.number,
   hasError: PropTypes.bool,
+  userInfo: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
   errorCount: getTotalScreeningSubmissionErrorValueSelector(state),

@@ -26,6 +26,7 @@ import screeningPage from 'reducers/screeningPageReducer'
 import staff from 'reducers/staffReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
 import {combineReducers} from 'redux-immutable'
+import userInfo from 'reducers/userInfoReducer'
 
 const rootReducer = combineReducers({
   allegationsForm,
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   screeningPage,
   staff,
   workerSafetyForm,
+  userInfo,
 })
 
 export default rootReducer
