@@ -1,9 +1,3 @@
-import * as IntakeConfig from 'common/config'
-import nameFormatter from 'utils/nameFormatter'
-import {participantFlag} from 'utils/accessIndicator'
-import PersonCardHeader from 'views/people/PersonCardHeader'
-import ParticipantEditView from 'screenings/ParticipantEditView'
-import ParticipantShowView from 'screenings/ParticipantShowView'
 import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -67,29 +61,8 @@ export default class ParticipantCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    const {editable, participant} = this.props
+    const {participant} = this.props
 
-    const sharedProps = {
-      participant: participant,
-    }
-
-    const allProps = {
-      edit: {
-        ...sharedProps,
-        onCancel: this.onCancel,
-        onChange: this.onChange,
-        onDobBlur: this.onDobBlur,
-        onSave: this.onSave,
-      },
-      show: {
-        ...sharedProps,
-        onEdit: this.toggleMode,
-      },
-    }
-
-    const ParticipantView = (mode === 'edit') ? ParticipantEditView : ParticipantShowView
-    const props = allProps[mode]
-    const informationFlag = participantFlag(participant.toJS())
     return (
       <PersonCardContainer
         mode={mode}
