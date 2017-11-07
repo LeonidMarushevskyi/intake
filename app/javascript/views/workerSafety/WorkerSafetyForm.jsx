@@ -52,11 +52,9 @@ WorkerSafetyForm.propTypes = {
   onChange: PropTypes.func,
   onSave: PropTypes.func,
   safetyAlerts: PropTypes.shape({
-    errors: PropTypes.array,
     value: PropTypes.array,
   }),
   safetyInformation: PropTypes.shape({
-    errors: PropTypes.array,
     value: PropTypes.string,
   }),
 }

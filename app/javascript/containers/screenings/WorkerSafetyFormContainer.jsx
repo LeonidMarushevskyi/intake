@@ -16,11 +16,9 @@ const mapStateToProps = (state, _ownProps) => (
     alertOptions: getSafetyAlertsSelector(state),
     safetyAlerts: {
       value: (getAlertValuesSelector(state) || List([])).toJS(),
-      errors: null,
     },
     safetyInformation: {
       value: getInformationValueSelector(state),
-      errors: null,
     },
     screening: getScreeningSelector(state).toJS(),
     screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
