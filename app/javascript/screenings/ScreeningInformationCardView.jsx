@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
-import ScreeningInformationFormContainer from 'screenings/screeningInformation/ScreeningInformationFormContainer'
-import ScreeningInformationShowContainer from 'screenings/screeningInformation/ScreeningInformationShowContainer'
+import ScreeningInformationFormContainer from 'containers/screenings/ScreeningInformationFormContainer'
+import ScreeningInformationShowContainer from 'containers/screenings/ScreeningInformationShowContainer'
 
 export default class ScreeningInformationCardView extends React.Component {
   constructor(props, context) {
