@@ -9,12 +9,13 @@ import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues} from 'actions/workerSafetyFormActions'
 import {saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
+import {List} from 'immutable'
 
 const mapStateToProps = (state, _ownProps) => (
   {
     alertOptions: getSafetyAlertsSelector(state),
     safetyAlerts: {
-      value: getAlertValuesSelector(state).toJS(),
+      value: (getAlertValuesSelector(state) || List([])).toJS(),
       errors: null,
     },
     safetyInformation: {
