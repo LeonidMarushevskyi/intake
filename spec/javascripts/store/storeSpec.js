@@ -32,6 +32,7 @@ describe('Store', () => {
       locations: [],
       narrativeForm: {},
       participants: [],
+      peopleForm: {},
       relationships: [],
       remoteError: {},
       routing: {locationBeforeTransitions: null},

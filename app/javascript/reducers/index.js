@@ -13,6 +13,7 @@ import involvements from 'reducers/involvementsReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
+import peopleForm from 'reducers/peopleFormReducer'
 import relationships from 'reducers/relationshipsReducer'
 import remoteError from 'reducers/remoteErrorReducer'
 import routing from 'reducers/routerReducer'
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   locations,
   narrativeForm,
   participants,
+  peopleForm,
   relationships,
   remoteError,
   routing,
