@@ -36,6 +36,7 @@ describe('Store', () => {
       remoteError: {},
       routing: {locationBeforeTransitions: null},
       screening: {},
+      screeningInformationForm: {},
       screenings: [],
       staff: {},
     })
