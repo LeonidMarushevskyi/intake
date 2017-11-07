@@ -16,24 +16,12 @@ feature 'screening information card' do
     )
   end
 
-  let(:character_buffet) { 'C am-r\'o’n1234567890!@#$%^&*(),./;"[]' }
-
   before(:each) do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
-
     visit edit_screening_path(id: screening.id)
-  end
-
-  scenario 'character limitations by field' do
-    within '#screening-information-card.edit' do
-      fill_in 'Title/Name of Screening', with: character_buffet
-      fill_in 'Assigned Social Worker', with: character_buffet
-      expect(page).to have_field('Title/Name of Screening', with: "C am-r'o’n")
-      expect(page).to have_field('Assigned Social Worker', with: 'C amron')
-    end
   end
 
   scenario 'user edits screening details and save the card' do
@@ -45,10 +33,14 @@ feature 'screening information card' do
       expect(page).to have_field('Communication Method', with: 'mail')
       expect(page).to have_content('Save')
       expect(page).to have_content('Cancel')
+    end
+
+    within '#screening-information-card.edit' do
+      fill_in_datepicker 'Screening Start Date/Time', with: '08/15/2016 3:00 AM'
+      fill_in_datepicker 'Screening End Date/Time', with: '08/17/2016 3:00 AM'
       fill_in 'Title/Name of Screening', with: 'Cameron'
       fill_in 'Assigned Social Worker', with: 'Mariko'
       select 'Phone', from: 'Communication Method'
-      fill_in_datepicker 'Screening End Date/Time', with: '08/17/2016 3:00 AM'
       click_button 'Save'
     end
 
@@ -56,6 +48,7 @@ feature 'screening information card' do
       name: 'Cameron',
       assignee: 'Mariko',
       communication_method: 'phone',
+      started_at: '2016-08-15T10:00:00.000Z',
       ended_at: '2016-08-17T10:00:00.000Z'
     )
 
