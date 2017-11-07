@@ -87,11 +87,12 @@ describe('ScreeningDecisionShow', () => {
   })
 
   it('renders a link to the SDM tool', () => {
-    const component = renderScreeningDecisionShow({sdmLink: 'http://foo.com'})
+    const sdmPath = 'http://foo.com'
+    const component = renderScreeningDecisionShow({sdmPath})
     expect(component.text()).toContain('SDM Hotline Tool')
     expect(component.text()).toContain('Determine Decision and Response Time by using Structured Decision Making.')
     const sdmLink = component.find('a')
-    expect(sdmLink.props().href).toEqual('http://foo.com')
+    expect(sdmLink.props().href).toEqual(sdmPath)
     expect(sdmLink.props().target).toEqual('_blank')
     expect(sdmLink.text()).toEqual('Complete SDM')
   })

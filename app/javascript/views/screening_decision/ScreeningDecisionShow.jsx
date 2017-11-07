@@ -10,7 +10,7 @@ const ScreeningDecisionShow = ({
   decisionDetail,
   onEdit,
   restrictionRationale,
-  sdmLink,
+  sdmPath,
 }) => (
   <div className='card show double-gap-top' id='decision-card'>
     <div className='card-header'>
@@ -42,7 +42,7 @@ const ScreeningDecisionShow = ({
         <div className='col-md-6'>
           <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
           <div>Determine Decision and Response Time by using Structured Decision Making.</div>
-          <a href={sdmLink} target='_blank' id='complete_sdm'>Complete SDM</a>
+          <a href={sdmPath} target='_blank' id='complete_sdm'>Complete SDM</a>
         </div>
       </div>
       <div className='row'>
@@ -85,7 +85,7 @@ ScreeningDecisionShow.propTypes = {
   restrictionRationale: PropTypes.shape({
     value: PropTypes.string,
   }),
-  sdmLink: PropTypes.string,
+  sdmPath: PropTypes.string,
 }
 
 export default ScreeningDecisionShow

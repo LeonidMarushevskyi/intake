@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     restrictionRationale: {
       value: getScreeningSelector(state).get('restrictions_rationale'),
     },
-    sdmLink: IntakeConfig.sdmPath(),
+    sdmPath: IntakeConfig.sdmPath(),
   }
   if (!getScreeningIsReadOnlySelector(state)) {
     props = {
