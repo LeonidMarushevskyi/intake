@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import ScreeningDecisionShow from 'views/screening_decision/ScreeningDecisionShow'
+import ScreeningDecisionShow from 'views/ScreeningDecisionShow'
 import {
   getDecisionSelector,
   getDecisionDetailSelector,

@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import ScreeningDecisionShow from 'views/screening_decision/ScreeningDecisionShow'
+import ScreeningDecisionShow from 'views/ScreeningDecisionShow'
 
 describe('ScreeningDecisionShow', () => {
   const renderScreeningDecisionShow = ({
