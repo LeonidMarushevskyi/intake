@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Participant Phone Number' do
+feature 'Participant Phone Number', pending: 'Until completion of person card refactor' do
   let(:existing_phone_number) { PhoneNumber.new(id: '1', number: '9175555555', type: 'Work') }
   let(:marge) { FactoryGirl.create(:participant, phone_numbers: [existing_phone_number]) }
   let(:screening) { FactoryGirl.create(:screening, participants: [marge]) }

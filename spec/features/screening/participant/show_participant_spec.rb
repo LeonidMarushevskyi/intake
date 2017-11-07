@@ -51,7 +51,7 @@ feature 'Show Screening' do
     stub_empty_relationships_for_screening(existing_screening)
   end
 
-  scenario 'showing existing participant' do
+  scenario 'showing existing participant', pending: 'until person card refactor complete' do
     visit screening_path(id: existing_screening.id)
 
     within show_participant_card_selector(existing_participant.id) do
@@ -92,7 +92,8 @@ feature 'Show Screening' do
     end
   end
 
-  context 'showing participant with approximate age' do
+  context 'showing participant with approximate age',
+    pending: 'until person card refactor complete' do
     approximate_participant = FactoryGirl.create(
       :participant,
       date_of_birth: nil,

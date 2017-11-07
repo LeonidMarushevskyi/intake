@@ -175,7 +175,8 @@ feature 'show allegations' do
     end
   end
 
-  scenario 'removing participant role, re-adding it does not show deleted allegations' do
+  scenario 'removing participant role, re-adding it does not show deleted allegations',
+    pending: 'until person card refactor complete' do
     marge = FactoryGirl.create(
       :participant,
       first_name: 'Marge',
