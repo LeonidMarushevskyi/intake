@@ -1,11 +1,10 @@
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import Immutable from 'immutable'
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('IncidentInformationCardView', () => {
   let component
-  let promiseObj
   const props = {
     screening: Immutable.fromJS({
       incident_date: '2006-01-21',
@@ -27,7 +26,6 @@ describe('IncidentInformationCardView', () => {
     props.onChange = jasmine.createSpy('onChange')
     props.onSave = jasmine.createSpy('onSave')
     props.onEdit = jasmine.createSpy('onEdit')
-    promiseObj = jasmine.createSpyObj('promiseObj', ['then'])
   })
 
   it('renders the card header', () => {
@@ -40,63 +38,16 @@ describe('IncidentInformationCardView', () => {
   })
 
   describe('render', () => {
-    describe('when mode is set to edit', () => {
-      beforeEach(() => {
-        promiseObj.then.and.callFake((thenFunction) => thenFunction())
-        props.onSave.and.returnValue(promiseObj)
-        component = mount(<IncidentInformationCardView {...props} mode='edit'/>)
-      })
-
-      it('renders the incident edit card', () => {
-        expect(component.find('IncidentInformationEditView').length).toEqual(1)
-      })
-
-      it('passes errors to the edit view', () => {
-        expect(component.find('IncidentInformationEditView').props().errors).toEqual({})
-      })
-
-      describe('when a user clicks Cancel', () => {
-        beforeEach(() => {
-          const cancelButton = component.find('button[children="Cancel"]')
-          cancelButton.simulate('click')
-        })
-
-        it('the show view of incident information is rendered', () => {
-          expect(component.find('IncidentInformationShowView').length).toEqual(1)
-        })
-      })
-
-      describe('when a user clicks Save', () => {
-        beforeEach(() => {
-          const saveButton = component.find('button[children="Save"]')
-          saveButton.simulate('click')
-        })
-
-        it('calls the props onSave', () => {
-          expect(props.onSave).toHaveBeenCalled()
-        })
-
-        it('the incident information show view is rendered', () => {
-          expect(component.find('IncidentInformationShowView').length).toEqual(1)
-        })
-
-        it('sets displayErrorsFor to all of the fields', () => {
-          expect(component.update().state().displayErrorsFor.toJS())
-            .toEqual(['address', 'incident_county', 'incident_date', 'location_type'])
-        })
-      })
-    })
-
     describe('when mode is set to show', () => {
       beforeEach(() => {
-        component = mount(<IncidentInformationCardView {...props} mode='show'/>)
+        component = shallow(<IncidentInformationCardView {...props} mode='show'/>)
       })
       it('renders the incident show card', () => {
-        expect(component.find('IncidentInformationShowView').length).toEqual(1)
+        expect(component.find('Connect(IncidentInformationShow)').length).toEqual(1)
       })
 
       it('passes errors to the edit view', () => {
-        expect(component.find('IncidentInformationShowView').props().errors).toEqual({})
+        expect(component.find('Connect(IncidentInformationShow)').props().errors).toEqual({})
       })
     })
   })
