@@ -164,6 +164,9 @@ feature 'Edit Screening' do
                  'Hostile, Aggressive Client', 'Severe Mental Health Status']
         )
         click_button 'Save'
+      end
+      pending('transition between save and show implemented')
+      within '#worker-safety-card.show', text: 'Worker Safety' do
         expect(page).to have_content('Hostile, Aggressive Client')
         expect(page).to have_content('Dangerous Animal on Premises')
         expect(page).to have_content('Firearms in Home')
