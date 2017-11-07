@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
-import WorkerSafetyShowContainer from 'screenings/workerSafety/WorkerSafetyShowContainer'
-import WorkerSafetyFormContainer from 'screenings/workerSafety/WorkerSafetyFormContainer'
+import WorkerSafetyShowContainer from 'containers/screenings/WorkerSafetyShowContainer'
+import WorkerSafetyFormContainer from 'containers/screenings/WorkerSafetyFormContainer'
 
 export default class WorkerSafetyCardView extends React.Component {
   constructor(props) {

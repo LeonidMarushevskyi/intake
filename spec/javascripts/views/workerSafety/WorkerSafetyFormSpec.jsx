@@ -1,4 +1,4 @@
-import WorkerSafetyForm from 'screenings/workerSafety/WorkerSafetyForm'
+import WorkerSafetyForm from 'views/workerSafety/WorkerSafetyForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 
