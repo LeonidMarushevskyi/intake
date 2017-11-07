@@ -4,6 +4,7 @@ import {participantFlag} from 'utils/accessIndicator'
 import PersonCardHeader from 'views/people/PersonCardHeader'
 import ParticipantEditView from 'screenings/ParticipantEditView'
 import ParticipantShowView from 'screenings/ParticipantShowView'
+import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -90,17 +91,17 @@ export default class ParticipantCardView extends React.Component {
     const props = allProps[mode]
     const informationFlag = participantFlag(participant.toJS())
     return (
-      <div className={`card ${mode} double-gap-top`} id={`participants-card-${participant.get('id')}`}>
-        <PersonCardHeader
-          informationFlag={informationFlag}
-          onDelete={() => this.props.onDelete(participant.get('id'))}
-          showDelete={editable}
-          onEdit={this.toggleMode}
-          showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
-          title={nameFormatter(participant.toJS())}
-        />
-        <ParticipantView {...props} />
-      </div>
+      <PersonCardContainer
+        mode={mode}
+        toggleMode={this.toggleMode}
+        personId={participant.get('id')}
+        edit={
+          <p>Edit placeholder</p>
+        }
+        show={
+          <p>Show placeholder</p>
+        }
+      />
     )
   }
 }
