@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Edit Screening', pending: 'until person card refactor complete' do
+feature 'Edit Person' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
   let(:marge_roles) { %w[Victim Perpetrator] }
@@ -43,7 +43,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     stub_empty_relationships_for_screening(screening)
   end
 
-  scenario 'character limitations by field' do
+  scenario 'character limitations by field',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       fill_in 'Zip', with: '9i5%6Y1 8-_3.6+9*7='
@@ -53,7 +54,51 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'editing and saving a participant for a screening saves only the relevant participant' do
+  context 'editing and saving basic person information' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(marge.id) do
+        within '.card-header' do
+          expect(page).to have_content('Sensitive')
+          expect(page).to have_content marge_formatted_name
+          expect(page).to have_button 'Delete person'
+        end
+        within '.card-body' do
+          table_description = marge.legacy_descriptor.legacy_table_description
+          ui_id = marge.legacy_descriptor.legacy_ui_id
+          has_react_select_field 'Role', with: %w[Victim Perpetrator]
+          expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
+          expect(page).to have_field('First Name', with: marge.first_name)
+          expect(page).to have_field('Middle Name', with: marge.middle_name)
+          expect(page).to have_field('Last Name', with: marge.last_name)
+          expect(page).to have_field('Suffix', with: marge.name_suffix)
+          expect(page).to have_field('Social security number', with: marge.ssn)
+
+          fill_in 'First Name', with: 'new first name'
+          fill_in 'Middle Name', with: 'new middle name'
+          fill_in 'Last Name', with: 'new last name'
+          select 'Sr', from: 'Suffix'
+          fill_in 'Social security number', with: 111_111_111
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            first_name: 'new first name',
+            middle_name: 'new middle name',
+            last_name: 'new last name',
+            name_suffix: 'sr',
+            ssn: '111-11-1111'
+          )
+        )
+      ).to have_been_made
+    end
+  end
+  scenario 'editing and saving a participant for a screening saves only the relevant participant',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
@@ -67,10 +112,6 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
         ui_id = marge.legacy_descriptor.legacy_ui_id
         expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
         expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_field('First Name', with: marge.first_name)
-        expect(page).to have_field('Middle Name', with: marge.middle_name)
-        expect(page).to have_field('Last Name', with: marge.last_name)
-        expect(page).to have_field('Suffix', with: marge.name_suffix)
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
@@ -81,7 +122,6 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
         expect(page).not_to have_selector('.rw-select')
         dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
         expect(page).to have_field('Date of birth', with: dob)
-        expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
         expect(page).to have_field('City', with: marge.addresses.first.city)
         expect(page).to have_field('State', with: marge.addresses.first.state)
@@ -157,18 +197,19 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
       end
     end
 
-    scenario 'ssn placeholder in input field is behaving as intended' do
+    scenario 'ssn placeholder in input field is behaving as intended',
+      pending: 'until person show properly displays the ssn' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
         within '.card-body' do
-          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
+          expect(page.find('#ssn')['placeholder']).to eq('')
           fill_in 'Social security number', with: 12
-          expect(focused_native_element['id']).to eq("participant-#{homer.id}-ssn")
+          expect(focused_native_element['id']).to eq('ssn')
           expect(focused_native_element['placeholder']).to eq('___-__-____')
           fill_in 'First Name', with: 'Change Focus'
-          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
-          click_button 'Save'
+          expect(page.find('#ssn')['placeholder']).to eq('')
         end
+        click_button 'Save'
       end
       within show_participant_card_selector(homer.id) do
         expect(page).not_to have_content('12_-__-___')
@@ -187,7 +228,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'editing and then removing an address from a participant' do
+  scenario 'editing and then removing an address from a participant',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -259,7 +301,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'when a user modifies languages for an existing participant' do
+  scenario 'when a user modifies languages for an existing participant',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -283,7 +326,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'when a user tabs out of the language multi-select' do
+  scenario 'when a user tabs out of the language multi-select',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -294,7 +338,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'canceling edits for a screening participant' do
+  scenario 'canceling edits for a screening participant',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
@@ -330,7 +375,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     expect(page).to have_content old_ssn
   end
 
-  scenario 'when a user edits a participants role in a screening' do
+  scenario 'when a user edits a participants role in a screening',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -365,7 +411,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  context 'A participant has an existing reporter role' do
+  context 'A participant has an existing reporter role',
+    pending: 'until person card refactor complete' do
     let(:marge_roles) { ['Mandated Reporter'] }
 
     scenario 'the other reporter roles are unavailable' do
@@ -382,7 +429,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'when a user modifies existing person ethnicity to null' do
+  scenario 'when a user modifies existing person ethnicity to null',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -408,7 +456,8 @@ feature 'Edit Screening', pending: 'until person card refactor complete' do
     end
   end
 
-  scenario 'setting an approximate age' do
+  scenario 'setting an approximate age',
+    pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       expect(page).to have_field('Approximate Age', disabled: true)
