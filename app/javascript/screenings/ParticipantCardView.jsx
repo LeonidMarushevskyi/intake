@@ -2,6 +2,7 @@ import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
 import PersonShowContainer from 'containers/screenings/PersonShowContainer'
 import PersonAddressesContainer from 'containers/screenings/PersonAddressesContainer'
+import PersonFormContainer from 'containers/screenings/PersonFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -70,9 +71,7 @@ export default class ParticipantCardView extends React.Component {
         mode={mode}
         toggleMode={this.toggleMode}
         personId={personId}
-        edit={
-          <p>Edit placeholder</p>
-        }
+        edit={<PersonFormContainer />}
         show={
           <div className='card-body'>
             <PersonShowContainer personId={personId} />
