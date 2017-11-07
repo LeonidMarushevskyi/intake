@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import ScreeningInformationForm from 'screenings/screeningInformation/ScreeningInformationForm'
+import ScreeningInformationForm from 'views/ScreeningInformationForm'
 import COMMUNICATION_METHOD from 'enums/CommunicationMethod'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/screeningInformationFormActions'
 import {

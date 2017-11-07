@@ -1,5 +1,5 @@
 import React from 'react'
-import ScreeningInformationShow from 'screenings/screeningInformation/ScreeningInformationShow'
+import ScreeningInformationShow from 'views/ScreeningInformationShow'
 import {shallow} from 'enzyme'
 
 describe('ScreeningInformationShow', () => {

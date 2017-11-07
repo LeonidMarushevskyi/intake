@@ -1,4 +1,4 @@
-import ScreeningInformationForm from 'screenings/screeningInformation/ScreeningInformationForm'
+import ScreeningInformationForm from 'views/ScreeningInformationForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 
