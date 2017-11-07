@@ -16,7 +16,6 @@ describe('ScreeningPage', () => {
     promiseObj.then.and.callFake((thenFunction) => thenFunction())
 
     const savePerson = jasmine.createSpy('savePerson').and.returnValue(promiseObj)
-    const deletePerson = jasmine.createSpy('deletePerson')
     const createPerson = jasmine.createSpy('createPerson')
 
     const address1 = Immutable.Map({
@@ -66,7 +65,7 @@ describe('ScreeningPage', () => {
 
     const props = {
       ...requiredProps,
-      actions: {createPerson, savePerson, deletePerson},
+      actions: {createPerson, savePerson},
       params: {id: '3'},
       participants: Immutable.List([participant1, participant2]),
       editable: true,
@@ -94,13 +93,6 @@ describe('ScreeningPage', () => {
       it('calls the createParticipant action', () => {
         component.instance().createParticipant(person)
         expect(createPerson).toHaveBeenCalledWith(participant)
-      })
-    })
-
-    describe('deleteParticipant', () => {
-      it('calls the deleteParticipant action', () => {
-        component.instance().deleteParticipant('1')
-        expect(deletePerson).toHaveBeenCalledWith('1')
       })
     })
 

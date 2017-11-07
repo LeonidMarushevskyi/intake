@@ -1,9 +1,4 @@
-import * as IntakeConfig from 'common/config'
-import nameFormatter from 'utils/nameFormatter'
-import {participantFlag} from 'utils/accessIndicator'
-import PersonCardHeader from 'views/people/PersonCardHeader'
-import ParticipantEditView from 'screenings/ParticipantEditView'
-import ParticipantShowView from 'screenings/ParticipantShowView'
+import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -66,41 +61,20 @@ export default class ParticipantCardView extends React.Component {
 
   render() {
     const {mode} = this.state
-    const {editable, participant} = this.props
+    const {participant} = this.props
 
-    const sharedProps = {
-      participant: participant,
-    }
-
-    const allProps = {
-      edit: {
-        ...sharedProps,
-        onCancel: this.onCancel,
-        onChange: this.onChange,
-        onDobBlur: this.onDobBlur,
-        onSave: this.onSave,
-      },
-      show: {
-        ...sharedProps,
-        onEdit: this.toggleMode,
-      },
-    }
-
-    const ParticipantView = (mode === 'edit') ? ParticipantEditView : ParticipantShowView
-    const props = allProps[mode]
-    const informationFlag = participantFlag(participant.toJS())
     return (
-      <div className={`card ${mode} double-gap-top`} id={`participants-card-${participant.get('id')}`}>
-        <PersonCardHeader
-          informationFlag={informationFlag}
-          onDelete={() => this.props.onDelete(participant.get('id'))}
-          showDelete={editable}
-          onEdit={this.toggleMode}
-          showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
-          title={nameFormatter(participant.toJS())}
-        />
-        <ParticipantView {...props} />
-      </div>
+      <PersonCardContainer
+        mode={mode}
+        toggleMode={this.toggleMode}
+        personId={participant.get('id')}
+        edit={
+          <p>Edit placeholder</p>
+        }
+        show={
+          <p>Show placeholder</p>
+        }
+      />
     )
   }
 }
