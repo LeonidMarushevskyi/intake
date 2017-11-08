@@ -20,6 +20,7 @@ import screening from 'reducers/screeningReducer'
 import screeningInformationForm from 'reducers/screeningInformationFormReducer'
 import screenings from 'reducers/screeningsReducer'
 import staff from 'reducers/staffReducer'
+import workerSafetyForm from 'reducers/workerSafetyFormReducer'
 import {combineReducers} from 'redux-immutable'
 
 const rootReducer = combineReducers({
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   screeningInformationForm,
   screenings,
   staff,
+  workerSafetyForm,
 })
 
 export default rootReducer

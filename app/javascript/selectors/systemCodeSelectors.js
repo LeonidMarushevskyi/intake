@@ -1,5 +1,7 @@
 import {createSelector} from 'reselect'
 import {Map, List} from 'immutable'
+import SAFETY_ALERT from 'enums/SafetyAlert'
+import selectOptions from 'utils/selectHelper'
 
 /* eslint-disable no-invalid-this */
 export const systemCodeDisplayValue = (code, systemCodes = List(), noSetValue = Map(), context = this) => systemCodes.find(
@@ -11,6 +13,7 @@ export const getPurposesSelector = (state) => state.get('contactPurposes')
 export const getLocationsSelector = (state) => state.get('locations')
 export const getCommunicationMethodsSelector = (state) => state.get('communicationMethods')
 export const getAllegationTypesSelector = (state) => state.get('allegationTypes', List())
+export const getSafetyAlertsSelector = (_state) => selectOptions(SAFETY_ALERT)
 
 /* eslint-disable no-invalid-this */
 export const getInPersonCommunicationMethodValueSelector = createSelector(
