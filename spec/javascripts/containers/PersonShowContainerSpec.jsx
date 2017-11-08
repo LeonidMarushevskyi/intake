@@ -21,7 +21,7 @@ describe('PersonShowContainer', () => {
   })
   it('renders PersonInformationShow', () => {
     expect(component.find('PersonInformationShow').props()).toEqual({
-      approximateAge: '9 dog years',
+      approximateAge: undefined,
       dateOfBirth: '01/15/2014',
       name: 'John Q Public',
       ethnicity: 'Yes - Mexican',

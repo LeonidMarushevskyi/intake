@@ -42,6 +42,15 @@ describe('peopleShowSelectors', () => {
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('dateOfBirth')).toEqual('01/15/2014')
     })
+    it('does not include approximate age if person has a date of birth', () => {
+      const participants = [{
+        id: '1',
+        date_of_birth: '2014-01-15',
+        approximate_age: '9', approximate_age_units: 'dog years',
+      }]
+      const state = fromJS({participants})
+      expect(getFormattedPersonInformationSelector(state, '1').get('approximateAge')).toEqual(undefined)
+    })
     it('includes the approximate age for the given person', () => {
       const participants = [{id: '1', approximate_age: '9', approximate_age_units: 'dog years'}]
       const state = fromJS({participants})

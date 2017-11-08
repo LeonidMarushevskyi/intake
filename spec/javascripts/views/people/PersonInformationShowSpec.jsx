@@ -31,10 +31,6 @@ describe('PersonInformationShow', () => {
     const view = shallow(<PersonInformationShow roles={[]} dateOfBirth={'Safar 17, 1440'}/>)
     expect(view.find('ShowField[label="Date of birth"]').html()).toContain('Safar 17, 1440')
   })
-  it('does not render the approximate age of the person when DOB provided', () => {
-    const view = shallow(<PersonInformationShow roles={[]} dateOfBirth={'1'} approximateAge={'1'}/>)
-    expect(view.find('ShowField[label="Approximate Age"]').exists()).toBe(false)
-  })
   it('renders the approximate age of the person when date of birth is absent', () => {
     const view = shallow(<PersonInformationShow roles={[]} approximateAge={'-1'}/>)
     expect(view.find('ShowField[label="Date of birth"]').exists()).toBe(false)
