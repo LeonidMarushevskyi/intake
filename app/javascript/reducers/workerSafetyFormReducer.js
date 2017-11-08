@@ -14,10 +14,10 @@ export default createReducer(Map(), {
       const {safety_alerts, safety_information} = screening
       return fromJS({
         safety_alerts: {
-          value: safety_alerts || [],
+          value: safety_alerts,
         },
         safety_information: {
-          value: safety_information || '',
+          value: safety_information,
         },
       })
     }

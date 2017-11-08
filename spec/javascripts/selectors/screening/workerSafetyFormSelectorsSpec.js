@@ -16,10 +16,10 @@ describe('workerSafetyFormSelectors', () => {
       expect(getAlertValuesSelector(state)).toEqual(List(['ABC']))
     })
 
-    it('returns undefined when safety alerts is not present', () => {
+    it('returns empty list when safety alerts is not present', () => {
       const workerSafetyForm = {}
       const state = fromJS({workerSafetyForm})
-      expect(getAlertValuesSelector(state)).toEqual(undefined)
+      expect(getAlertValuesSelector(state)).toEqual(List([]))
     })
   })
 

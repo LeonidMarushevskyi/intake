@@ -30,8 +30,8 @@ describe('workerSafetyFormReducer', () => {
       })
       expect(workerSafetyFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
-          safety_alerts: {value: []},
-          safety_information: {value: ''},
+          safety_alerts: {value: null},
+          safety_information: {value: null},
         })
       )
     })

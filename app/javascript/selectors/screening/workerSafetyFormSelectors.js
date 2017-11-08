@@ -1,9 +1,10 @@
 import {createSelector} from 'reselect'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {List} from 'immutable'
 
 export const getAlertValuesSelector = createSelector(
   (state) => state.get('workerSafetyForm'),
-  (workerSafetyForm) => workerSafetyForm.getIn(['safety_alerts', 'value'])
+  (workerSafetyForm) => workerSafetyForm.getIn(['safety_alerts', 'value']) || List([])
 )
 
 export const getInformationValueSelector = createSelector(
