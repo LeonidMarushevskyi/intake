@@ -1,4 +1,4 @@
-import WorkerSafetyShow from 'views/workerSafety/WorkerSafetyShow'
+import WorkerSafetyShow from 'views/WorkerSafetyShow'
 import {
   getAlertValuesSelector,
   getInformationValueSelector,

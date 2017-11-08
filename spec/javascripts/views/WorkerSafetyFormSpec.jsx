@@ -1,24 +1,26 @@
-import WorkerSafetyForm from 'views/workerSafety/WorkerSafetyForm'
+import WorkerSafetyForm from 'views/WorkerSafetyForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('WorkerSafetyForm', () => {
   function renderWorkerSafety({
+    alertOptions = [],
+    onCancel,
+    onChange,
+    onSave,
     safetyAlerts = {value: []},
     safetyInformation = {value: ''},
-    alertOptions = [],
-    onChange,
-    onCancel,
-    onSave,
-    toggleMode,
+    showEdit = false,
+    toggleMode = jasmine.createSpy('toggleMode'),
   }) {
     const props = {
       alertOptions,
+      onCancel,
+      onChange,
+      onSave,
       safetyAlerts,
       safetyInformation,
-      onChange,
-      onCancel,
-      onSave,
+      showEdit,
       toggleMode,
     }
     return shallow(<WorkerSafetyForm {...props} />)
