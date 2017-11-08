@@ -37,6 +37,7 @@ describe('Store', () => {
       routing: {locationBeforeTransitions: null},
       screening: {},
       screeningInformationForm: {},
+      screeningDecisionForm: {},
       screenings: [],
       staff: {},
       workerSafetyForm: {},

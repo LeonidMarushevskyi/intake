@@ -88,23 +88,19 @@ export const getFormattedAllegationsSelector = createSelector(
   )
 )
 
-export const getAllegationsRequiredValueSelector = createSelector(
-  getScreeningSelector,
-  (screening) => screening.get('screening_decision') === 'promote_to_referral'
+export const getAllegationsRequiredValueSelector = (state) => (
+  state.getIn(['screeningDecisionForm', 'screening_decision', 'value']) === 'promote_to_referral'
 )
 
-export const getAllegationsAlertErrorMessageSelector = createSelector(
-  getScreeningSelector,
-  getAllegationsRequiredValueSelector,
-  getAllegationsFormSelector,
-  getAllegationsWithTypesSelector,
-  (screening, required, allegations, allegationsWithTypes) => {
-    if (!siblingAtRiskHasRequiredComplementaryAllegations(allegations)) {
-      return 'Any allegations of Sibling at Risk must be accompanied by another allegation.'
-    } else if (required && allegationsWithTypes.isEmpty()) {
-      return 'Any report that is promoted for referral must include at least one allegation.'
-    } else {
-      return undefined
-    }
+export const getAllegationsAlertErrorMessageSelector = (state) => {
+  const required = getAllegationsRequiredValueSelector(state)
+  const allegations = getAllegationsFormSelector(state)
+  const allegationsWithTypes = getAllegationsWithTypesSelector(state)
+  if (!siblingAtRiskHasRequiredComplementaryAllegations(allegations)) {
+    return 'Any allegations of Sibling at Risk must be accompanied by another allegation.'
+  } else if (required && allegationsWithTypes.isEmpty()) {
+    return 'Any report that is promoted for referral must include at least one allegation.'
+  } else {
+    return undefined
   }
-)
+}

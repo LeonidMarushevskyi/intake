@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import ScreeningDecisionShow from 'views/screening_decision/ScreeningDecisionShow'
+import ScreeningDecisionShow from 'views/ScreeningDecisionShow'
 import {
   getDecisionSelector,
   getDecisionDetailSelector,
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     restrictionRationale: {
       value: getScreeningSelector(state).get('restrictions_rationale'),
     },
-    sdmLink: IntakeConfig.sdmPath(),
+    sdmPath: IntakeConfig.sdmPath(),
   }
   if (!getScreeningIsReadOnlySelector(state)) {
     props = {

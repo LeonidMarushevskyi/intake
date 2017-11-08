@@ -1,13 +1,13 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import ScreeningDecisionShow from 'views/screening_decision/ScreeningDecisionShow'
+import ScreeningDecisionShow from 'views/ScreeningDecisionShow'
 
 describe('ScreeningDecisionShow', () => {
   const renderScreeningDecisionShow = ({
     accessRestriction = {},
     additionalInformation = {},
     decision = {},
-    decisionDetail = {},
+    decisionDetail = {label: ''},
     restrictionRationale = {},
     ...options
   }) => {
@@ -87,11 +87,12 @@ describe('ScreeningDecisionShow', () => {
   })
 
   it('renders a link to the SDM tool', () => {
-    const component = renderScreeningDecisionShow({sdmLink: 'http://foo.com'})
+    const sdmPath = 'http://foo.com'
+    const component = renderScreeningDecisionShow({sdmPath})
     expect(component.text()).toContain('SDM Hotline Tool')
     expect(component.text()).toContain('Determine Decision and Response Time by using Structured Decision Making.')
     const sdmLink = component.find('a')
-    expect(sdmLink.props().href).toEqual('http://foo.com')
+    expect(sdmLink.props().href).toEqual(sdmPath)
     expect(sdmLink.props().target).toEqual('_blank')
     expect(sdmLink.text()).toEqual('Complete SDM')
   })

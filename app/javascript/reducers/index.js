@@ -18,6 +18,7 @@ import remoteError from 'reducers/remoteErrorReducer'
 import routing from 'reducers/routerReducer'
 import screening from 'reducers/screeningReducer'
 import screeningInformationForm from 'reducers/screeningInformationFormReducer'
+import screeningDecisionForm from 'reducers/screeningDecisionFormReducer'
 import screenings from 'reducers/screeningsReducer'
 import staff from 'reducers/staffReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   routing,
   screening,
   screeningInformationForm,
+  screeningDecisionForm,
   screenings,
   staff,
   workerSafetyForm,

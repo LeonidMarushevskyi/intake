@@ -114,39 +114,16 @@ describe('ScreeningPage', () => {
       expect(allegationsCard.props().mode).toEqual('edit')
     })
 
-    it('renders to Cross Report Card and specifies if cross reporting is required', () => {
-      const participants = Immutable.fromJS([
-        {id: '1', first_name: 'Sterling', last_name: 'Archer', roles: ['Victim', 'Perpetrator']},
-        {id: '2', first_name: 'Malory', last_name: 'Archer', roles: ['Perpetrator']},
-      ])
-      const fetchScreening = jasmine.createSpy('fetchScreening')
-      const fetchCountyAgencies = jasmine.createSpy('fetchCountyAgencies')
-      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
+    it('renders to Cross Report Card', () => {
       const props = {
         ...requiredProps,
-        actions: {fetchScreening, checkStaffPermission, fetchCountyAgencies},
-        participants: participants,
         mode: 'edit',
-        screening: Immutable.fromJS({
-          allegations: [
-            {id: '123', screening_id: '3', victim_id: '1', perpetrator_id: '2', allegation_types: ['Exploitation', 'Severe neglect']},
-          ],
-          id: '123456',
-          participants: participants,
-          safety_alerts: [],
-          cross_reports: [
-            {agency_type: 'District attorney', agency_code: 'SCDAOFFCODE'},
-            {agency_type: 'Department of justice'},
-          ],
-        }),
         loaded: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
       const crossReportsCard = component.find('CrossReportCardView')
-      expect(crossReportsCard.length).toEqual(1)
-      expect(crossReportsCard.props().crossReports).toEqual(props.screening.get('cross_reports'))
+      expect(crossReportsCard.exists()).toEqual(true)
       expect(crossReportsCard.props().mode).toEqual('edit')
-      expect(crossReportsCard.props().actions.fetchCountyAgencies).toEqual(fetchCountyAgencies)
     })
 
     it('renders the relations card', () => {
@@ -456,15 +433,11 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the cross report show card', () => {
-        expect(component.find('CrossReportCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
-        )
+        expect(component.find('CrossReportCardView').props().mode).toEqual('show')
       })
 
       it('renders the decision show card', () => {
-        expect(component.find('DecisionCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
-        )
+        expect(component.find('DecisionCardView').props().mode).toEqual('show')
       })
     })
   })
@@ -488,16 +461,16 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the cross report card view', () => {
-        expect(component.find('CrossReportCardView').length).toEqual(1)
+        expect(component.find('CrossReportCardView').exists()).toEqual(true)
       })
       it('renders the narrative card', () => {
-        expect(component.find('NarrativeCardView').length).toEqual(1)
+        expect(component.find('NarrativeCardView').exists()).toEqual(true)
       })
       it('renders the incident information card', () => {
-        expect(component.find('IncidentInformationCardView').length).toEqual(1)
+        expect(component.find('IncidentInformationCardView').exists()).toEqual(true)
       })
       it('renders the decision card', () => {
-        expect(component.find('DecisionCardView').length).toEqual(1)
+        expect(component.find('DecisionCardView').exists()).toEqual(true)
       })
     })
 
