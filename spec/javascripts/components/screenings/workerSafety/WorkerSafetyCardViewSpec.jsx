@@ -12,7 +12,7 @@ describe('WorkerSafetyCardView', () => {
     const component = renderWorkerSafetyCard({mode: 'edit'})
     const header = component.find('ScreeningCardHeader')
     expect(header.exists()).toEqual(true)
-    expect(header.props().onEdit).toEqual(component.instance().onEdit)
+    expect(header.props().onEdit).toEqual(component.instance().toggleMode)
     expect(header.props().showEdit).toEqual(false)
     expect(header.props().title).toEqual('Worker Safety')
   })

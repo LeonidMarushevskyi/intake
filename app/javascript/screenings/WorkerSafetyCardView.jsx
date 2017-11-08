@@ -10,7 +10,6 @@ export default class WorkerSafetyCardView extends React.Component {
     this.state = {
       mode: this.props.mode,
     }
-    this.onEdit = this.onEdit.bind(this)
     this.toggleMode = this.toggleMode.bind(this)
   }
 
@@ -20,16 +19,12 @@ export default class WorkerSafetyCardView extends React.Component {
     this.setState({mode: newMode})
   }
 
-  onEdit() {
-    this.setState({mode: 'edit'})
-  }
-
   render() {
     const {mode} = this.state
     return (
       <div className={`card ${mode} double-gap-top`} id='worker-safety-card'>
         <ScreeningCardHeader
-          onEdit={this.onEdit}
+          onEdit={this.toggleMode}
           title='Worker Safety'
           showEdit={this.props.editable && mode === 'show'}
         />
