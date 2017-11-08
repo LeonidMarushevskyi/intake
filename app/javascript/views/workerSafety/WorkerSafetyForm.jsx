@@ -47,12 +47,15 @@ const WorkerSafetyForm = ({
 )
 
 WorkerSafetyForm.propTypes = {
-  alertOptions: PropTypes.array.isRequired,
+  alertOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  })).isRequired,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,
   onSave: PropTypes.func,
   safetyAlerts: PropTypes.shape({
-    value: PropTypes.array,
+    value: PropTypes.arrayOf(PropTypes.string),
   }),
   safetyInformation: PropTypes.shape({
     value: PropTypes.string,
