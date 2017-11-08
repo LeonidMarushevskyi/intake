@@ -17,13 +17,13 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
   }).join(', ')
   const {hispanic_latino_origin, ethnicity_detail} = person.toJS().ethnicity || {}
   return fromJS({
-    legacy_source: legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : '',
-    display_name: nameFormatter(person.toJS()),
+    legacySource: legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : '',
+    name: nameFormatter(person.toJS()),
     gender: GENDERS[person.get('gender')],
-    roles: person.get('roles'),
+    roles: person.get('roles', []),
     languages: flagPrimaryLanguage((person.toJS().languages) || []).join(', '),
-    date_of_birth: dateFormatter(person.get('date_of_birth')),
-    approximate_age: [person.get('approximate_age'), person.get('approximate_age_units')].join(' '),
+    dateOfBirth: dateFormatter(person.get('date_of_birth')),
+    approximateAge: [person.get('approximate_age'), person.get('approximate_age_units')].join(' '),
     ssn: ssnFormatter(person.get('ssn')),
     races: races,
     ethnicity: hispanic_latino_origin && `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`,

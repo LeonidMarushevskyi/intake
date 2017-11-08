@@ -4,34 +4,34 @@ import React from 'react'
 import ShowField from 'common/ShowField'
 
 const PersonInformationShow = ({
-  approximate_age,
-  date_of_birth,
-  display_name,
+  approximateAge,
+  dateOfBirth,
+  name,
   ethnicity,
   gender,
   languages,
-  legacy_source,
+  legacySource,
   races,
   roles,
   ssn,
 }) => {
-  const showDateOfBirth = date_of_birth || !approximate_age
+  const showDateOfBirth = dateOfBirth || !approximateAge
   return (
     <div>
       <div className='row'>
         <div className='col-md-2'><img src={AvatarImg}/></div>
         <div className='col-md-10'>
-          {legacy_source &&
-            <div className='row'><div className='col-md-12'><span>{legacy_source}</span></div></div>
+          {legacySource &&
+            <div className='row'><div className='col-md-12'><span>{legacySource}</span></div></div>
           }
           <div className='row'>
             <div className='col-md-5'>
-              <ShowField label='Name'>{display_name}</ShowField>
+              <ShowField label='Name'>{name}</ShowField>
               <ShowField label='Gender'>{gender}</ShowField>
             </div>
             <div className='col-md-5'>
               <ShowField label='Role(s)'>
-                {roles &&
+                {roles.length > 0 &&
                   <ul>{roles.map((role, index) => (<li key={`role-${index}`}>{role}</li>))}</ul>
                 }
               </ShowField>
@@ -40,8 +40,8 @@ const PersonInformationShow = ({
               <ShowField label='Language(s) (Primary First)'>{languages}</ShowField>
             </div>
             <div className='col-md-5'>
-              {showDateOfBirth && <ShowField label='Date of birth'>{date_of_birth}</ShowField>}
-              {!showDateOfBirth && <ShowField label='Approximate Age'>{approximate_age}</ShowField>}
+              {showDateOfBirth && <ShowField label='Date of birth'>{dateOfBirth}</ShowField>}
+              {!showDateOfBirth && <ShowField label='Approximate Age'>{approximateAge}</ShowField>}
               <ShowField label='Social security number'>{ssn}</ShowField>
             </div>
           </div>
@@ -60,13 +60,13 @@ const PersonInformationShow = ({
 }
 
 PersonInformationShow.propTypes = {
-  approximate_age: PropTypes.string,
-  date_of_birth: PropTypes.string,
-  display_name: PropTypes.string,
+  approximateAge: PropTypes.string,
+  dateOfBirth: PropTypes.string,
+  name: PropTypes.string,
   ethnicity: PropTypes.string,
   gender: PropTypes.string,
   languages: PropTypes.string,
-  legacy_source: PropTypes.string,
+  legacySource: PropTypes.string,
   races: PropTypes.string,
   roles: PropTypes.arrayOf(PropTypes.string),
   ssn: PropTypes.string,

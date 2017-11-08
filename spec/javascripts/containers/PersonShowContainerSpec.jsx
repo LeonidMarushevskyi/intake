@@ -21,13 +21,13 @@ describe('PersonShowContainer', () => {
   })
   it('renders PersonInformationShow', () => {
     expect(component.find('PersonInformationShow').props()).toEqual({
-      approximate_age: '9 dog years',
-      date_of_birth: '01/15/2014',
-      display_name: 'John Q Public',
+      approximateAge: '9 dog years',
+      dateOfBirth: '01/15/2014',
+      name: 'John Q Public',
       ethnicity: 'Yes - Mexican',
       gender: 'Female',
       languages: 'Javascript (Primary), Ruby',
-      legacy_source: 'Client ID 1-4 in CWS-CMS',
+      legacySource: 'Client ID 1-4 in CWS-CMS',
       personId: '1',
       races: 'White - Romanian, Asian - Chinese',
       roles: ['super-hero', 'anti-hero'],
