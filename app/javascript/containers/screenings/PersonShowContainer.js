@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {getFormattedPersonInformationSelector} from 'selectors/screening/peopleShowSelectors'
+import {getFormattedPersonInformationSelector} from 'selectors/screening/personShowSelectors'
 import PersonInformationShow from 'views/people/PersonInformationShow'
 
 const mapStateToProps = (state, {personId}) => (
