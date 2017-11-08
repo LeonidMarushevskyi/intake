@@ -462,9 +462,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the decision show card', () => {
-        expect(component.find('DecisionCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
-        )
+        expect(component.find('DecisionCardView').props().mode).toEqual('show')
       })
     })
   })

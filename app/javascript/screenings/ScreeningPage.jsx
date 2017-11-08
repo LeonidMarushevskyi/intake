@@ -310,16 +310,7 @@ export class ScreeningPage extends React.Component {
                 mode={mode}
               />
           }
-          {
-            releaseTwoInactive &&
-            <DecisionCardView
-              {...cardCallbacks}
-              editable={editable}
-              errors={cardErrors.get('decision_card')}
-              mode={mode}
-              screening={mergedScreening}
-            />
-          }
+          {releaseTwoInactive && <DecisionCardView mode={mode}/>}
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
