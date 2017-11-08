@@ -24,16 +24,16 @@ feature 'decision card' do
   scenario 'initial configuration' do
     new_window = nil
     within '#decision-card.edit' do
-      expect(page).to have_select('Screening Decision', options: [
+      expect(page).to have_select('Screening decision', options: [
                                     '',
                                     'Differential response',
                                     'Information to child welfare services',
                                     'Promote to referral',
                                     'Screen out'
                                   ])
-      select 'Information to child welfare services', from: 'Screening Decision'
+      select 'Information to child welfare services', from: 'Screening decision'
       expect(page).to have_field('Staff name', with: '')
-      select 'Promote to referral', from: 'Screening Decision'
+      select 'Promote to referral', from: 'Screening decision'
       expect(page).to have_select('Response time', options: [
                                     '',
                                     'Immediate',
@@ -41,7 +41,7 @@ feature 'decision card' do
                                     '5 days',
                                     '10 days'
                                   ])
-      select 'Screen out', from: 'Screening Decision'
+      select 'Screen out', from: 'Screening decision'
       expect(page).to have_select('Category', options: [
                                     '',
                                     'Evaluate out',
@@ -50,13 +50,13 @@ feature 'decision card' do
                                     'Abandoned call',
                                     'Other'
                                   ])
-      select 'Differential response', from: 'Screening Decision'
+      select 'Differential response', from: 'Screening decision'
       expect(page).to have_field('Service name', with: '')
       # Values are cleared when decision is changed
       fill_in 'Service name', with: 'Do not persist'
-      select 'Information to child welfare services', from: 'Screening Decision'
+      select 'Information to child welfare services', from: 'Screening decision'
       expect(page).to have_field('Staff name', with: '')
-      select 'Differential response', from: 'Screening Decision'
+      select 'Differential response', from: 'Screening decision'
       expect(page).to have_field('Service name', with: '')
       expect(page).to have_field('Additional information', with: 'this is why it is')
 
@@ -96,14 +96,14 @@ feature 'decision card' do
       .and_return(json_body(screening.to_json))
 
     within '#decision-card.edit' do
-      expect(page).to have_select('Screening Decision', selected: 'Promote to referral')
+      expect(page).to have_select('Screening decision', selected: 'Promote to referral')
       expect(page).to have_select('Response time', selected: '3 days')
       expect(page).to have_select('Access Restrictions', selected: 'Do not restrict access')
       expect(page).to have_field('Additional information', with: 'this is why it is')
       expect(page).to have_content('Save')
       expect(page).to have_content('Cancel')
       fill_in 'Additional information', with: 'I changed my decision rationale'
-      select 'Differential response', from: 'Screening Decision'
+      select 'Differential response', from: 'Screening decision'
       fill_in 'Service name', with: 'An arbitrary string'
       select 'Mark as Sensitive', from: 'Access Restrictions'
       fill_in 'Restrictions Rationale', with: 'Someone in this screening has sensitive information'
@@ -133,7 +133,7 @@ feature 'decision card' do
   scenario 'user edits information details and click cancel' do
     within '#decision-card.edit' do
       fill_in 'Additional information', with: 'I changed my decision rationale'
-      select 'Screen out', from: 'Screening Decision'
+      select 'Screen out', from: 'Screening decision'
       select 'Consultation', from: 'Category'
       click_button 'Cancel'
     end
@@ -150,7 +150,7 @@ feature 'decision card' do
     click_link 'Edit decision'
     within '#decision-card.edit' do
       expect(page.find('label', text: 'Response time')[:class]).to include('required')
-      expect(page).to have_field('Screening Decision', with: 'promote_to_referral')
+      expect(page).to have_field('Screening decision', with: 'promote_to_referral')
       expect(page).to have_field('Response time', with: '3_days')
       expect(page).to have_field('Additional information', with: 'this is why it is')
     end
