@@ -10,6 +10,7 @@ describe('PersonForm', () => {
     legacySourceDescription,
     firstName,
     middleName,
+    lastName,
   }) {
     const props = {
       personId,
@@ -18,6 +19,7 @@ describe('PersonForm', () => {
       legacySourceDescription,
       firstName,
       middleName,
+      lastName,
     }
     return shallow(<PersonForm {...props}/>)
   }
@@ -73,5 +75,12 @@ describe('PersonForm', () => {
       .find('InputField[label="Middle Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample middle name')
+  })
+
+  it('renders the last name field', () => {
+    const field = renderPersonForm({lastName: 'a sample last name'})
+      .find('InputField[label="Last Name"]')
+    expect(field.exists()).toEqual(true)
+    expect(field.props().value).toEqual('a sample last name')
   })
 })

@@ -5,6 +5,7 @@ import InputField from 'common/InputField'
 
 const PersonForm = ({
   firstName,
+  lastName,
   legacySourceDescription,
   middleName,
   personId,
@@ -49,11 +50,19 @@ const PersonForm = ({
         maxLength='64'
         value={middleName}
       />
+      <InputField
+        gridClassName='col-md-4'
+        id='last_name'
+        label='Last Name'
+        maxLength='64'
+        value={lastName}
+      />
     </div>
   </div>
 )
 PersonForm.propTypes = {
   firstName: PropTypes.string,
+  lastName: PropTypes.string,
   legacySourceDescription: PropTypes.string,
   middleName: PropTypes.string,
   personId: PropTypes.string.isRequired,

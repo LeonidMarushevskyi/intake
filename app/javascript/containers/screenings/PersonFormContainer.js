@@ -16,6 +16,7 @@ const mapStateToProps = (state, {personId}) => {
     legacySourceDescription,
     firstName: person.getIn(['first_name', 'value']),
     middleName: person.getIn(['middle_name', 'value']),
+    lastName: person.getIn(['last_name', 'value']),
     roleOptions,
   }
 }
