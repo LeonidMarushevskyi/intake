@@ -3,7 +3,8 @@ import PersonForm from 'views/people/PersonForm'
 import {ROLE_TYPE} from 'enums/RoleType'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import {Map} from 'immutable'
-import {getPeopleSelector} from 'selectors/peopleFormSelectors'
+import {getPeopleSelector} from 'selectors/screening/peopleFormSelectors'
+import {setField} from 'actions/peopleFormActions'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 
 const mapStateToProps = (state, {personId}) => {
@@ -27,4 +28,31 @@ const mapStateToProps = (state, {personId}) => {
     roleOptions,
   }
 }
-export default connect(mapStateToProps)(PersonForm)
+const mergeProps = ({
+  personId,
+  roles,
+  legacySourceDescription,
+  firstName,
+  middleName,
+  lastName,
+  nameSuffix,
+  ssn,
+  nameSuffixOptions,
+  roleOptions,
+}, {dispatch}) => {
+  const onChange = (field, value) => dispatch(setField(personId, [field], value))
+  return {
+    personId,
+    roles,
+    legacySourceDescription,
+    firstName,
+    middleName,
+    lastName,
+    nameSuffix,
+    ssn,
+    nameSuffixOptions,
+    roleOptions,
+    onChange,
+  }
+}
+export default connect(mapStateToProps, null, mergeProps)(PersonForm)

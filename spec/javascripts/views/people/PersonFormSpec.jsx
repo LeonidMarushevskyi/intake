@@ -14,6 +14,7 @@ describe('PersonForm', () => {
     nameSuffix,
     nameSuffixOptions = [],
     ssn,
+    onChange,
   }) {
     const props = {
       personId,
@@ -26,6 +27,7 @@ describe('PersonForm', () => {
       nameSuffix,
       nameSuffixOptions,
       ssn,
+      onChange,
     }
     return shallow(<PersonForm {...props}/>)
   }
@@ -44,7 +46,7 @@ describe('PersonForm', () => {
     expect(legacySource.text()).toContain('from some legacy source')
   })
 
-  it('renders the participants role in a multiselect', () => {
+  it('renders the role field as a multiselect', () => {
     const component = renderPersonForm({
       personId: 'existing-person-id',
       roles: ['A', 'B'],
@@ -69,11 +71,29 @@ describe('PersonForm', () => {
     ])
   })
 
+  it('changing roles fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({onChange, roles: []})
+      .find('Select').simulate('change', [
+        {label: 'label 1', value: 'label_1'},
+        {label: 'label 2', value: 'label_2'},
+      ])
+    expect(onChange).toHaveBeenCalledWith('roles', ['label_1', 'label_2'])
+  })
+
   it('renders the first name field', () => {
     const field = renderPersonForm({firstName: 'a sample first name'})
       .find('InputField[label="First Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample first name')
+  })
+
+  it('changing the first name fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({firstName: 'a sample first name', onChange})
+      .find('InputField[label="First Name"]')
+      .simulate('change', {target: {value:'my new name'}})
+    expect(onChange).toHaveBeenCalledWith('first_name', 'my new name')
   })
 
   it('renders the middle name field', () => {
@@ -83,11 +103,27 @@ describe('PersonForm', () => {
     expect(field.props().value).toEqual('a sample middle name')
   })
 
+  it('changing the middle name fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({middleName: 'a sample middle name', onChange})
+      .find('InputField[label="Middle Name"]')
+      .simulate('change', {target: {value:'my new name'}})
+    expect(onChange).toHaveBeenCalledWith('middle_name', 'my new name')
+  })
+
   it('renders the last name field', () => {
     const field = renderPersonForm({lastName: 'a sample last name'})
       .find('InputField[label="Last Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample last name')
+  })
+
+  it('changing the last name fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({lastName: 'a sample last name', onChange})
+      .find('InputField[label="Last Name"]')
+      .simulate('change', {target: {value:'my new name'}})
+    expect(onChange).toHaveBeenCalledWith('last_name', 'my new name')
   })
 
   it('renders the suffix field', () => {
@@ -107,11 +143,27 @@ describe('PersonForm', () => {
     expect(field.childAt(3).props().value).toEqual('3')
   })
 
+  it('changing the suffix fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({onChange})
+      .find('SelectField[label="Suffix"]')
+      .simulate('change', {target: {value:'my new suffix'}})
+    expect(onChange).toHaveBeenCalledWith('name_suffix', 'my new suffix')
+  })
+
   it('renders the SSN field', () => {
     const field = renderPersonForm({
       ssn: 'example-ssn',
     }).find('MaskedInputField[label="Social security number"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('example-ssn')
+  })
+
+  it('changing the ssn fires onChange', () => {
+    const onChange = jasmine.createSpy('onChange')
+    renderPersonForm({onChange})
+      .find('MaskedInputField[label="Social security number"]')
+      .simulate('change', {target: {value:'111-11-1111'}})
+    expect(onChange).toHaveBeenCalledWith('ssn', '111-11-1111')
   })
 })

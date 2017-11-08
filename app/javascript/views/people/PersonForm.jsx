@@ -16,6 +16,7 @@ const PersonForm = ({
   roleOptions,
   roles,
   ssn,
+  onChange,
 }) => (
   <div className='card-body'>
     {
@@ -37,6 +38,7 @@ const PersonForm = ({
           clearable={false}
           options={roleOptions}
           placeholder=''
+          onChange={(values) => onChange('roles', values.map(({value}) =>  value))}
         />
       </div>
     </div>
@@ -47,6 +49,7 @@ const PersonForm = ({
         label='First Name'
         maxLength='64'
         value={firstName}
+        onChange={({target: {value}}) => onChange('first_name', value)}
       />
       <InputField
         gridClassName='col-md-4'
@@ -54,6 +57,7 @@ const PersonForm = ({
         label='Middle Name'
         maxLength='64'
         value={middleName}
+        onChange={({target: {value}}) => onChange('middle_name', value)}
       />
       <InputField
         gridClassName='col-md-4'
@@ -61,6 +65,7 @@ const PersonForm = ({
         label='Last Name'
         maxLength='64'
         value={lastName}
+        onChange={({target: {value}}) => onChange('last_name', value)}
       />
     </div>
     <div className='row'>
@@ -69,6 +74,7 @@ const PersonForm = ({
         id='name_suffix'
         label='Suffix'
         value={nameSuffix}
+        onChange={({target: {value}}) => onChange('name_suffix', value)}
       >
         <option key='' value='' />
         {nameSuffixOptions.map(({label, value}) => <option key={value} value={value}>{label}</option>)}
@@ -80,6 +86,7 @@ const PersonForm = ({
         mask='111-11-1111'
         placeholder='___-__-____'
         value={ssn}
+        onChange={({target: {value}}) => onChange('ssn', value)}
       />
     </div>
   </div>
@@ -95,5 +102,6 @@ PersonForm.propTypes = {
   roleOptions: PropTypes.array,
   roles: PropTypes.array,
   ssn: PropTypes.string,
+  onChange: PropTypes.func,
 }
 export default PersonForm

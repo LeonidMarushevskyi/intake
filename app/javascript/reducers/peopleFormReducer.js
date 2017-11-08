@@ -1,6 +1,7 @@
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
+import {SET_PEOPLE_FORM_FIELD} from 'actions/peopleFormActions'
 
 const buildPerson = ({
   first_name,
@@ -29,4 +30,5 @@ export default createReducer(Map(), {
       ), Map())
     }
   },
+  [SET_PEOPLE_FORM_FIELD]: (state, {payload: {personId, fieldSet, value}}) => state.setIn([personId, ...fieldSet, 'value'], fromJS(value)),
 })

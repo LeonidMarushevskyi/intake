@@ -1,5 +1,6 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
+import {setField} from 'actions/peopleFormActions'
 import peopleFormReducer from 'reducers/peopleFormReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -75,6 +76,29 @@ describe('peopleFormReducer', () => {
           participant_two: {
             roles: {value: ['c']},
             legacy_descriptor: {value: 'legacy descriptor two'},
+          },
+        })
+      )
+    })
+  })
+  describe('on set person form field', () => {
+    it('returns the updated form state', () => {
+      const lastState = fromJS({
+        participant_one: {
+          roles: {value: []},
+        },
+        participant_two: {
+          roles: {value: ['c']},
+        },
+      })
+      const action = setField('participant_one', ['roles'], ['a', 'b'])
+      expect(peopleFormReducer(lastState, action)).toEqualImmutable(
+        fromJS({
+          participant_one: {
+            roles: {value: ['a', 'b']},
+          },
+          participant_two: {
+            roles: {value: ['c']},
           },
         })
       )
