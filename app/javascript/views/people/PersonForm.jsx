@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 import Select from 'react-select'
 import InputField from 'common/InputField'
 
-const PersonForm = ({firstName, legacySourceDescription, personId, roles, roleOptions}) => (
+const PersonForm = ({
+  firstName,
+  legacySourceDescription,
+  middleName,
+  personId,
+  roleOptions,
+  roles,
+}) => (
   <div className='card-body'>
     {
       Boolean(legacySourceDescription) &&
@@ -35,12 +42,20 @@ const PersonForm = ({firstName, legacySourceDescription, personId, roles, roleOp
         maxLength='64'
         value={firstName}
       />
+      <InputField
+        gridClassName='col-md-4'
+        id='middle_name'
+        label='Middle Name'
+        maxLength='64'
+        value={middleName}
+      />
     </div>
   </div>
 )
 PersonForm.propTypes = {
   firstName: PropTypes.string,
   legacySourceDescription: PropTypes.string,
+  middleName: PropTypes.string,
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
   roles: PropTypes.array,

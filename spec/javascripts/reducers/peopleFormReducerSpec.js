@@ -14,11 +14,13 @@ describe('peopleFormReducer', () => {
           roles: ['a', 'b'],
           legacy_descriptor: 'legacy descriptor one',
           first_name: 'first name one',
+          middle_name: 'middle name one',
         }, {
           id: 'participant_two',
           roles: ['c'],
           legacy_descriptor: 'legacy descriptor two',
           first_name: 'first name two',
+          middle_name: 'middle name two',
         }],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
@@ -27,11 +29,13 @@ describe('peopleFormReducer', () => {
             roles: {value: ['a', 'b']},
             legacy_descriptor: {value: 'legacy descriptor one'},
             first_name: {value: 'first name one'},
+            middle_name: {value: 'middle name one'},
           },
           participant_two: {
             roles: {value: ['c']},
             legacy_descriptor: {value: 'legacy descriptor two'},
             first_name: {value: 'first name two'},
+            middle_name: {value: 'middle name two'},
           },
         })
       )
