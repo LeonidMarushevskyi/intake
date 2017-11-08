@@ -17,7 +17,7 @@ const PersonInformationShow = ({
 }) => {
   const showDateOfBirth = date_of_birth || !approximate_age
   return (
-    <div className='card-body'>
+    <div>
       <div className='row'>
         <div className='col-md-2'><img src={AvatarImg}/></div>
         <div className='col-md-10'>
@@ -47,7 +47,6 @@ const PersonInformationShow = ({
           </div>
         </div>
       </div>
-      <p>phone numbers + addresses</p>
       <div className='row gap-top'>
         <ShowField gridClassName='col-md-12' label='Race'>{races}</ShowField>
       </div>
