@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Select from 'react-select'
 import InputField from 'common/InputField'
 import SelectField from 'common/SelectField'
+import MaskedInputField from 'common/MaskedInputField'
 
 const PersonForm = ({
   firstName,
@@ -14,6 +15,7 @@ const PersonForm = ({
   personId,
   roleOptions,
   roles,
+  ssn,
 }) => (
   <div className='card-body'>
     {
@@ -71,6 +73,14 @@ const PersonForm = ({
         <option key='' value='' />
         {nameSuffixOptions.map(({label, value}) => <option key={value} value={value}>{label}</option>)}
       </SelectField>
+      <MaskedInputField
+        gridClassName='col-md-4'
+        id='ssn'
+        label='Social security number'
+        mask='111-11-1111'
+        placeholder='___-__-____'
+        value={ssn}
+      />
     </div>
   </div>
 )
@@ -84,5 +94,6 @@ PersonForm.propTypes = {
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
   roles: PropTypes.array,
+  ssn: PropTypes.string,
 }
 export default PersonForm

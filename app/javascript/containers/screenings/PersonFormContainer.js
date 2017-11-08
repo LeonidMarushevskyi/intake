@@ -22,6 +22,7 @@ const mapStateToProps = (state, {personId}) => {
     middleName: person.getIn(['middle_name', 'value']),
     lastName: person.getIn(['last_name', 'value']),
     nameSuffix: person.getIn(['name_suffix', 'value']),
+    ssn: person.getIn(['ssn', 'value']),
     nameSuffixOptions,
     roleOptions,
   }

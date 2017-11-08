@@ -13,6 +13,7 @@ describe('PersonForm', () => {
     lastName,
     nameSuffix,
     nameSuffixOptions = [],
+    ssn,
   }) {
     const props = {
       personId,
@@ -24,6 +25,7 @@ describe('PersonForm', () => {
       lastName,
       nameSuffix,
       nameSuffixOptions,
+      ssn,
     }
     return shallow(<PersonForm {...props}/>)
   }
@@ -103,5 +105,13 @@ describe('PersonForm', () => {
     expect(field.childAt(1).props().value).toEqual('1')
     expect(field.childAt(2).props().value).toEqual('2')
     expect(field.childAt(3).props().value).toEqual('3')
+  })
+
+  it('renders the SSN field', () => {
+    const field = renderPersonForm({
+      ssn: 'example-ssn',
+    }).find('MaskedInputField[label="Social security number"]')
+    expect(field.exists()).toEqual(true)
+    expect(field.props().value).toEqual('example-ssn')
   })
 })
