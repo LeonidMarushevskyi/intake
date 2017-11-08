@@ -9,20 +9,29 @@ describe('peopleFormReducer', () => {
   describe('on fetch screening success', () => {
     it('populates the people form', () => {
       const action = fetchScreeningSuccess({
-        participants: [
-          {id: 'participant_one', roles: ['a', 'b'], legacy_descriptor: 'legacy descriptor one'},
-          {id: 'participant_two', roles: ['c'], legacy_descriptor: 'legacy descriptor two'},
-        ],
+        participants: [{
+          id: 'participant_one',
+          roles: ['a', 'b'],
+          legacy_descriptor: 'legacy descriptor one',
+          first_name: 'first name one',
+        }, {
+          id: 'participant_two',
+          roles: ['c'],
+          legacy_descriptor: 'legacy descriptor two',
+          first_name: 'first name two',
+        }],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
           participant_one: {
             roles: {value: ['a', 'b']},
             legacy_descriptor: {value: 'legacy descriptor one'},
+            first_name: {value: 'first name one'},
           },
           participant_two: {
             roles: {value: ['c']},
             legacy_descriptor: {value: 'legacy descriptor two'},
+            first_name: {value: 'first name two'},
           },
         })
       )

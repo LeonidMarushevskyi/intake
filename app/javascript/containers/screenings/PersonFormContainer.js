@@ -8,10 +8,14 @@ import legacySourceFormatter from 'utils/legacySourceFormatter'
 const mapStateToProps = (state, {personId}) => {
   const roleOptions = ROLE_TYPE.map((value) => ({label: value, value}))
   const person = getPeopleSelector(state).get(personId)
+  const roles = person.getIn(['roles', 'value']).toJS()
+  const firstName = person.getIn(['first_name', 'value'])
+  const legacySourceDescription = legacySourceFormatter(person.getIn(['legacy_descriptor', 'value'], Map()).toJS())
   return {
     personId,
-    roles: person.getIn(['roles', 'value']).toJS(),
-    legacySourceDescription: legacySourceFormatter(person.getIn(['legacy_descriptor', 'value'], Map()).toJS()),
+    roles,
+    legacySourceDescription,
+    firstName,
     roleOptions,
   }
 }
