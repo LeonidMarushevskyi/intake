@@ -47,6 +47,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     alertOptions,
     safetyAlerts,
     safetyInformation,
+    toggleMode,
   }
 }
 

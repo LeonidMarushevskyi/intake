@@ -8,15 +8,6 @@ describe('WorkerSafetyCardView', () => {
     return shallow(<WorkerSafetyCardView {...props} />)
   }
 
-  it('renders the card header', () => {
-    const component = renderWorkerSafetyCard({mode: 'edit'})
-    const header = component.find('ScreeningCardHeader')
-    expect(header.exists()).toEqual(true)
-    expect(header.props().onEdit).toEqual(component.instance().toggleMode)
-    expect(header.props().showEdit).toEqual(false)
-    expect(header.props().title).toEqual('Worker Safety')
-  })
-
   describe('render', () => {
     describe('when the mode is set to edit', () => {
       it('renders the edit view', () => {

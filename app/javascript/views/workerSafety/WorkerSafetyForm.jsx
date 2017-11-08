@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
 import Select from 'react-select'
 
 const WorkerSafetyForm = ({
@@ -9,38 +10,46 @@ const WorkerSafetyForm = ({
   onSave,
   safetyAlerts,
   safetyInformation,
+  toggleMode,
 }) => (
-  <div className='card-body'>
-    <div className='row'>
-      <div className='col-md-12'>
-        <label htmlFor='safety_alerts'>Worker safety alerts</label>
-        <Select
-          multi
-          tabSelectsValue={false}
-          inputProps={{id: 'safety_alerts'}}
-          options={alertOptions}
-          value={safetyAlerts.value}
-          onChange={
-            (alerts) => onChange('safety_alerts',
-              alerts.map((alert) => alert.value) || [])
-          }
-        />
+  <div>
+    <ScreeningCardHeader
+      onEdit={toggleMode}
+      title='Worker Safety'
+      showEdit={false}
+    />
+    <div className='card-body'>
+      <div className='row'>
+        <div className='col-md-12'>
+          <label htmlFor='safety_alerts'>Worker safety alerts</label>
+          <Select
+            multi
+            tabSelectsValue={false}
+            inputProps={{id: 'safety_alerts'}}
+            options={alertOptions}
+            value={safetyAlerts.value}
+            onChange={
+              (alerts) => onChange('safety_alerts',
+                alerts.map((alert) => alert.value) || [])
+            }
+          />
+        </div>
       </div>
-    </div>
-    <div className='row'>
-      <div className='col-md-12'>
-        <label className='no-gap' htmlFor='safety_information'>Additional safety information</label>
-        <textarea
-          id='safety_information'
-          onChange={({target: {value}}) => onChange('safety_information', value || null)}
-          value={safetyInformation.value || ''}
-        />
+      <div className='row'>
+        <div className='col-md-12'>
+          <label className='no-gap' htmlFor='safety_information'>Additional safety information</label>
+          <textarea
+            id='safety_information'
+            onChange={({target: {value}}) => onChange('safety_information', value || null)}
+            value={safetyInformation.value || ''}
+          />
+        </div>
       </div>
-    </div>
-    <div className='row'>
-      <div className='centered'>
-        <button className='btn btn-primary' onClick={onSave}>Save</button>
-        <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+      <div className='row'>
+        <div className='centered'>
+          <button className='btn btn-primary' onClick={onSave}>Save</button>
+          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -60,6 +69,7 @@ WorkerSafetyForm.propTypes = {
   safetyInformation: PropTypes.shape({
     value: PropTypes.string,
   }),
+  toggleMode: PropTypes.func,
 }
 
 WorkerSafetyForm.defaultProps = {
