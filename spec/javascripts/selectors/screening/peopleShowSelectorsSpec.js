@@ -6,6 +6,22 @@ describe('peopleShowSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getFormattedPersonInformationSelector', () => {
+    it('returns a blank person when person does not exist', () => {
+      const participants = [{id: '1', date_of_birth: '2014-01-15'}]
+      const state = fromJS({participants})
+      expect(getFormattedPersonInformationSelector(state, '2')).toEqualImmutable(fromJS({
+        legacySource: undefined,
+        name: 'Unknown Person',
+        gender: undefined,
+        roles: [],
+        languages: undefined,
+        dateOfBirth: undefined,
+        approximateAge: undefined,
+        ssn: undefined,
+        races: undefined,
+        ethnicity: undefined,
+      }))
+    })
     it('includes the legacy source for the given person', () => {
       const participants = [
         {id: '1', legacy_descriptor: {legacy_ui_id: '1-4', legacy_table_description: 'Client'}},

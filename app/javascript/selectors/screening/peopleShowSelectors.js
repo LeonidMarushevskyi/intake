@@ -7,7 +7,7 @@ import {dateFormatter} from 'utils/dateFormatter'
 import {flagPrimaryLanguage} from 'common/LanguageInfo'
 
 export const getFormattedPersonInformationSelector = (state, personId) => {
-  const person = state.get('participants').find((person) => person.get('id') === personId)
+  const person = state.get('participants').find((person) => person.get('id') === personId) || fromJS({})
   const legacyDescriptor = person.get('legacy_descriptor')
   const showApproximateAge = !person.get('date_of_birth') && person.get('approximate_age')
   const approximateAge = showApproximateAge ?
@@ -22,15 +22,15 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
   }).join(', ')
   const {hispanic_latino_origin, ethnicity_detail} = person.toJS().ethnicity || {}
   return fromJS({
-    legacySource: legacyDescriptor ? legacySourceFormatter(legacyDescriptor.toJS()) : '',
-    name: nameFormatter(person.toJS()),
-    gender: GENDERS[person.get('gender')],
-    roles: person.get('roles', []),
-    languages: flagPrimaryLanguage((person.toJS().languages) || []).join(', '),
-    ssn: ssnFormatter(person.get('ssn')),
-    dateOfBirth: dateOfBirth,
     approximateAge: approximateAge,
-    races: races,
+    dateOfBirth: dateOfBirth,
     ethnicity: hispanic_latino_origin && `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`,
+    gender: GENDERS[person.get('gender')],
+    languages: person.get('languages') && flagPrimaryLanguage((person.toJS().languages) || []).join(', '),
+    legacySource: legacyDescriptor && legacySourceFormatter(legacyDescriptor.toJS()),
+    name: nameFormatter(person.toJS()),
+    races: races,
+    roles: person.get('roles', []),
+    ssn: person.get('ssn') && ssnFormatter(person.get('ssn')),
   })
 }
