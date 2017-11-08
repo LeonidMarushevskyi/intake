@@ -10,14 +10,20 @@ describe('peopleFormReducer', () => {
     it('populates the people form', () => {
       const action = fetchScreeningSuccess({
         participants: [
-          {id: 'participant_one', roles: ['a', 'b']},
-          {id: 'participant_two', roles: ['c']},
+          {id: 'participant_one', roles: ['a', 'b'], legacy_descriptor: 'legacy descriptor one'},
+          {id: 'participant_two', roles: ['c'], legacy_descriptor: 'legacy descriptor two'},
         ],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
         fromJS({
-          participant_one: {roles: {value: ['a', 'b']}},
-          participant_two: {roles: {value: ['c']}},
+          participant_one: {
+            roles: {value: ['a', 'b']},
+            legacy_descriptor: {value: 'legacy descriptor one'},
+          },
+          participant_two: {
+            roles: {value: ['c']},
+            legacy_descriptor: {value: 'legacy descriptor two'},
+          },
         })
       )
     })
@@ -25,14 +31,26 @@ describe('peopleFormReducer', () => {
   describe('on fetch screening failure', () => {
     it('returns the last state', () => {
       const lastState = fromJS({
-        participant_one: {roles: {value: ['a', 'b']}},
-        participant_two: {roles: {value: ['c']}},
+        participant_one: {
+          roles: {value: ['a', 'b']},
+          legacy_descriptor: {value: 'legacy descriptor one'},
+        },
+        participant_two: {
+          roles: {value: ['c']},
+          legacy_descriptor: {value: 'legacy descriptor two'},
+        },
       })
       const action = fetchScreeningFailure()
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(
         fromJS({
-          participant_one: {roles: {value: ['a', 'b']}},
-          participant_two: {roles: {value: ['c']}},
+          participant_one: {
+            roles: {value: ['a', 'b']},
+            legacy_descriptor: {value: 'legacy descriptor one'},
+          },
+          participant_two: {
+            roles: {value: ['c']},
+            legacy_descriptor: {value: 'legacy descriptor two'},
+          },
         })
       )
     })

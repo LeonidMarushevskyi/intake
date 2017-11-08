@@ -2,7 +2,8 @@ import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 
-const buildPerson = ({roles}) => fromJS({
+const buildPerson = ({legacy_descriptor, roles}) => fromJS({
+  legacy_descriptor: {value: legacy_descriptor},
   roles: {value: roles},
 })
 export default createReducer(Map(), {

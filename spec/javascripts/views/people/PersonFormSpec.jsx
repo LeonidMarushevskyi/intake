@@ -7,11 +7,13 @@ describe('PersonForm', () => {
     personId = '123',
     roles,
     roleOptions,
+    legacySourceDescription,
   }) {
     const props = {
       personId,
       roles,
       roleOptions,
+      legacySourceDescription,
     }
     return shallow(<PersonForm {...props}/>)
   }
@@ -20,6 +22,14 @@ describe('PersonForm', () => {
     const cardBody = renderPersonForm({})
       .find('.card-body')
     expect(cardBody.exists()).toEqual(true)
+  })
+
+  it('renders the legacySourceDescription', () => {
+    const legacySource = renderPersonForm({
+      legacySourceDescription: 'from some legacy source',
+    }).find('.c-dark-grey.double-gap-top')
+    expect(legacySource.exists()).toEqual(true)
+    expect(legacySource.text()).toContain('from some legacy source')
   })
 
   it('renders the participants role in a multiselect', () => {
