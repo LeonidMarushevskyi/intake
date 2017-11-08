@@ -72,8 +72,8 @@ describe('ReferralView', () => {
 
     it('renders a allegations and disposition for each person', () => {
       const peopleAndRoles = [
-        {allegations: 'allegations one', disposition: 'pending'},
-        {allegations: 'allegations two', disposition: 'not pending'},
+        {allegations: 'allegations one', disposition: '(pending)'},
+        {allegations: 'allegations two', disposition: '(not pending)'},
       ]
       const component = renderReferralView({peopleAndRoles})
       expect(component.find('.people-and-roles').find('tbody tr').at(0).find('td.allegations.disposition').text()).toEqual('allegations one (pending)')
