@@ -92,8 +92,7 @@ feature 'Show Screening' do
     end
   end
 
-  context 'showing participant with approximate age',
-    pending: 'until person card refactor complete' do
+  context 'showing participant with approximate age' do
     approximate_participant = FactoryGirl.create(
       :participant,
       date_of_birth: nil,
