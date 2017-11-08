@@ -31,7 +31,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const {toggleMode} = ownProps
 
   const onCancel = () => {
-    dispatch(resetFieldValues(screening))
+    const {safety_alerts, safety_information} = screening
+    dispatch(resetFieldValues({safety_alerts, safety_information}))
     toggleMode()
   }
 

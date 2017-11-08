@@ -1,15 +1,11 @@
-import * as actions from 'actions/workerSafetyFormActions'
+import {resetFieldValues, setField} from 'actions/workerSafetyFormActions'
 import {isFSA} from 'flux-standard-action'
 
 describe('workerSafetyFormActions', () => {
-  const actionNames = Object.keys(actions)
-  const actionFuncs = actionNames.filter((actionName) => (
-    typeof (actions[actionName]) === 'function'
-  ))
-  actionFuncs.forEach((actionName) => {
-    it(`${actionName} is FSA compliant`, () => {
-      const action = actions[actionName]
-      expect(isFSA(action())).toEqual(true)
-    })
+  it('resetFieldValues is FSA compliant', () => {
+    expect(isFSA(resetFieldValues({safety_alerts: [], safety_information: ''}))).toBe(true)
+  })
+  it('setField is FSA compliant', () => {
+    expect(isFSA(setField('field', 'value'))).toBe(true)
   })
 })
