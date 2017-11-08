@@ -7,15 +7,6 @@ describe('IncidentInformationCardView', () => {
   let component
   const props = {
     screening: Immutable.fromJS({
-      incident_date: '2006-01-21',
-      incident_county: 'alpine',
-      address: {
-        street_address: '1500 7th St',
-        city: 'Sacramento',
-        state: 'CA',
-        zip: '95814',
-      },
-      location_type: 'Juvenile Detention',
     }),
     errors: Immutable.Map(),
     editable: true,
@@ -45,18 +36,18 @@ describe('IncidentInformationCardView', () => {
       it('renders the incident show card', () => {
         expect(component.find('Connect(IncidentInformationShow)').length).toEqual(1)
       })
-
-      it('passes errors to the edit view', () => {
-        expect(component.find('Connect(IncidentInformationShow)').props().errors).toEqual({})
-      })
     })
-  })
 
-  describe('onBlur', () => {
-    it('adds the proper field to the list of fields to display errors for', () => {
-      const component = shallow(<IncidentInformationCardView {...props} mode={'edit'}/>)
-      component.instance().onBlur('incident_date')
-      expect(component.state().displayErrorsFor.toJS()).toEqual(['incident_date'])
+    describe('when mode is set to edit', () => {
+      beforeEach(() => {
+        component = shallow(<IncidentInformationCardView {...props} mode='edit'/>)
+      })
+      it('renders the incident edit card', () => {
+        expect(component.find('Connect(IncidentInformationForm)').length).toEqual(1)
+      })
+      it('passes errors to the edit view', () => {
+        expect(component.find('Connect(IncidentInformationForm)').props().errors).toEqual({})
+      })
     })
   })
 
