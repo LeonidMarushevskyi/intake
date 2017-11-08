@@ -1,4 +1,5 @@
 import PersonCardContainer from 'containers/screenings/PersonCardContainer'
+import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -62,6 +63,7 @@ export default class ParticipantCardView extends React.Component {
   render() {
     const {mode} = this.state
     const {participant} = this.props
+    const personId = participant.get('id')
 
     return (
       <PersonCardContainer
@@ -72,7 +74,7 @@ export default class ParticipantCardView extends React.Component {
           <p>Edit placeholder</p>
         }
         show={
-          <p>Show placeholder</p>
+          <PersonPhoneNumbersContainer personId={personId} />
         }
       />
     )
