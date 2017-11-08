@@ -27,6 +27,7 @@ describe('Store', () => {
       counties: [],
       countyAgencies: [],
       crossReportForm: {},
+      incidentInformationForm: {},
       investigation: {},
       involvements: [],
       locations: [],
@@ -56,6 +57,7 @@ describe('Store', () => {
       name: 'Mock screening',
       participants: [{id: '2', legacy_id: '3', screening_id: '1'}],
       allegations: [],
+      address: {},
     })
     const participants = screening.get('participants')
     const action = fetchScreeningSuccess(screening.toJS())
