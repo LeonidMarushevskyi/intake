@@ -11,6 +11,8 @@ describe('PersonForm', () => {
     firstName,
     middleName,
     lastName,
+    nameSuffix,
+    nameSuffixOptions = [],
   }) {
     const props = {
       personId,
@@ -20,6 +22,8 @@ describe('PersonForm', () => {
       firstName,
       middleName,
       lastName,
+      nameSuffix,
+      nameSuffixOptions,
     }
     return shallow(<PersonForm {...props}/>)
   }
@@ -82,5 +86,22 @@ describe('PersonForm', () => {
       .find('InputField[label="Last Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample last name')
+  })
+
+  it('renders the suffix field', () => {
+    const field = renderPersonForm({
+      nameSuffix: 'Blah',
+      nameSuffixOptions: [
+        {value: '1'},
+        {value: '2'},
+        {value: '3'},
+      ]
+    }).find('SelectField[label="Suffix"]')
+    expect(field.exists()).toEqual(true)
+    expect(field.props().value).toEqual('Blah')
+    expect(field.childAt(0).props().value).toEqual('')
+    expect(field.childAt(1).props().value).toEqual('1')
+    expect(field.childAt(2).props().value).toEqual('2')
+    expect(field.childAt(3).props().value).toEqual('3')
   })
 })

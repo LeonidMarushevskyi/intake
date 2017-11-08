@@ -2,12 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import InputField from 'common/InputField'
+import SelectField from 'common/SelectField'
 
 const PersonForm = ({
   firstName,
   lastName,
   legacySourceDescription,
   middleName,
+  nameSuffix,
+  nameSuffixOptions,
   personId,
   roleOptions,
   roles,
@@ -58,6 +61,17 @@ const PersonForm = ({
         value={lastName}
       />
     </div>
+    <div className='row'>
+      <SelectField
+        gridClassName='col-md-4'
+        id='name_suffix'
+        label='Suffix'
+        value={nameSuffix}
+      >
+        <option key='' value='' />
+        {nameSuffixOptions.map(({label, value}) => <option key={value} value={value}>{label}</option>)}
+      </SelectField>
+    </div>
   </div>
 )
 PersonForm.propTypes = {
@@ -65,6 +79,8 @@ PersonForm.propTypes = {
   lastName: PropTypes.string,
   legacySourceDescription: PropTypes.string,
   middleName: PropTypes.string,
+  nameSuffix: PropTypes.string,
+  nameSuffixOptions: PropTypes.array,
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
   roles: PropTypes.array,

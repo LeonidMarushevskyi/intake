@@ -16,6 +16,7 @@ describe('peopleFormReducer', () => {
           first_name: 'first name one',
           middle_name: 'middle name one',
           last_name: 'last name one',
+          name_suffix: 'name suffix one',
         }, {
           id: 'participant_two',
           roles: ['c'],
@@ -23,6 +24,7 @@ describe('peopleFormReducer', () => {
           first_name: 'first name two',
           middle_name: 'middle name two',
           last_name: 'last name two',
+          name_suffix: 'name suffix two',
         }],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
@@ -33,6 +35,7 @@ describe('peopleFormReducer', () => {
             first_name: {value: 'first name one'},
             middle_name: {value: 'middle name one'},
             last_name: {value: 'last name one'},
+            name_suffix: {value: 'name suffix one'},
           },
           participant_two: {
             roles: {value: ['c']},
@@ -40,6 +43,7 @@ describe('peopleFormReducer', () => {
             first_name: {value: 'first name two'},
             middle_name: {value: 'middle name two'},
             last_name: {value: 'last name two'},
+            name_suffix: {value: 'name suffix two'},
           },
         })
       )
