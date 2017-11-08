@@ -9,7 +9,7 @@ describe('ScreeningDecisionForm', () => {
     additionalInformation = {},
     decision = {},
     decisionOptions = [],
-    decisionDetail = {},
+    decisionDetail = {label: ''},
     decisionDetailOptions = [],
     restrictionRationale = {},
     ...options

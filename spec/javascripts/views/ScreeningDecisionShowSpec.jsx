@@ -7,7 +7,7 @@ describe('ScreeningDecisionShow', () => {
     accessRestriction = {},
     additionalInformation = {},
     decision = {},
-    decisionDetail = {},
+    decisionDetail = {label: ''},
     restrictionRationale = {},
     ...options
   }) => {
