@@ -27,10 +27,7 @@ describe('Participant card view', () => {
       const participant = Immutable.fromJS({id: '5', first_name: 'Tony', roles: []})
       const header = shallow(<ParticipantCardView participant={participant} mode='show' editable={true}/>)
       const showContainer = header.find('Connect(PersonCard)').props().show
-      expect(showContainer.props.children).toEqual([
-        jasmine.objectContaining({props: {personId: '5'}}),
-        jasmine.objectContaining({props: {personId: '5'}}),
-      ])
+      expect(showContainer.props.children.length).toEqual(3)
     })
 
     describe('#toggleMode', () => {

@@ -1,6 +1,7 @@
 import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
 import PersonShowContainer from 'containers/screenings/PersonShowContainer'
+import PersonAddressesContainer from 'containers/screenings/PersonAddressesContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -76,6 +77,7 @@ export default class ParticipantCardView extends React.Component {
           <div className='card-body'>
             <PersonShowContainer personId={personId} />
             <PersonPhoneNumbersContainer personId={personId} />
+            <PersonAddressesContainer personId={personId} />
           </div>
         }
       />

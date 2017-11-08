@@ -5,15 +5,7 @@ import nameFormatter from 'utils/nameFormatter'
 import ssnFormatter from 'utils/ssnFormatter'
 import {dateFormatter} from 'utils/dateFormatter'
 import {flagPrimaryLanguage} from 'common/LanguageInfo'
-
-const phoneNumberFormatter = (phoneNumber) => {
-  if (phoneNumber) {
-    // eslint-disable-next-line no-magic-numbers
-    return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
-  } else {
-    return ''
-  }
-}
+import US_STATE from 'enums/USState'
 
 export const getFormattedPersonInformationSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
@@ -44,12 +36,40 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
   })
 }
 
+const formattedPhoneNumber = (phoneNumber) => {
+  if (phoneNumber) {
+    // eslint-disable-next-line no-magic-numbers
+    return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
+  } else {
+    return ''
+  }
+}
+
 export const getPersonFormattedPhoneNumbersSelector = (state, personId) => (
   state.get('participants', List()).find((person) => person.get('id') === personId)
     .get('phone_numbers', List()).map((phoneNumber) => (
       Map({
-        number: phoneNumberFormatter(phoneNumber.get('number')),
+        number: formattedPhoneNumber(phoneNumber.get('number')),
         type: phoneNumber.get('type'),
+      })
+    )
+    )
+)
+
+const formattedState = (stateCode) => {
+  const state = US_STATE.find((state) => state.code === stateCode)
+  return state ? state.name : ''
+}
+
+export const getPersonFormattedAddressesSelector = (state, personId) => (
+  state.get('participants', List()).find((person) => person.get('id') === personId)
+    .get('addresses', List()).map((address) => (
+      Map({
+        street: address.get('street_address'),
+        city: address.get('city'),
+        state: formattedState(address.get('state')),
+        zip: address.get('zip'),
+        type: address.get('type'),
       })
     )
     )
