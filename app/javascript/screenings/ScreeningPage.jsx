@@ -1,4 +1,3 @@
-import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
@@ -274,19 +273,8 @@ export class ScreeningPage extends React.Component {
               screening={mergedScreening}
             />
           }
-          {
-            releaseTwoInactive &&
-              <AllegationsCardView
-                required={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
-                {...cardCallbacks}
-                editable={editable}
-                mode={mode}
-              />
-          }
-          {
-            releaseTwoInactive &&
-            <RelationshipsCardContainer />
-          }
+          {releaseTwoInactive && <AllegationsCardView mode={mode} />}
+          {releaseTwoInactive && <RelationshipsCardContainer />}
           {
             releaseTwoInactive &&
               <WorkerSafetyCardView
@@ -296,20 +284,8 @@ export class ScreeningPage extends React.Component {
                 screening={mergedScreening}
               />
           }
-          <HistoryOfInvolvementContainer
-            empty={<EmptyHistory />}
-            notEmpty={<HistoryTableContainer />}
-          />
-          {
-            releaseTwoInactive &&
-              <CrossReportCardView
-                {...cardCallbacks}
-                crossReports={mergedScreening.get('cross_reports')}
-                editable={editable}
-                actions={this.props.actions}
-                mode={mode}
-              />
-          }
+          <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
+          {releaseTwoInactive && <CrossReportCardView editable={editable} mode={mode} />}
           {releaseTwoInactive && <DecisionCardView mode={mode}/>}
           {
             releaseTwoInactive &&
