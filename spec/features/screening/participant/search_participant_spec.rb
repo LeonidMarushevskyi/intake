@@ -3,37 +3,6 @@
 require 'rails_helper'
 require 'spec_helper'
 require 'feature/testing'
-feature 'searching a person' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
-  before do
-    stub_request(
-      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json, status: 200))
-    stub_empty_relationships_for_screening(existing_screening)
-    stub_empty_history_for_screening(existing_screening)
-    visit edit_screening_path(id: existing_screening.id)
-    stub_request(
-      :get,
-      intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa'))
-    ).and_return(json_body([].to_json, status: 200))
-  end
-
-  scenario 'I search for a person' do
-    within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'aa', skip_select: true
-    end
-
-    expect(
-      a_request(
-        :get,
-        intake_api_url(
-          ExternalRoutes.intake_api_people_search_v2_path(search_term: 'aa')
-        )
-      )
-    ).to have_been_made
-  end
-end
-
 feature 'searching a participant in autocompleter' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:date_of_birth) { 15.years.ago.to_date }
