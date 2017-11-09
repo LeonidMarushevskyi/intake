@@ -371,8 +371,7 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'canceling edits for a screening participant',
-    pending: 'until person card refactor complete' do
+  scenario 'canceling edits for a screening participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
