@@ -11,6 +11,10 @@ export const getPeopleWithEditsSelector = createSelector(
     middle_name: person.getIn(['middle_name', 'value']),
     last_name: person.getIn(['last_name', 'value']),
     name_suffix: person.getIn(['name_suffix', 'value']),
+    phone_numbers: person.get('phone_numbers', List()).map((phoneNumber) => Map({
+      number: phoneNumber.getIn(['number', 'value']),
+      type: phoneNumber.getIn(['type', 'value']),
+    })),
     roles: person.getIn(['roles', 'value']),
     ssn: person.getIn(['ssn', 'value']),
   }))
