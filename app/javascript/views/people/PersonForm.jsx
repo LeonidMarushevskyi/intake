@@ -48,7 +48,7 @@ const PersonForm = ({
         id='first_name'
         label='First Name'
         maxLength='64'
-        value={firstName}
+        value={firstName || ''}
         onChange={({target: {value}}) => onChange('first_name', value)}
       />
       <InputField
@@ -56,7 +56,7 @@ const PersonForm = ({
         id='middle_name'
         label='Middle Name'
         maxLength='64'
-        value={middleName}
+        value={middleName || ''}
         onChange={({target: {value}}) => onChange('middle_name', value)}
       />
       <InputField
@@ -64,7 +64,7 @@ const PersonForm = ({
         id='last_name'
         label='Last Name'
         maxLength='64'
-        value={lastName}
+        value={lastName || ''}
         onChange={({target: {value}}) => onChange('last_name', value)}
       />
     </div>
@@ -85,7 +85,7 @@ const PersonForm = ({
         label='Social security number'
         mask='111-11-1111'
         placeholder='___-__-____'
-        value={ssn}
+        value={ssn || ''}
         onChange={({target: {value}}) => onChange('ssn', value)}
       />
     </div>
