@@ -75,10 +75,11 @@ export const getPersonAddressesSelector = (state, personId) => (
 )
 export const getPersonDemographicsSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || fromJS({})
+  const approximateAgeIsDisabled = Boolean(person.get('date_of_birth'))
   return fromJS({
-    approximateAge: person.get('approximate_age'),
-    approximateAgeIsDisabled: Boolean(person.get('date_of_birth')),
-    approximateAgeUnit: person.get('approximate_age_units'),
+    approximateAge: approximateAgeIsDisabled ? undefined : person.get('approximate_age'),
+    approximateAgeIsDisabled: approximateAgeIsDisabled,
+    approximateAgeUnit: approximateAgeIsDisabled ? 'years' : person.get('approximate_age_units'),
     approximateAgeUnitOptions: formatEnums(APPROXIMATE_AGE_UNITS),
     dateOfBirth: person.get('date_of_birth'),
     gender: person.get('gender'),

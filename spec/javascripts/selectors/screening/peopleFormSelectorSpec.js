@@ -291,6 +291,20 @@ describe('peopleFormSelectors', () => {
         .toEqual('13/0/-514')
     })
 
+    it('disables and clears approximate age data if date or birth is defiend', () => {
+      const participants = [{
+        id: '1',
+        date_of_birth: '13/0/-514A',
+        approximate_age: '1',
+        approximate_age_units: 'nanosecond',
+      }]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAgeUnit'))
+        .toEqual('years')
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAge'))
+        .toBe(undefined)
+    })
+
     it('includes the gender for the given person', () => {
       const participants = [{id: '1', gender: 'known'}]
       const state = fromJS({participants})
