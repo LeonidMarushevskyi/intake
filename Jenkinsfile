@@ -39,17 +39,6 @@ node('Slave') {
                     sh "make publish"
                 }
             }
-
-            stage('Deploy') {
-                curStage = 'Deploy'
-                sh "printf \$(git rev-parse --short HEAD) > tag.tmp"
-                def imageTag = readFile 'tag.tmp'
-                build job: DEPLOY_JOB, parameters: [[
-                    $class: 'StringParameterValue',
-                    name: 'IMAGE_TAG',
-                    value: 'cwds/intake:' + imageTag
-                ]]
-            }
         }
     }
     catch (e) {
