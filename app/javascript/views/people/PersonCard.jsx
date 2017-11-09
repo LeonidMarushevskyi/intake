@@ -25,16 +25,18 @@ const PersonCard = ({
       showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
       title={personName}
     />
-    {mode === 'show' && show}
-    {mode === 'edit' && edit}
-    {mode === 'edit' &&
-      <div className='row'>
-        <div className='centered'>
-          <button className='btn btn-primary' onClick={onSave}>Save</button>
-          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+    <div className='card-body'>
+      {mode === 'show' && show}
+      {mode === 'edit' && edit}
+      {mode === 'edit' &&
+        <div className='row'>
+          <div className='centered'>
+            <button className='btn btn-primary' onClick={onSave}>Save</button>
+            <button className='btn btn-default' onClick={onCancel}>Cancel</button>
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 )
 

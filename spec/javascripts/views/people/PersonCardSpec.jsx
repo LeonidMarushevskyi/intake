@@ -87,7 +87,7 @@ describe('PersonCard', () => {
             show={<p>Showing</p>}
           />
         )
-        expect(component.children('p').at(0).text()).toEqual('Showing')
+        expect(component.find('.card-body').children('p').at(0).text()).toEqual('Showing')
       })
       it('does not render save and cancel buttons', () => {
         const component = renderPersonCard({mode: 'show'})
@@ -139,7 +139,7 @@ describe('PersonCard', () => {
             show={<p>Showing</p>}
           />
         )
-        expect(component.children('p').at(0).text()).toEqual('Editing')
+        expect(component.find('.card-body').children('p').at(0).text()).toEqual('Editing')
       })
       it('does render save and cancel buttons', () => {
         const onSave = jasmine.createSpy('onSave')
