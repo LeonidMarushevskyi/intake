@@ -7,6 +7,7 @@ import {
   getAddressTypeOptionsSelector,
   getPersonAddressesSelector,
   getStateOptionsSelector,
+  getPersonDemographicsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -236,6 +237,107 @@ describe('peopleFormSelectors', () => {
           type: 'Home',
         }]
       ))
+    })
+  })
+
+  describe('getPersonDemographicsSelector', () => {
+    it('returns a blank person when person does not exist', () => {
+      const participants = [{id: '1'}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '2').toJS()).toEqual({
+        approximateAge: undefined,
+        approximateAgeIsDisabled: false,
+        approximateAgeUnit: undefined,
+        approximateAgeUnitOptions: jasmine.any(Array),
+        dateOfBirth: undefined,
+        gender: undefined,
+        genderOptions: jasmine.any(Array),
+        languageOptions: jasmine.any(Array),
+        languages: [],
+        personId: '2',
+      })
+    })
+
+    it('includes the approximate age for the given person', () => {
+      const participants = [{id: '1', approximate_age: '1'}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAge'))
+        .toEqual('1')
+    })
+
+    it('includes the approximate age unit for the given person', () => {
+      const participants = [{id: '1', approximate_age_units: 'year'}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAgeUnit'))
+        .toEqual('year')
+    })
+
+    it('includes the approximate age unit options', () => {
+      const participants = []
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAgeUnitOptions'))
+        .toEqualImmutable(fromJS([
+          {label: 'Days', value: 'days'},
+          {label: 'Weeks', value: 'weeks'},
+          {label: 'Months', value: 'months'},
+          {label: 'Years', value: 'years'},
+        ]))
+    })
+
+    it('includes the date of birth for the given person', () => {
+      const participants = [{id: '1', date_of_birth: '13/0/-514'}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('dateOfBirth'))
+        .toEqual('13/0/-514')
+    })
+
+    it('includes the gender for the given person', () => {
+      const participants = [{id: '1', gender: 'known'}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('gender'))
+        .toEqual('known')
+    })
+
+    it('includes the gender options', () => {
+      const participants = []
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('genderOptions'))
+        .toEqualImmutable(fromJS([
+          {label: '', value: ''},
+          {label: 'Male', value: 'male'},
+          {label: 'Female', value: 'female'},
+          {label: 'Unknown', value: 'unknown'},
+        ]))
+    })
+
+    it('includes the languages for the given person', () => {
+      const participants = [{id: '1', languages: ['Ω', 'ß']}]
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('languages'))
+        .toEqualImmutable(fromJS(['Ω', 'ß']))
+    })
+
+    it('includes the languages options', () => {
+      const participants = []
+      const state = fromJS({participants})
+      expect(getPersonDemographicsSelector(state, '1').get('languageOptions').toJS())
+        .toContain({label: 'English', value: 'English'})
+    })
+
+    describe('approximateAgeIsDisabled', () => {
+      it('is set to false if the given person does not have a date of birth', () => {
+        const participants = [{id: '1'}]
+        const state = fromJS({participants})
+        expect(getPersonDemographicsSelector(state, '1').get('approximateAgeIsDisabled'))
+          .toBe(false)
+      })
+
+      it('is set to true if the given person has a date of birth', () => {
+        const participants = [{id: '1', date_of_birth: '13/0/-514'}]
+        const state = fromJS({participants})
+        expect(getPersonDemographicsSelector(state, '1').get('approximateAgeIsDisabled'))
+          .toBe(true)
+      })
     })
   })
 })
