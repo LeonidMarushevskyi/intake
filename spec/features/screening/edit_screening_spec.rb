@@ -53,7 +53,7 @@ feature 'Edit Screening' do
       stub_empty_relationships_for_screening(existing_screening)
       stub_empty_history_for_screening(existing_screening)
       visit edit_screening_path(id: existing_screening.id)
-      expect(page).to have_content 'Edit Screening #My Bad!'
+      expect(page.find('h1', text: 'Edit Screening #My Bad!')).to be_truthy
     end
 
     scenario 'edit an existing screening' do
