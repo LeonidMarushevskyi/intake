@@ -67,7 +67,7 @@ FactoryGirl.define do
       ssn { nil }
       date_of_birth { nil }
       languages { [] }
-      legacy_descriptor nil
+      legacy_descriptor { LegacyDescriptor.new }
     end
 
     trait :reporter do

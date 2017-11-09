@@ -129,10 +129,6 @@ feature 'Edit Screening' do
   end
 
   scenario 'creating an unknown participant when autocompleter contains results' do
-    pending <<~END
-      because fill_in_autocompleter does not consistenly find the result even though it shows up
-      I think it's related to the lines that do field.click unless field.base.click
-    END
     created_participant_unknown = FactoryGirl.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
