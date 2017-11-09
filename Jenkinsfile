@@ -32,23 +32,12 @@ node('Slave') {
 
             stage('Publish') {
                 curStage = 'Publish'
-                sh "make tag latest \$(git rev-parse --short HEAD)"
+                sh "make tag latest.redux-refactor \$(git rev-parse --short HEAD).redux-refactor"
                 withEnv(["DOCKER_USER=${DOCKER_USER}",
                          "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
                     sh "make login"
                     sh "make publish"
                 }
-            }
-
-            stage('Deploy') {
-                curStage = 'Deploy'
-                sh "printf \$(git rev-parse --short HEAD) > tag.tmp"
-                def imageTag = readFile 'tag.tmp'
-                build job: DEPLOY_JOB, parameters: [[
-                    $class: 'StringParameterValue',
-                    name: 'IMAGE_TAG',
-                    value: 'cwds/intake:' + imageTag
-                ]]
             }
         }
     }
