@@ -32,7 +32,7 @@ node('Slave') {
 
             stage('Publish') {
                 curStage = 'Publish'
-                sh "make tag latest \$(git rev-parse --short HEAD)"
+                sh "make tag latest.redux-refactor \$(git rev-parse --short HEAD).redux-refactor"
                 withEnv(["DOCKER_USER=${DOCKER_USER}",
                          "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
                     sh "make login"
