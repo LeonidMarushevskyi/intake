@@ -13,6 +13,11 @@ const getCasesSelector = createSelector(
   (hoi) => hoi.get('cases', List())
 )
 
+const formatDisposition = (disposition) => {
+  const formattedDisposition = disposition ? `(${ disposition })` : ''
+  return formattedDisposition
+}
+
 export const getFormattedCasesSelector = createSelector(
   getCasesSelector,
   (cases) => cases.map((hoiCase) => {
@@ -57,7 +62,7 @@ export const getFormattedReferralsSelector = createSelector(
         name_suffix: allegation.get('perpetrator_name_suffix'),
         name_default: ''}),
       allegations: allegation.get('allegation_description', ''),
-      disposition: allegation.get('disposition_description', ''),
+      disposition: formatDisposition(allegation.get('disposition_description')),
     })))
     return fromJS({
       dateRange: dateRangeFormatter(referral.toJS()),
