@@ -97,6 +97,39 @@ feature 'Edit Person' do
       ).to have_been_made
     end
   end
+
+  context 'editing and saving person phone numbers' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(marge.id) do
+        within '.card-body' do
+          expect(page).to have_field('Phone Number', with: '(123)456-7890')
+          expect(page).to have_field('Phone Number Type', with: phone_number.type)
+
+          click_button 'Add new phone number'
+
+          within all('.row.list-item').last do
+            fill_in 'Phone Number', with: '9876543210'
+            select 'Cell', from: 'Phone Number Type'
+          end
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            'phone_numbers' => array_including(
+              hash_including('number' => phone_number.number, 'type' => phone_number.type),
+              hash_including('number' => '(987)654-3210', 'type' => 'Cell')
+            )
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
   scenario 'editing and saving a participant for a screening saves only the relevant participant',
     pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)

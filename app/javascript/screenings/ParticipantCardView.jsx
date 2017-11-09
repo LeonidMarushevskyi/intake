@@ -1,5 +1,6 @@
 import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
+import PersonPhoneNumbersFormContainer from 'containers/screenings/PersonPhoneNumbersFormContainer'
 import PersonShowContainer from 'containers/screenings/PersonShowContainer'
 import PersonAddressesContainer from 'containers/screenings/PersonAddressesContainer'
 import PersonFormContainer from 'containers/screenings/PersonFormContainer'
@@ -74,6 +75,7 @@ export default class ParticipantCardView extends React.Component {
         edit={
           <div className='card-body'>
             <PersonFormContainer personId={personId} />
+            <PersonPhoneNumbersFormContainer personId={personId} />
           </div>
         }
         show={

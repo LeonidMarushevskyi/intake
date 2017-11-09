@@ -1,7 +1,22 @@
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
-import {SET_PEOPLE_FORM_FIELD} from 'actions/peopleFormActions'
+import {
+  SET_PEOPLE_FORM_FIELD,
+  ADD_PEOPLE_FORM_PHONE_NUMBER,
+  DELETE_PEOPLE_FORM_PHONE_NUMBER,
+} from 'actions/peopleFormActions'
+
+const buildPhoneNumbers = (phoneNumbers) => {
+  if (phoneNumbers) {
+    return phoneNumbers.map(({number, type}) => ({
+      number: {value: number},
+      type: {value: type},
+    }))
+  } else {
+    return []
+  }
+}
 
 const buildPerson = ({
   first_name,
@@ -9,6 +24,7 @@ const buildPerson = ({
   legacy_descriptor,
   middle_name,
   name_suffix,
+  phone_numbers,
   roles,
   ssn,
 }) => fromJS({
@@ -17,6 +33,7 @@ const buildPerson = ({
   legacy_descriptor: {value: legacy_descriptor},
   middle_name: {value: middle_name},
   name_suffix: {value: name_suffix},
+  phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
   ssn: {value: ssn},
 })
@@ -31,4 +48,13 @@ export default createReducer(Map(), {
     }
   },
   [SET_PEOPLE_FORM_FIELD]: (state, {payload: {personId, fieldSet, value}}) => state.setIn([personId, ...fieldSet, 'value'], fromJS(value)),
+  [ADD_PEOPLE_FORM_PHONE_NUMBER]: (state, {payload: {personId}}) => {
+    const currentPhones = state.getIn([personId, 'phone_numbers'])
+    const newPhone = fromJS({number: {value: null}, type: {value: null}})
+    return state.setIn([personId, 'phone_numbers'], currentPhones.push(newPhone))
+  },
+  [DELETE_PEOPLE_FORM_PHONE_NUMBER]: (state, {payload: {personId, phoneIndex}}) => {
+    const currentPhones = state.getIn([personId, 'phone_numbers'])
+    return state.setIn([personId, 'phone_numbers'], currentPhones.delete(phoneIndex))
+  },
 })
