@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {
+  getFilteredPersonRolesSelector,
   getPeopleWithEditsSelector,
   getPersonPhoneNumbersSelector,
   getPhoneNumberTypeOptions,
@@ -76,6 +77,45 @@ describe('peopleFormSelectors', () => {
           ssn: null,
         },
       }))
+    })
+  })
+  describe('getFilteredPersonRolesSelector', () => {
+    const personId = 'one'
+    describe('when a reporter role is arleady selected', () => {
+      const state = fromJS({
+        peopleForm: {
+          [personId]: {roles: {value: ['Mandated Reporter']}},
+        },
+      })
+      it('returns all roles with reporter roles disabled', () => {
+        expect(getFilteredPersonRolesSelector(state, personId)).toEqualImmutable(fromJS([
+          {label: 'Victim', value: 'Victim', disabled: false},
+          {label: 'Perpetrator', value: 'Perpetrator', disabled: false},
+          {label: 'Family Member', value: 'Family Member', disabled: false},
+          {label: 'Collateral', value: 'Collateral', disabled: false},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: true},
+          {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: true},
+          {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: true},
+        ]))
+      })
+    })
+    describe('when no reporter roles are selected', () => {
+      const state = fromJS({
+        peopleForm: {
+          [personId]: {roles: {value: ['Victim']}},
+        },
+      })
+      it('returns all roles not disabled', () => {
+        expect(getFilteredPersonRolesSelector(state, personId)).toEqualImmutable(fromJS([
+          {label: 'Victim', value: 'Victim', disabled: false},
+          {label: 'Perpetrator', value: 'Perpetrator', disabled: false},
+          {label: 'Family Member', value: 'Family Member', disabled: false},
+          {label: 'Collateral', value: 'Collateral', disabled: false},
+          {label: 'Mandated Reporter', value: 'Mandated Reporter', disabled: false},
+          {label: 'Non-mandated Reporter', value: 'Non-mandated Reporter', disabled: false},
+          {label: 'Anonymous Reporter', value: 'Anonymous Reporter', disabled: false},
+        ]))
+      })
     })
   })
 

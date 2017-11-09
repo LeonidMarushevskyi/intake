@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
+import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
 export const getPeopleSelector = (state) => state.get('peopleForm')
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
 
@@ -19,9 +20,7 @@ export const getPeopleWithEditsSelector = createSelector(
     ssn: person.getIn(['ssn', 'value']),
   }))
 )
-
 export const getPhoneNumberTypeOptions = () => fromJS(PHONE_NUMBER_TYPE.map((type) => ({value: type, label: type})))
-
 export const getPersonPhoneNumbersSelector = (state, personId) => (
   state.get('peopleForm', Map()).get(personId).get('phone_numbers', List()).map((phoneNumber) => (
     Map({
@@ -30,3 +29,11 @@ export const getPersonPhoneNumbersSelector = (state, personId) => (
     })
   ))
 )
+export const getFilteredPersonRolesSelector = (state, personId) => {
+  const selectedRoles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
+  const hasReporterRole = selectedRoles.some((role) => ROLE_TYPE_REPORTER.includes(role))
+  return fromJS([
+    ...ROLE_TYPE_NON_REPORTER.map((value) => ({label: value, value, disabled: false})),
+    ...ROLE_TYPE_REPORTER.map((value) => ({label: value, value, disabled: hasReporterRole})),
+  ])
+}
