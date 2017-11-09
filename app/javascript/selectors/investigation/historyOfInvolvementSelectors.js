@@ -12,6 +12,11 @@ export const getHistoryOfInvolvementSelector = createSelector(
   (investigation) => investigation.get('history_of_involvement') || Map()
 )
 
+const formatDisposition = (disposition) => {
+  const formattedDisposition = disposition ? `(${ disposition })` : ''
+  return formattedDisposition
+}
+
 const getCasesSelector = createSelector(
   getHistoryOfInvolvementSelector,
   (hoi) => hoi.get('cases', List())
@@ -61,7 +66,7 @@ export const getFormattedReferralsSelector = createSelector(
         name_suffix: allegation.get('perpetrator_name_suffix'),
         name_default: ''}),
       allegations: allegation.get('allegation_description', ''),
-      disposition: allegation.get('disposition_description', ''),
+      disposition: formatDisposition(allegation.get('disposition_description')),
     })))
     return fromJS({
       dateRange: dateRangeFormatter(referral.toJS()),

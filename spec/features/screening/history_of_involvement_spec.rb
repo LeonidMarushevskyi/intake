@@ -107,7 +107,6 @@ feature 'History card' do
           allegations: [
             {
               allegation_description: 'Severe Neglect',
-              disposition_description: 'Confirmed',
               perpetrator_first_name: 'Perpetrator2',
               perpetrator_last_name: 'p2LastName',
               victim_first_name: 'Victim2',
@@ -317,7 +316,8 @@ feature 'History card' do
               within allegation_rows[1] do
                 expect(page).to have_content('Victim2 v2LastName')
                 expect(page).to have_content('Perpetrator2 p2LastName')
-                expect(page).to have_content('Severe Neglect (Confirmed)')
+                expect(page).to have_content('Severe Neglect')
+                expect(page).to have_no_content('()')
               end
             end
 
@@ -453,7 +453,8 @@ feature 'History card' do
               within allegation_rows[1] do
                 expect(page).to have_content('Victim2 v2LastName')
                 expect(page).to have_content('Perpetrator2 p2LastName')
-                expect(page).to have_content('Severe Neglect (Confirmed)')
+                expect(page).to have_content('Severe Neglect')
+                expect(page).to have_no_content('()')
               end
             end
 
@@ -568,7 +569,8 @@ feature 'History card' do
                 within allegation_rows[1] do
                   expect(page).to have_content('Victim2 v2LastName')
                   expect(page).to have_content('Perpetrator2 p2LastName')
-                  expect(page).to have_content('Severe Neglect (Confirmed)')
+                  expect(page).to have_content('Severe Neglect')
+                  expect(page).to have_no_content('()')
                 end
               end
 

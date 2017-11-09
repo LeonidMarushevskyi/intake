@@ -200,7 +200,7 @@ describe('historyOfInvolvementSelectors', () => {
           victim: 'Sharon W.',
           perpetrator: 'Ricky W.',
           allegations: 'Sexual Abuse',
-          disposition: 'Substantiated',
+          disposition: '(Substantiated)',
         }]))
     })
 

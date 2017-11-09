@@ -22,8 +22,8 @@ import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import HistoryOfInvolvementContainer from 'containers/screening/HistoryOfInvolvementContainer'
-import HistoryTableContainer from 'containers/screening/HistoryTableContainer'
+import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
+import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 
 export class ScreeningPage extends React.Component {

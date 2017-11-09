@@ -33,7 +33,7 @@ const ReferralView = ({dateRange, referralId, status, notification, county, peop
                   <tr key={index}>
                     <td className='victim'>{victim}</td>
                     <td className='perpetrator'>{perpetrator}</td>
-                    <td className='allegations disposition'>{allegations} ({disposition})</td>
+                    <td className='allegations disposition'>{allegations} {disposition}</td>
                   </tr>
                 ))
               }

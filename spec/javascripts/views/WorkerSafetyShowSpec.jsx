@@ -1,9 +1,20 @@
-import WorkerSafetyShow from 'views/workerSafety/WorkerSafetyShow'
+import WorkerSafetyShow from 'views/WorkerSafetyShow'
 import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('WorkerSafetyShow', () => {
-  function renderWorkerSafety(props) {
+  function renderWorkerSafety({
+    safetyAlerts,
+    safetyInformation,
+    showEdit = false,
+    toggleMode = jasmine.createSpy('toggleMode'),
+  }) {
+    const props = {
+      safetyAlerts,
+      safetyInformation,
+      showEdit,
+      toggleMode,
+    }
     return shallow(<WorkerSafetyShow {...props} />)
   }
 

@@ -1,4 +1,4 @@
-import WorkerSafetyForm from 'views/workerSafety/WorkerSafetyForm'
+import WorkerSafetyForm from 'views/WorkerSafetyForm'
 import {
   getAlertValuesSelector,
   getInformationValueSelector,
