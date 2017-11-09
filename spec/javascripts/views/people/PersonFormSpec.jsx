@@ -32,12 +32,6 @@ describe('PersonForm', () => {
     return shallow(<PersonForm {...props}/>)
   }
 
-  it('renders the card body', () => {
-    const cardBody = renderPersonForm({})
-      .find('.card-body')
-    expect(cardBody.exists()).toEqual(true)
-  })
-
   it('renders the legacySourceDescription', () => {
     const legacySource = renderPersonForm({
       legacySourceDescription: 'from some legacy source',
@@ -92,7 +86,7 @@ describe('PersonForm', () => {
     const onChange = jasmine.createSpy('onChange')
     renderPersonForm({firstName: 'a sample first name', onChange})
       .find('InputField[label="First Name"]')
-      .simulate('change', {target: {value:'my new name'}})
+      .simulate('change', {target: {value: 'my new name'}})
     expect(onChange).toHaveBeenCalledWith('first_name', 'my new name')
   })
 
@@ -107,7 +101,7 @@ describe('PersonForm', () => {
     const onChange = jasmine.createSpy('onChange')
     renderPersonForm({middleName: 'a sample middle name', onChange})
       .find('InputField[label="Middle Name"]')
-      .simulate('change', {target: {value:'my new name'}})
+      .simulate('change', {target: {value: 'my new name'}})
     expect(onChange).toHaveBeenCalledWith('middle_name', 'my new name')
   })
 
@@ -122,7 +116,7 @@ describe('PersonForm', () => {
     const onChange = jasmine.createSpy('onChange')
     renderPersonForm({lastName: 'a sample last name', onChange})
       .find('InputField[label="Last Name"]')
-      .simulate('change', {target: {value:'my new name'}})
+      .simulate('change', {target: {value: 'my new name'}})
     expect(onChange).toHaveBeenCalledWith('last_name', 'my new name')
   })
 
@@ -133,7 +127,7 @@ describe('PersonForm', () => {
         {value: '1'},
         {value: '2'},
         {value: '3'},
-      ]
+      ],
     }).find('SelectField[label="Suffix"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('Blah')
@@ -147,7 +141,7 @@ describe('PersonForm', () => {
     const onChange = jasmine.createSpy('onChange')
     renderPersonForm({onChange})
       .find('SelectField[label="Suffix"]')
-      .simulate('change', {target: {value:'my new suffix'}})
+      .simulate('change', {target: {value: 'my new suffix'}})
     expect(onChange).toHaveBeenCalledWith('name_suffix', 'my new suffix')
   })
 
@@ -163,7 +157,7 @@ describe('PersonForm', () => {
     const onChange = jasmine.createSpy('onChange')
     renderPersonForm({onChange})
       .find('MaskedInputField[label="Social security number"]')
-      .simulate('change', {target: {value:'111-11-1111'}})
+      .simulate('change', {target: {value: '111-11-1111'}})
     expect(onChange).toHaveBeenCalledWith('ssn', '111-11-1111')
   })
 })

@@ -18,7 +18,7 @@ const PersonForm = ({
   ssn,
   onChange,
 }) => (
-  <div className='card-body'>
+  <div>
     {
       Boolean(legacySourceDescription) &&
         <div className='row'>
@@ -38,7 +38,7 @@ const PersonForm = ({
           clearable={false}
           options={roleOptions}
           placeholder=''
-          onChange={(values) => onChange('roles', values.map(({value}) =>  value))}
+          onChange={(values) => onChange('roles', values.map(({value}) => value))}
         />
       </div>
     </div>
@@ -98,10 +98,10 @@ PersonForm.propTypes = {
   middleName: PropTypes.string,
   nameSuffix: PropTypes.string,
   nameSuffixOptions: PropTypes.array,
+  onChange: PropTypes.func,
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
   roles: PropTypes.array,
   ssn: PropTypes.string,
-  onChange: PropTypes.func,
 }
 export default PersonForm

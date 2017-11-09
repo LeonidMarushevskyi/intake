@@ -71,7 +71,11 @@ export default class ParticipantCardView extends React.Component {
         mode={mode}
         toggleMode={this.toggleMode}
         personId={personId}
-        edit={<PersonFormContainer personId={participant.get('id')} />}
+        edit={
+          <div className='card-body'>
+            <PersonFormContainer personId={personId} />
+          </div>
+        }
         show={
           <div className='card-body'>
             <PersonShowContainer personId={personId} />
