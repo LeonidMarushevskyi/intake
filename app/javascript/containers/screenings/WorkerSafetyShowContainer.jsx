@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 
 const mapStateToProps = (state, _ownProps) => (
   {
-    safetyAlerts: getAlertValuesSelector(state),
+    safetyAlerts: getAlertValuesSelector(state).toJS(),
     safetyInformation: getInformationValueSelector(state),
   }
 )
