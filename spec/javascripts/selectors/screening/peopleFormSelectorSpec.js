@@ -1,9 +1,12 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {
   getFilteredPersonRolesSelector,
   getPeopleWithEditsSelector,
   getPersonPhoneNumbersSelector,
   getPhoneNumberTypeOptions,
+  getAddressTypeOptionsSelector,
+  getPersonAddressesSelector,
+  getStateOptionsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -149,6 +152,60 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getPersonPhoneNumbersSelector(state, 'one')).toEqualImmutable(fromJS(
         [{number: '1234567890', type: 'Home'}]
+      ))
+    })
+  })
+
+  describe('getAddressTypeOptionsSelector', () => {
+    it('returns formatted options for phone types', () => {
+      expect(getAddressTypeOptionsSelector()).toEqualImmutable(fromJS([
+        {value: 'Common', label: 'Common'},
+        {value: 'Day Care', label: 'Day Care'},
+        {value: 'Home', label: 'Home'},
+        {value: 'Homeless', label: 'Homeless'},
+        {value: 'Other', label: 'Other'},
+        {value: 'Penal Institution', label: 'Penal Institution'},
+        {value: 'Permanent Mailing Address', label: 'Permanent Mailing Address'},
+        {value: 'Residence 2', label: 'Residence 2'},
+        {value: 'Work', label: 'Work'},
+      ]))
+    })
+  })
+
+  describe('getStateOptionsSelector', () => {
+    it('returns formatted options for phone types', () => {
+      expect(getStateOptionsSelector().first()).toEqualImmutable(Map({value: 'AL', label: 'Alabama'}))
+      expect(getStateOptionsSelector().last()).toEqualImmutable(Map({value: 'WY', label: 'Wyoming'}))
+    })
+  })
+
+  describe('getPersonAddressesSelector', () => {
+    it('returns the addresses for the person with the passed id', () => {
+      const peopleForm = {
+        one: {addresses: [{
+          street: {value: '1234 Nowhere Lane'},
+          city: {value: 'Somewhereville'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Home'},
+        }]},
+        two: {addresses: [{
+          street: {value: '9674 Somewhere Street'},
+          city: {value: 'Nowhereville'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Cell'},
+        }]},
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonAddressesSelector(state, 'one')).toEqualImmutable(fromJS(
+        [{
+          street: '1234 Nowhere Lane',
+          city: 'Somewhereville',
+          state: 'CA',
+          zip: '55555',
+          type: 'Home',
+        }]
       ))
     })
   })

@@ -4,6 +4,8 @@ import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
 export const getPeopleSelector = (state) => state.get('peopleForm')
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
+import ADDRESS_TYPE from 'enums/AddressType'
+import US_STATE from 'enums/USState'
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
@@ -32,6 +34,7 @@ export const getPersonPhoneNumbersSelector = (state, personId) => (
     })
   ))
 )
+
 export const getFilteredPersonRolesSelector = (state, personId) => {
   const selectedRoles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
   const hasReporterRole = selectedRoles.some((role) => ROLE_TYPE_REPORTER.includes(role))
@@ -40,3 +43,18 @@ export const getFilteredPersonRolesSelector = (state, personId) => {
     ...ROLE_TYPE_REPORTER.map((value) => ({label: value, value, disabled: hasReporterRole})),
   ])
 }
+
+export const getAddressTypeOptionsSelector = () => fromJS(ADDRESS_TYPE.map((type) => ({value: type, label: type})))
+export const getStateOptionsSelector = () => fromJS(US_STATE.map(({code, name}) => ({value: code, label: name})))
+
+export const getPersonAddressesSelector = (state, personId) => (
+  state.get('peopleForm', Map()).get(personId).get('addresses', List()).map((address) => (
+    Map({
+      street: address.getIn(['street', 'value']) || '',
+      city: address.getIn(['city', 'value']) || '',
+      state: address.getIn(['state', 'value']) || '',
+      zip: address.getIn(['zip', 'value']) || '',
+      type: address.getIn(['type', 'value']) || '',
+    })
+  ))
+)
