@@ -12,6 +12,7 @@ describe('peopleFormSelectors', () => {
 
   describe('getPeopleWithEditsSelector', () => {
     it('returns formated people object map', () => {
+      const screening = {id: '123456'}
       const peopleForm = {
         one: {
           first_name: {value: 'one'},
@@ -44,10 +45,11 @@ describe('peopleFormSelectors', () => {
           ssn: {value: null},
         },
       }
-      const state = fromJS({peopleForm})
+      const state = fromJS({peopleForm, screening})
       expect(getPeopleWithEditsSelector(state)).toEqualImmutable(fromJS({
         one: {
           id: 'one',
+          screening_id: '123456',
           first_name: 'one',
           middle_name: 'middle one',
           last_name: 'last one',
@@ -58,6 +60,7 @@ describe('peopleFormSelectors', () => {
         },
         two: {
           id: 'two',
+          screening_id: '123456',
           first_name: 'two',
           middle_name: 'middle two',
           last_name: 'last two',
@@ -68,6 +71,7 @@ describe('peopleFormSelectors', () => {
         },
         three: {
           id: 'three',
+          screening_id: '123456',
           first_name: 'three',
           middle_name: 'middle three',
           last_name: 'last three',
