@@ -1,7 +1,13 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
 import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
-import {setField, addPhone, deletePhone} from 'actions/peopleFormActions'
+import {
+  setField,
+  addAddress,
+  deleteAddress,
+  addPhone,
+  deletePhone,
+} from 'actions/peopleFormActions'
 import peopleFormReducer from 'reducers/peopleFormReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -13,6 +19,7 @@ describe('peopleFormReducer', () => {
       const action = fetchScreeningSuccess({
         participants: [{
           id: 'participant_one',
+          addresses: [],
           roles: ['a', 'b'],
           legacy_descriptor: 'legacy descriptor one',
           first_name: 'first name one',
@@ -23,6 +30,13 @@ describe('peopleFormReducer', () => {
           ssn: 'ssn one',
         }, {
           id: 'participant_two',
+          addresses: [{
+            street_address: '1234 Some Lane',
+            city: 'Somewhere',
+            state: 'CA',
+            zip: '55555',
+            type: 'Home',
+          }],
           roles: ['c'],
           legacy_descriptor: 'legacy descriptor two',
           first_name: 'first name two',
@@ -37,6 +51,7 @@ describe('peopleFormReducer', () => {
         fromJS({
           participant_one: {
             roles: {value: ['a', 'b']},
+            addresses: [],
             legacy_descriptor: {value: 'legacy descriptor one'},
             first_name: {value: 'first name one'},
             middle_name: {value: 'middle name one'},
@@ -47,6 +62,13 @@ describe('peopleFormReducer', () => {
           },
           participant_two: {
             roles: {value: ['c']},
+            addresses: [{
+              street: {value: '1234 Some Lane'},
+              city: {value: 'Somewhere'},
+              state: {value: 'CA'},
+              zip: {value: '55555'},
+              type: {value: 'Home'},
+            }],
             legacy_descriptor: {value: 'legacy descriptor two'},
             first_name: {value: 'first name two'},
             middle_name: {value: 'middle name two'},
@@ -142,6 +164,7 @@ describe('peopleFormReducer', () => {
       )
     })
   })
+
   describe('on CREATE_PERSON_COMPLETE', () => {
     const lastState = fromJS({
       participant_one: {
@@ -153,6 +176,7 @@ describe('peopleFormReducer', () => {
         name_suffix: {value: 'name suffix one'},
         ssn: {value: 'ssn one'},
         phone_numbers: [],
+        addresses: [],
       },
     })
     it('returns people form with the added person on success', () => {
@@ -166,6 +190,13 @@ describe('peopleFormReducer', () => {
         name_suffix: 'name suffix two',
         ssn: 'ssn two',
         phone_numbers: [{number: '1234567890', type: 'Home'}],
+        addresses: [{
+          street_address: '1234 Some Lane',
+          city: 'Somewhere',
+          state: 'CA',
+          zip: '55555',
+          type: 'Home',
+        }],
       }
       const action = createPersonSuccess(newPerson)
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(fromJS({
@@ -178,6 +209,7 @@ describe('peopleFormReducer', () => {
           name_suffix: {value: 'name suffix one'},
           ssn: {value: 'ssn one'},
           phone_numbers: [],
+          addresses: [],
         },
         participant_two: {
           roles: {value: ['c']},
@@ -191,12 +223,75 @@ describe('peopleFormReducer', () => {
             number: {value: '1234567890'},
             type: {value: 'Home'},
           }],
+          addresses: [{
+            street: {value: '1234 Some Lane'},
+            city: {value: 'Somewhere'},
+            state: {value: 'CA'},
+            zip: {value: '55555'},
+            type: {value: 'Home'},
+          }],
         },
       }))
     })
     it('returns the last person form state on failure', () => {
       const action = createPersonFailure()
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(lastState)
+    })
+  })
+
+  describe('on addAddress', () => {
+    it('adds a new empty address item for the given person id', () => {
+      const lastState = fromJS({
+        person_one: {addresses: []},
+        person_two: {addresses: []},
+      })
+      const action = addAddress('person_one')
+      expect(peopleFormReducer(lastState, action)).toEqualImmutable(
+        fromJS({
+          person_one: {addresses: [{
+            street: {value: null},
+            city: {value: null},
+            state: {value: null},
+            zip: {value: null},
+            type: {value: null},
+          }]},
+          person_two: {addresses: []},
+        })
+      )
+    })
+  })
+
+  describe('on deleteAddress', () => {
+    it('deletes the address for the given person id and index', () => {
+      const lastState = fromJS({
+        person_one: {addresses: [{
+          street: {value: '1234 Some Lane'},
+          city: {value: 'Somewhere'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Home'},
+        }]},
+        person_two: {addresses: [{
+          street: {value: '5678 No Street'},
+          city: {value: 'Nowhere'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Cell'},
+        }]},
+      })
+      const action = deleteAddress('person_one', 0)
+      expect(peopleFormReducer(lastState, action)).toEqualImmutable(
+        fromJS({
+          person_one: {addresses: []},
+          person_two: {addresses: [{
+            street: {value: '5678 No Street'},
+            city: {value: 'Nowhere'},
+            state: {value: 'CA'},
+            zip: {value: '55555'},
+            type: {value: 'Cell'},
+          }]},
+        })
+      )
     })
   })
 })
