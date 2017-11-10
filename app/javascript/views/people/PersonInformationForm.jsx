@@ -5,7 +5,7 @@ import InputField from 'common/InputField'
 import SelectField from 'common/SelectField'
 import MaskedInputField from 'common/MaskedInputField'
 
-const PersonForm = ({
+const PersonInformationForm = ({
   firstName,
   lastName,
   legacySourceDescription,
@@ -91,7 +91,7 @@ const PersonForm = ({
     </div>
   </div>
 )
-PersonForm.propTypes = {
+PersonInformationForm.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   legacySourceDescription: PropTypes.string,
@@ -104,4 +104,4 @@ PersonForm.propTypes = {
   roles: PropTypes.array,
   ssn: PropTypes.string,
 }
-export default PersonForm
+export default PersonInformationForm

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import PersonForm from 'views/people/PersonForm'
+import PersonInformationForm from 'views/people/PersonInformationForm'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import {Map} from 'immutable'
 import {getPeopleSelector, getFilteredPersonRolesSelector} from 'selectors/screening/peopleFormSelectors'
@@ -53,4 +53,4 @@ const mergeProps = ({
     onChange,
   }
 }
-export default connect(mapStateToProps, null, mergeProps)(PersonForm)
+export default connect(mapStateToProps, null, mergeProps)(PersonInformationForm)

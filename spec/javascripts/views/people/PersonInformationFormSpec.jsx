@@ -1,8 +1,8 @@
-import PersonForm from 'views/people/PersonForm'
+import PersonInformationForm from 'views/people/PersonInformationForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-describe('PersonForm', () => {
+describe('PersonInformationForm', () => {
   function renderPersonForm({
     personId = '123',
     roles,
@@ -29,7 +29,7 @@ describe('PersonForm', () => {
       ssn,
       onChange,
     }
-    return shallow(<PersonForm {...props}/>)
+    return shallow(<PersonInformationForm {...props}/>)
   }
 
   it('renders the legacySourceDescription', () => {
