@@ -1,14 +1,12 @@
 import {connect} from 'react-redux'
-import PersonForm from 'views/people/PersonForm'
-import {ROLE_TYPE} from 'enums/RoleType'
+import PersonInformationForm from 'views/people/PersonInformationForm'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import {Map} from 'immutable'
-import {getPeopleSelector} from 'selectors/screening/peopleFormSelectors'
+import {getPeopleSelector, getFilteredPersonRolesSelector} from 'selectors/screening/peopleFormSelectors'
 import {setField} from 'actions/peopleFormActions'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 
 const mapStateToProps = (state, {personId}) => {
-  const roleOptions = ROLE_TYPE.map((value) => ({label: value, value}))
   const nameSuffixOptions = Object.keys(NAME_SUFFIXES).map((value) => (
     {label: NAME_SUFFIXES[value], value}
   ))
@@ -25,7 +23,7 @@ const mapStateToProps = (state, {personId}) => {
     nameSuffix: person.getIn(['name_suffix', 'value']),
     ssn: person.getIn(['ssn', 'value']),
     nameSuffixOptions,
-    roleOptions,
+    roleOptions: getFilteredPersonRolesSelector(state, personId).toJS(),
   }
 }
 const mergeProps = ({
@@ -55,4 +53,4 @@ const mergeProps = ({
     onChange,
   }
 }
-export default connect(mapStateToProps, null, mergeProps)(PersonForm)
+export default connect(mapStateToProps, null, mergeProps)(PersonInformationForm)

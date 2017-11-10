@@ -171,7 +171,12 @@ feature 'Relationship card' do
           :participant, :unpopulated,
           screening_id: participants_screening.id
         )
-        new_participant_request = { screening_id: participants_screening.id, legacy_id: nil }
+        new_participant_request = {
+          screening_id: participants_screening.id,
+          legacy_id: nil,
+          legacy_source_table: nil,
+          legacy_descriptor: nil
+        }
 
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
           .with(body: new_participant.as_json(except: :id).merge(new_participant_request))
@@ -211,14 +216,16 @@ feature 'Relationship card' do
           :get, intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'ma'))
         ).and_return(json_body([].to_json, status: 200))
 
-        pending <<~END
-          because fill_in_autocompleter does not consistenly find the result even though it shows up
-          I think it's related to the lines that do field.click unless field.base.click
-        END
         within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true
           find('.btn', text: /Create a new person/).click
           expect(page).not_to have_content('Create a new person')
+        end
+
+        within edit_participant_card_selector(new_participant.id) do
+          within '.card-header' do
+            expect(page).to have_content 'Unknown Person'
+          end
         end
 
         expect(
@@ -229,12 +236,6 @@ feature 'Relationship card' do
             )
           )
         ).to have_been_made.twice
-
-        within edit_participant_card_selector(new_participant.id) do
-          within '.card-header' do
-            expect(page).to have_content 'Unknown Person'
-          end
-        end
 
         within '#relationships-card.card.show', text: 'Relationships' do
           expect(page).to have_content(

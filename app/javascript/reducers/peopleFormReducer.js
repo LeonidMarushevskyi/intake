@@ -6,6 +6,7 @@ import {
   ADD_PEOPLE_FORM_PHONE_NUMBER,
   DELETE_PEOPLE_FORM_PHONE_NUMBER,
 } from 'actions/peopleFormActions'
+import {CREATE_PERSON_COMPLETE} from 'actions/personCardActions'
 
 const buildPhoneNumbers = (phoneNumbers) => {
   if (phoneNumbers) {
@@ -38,6 +39,13 @@ const buildPerson = ({
   ssn: {value: ssn},
 })
 export default createReducer(Map(), {
+  [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {
+    if (error) {
+      return state
+    } else {
+      return state.set(person.id, buildPerson(person))
+    }
+  },
   [FETCH_SCREENING_COMPLETE]: (state, {payload: {screening}, error}) => {
     if (error) {
       return state

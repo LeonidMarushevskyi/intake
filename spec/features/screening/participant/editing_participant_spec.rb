@@ -230,26 +230,6 @@ feature 'Edit Person' do
       end
     end
 
-    scenario 'ssn placeholder in input field is behaving as intended',
-      pending: 'until person show properly displays the ssn' do
-      visit edit_screening_path(id: screening.id)
-      within edit_participant_card_selector(homer.id) do
-        within '.card-body' do
-          expect(page.find('#ssn')['placeholder']).to eq('')
-          fill_in 'Social security number', with: 12
-          expect(focused_native_element['id']).to eq('ssn')
-          expect(focused_native_element['placeholder']).to eq('___-__-____')
-          fill_in 'First Name', with: 'Change Focus'
-          expect(page.find('#ssn')['placeholder']).to eq('')
-        end
-        click_button 'Save'
-      end
-      within show_participant_card_selector(homer.id) do
-        expect(page).not_to have_content('12_-__-___')
-        expect(page).to have_content('12 -  -    ')
-      end
-    end
-
     scenario 'an invalid character is inserted' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
@@ -371,8 +351,7 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'canceling edits for a screening participant',
-    pending: 'until person card refactor complete' do
+  scenario 'canceling edits for a screening participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
@@ -408,8 +387,7 @@ feature 'Edit Person' do
     expect(page).to have_content old_ssn
   end
 
-  scenario 'when a user edits a participants role in a screening',
-    pending: 'until person card refactor complete' do
+  scenario 'when a user edits a participants role in a screening' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -417,9 +395,7 @@ feature 'Edit Person' do
       remove_react_select_option('Role', 'Perpetrator')
       expect(page).to have_no_content('Perpetrator')
 
-      marge.roles = ['Victim']
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
 
       within '.card-body' do
@@ -429,7 +405,7 @@ feature 'Edit Person' do
 
     expect(
       a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
+      .with(body: hash_including('roles' => ['Victim']))
     ).to have_been_made
 
     expect(page).to have_selector(show_participant_card_selector(marge.id))
@@ -444,8 +420,7 @@ feature 'Edit Person' do
     end
   end
 
-  context 'A participant has an existing reporter role',
-    pending: 'until person card refactor complete' do
+  context 'A participant has an existing reporter role' do
     let(:marge_roles) { ['Mandated Reporter'] }
 
     scenario 'the other reporter roles are unavailable' do
