@@ -175,8 +175,7 @@ feature 'show allegations' do
     end
   end
 
-  scenario 'removing participant role, re-adding it does not show deleted allegations',
-    pending: 'until person card refactor complete' do
+  scenario 'removing participant role, re-adding it does not show deleted allegations' do
     marge = FactoryGirl.create(
       :participant,
       first_name: 'Marge',
@@ -216,7 +215,6 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -243,7 +241,6 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
