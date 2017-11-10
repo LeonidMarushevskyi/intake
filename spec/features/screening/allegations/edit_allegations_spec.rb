@@ -76,8 +76,7 @@ feature 'edit allegations' do
     end
   end
 
-  scenario 'removing participant role, re-adding it does not show deleted allegations',
-    pending: 'until person card refactor is complete' do
+  scenario 'removing participant role, re-adding it does not show deleted allegations' do
     marge = FactoryGirl.create(
       :participant,
       first_name: 'Marge',
@@ -95,6 +94,7 @@ feature 'edit allegations' do
       screening_id: screening.id
     )
     screening.allegations << allegation
+
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -112,7 +112,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -138,7 +137,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
@@ -167,8 +165,7 @@ feature 'edit allegations' do
     end
   end
 
-  scenario 'changing the roles of participants creates new possible allegation rows',
-    pending: 'until person card refactor is complete' do
+  scenario 'changing the roles of participants creates new possible allegation rows' do
     marge = FactoryGirl.create(:participant, first_name: 'Marge')
     lisa = FactoryGirl.create(:participant, first_name: 'Lisa')
     screening = FactoryGirl.create(:screening, participants: [marge, lisa])
@@ -193,7 +190,6 @@ feature 'edit allegations' do
       fill_in_react_select('Role', with: 'Perpetrator')
       marge.roles = ['Perpetrator']
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
       click_button 'Save'
     end
@@ -204,7 +200,6 @@ feature 'edit allegations' do
 
     lisa.roles = ['Victim']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(body: as_json_without_root_id(lisa))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.participants = [marge, lisa]
@@ -464,8 +459,7 @@ feature 'edit allegations' do
     end
   end
 
-  scenario 'I remove the victim role from a participant for whom I have edited allegations',
-    pending: 'until person card refactor is complete' do
+  scenario 'I remove the victim role from a participant for whom I have edited allegations' do
     marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
     lisa = FactoryGirl.create(
       :participant,
@@ -516,7 +510,6 @@ feature 'edit allegations' do
 
     lisa.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
@@ -547,7 +540,6 @@ feature 'edit allegations' do
 
     lisa.roles = ['Anonymous Reporter', 'Victim']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -564,8 +556,7 @@ feature 'edit allegations' do
     end
   end
 
-  scenario 'I remove the perpetrator role from a participant for whom I have edited allegations',
-    pending: 'until person card refactor is complete' do
+  scenario 'I remove the perpetrator role from a participant for whom I have edited allegations' do
     lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
     marge = FactoryGirl.create(
       :participant,
@@ -616,7 +607,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
@@ -647,7 +637,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
