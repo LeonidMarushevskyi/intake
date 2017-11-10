@@ -16,13 +16,18 @@ export class App extends React.Component {
     this.props.actions.fetchSystemCodesAction()
     this.props.actions.fetchUserInfoAction()
   }
+
   render() {
     const {errorCount, hasError} = this.props
+    const fullName = this.props.userInfo ? `${this.props.userInfo.get('first_name')} ${this.props.userInfo.get('last_name')}` : ''
+
     return (
       <div>
+        <GlobalHeader profileName={fullName} />
         {(hasError) && <PageError errorCount={errorCount} />}
-        <GlobalHeader profileName='Will Robinson'/>
-        {this.props.children}
+        <div className='container'>
+          {this.props.children}
+        </div>
       </div>
     )
   }
@@ -38,6 +43,7 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
   errorCount: getTotalScreeningSubmissionErrorValueSelector(state),
   hasError: getHasGenericErrorValueSelector(state) || Boolean(getTotalScreeningSubmissionErrorValueSelector(state)),
+  userInfo: state.get('userInfo'),
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
