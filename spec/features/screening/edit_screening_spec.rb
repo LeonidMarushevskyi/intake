@@ -145,6 +145,18 @@ feature 'Edit Screening' do
     end
 
     scenario 'adding multiple alerts to existing ones in a Worker Safety Card' do
+      stub_screening_put_request_with_anything_and_return(
+        existing_screening,
+        with_updated_attributes: {
+          safety_alerts: [
+            'Dangerous Animal on Premises',
+            'Firearms in Home',
+
+            'Hostile, Aggressive Client',
+            'Severe Mental Health Status'
+          ]
+        }
+      )
       within '#worker-safety-card', text: 'Worker Safety' do
         has_react_select_field(
           'Worker safety alerts',
@@ -165,11 +177,26 @@ feature 'Edit Screening' do
         )
         click_button 'Save'
       end
-      pending('transition between save and show implemented')
+      expect(
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(
+          body: hash_including(
+            'safety_alerts' => array_including(
+              'Dangerous Animal on Premises',
+              'Firearms in Home',
+              'Hostile, Aggressive Client',
+              'Severe Mental Health Status'
+            ),
+            'safety_information' => 'Potential safety alert: dangerous dog at home.'
+          )
+        )
+      ).to have_been_made
+
       within '#worker-safety-card.show', text: 'Worker Safety' do
-        expect(page).to have_content('Hostile, Aggressive Client')
         expect(page).to have_content('Dangerous Animal on Premises')
         expect(page).to have_content('Firearms in Home')
+        expect(page).to have_content('Hostile, Aggressive Client')
         expect(page).to have_content('Severe Mental Health Status')
       end
     end
