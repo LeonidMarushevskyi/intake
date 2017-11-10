@@ -85,7 +85,7 @@ describe('PersonEthnicityForm', () => {
         const component = renderPersonEthnicityForm({latinoOrigin: 'Yes', onChange})
         const detailSelect = component.find('SelectField')
         detailSelect.simulate('change', {target: {value: 'Hispanic'}})
-        expect(onChange).toHaveBeenCalledWith('ethnicity_detail', 'Hispanic')
+        expect(onChange).toHaveBeenCalledWith('ethnicity_detail', ['Hispanic'])
       })
 
       it('renders ethnicityDetailOptions as options for the select', () => {
