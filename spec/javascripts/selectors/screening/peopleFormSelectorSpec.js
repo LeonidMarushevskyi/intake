@@ -1,9 +1,12 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {
   getFilteredPersonRolesSelector,
   getPeopleWithEditsSelector,
   getPersonPhoneNumbersSelector,
   getPhoneNumberTypeOptions,
+  getAddressTypeOptionsSelector,
+  getPersonAddressesSelector,
+  getStateOptionsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -23,6 +26,21 @@ describe('peopleFormSelectors', () => {
             {number: {value: '1234567890'}, type: {value: 'Home'}},
             {number: {value: '0987654321'}, type: {value: 'Cell'}},
           ],
+          addresses: [
+            {
+              street: {value: '1234 Nowhere Lane'},
+              city: {value: 'Somewhereville'},
+              state: {value: 'CA'},
+              zip: {value: '55555'},
+              type: {value: 'Home'},
+            }, {
+              street: {value: '9674 Somewhere Street'},
+              city: {value: 'Nowhereville'},
+              state: {value: 'CA'},
+              zip: {value: '55555'},
+              type: {value: 'Cell'},
+            },
+          ],
           roles: {value: ['a', 'b']},
           ssn: {value: '123'},
         },
@@ -32,6 +50,13 @@ describe('peopleFormSelectors', () => {
           last_name: {value: 'last two'},
           name_suffix: {value: 'suffix two'},
           phone_numbers: [{number: {value: null}, type: {value: null}}],
+          addresses: [{
+            street: {value: null},
+            city: {value: null},
+            state: {value: null},
+            zip: {value: null},
+            type: {value: null},
+          }],
           roles: {value: ['c']},
           ssn: {value: '321'},
         },
@@ -41,6 +66,7 @@ describe('peopleFormSelectors', () => {
           last_name: {value: 'last three'},
           name_suffix: {value: 'suffix three'},
           phone_numbers: [],
+          addresses: [],
           roles: {value: []},
           ssn: {value: null},
         },
@@ -55,6 +81,10 @@ describe('peopleFormSelectors', () => {
           last_name: 'last one',
           name_suffix: 'suffix one',
           phone_numbers: [{number: '1234567890', type: 'Home'}, {number: '0987654321', type: 'Cell'}],
+          addresses: [
+            {street_address: '1234 Nowhere Lane', city: 'Somewhereville', state: 'CA', zip: '55555', type: 'Home'},
+            {street_address: '9674 Somewhere Street', city: 'Nowhereville', state: 'CA', zip: '55555', type: 'Cell'},
+          ],
           roles: ['a', 'b'],
           ssn: '123',
         },
@@ -66,6 +96,7 @@ describe('peopleFormSelectors', () => {
           last_name: 'last two',
           name_suffix: 'suffix two',
           phone_numbers: [{number: null, type: null}],
+          addresses: [{street_address: null, city: null, state: null, zip: null, type: null}],
           roles: ['c'],
           ssn: '321',
         },
@@ -77,6 +108,7 @@ describe('peopleFormSelectors', () => {
           last_name: 'last three',
           name_suffix: 'suffix three',
           phone_numbers: [],
+          addresses: [],
           roles: [],
           ssn: null,
         },
@@ -149,6 +181,60 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getPersonPhoneNumbersSelector(state, 'one')).toEqualImmutable(fromJS(
         [{number: '1234567890', type: 'Home'}]
+      ))
+    })
+  })
+
+  describe('getAddressTypeOptionsSelector', () => {
+    it('returns formatted options for phone types', () => {
+      expect(getAddressTypeOptionsSelector()).toEqualImmutable(fromJS([
+        {value: 'Common', label: 'Common'},
+        {value: 'Day Care', label: 'Day Care'},
+        {value: 'Home', label: 'Home'},
+        {value: 'Homeless', label: 'Homeless'},
+        {value: 'Other', label: 'Other'},
+        {value: 'Penal Institution', label: 'Penal Institution'},
+        {value: 'Permanent Mailing Address', label: 'Permanent Mailing Address'},
+        {value: 'Residence 2', label: 'Residence 2'},
+        {value: 'Work', label: 'Work'},
+      ]))
+    })
+  })
+
+  describe('getStateOptionsSelector', () => {
+    it('returns formatted options for phone types', () => {
+      expect(getStateOptionsSelector().first()).toEqualImmutable(Map({value: 'AL', label: 'Alabama'}))
+      expect(getStateOptionsSelector().last()).toEqualImmutable(Map({value: 'WY', label: 'Wyoming'}))
+    })
+  })
+
+  describe('getPersonAddressesSelector', () => {
+    it('returns the addresses for the person with the passed id', () => {
+      const peopleForm = {
+        one: {addresses: [{
+          street: {value: '1234 Nowhere Lane'},
+          city: {value: 'Somewhereville'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Home'},
+        }]},
+        two: {addresses: [{
+          street: {value: '9674 Somewhere Street'},
+          city: {value: 'Nowhereville'},
+          state: {value: 'CA'},
+          zip: {value: '55555'},
+          type: {value: 'Cell'},
+        }]},
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonAddressesSelector(state, 'one')).toEqualImmutable(fromJS(
+        [{
+          street: '1234 Nowhere Lane',
+          city: 'Somewhereville',
+          state: 'CA',
+          zip: '55555',
+          type: 'Home',
+        }]
       ))
     })
   })

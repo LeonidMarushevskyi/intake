@@ -43,8 +43,7 @@ feature 'Edit Person' do
     stub_empty_relationships_for_screening(screening)
   end
 
-  scenario 'character limitations by field',
-    pending: 'until person card refactor complete' do
+  scenario 'character limitations by field' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       fill_in 'Zip', with: '9i5%6Y1 8-_3.6+9*7='
@@ -108,7 +107,7 @@ feature 'Edit Person' do
 
           click_button 'Add new phone number'
 
-          within all('.row.list-item').last do
+          within all('.row.list-item')[1] do
             fill_in 'Phone Number', with: '9876543210'
             select 'Cell', from: 'Phone Number Type'
           end
@@ -123,6 +122,57 @@ feature 'Edit Person' do
             'phone_numbers' => array_including(
               hash_including('number' => phone_number.number, 'type' => phone_number.type),
               hash_including('number' => '(987)654-3210', 'type' => 'Cell')
+            )
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
+  context 'editing and saving addresses' do
+    scenario 'saves the person information' do
+      address = homer.addresses.first
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          expect(page).to have_field('Address', with: address.street_address)
+          expect(page).to have_field('City', with: address.city)
+          expect(page).to have_field('State', with: address.state)
+          expect(page).to have_field('Zip', with: address.zip)
+          expect(page).to have_field('Type', with: address.type)
+
+          click_button 'Add new address'
+
+          within all('.row.list-item').last do
+            fill_in 'Address', with: '1234 Some Lane'
+            fill_in 'City', with: 'Someplace'
+            select 'California', from: 'State'
+            fill_in 'Zip', with: '55555'
+            select 'Home', from: 'Address Type'
+          end
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
+        .with(
+          body: hash_including(
+            'addresses' => array_including(
+              hash_including(
+                'street_address' => address.street_address,
+                'city' => address.city,
+                'state' => address.state,
+                'zip' => address.zip,
+                'type' => address.type
+              ),
+              hash_including(
+                'street_address' => '1234 Some Lane',
+                'city' => 'Someplace',
+                'state' => 'CA',
+                'zip' => '55555',
+                'type' => 'Home'
+              )
             )
           )
         )
@@ -241,77 +291,37 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'editing and then removing an address from a participant',
-    pending: 'until person card refactor complete' do
+  scenario 'removing an address from a participant' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_field('Address', with: marge.addresses.first.street_address)
-        expect(page).to have_field('City', with: marge.addresses.first.city)
-        expect(page).to have_field('State', with: marge.addresses.first.state)
-        expect(page).to have_field('Zip', with: marge.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
-        expect(page).to have_button 'Cancel'
-        expect(page).to have_button 'Save'
-        fill_in 'City', with: 'New City'
-      end
-
-      marge.addresses.first.city = 'New City'
-
-      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
-    end
-
-    within show_participant_card_selector(marge.id) do
-      within '.card-body' do
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_content('New City')
-        expect(page).to_not have_content('Springfield')
-      end
-
-      within '.card-header' do
-        click_link 'Edit person'
-      end
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        within "#address-#{marge.addresses.first.id}" do
+        within page.all('.list-item').last do
+          expect(page).to have_field('Address', with: marge.addresses.first.street_address)
+          expect(page).to have_field('City', with: marge.addresses.first.city)
+          expect(page).to have_field('State', with: marge.addresses.first.state)
+          expect(page).to have_field('Zip', with: marge.addresses.first.zip)
+          expect(page).to have_field('Address Type', with: marge.addresses.first.type)
           click_link 'Delete address'
         end
 
-        expect(page).to_not have_selector("#address-#{marge.addresses.first.id}")
+        expect(page).to_not have_field('City', with: 'New City')
       end
     end
 
     marge.addresses = []
-
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
+      click_button 'Save'
     end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(addresses: []))
+    ).to have_been_made
   end
 
   scenario 'when a user modifies languages for an existing participant',

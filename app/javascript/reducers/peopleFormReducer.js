@@ -3,10 +3,26 @@ import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {
   SET_PEOPLE_FORM_FIELD,
+  ADD_PEOPLE_FORM_ADDRESS,
+  DELETE_PEOPLE_FORM_ADDRESS,
   ADD_PEOPLE_FORM_PHONE_NUMBER,
   DELETE_PEOPLE_FORM_PHONE_NUMBER,
 } from 'actions/peopleFormActions'
 import {CREATE_PERSON_COMPLETE} from 'actions/personCardActions'
+
+const buildAddresses = (addresses) => {
+  if (addresses) {
+    return addresses.map(({street_address, city, state, zip, type}) => ({
+      street: {value: street_address},
+      city: {value: city},
+      state: {value: state},
+      zip: {value: zip},
+      type: {value: type},
+    }))
+  } else {
+    return []
+  }
+}
 
 const buildPhoneNumbers = (phoneNumbers) => {
   if (phoneNumbers) {
@@ -20,6 +36,7 @@ const buildPhoneNumbers = (phoneNumbers) => {
 }
 
 const buildPerson = ({
+  addresses,
   first_name,
   last_name,
   legacy_descriptor,
@@ -29,6 +46,7 @@ const buildPerson = ({
   roles,
   ssn,
 }) => fromJS({
+  addresses: buildAddresses(addresses),
   first_name: {value: first_name},
   last_name: {value: last_name},
   legacy_descriptor: {value: legacy_descriptor},
@@ -56,10 +74,26 @@ export default createReducer(Map(), {
     }
   },
   [SET_PEOPLE_FORM_FIELD]: (state, {payload: {personId, fieldSet, value}}) => state.setIn([personId, ...fieldSet, 'value'], fromJS(value)),
+  [ADD_PEOPLE_FORM_ADDRESS]: (state, {payload: {personId}}) => {
+    const currentAddresses = state.getIn([personId, 'addresses'])
+    const nullValue = {value: null}
+    const newAddress = fromJS({
+      street: nullValue,
+      city: nullValue,
+      state: nullValue,
+      zip: nullValue,
+      type: nullValue,
+    })
+    return state.setIn([personId, 'addresses'], currentAddresses.push(newAddress))
+  },
   [ADD_PEOPLE_FORM_PHONE_NUMBER]: (state, {payload: {personId}}) => {
     const currentPhones = state.getIn([personId, 'phone_numbers'])
     const newPhone = fromJS({number: {value: null}, type: {value: null}})
     return state.setIn([personId, 'phone_numbers'], currentPhones.push(newPhone))
+  },
+  [DELETE_PEOPLE_FORM_ADDRESS]: (state, {payload: {personId, addressIndex}}) => {
+    const currentAddresses = state.getIn([personId, 'addresses'])
+    return state.setIn([personId, 'addresses'], currentAddresses.delete(addressIndex))
   },
   [DELETE_PEOPLE_FORM_PHONE_NUMBER]: (state, {payload: {personId, phoneIndex}}) => {
     const currentPhones = state.getIn([personId, 'phone_numbers'])
