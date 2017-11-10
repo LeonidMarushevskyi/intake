@@ -230,26 +230,6 @@ feature 'Edit Person' do
       end
     end
 
-    scenario 'ssn placeholder in input field is behaving as intended',
-      pending: 'until person show properly displays the ssn' do
-      visit edit_screening_path(id: screening.id)
-      within edit_participant_card_selector(homer.id) do
-        within '.card-body' do
-          expect(page.find('#ssn')['placeholder']).to eq('')
-          fill_in 'Social security number', with: 12
-          expect(focused_native_element['id']).to eq('ssn')
-          expect(focused_native_element['placeholder']).to eq('___-__-____')
-          fill_in 'First Name', with: 'Change Focus'
-          expect(page.find('#ssn')['placeholder']).to eq('')
-        end
-        click_button 'Save'
-      end
-      within show_participant_card_selector(homer.id) do
-        expect(page).not_to have_content('12_-__-___')
-        expect(page).to have_content('12 -  -    ')
-      end
-    end
-
     scenario 'an invalid character is inserted' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
