@@ -19,7 +19,7 @@ feature 'Create Screening' do
         reference: 'DQJIYK',
         safety_alerts: [],
         safety_information: nil,
-        address: nil,
+        address: { city: nil },
         assignee: nil
       )
       stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
@@ -81,7 +81,7 @@ feature 'Create Screening' do
           reference: 'DQJIYK',
           safety_alerts: [],
           safety_information: nil,
-          address: nil,
+          address: { city: nil },
           assignee: user_name_display,
           assignee_staff_id: '1234'
         )
@@ -134,7 +134,7 @@ feature 'Create Screening' do
           reference: 'DQJIYK',
           safety_alerts: [],
           safety_information: nil,
-          address: nil,
+          address: { city: nil },
           assignee: user_name_display,
           assignee_staff_id: '1234'
         )
@@ -173,7 +173,7 @@ feature 'Create Screening' do
           reference: 'DQJIYK',
           safety_alerts: [],
           safety_information: nil,
-          address: nil,
+          address: { city: nil },
           assignee: nil,
           assignee_staff_id: nil
         )
@@ -207,7 +207,7 @@ feature 'Create Screening' do
       reference: 'DQJIYK',
       safety_alerts: [],
       safety_information: nil,
-      address: nil,
+      address: { city: nil },
       assignee: nil
     )
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))

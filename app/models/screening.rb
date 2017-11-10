@@ -27,7 +27,7 @@ class Screening # :nodoc:
   attribute :indexable, Boolean, default: lambda { |_screening, _attribute|
     Feature.inactive?(:release_two)
   }
-  attribute :address, Address
+  attribute :address, Address, default: ->(_, _) { Address.new }
   attribute :assignee, String
   attribute :cross_reports, Array[CrossReport]
   attribute :participants, Array[Participant]
