@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Participant Phone Number', pending: 'Until completion of person card refactor' do
+feature 'Participant Phone Number' do
   let(:existing_phone_number) { PhoneNumber.new(id: '1', number: '9175555555', type: 'Work') }
   let(:marge) { FactoryGirl.create(:participant, phone_numbers: [existing_phone_number]) }
   let(:screening) { FactoryGirl.create(:screening, participants: [marge]) }
@@ -33,17 +33,13 @@ feature 'Participant Phone Number', pending: 'Until completion of person card re
       click_button 'Save'
     end
 
-    expect(
-      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
-    ).to have_been_made
-
-    within show_participant_card_selector(marge.id) do
-      expect(page).to have_content('(917)555-5555')
-      expect(page).to have_content('Work')
-      expect(page).to have_content('(789)456-1245')
-      expect(page).to have_content('Home')
-    end
+    expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(
+        'phone_numbers' => array_including(
+          hash_including('number' => '9175555555', 'type' => 'Work'),
+          hash_including('number' => '(789)456-1245', 'type' => 'Home')
+        )
+      ))).to have_been_made
   end
 
   scenario 'editing a phone number from a participant' do
@@ -57,15 +53,17 @@ feature 'Participant Phone Number', pending: 'Until completion of person card re
     within edit_participant_card_selector(marge.id) do
       expect(page).to have_field('Phone Number', with: '(917)555-5555')
       expect(page).to have_field('Phone Number Type', with: 'Work')
-      fill_in 'Phone Number', with: '789-456-1245'
+      fill_in 'Phone Number', with: '7894561245'
 
       click_button 'Save'
     end
 
-    expect(
-      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
-    ).to have_been_made
+    expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(
+        'phone_numbers' => array_including(
+          hash_including('number' => '(789)456-1245', 'type' => existing_phone_number.type)
+        )
+      ))).to have_been_made
   end
 
   scenario 'deleting an existing phone number from a participant' do
@@ -89,10 +87,8 @@ feature 'Participant Phone Number', pending: 'Until completion of person card re
       click_button 'Save'
     end
 
-    expect(
-      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
-    ).to have_been_made
+    expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including('phone_numbers' => []))).to have_been_made
   end
 
   scenario 'filling phone number with a combinaiton of valid and invalid characters' do
@@ -102,14 +98,16 @@ feature 'Participant Phone Number', pending: 'Until completion of person card re
       within '.card-body' do
         fill_in 'Phone Number', with: 'as(343ld81103kjs809u38'
         expect(page).to have_field('Phone Number', with: '(343)811-0380')
-        click_button 'Save'
       end
+      click_button 'Save'
 
       marge.phone_numbers.first.number = '3438110380'
-      expect(
-        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
+      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(body: hash_including(
+          'phone_numbers' => array_including(
+            hash_including('number' => '(343)811-0380', 'type' => existing_phone_number.type)
+          )
+        ))).to have_been_made
     end
   end
 end
