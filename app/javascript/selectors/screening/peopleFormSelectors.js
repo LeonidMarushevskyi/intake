@@ -2,11 +2,14 @@ import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
 export const getPeopleSelector = (state) => state.get('peopleForm')
+import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
-  (people) => people.map((person, personId) => fromJS({
+  getScreeningIdValueSelector,
+  (people, screeningId) => people.map((person, personId) => fromJS({
+    screening_id: screeningId,
     id: personId,
     first_name: person.getIn(['first_name', 'value']),
     middle_name: person.getIn(['middle_name', 'value']),
