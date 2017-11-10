@@ -21,6 +21,13 @@ export const getPeopleWithEditsSelector = createSelector(
       number: phoneNumber.getIn(['number', 'value']),
       type: phoneNumber.getIn(['type', 'value']),
     })),
+    addresses: person.get('addresses', List()).map((address) => Map({
+      street_address: address.getIn(['street', 'value']),
+      city: address.getIn(['city', 'value']),
+      state: address.getIn(['state', 'value']),
+      zip: address.getIn(['zip', 'value']),
+      type: address.getIn(['type', 'value']),
+    })),
     roles: person.getIn(['roles', 'value']),
     ssn: person.getIn(['ssn', 'value']),
   }))
