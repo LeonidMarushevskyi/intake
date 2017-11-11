@@ -13,6 +13,10 @@ import {
   getApproximateAgeUnitOptionsSelector,
   getLanguageOptionsSelector,
   getGenderOptionsSelector,
+  getAreEthnicityFieldsDisabledForPersonSelector,
+  getPersonHispanicLatinoOriginValueSelector,
+  getEthnicityDetailOptionsSelector,
+  getPersonEthnicityDetaiValueSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -458,6 +462,59 @@ describe('peopleFormSelectors', () => {
           detail: '',
         },
       }))
+    })
+  })
+
+  describe('getAreEthnicityFieldsDisabledForPersonSelector', () => {
+    it('returns true if hispanic_latino_origin is set for the person passed', () => {
+      const peopleForm = {
+        one: {ethnicity: {hispanic_latino_origin: {value: null}}},
+        two: {ethnicity: {hispanic_latino_origin: {value: 'Yes'}}},
+      }
+      const state = fromJS({peopleForm})
+      expect(getAreEthnicityFieldsDisabledForPersonSelector(state, 'two')).toEqual(true)
+    })
+
+    it('returns false if hispanic_latino_origin is set for the person passed', () => {
+      const peopleForm = {
+        one: {ethnicity: {hispanic_latino_origin: {value: null}}},
+        two: {ethnicity: {hispanic_latino_origin: {value: 'Yes'}}},
+      }
+      const state = fromJS({peopleForm})
+      expect(getAreEthnicityFieldsDisabledForPersonSelector(state, 'one')).toEqual(false)
+    })
+  })
+
+  describe('getPersonHispanicLatinoOriginValueSelector', () => {
+    it('returns the value of hispanic_latino_origin for the person passed', () => {
+      const peopleForm = {
+        one: {ethnicity: {hispanic_latino_origin: {value: null}}},
+        two: {ethnicity: {hispanic_latino_origin: {value: 'Yes'}}},
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonHispanicLatinoOriginValueSelector(state, 'two')).toEqual('Yes')
+    })
+  })
+
+  describe('getEthnicityDetailOptionsSelector', () => {
+    it('returns a value and label for ethnicity options', () => {
+      expect(getEthnicityDetailOptionsSelector()).toEqualImmutable(fromJS([
+        {value: 'Hispanic', label: 'Hispanic'},
+        {value: 'Mexican', label: 'Mexican'},
+        {value: 'Central American', label: 'Central American'},
+        {value: 'South American', label: 'South American'},
+      ]))
+    })
+  })
+
+  describe('getPersonEthnicityDetaiValueSelector', () => {
+    it('returns the first value of ethnicity_detail for the person passed', () => {
+      const peopleForm = {
+        one: {ethnicity: {ethnicity_detail: {value: ['Hispanic']}}},
+        two: {ethnicity: {ethnicity_detail: {value: ['Mexican']}}},
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonEthnicityDetaiValueSelector(state, 'one')).toEqual('Hispanic')
     })
   })
 })

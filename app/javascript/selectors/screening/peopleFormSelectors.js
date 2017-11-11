@@ -15,6 +15,7 @@ import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
 import ADDRESS_TYPE from 'enums/AddressType'
 import US_STATE from 'enums/USState'
 import {RACE_DETAILS} from 'enums/Races'
+import {ETHNICITY_DETAILS} from 'enums/Ethnicity'
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
@@ -108,3 +109,19 @@ export const getPersonRacesSelector = (state, personId) => {
   return Object.keys(RACE_DETAILS).reduce((races, race) => races.setIn([race, 'checked'], personRaces.has(race))
     .setIn([race, 'detail'], personRaces.get(race, '')), Map())
 }
+
+export const getAreEthnicityFieldsDisabledForPersonSelector = (state, personId) => (
+  Boolean(state.getIn(['peopleForm', personId, 'ethnicity', 'hispanic_latino_origin', 'value']))
+)
+
+export const getPersonHispanicLatinoOriginValueSelector = (state, personId) => (
+  state.getIn(['peopleForm', personId, 'ethnicity', 'hispanic_latino_origin', 'value'])
+)
+
+export const getEthnicityDetailOptionsSelector = () => (
+  fromJS(ETHNICITY_DETAILS.map((detail) => ({value: detail, label: detail})))
+)
+
+export const getPersonEthnicityDetaiValueSelector = (state, personId) => (
+  state.getIn(['peopleForm', personId, 'ethnicity', 'ethnicity_detail', 'value', 0])
+)
