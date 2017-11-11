@@ -34,9 +34,13 @@ const buildPhoneNumbers = (phoneNumbers) => {
     return []
   }
 }
-const buildRaces = (races = []) => races.reduce((racesValue, {race, race_detail}) => ({
+const buildRaces = (races = []) => races.reduce((racesValue, {race}) => ({
   ...racesValue,
-  [race]: race_detail,
+  [race]: {value: true},
+}), {})
+const buildRaceDetails = (races = []) => races.reduce((racesValue, {race, race_detail}) => ({
+  ...racesValue,
+  [race]: {value: race_detail},
 }), {})
 
 const buildEthnicity = (ethnicity = {}) => {
@@ -80,6 +84,7 @@ const buildPerson = ({
   roles: {value: roles},
   ssn: {value: ssn},
   races: buildRaces(races),
+  raceDetails: buildRaceDetails(races),
   ethnicity: buildEthnicity(ethnicity),
 })
 export default createReducer(Map(), {

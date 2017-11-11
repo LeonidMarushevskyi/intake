@@ -9,6 +9,7 @@ import {
   getStateOptionsSelector,
   getPersonDemographicsSelector,
   getPersonRacesSelector,
+  getPersonRaceDetailsSelector,
   getIsApproximateAgeDisabledSelector,
   getApproximateAgeUnitOptionsSelector,
   getLanguageOptionsSelector,
@@ -451,8 +452,8 @@ describe('peopleFormSelectors', () => {
       const peopleForm = {
         one: {
           races: {
-            White: 'race_detail_1',
-            Asian: 'race_detail_2',
+            White: {value: true},
+            Asian: {value: true},
           },
         },
         two: {
@@ -462,36 +463,70 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getPersonRacesSelector(state, 'one')).toEqualImmutable(fromJS({
         White: {
-          checked: true,
-          detail: 'race_detail_1',
+          value: true,
         },
         'Black or African American': {
-          checked: false,
-          detail: '',
+          value: false,
         },
         Asian: {
-          checked: true,
-          detail: 'race_detail_2',
+          value: true,
         },
         'American Indian or Alaska Native': {
-          checked: false,
-          detail: '',
+          value: false,
         },
         'Native Hawaiian or Other Pacific Islander': {
-          checked: false,
-          detail: '',
+          value: false,
         },
         Unknown: {
-          checked: false,
-          detail: '',
+          value: false,
         },
         Abandoned: {
-          checked: false,
-          detail: '',
+          value: false,
         },
         'Declined to answer': {
-          checked: false,
-          detail: '',
+          value: false,
+        },
+      }))
+    })
+  })
+  describe('getPersonRaceDetailsSelector', () => {
+    it('returns the races for the person with the passed id', () => {
+      const peopleForm = {
+        one: {
+          raceDetails: {
+            White: {value: 'race_detail_1'},
+            Asian: {value: 'race_detail_2'},
+          },
+        },
+        two: {
+          raceDetails: {},
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonRaceDetailsSelector(state, 'one')).toEqualImmutable(fromJS({
+        White: {
+          value: 'race_detail_1',
+        },
+        'Black or African American': {
+          value: '',
+        },
+        Asian: {
+          value: 'race_detail_2',
+        },
+        'American Indian or Alaska Native': {
+          value: '',
+        },
+        'Native Hawaiian or Other Pacific Islander': {
+          value: '',
+        },
+        Unknown: {
+          value: '',
+        },
+        Abandoned: {
+          value: '',
+        },
+        'Declined to answer': {
+          value: '',
         },
       }))
     })

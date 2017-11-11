@@ -88,8 +88,12 @@ describe('peopleFormReducer', () => {
             phone_numbers: [],
             ssn: {value: 'ssn one'},
             races: {
-              race_1: 'race_detail_1',
-              race_2: 'race_detail_2',
+              race_1: {value: true},
+              race_2: {value: true},
+            },
+            raceDetails: {
+              race_1: {value: 'race_detail_1'},
+              race_2: {value: 'race_detail_2'},
             },
             ethnicity: {
               ethnicity_detail: {value: ['Mexican']},
@@ -121,6 +125,7 @@ describe('peopleFormReducer', () => {
             }],
             ssn: {value: 'ssn two'},
             races: {},
+            raceDetails: {},
             ethnicity: {
               ethnicity_detail: {value: []},
               hispanic_latino_origin: {value: null},
@@ -229,6 +234,7 @@ describe('peopleFormReducer', () => {
         phone_numbers: [],
         addresses: [],
         races: {},
+        raceDetails: {},
         ethnicity: {
           hispanic_latino_origin: 'Yes',
           ethnicity_detail: ['Mexican'],
@@ -282,6 +288,7 @@ describe('peopleFormReducer', () => {
           phone_numbers: [],
           addresses: [],
           races: {},
+          raceDetails: {},
           ethnicity: {
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: ['Mexican'],
@@ -312,6 +319,7 @@ describe('peopleFormReducer', () => {
             type: {value: 'Home'},
           }],
           races: {},
+          raceDetails: {},
           ethnicity: {
             hispanic_latino_origin: {value: null},
             ethnicity_detail: {value: []},
