@@ -39,6 +39,14 @@ const buildRaces = (races = []) => races.reduce((racesValue, {race, race_detail}
   [race]: race_detail,
 }), {})
 
+const buildEthnicity = (ethnicity = {}) => {
+  const {hispanic_latino_origin = null, ethnicity_detail = []} = ethnicity
+  return {
+    hispanic_latino_origin: {value: hispanic_latino_origin},
+    ethnicity_detail: {value: ethnicity_detail},
+  }
+}
+
 const buildPerson = ({
   addresses,
   approximate_age,
@@ -55,6 +63,7 @@ const buildPerson = ({
   roles,
   ssn,
   races,
+  ethnicity,
 }) => fromJS({
   addresses: buildAddresses(addresses),
   approximate_age: {value: approximate_age},
@@ -71,6 +80,7 @@ const buildPerson = ({
   roles: {value: roles},
   ssn: {value: ssn},
   races: buildRaces(races),
+  ethnicity: buildEthnicity(ethnicity),
 })
 export default createReducer(Map(), {
   [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {

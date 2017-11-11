@@ -22,6 +22,13 @@ export const getPeopleWithEditsSelector = createSelector(
   getScreeningIdValueSelector,
   (people, screeningId) => people.map((person, personId) => {
     const isAgeDisabled = Boolean(person.getIn(['date_of_birth', 'value']))
+    const hispanic_latino_origin = person.getIn(['ethnicity', 'hispanic_latino_origin', 'value'])
+    let ethnicity_detail
+    if (hispanic_latino_origin === 'Yes') {
+      ethnicity_detail = person.getIn(['ethnicity', 'ethnicity_detail', 'value'])
+    } else {
+      ethnicity_detail = []
+    }
     return fromJS({
       screening_id: screeningId,
       id: personId,
@@ -47,6 +54,7 @@ export const getPeopleWithEditsSelector = createSelector(
       })),
       roles: person.getIn(['roles', 'value']),
       ssn: person.getIn(['ssn', 'value']),
+      ethnicity: {hispanic_latino_origin, ethnicity_detail},
     })
   })
 )

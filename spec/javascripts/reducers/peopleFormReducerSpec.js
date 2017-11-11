@@ -37,6 +37,10 @@ describe('peopleFormReducer', () => {
             {race: 'race_1', race_detail: 'race_detail_1'},
             {race: 'race_2', race_detail: 'race_detail_2'},
           ],
+          ethnicity: {
+            ethnicity_detail: ['Mexican'],
+            hispanic_latino_origin: 'Yes',
+          },
         }, {
           id: 'participant_two',
           addresses: [{
@@ -60,6 +64,10 @@ describe('peopleFormReducer', () => {
           phone_numbers: [{number: '1234567890', type: 'Home'}],
           ssn: 'ssn two',
           races: [],
+          ethnicity: {
+            ethnicity_detail: [],
+            hispanic_latino_origin: null,
+          },
         }],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
@@ -82,6 +90,10 @@ describe('peopleFormReducer', () => {
             races: {
               race_1: 'race_detail_1',
               race_2: 'race_detail_2',
+            },
+            ethnicity: {
+              ethnicity_detail: {value: ['Mexican']},
+              hispanic_latino_origin: {value: 'Yes'},
             },
           },
           participant_two: {
@@ -109,6 +121,10 @@ describe('peopleFormReducer', () => {
             }],
             ssn: {value: 'ssn two'},
             races: {},
+            ethnicity: {
+              ethnicity_detail: {value: []},
+              hispanic_latino_origin: {value: null},
+            },
           },
         })
       )
@@ -213,6 +229,10 @@ describe('peopleFormReducer', () => {
         phone_numbers: [],
         addresses: [],
         races: {},
+        ethnicity: {
+          hispanic_latino_origin: 'Yes',
+          ethnicity_detail: ['Mexican'],
+        },
       },
     })
     it('returns people form with the added person on success', () => {
@@ -239,6 +259,10 @@ describe('peopleFormReducer', () => {
           type: 'Home',
         }],
         races: [],
+        ethnicity: {
+          hispanic_latino_origin: null,
+          ethnicity_detail: [],
+        },
       }
       const action = createPersonSuccess(newPerson)
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(fromJS({
@@ -258,6 +282,10 @@ describe('peopleFormReducer', () => {
           phone_numbers: [],
           addresses: [],
           races: {},
+          ethnicity: {
+            hispanic_latino_origin: 'Yes',
+            ethnicity_detail: ['Mexican'],
+          },
         },
         participant_two: {
           approximate_age: {value: '3'},
@@ -284,6 +312,10 @@ describe('peopleFormReducer', () => {
             type: {value: 'Home'},
           }],
           races: {},
+          ethnicity: {
+            hispanic_latino_origin: {value: null},
+            ethnicity_detail: {value: []},
+          },
         },
       }))
     })

@@ -58,6 +58,10 @@ describe('peopleFormSelectors', () => {
           ],
           roles: {value: ['a', 'b']},
           ssn: {value: '123'},
+          ethnicity: {
+            hispanic_latino_origin: {value: 'Yes'},
+            ethnicity_detail: {value: ['Mexican']},
+          },
         },
         two: {
           approximate_age: {value: '1'},
@@ -79,6 +83,10 @@ describe('peopleFormSelectors', () => {
           }],
           roles: {value: ['c']},
           ssn: {value: '321'},
+          ethnicity: {
+            hispanic_latino_origin: {value: 'No'},
+            ethnicity_detail: {value: ['Mexican']},
+          },
         },
         three: {
           approximate_age: {value: ''},
@@ -94,6 +102,10 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: {value: []},
           ssn: {value: null},
+          ethnicity: {
+            hispanic_latino_origin: {value: null},
+            ethnicity_detail: {value: []},
+          },
         },
       }
       const state = fromJS({peopleForm, screening})
@@ -117,6 +129,10 @@ describe('peopleFormSelectors', () => {
           ],
           roles: ['a', 'b'],
           ssn: '123',
+          ethnicity: {
+            hispanic_latino_origin: 'Yes',
+            ethnicity_detail: ['Mexican'],
+          },
         },
         two: {
           id: 'two',
@@ -134,6 +150,10 @@ describe('peopleFormSelectors', () => {
           addresses: [{street_address: null, city: null, state: null, zip: null, type: null}],
           roles: ['c'],
           ssn: '321',
+          ethnicity: {
+            hispanic_latino_origin: 'No',
+            ethnicity_detail: [],
+          },
         },
         three: {
           id: 'three',
@@ -151,6 +171,10 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: null,
+          ethnicity: {
+            hispanic_latino_origin: null,
+            ethnicity_detail: [],
+          },
         },
       }))
     })
@@ -172,6 +196,10 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: {value: []},
           ssn: {value: ''},
+          ethnicity: {
+            hispanic_latino_origin: {value: null},
+            ethnicity_detail: {value: []},
+          },
         },
       }
       const state = fromJS({peopleForm, screening})
@@ -192,6 +220,10 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: '',
+          ethnicity: {
+            hispanic_latino_origin: null,
+            ethnicity_detail: [],
+          },
         },
       }))
     })
