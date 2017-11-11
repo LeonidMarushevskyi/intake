@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import RaceField from 'views/people/RaceField'
 
 const RaceForm = ({
+  onChange,
   racesDisabled,
   personId,
   raceDetails,
@@ -23,6 +24,7 @@ const RaceForm = ({
                     race='White'
                     raceDetailOptions={raceDetails.White}
                     checked={races.White.checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -32,6 +34,7 @@ const RaceForm = ({
                     race='Black or African American'
                     raceDetailOptions={raceDetails['Black or African American']}
                     checked={races['Black or African American'].checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -41,6 +44,7 @@ const RaceForm = ({
                     race='Asian'
                     raceDetailOptions={raceDetails.Asian}
                     checked={races.Asian.checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -50,6 +54,7 @@ const RaceForm = ({
                     race='American Indian or Alaska Native'
                     raceDetailOptions={raceDetails['American Indian or Alaska Native']}
                     checked={races['American Indian or Alaska Native'].checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -59,6 +64,7 @@ const RaceForm = ({
                     race='Native Hawaiian or Other Pacific Islander'
                     raceDetailOptions={raceDetails['Native Hawaiian or Other Pacific Islander']}
                     checked={races['Native Hawaiian or Other Pacific Islander'].checked}
+                    onChange={onChange}
                   />
                 </li>
               </ul>
@@ -71,6 +77,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Unknown'
                     checked={races.Unknown.checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -79,6 +86,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Abandoned'
                     checked={races.Abandoned.checked}
+                    onChange={onChange}
                   />
                 </li>
                 <li>
@@ -87,6 +95,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Declined to answer'
                     checked={races['Declined to answer'].checked}
+                    onChange={onChange}
                   />
                 </li>
               </ul>
@@ -98,6 +107,7 @@ const RaceForm = ({
   </div>
 )
 RaceForm.propTypes = {
+  onChange: PropTypes.func,
   personId: PropTypes.string,
   raceDetails: PropTypes.object,
   races: PropTypes.object,
