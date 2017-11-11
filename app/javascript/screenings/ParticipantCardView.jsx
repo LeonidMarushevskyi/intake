@@ -1,6 +1,7 @@
 import PersonCardContainer from 'containers/screenings/PersonCardContainer'
 import PersonDemographicsFormContainer from 'containers/screenings/PersonDemographicsFormContainer'
 import PersonRaceFormContainer from 'containers/screenings/PersonRaceFormContainer'
+import PersonEthnicityFormContainer from 'containers/screenings/PersonEthnicityFormContainer'
 import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
 import PersonPhoneNumbersFormContainer from 'containers/screenings/PersonPhoneNumbersFormContainer'
 import PersonShowContainer from 'containers/screenings/PersonShowContainer'
@@ -36,6 +37,7 @@ export default class ParticipantCardView extends React.Component {
             <PersonFormContainer personId={personId} />
             <PersonDemographicsFormContainer personId={personId} />
             <PersonRaceFormContainer personId={personId} />
+            <PersonEthnicityFormContainer personId={personId} />
             <PersonPhoneNumbersFormContainer personId={personId} />
             <PersonAddressesFormContainer personId={personId} />
           </div>
