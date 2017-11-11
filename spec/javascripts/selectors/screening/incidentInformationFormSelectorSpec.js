@@ -10,7 +10,7 @@ import {
 import * as matchers from 'jasmine-immutable-matchers'
 import moment from 'moment'
 
-describe('incidentInformationSelectors', () => {
+describe('incidentInformationFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   const emptyState = fromJS({address: {}})

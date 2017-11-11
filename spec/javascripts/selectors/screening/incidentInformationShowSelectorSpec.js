@@ -4,10 +4,10 @@ import {
   getIncidentCountySelector,
   getAddressSelector,
   getLocationTypeSelector,
-} from 'selectors/screening/incidentInformationSelector'
+} from 'selectors/screening/incidentInformationShowSelector'
 import * as matchers from 'jasmine-immutable-matchers'
 
-describe('incidentInformationSelectors', () => {
+describe('incidentInformationShowSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   const emptyState = fromJS({address: {}})

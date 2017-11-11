@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import IncidentInformationShowContainer from 'containers/screenings/incidentInformation/IncidentInformationShowContainer'
+import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'

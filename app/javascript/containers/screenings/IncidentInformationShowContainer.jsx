@@ -4,8 +4,8 @@ import {
   getIncidentCountySelector,
   getAddressSelector,
   getLocationTypeSelector,
-} from 'selectors/screening/incidentInformationSelector'
-import IncidentInformationShow from 'views/incidentInformation/IncidentInformationShow'
+} from 'selectors/screening/incidentInformationShowSelector'
+import IncidentInformationShow from 'views/IncidentInformationShow'
 
 const mapStateToProps = (state, ownProps) => ({
   errors: ownProps.errors || [],
