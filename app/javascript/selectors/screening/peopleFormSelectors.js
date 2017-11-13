@@ -14,6 +14,7 @@ import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
 import ADDRESS_TYPE from 'enums/AddressType'
 import US_STATE from 'enums/USState'
+import {RACE_DETAILS} from 'enums/Races'
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
@@ -99,4 +100,11 @@ export const getPersonDemographicsSelector = (state, personId) => {
     gender: person.getIn(['gender', 'value']) || '',
     languages: person.getIn(['languages', 'value']) || [],
   })
+}
+
+export const getPersonRacesSelector = (state, personId) => {
+  const personRaces = state.getIn(['peopleForm', personId, 'races'])
+
+  return Object.keys(RACE_DETAILS).reduce((races, race) => races.setIn([race, 'checked'], personRaces.has(race))
+    .setIn([race, 'detail'], personRaces.get(race, '')), Map())
 }

@@ -8,6 +8,7 @@ import {
   getPersonAddressesSelector,
   getStateOptionsSelector,
   getPersonDemographicsSelector,
+  getPersonRacesSelector,
   getIsApproximateAgeDisabledSelector,
   getApproximateAgeUnitOptionsSelector,
   getLanguageOptionsSelector,
@@ -407,6 +408,56 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getPersonDemographicsSelector(state, '1').get('languages'))
         .toEqualImmutable(fromJS(['Ω', 'ß']))
+    })
+  })
+  describe('getPersonRacesSelector', () => {
+    it('returns the races for the person with the passed id', () => {
+      const peopleForm = {
+        one: {
+          races: {
+            White: 'race_detail_1',
+            Asian: 'race_detail_2',
+          },
+        },
+        two: {
+          races: {},
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getPersonRacesSelector(state, 'one')).toEqualImmutable(fromJS({
+        White: {
+          checked: true,
+          detail: 'race_detail_1',
+        },
+        'Black or African American': {
+          checked: false,
+          detail: '',
+        },
+        Asian: {
+          checked: true,
+          detail: 'race_detail_2',
+        },
+        'American Indian or Alaska Native': {
+          checked: false,
+          detail: '',
+        },
+        'Native Hawaiian or Other Pacific Islander': {
+          checked: false,
+          detail: '',
+        },
+        Unknown: {
+          checked: false,
+          detail: '',
+        },
+        Abandoned: {
+          checked: false,
+          detail: '',
+        },
+        'Declined to answer': {
+          checked: false,
+          detail: '',
+        },
+      }))
     })
   })
 })

@@ -27,7 +27,7 @@ describe('Participant card view', () => {
       const participant = Immutable.fromJS({id: '5', first_name: 'Tony', roles: []})
       const header = shallow(<ParticipantCardView participant={participant} mode='show' editable={true}/>)
       const formContainer = header.find('Connect(PersonCard)').props().edit
-      expect(formContainer.props.children.length).toEqual(4)
+      expect(formContainer.props.children.length).toEqual(5)
     })
 
     it('passes the person show container to the person card as a show prop', () => {
