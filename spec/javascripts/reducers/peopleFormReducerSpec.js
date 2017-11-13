@@ -33,6 +33,10 @@ describe('peopleFormReducer', () => {
           name_suffix: 'name suffix one',
           phone_numbers: [],
           ssn: 'ssn one',
+          races: [
+            {race: 'race_1', race_detail: 'race_detail_1'},
+            {race: 'race_2', race_detail: 'race_detail_2'},
+          ],
         }, {
           id: 'participant_two',
           addresses: [{
@@ -55,6 +59,7 @@ describe('peopleFormReducer', () => {
           name_suffix: 'name suffix two',
           phone_numbers: [{number: '1234567890', type: 'Home'}],
           ssn: 'ssn two',
+          races: [],
         }],
       })
       expect(peopleFormReducer(Map(), action)).toEqualImmutable(
@@ -74,6 +79,10 @@ describe('peopleFormReducer', () => {
             name_suffix: {value: 'name suffix one'},
             phone_numbers: [],
             ssn: {value: 'ssn one'},
+            races: {
+              race_1: 'race_detail_1',
+              race_2: 'race_detail_2',
+            },
           },
           participant_two: {
             roles: {value: ['c']},
@@ -99,6 +108,7 @@ describe('peopleFormReducer', () => {
               type: {value: 'Home'},
             }],
             ssn: {value: 'ssn two'},
+            races: {},
           },
         })
       )
@@ -202,6 +212,7 @@ describe('peopleFormReducer', () => {
         ssn: {value: 'ssn one'},
         phone_numbers: [],
         addresses: [],
+        races: {},
       },
     })
     it('returns people form with the added person on success', () => {
@@ -227,6 +238,7 @@ describe('peopleFormReducer', () => {
           zip: '55555',
           type: 'Home',
         }],
+        races: [],
       }
       const action = createPersonSuccess(newPerson)
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(fromJS({
@@ -245,6 +257,7 @@ describe('peopleFormReducer', () => {
           ssn: {value: 'ssn one'},
           phone_numbers: [],
           addresses: [],
+          races: {},
         },
         participant_two: {
           approximate_age: {value: '3'},
@@ -270,6 +283,7 @@ describe('peopleFormReducer', () => {
             zip: {value: '55555'},
             type: {value: 'Home'},
           }],
+          races: {},
         },
       }))
     })

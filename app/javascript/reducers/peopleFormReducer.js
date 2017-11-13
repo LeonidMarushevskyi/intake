@@ -34,6 +34,10 @@ const buildPhoneNumbers = (phoneNumbers) => {
     return []
   }
 }
+const buildRaces = (races = []) => races.reduce((racesValue, {race, race_detail}) => ({
+  ...racesValue,
+  [race]: race_detail,
+}), {})
 
 const buildPerson = ({
   addresses,
@@ -50,6 +54,7 @@ const buildPerson = ({
   phone_numbers,
   roles,
   ssn,
+  races,
 }) => fromJS({
   addresses: buildAddresses(addresses),
   approximate_age: {value: approximate_age},
@@ -65,6 +70,7 @@ const buildPerson = ({
   phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
   ssn: {value: ssn},
+  races: buildRaces(races),
 })
 export default createReducer(Map(), {
   [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {
