@@ -45,19 +45,6 @@ describe('IncidentInformationCardView', () => {
       it('renders the incident edit card', () => {
         expect(component.find('Connect(IncidentInformationForm)').length).toEqual(1)
       })
-      it('passes errors to the edit view', () => {
-        expect(component.find('Connect(IncidentInformationForm)').props().errors).toEqual({})
-      })
-    })
-  })
-
-  describe('filteredErrors', () => {
-    it('only returns errors for fields that are in the displayErrorFor list', () => {
-      const errorProps = Immutable.fromJS({foo: ['foo error'], bar: ['bar error']})
-      const component = shallow(<IncidentInformationCardView {...props} mode={'edit'} errors={errorProps}/>)
-      component.setState({displayErrorsFor: Immutable.List(['foo'])})
-      const errors = component.instance().filteredErrors()
-      expect(errors).toEqual({foo: ['foo error']})
     })
   })
 })
