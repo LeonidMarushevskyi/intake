@@ -1,7 +1,10 @@
 import {connect} from 'react-redux'
 import RaceForm from 'views/people/RaceForm'
 import {RACE_DETAILS} from 'enums/Races'
-import {getPersonRacesSelector} from 'selectors/screening/peopleFormSelectors'
+import {
+  getPersonRacesSelector,
+  getIsRaceIndeterminateValueSelector,
+} from 'selectors/screening/peopleFormSelectors'
 import {setField} from 'actions/peopleFormActions'
 
 const mapStateToProps = (state, {personId}) => {
@@ -12,7 +15,7 @@ const mapStateToProps = (state, {personId}) => {
   return {
     personId,
     raceDetails,
-    racesDisabled: false,
+    racesDisabled: getIsRaceIndeterminateValueSelector(state, personId),
     races: getPersonRacesSelector(state, personId).toJS(),
   }
 }

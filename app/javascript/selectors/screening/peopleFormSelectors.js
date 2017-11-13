@@ -143,3 +143,13 @@ export const getEthnicityDetailOptionsSelector = () => (
 export const getPersonEthnicityDetaiValueSelector = (state, personId) => (
   state.getIn(['peopleForm', personId, 'ethnicity', 'ethnicity_detail', 'value', 0])
 )
+export const getIsRaceIndeterminateValueSelector = (state, personId) => {
+  const isUnknown =
+    state.getIn(['peopleForm', personId, 'races', 'Unknown', 'value'])
+  const isAbandoned =
+    state.getIn(['peopleForm', personId, 'races', 'Abandoned', 'value'])
+  const isDeclinedToAnswer =
+    state.getIn(['peopleForm', personId, 'races', 'Declined to answer', 'value'])
+
+  return Boolean(isUnknown || isAbandoned || isDeclinedToAnswer)
+}

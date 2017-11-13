@@ -18,6 +18,7 @@ import {
   getPersonHispanicLatinoOriginValueSelector,
   getEthnicityDetailOptionsSelector,
   getPersonEthnicityDetaiValueSelector,
+  getIsRaceIndeterminateValueSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -582,6 +583,58 @@ describe('peopleFormSelectors', () => {
       }
       const state = fromJS({peopleForm})
       expect(getPersonEthnicityDetaiValueSelector(state, 'one')).toEqual('Hispanic')
+    })
+  })
+
+  describe('getIsRaceIndeterminateValueSelector', () => {
+    it('returns true if persons race is Unknown', () => {
+      const peopleForm = {
+        one: {
+          races: {
+            Unknown: {value: true},
+          },
+        },
+        two: {
+          races: {}
+        }
+      }
+      const state = fromJS({peopleForm})
+      expect(getIsRaceIndeterminateValueSelector(state, 'one')).toEqual(true)
+      expect(getIsRaceIndeterminateValueSelector(state, 'two')).toEqual(false)
+    })
+
+    it('returns true if persons race is Abandoned', () => {
+      const peopleForm = {
+        one: {
+          races: {
+            Abandoned: {value: true},
+          },
+        },
+        two: {
+          races: {
+            White: {value: true},
+          },
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getIsRaceIndeterminateValueSelector(state, 'one')).toEqual(true)
+      expect(getIsRaceIndeterminateValueSelector(state, 'two')).toEqual(false)
+    })
+
+    it("returns true if persons race is 'Declined to answer'", () => {
+      const peopleForm = {
+        one: {
+          races: {
+            'Declined to answer': {value: true},
+          },
+        },
+        two: {
+          Asian: {value: true},
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getIsRaceIndeterminateValueSelector(state, 'one')).toEqual(true)
+      expect(getIsRaceIndeterminateValueSelector(state, 'two')).toEqual(false)
     })
   })
 })
