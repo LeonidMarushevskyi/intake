@@ -207,11 +207,6 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const cardCallbacks = {
-      onCancel: this.cancelEdit,
-      onChange: this.setField,
-      onSave: this.cardSave,
-    }
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const editable = this.props.editable
     const mode = this.renderMode()
@@ -255,11 +250,7 @@ export class ScreeningPage extends React.Component {
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
           {
             releaseTwoInactive &&
-            <IncidentInformationCardView
-              editable={editable}
-              errors={cardErrors.get('incident_information_card') || Immutable.List()}
-              mode={mode}
-            />
+            <IncidentInformationCardView editable={editable} mode={mode} />
           }
           {releaseTwoInactive && <AllegationsCardView mode={mode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}

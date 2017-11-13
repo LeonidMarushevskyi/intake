@@ -358,7 +358,6 @@ describe('ScreeningPage', () => {
     describe('render', () => {
       let component
       let props
-      let cardCallbacks
 
       beforeEach(() => {
         props = {
@@ -380,11 +379,6 @@ describe('ScreeningPage', () => {
         }
 
         component = shallow(<ScreeningPage {...props} />)
-        cardCallbacks = {
-          onCancel: component.instance().cancelEdit,
-          onChange: component.instance().setField,
-          onSave: component.instance().cardSave,
-        }
       })
 
       it('renders the home and edit link', () => {
@@ -415,7 +409,7 @@ describe('ScreeningPage', () => {
 
       it('renders the incident information show card', () => {
         expect(component.find('IncidentInformationCardView').props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+          jasmine.objectContaining({mode: 'show'})
         )
       })
 
