@@ -1,9 +1,10 @@
 import COUNTIES from 'enums/Counties'
 import US_STATE from 'enums/USState'
 import {createSelector} from 'reselect'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 import {dateFormatter} from 'utils/dateFormatter'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {isFutureDatetimeCreate, combineCompact} from 'utils/validator'
 
 export const getIncidentDateSelector = createSelector(
   getScreeningSelector,
@@ -29,4 +30,11 @@ export const getAddressSelector = createSelector(
 export const getLocationTypeSelector = createSelector(
   getScreeningSelector,
   (screening) => screening.get('location_type', '')
+)
+
+export const getErrorsSelector = createSelector(
+  (state) => state.getIn(['screening', 'incident_date']),
+  (incident_date) => (fromJS({
+    incident_date: combineCompact(isFutureDatetimeCreate(incident_date, 'The incident date and time cannot be in the future.')),
+  }))
 )

@@ -17,7 +17,6 @@ import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
-import ScreeningValidator from 'screenings/ScreeningValidator'
 import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
@@ -208,25 +207,11 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const cardCallbacks = {
-      onCancel: this.cancelEdit,
-      onChange: this.setField,
-      onSave: this.cardSave,
-    }
     const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
     const editable = this.props.editable
     const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
-
-    let cardErrors
-    if (releaseTwoInactive) {
-      const screeningValidator = new ScreeningValidator({
-        screening: mergedScreening,
-        allegations: [],
-      })
-      cardErrors = screeningValidator.validateScreening()
-    }
 
     if (this.props.loaded) {
       return (
@@ -265,13 +250,7 @@ export class ScreeningPage extends React.Component {
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
           {
             releaseTwoInactive &&
-            <IncidentInformationCardView
-              {...cardCallbacks}
-              editable={editable}
-              errors={cardErrors.get('incident_information_card') || Immutable.List()}
-              mode={mode}
-              screening={mergedScreening}
-            />
+            <IncidentInformationCardView editable={editable} mode={mode} />
           }
           {releaseTwoInactive && <AllegationsCardView mode={mode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}

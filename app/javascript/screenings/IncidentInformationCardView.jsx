@@ -1,5 +1,4 @@
-import Immutable from 'immutable'
-import IncidentInformationShowContainer from 'containers/screenings/incidentInformation/IncidentInformationShowContainer'
+import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -11,18 +10,8 @@ export default class IncidentInformationCardView extends React.Component {
     this.onEdit = this.onEdit.bind(this)
     this.toggleShow = this.toggleShow.bind(this)
 
-    this.fields = Immutable.fromJS([
-      'address',
-      'incident_county',
-      'incident_date',
-      'location_type',
-    ])
-
-    const displayErrorsFor = this.fields
-
     this.state = {
       mode: this.props.mode,
-      displayErrorsFor: displayErrorsFor,
     }
   }
 
@@ -34,15 +23,8 @@ export default class IncidentInformationCardView extends React.Component {
     this.setState({mode: 'edit'})
   }
 
-  filteredErrors() {
-    return this.props.errors.filter((_value, key) => (
-      this.state.displayErrorsFor.includes(key)
-    )).toJS()
-  }
-
   render() {
     const {mode} = this.state
-    const errors = this.filteredErrors()
     const IncidentInformationView = (mode === 'edit') ? IncidentInformationFormContainer : IncidentInformationShowContainer
     return (
       <div className={`card ${mode} double-gap-top`} id='incident-information-card'>
@@ -51,7 +33,7 @@ export default class IncidentInformationCardView extends React.Component {
           title='Incident Information'
           showEdit={this.props.editable && mode === 'show'}
         />
-        <IncidentInformationView errors={errors} toggleShow={this.toggleShow} />
+        <IncidentInformationView toggleShow={this.toggleShow} />
       </div>
     )
   }
@@ -59,6 +41,5 @@ export default class IncidentInformationCardView extends React.Component {
 
 IncidentInformationCardView.propTypes = {
   editable: PropTypes.bool.isRequired,
-  errors: PropTypes.object.isRequired,
   mode: PropTypes.oneOf(['edit', 'show']),
 }

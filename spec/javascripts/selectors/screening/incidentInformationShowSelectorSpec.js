@@ -4,10 +4,12 @@ import {
   getIncidentCountySelector,
   getAddressSelector,
   getLocationTypeSelector,
-} from 'selectors/screening/incidentInformationSelector'
+  getErrorsSelector,
+} from 'selectors/screening/incidentInformationShowSelector'
 import * as matchers from 'jasmine-immutable-matchers'
+import moment from 'moment'
 
-describe('incidentInformationSelectors', () => {
+describe('incidentInformationShowSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   const emptyState = fromJS({address: {}})
@@ -68,6 +70,28 @@ describe('incidentInformationSelectors', () => {
       const state = fromJS({screening})
       expect(getLocationTypeSelector(state)).toEqual('location type')
       expect(getLocationTypeSelector(emptyState)).toEqual('')
+    })
+  })
+
+  describe('getErrorsSelector', () => {
+    it('returns an error if the incident date fails to validate', () => {
+      const screening = {
+        incident_date: moment().add(10, 'days').toISOString(),
+      }
+      const state = fromJS({screening})
+      expect(getErrorsSelector(state)).toEqualImmutable(fromJS({
+        incident_date: ['The incident date and time cannot be in the future.'],
+      }))
+    })
+
+    it('does not return an error if the incident date successfully validates', () => {
+      const screening = {
+        incident_date: moment().toISOString(),
+      }
+      const state = fromJS({screening})
+      expect(getErrorsSelector(state)).toEqualImmutable(fromJS({
+        incident_date: [],
+      }))
     })
   })
 })

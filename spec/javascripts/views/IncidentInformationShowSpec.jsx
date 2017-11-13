@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import IncidentInformationShow from 'views/incidentInformation/IncidentInformationShow'
+import IncidentInformationShow from 'views/IncidentInformationShow'
 
 describe('IncidentInformationShow', () => {
   const renderIncidentInformationShow = ({errors = {}, address = {}, ...args}) => {
