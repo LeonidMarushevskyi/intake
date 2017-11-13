@@ -10,15 +10,15 @@ const RaceField = ({personId, onChange, race, raceDetail, raceDetailOptions, che
       disabled={disabled}
       id={`${personId}-race-${race.replace(/ /gi, '_')}`}
       label={race}
-      onChange={({target: {checked}}) => onChange(personId, 'race', race, checked)}
+      onChange={({target: {checked}}) => onChange(race, checked)}
       value={race}
     />
-    {checked && raceDetailOptions.length &&
+    {checked && Boolean(raceDetailOptions.length) &&
       <SelectField
         id={`${personId}-${race.replace(/ /gi, '_')}-race-detail`}
         label=''
         value={raceDetail}
-        onChange={({target: {value}}) => onChange(personId, 'raceDetail', race, value)}
+        onChange={({target: {value}}) => onChange('raceDetail', race, value)}
       >
         <option key='' value=''/>
         {raceDetailOptions.map(({label, value}) => <option key={value} value={value}>{label}</option>)}

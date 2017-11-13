@@ -14,35 +14,14 @@ describe('Race', () => {
       onChange,
       racesDisabled, personId, raceDetails,
       races: {
-        White: {
-          checked: false,
-          detail: '',
-        },
-        'Black or African American': {
-          checked: false,
-          detail: '',
-        },
-        Asian: {
-          checked: false,
-          detail: '',
-        },
-        'American Indian or Alaska Native': {
-          checked: false,
-          detail: '',
-        },
-        'Native Hawaiian or Other Pacific Islander': {
-          checked: false,
-          detail: '',
-        },
-        Unknown: {
-          checked: false,
-        },
-        Abandoned: {
-          checked: false,
-        },
-        'Declined to answer': {
-          checked: false,
-        },
+        White: false,
+        'Black or African American': false,
+        Asian: false,
+        'American Indian or Alaska Native': false,
+        'Native Hawaiian or Other Pacific Islander': false,
+        Unknown: false,
+        Abandoned: false,
+        'Declined to answer': false,
         ...races,
       },
     }
@@ -52,7 +31,7 @@ describe('Race', () => {
   it('it disables the race fields, except "Unknown" if it is checked', () => {
     const component = renderRaceForm({
       racesDisabled: true,
-      races: {Unknown: {checked: true}},
+      races: {Unknown: true},
     })
     expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
@@ -66,7 +45,7 @@ describe('Race', () => {
   it('it disables the race fields, except "Abandoned" if it is checked', () => {
     const component = renderRaceForm({
       racesDisabled: true,
-      races: {Abandoned: {checked: true}},
+      races: {Abandoned: true},
     })
     expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
@@ -80,7 +59,7 @@ describe('Race', () => {
   it('it disables the race fields, except "Declined to answer" if it is checked', () => {
     const component = renderRaceForm({
       racesDisabled: true,
-      races: {'Declined to answer': {checked: true}},
+      races: {'Declined to answer': true},
     })
     expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
@@ -114,7 +93,7 @@ describe('Race', () => {
 
   it('renders the white race field as checked', () => {
     const component = renderRaceForm({
-      races: {White: {checked: true}},
+      races: {White: true},
     }).find('RaceField[race="White"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -141,7 +120,7 @@ describe('Race', () => {
 
   it('renders the african american field as checked', () => {
     const component = renderRaceForm({
-      races: {'Black or African American': {checked: true}},
+      races: {'Black or African American': true},
     }).find('RaceField[race="Black or African American"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -168,7 +147,7 @@ describe('Race', () => {
 
   it('renders the asian field as checked', () => {
     const component = renderRaceForm({
-      races: {Asian: {checked: true}},
+      races: {Asian: true},
     }).find('RaceField[race="Asian"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -195,7 +174,7 @@ describe('Race', () => {
 
   it('renders the American Indian or Alaska Native field as checked', () => {
     const component = renderRaceForm({
-      races: {'American Indian or Alaska Native': {checked: true}},
+      races: {'American Indian or Alaska Native': true},
     }).find('RaceField[race="American Indian or Alaska Native"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -222,7 +201,7 @@ describe('Race', () => {
 
   it('renders the Native Hawaiian or Other Pacific Islander field as checked', () => {
     const component = renderRaceForm({
-      races: {'Native Hawaiian or Other Pacific Islander': {checked: true}},
+      races: {'Native Hawaiian or Other Pacific Islander': true},
     }).find('RaceField[race="Native Hawaiian or Other Pacific Islander"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -239,7 +218,7 @@ describe('Race', () => {
 
   it('renders the unknown field as checked', () => {
     const component = renderRaceForm({
-      races: {Unknown: {checked: true}},
+      races: {Unknown: true},
     }).find('RaceField[race="Unknown"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -256,7 +235,7 @@ describe('Race', () => {
 
   it('renders the abandoned field as checked', () => {
     const component = renderRaceForm({
-      races: {Abandoned: {checked: true}},
+      races: {Abandoned: true},
     }).find('RaceField[race="Abandoned"]')
     expect(component.props().checked).toEqual(true)
   })
@@ -273,7 +252,7 @@ describe('Race', () => {
 
   it('renders the Declined to answer field as checked', () => {
     const component = renderRaceForm({
-      races: {'Declined to answer': {checked: true}},
+      races: {'Declined to answer': true},
     }).find('RaceField[race="Declined to answer"]')
     expect(component.props().checked).toEqual(true)
   })

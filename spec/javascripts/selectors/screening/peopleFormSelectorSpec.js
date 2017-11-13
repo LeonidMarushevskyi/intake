@@ -463,30 +463,14 @@ describe('peopleFormSelectors', () => {
       }
       const state = fromJS({peopleForm})
       expect(getPersonRacesSelector(state, 'one')).toEqualImmutable(fromJS({
-        White: {
-          value: true,
-        },
-        'Black or African American': {
-          value: false,
-        },
-        Asian: {
-          value: true,
-        },
-        'American Indian or Alaska Native': {
-          value: false,
-        },
-        'Native Hawaiian or Other Pacific Islander': {
-          value: false,
-        },
-        Unknown: {
-          value: false,
-        },
-        Abandoned: {
-          value: false,
-        },
-        'Declined to answer': {
-          value: false,
-        },
+        White: true,
+        'Black or African American': false,
+        Asian: true,
+        'American Indian or Alaska Native': false,
+        'Native Hawaiian or Other Pacific Islander': false,
+        Unknown: false,
+        Abandoned: false,
+        'Declined to answer': false,
       }))
     })
   })
@@ -505,30 +489,14 @@ describe('peopleFormSelectors', () => {
       }
       const state = fromJS({peopleForm})
       expect(getPersonRaceDetailsSelector(state, 'one')).toEqualImmutable(fromJS({
-        White: {
-          value: 'race_detail_1',
-        },
-        'Black or African American': {
-          value: '',
-        },
-        Asian: {
-          value: 'race_detail_2',
-        },
-        'American Indian or Alaska Native': {
-          value: '',
-        },
-        'Native Hawaiian or Other Pacific Islander': {
-          value: '',
-        },
-        Unknown: {
-          value: '',
-        },
-        Abandoned: {
-          value: '',
-        },
-        'Declined to answer': {
-          value: '',
-        },
+        White: 'race_detail_1',
+        'Black or African American': '',
+        Asian: 'race_detail_2',
+        'American Indian or Alaska Native': '',
+        'Native Hawaiian or Other Pacific Islander': '',
+        Unknown: '',
+        Abandoned: '',
+        'Declined to answer': '',
       }))
     })
   })
@@ -595,8 +563,8 @@ describe('peopleFormSelectors', () => {
           },
         },
         two: {
-          races: {}
-        }
+          races: {},
+        },
       }
       const state = fromJS({peopleForm})
       expect(getIsRaceIndeterminateValueSelector(state, 'one')).toEqual(true)

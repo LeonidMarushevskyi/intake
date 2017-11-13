@@ -23,7 +23,7 @@ const RaceForm = ({
                     personId={personId}
                     race='White'
                     raceDetailOptions={raceDetails.White}
-                    checked={races.White.checked}
+                    checked={races.White}
                     onChange={onChange}
                   />
                 </li>
@@ -33,7 +33,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Black or African American'
                     raceDetailOptions={raceDetails['Black or African American']}
-                    checked={races['Black or African American'].checked}
+                    checked={races['Black or African American']}
                     onChange={onChange}
                   />
                 </li>
@@ -43,7 +43,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Asian'
                     raceDetailOptions={raceDetails.Asian}
-                    checked={races.Asian.checked}
+                    checked={races.Asian}
                     onChange={onChange}
                   />
                 </li>
@@ -53,7 +53,7 @@ const RaceForm = ({
                     personId={personId}
                     race='American Indian or Alaska Native'
                     raceDetailOptions={raceDetails['American Indian or Alaska Native']}
-                    checked={races['American Indian or Alaska Native'].checked}
+                    checked={races['American Indian or Alaska Native']}
                     onChange={onChange}
                   />
                 </li>
@@ -63,7 +63,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Native Hawaiian or Other Pacific Islander'
                     raceDetailOptions={raceDetails['Native Hawaiian or Other Pacific Islander']}
-                    checked={races['Native Hawaiian or Other Pacific Islander'].checked}
+                    checked={races['Native Hawaiian or Other Pacific Islander']}
                     onChange={onChange}
                   />
                 </li>
@@ -73,28 +73,31 @@ const RaceForm = ({
               <ul className='unstyled-list'>
                 <li>
                   <RaceField
-                    disabled={!races.Unknown.checked && racesDisabled}
+                    disabled={!races.Unknown && racesDisabled}
                     personId={personId}
                     race='Unknown'
-                    checked={races.Unknown.checked}
+                    raceDetailOptions={raceDetails.Unknown}
+                    checked={races.Unknown}
                     onChange={onChange}
                   />
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races.Abandoned.checked && racesDisabled}
+                    disabled={!races.Abandoned && racesDisabled}
                     personId={personId}
                     race='Abandoned'
-                    checked={races.Abandoned.checked}
+                    raceDetailOptions={raceDetails.Abandoned}
+                    checked={races.Abandoned}
                     onChange={onChange}
                   />
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races['Declined to answer'].checked && racesDisabled}
+                    disabled={!races['Declined to answer'] && racesDisabled}
                     personId={personId}
                     race='Declined to answer'
-                    checked={races['Declined to answer'].checked}
+                    raceDetailOptions={raceDetails['Declined to answer']}
+                    checked={races['Declined to answer']}
                     onChange={onChange}
                   />
                 </li>

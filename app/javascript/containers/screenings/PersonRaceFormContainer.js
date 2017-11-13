@@ -21,11 +21,8 @@ const mapStateToProps = (state, {personId}) => {
 }
 const mergeProps = (stateProps, {dispatch}, {personId}) => (
   {
-    onChange: (field, race, value) => {
-      dispatch(setField(personId, ['races', field, race], value))
-      if (field === 'race' && !value) {
-        dispatch(setField(personId, ['races', 'raceDetail', race], ''))
-      }
+    onChange: (race, value) => {
+      dispatch(setField(personId, ['races', race], value))
     },
     ...stateProps,
   }

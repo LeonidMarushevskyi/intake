@@ -113,9 +113,8 @@ export const getPersonDemographicsSelector = (state, personId) => {
 
 export const getPersonRacesSelector = (state, personId) => {
   const personRaces = state.getIn(['peopleForm', personId, 'races'])
-
   return Object.keys(RACE_DETAILS).reduce(
-    (races, race) => races.setIn([race, 'value'], personRaces.has(race)),
+    (races, race) => races.set(race, personRaces.getIn([race, 'value'], false)),
     Map()
   )
 }
@@ -123,7 +122,7 @@ export const getPersonRaceDetailsSelector = (state, personId) => {
   const personRaces = state.getIn(['peopleForm', personId, 'raceDetails'])
 
   return Object.keys(RACE_DETAILS).reduce(
-    (races, race) => races.setIn([race, 'value'], personRaces.getIn([race, 'value'], '')),
+    (races, race) => races.set(race, personRaces.getIn([race, 'value'], '')),
     Map()
   )
 }

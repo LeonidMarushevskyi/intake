@@ -41,7 +41,7 @@ describe('RaceField', () => {
     const component = renderRaceField({personId: 'person-123', race, onChange})
     component.find('CheckboxField[id="person-123-race-Black_or_African"]')
       .simulate('change', {target: {checked: true}})
-    expect(onChange).toHaveBeenCalledWith('person-123', 'race', race, true)
+    expect(onChange).toHaveBeenCalledWith(race, true)
   })
 
   it('renders the select field for race detail when race is checked', () => {
@@ -66,7 +66,7 @@ describe('RaceField', () => {
     const component = renderRaceField({onChange, personId: 'person-123', checked: true, race, raceDetailOptions: ['European']})
     component.find('SelectField')
       .simulate('change', {target: {value: raceDetail}})
-    expect(onChange).toHaveBeenCalledWith('person-123', 'raceDetail', race, raceDetail)
+    expect(onChange).toHaveBeenCalledWith('raceDetail', race, raceDetail)
   })
 
   it('renders the race detail options', () => {
