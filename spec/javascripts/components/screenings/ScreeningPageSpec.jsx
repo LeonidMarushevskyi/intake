@@ -146,7 +146,6 @@ describe('ScreeningPage', () => {
       const safetyCard = component.find('WorkerSafetyCardView')
       expect(safetyCard.length).toEqual(1)
       expect(safetyCard.props().mode).toEqual('edit')
-      expect(safetyCard.props().onCancel).toEqual(component.instance().cancelEdit)
     })
 
     it('renders the screening reference', () => {
@@ -424,7 +423,7 @@ describe('ScreeningPage', () => {
         const safetyCard = component.find('WorkerSafetyCardView')
         expect(safetyCard.length).toEqual(1)
         expect(safetyCard.props()).toEqual(
-          jasmine.objectContaining({...cardCallbacks, mode: 'show'})
+          jasmine.objectContaining({mode: 'show'})
         )
       })
 

@@ -275,15 +275,7 @@ export class ScreeningPage extends React.Component {
           }
           {releaseTwoInactive && <AllegationsCardView mode={mode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}
-          {
-            releaseTwoInactive &&
-              <WorkerSafetyCardView
-                {...cardCallbacks}
-                editable={editable}
-                mode={mode}
-                screening={mergedScreening}
-              />
-          }
+          {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={mode} />}
           <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
           {releaseTwoInactive && <CrossReportCardView editable={editable} mode={mode} />}
           {releaseTwoInactive && <DecisionCardView mode={mode}/>}
