@@ -472,27 +472,30 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'when a user modifies existing person ethnicity to null',
-    pending: 'until person card refactor complete' do
+  scenario 'when a user modifies existing person ethnicity from Yes to nothing selected' do
     visit edit_screening_path(id: screening.id)
 
+    marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: [] }
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .and_return(json_body(marge.to_json, status: 200))
+
     within edit_participant_card_selector(marge.id) do
-      within('#ethnicity') do
+      within 'fieldset', text: 'Hispanic/Latino Origin' do
         find('label', text: 'Yes').click
       end
-      marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
-
-      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
-      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge))))
-        .to have_been_made
     end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(
+        'ethnicity' => hash_including(
+          'ethnicity_detail' => [],
+          'hispanic_latino_origin' => nil
+        )
+      ))
+    ).to have_been_made
 
     within show_participant_card_selector(marge.id) do
       expect(page).to_not have_content('Yes - Mexican')

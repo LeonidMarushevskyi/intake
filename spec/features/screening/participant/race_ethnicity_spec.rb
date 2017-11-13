@@ -3,49 +3,28 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Race & Ethnicity', pending: 'until person card refactor complete' do
-  let(:race_asian) { [{ race: 'Asian', race_detail: 'Hmong' }] }
-  let(:race_unknown) { [{ race: 'Unknown', race_detail: nil }] }
-  let(:ethnicity_mexican) { { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican'] } }
-  let(:ethnicity_declined) do
-    { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: [] }
-  end
-  let(:phone_number) { FactoryGirl.create(:phone_number, number: '1234567890', type: 'Work') }
+feature 'Race & Ethnicity' do
   let(:marge) do
     FactoryGirl.create(
       :participant,
       middle_name: 'Jacqueline',
-      races: race_asian,
-      ethnicity: ethnicity_mexican
+      races: [{ race: 'Asian', race_detail: 'Hmong' }],
+      ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican'] }
     )
   end
   let(:homer) do
     FactoryGirl.create(
       :participant,
       middle_name: 'Jay',
-      races: race_unknown,
-      ethnicity: ethnicity_declined
+      races: [{ race: 'Unknown', race_detail: nil }],
+      ethnicity: { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: [] }
     )
-  end
-  let(:expected_marge_as_json) do
-    as_json_without_root_id(marge)
-      .merge(races: race_unknown.as_json, ethnicity: ethnicity_declined.as_json)
-  end
-  let(:expected_homer_as_json) do
-    as_json_without_root_id(homer)
-      .merge(races: race_asian.as_json, ethnicity: ethnicity_mexican.as_json)
   end
   let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
 
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
-    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(body: as_json_without_root_id(marge))
-      .and_return(json_body(marge.to_json, status: 200))
-    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
-      .with(body: as_json_without_root_id(homer))
-      .and_return(json_body(homer.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
   end
@@ -56,29 +35,48 @@ feature 'Race & Ethnicity', pending: 'until person card refactor complete' do
       within edit_participant_card_selector(marge.id) do
         within '#race' do
           expect(find('input[value="Asian"]')).to be_checked
-          expect(page).to have_field("participant-#{marge.id}-Asian-race-detail", text: 'Hmong')
+          expect(page).to have_select(
+            "participant-#{marge.id}-Asian-race-detail", selected: 'Hmong'
+          )
           find('label', text: 'Unknown').click
           expect(find('input[value="Unknown"]')).to be_checked
           expect(find('input[value="Asian"]')).to_not be_checked
           expect(find('input[value="Asian"]')).to be_disabled
-          expect(page).to_not have_field("participant-#{marge.id}-Asian-race-detail", text: 'Hmong')
+          expect(page).to_not have_select(
+            "participant-#{marge.id}-Asian-race-detail", selected: 'Hmong'
+          )
         end
-        within '#ethnicity' do
+        within 'fieldset', text: 'Hispanic/Latino Origin' do
           expect(find('input[value="Yes"]')).to be_checked
-          expect(page).to have_field("participant-#{marge.id}-ethnicity-detail", text: 'Mexican')
+          expect(page).to have_select('', selected: 'Mexican')
           expect(find('input[value="Declined to answer"]')).to be_disabled
           find('label', text: 'Yes').click
           find('label', text: 'Declined to answer').click
           expect(find('input[value="Declined to answer"]')).to be_checked
           expect(find('input[value="Yes"]')).to be_disabled
-          expect(page)
-            .to_not have_field("participant-#{marge.id}-ethnicity-detail", text: 'Mexican')
+          expect(page).to_not have_select('', selected: 'Mexican')
         end
+
+        marge.races = [{ race: 'Unknown', race_detail: nil }]
+        marge.ethnicity = { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: [] }
+        stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+          .and_return(json_body(marge.to_json, status: 200))
 
         click_button 'Save'
         expect(
           a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-          .with(json_body(expected_marge_as_json))
+          .with(body: hash_including(
+            'races' => array_including(
+              hash_including(
+                'race' => 'Unknown',
+                'race_detail' => nil
+              )
+            ),
+            'ethnicity' => hash_including(
+              'ethnicity_detail' => [],
+              'hispanic_latino_origin' => 'Declined to answer'
+            )
+          ))
         ).to have_been_made
       end
       within show_participant_card_selector(marge.id) do
@@ -101,18 +99,34 @@ feature 'Race & Ethnicity', pending: 'until person card refactor complete' do
           find('label', text: 'Asian').click
           select 'Hmong', from: "participant-#{homer.id}-Asian-race-detail"
         end
-        within '#ethnicity' do
+        within 'fieldset', text: 'Hispanic/Latino Origin' do
           expect(find('input[value="Declined to answer"]')).to be_checked
           expect(find('input[value="Yes"]')).to be_disabled
           find('label', text: 'Declined to answer').click
           find('label', text: 'Yes').click
-          select 'Mexican', from: "participant-#{homer.id}-ethnicity-detail"
+          select 'Mexican', from: ''
         end
+
+        homer.races = [{ race: 'Asian', race_detail: 'Hmong' }]
+        homer.ethnicity =  { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican'] }
+        stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
+          .and_return(json_body(homer.to_json, status: 200))
 
         click_button 'Save'
         expect(
           a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
-          .with(json_body(expected_homer_as_json))
+          .with(body: hash_including(
+            'races' => array_including(
+              hash_including(
+                'race' => 'Asian',
+                'race_detail' => 'Hmong'
+              )
+            ),
+            'ethnicity' => hash_including(
+              'ethnicity_detail' => ['Mexican'],
+              'hispanic_latino_origin' => 'Yes'
+            )
+          ))
         ).to have_been_made
       end
       within show_participant_card_selector(homer.id) do
