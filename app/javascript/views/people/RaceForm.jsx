@@ -19,7 +19,7 @@ const RaceForm = ({
               <ul className='unstyled-list'>
                 <li>
                   <RaceField
-                    disabled={!races.White.checked && racesDisabled}
+                    disabled={racesDisabled}
                     personId={personId}
                     race='White'
                     raceDetailOptions={raceDetails.White}
@@ -29,7 +29,7 @@ const RaceForm = ({
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races['Black or African American'].checked && racesDisabled}
+                    disabled={racesDisabled}
                     personId={personId}
                     race='Black or African American'
                     raceDetailOptions={raceDetails['Black or African American']}
@@ -39,7 +39,7 @@ const RaceForm = ({
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races.Asian.checked && racesDisabled}
+                    disabled={racesDisabled}
                     personId={personId}
                     race='Asian'
                     raceDetailOptions={raceDetails.Asian}
@@ -49,7 +49,7 @@ const RaceForm = ({
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races['American Indian or Alaska Native'].checked && racesDisabled}
+                    disabled={racesDisabled}
                     personId={personId}
                     race='American Indian or Alaska Native'
                     raceDetailOptions={raceDetails['American Indian or Alaska Native']}
@@ -59,7 +59,7 @@ const RaceForm = ({
                 </li>
                 <li>
                   <RaceField
-                    disabled={!races['Native Hawaiian or Other Pacific Islander'].checked && racesDisabled}
+                    disabled={racesDisabled}
                     personId={personId}
                     race='Native Hawaiian or Other Pacific Islander'
                     raceDetailOptions={raceDetails['Native Hawaiian or Other Pacific Islander']}

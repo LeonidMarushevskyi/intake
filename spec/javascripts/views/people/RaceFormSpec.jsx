@@ -49,19 +49,47 @@ describe('Race', () => {
     return shallow(<RaceForm {...props}/>)
   }
 
-  it('it disables the race fields, except the one that was checked', () => {
+  it('it disables the race fields, except "Unknown" if it is checked', () => {
     const component = renderRaceForm({
       racesDisabled: true,
-      races: {White: {checked: true}},
+      races: {Unknown: {checked: true}},
     })
-    expect(component.find('RaceField[race="White"]').props().disabled).toEqual(false)
+    expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Asian"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="American Indian or Alaska Native"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Native Hawaiian or Other Pacific Islander"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Unknown"]').props().disabled).toEqual(false)
+    expect(component.find('RaceField[race="Abandoned"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Declined to answer"]').props().disabled).toEqual(true)
+  })
+  it('it disables the race fields, except "Abandoned" if it is checked', () => {
+    const component = renderRaceForm({
+      racesDisabled: true,
+      races: {Abandoned: {checked: true}},
+    })
+    expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Asian"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="American Indian or Alaska Native"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Native Hawaiian or Other Pacific Islander"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Unknown"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Abandoned"]').props().disabled).toEqual(false)
+    expect(component.find('RaceField[race="Declined to answer"]').props().disabled).toEqual(true)
+  })
+  it('it disables the race fields, except "Declined to answer" if it is checked', () => {
+    const component = renderRaceForm({
+      racesDisabled: true,
+      races: {'Declined to answer': {checked: true}},
+    })
+    expect(component.find('RaceField[race="White"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Black or African American"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Asian"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="American Indian or Alaska Native"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Native Hawaiian or Other Pacific Islander"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Unknown"]').props().disabled).toEqual(true)
     expect(component.find('RaceField[race="Abandoned"]').props().disabled).toEqual(true)
-    expect(component.find('RaceField[race="Declined to answer"]').props().disabled).toEqual(true)
+    expect(component.find('RaceField[race="Declined to answer"]').props().disabled).toEqual(false)
   })
 
   it('renders the white race field', () => {
