@@ -222,7 +222,6 @@ feature 'Edit Person' do
         table_description = marge.legacy_descriptor.legacy_table_description
         ui_id = marge.legacy_descriptor.legacy_ui_id
         expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
