@@ -26,8 +26,8 @@ describe('RaceField', () => {
 
   it('renders the checkbox', () => {
     const race = 'Black or African'
-    const component = renderRaceField({personId: 'person-123', race, checked: true, disabled: true})
-    const checkbox = component.find('CheckboxField[id="person-123-race-Black_or_African"]')
+    const component = renderRaceField({personId: '123', race, checked: true, disabled: true})
+    const checkbox = component.find('CheckboxField[id="participant-123-race-Black_or_African"]')
     expect(checkbox.exists()).toEqual(true)
     expect(checkbox.props().checked).toEqual(true)
     expect(checkbox.props().disabled).toEqual(true)
@@ -38,8 +38,8 @@ describe('RaceField', () => {
   it('fires on change when race checkbox is changed', () => {
     const onChange = jasmine.createSpy('onChange')
     const race = 'Black or African'
-    const component = renderRaceField({personId: 'person-123', race, onChange})
-    component.find('CheckboxField[id="person-123-race-Black_or_African"]')
+    const component = renderRaceField({personId: '123', race, onChange})
+    component.find('CheckboxField[id="participant-123-race-Black_or_African"]')
       .simulate('change', {target: {checked: true}})
     expect(onChange).toHaveBeenCalledWith(race, true)
   })
@@ -47,8 +47,8 @@ describe('RaceField', () => {
   it('renders the select field for race detail when race is checked', () => {
     const raceDetail = 'Ethopian'
     const race = 'Black or African'
-    const component = renderRaceField({personId: 'person-123', race, raceDetail, raceDetailOptions: ['European'], checked: true})
-    const select = component.find('SelectField[id="person-123-Black_or_African-race-detail"]')
+    const component = renderRaceField({personId: '123', race, raceDetail, raceDetailOptions: ['European'], checked: true})
+    const select = component.find('SelectField[id="participant-123-Black_or_African-race-detail"]')
     expect(select.exists()).toEqual(true)
     expect(select.props().label).toEqual('')
     expect(select.props().value).toEqual(raceDetail)
@@ -63,7 +63,7 @@ describe('RaceField', () => {
     const onChange = jasmine.createSpy('onChange')
     const race = 'Black or African'
     const raceDetail = 'Ethopian'
-    const component = renderRaceField({onChange, personId: 'person-123', checked: true, race, raceDetailOptions: ['European']})
+    const component = renderRaceField({onChange, personId: '123', checked: true, race, raceDetailOptions: ['European']})
     component.find('SelectField')
       .simulate('change', {target: {value: raceDetail}})
     expect(onChange).toHaveBeenCalledWith('raceDetail', race, raceDetail)

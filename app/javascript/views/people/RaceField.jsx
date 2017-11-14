@@ -8,14 +8,14 @@ const RaceField = ({personId, onChange, race, raceDetail, raceDetailOptions, che
     <CheckboxField
       checked={checked}
       disabled={disabled}
-      id={`${personId}-race-${race.replace(/ /gi, '_')}`}
+      id={`participant-${personId}-race-${race.replace(/ /gi, '_')}`}
       label={race}
       onChange={({target: {checked}}) => onChange(race, checked)}
       value={race}
     />
     {checked && Boolean(raceDetailOptions.length) &&
       <SelectField
-        id={`${personId}-${race.replace(/ /gi, '_')}-race-detail`}
+        id={`participant-${personId}-${race.replace(/ /gi, '_')}-race-detail`}
         label=''
         value={raceDetail}
         onChange={({target: {value}}) => onChange('raceDetail', race, value)}
