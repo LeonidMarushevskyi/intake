@@ -33,7 +33,6 @@ describe('PersonDemographicsFormContainer', () => {
       dateOfBirth: '2014-01-15',
       gender: 'female',
       genderOptions: [
-        {label: '', value: ''},
         {label: 'Male', value: 'male'},
         {label: 'Female', value: 'female'},
         {label: 'Unknown', value: 'unknown'},

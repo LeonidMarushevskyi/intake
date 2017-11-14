@@ -358,7 +358,6 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getGenderOptionsSelector(state, '1'))
         .toEqualImmutable(fromJS([
-          {label: '', value: ''},
           {label: 'Male', value: 'male'},
           {label: 'Female', value: 'female'},
           {label: 'Unknown', value: 'unknown'},

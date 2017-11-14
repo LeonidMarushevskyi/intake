@@ -64,8 +64,9 @@ describe('PersonDemographicsForm', () => {
       gender: '0', genderOptions: [{value: '1'}, {value: '2'}],
     }).find('SelectField[label="Gender"]')
     expect(field.props().value).toEqual('0')
-    expect(field.childAt(0).props().value).toEqual('1')
-    expect(field.childAt(1).props().value).toEqual('2')
+    expect(field.childAt(0).props().value).toEqual('')
+    expect(field.childAt(1).props().value).toEqual('1')
+    expect(field.childAt(2).props().value).toEqual('2')
   })
 
   it('renders the languages field and its options', () => {

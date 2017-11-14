@@ -62,6 +62,7 @@ const PersonDemographicsForm = ({
         value={gender}
         onChange={({target: {value}}) => onChange('gender', value)}
       >
+        <option key='' value='' />
         {genderOptions.map(({label, value}) => <option key={value} value={value}>{label}</option>)}
       </SelectField>
     </div>
