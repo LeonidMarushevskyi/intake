@@ -56,8 +56,9 @@ export const getPeopleWithEditsSelector = createSelector(
       ssn: person.getIn(['ssn', 'value']),
       ethnicity: {hispanic_latino_origin, ethnicity_detail},
       races: person.get('races', Map()).reduce((races, raceValue, raceKey) => {
+        const raceDetails = person.getIn(['race_details', raceKey, 'value'], null)
         if (raceValue.get('value')) {
-          return [...races, {race: raceKey, race_detail: null}]
+          return [...races, {race: raceKey, race_detail: raceDetails}]
         } else {
           return races
         }

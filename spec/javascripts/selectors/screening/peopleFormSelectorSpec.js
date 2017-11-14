@@ -68,6 +68,7 @@ describe('peopleFormSelectors', () => {
             Abandoned: {value: true},
             White: {value: false},
           },
+          race_details: {}
         },
         two: {
           approximate_age: {value: '1'},
@@ -97,6 +98,10 @@ describe('peopleFormSelectors', () => {
             White: {value: true},
             Asian: {value: true},
           },
+          race_details: {
+            White: {value: 'Fuzzy Triangle'},
+            Asian: {value: 'Regular Circle'},
+          }
         },
         three: {
           approximate_age: {value: ''},
@@ -116,7 +121,8 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: {value: null},
             ethnicity_detail: {value: []},
           },
-          races: [],
+          races: {},
+          race_details: {}
         },
       }
       const state = fromJS({peopleForm, screening})
@@ -169,8 +175,8 @@ describe('peopleFormSelectors', () => {
             ethnicity_detail: [],
           },
           races: [
-            {race: 'White', race_detail: null},
-            {race: 'Asian', race_detail: null},
+            {race: 'White', race_detail: 'Fuzzy Triangle'},
+            {race: 'Asian', race_detail: 'Regular Circle'},
           ],
         },
         three: {
