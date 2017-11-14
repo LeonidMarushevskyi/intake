@@ -21,8 +21,15 @@ const mapStateToProps = (state, {personId}) => {
 }
 const mergeProps = (stateProps, {dispatch}, {personId}) => (
   {
-    onChange: (race, value) => {
-      dispatch(setField(personId, ['races', race], value))
+    onChange: (changedRace, value) => {
+      dispatch(setField(personId, ['races', changedRace], value))
+      if (changedRace === 'Unknown' || changedRace === 'Abandoned' || changedRace === 'Declined to answer') {
+        Object.keys(RACE_DETAILS).forEach((race) => {
+          if (race !== changedRace) {
+            dispatch(setField(personId, ['races', race], false))
+          }
+        })
+      }
     },
     ...stateProps,
   }
