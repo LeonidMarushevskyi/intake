@@ -84,7 +84,7 @@ const buildPerson = ({
   roles: {value: roles},
   ssn: {value: ssn},
   races: buildRaces(races),
-  raceDetails: buildRaceDetails(races),
+  race_details: buildRaceDetails(races),
   ethnicity: buildEthnicity(ethnicity),
 })
 export default createReducer(Map(), {

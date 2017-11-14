@@ -495,13 +495,13 @@ describe('peopleFormSelectors', () => {
     it('returns the races for the person with the passed id', () => {
       const peopleForm = {
         one: {
-          raceDetails: {
+          race_details: {
             White: {value: 'race_detail_1'},
             Asian: {value: 'race_detail_2'},
           },
         },
         two: {
-          raceDetails: {},
+          race_details: {},
         },
       }
       const state = fromJS({peopleForm})

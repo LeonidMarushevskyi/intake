@@ -126,8 +126,7 @@ export const getPersonRacesSelector = (state, personId) => {
   )
 }
 export const getPersonRaceDetailsSelector = (state, personId) => {
-  const personRaces = state.getIn(['peopleForm', personId, 'raceDetails'])
-
+  const personRaces = state.getIn(['peopleForm', personId, 'race_details'])
   return Object.keys(RACE_DETAILS).reduce(
     (races, race) => races.set(race, personRaces.getIn([race, 'value'], '')),
     Map()
