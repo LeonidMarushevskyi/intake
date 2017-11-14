@@ -3,8 +3,7 @@
 module ReactSelectHelpers
   def fill_in_react_select(selector, with: nil, exit_key: :return)
     input = find_field(selector)
-    input.send_keys with
-    input.native.send_keys exit_key
+    input.native.send_keys with, exit_key
   end
 
   def has_react_select_field(selector, with:)
