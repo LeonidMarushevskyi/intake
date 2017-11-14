@@ -36,7 +36,7 @@ const PersonEthnicityForm = ({
                 />
                 {latinoOrigin === 'Yes' &&
                   <SelectField
-                    id={`${personId}-ethnicity-detail`}
+                    id={`participant-${personId}-ethnicity-detail`}
                     label={''}
                     value={ethnicityDetail || ''}
                     onChange={({target: {value}}) => onChange('ethnicity_detail', [value])}
