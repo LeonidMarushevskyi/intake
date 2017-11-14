@@ -64,6 +64,10 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: {value: 'Yes'},
             ethnicity_detail: {value: ['Mexican']},
           },
+          races: {
+            Abandoned: {value: true},
+            White: {value: false},
+          },
         },
         two: {
           approximate_age: {value: '1'},
@@ -89,6 +93,10 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: {value: 'No'},
             ethnicity_detail: {value: ['Mexican']},
           },
+          races: {
+            White: {value: true},
+            Asian: {value: true},
+          },
         },
         three: {
           approximate_age: {value: ''},
@@ -108,6 +116,7 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: {value: null},
             ethnicity_detail: {value: []},
           },
+          races: [],
         },
       }
       const state = fromJS({peopleForm, screening})
@@ -135,6 +144,9 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: ['Mexican'],
           },
+          races: [
+            { race: 'Abandoned', race_detail: null },
+          ],
         },
         two: {
           id: 'two',
@@ -156,6 +168,10 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: 'No',
             ethnicity_detail: [],
           },
+          races: [
+            { race: 'White', race_detail: null },
+            { race: 'Asian', race_detail: null },
+          ],
         },
         three: {
           id: 'three',
@@ -177,6 +193,7 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: null,
             ethnicity_detail: [],
           },
+          races: []
         },
       }))
     })
