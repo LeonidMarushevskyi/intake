@@ -7,7 +7,6 @@ import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
-import Immutable from 'immutable'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import NarrativeCardView from 'screenings/NarrativeCardView'
 import ParticipantCardView from 'screenings/ParticipantCardView'
@@ -28,25 +27,12 @@ import EmptyHistory from 'views/history/EmptyHistory'
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      screening: props.screening,
-      screeningEdits: Immutable.Map(),
-      participantsEdits: Immutable.Map(),
-    }
+    this.state = {screening: props.screening}
 
     const methods = [
-      'cancelEdit',
-      'cancelParticipantEdit',
-      'cardSave',
       'createParticipant',
       'canCreateParticipant',
-      'deleteParticipant',
-      'mergeScreeningWithEdits',
-      'participants',
       'renderMode',
-      'saveParticipant',
-      'setField',
-      'setParticipantField',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -73,34 +59,6 @@ export class ScreeningPage extends React.Component {
     return this.props.mode
   }
 
-  setField(fieldSeq, value, callback) {
-    const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits}, callback)
-  }
-
-  setParticipantField(id, value) {
-    const participantsEdits = this.state.participantsEdits.set(id, value)
-    this.setState({participantsEdits: participantsEdits})
-  }
-
-  cardSave(fieldList) {
-    const changes = this.state.screeningEdits.filter((value, key) =>
-      fieldList.includes(key) && value !== undefined
-    )
-    const screening = this.mergeScreeningWithEdits(changes)
-    return this.props.actions.saveScreening(screening.toJS())
-  }
-
-  cancelEdit(fieldList) {
-    const updatedEdits = this.state.screeningEdits.filterNot((value, key) => fieldList.includes(key))
-    this.setState({screeningEdits: updatedEdits})
-  }
-
-  cancelParticipantEdit(id) {
-    const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
-    this.setState({participantsEdits: updatedParticipantsEdits})
-  }
-
   canCreateParticipant(person) {
     return (person.sensitive === false || this.props.hasAddSensitivePerson)
   }
@@ -115,100 +73,8 @@ export class ScreeningPage extends React.Component {
     this.props.actions.createPerson(participant)
   }
 
-  deleteParticipant(id) {
-    this.props.actions.deletePerson(id)
-  }
-
-  saveParticipant(participant) {
-    this.props.actions.savePerson(participant.toJS())
-  }
-
-  mergeScreeningWithEdits(changes) {
-    // Changes in lists are already applied and returned in `changes`.
-    // No need to merge old list with new list.
-    const lists = changes.filter((val) => Immutable.List.isList(val))
-    const nonlists = changes.filterNot((val) => Immutable.List.isList(val))
-    let screening = this.state.screening
-    lists.map((v, k) => {
-      screening = screening.set(k, v)
-    })
-    return screening.mergeDeep(nonlists)
-  }
-
-  participants() {
-    // We want to merge the keys of each participant, but we don't want deep merge
-    // to combine the address lists for us. So, we do a custom merge at one level deep.
-    const mergedParticipants = this.props.participants.map((participant) => {
-      const participantId = participant.get('id')
-      const relevantEdits = this.state.participantsEdits.get(participantId)
-      const participantEdits = (relevantEdits || Immutable.Map())
-      return participant.merge(participantEdits)
-    })
-
-    return mergedParticipants
-  }
-
-  renderAutocompleter() {
-    return (
-      <div className='card edit double-gap-top' id='search-card'>
-        <div className='card-header'>
-          <span>Search</span>
-        </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-12'>
-              <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
-              <Autocompleter id='screening_participants'
-                onSelect={this.createParticipant}
-                isSelectable={this.canCreateParticipant}
-                footer={
-                  IntakeConfig.isFeatureInactive('release_two') &&
-                  <CreateUnknownParticipant saveCallback={this.createParticipant}/>
-                }
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  renderParticipantsCard() {
-    const participants = this.participants()
-
-    return (
-      <div>
-        { this.renderMode() === 'edit' && this.renderAutocompleter() }
-        {
-          participants.map((participant) =>
-            <ParticipantCardView
-              editable={this.props.editable}
-              key={participant.get('id')}
-              onCancel={this.cancelParticipantEdit}
-              onDelete={this.deleteParticipant}
-              onChange={this.setParticipantField}
-              onSave={this.saveParticipant}
-              participant={participant}
-              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
-            />
-          )
-        }
-      </div>
-    )
-  }
-
-  renderFooterLinks() {
-    return (
-      <div>
-        <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
-        {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
-      </div>
-    )
-  }
-
   render() {
-    const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const editable = this.props.editable
+    const {screening, editable} = this.props
     const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
@@ -220,8 +86,8 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <h1>
                 {mode === 'edit' && 'Edit '}
-                {`Screening #${mergedScreening.get('reference')}`}
-                {mergedScreening.get('referral_id') && ` - Referral #${mergedScreening.get('referral_id')}`}
+                {`Screening #${screening.get('reference')}`}
+                {screening.get('referral_id') && ` - Referral #${screening.get('referral_id')}`}
               </h1>
           }
           {
@@ -242,16 +108,38 @@ export class ScreeningPage extends React.Component {
                 </div>
               </div>
           }
-          {
-            releaseTwoInactive &&
-            <ScreeningInformationCardView editable={editable} mode={mode} />
+          {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
+          {this.renderMode() === 'edit' &&
+            <div className='card edit double-gap-top' id='search-card'>
+              <div className='card-header'>
+                <span>Search</span>
+              </div>
+              <div className='card-body'>
+                <div className='row'>
+                  <div className='col-md-12'>
+                    <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
+                    <Autocompleter id='screening_participants'
+                      onSelect={this.createParticipant}
+                      isSelectable={this.canCreateParticipant}
+                      footer={
+                        IntakeConfig.isFeatureInactive('release_two') &&
+                        <CreateUnknownParticipant saveCallback={this.createParticipant}/>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           }
-          {this.renderParticipantsCard()}
+          {this.props.participants.map((participant) =>
+            <ParticipantCardView
+              key={participant.get('id')}
+              participant={participant}
+              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
+            />
+          )}
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
-          {
-            releaseTwoInactive &&
-            <IncidentInformationCardView editable={editable} mode={mode} />
-          }
+          {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={mode}/>}
           {releaseTwoInactive && <AllegationsCardView mode={mode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}
           {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={mode} />}
@@ -280,7 +168,12 @@ export class ScreeningPage extends React.Component {
               </div>
             </div>
           }
-          { mode === 'show' && this.renderFooterLinks() }
+          { mode === 'show' &&
+            <div>
+              <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
+              {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
+            </div>
+          }
         </div>
       )
     } else {
