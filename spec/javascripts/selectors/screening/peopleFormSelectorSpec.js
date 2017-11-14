@@ -145,7 +145,7 @@ describe('peopleFormSelectors', () => {
             ethnicity_detail: ['Mexican'],
           },
           races: [
-            { race: 'Abandoned', race_detail: null },
+            {race: 'Abandoned', race_detail: null},
           ],
         },
         two: {
@@ -169,8 +169,8 @@ describe('peopleFormSelectors', () => {
             ethnicity_detail: [],
           },
           races: [
-            { race: 'White', race_detail: null },
-            { race: 'Asian', race_detail: null },
+            {race: 'White', race_detail: null},
+            {race: 'Asian', race_detail: null},
           ],
         },
         three: {
@@ -193,7 +193,7 @@ describe('peopleFormSelectors', () => {
             hispanic_latino_origin: null,
             ethnicity_detail: [],
           },
-          races: []
+          races: [],
         },
       }))
     })

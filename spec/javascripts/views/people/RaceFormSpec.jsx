@@ -6,13 +6,13 @@ describe('Race', () => {
   function renderRaceForm({
     onChange,
     personId,
-    raceDetails = {},
+    raceDetailOptions = {},
     races,
     racesDisabled = false,
   }) {
     const props = {
       onChange,
-      racesDisabled, personId, raceDetails,
+      racesDisabled, personId, raceDetailOptions,
       races: {
         White: false,
         'Black or African American': false,
@@ -73,13 +73,13 @@ describe('Race', () => {
 
   it('renders the white race field', () => {
     const onChange = jasmine.createSpy('onChange')
-    const raceDetails = {
+    const raceDetailOptions = {
       White: [
         {label: 'Race Detail 1', value: 'race_detail_1'},
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const component = renderRaceForm({onChange, personId: 'person-123', raceDetails})
+    const component = renderRaceForm({onChange, personId: 'person-123', raceDetailOptions})
       .find('RaceField[race="White"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onChange).toEqual(onChange)
@@ -100,13 +100,13 @@ describe('Race', () => {
 
   it('renders the african american race field', () => {
     const onChange = jasmine.createSpy('onChange')
-    const raceDetails = {
+    const raceDetailOptions = {
       'Black or African American': [
         {label: 'Race Detail 1', value: 'race_detail_1'},
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const component = renderRaceForm({onChange, personId: 'person-123', raceDetails})
+    const component = renderRaceForm({onChange, personId: 'person-123', raceDetailOptions})
       .find('RaceField[race="Black or African American"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onChange).toEqual(onChange)
@@ -127,13 +127,13 @@ describe('Race', () => {
 
   it('renders the asian race field', () => {
     const onChange = jasmine.createSpy('onChange')
-    const raceDetails = {
+    const raceDetailOptions = {
       Asian: [
         {label: 'Race Detail 1', value: 'race_detail_1'},
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const component = renderRaceForm({onChange, personId: 'person-123', raceDetails})
+    const component = renderRaceForm({onChange, personId: 'person-123', raceDetailOptions})
       .find('RaceField[race="Asian"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onChange).toEqual(onChange)
@@ -154,13 +154,13 @@ describe('Race', () => {
 
   it('renders the American Indian or Alaska Native race field', () => {
     const onChange = jasmine.createSpy('onChange')
-    const raceDetails = {
+    const raceDetailOptions = {
       'American Indian or Alaska Native': [
         {label: 'Race Detail 1', value: 'race_detail_1'},
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const component = renderRaceForm({onChange, personId: 'person-123', raceDetails})
+    const component = renderRaceForm({onChange, personId: 'person-123', raceDetailOptions})
       .find('RaceField[race="American Indian or Alaska Native"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onChange).toEqual(onChange)
@@ -181,13 +181,13 @@ describe('Race', () => {
 
   it('renders the Native Hawaiian or Other Pacific Islander race field', () => {
     const onChange = jasmine.createSpy('onChange')
-    const raceDetails = {
+    const raceDetailOptions = {
       'Native Hawaiian or Other Pacific Islander': [
         {label: 'Race Detail 1', value: 'race_detail_1'},
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const component = renderRaceForm({onChange, personId: 'person-123', raceDetails})
+    const component = renderRaceForm({onChange, personId: 'person-123', raceDetailOptions})
       .find('RaceField[race="Native Hawaiian or Other Pacific Islander"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onChange).toEqual(onChange)

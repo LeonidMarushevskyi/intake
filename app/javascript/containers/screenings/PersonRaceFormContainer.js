@@ -8,13 +8,13 @@ import {
 import {setField} from 'actions/peopleFormActions'
 
 const mapStateToProps = (state, {personId}) => {
-  const raceDetails = Object.keys(RACE_DETAILS).reduce((raceDetails, race) => ({
+  const raceDetailOptions = Object.keys(RACE_DETAILS).reduce((raceDetails, race) => ({
     ...raceDetails,
     [race]: RACE_DETAILS[race].map((value) => ({label: value, value})),
   }), {})
   return {
     personId,
-    raceDetails,
+    raceDetailOptions,
     racesDisabled: getIsRaceIndeterminateValueSelector(state, personId),
     races: getPersonRacesSelector(state, personId).toJS(),
   }

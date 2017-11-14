@@ -6,7 +6,7 @@ const RaceForm = ({
   onChange,
   racesDisabled,
   personId,
-  raceDetails,
+  raceDetailOptions,
   races,
 }) => (
   <div className='row'>
@@ -22,7 +22,7 @@ const RaceForm = ({
                     disabled={racesDisabled}
                     personId={personId}
                     race='White'
-                    raceDetailOptions={raceDetails.White}
+                    raceDetailOptions={raceDetailOptions.White}
                     checked={races.White}
                     onChange={onChange}
                   />
@@ -32,7 +32,7 @@ const RaceForm = ({
                     disabled={racesDisabled}
                     personId={personId}
                     race='Black or African American'
-                    raceDetailOptions={raceDetails['Black or African American']}
+                    raceDetailOptions={raceDetailOptions['Black or African American']}
                     checked={races['Black or African American']}
                     onChange={onChange}
                   />
@@ -42,7 +42,7 @@ const RaceForm = ({
                     disabled={racesDisabled}
                     personId={personId}
                     race='Asian'
-                    raceDetailOptions={raceDetails.Asian}
+                    raceDetailOptions={raceDetailOptions.Asian}
                     checked={races.Asian}
                     onChange={onChange}
                   />
@@ -52,7 +52,7 @@ const RaceForm = ({
                     disabled={racesDisabled}
                     personId={personId}
                     race='American Indian or Alaska Native'
-                    raceDetailOptions={raceDetails['American Indian or Alaska Native']}
+                    raceDetailOptions={raceDetailOptions['American Indian or Alaska Native']}
                     checked={races['American Indian or Alaska Native']}
                     onChange={onChange}
                   />
@@ -62,7 +62,7 @@ const RaceForm = ({
                     disabled={racesDisabled}
                     personId={personId}
                     race='Native Hawaiian or Other Pacific Islander'
-                    raceDetailOptions={raceDetails['Native Hawaiian or Other Pacific Islander']}
+                    raceDetailOptions={raceDetailOptions['Native Hawaiian or Other Pacific Islander']}
                     checked={races['Native Hawaiian or Other Pacific Islander']}
                     onChange={onChange}
                   />
@@ -76,7 +76,7 @@ const RaceForm = ({
                     disabled={!races.Unknown && racesDisabled}
                     personId={personId}
                     race='Unknown'
-                    raceDetailOptions={raceDetails.Unknown}
+                    raceDetailOptions={raceDetailOptions.Unknown}
                     checked={races.Unknown}
                     onChange={onChange}
                   />
@@ -86,7 +86,7 @@ const RaceForm = ({
                     disabled={!races.Abandoned && racesDisabled}
                     personId={personId}
                     race='Abandoned'
-                    raceDetailOptions={raceDetails.Abandoned}
+                    raceDetailOptions={raceDetailOptions.Abandoned}
                     checked={races.Abandoned}
                     onChange={onChange}
                   />
@@ -96,7 +96,7 @@ const RaceForm = ({
                     disabled={!races['Declined to answer'] && racesDisabled}
                     personId={personId}
                     race='Declined to answer'
-                    raceDetailOptions={raceDetails['Declined to answer']}
+                    raceDetailOptions={raceDetailOptions['Declined to answer']}
                     checked={races['Declined to answer']}
                     onChange={onChange}
                   />
@@ -112,7 +112,7 @@ const RaceForm = ({
 RaceForm.propTypes = {
   onChange: PropTypes.func,
   personId: PropTypes.string,
-  raceDetails: PropTypes.object,
+  raceDetailOptions: PropTypes.object,
   races: PropTypes.object,
   racesDisabled: PropTypes.bool,
 }

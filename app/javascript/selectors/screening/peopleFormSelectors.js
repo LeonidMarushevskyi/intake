@@ -61,7 +61,7 @@ export const getPeopleWithEditsSelector = createSelector(
         } else {
           return races
         }
-      }, [])
+      }, []),
     })
   })
 )
