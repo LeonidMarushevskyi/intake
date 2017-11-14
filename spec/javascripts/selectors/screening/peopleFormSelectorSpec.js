@@ -7,6 +7,11 @@ import {
   getAddressTypeOptionsSelector,
   getPersonAddressesSelector,
   getStateOptionsSelector,
+  getPersonDemographicsSelector,
+  getIsApproximateAgeDisabledSelector,
+  getApproximateAgeUnitOptionsSelector,
+  getLanguageOptionsSelector,
+  getGenderOptionsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -14,11 +19,16 @@ describe('peopleFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getPeopleWithEditsSelector', () => {
-    it('returns formated people object map', () => {
+    it('returns formatted people object map', () => {
       const screening = {id: '123456'}
       const peopleForm = {
         one: {
+          approximate_age: {value: ''},
+          approximate_age_units: {value: ''},
+          date_of_birth: {value: '13/0/-514'},
           first_name: {value: 'one'},
+          gender: {value: 'known'},
+          languages: {value: ['Ω', 'ß']},
           middle_name: {value: 'middle one'},
           last_name: {value: 'last one'},
           name_suffix: {value: 'suffix one'},
@@ -45,7 +55,12 @@ describe('peopleFormSelectors', () => {
           ssn: {value: '123'},
         },
         two: {
+          approximate_age: {value: '1'},
+          approximate_age_units: {value: 'year'},
+          date_of_birth: {value: ''},
           first_name: {value: 'two'},
+          gender: {value: 'unknown'},
+          languages: {value: []},
           middle_name: {value: 'middle two'},
           last_name: {value: 'last two'},
           name_suffix: {value: 'suffix two'},
@@ -61,7 +76,12 @@ describe('peopleFormSelectors', () => {
           ssn: {value: '321'},
         },
         three: {
+          approximate_age: {value: ''},
+          approximate_age_units: {value: 'days'},
+          date_of_birth: {value: ''},
           first_name: {value: 'three'},
+          gender: {value: ''},
+          languages: {value: ['']},
           middle_name: {value: 'middle three'},
           last_name: {value: 'last three'},
           name_suffix: {value: 'suffix three'},
@@ -76,7 +96,12 @@ describe('peopleFormSelectors', () => {
         one: {
           id: 'one',
           screening_id: '123456',
+          approximate_age: null,
+          approximate_age_units: null,
+          date_of_birth: '13/0/-514',
           first_name: 'one',
+          gender: 'known',
+          languages: ['Ω', 'ß'],
           middle_name: 'middle one',
           last_name: 'last one',
           name_suffix: 'suffix one',
@@ -91,7 +116,12 @@ describe('peopleFormSelectors', () => {
         two: {
           id: 'two',
           screening_id: '123456',
+          approximate_age: '1',
+          approximate_age_units: 'year',
+          date_of_birth: '',
           first_name: 'two',
+          gender: 'unknown',
+          languages: [],
           middle_name: 'middle two',
           last_name: 'last two',
           name_suffix: 'suffix two',
@@ -103,7 +133,12 @@ describe('peopleFormSelectors', () => {
         three: {
           id: 'three',
           screening_id: '123456',
+          approximate_age: '',
+          approximate_age_units: 'days',
+          date_of_birth: '',
           first_name: 'three',
+          gender: '',
+          languages: [''],
           middle_name: 'middle three',
           last_name: 'last three',
           name_suffix: 'suffix three',
@@ -111,6 +146,47 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: null,
+        },
+      }))
+    })
+
+    it('it clears aproximate age fields when date of birth is set', () => {
+      const screening = {id: '123456'}
+      const peopleForm = {
+        one: {
+          approximate_age: {value: '1'},
+          approximate_age_units: {value: 'years'},
+          date_of_birth: {value: '13/0/-514'},
+          first_name: {value: ''},
+          gender: {value: ''},
+          languages: {value: []},
+          middle_name: {value: ''},
+          last_name: {value: ''},
+          name_suffix: {value: ''},
+          phone_numbers: [],
+          addresses: [],
+          roles: {value: []},
+          ssn: {value: ''},
+        },
+      }
+      const state = fromJS({peopleForm, screening})
+      expect(getPeopleWithEditsSelector(state)).toEqualImmutable(fromJS({
+        one: {
+          id: 'one',
+          screening_id: '123456',
+          approximate_age: null,
+          approximate_age_units: null,
+          date_of_birth: '13/0/-514',
+          first_name: '',
+          gender: '',
+          languages: [],
+          middle_name: '',
+          last_name: '',
+          name_suffix: '',
+          phone_numbers: [],
+          addresses: [],
+          roles: [],
+          ssn: '',
         },
       }))
     })
@@ -236,6 +312,101 @@ describe('peopleFormSelectors', () => {
           type: 'Home',
         }]
       ))
+    })
+  })
+
+  describe('getIsApproximateAgeDisabledSelector', () => {
+    it('is set to false if the given person does not have a date of birth', () => {
+      const peopleForm = {1: {date_of_birth: {value: null}}}
+      const state = fromJS({peopleForm})
+      expect(getIsApproximateAgeDisabledSelector(state, '1')).toBe(false)
+    })
+
+    it('is set to true if the given person has a date of birth', () => {
+      const peopleForm = {1: {date_of_birth: {value: '13/0/-514'}}}
+      const state = fromJS({peopleForm})
+      expect(getIsApproximateAgeDisabledSelector(state, '1')).toBe(true)
+    })
+  })
+
+  describe('getApproximateAgeUnitOptionsSelector', () => {
+    it('includes the approximate age unit options', () => {
+      const peopleForm = {}
+      const state = fromJS({peopleForm})
+      expect(getApproximateAgeUnitOptionsSelector(state, '1'))
+        .toEqualImmutable(fromJS([
+          {label: 'Days', value: 'days'},
+          {label: 'Weeks', value: 'weeks'},
+          {label: 'Months', value: 'months'},
+          {label: 'Years', value: 'years'},
+        ]))
+    })
+  })
+
+  describe('getLanguageOptionsSelector', () => {
+    it('includes the languages options', () => {
+      const peopleForm = {}
+      const state = fromJS({peopleForm})
+      expect(getLanguageOptionsSelector(state, '1').toJS())
+        .toContain({label: 'English', value: 'English'})
+    })
+  })
+
+  describe('getGenderOptionsSelector', () => {
+    it('includes the gender options', () => {
+      const peopleForm = {}
+      const state = fromJS({peopleForm})
+      expect(getGenderOptionsSelector(state, '1'))
+        .toEqualImmutable(fromJS([
+          {label: 'Male', value: 'male'},
+          {label: 'Female', value: 'female'},
+          {label: 'Unknown', value: 'unknown'},
+        ]))
+    })
+  })
+
+  describe('getPersonDemographicsSelector', () => {
+    it('returns a blank person when person does not exist', () => {
+      const peopleForm = {1: {}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '2').toJS()).toEqual({
+        approximateAge: '',
+        approximateAgeUnit: 'years',
+        dateOfBirth: '',
+        gender: '',
+        languages: [],
+      })
+    })
+
+    it('includes the approximate age for the given person', () => {
+      const peopleForm = {1: {approximate_age: {value: '1'}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAge')).toEqual('1')
+    })
+
+    it('includes the approximate age unit for the given person', () => {
+      const peopleForm = {1: {approximate_age_units: {value: 'year'}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '1').get('approximateAgeUnit')).toEqual('year')
+    })
+
+    it('includes the date of birth for the given person', () => {
+      const peopleForm = {1: {date_of_birth: {value: '13/0/-514'}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '1').get('dateOfBirth')).toEqual('13/0/-514')
+    })
+
+    it('includes the gender for the given person', () => {
+      const peopleForm = {1: {gender: {value: 'known'}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '1').get('gender')).toEqual('known')
+    })
+
+    it('includes the languages for the given person', () => {
+      const peopleForm = {1: {languages: {value: ['Ω', 'ß']}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonDemographicsSelector(state, '1').get('languages'))
+        .toEqualImmutable(fromJS(['Ω', 'ß']))
     })
   })
 })

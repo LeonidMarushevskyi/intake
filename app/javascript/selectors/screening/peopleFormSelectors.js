@@ -1,6 +1,14 @@
+import selectOptions from 'utils/selectHelper'
+import APPROXIMATE_AGE_UNITS from 'enums/ApproximateAgeUnits'
+import Genders from 'enums/Genders'
+import LANGUAGES from 'enums/Languages'
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
+
+const formatEnums = (enumObject) =>
+  Object.keys(enumObject).map((item) => ({label: enumObject[item], value: item}))
+
 export const getPeopleSelector = (state) => state.get('peopleForm')
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
@@ -10,27 +18,35 @@ import US_STATE from 'enums/USState'
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
   getScreeningIdValueSelector,
-  (people, screeningId) => people.map((person, personId) => fromJS({
-    screening_id: screeningId,
-    id: personId,
-    first_name: person.getIn(['first_name', 'value']),
-    middle_name: person.getIn(['middle_name', 'value']),
-    last_name: person.getIn(['last_name', 'value']),
-    name_suffix: person.getIn(['name_suffix', 'value']),
-    phone_numbers: person.get('phone_numbers', List()).map((phoneNumber) => Map({
-      number: phoneNumber.getIn(['number', 'value']),
-      type: phoneNumber.getIn(['type', 'value']),
-    })),
-    addresses: person.get('addresses', List()).map((address) => Map({
-      street_address: address.getIn(['street', 'value']),
-      city: address.getIn(['city', 'value']),
-      state: address.getIn(['state', 'value']),
-      zip: address.getIn(['zip', 'value']),
-      type: address.getIn(['type', 'value']),
-    })),
-    roles: person.getIn(['roles', 'value']),
-    ssn: person.getIn(['ssn', 'value']),
-  }))
+  (people, screeningId) => people.map((person, personId) => {
+    const isAgeDisabled = Boolean(person.getIn(['date_of_birth', 'value']))
+    return fromJS({
+      screening_id: screeningId,
+      id: personId,
+      approximate_age: isAgeDisabled ? null : person.getIn(['approximate_age', 'value']),
+      approximate_age_units: isAgeDisabled ? null : person.getIn(['approximate_age_units', 'value']),
+      date_of_birth: person.getIn(['date_of_birth', 'value']),
+      first_name: person.getIn(['first_name', 'value']),
+      gender: person.getIn(['gender', 'value']),
+      languages: person.getIn(['languages', 'value']),
+      middle_name: person.getIn(['middle_name', 'value']),
+      last_name: person.getIn(['last_name', 'value']),
+      name_suffix: person.getIn(['name_suffix', 'value']),
+      phone_numbers: person.get('phone_numbers', List()).map((phoneNumber) => Map({
+        number: phoneNumber.getIn(['number', 'value']),
+        type: phoneNumber.getIn(['type', 'value']),
+      })),
+      addresses: person.get('addresses', List()).map((address) => Map({
+        street_address: address.getIn(['street', 'value']),
+        city: address.getIn(['city', 'value']),
+        state: address.getIn(['state', 'value']),
+        zip: address.getIn(['zip', 'value']),
+        type: address.getIn(['type', 'value']),
+      })),
+      roles: person.getIn(['roles', 'value']),
+      ssn: person.getIn(['ssn', 'value']),
+    })
+  })
 )
 export const getPhoneNumberTypeOptions = () => fromJS(PHONE_NUMBER_TYPE.map((type) => ({value: type, label: type})))
 export const getPersonPhoneNumbersSelector = (state, personId) => (
@@ -65,3 +81,22 @@ export const getPersonAddressesSelector = (state, personId) => (
     })
   ))
 )
+
+export const getIsApproximateAgeDisabledSelector = (state, personId) => (
+  Boolean(state.getIn(['peopleForm', personId, 'date_of_birth', 'value']))
+)
+
+export const getApproximateAgeUnitOptionsSelector = () => fromJS(formatEnums(APPROXIMATE_AGE_UNITS))
+export const getLanguageOptionsSelector = () => fromJS(selectOptions(LANGUAGES))
+export const getGenderOptionsSelector = () => fromJS(formatEnums(Genders))
+
+export const getPersonDemographicsSelector = (state, personId) => {
+  const person = state.getIn(['peopleForm', personId], Map())
+  return fromJS({
+    approximateAge: person.getIn(['approximate_age', 'value']) || '',
+    approximateAgeUnit: person.getIn(['approximate_age_units', 'value']) || 'years',
+    dateOfBirth: person.getIn(['date_of_birth', 'value']) || '',
+    gender: person.getIn(['gender', 'value']) || '',
+    languages: person.getIn(['languages', 'value']) || [],
+  })
+}

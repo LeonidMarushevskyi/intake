@@ -20,6 +20,11 @@ describe('peopleFormReducer', () => {
         participants: [{
           id: 'participant_one',
           addresses: [],
+          approximate_age: '2',
+          approximate_age_units: 'days',
+          date_of_birth: '2/2/2222',
+          gender: 'male',
+          languages: ['English'],
           roles: ['a', 'b'],
           legacy_descriptor: 'legacy descriptor one',
           first_name: 'first name one',
@@ -39,6 +44,11 @@ describe('peopleFormReducer', () => {
           }],
           roles: ['c'],
           legacy_descriptor: 'legacy descriptor two',
+          approximate_age: '3',
+          approximate_age_units: 'months',
+          date_of_birth: '3/3/3333',
+          gender: '',
+          languages: [],
           first_name: 'first name two',
           middle_name: 'middle name two',
           last_name: 'last name two',
@@ -52,6 +62,11 @@ describe('peopleFormReducer', () => {
           participant_one: {
             roles: {value: ['a', 'b']},
             addresses: [],
+            approximate_age: {value: '2'},
+            approximate_age_units: {value: 'days'},
+            date_of_birth: {value: '2/2/2222'},
+            gender: {value: 'male'},
+            languages: {value: ['English']},
             legacy_descriptor: {value: 'legacy descriptor one'},
             first_name: {value: 'first name one'},
             middle_name: {value: 'middle name one'},
@@ -69,6 +84,11 @@ describe('peopleFormReducer', () => {
               zip: {value: '55555'},
               type: {value: 'Home'},
             }],
+            approximate_age: {value: '3'},
+            approximate_age_units: {value: 'months'},
+            date_of_birth: {value: '3/3/3333'},
+            gender: {value: ''},
+            languages: {value: []},
             legacy_descriptor: {value: 'legacy descriptor two'},
             first_name: {value: 'first name two'},
             middle_name: {value: 'middle name two'},
@@ -168,6 +188,11 @@ describe('peopleFormReducer', () => {
   describe('on CREATE_PERSON_COMPLETE', () => {
     const lastState = fromJS({
       participant_one: {
+        approximate_age: {value: '2'},
+        approximate_age_units: {value: 'days'},
+        date_of_birth: {value: '2/2/2222'},
+        gender: {value: 'male'},
+        languages: {value: ['English']},
         roles: {value: ['a', 'b']},
         legacy_descriptor: {value: 'legacy descriptor one'},
         first_name: {value: 'first name one'},
@@ -181,6 +206,11 @@ describe('peopleFormReducer', () => {
     })
     it('returns people form with the added person on success', () => {
       const newPerson = {
+        approximate_age: '3',
+        approximate_age_units: 'months',
+        date_of_birth: '3/3/3333',
+        gender: '',
+        languages: [],
         id: 'participant_two',
         roles: ['c'],
         legacy_descriptor: 'legacy descriptor two',
@@ -201,6 +231,11 @@ describe('peopleFormReducer', () => {
       const action = createPersonSuccess(newPerson)
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(fromJS({
         participant_one: {
+          approximate_age: {value: '2'},
+          approximate_age_units: {value: 'days'},
+          date_of_birth: {value: '2/2/2222'},
+          gender: {value: 'male'},
+          languages: {value: ['English']},
           roles: {value: ['a', 'b']},
           legacy_descriptor: {value: 'legacy descriptor one'},
           first_name: {value: 'first name one'},
@@ -212,6 +247,11 @@ describe('peopleFormReducer', () => {
           addresses: [],
         },
         participant_two: {
+          approximate_age: {value: '3'},
+          approximate_age_units: {value: 'months'},
+          date_of_birth: {value: '3/3/3333'},
+          gender: {value: ''},
+          languages: {value: []},
           roles: {value: ['c']},
           legacy_descriptor: {value: 'legacy descriptor two'},
           first_name: {value: 'first name two'},
