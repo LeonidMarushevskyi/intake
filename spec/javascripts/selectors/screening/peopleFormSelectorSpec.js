@@ -19,7 +19,7 @@ describe('peopleFormSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getPeopleWithEditsSelector', () => {
-    it('returns formated people object map', () => {
+    it('returns formatted people object map', () => {
       const screening = {id: '123456'}
       const peopleForm = {
         one: {
@@ -96,8 +96,8 @@ describe('peopleFormSelectors', () => {
         one: {
           id: 'one',
           screening_id: '123456',
-          approximate_age: '',
-          approximate_age_units: '',
+          approximate_age: null,
+          approximate_age_units: null,
           date_of_birth: '13/0/-514',
           first_name: 'one',
           gender: 'known',
@@ -146,6 +146,47 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: null,
+        },
+      }))
+    })
+
+    it('it clears aproximate age fields when date of birth is set', () => {
+      const screening = {id: '123456'}
+      const peopleForm = {
+        one: {
+          approximate_age: {value: '1'},
+          approximate_age_units: {value: 'years'},
+          date_of_birth: {value: '13/0/-514'},
+          first_name: {value: ''},
+          gender: {value: ''},
+          languages: {value: []},
+          middle_name: {value: ''},
+          last_name: {value: ''},
+          name_suffix: {value: ''},
+          phone_numbers: [],
+          addresses: [],
+          roles: {value: []},
+          ssn: {value: ''},
+        },
+      }
+      const state = fromJS({peopleForm, screening})
+      expect(getPeopleWithEditsSelector(state)).toEqualImmutable(fromJS({
+        one: {
+          id: 'one',
+          screening_id: '123456',
+          approximate_age: null,
+          approximate_age_units: null,
+          date_of_birth: '13/0/-514',
+          first_name: '',
+          gender: '',
+          languages: [],
+          middle_name: '',
+          last_name: '',
+          name_suffix: '',
+          phone_numbers: [],
+          addresses: [],
+          roles: [],
+          ssn: '',
         },
       }))
     })

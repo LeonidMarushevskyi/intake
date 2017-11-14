@@ -18,32 +18,35 @@ import US_STATE from 'enums/USState'
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
   getScreeningIdValueSelector,
-  (people, screeningId) => people.map((person, personId) => fromJS({
-    screening_id: screeningId,
-    id: personId,
-    approximate_age: person.getIn(['approximate_age', 'value']),
-    approximate_age_units: person.getIn(['approximate_age_units', 'value']),
-    date_of_birth: person.getIn(['date_of_birth', 'value']),
-    first_name: person.getIn(['first_name', 'value']),
-    gender: person.getIn(['gender', 'value']),
-    languages: person.getIn(['languages', 'value']),
-    middle_name: person.getIn(['middle_name', 'value']),
-    last_name: person.getIn(['last_name', 'value']),
-    name_suffix: person.getIn(['name_suffix', 'value']),
-    phone_numbers: person.get('phone_numbers', List()).map((phoneNumber) => Map({
-      number: phoneNumber.getIn(['number', 'value']),
-      type: phoneNumber.getIn(['type', 'value']),
-    })),
-    addresses: person.get('addresses', List()).map((address) => Map({
-      street_address: address.getIn(['street', 'value']),
-      city: address.getIn(['city', 'value']),
-      state: address.getIn(['state', 'value']),
-      zip: address.getIn(['zip', 'value']),
-      type: address.getIn(['type', 'value']),
-    })),
-    roles: person.getIn(['roles', 'value']),
-    ssn: person.getIn(['ssn', 'value']),
-  }))
+  (people, screeningId) => people.map((person, personId) => {
+    const isAgeDisabled = Boolean(person.getIn(['date_of_birth', 'value']))
+    return fromJS({
+      screening_id: screeningId,
+      id: personId,
+      approximate_age: isAgeDisabled ? null : person.getIn(['approximate_age', 'value']),
+      approximate_age_units: isAgeDisabled ? null : person.getIn(['approximate_age_units', 'value']),
+      date_of_birth: person.getIn(['date_of_birth', 'value']),
+      first_name: person.getIn(['first_name', 'value']),
+      gender: person.getIn(['gender', 'value']),
+      languages: person.getIn(['languages', 'value']),
+      middle_name: person.getIn(['middle_name', 'value']),
+      last_name: person.getIn(['last_name', 'value']),
+      name_suffix: person.getIn(['name_suffix', 'value']),
+      phone_numbers: person.get('phone_numbers', List()).map((phoneNumber) => Map({
+        number: phoneNumber.getIn(['number', 'value']),
+        type: phoneNumber.getIn(['type', 'value']),
+      })),
+      addresses: person.get('addresses', List()).map((address) => Map({
+        street_address: address.getIn(['street', 'value']),
+        city: address.getIn(['city', 'value']),
+        state: address.getIn(['state', 'value']),
+        zip: address.getIn(['zip', 'value']),
+        type: address.getIn(['type', 'value']),
+      })),
+      roles: person.getIn(['roles', 'value']),
+      ssn: person.getIn(['ssn', 'value']),
+    })
+  })
 )
 export const getPhoneNumberTypeOptions = () => fromJS(PHONE_NUMBER_TYPE.map((type) => ({value: type, label: type})))
 export const getPersonPhoneNumbersSelector = (state, personId) => (

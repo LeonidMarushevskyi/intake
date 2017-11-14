@@ -61,5 +61,13 @@ describe('PersonDemographicsFormContainer', () => {
       component.find('PersonDemographicsForm').props().onChange('gender', 'male')
       expect(setFieldSpy).toHaveBeenCalledWith('1', ['gender'], 'male')
     })
+
+    it('clears approximate age on populating date of birth', () => {
+      const setFieldSpy = spyOn(peopleActions, 'setField')
+      component.find('PersonDemographicsForm').props().onChange('date_of_birth', '2/22/2022')
+      expect(setFieldSpy).toHaveBeenCalledWith('1', ['date_of_birth'], '2/22/2022')
+      expect(setFieldSpy).toHaveBeenCalledWith('1', ['approximate_age'], null)
+      expect(setFieldSpy).toHaveBeenCalledWith('1', ['approximate_age_units'], null)
+    })
   })
 })

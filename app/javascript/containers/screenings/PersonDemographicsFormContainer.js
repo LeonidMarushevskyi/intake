@@ -18,15 +18,30 @@ const mapStateToProps = (state, {personId}) => (
     languageOptions: getLanguageOptionsSelector().toJS(),
     ...getPersonDemographicsSelector(state, personId).toJS(),
   }
-
 )
 
-const mergeProps = (selectedProps, {dispatch}) => {
+const mergeProps = (stateProps, {dispatch}, {personId}) => {
   const onChange = (field, value) => {
-    const newValue = field === 'languages' ?
-      value.slice(0, MAX_LANGUAGES).map((languages) => languages.value) || [] : value
-    dispatch(setField(selectedProps.personId, [field], newValue))
+    switch (field) {
+      case 'languages':
+      {
+        const trimmedLanguages = value.slice(0, MAX_LANGUAGES).map((languages) => languages.value) || []
+        dispatch(setField(personId, ['languages'], trimmedLanguages))
+        break
+      }
+      case 'date_of_birth':
+      {
+        dispatch(setField(personId, [field], value))
+        dispatch(setField(personId, ['approximate_age'], null))
+        dispatch(setField(personId, ['approximate_age_units'], null))
+        break
+      }
+      default:
+      {
+        dispatch(setField(personId, [field], value))
+      }
+    }
   }
-  return {onChange, ...selectedProps}
+  return {onChange, personId, ...stateProps}
 }
 export default connect(mapStateToProps, null, mergeProps)(PersonDemographicsForm)
