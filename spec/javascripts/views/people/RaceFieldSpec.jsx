@@ -10,7 +10,8 @@ describe('RaceField', () => {
     race = 'Native Alien',
     raceDetail,
     raceDetailOptions = [],
-    onChange,
+    onRaceChange,
+    onRaceDetailChange,
   }) {
     const props = {
       personId,
@@ -19,7 +20,8 @@ describe('RaceField', () => {
       race,
       raceDetail,
       raceDetailOptions,
-      onChange,
+      onRaceChange,
+      onRaceDetailChange,
     }
     return shallow(<RaceField {...props} />)
   }
@@ -35,13 +37,13 @@ describe('RaceField', () => {
     expect(checkbox.props().label).toEqual(race)
   })
 
-  it('fires on change when race checkbox is changed', () => {
-    const onChange = jasmine.createSpy('onChange')
+  it('fires on race change when race checkbox is changed', () => {
+    const onRaceChange = jasmine.createSpy('onRaceChange')
     const race = 'Black or African'
-    const component = renderRaceField({personId: '123', race, onChange})
+    const component = renderRaceField({personId: '123', race, onRaceChange})
     component.find('CheckboxField[id="participant-123-race-Black_or_African"]')
       .simulate('change', {target: {checked: true}})
-    expect(onChange).toHaveBeenCalledWith(race, true)
+    expect(onRaceChange).toHaveBeenCalledWith(race, true)
   })
 
   it('renders the select field for race detail when race is checked', () => {
@@ -59,14 +61,20 @@ describe('RaceField', () => {
     expect(component.find('SelectField').exists()).toEqual(false)
   })
 
-  it('fires on change when race detail select is changed', () => {
-    const onChange = jasmine.createSpy('onChange')
+  it('fires on race deatil change when race detail select is changed', () => {
+    const onRaceDetailChange = jasmine.createSpy('onRaceDetailChange')
     const race = 'Black or African'
     const raceDetail = 'Ethopian'
-    const component = renderRaceField({onChange, personId: '123', checked: true, race, raceDetailOptions: ['European']})
+    const component = renderRaceField({
+      onRaceDetailChange,
+      personId: '123',
+      checked: true,
+      race,
+      raceDetailOptions: ['European']
+    })
     component.find('SelectField')
       .simulate('change', {target: {value: raceDetail}})
-    expect(onChange).toHaveBeenCalledWith('raceDetail', race, raceDetail)
+    expect(onRaceDetailChange).toHaveBeenCalledWith(race, raceDetail)
   })
 
   it('renders the race detail options', () => {
