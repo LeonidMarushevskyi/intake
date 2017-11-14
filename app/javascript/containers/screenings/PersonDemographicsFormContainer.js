@@ -1,11 +1,24 @@
 import {connect} from 'react-redux'
-import {getPersonDemographicsSelector} from 'selectors/screening/peopleFormSelectors'
+import {
+  getIsApproximateAgeDisabledSelector,
+  getPersonDemographicsSelector,
+  getApproximateAgeUnitOptionsSelector,
+  getLanguageOptionsSelector,
+  getGenderOptionsSelector,
+} from 'selectors/screening/peopleFormSelectors'
 import {setField} from 'actions/peopleFormActions'
 import {MAX_LANGUAGES} from 'common/LanguageInfo'
 import PersonDemographicsForm from 'views/people/PersonDemographicsForm'
 
 const mapStateToProps = (state, {personId}) => (
-  getPersonDemographicsSelector(state, personId).toJS()
+  {
+    approximateAgeUnitOptions: getApproximateAgeUnitOptionsSelector().toJS(),
+    approximateAgeIsDisabled: getIsApproximateAgeDisabledSelector(state, personId),
+    genderOptions: getGenderOptionsSelector().toJS(),
+    languageOptions: getLanguageOptionsSelector().toJS(),
+    ...getPersonDemographicsSelector(state, personId).toJS(),
+  }
+
 )
 
 const mergeProps = (selectedProps, {dispatch}) => {

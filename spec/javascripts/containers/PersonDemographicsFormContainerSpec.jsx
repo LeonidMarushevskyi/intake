@@ -7,7 +7,7 @@ import {shallow} from 'enzyme'
 
 describe('PersonDemographicsFormContainer', () => {
   const state = fromJS({
-    peopleForm: {1:{ssn: {value: '123456789'}, approximate_age: {value: '9'}, approximate_age_units: {value: 'dog years'},
+    peopleForm: {1: {ssn: {value: '123456789'}, approximate_age: {value: ''}, approximate_age_units: {value: ''},
       date_of_birth: {value: '2014-01-15'}, languages: {value: ['Javascript', 'Ruby']}, gender: {value: 'female'},
       roles: {value: ['super-hero', 'anti-hero']}, first_name: {value: 'John'}, middle_name: {value: 'Q'}, last_name: {value: 'Public'},
       races: {value: [{race: 'White', race_detail: 'Romanian'}, {race: 'Asian', race_detail: 'Chinese'}]},
@@ -21,7 +21,7 @@ describe('PersonDemographicsFormContainer', () => {
   })
   it('renders PersonDemographicsForm', () => {
     expect(component.find('PersonDemographicsForm').props()).toEqual({
-      approximateAge: undefined,
+      approximateAge: '',
       approximateAgeUnit: 'years',
       approximateAgeIsDisabled: true,
       approximateAgeUnitOptions: [
