@@ -21,7 +21,12 @@ export const getPeopleWithEditsSelector = createSelector(
   (people, screeningId) => people.map((person, personId) => fromJS({
     screening_id: screeningId,
     id: personId,
+    approximate_age: person.getIn(['approximate_age', 'value']),
+    approximate_age_units: person.getIn(['approximate_age_units', 'value']),
+    date_of_birth: person.getIn(['date_of_birth', 'value']),
     first_name: person.getIn(['first_name', 'value']),
+    gender: person.getIn(['gender', 'value']),
+    languages: person.getIn(['languages', 'value']),
     middle_name: person.getIn(['middle_name', 'value']),
     last_name: person.getIn(['last_name', 'value']),
     name_suffix: person.getIn(['name_suffix', 'value']),
