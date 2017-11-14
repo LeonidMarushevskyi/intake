@@ -86,7 +86,7 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const raceDetails = { White: 'selected value' }
+    const raceDetails = {White: 'selected value'}
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
@@ -122,7 +122,7 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const raceDetails = { 'Black or African American': 'selected value' }
+    const raceDetails = {'Black or African American': 'selected value'}
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
@@ -157,7 +157,7 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const raceDetails = { 'Asian': 'selected value' }
+    const raceDetails = {Asian: 'selected value'}
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
@@ -193,7 +193,7 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const raceDetails = { 'American Indian or Alaska Native': 'selected value' }
+    const raceDetails = {'American Indian or Alaska Native': 'selected value'}
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
@@ -229,7 +229,7 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
-    const raceDetails = { 'Native Hawaiian or Other Pacific Islander': 'selected value' }
+    const raceDetails = {'Native Hawaiian or Other Pacific Islander': 'selected value'}
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,

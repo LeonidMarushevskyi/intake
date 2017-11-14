@@ -70,7 +70,7 @@ describe('RaceField', () => {
       personId: '123',
       checked: true,
       race,
-      raceDetailOptions: ['European']
+      raceDetailOptions: ['European'],
     })
     component.find('SelectField')
       .simulate('change', {target: {value: raceDetail}})
