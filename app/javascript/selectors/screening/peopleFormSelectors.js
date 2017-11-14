@@ -74,18 +74,18 @@ export const getPersonAddressesSelector = (state, personId) => (
   ))
 )
 export const getPersonDemographicsSelector = (state, personId) => {
-  const person = state.get('participants').find((person) => person.get('id') === personId) || fromJS({})
+  const person = state.getIn(['peopleForm', personId], Map())
   const approximateAgeIsDisabled = Boolean(person.get('date_of_birth'))
   return fromJS({
-    approximateAge: approximateAgeIsDisabled ? undefined : person.get('approximate_age'),
+    approximateAge: approximateAgeIsDisabled ? undefined : person.getIn(['approximate_age', 'value']),
     approximateAgeIsDisabled: approximateAgeIsDisabled,
-    approximateAgeUnit: approximateAgeIsDisabled ? 'years' : person.get('approximate_age_units'),
+    approximateAgeUnit: approximateAgeIsDisabled ? 'years' : person.getIn(['approximate_age_units', 'value']),
     approximateAgeUnitOptions: formatEnums(APPROXIMATE_AGE_UNITS),
-    dateOfBirth: person.get('date_of_birth'),
-    gender: person.get('gender'),
+    dateOfBirth: person.getIn(['date_of_birth', 'value']),
+    gender: person.getIn(['gender', 'value']),
     genderOptions: formatEnums(Genders),
     languageOptions: selectOptions(LANGUAGES),
-    languages: person.get('languages') || [],
+    languages: person.getIn(['languages', 'value']) || [],
     personId: personId,
   })
 }

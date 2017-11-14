@@ -37,7 +37,12 @@ const buildPhoneNumbers = (phoneNumbers) => {
 
 const buildPerson = ({
   addresses,
+  approximate_age,
+  approximate_age_units,
+  date_of_birth,
   first_name,
+  gender,
+  languages,
   last_name,
   legacy_descriptor,
   middle_name,
@@ -47,7 +52,12 @@ const buildPerson = ({
   ssn,
 }) => fromJS({
   addresses: buildAddresses(addresses),
+  approximate_age: {value: approximate_age},
+  approximate_age_units: {value: approximate_age_units},
+  date_of_birth: {value: date_of_birth},
   first_name: {value: first_name},
+  gender: {value: gender},
+  languages: {value: languages},
   last_name: {value: last_name},
   legacy_descriptor: {value: legacy_descriptor},
   middle_name: {value: middle_name},

@@ -7,13 +7,12 @@ import {shallow} from 'enzyme'
 
 describe('PersonDemographicsFormContainer', () => {
   const state = fromJS({
-    participants: [{id: '1', ssn: '123456789', approximate_age: '9', approximate_age_units: 'dog years',
-      date_of_birth: '2014-01-15', languages: ['Javascript', 'Ruby'], gender: 'female',
-      roles: ['super-hero', 'anti-hero'], first_name: 'John', middle_name: 'Q', last_name: 'Public',
-      legacy_descriptor: {legacy_ui_id: '1-4', legacy_table_description: 'Client'},
-      races: [{race: 'White', race_detail: 'Romanian'}, {race: 'Asian', race_detail: 'Chinese'}],
-      ethnicity: {hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican']},
-    }]})
+    peopleForm: {1:{ssn: {value: '123456789'}, approximate_age: {value: '9'}, approximate_age_units: {value: 'dog years'},
+      date_of_birth: {value: '2014-01-15'}, languages: {value: ['Javascript', 'Ruby']}, gender: {value: 'female'},
+      roles: {value: ['super-hero', 'anti-hero']}, first_name: {value: 'John'}, middle_name: {value: 'Q'}, last_name: {value: 'Public'},
+      races: {value: [{race: 'White', race_detail: 'Romanian'}, {race: 'Asian', race_detail: 'Chinese'}]},
+      ethnicity: {value: {hispanic_latino_origin: 'Yes'}, ethnicity_detail: {value: ['Mexican']}},
+    }}})
   const store = createMockStore(state)
   let component
   beforeEach(() => {
