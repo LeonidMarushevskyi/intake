@@ -197,20 +197,6 @@ describe('Participant card view', () => {
         component.find('ParticipantEditView').props().onChange(['first_name'], 'Bart')
         expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
       })
-
-      describe('when onDobBlur is called', () => {
-        it('calls onChange from props with cleared approximate age values when given a non-empty value', () => {
-          const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
-          component.find('ParticipantEditView').props().onDobBlur('123')
-          expect(onChange).toHaveBeenCalledWith(participantId, updatedParticipant)
-        })
-
-        it('does not call onChange when given an empty value', () => {
-          const updatedParticipant = participant.set('approximate_age', null).set('approximate_age_units', null)
-          component.find('ParticipantEditView').props().onDobBlur('')
-          expect(onChange).not.toHaveBeenCalledWith(participantId, updatedParticipant)
-        })
-      })
     })
   })
 })
