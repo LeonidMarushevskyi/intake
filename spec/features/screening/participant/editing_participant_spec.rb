@@ -180,6 +180,34 @@ feature 'Edit Person' do
     end
   end
 
+  context 'editing and saving person demographics' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
+      within edit_participant_card_selector(marge.id) do
+        within '.card-body' do
+          expect(page).to have_field('Date of birth', with: dob)
+          expect(page).to have_field('Approximate Age', disabled: true)
+          expect(page).to have_field('Approximate Age Units', disabled: true)
+          expect(page).to have_field('Gender', with: marge.gender)
+          has_react_select_field('Language(s) (Primary First)', with: marge.languages)
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            date_of_birth: marge.date_of_birth,
+            gender: marge.gender,
+            languages: marge.languages
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
   scenario 'editing and saving a participant for a screening saves only the relevant participant',
     pending: 'until person card refactor complete' do
     visit edit_screening_path(id: screening.id)
@@ -324,8 +352,7 @@ feature 'Edit Person' do
     ).to have_been_made
   end
 
-  scenario 'when a user modifies languages for an existing participant',
-    pending: 'until person card refactor complete' do
+  scenario 'when a user modifies languages for an existing participant' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -338,19 +365,17 @@ feature 'Edit Person' do
       end
       marge.languages = %w[English Arabic]
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: marge.to_json)
-        .and_return(json_body(marge.to_json, status: 200))
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
       expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))).to have_been_made
+        .with(body: hash_including(
+          languages: contain_exactly('English', 'Arabic')
+        ))).to have_been_made
     end
   end
 
-  scenario 'when a user tabs out of the language multi-select',
-    pending: 'until person card refactor complete' do
+  scenario 'when a user tabs out of the language multi-select' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -474,8 +499,7 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'setting an approximate age',
-    pending: 'until person card refactor complete' do
+  scenario 'setting an approximate age' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       expect(page).to have_field('Approximate Age', disabled: true)
@@ -501,8 +525,11 @@ feature 'Edit Person' do
       fill_in_datepicker 'Date of birth', with: dob, blur: false
       click_button 'Save'
       expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge))))
-        .to have_been_made
+        .with(body: hash_including(
+          date_of_birth: marge.date_of_birth,
+          approximate_age: nil,
+          approximate_age_units: nil
+        ))).to have_been_made
     end
   end
 end
