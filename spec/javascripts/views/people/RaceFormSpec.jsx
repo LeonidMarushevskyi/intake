@@ -7,6 +7,7 @@ describe('Race', () => {
     onRaceChange,
     onRaceDetailChange,
     personId,
+    raceDetails = {},
     raceDetailOptions = {},
     races,
     racesDisabled = false,
@@ -14,7 +15,10 @@ describe('Race', () => {
     const props = {
       onRaceChange,
       onRaceDetailChange,
-      racesDisabled, personId, raceDetailOptions,
+      racesDisabled,
+      personId,
+      raceDetailOptions,
+      raceDetails,
       races: {
         White: false,
         'Black or African American': false,
@@ -82,11 +86,13 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
+    const raceDetails = { White: 'selected value' }
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
       personId: 'person-123',
-      raceDetailOptions
+      raceDetailOptions,
+      raceDetails,
     }).find('RaceField[race="White"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onRaceChange).toEqual(onRaceChange)
@@ -96,6 +102,7 @@ describe('Race', () => {
       {label: 'Race Detail 1', value: 'race_detail_1'},
       {label: 'Race Detail 2', value: 'race_detail_2'},
     ])
+    expect(component.props().raceDetail).toEqual('selected value')
     expect(component.props().checked).toEqual(false)
   })
 
@@ -115,11 +122,13 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
+    const raceDetails = { 'Black or African American': 'selected value' }
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
       personId: 'person-123',
-      raceDetailOptions
+      raceDetailOptions,
+      raceDetails,
     }).find('RaceField[race="Black or African American"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onRaceDetailChange).toEqual(onRaceDetailChange)
@@ -128,6 +137,7 @@ describe('Race', () => {
       {label: 'Race Detail 1', value: 'race_detail_1'},
       {label: 'Race Detail 2', value: 'race_detail_2'},
     ])
+    expect(component.props().raceDetail).toEqual('selected value')
     expect(component.props().checked).toEqual(false)
   })
 
@@ -147,11 +157,13 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
+    const raceDetails = { 'Asian': 'selected value' }
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
       personId: 'person-123',
-      raceDetailOptions
+      raceDetailOptions,
+      raceDetails,
     }).find('RaceField[race="Asian"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onRaceChange).toEqual(onRaceChange)
@@ -161,6 +173,7 @@ describe('Race', () => {
       {label: 'Race Detail 1', value: 'race_detail_1'},
       {label: 'Race Detail 2', value: 'race_detail_2'},
     ])
+    expect(component.props().raceDetail).toEqual('selected value')
     expect(component.props().checked).toEqual(false)
   })
 
@@ -180,11 +193,13 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
+    const raceDetails = { 'American Indian or Alaska Native': 'selected value' }
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
       personId: 'person-123',
-      raceDetailOptions
+      raceDetailOptions,
+      raceDetails,
     }).find('RaceField[race="American Indian or Alaska Native"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onRaceChange).toEqual(onRaceChange)
@@ -194,6 +209,7 @@ describe('Race', () => {
       {label: 'Race Detail 1', value: 'race_detail_1'},
       {label: 'Race Detail 2', value: 'race_detail_2'},
     ])
+    expect(component.props().raceDetail).toEqual('selected value')
     expect(component.props().checked).toEqual(false)
   })
 
@@ -213,11 +229,13 @@ describe('Race', () => {
         {label: 'Race Detail 2', value: 'race_detail_2'},
       ],
     }
+    const raceDetails = { 'Native Hawaiian or Other Pacific Islander': 'selected value' }
     const component = renderRaceForm({
       onRaceChange,
       onRaceDetailChange,
       personId: 'person-123',
-      raceDetailOptions
+      raceDetailOptions,
+      raceDetails,
     }).find('RaceField[race="Native Hawaiian or Other Pacific Islander"]')
     expect(component.exists()).toEqual(true)
     expect(component.props().onRaceChange).toEqual(onRaceChange)
@@ -227,6 +245,7 @@ describe('Race', () => {
       {label: 'Race Detail 1', value: 'race_detail_1'},
       {label: 'Race Detail 2', value: 'race_detail_2'},
     ])
+    expect(component.props().raceDetail).toEqual('selected value')
     expect(component.props().checked).toEqual(false)
   })
 

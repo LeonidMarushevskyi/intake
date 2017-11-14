@@ -8,6 +8,7 @@ const RaceForm = ({
   racesDisabled,
   personId,
   raceDetailOptions,
+  raceDetails,
   races,
 }) => (
   <div className='row'>
@@ -24,6 +25,7 @@ const RaceForm = ({
                     personId={personId}
                     race='White'
                     raceDetailOptions={raceDetailOptions.White}
+                    raceDetail={raceDetails.White}
                     checked={races.White}
                     onRaceChange={onRaceChange}
                     onRaceDetailChange={onRaceDetailChange}
@@ -35,6 +37,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Black or African American'
                     raceDetailOptions={raceDetailOptions['Black or African American']}
+                    raceDetail={raceDetails['Black or African American']}
                     checked={races['Black or African American']}
                     onRaceChange={onRaceChange}
                     onRaceDetailChange={onRaceDetailChange}
@@ -46,6 +49,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Asian'
                     raceDetailOptions={raceDetailOptions.Asian}
+                    raceDetail={raceDetails.Asian}
                     checked={races.Asian}
                     onRaceChange={onRaceChange}
                     onRaceDetailChange={onRaceDetailChange}
@@ -57,6 +61,7 @@ const RaceForm = ({
                     personId={personId}
                     race='American Indian or Alaska Native'
                     raceDetailOptions={raceDetailOptions['American Indian or Alaska Native']}
+                    raceDetail={raceDetails['American Indian or Alaska Native']}
                     checked={races['American Indian or Alaska Native']}
                     onRaceChange={onRaceChange}
                     onRaceDetailChange={onRaceDetailChange}
@@ -68,6 +73,7 @@ const RaceForm = ({
                     personId={personId}
                     race='Native Hawaiian or Other Pacific Islander'
                     raceDetailOptions={raceDetailOptions['Native Hawaiian or Other Pacific Islander']}
+                    raceDetail={raceDetails['Native Hawaiian or Other Pacific Islander']}
                     checked={races['Native Hawaiian or Other Pacific Islander']}
                     onRaceChange={onRaceChange}
                     onRaceDetailChange={onRaceDetailChange}
@@ -120,6 +126,7 @@ RaceForm.propTypes = {
   onRaceDetailChange: PropTypes.func,
   personId: PropTypes.string,
   raceDetailOptions: PropTypes.object,
+  raceDetails: PropTypes.object,
   races: PropTypes.object,
   racesDisabled: PropTypes.bool,
 }

@@ -3,6 +3,7 @@ import RaceForm from 'views/people/RaceForm'
 import {RACE_DETAILS} from 'enums/Races'
 import {
   getPersonRacesSelector,
+  getPersonRaceDetailsSelector,
   getIsRaceIndeterminateValueSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import {setField} from 'actions/peopleFormActions'
@@ -17,6 +18,7 @@ const mapStateToProps = (state, {personId}) => {
     raceDetailOptions,
     racesDisabled: getIsRaceIndeterminateValueSelector(state, personId),
     races: getPersonRacesSelector(state, personId).toJS(),
+    raceDetails: getPersonRaceDetailsSelector(state, personId).toJS(),
   }
 }
 const mergeProps = (stateProps, {dispatch}, {personId}) => (
