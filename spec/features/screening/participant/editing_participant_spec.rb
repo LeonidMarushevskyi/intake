@@ -41,6 +41,8 @@ feature 'Edit Person' do
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
+    marge.screening_id = screening.id
+    homer.screening_id = screening.id
   end
 
   scenario 'character limitations by field' do
