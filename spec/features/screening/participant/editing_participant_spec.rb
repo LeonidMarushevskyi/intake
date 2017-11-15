@@ -120,8 +120,16 @@ feature 'Edit Person' do
         .with(
           body: hash_including(
             'phone_numbers' => array_including(
-              hash_including('number' => phone_number.number, 'type' => phone_number.type),
-              hash_including('number' => '(987)654-3210', 'type' => 'Cell')
+              hash_including(
+                'id' => phone_number.id,
+                'number' => phone_number.number,
+                'type' => phone_number.type
+              ),
+              hash_including(
+                'id' => nil,
+                'number' => '(987)654-3210',
+                'type' => 'Cell'
+              )
             )
           )
         )
@@ -160,6 +168,7 @@ feature 'Edit Person' do
           body: hash_including(
             'addresses' => array_including(
               hash_including(
+                'id' => address.id,
                 'street_address' => address.street_address,
                 'city' => address.city,
                 'state' => address.state,
@@ -167,6 +176,7 @@ feature 'Edit Person' do
                 'type' => address.type
               ),
               hash_including(
+                'id' => nil,
                 'street_address' => '1234 Some Lane',
                 'city' => 'Someplace',
                 'state' => 'CA',
