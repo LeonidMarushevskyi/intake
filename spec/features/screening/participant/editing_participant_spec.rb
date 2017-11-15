@@ -317,7 +317,6 @@ feature 'Edit Person' do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
