@@ -208,8 +208,36 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'editing and saving a participant for a screening saves only the relevant participant',
-    pending: 'until person card refactor complete' do
+  scenario 'editing & saving a person for a screening saves only the relevant person ids' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      within '.card-body' do
+        click_button 'Save'
+      end
+    end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(
+        body: hash_including(
+          screening_id: screening.id,
+          sensitive: true,
+          sealed: false,
+          legacy_descriptor: hash_including(
+            'id' => marge.legacy_descriptor.id,
+            'legacy_id' => marge.legacy_descriptor.legacy_id,
+            'legacy_last_updated' => marge.legacy_descriptor.legacy_last_updated.iso8601(3),
+            'legacy_table_description' => marge.legacy_descriptor.legacy_table_description,
+            'legacy_table_name' => marge.legacy_descriptor.legacy_table_name,
+            'legacy_ui_id' => marge.legacy_descriptor.legacy_ui_id
+          )
+        )
+      )
+    ).to have_been_made
+  end
+
+  scenario 'editing and saving a participant for a screening saves only the relevant participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do

@@ -38,6 +38,7 @@ export const getPeopleWithEditsSelector = createSelector(
       first_name: person.getIn(['first_name', 'value']),
       gender: person.getIn(['gender', 'value']),
       languages: person.getIn(['languages', 'value']),
+      legacy_descriptor: person.getIn(['legacy_descriptor', 'value']),
       middle_name: person.getIn(['middle_name', 'value']),
       last_name: person.getIn(['last_name', 'value']),
       name_suffix: person.getIn(['name_suffix', 'value']),

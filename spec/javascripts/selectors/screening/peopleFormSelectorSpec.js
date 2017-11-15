@@ -30,6 +30,7 @@ describe('peopleFormSelectors', () => {
       const screening = {id: '123456'}
       const peopleForm = {
         one: {
+          legacy_descriptor: {value: 'a legacy descriptor'},
           approximate_age: {value: ''},
           approximate_age_units: {value: ''},
           date_of_birth: {value: '13/0/-514'},
@@ -71,6 +72,7 @@ describe('peopleFormSelectors', () => {
           race_details: {},
         },
         two: {
+          legacy_descriptor: {value: 'a legacy descriptor'},
           approximate_age: {value: '1'},
           approximate_age_units: {value: 'year'},
           date_of_birth: {value: ''},
@@ -104,6 +106,7 @@ describe('peopleFormSelectors', () => {
           },
         },
         three: {
+          legacy_descriptor: {value: 'a legacy descriptor'},
           approximate_age: {value: ''},
           approximate_age_units: {value: 'days'},
           date_of_birth: {value: ''},
@@ -129,6 +132,7 @@ describe('peopleFormSelectors', () => {
       expect(getPeopleWithEditsSelector(state)).toEqualImmutable(fromJS({
         one: {
           id: 'one',
+          legacy_descriptor: 'a legacy descriptor',
           screening_id: '123456',
           approximate_age: null,
           approximate_age_units: null,
@@ -156,6 +160,7 @@ describe('peopleFormSelectors', () => {
         },
         two: {
           id: 'two',
+          legacy_descriptor: 'a legacy descriptor',
           screening_id: '123456',
           approximate_age: '1',
           approximate_age_units: 'year',
@@ -181,6 +186,7 @@ describe('peopleFormSelectors', () => {
         },
         three: {
           id: 'three',
+          legacy_descriptor: 'a legacy descriptor',
           screening_id: '123456',
           approximate_age: '',
           approximate_age_units: 'days',
@@ -214,6 +220,7 @@ describe('peopleFormSelectors', () => {
           first_name: {value: ''},
           gender: {value: ''},
           languages: {value: []},
+          legacy_descriptor: {value: 'a legacy_descriptor'},
           middle_name: {value: ''},
           last_name: {value: ''},
           name_suffix: {value: ''},
@@ -240,6 +247,7 @@ describe('peopleFormSelectors', () => {
           first_name: '',
           gender: '',
           languages: [],
+          legacy_descriptor: 'a legacy_descriptor',
           middle_name: '',
           last_name: '',
           name_suffix: '',
