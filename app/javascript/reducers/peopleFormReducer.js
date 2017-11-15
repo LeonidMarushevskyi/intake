@@ -12,7 +12,8 @@ import {CREATE_PERSON_COMPLETE} from 'actions/personCardActions'
 
 const buildAddresses = (addresses) => {
   if (addresses) {
-    return addresses.map(({street_address, city, state, zip, type}) => ({
+    return addresses.map(({id, street_address, city, state, zip, type}) => ({
+      id,
       street: {value: street_address},
       city: {value: city},
       state: {value: state},
@@ -26,7 +27,8 @@ const buildAddresses = (addresses) => {
 
 const buildPhoneNumbers = (phoneNumbers) => {
   if (phoneNumbers) {
-    return phoneNumbers.map(({number, type}) => ({
+    return phoneNumbers.map(({id, number, type}) => ({
+      id,
       number: {value: number},
       type: {value: type},
     }))
@@ -113,6 +115,7 @@ export default createReducer(Map(), {
     const currentAddresses = state.getIn([personId, 'addresses'])
     const nullValue = {value: null}
     const newAddress = fromJS({
+      id: null,
       street: nullValue,
       city: nullValue,
       state: nullValue,
@@ -123,7 +126,7 @@ export default createReducer(Map(), {
   },
   [ADD_PEOPLE_FORM_PHONE_NUMBER]: (state, {payload: {personId}}) => {
     const currentPhones = state.getIn([personId, 'phone_numbers'])
-    const newPhone = fromJS({number: {value: null}, type: {value: null}})
+    const newPhone = fromJS({id: null, number: {value: null}, type: {value: null}})
     return state.setIn([personId, 'phone_numbers'], currentPhones.push(newPhone))
   },
   [DELETE_PEOPLE_FORM_ADDRESS]: (state, {payload: {personId, addressIndex}}) => {

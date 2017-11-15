@@ -46,6 +46,7 @@ describe('peopleFormReducer', () => {
         }, {
           id: 'participant_two',
           addresses: [{
+            id: 'ABC123',
             street_address: '1234 Some Lane',
             city: 'Somewhere',
             state: 'CA',
@@ -63,7 +64,7 @@ describe('peopleFormReducer', () => {
           middle_name: 'middle name two',
           last_name: 'last name two',
           name_suffix: 'name suffix two',
-          phone_numbers: [{number: '1234567890', type: 'Home'}],
+          phone_numbers: [{id: 'DEF456', number: '1234567890', type: 'Home'}],
           ssn: 'ssn two',
           sensitive: false,
           sealed: false,
@@ -109,6 +110,7 @@ describe('peopleFormReducer', () => {
           participant_two: {
             roles: {value: ['c']},
             addresses: [{
+              id: 'ABC123',
               street: {value: '1234 Some Lane'},
               city: {value: 'Somewhere'},
               state: {value: 'CA'},
@@ -126,6 +128,7 @@ describe('peopleFormReducer', () => {
             last_name: {value: 'last name two'},
             name_suffix: {value: 'name suffix two'},
             phone_numbers: [{
+              id: 'DEF456',
               number: {value: '1234567890'},
               type: {value: 'Home'},
             }],
@@ -201,7 +204,7 @@ describe('peopleFormReducer', () => {
       const action = addPhone('person_one')
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(
         fromJS({
-          person_one: {phone_numbers: [{number: {value: null}, type: {value: null}}]},
+          person_one: {phone_numbers: [{id: null, number: {value: null}, type: {value: null}}]},
           person_two: {phone_numbers: []},
         })
       )
@@ -211,14 +214,14 @@ describe('peopleFormReducer', () => {
   describe('on deletePhone', () => {
     it('deletes the phone item for the given person id and index', () => {
       const lastState = fromJS({
-        person_one: {phone_numbers: [{number: {value: '1234567890'}, type: {value: 'Home'}}]},
-        person_two: {phone_numbers: [{number: {value: '0987654321'}, type: {value: 'Cell'}}]},
+        person_one: {phone_numbers: [{id: '123', number: {value: '1234567890'}, type: {value: 'Home'}}]},
+        person_two: {phone_numbers: [{id: 'ABC', number: {value: '0987654321'}, type: {value: 'Cell'}}]},
       })
       const action = deletePhone('person_one', 0)
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(
         fromJS({
           person_one: {phone_numbers: []},
-          person_two: {phone_numbers: [{number: {value: '0987654321'}, type: {value: 'Cell'}}]},
+          person_two: {phone_numbers: [{id: 'ABC', number: {value: '0987654321'}, type: {value: 'Cell'}}]},
         })
       )
     })
@@ -268,8 +271,9 @@ describe('peopleFormReducer', () => {
         ssn: 'ssn two',
         sensitive: false,
         sealed: false,
-        phone_numbers: [{number: '1234567890', type: 'Home'}],
+        phone_numbers: [{id: 'DEF456', number: '1234567890', type: 'Home'}],
         addresses: [{
+          id: 'ABC123',
           street_address: '1234 Some Lane',
           city: 'Somewhere',
           state: 'CA',
@@ -324,10 +328,12 @@ describe('peopleFormReducer', () => {
           sensitive: {value: false},
           sealed: {value: false},
           phone_numbers: [{
+            id: 'DEF456',
             number: {value: '1234567890'},
             type: {value: 'Home'},
           }],
           addresses: [{
+            id: 'ABC123',
             street: {value: '1234 Some Lane'},
             city: {value: 'Somewhere'},
             state: {value: 'CA'},
@@ -359,6 +365,7 @@ describe('peopleFormReducer', () => {
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(
         fromJS({
           person_one: {addresses: [{
+            id: null,
             street: {value: null},
             city: {value: null},
             state: {value: null},
@@ -375,6 +382,7 @@ describe('peopleFormReducer', () => {
     it('deletes the address for the given person id and index', () => {
       const lastState = fromJS({
         person_one: {addresses: [{
+          id: '123',
           street: {value: '1234 Some Lane'},
           city: {value: 'Somewhere'},
           state: {value: 'CA'},
@@ -382,6 +390,7 @@ describe('peopleFormReducer', () => {
           type: {value: 'Home'},
         }]},
         person_two: {addresses: [{
+          id: 'ABC',
           street: {value: '5678 No Street'},
           city: {value: 'Nowhere'},
           state: {value: 'CA'},
@@ -394,6 +403,7 @@ describe('peopleFormReducer', () => {
         fromJS({
           person_one: {addresses: []},
           person_two: {addresses: [{
+            id: 'ABC',
             street: {value: '5678 No Street'},
             city: {value: 'Nowhere'},
             state: {value: 'CA'},
