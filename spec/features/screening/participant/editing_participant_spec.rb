@@ -41,6 +41,8 @@ feature 'Edit Person' do
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
+    marge.screening_id = screening.id
+    homer.screening_id = screening.id
   end
 
   scenario 'character limitations by field' do
@@ -120,8 +122,16 @@ feature 'Edit Person' do
         .with(
           body: hash_including(
             'phone_numbers' => array_including(
-              hash_including('number' => phone_number.number, 'type' => phone_number.type),
-              hash_including('number' => '(987)654-3210', 'type' => 'Cell')
+              hash_including(
+                'id' => phone_number.id,
+                'number' => phone_number.number,
+                'type' => phone_number.type
+              ),
+              hash_including(
+                'id' => nil,
+                'number' => '(987)654-3210',
+                'type' => 'Cell'
+              )
             )
           )
         )
@@ -160,6 +170,7 @@ feature 'Edit Person' do
           body: hash_including(
             'addresses' => array_including(
               hash_including(
+                'id' => address.id,
                 'street_address' => address.street_address,
                 'city' => address.city,
                 'state' => address.state,
@@ -167,6 +178,7 @@ feature 'Edit Person' do
                 'type' => address.type
               ),
               hash_including(
+                'id' => nil,
                 'street_address' => '1234 Some Lane',
                 'city' => 'Someplace',
                 'state' => 'CA',
@@ -208,8 +220,34 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'editing and saving a participant for a screening saves only the relevant participant',
-    pending: 'until person card refactor complete' do
+  scenario 'editing & saving a person for a screening saves only the relevant person ids' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(
+        body: hash_including(
+          screening_id: screening.id,
+          sensitive: true,
+          sealed: false,
+          legacy_descriptor: hash_including(
+            'id' => marge.legacy_descriptor.id,
+            'legacy_id' => marge.legacy_descriptor.legacy_id,
+            'legacy_last_updated' => marge.legacy_descriptor.legacy_last_updated.iso8601(3),
+            'legacy_table_description' => marge.legacy_descriptor.legacy_table_description,
+            'legacy_table_name' => marge.legacy_descriptor.legacy_table_name,
+            'legacy_ui_id' => marge.legacy_descriptor.legacy_ui_id
+          )
+        )
+      )
+    ).to have_been_made
+  end
+
+  scenario 'editing and saving a participant for a screening saves only the relevant participant' do
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       within '.card-header' do
@@ -222,7 +260,6 @@ feature 'Edit Person' do
         table_description = marge.legacy_descriptor.legacy_table_description
         ui_id = marge.legacy_descriptor.legacy_ui_id
         expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
@@ -280,7 +317,6 @@ feature 'Edit Person' do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
@@ -472,27 +508,30 @@ feature 'Edit Person' do
     end
   end
 
-  scenario 'when a user modifies existing person ethnicity to null',
-    pending: 'until person card refactor complete' do
+  scenario 'when a user modifies existing person ethnicity from Yes to nothing selected' do
     visit edit_screening_path(id: screening.id)
 
+    marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: [] }
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .and_return(json_body(marge.to_json, status: 200))
+
     within edit_participant_card_selector(marge.id) do
-      within('#ethnicity') do
+      within 'fieldset', text: 'Hispanic/Latino Origin' do
         find('label', text: 'Yes').click
       end
-      marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
-
-      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
-      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge))))
-        .to have_been_made
     end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(
+        'ethnicity' => hash_including(
+          'ethnicity_detail' => [],
+          'hispanic_latino_origin' => nil
+        )
+      ))
+    ).to have_been_made
 
     within show_participant_card_selector(marge.id) do
       expect(page).to_not have_content('Yes - Mexican')

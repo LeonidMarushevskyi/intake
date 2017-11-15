@@ -27,8 +27,6 @@ import EmptyHistory from 'views/history/EmptyHistory'
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {screening: props.screening}
-
     const methods = [
       'createParticipant',
       'canCreateParticipant',

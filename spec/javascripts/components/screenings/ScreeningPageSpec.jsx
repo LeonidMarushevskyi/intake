@@ -210,46 +210,6 @@ describe('ScreeningPage', () => {
     })
   })
 
-  describe('componentWillReceiveProps', () => {
-    let component
-    let props
-    const newScreeningState = Immutable.fromJS({report_narrative: 'my updated narrative'})
-
-    beforeEach(() => {
-      const fetchScreening = jasmine.createSpy('fetchScreening')
-      const fetchRelationships = jasmine.createSpy('fetchRelationships')
-      const fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
-      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-      fetchScreening.and.returnValue(Promise.resolve())
-      checkStaffPermission.and.returnValue(Promise.resolve())
-      props = {
-        ...requiredProps,
-        actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements, checkStaffPermission},
-        params: {id: '222'},
-        screening: Immutable.fromJS({
-          report_narrative: 'my narrative',
-          allegations: [],
-        }),
-      }
-      component = mount(<ScreeningPage {...props} />)
-      component.setState({screening: newScreeningState})
-      component.setProps(props)
-    })
-
-    it("doesn't update state if screening prop hasn't changed", () => {
-      const instance = component.instance()
-      expect(instance.state.screening).toEqual(newScreeningState)
-    })
-
-    it('updates state when screening prop changes', () => {
-      const screening = props.screening.merge({id: '1'})
-      component.setProps({screening})
-      const instance = component.instance()
-      expect(instance.state.screening).not.toEqual(newScreeningState)
-      expect(instance.state.screening).toEqual(screening)
-    })
-  })
-
   describe('Show mode', () => {
     beforeEach(() => {
       requiredProps.mode = 'show'

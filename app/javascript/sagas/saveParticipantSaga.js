@@ -5,18 +5,15 @@ import {
   updatePersonSuccess,
   updatePersonFailure,
 } from 'actions/personCardActions'
-import {
-  fetchScreeningSuccess,
-} from 'actions/screeningActions'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {fetch as fetchAllegations} from 'actions/screeningAllegationsActions'
+import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 
 export function* saveParticipant({payload: {person}}) {
   try {
-    let response = yield call(Utils.put, `/api/v1/participants/${person.id}`, person)
+    const response = yield call(Utils.put, `/api/v1/participants/${person.id}`, person)
     yield put(updatePersonSuccess(response))
-    const screening = yield select(getScreeningSelector)
-    response = yield call(Utils.get, `/api/v1/screenings/${screening.get('id')}`)
-    yield put(fetchScreeningSuccess(response))
+    const screeningId = yield select(getScreeningIdValueSelector)
+    yield put(fetchAllegations(screeningId))
   } catch (error) {
     yield put(updatePersonFailure(error.responseJSON))
   }
