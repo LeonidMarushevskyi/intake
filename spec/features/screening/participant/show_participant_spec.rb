@@ -92,7 +92,29 @@ feature 'Show Screening' do
     end
   end
 
-  context 'showing participant with approximate age' do
+  context 'has participant of hispanic/latino origin but with no ethnicity details' do
+    before do
+      existing_participant.ethnicity[:ethnicity_detail] = []
+      existing_screening.participants = [existing_participant]
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json, status: 200))
+      stub_empty_history_for_screening(existing_screening)
+      stub_empty_relationships_for_screening(existing_screening)
+    end
+
+    scenario('display only hispanic/latino origin') do
+      visit screening_path(id: existing_screening.id)
+      within show_participant_card_selector(existing_participant.id) do
+        within '.card-body' do
+          expect(page).to have_content('Hispanic/Latino Origin Yes')
+          expect(page).not_to have_content('Yes-')
+        end
+      end
+    end
+  end
+
+  context 'participant with approximate age and no date of birth' do
     approximate_participant = FactoryGirl.create(
       :participant,
       date_of_birth: nil,
@@ -112,13 +134,14 @@ feature 'Show Screening' do
       stub_empty_relationships_for_screening(approximate_screening)
     end
 
-    scenario 'showing participant' do
+    scenario 'shows approximate age and hides date of birth' do
       visit screening_path(id: approximate_screening.id)
 
       within show_participant_card_selector(approximate_participant.id) do
         within '.card-body' do
           expect(page).to have_content('10')
           expect(page).to have_content('Months')
+          expect(page).not_to have_content('Date of birth')
         end
       end
     end

@@ -93,12 +93,21 @@ describe('personShowSelectors', () => {
       expect(getFormattedPersonInformationSelector(state, '1').get('races'))
         .toEqual('White - Romanian, Asian - Chinese, Black or African American')
     })
-    it('includes the formatted ethnicity for the given person', () => {
+
+    it('includes the formatted ethnicity for a person of hispanic/latino origin who has ethnicity details', () => {
       const participants = [
         {id: '1', ethnicity: {hispanic_latino_origin: 'Yes', ethnicity_detail: ['Mexican']}},
       ]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('ethnicity')).toEqual('Yes - Mexican')
+    })
+
+    it('includes the formatted ethnicity for a person of hispanic/latino origin but without ethnicity details', () => {
+      const participants = [
+        {id: '1', ethnicity: {hispanic_latino_origin: 'Unknown', ethnicity_detail: []}},
+      ]
+      const state = fromJS({participants})
+      expect(getFormattedPersonInformationSelector(state, '1').get('ethnicity')).toEqual('Unknown')
     })
   })
 

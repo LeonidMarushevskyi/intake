@@ -25,7 +25,7 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
   return Map({
     approximateAge: approximateAge,
     dateOfBirth: dateOfBirth,
-    ethnicity: hispanic_latino_origin && `${hispanic_latino_origin}${(ethnicity_detail && ` - ${ethnicity_detail}`) || ''}`,
+    ethnicity: hispanic_latino_origin && `${hispanic_latino_origin}${(ethnicity_detail.length > 0 && ` - ${ethnicity_detail}`) || ''}`,
     gender: GENDERS[person.get('gender')],
     languages: person.get('languages') && flagPrimaryLanguage((person.toJS().languages) || []).join(', '),
     legacySource: legacyDescriptor && legacySourceFormatter(legacyDescriptor.toJS()),
