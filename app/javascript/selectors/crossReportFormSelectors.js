@@ -71,7 +71,7 @@ export const getErrorsSelector = createSelector(
   (state) => state.getIn(['crossReportForm', 'inform_date', 'value']),
   (state) => state.getIn(['crossReportForm', 'method', 'value']),
   getSelectedAgenciesSelector,
-  (state) => state.getIn(['screening', 'allegations']),
+  (state) => state.get('allegationsForm'),
   (informDate, method, agencies, allegations) => fromJS({
     inform_date: combineCompact(isRequiredIfCreate(informDate, 'Please enter a cross-report date.', () => (agencies.size !== 0))),
     method: combineCompact(isRequiredIfCreate(method, 'Please select cross-report communication method.', () => (agencies.size !== 0))),
@@ -102,7 +102,7 @@ export const getVisibleErrorsSelector = createSelector(
   getErrorsSelector,
   getTouchedFieldsSelector,
   getTouchedAgenciesSelector,
-  (state) => state.getIn(['screening', 'allegations']),
+  (state) => state.get('allegationsForm'),
   (errors, touchedFields, touchedAgencies, allegations) => errors.reduce(
     (filteredErrors, fieldErrors, field) => {
       if (touchedAgencies.includes(field)) {
@@ -120,7 +120,7 @@ export const getVisibleErrorsSelector = createSelector(
 
 export const getAllegationsRequireCrossReportsValueSelector = createSelector(
   getSelectedAgenciesSelector,
-  (state) => state.getIn(['screening', 'allegations']),
+  (state) => state.get('allegationsForm'),
   (agencies, allegations) => areCrossReportsRequired(allegations) && !CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.reduce((hasRequiredAgencies, requiredAgencyType) => hasRequiredAgencies && Boolean(agencies.find((agency) => (
     agency.get('type') === requiredAgencyType
   ))), true)

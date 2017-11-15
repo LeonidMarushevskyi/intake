@@ -94,8 +94,8 @@ feature 'Edit Screening' do
       phone_numbers: [marge_phone_number],
       races: [
         { race: 'Asian' },
-        { race: 'White', race_detail: 'Romanian' },
         { race: 'White' },
+        { race: 'White', race_detail: 'Romanian' },
         { race: 'Asian', race_detail: 'Hmong' },
         { race: 'Asian', race_detail: 'Chinese' },
         { race: 'American Indian or Alaska Native' }
@@ -181,6 +181,11 @@ feature 'Edit Screening' do
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
+    existing_screening.participants << created_participant_homer
+    stub_request(
+      :get,
+      intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json, status: 200))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
@@ -224,7 +229,7 @@ feature 'Edit Screening' do
           expect(page.find('input[value="Asian"]')).to be_checked
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-Asian-race-detail",
-            selected: 'Hmong'
+            selected: 'Chinese'
           )
           expect(page.find('input[value="White"]')).to be_checked
           expect(page).to have_select(

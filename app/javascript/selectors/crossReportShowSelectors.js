@@ -112,7 +112,7 @@ export const getCommunityCareLicensingErrors = (agencies) => {
 
 export const getAllegationsRequireCrossReportsValueSelector = createSelector(
   getCrossReportAgenciesSelector,
-  (state) => state.getIn(['screening', 'allegations']),
+  (state) => state.get('allegationsForm'),
   (agencies, allegations) => areCrossReportsRequired(allegations) && !CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS.reduce((hasRequiredAgencies, requiredAgencyType) => hasRequiredAgencies && Boolean(agencies.find((agency) => (
     agency.get('type') === requiredAgencyType
   ))), true)
@@ -121,7 +121,7 @@ export const getAllegationsRequireCrossReportsValueSelector = createSelector(
 export const getErrorsSelector = createSelector(
   getCrossReportSelector,
   getCrossReportAgenciesSelector,
-  (state) => state.getIn(['screening', 'allegations']),
+  (state) => state.get('allegationsForm'),
   (crossReport, agencies, allegations) => fromJS({
     informDate: combineCompact(isRequiredIfCreate(crossReport.get('inform_date'), 'Please enter a cross-report date.', () => (agencies.size !== 0))),
     method: combineCompact(isRequiredIfCreate(crossReport.get('method'), 'Please select a cross-report communication method.', () => (agencies.size !== 0))),

@@ -199,7 +199,7 @@ describe('contactFormSelectors', () => {
       }
       const state = fromJS({contactForm})
       const errors = getVisibleErrorsSelector(state)
-      expect(errors.some((fieldErrors) => !fieldErrors.isEmpty())).toEqual(false)
+      expect(errors.every((fieldErrors) => fieldErrors.isEmpty())).toEqual(true)
     })
   })
 

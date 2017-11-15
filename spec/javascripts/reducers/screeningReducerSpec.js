@@ -8,9 +8,13 @@ import {
   submitScreeningFailure,
   updateScreeningSuccess,
 } from 'actions/screeningActions'
+import {
+  fetchSuccess as fetchAllegationsSuccess,
+  fetchFailure as fetchAllegationsFailure,
+} from 'actions/screeningAllegationsActions'
 import {FETCH_SCREENING} from 'actions/actionTypes'
 import screeningReducer from 'reducers/screeningReducer'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 describe('screeningReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -72,6 +76,24 @@ describe('screeningReducer', () => {
     })
     it('returns the last state on failure', () => {
       const action = submitScreeningFailure()
+      expect(screeningReducer(Map(), action)).toEqualImmutable(Map())
+    })
+  })
+
+  describe('on FETCH_SCREENING_ALLEGATIONS_COMPLETE', () => {
+    it('returns the screening with updated allegations on success', () => {
+      const screening = {id: 1, screening_decision: 'promote_to_referral', allegations: [{id: 1}]}
+      const allegations = [{id: 2}]
+      const action = fetchAllegationsSuccess(allegations)
+      expect(screeningReducer(fromJS(screening), action)).toEqualImmutable(fromJS({
+        id: 1,
+        screening_decision: 'promote_to_referral',
+        allegations: [{id: 2}],
+      }))
+    })
+
+    it('returns the last state on failure', () => {
+      const action = fetchAllegationsFailure()
       expect(screeningReducer(Map(), action)).toEqualImmutable(Map())
     })
   })

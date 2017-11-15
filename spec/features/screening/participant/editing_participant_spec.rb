@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-feature 'Edit Screening' do
+feature 'Edit Person' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
   let(:marge_roles) { %w[Victim Perpetrator] }
@@ -41,6 +41,8 @@ feature 'Edit Screening' do
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
+    marge.screening_id = screening.id
+    homer.screening_id = screening.id
   end
 
   scenario 'character limitations by field' do
@@ -51,6 +53,198 @@ feature 'Edit Screening' do
       fill_in 'Zip', with: '9i5%6Y1 8'
       expect(page).to have_field('Zip', with: '95618')
     end
+  end
+
+  context 'editing and saving basic person information' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(marge.id) do
+        within '.card-header' do
+          expect(page).to have_content('Sensitive')
+          expect(page).to have_content marge_formatted_name
+          expect(page).to have_button 'Delete person'
+        end
+        within '.card-body' do
+          table_description = marge.legacy_descriptor.legacy_table_description
+          ui_id = marge.legacy_descriptor.legacy_ui_id
+          has_react_select_field 'Role', with: %w[Victim Perpetrator]
+          expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
+          expect(page).to have_field('First Name', with: marge.first_name)
+          expect(page).to have_field('Middle Name', with: marge.middle_name)
+          expect(page).to have_field('Last Name', with: marge.last_name)
+          expect(page).to have_field('Suffix', with: marge.name_suffix)
+          expect(page).to have_field('Social security number', with: marge.ssn)
+
+          fill_in 'First Name', with: 'new first name'
+          fill_in 'Middle Name', with: 'new middle name'
+          fill_in 'Last Name', with: 'new last name'
+          select 'Sr', from: 'Suffix'
+          fill_in 'Social security number', with: 111_111_111
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            first_name: 'new first name',
+            middle_name: 'new middle name',
+            last_name: 'new last name',
+            name_suffix: 'sr',
+            ssn: '111-11-1111'
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
+  context 'editing and saving person phone numbers' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(marge.id) do
+        within '.card-body' do
+          expect(page).to have_field('Phone Number', with: '(123)456-7890')
+          expect(page).to have_field('Phone Number Type', with: phone_number.type)
+
+          click_button 'Add new phone number'
+
+          within all('.row.list-item')[1] do
+            fill_in 'Phone Number', with: '9876543210'
+            select 'Cell', from: 'Phone Number Type'
+          end
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            'phone_numbers' => array_including(
+              hash_including(
+                'id' => phone_number.id,
+                'number' => phone_number.number,
+                'type' => phone_number.type
+              ),
+              hash_including(
+                'id' => nil,
+                'number' => '(987)654-3210',
+                'type' => 'Cell'
+              )
+            )
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
+  context 'editing and saving addresses' do
+    scenario 'saves the person information' do
+      address = homer.addresses.first
+      visit edit_screening_path(id: screening.id)
+      within edit_participant_card_selector(homer.id) do
+        within '.card-body' do
+          expect(page).to have_field('Address', with: address.street_address)
+          expect(page).to have_field('City', with: address.city)
+          expect(page).to have_field('State', with: address.state)
+          expect(page).to have_field('Zip', with: address.zip)
+          expect(page).to have_field('Type', with: address.type)
+
+          click_button 'Add new address'
+
+          within all('.row.list-item').last do
+            fill_in 'Address', with: '1234 Some Lane'
+            fill_in 'City', with: 'Someplace'
+            select 'California', from: 'State'
+            fill_in 'Zip', with: '55555'
+            select 'Home', from: 'Address Type'
+          end
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
+        .with(
+          body: hash_including(
+            'addresses' => array_including(
+              hash_including(
+                'id' => address.id,
+                'street_address' => address.street_address,
+                'city' => address.city,
+                'state' => address.state,
+                'zip' => address.zip,
+                'type' => address.type
+              ),
+              hash_including(
+                'id' => nil,
+                'street_address' => '1234 Some Lane',
+                'city' => 'Someplace',
+                'state' => 'CA',
+                'zip' => '55555',
+                'type' => 'Home'
+              )
+            )
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
+  context 'editing and saving person demographics' do
+    scenario 'saves the person information' do
+      visit edit_screening_path(id: screening.id)
+      dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
+      within edit_participant_card_selector(marge.id) do
+        within '.card-body' do
+          expect(page).to have_field('Date of birth', with: dob)
+          expect(page).to have_field('Approximate Age', disabled: true)
+          expect(page).to have_field('Approximate Age Units', disabled: true)
+          expect(page).to have_field('Gender', with: marge.gender)
+          has_react_select_field('Language(s) (Primary First)', with: marge.languages)
+        end
+        click_button 'Save'
+      end
+
+      expect(
+        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .with(
+          body: hash_including(
+            date_of_birth: marge.date_of_birth,
+            gender: marge.gender,
+            languages: marge.languages
+          )
+        )
+      ).to have_been_made
+    end
+  end
+
+  scenario 'editing & saving a person for a screening saves only the relevant person ids' do
+    visit edit_screening_path(id: screening.id)
+
+    within edit_participant_card_selector(marge.id) do
+      click_button 'Save'
+    end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(
+        body: hash_including(
+          screening_id: screening.id,
+          sensitive: true,
+          sealed: false,
+          legacy_descriptor: hash_including(
+            'id' => marge.legacy_descriptor.id,
+            'legacy_id' => marge.legacy_descriptor.legacy_id,
+            'legacy_last_updated' => marge.legacy_descriptor.legacy_last_updated.iso8601(3),
+            'legacy_table_description' => marge.legacy_descriptor.legacy_table_description,
+            'legacy_table_name' => marge.legacy_descriptor.legacy_table_name,
+            'legacy_ui_id' => marge.legacy_descriptor.legacy_ui_id
+          )
+        )
+      )
+    ).to have_been_made
   end
 
   scenario 'editing and saving a participant for a screening saves only the relevant participant' do
@@ -66,11 +260,6 @@ feature 'Edit Screening' do
         table_description = marge.legacy_descriptor.legacy_table_description
         ui_id = marge.legacy_descriptor.legacy_ui_id
         expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_field('First Name', with: marge.first_name)
-        expect(page).to have_field('Middle Name', with: marge.middle_name)
-        expect(page).to have_field('Last Name', with: marge.last_name)
-        expect(page).to have_field('Suffix', with: marge.name_suffix)
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
@@ -81,7 +270,6 @@ feature 'Edit Screening' do
         expect(page).not_to have_selector('.rw-select')
         dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
         expect(page).to have_field('Date of birth', with: dob)
-        expect(page).to have_field('Social security number', with: marge.ssn)
         expect(page).to have_field('Address', with: marge.addresses.first.street_address)
         expect(page).to have_field('City', with: marge.addresses.first.city)
         expect(page).to have_field('State', with: marge.addresses.first.state)
@@ -129,7 +317,6 @@ feature 'Edit Screening' do
       within '.card-body' do
         expect(page).to have_content(new_ssn)
         expect(page).to_not have_content(old_ssn)
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
         expect(page).to have_content('New City')
         expect(page).to_not have_content('Springfield')
       end
@@ -157,25 +344,6 @@ feature 'Edit Screening' do
       end
     end
 
-    scenario 'ssn placeholder in input field is behaving as intended' do
-      visit edit_screening_path(id: screening.id)
-      within edit_participant_card_selector(homer.id) do
-        within '.card-body' do
-          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
-          fill_in 'Social security number', with: 12
-          expect(focused_native_element['id']).to eq("participant-#{homer.id}-ssn")
-          expect(focused_native_element['placeholder']).to eq('___-__-____')
-          fill_in 'First Name', with: 'Change Focus'
-          expect(page.find("#participant-#{homer.id}-ssn")['placeholder']).to eq('')
-          click_button 'Save'
-        end
-      end
-      within show_participant_card_selector(homer.id) do
-        expect(page).not_to have_content('12_-__-___')
-        expect(page).to have_content('12 -  -    ')
-      end
-    end
-
     scenario 'an invalid character is inserted' do
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
@@ -187,76 +355,37 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'editing and then removing an address from a participant' do
+  scenario 'removing an address from a participant' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
       within '.card-body' do
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_field('Address', with: marge.addresses.first.street_address)
-        expect(page).to have_field('City', with: marge.addresses.first.city)
-        expect(page).to have_field('State', with: marge.addresses.first.state)
-        expect(page).to have_field('Zip', with: marge.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
-        expect(page).to have_button 'Cancel'
-        expect(page).to have_button 'Save'
-        fill_in 'City', with: 'New City'
-      end
-
-      marge.addresses.first.city = 'New City'
-
-      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
-    end
-
-    within show_participant_card_selector(marge.id) do
-      within '.card-body' do
-        expect(page).to have_selector("#address-#{marge.addresses.first.id}")
-        expect(page).to have_content('New City')
-        expect(page).to_not have_content('Springfield')
-      end
-
-      within '.card-header' do
-        click_link 'Edit person'
-      end
-    end
-
-    within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        within "#address-#{marge.addresses.first.id}" do
+        within page.all('.list-item').last do
+          expect(page).to have_field('Address', with: marge.addresses.first.street_address)
+          expect(page).to have_field('City', with: marge.addresses.first.city)
+          expect(page).to have_field('State', with: marge.addresses.first.state)
+          expect(page).to have_field('Zip', with: marge.addresses.first.zip)
+          expect(page).to have_field('Address Type', with: marge.addresses.first.type)
           click_link 'Delete address'
         end
 
-        expect(page).to_not have_selector("#address-#{marge.addresses.first.id}")
+        expect(page).to_not have_field('City', with: 'New City')
       end
     end
 
     marge.addresses = []
-
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
       .with(body: as_json_without_root_id(marge))
       .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
-      expect(
-        a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))
-      ).to have_been_made
+      click_button 'Save'
     end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(addresses: []))
+    ).to have_been_made
   end
 
   scenario 'when a user modifies languages for an existing participant' do
@@ -272,14 +401,13 @@ feature 'Edit Screening' do
       end
       marge.languages = %w[English Arabic]
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: marge.to_json)
-        .and_return(json_body(marge.to_json, status: 200))
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
       expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge)))).to have_been_made
+        .with(body: hash_including(
+          languages: contain_exactly('English', 'Arabic')
+        ))).to have_been_made
     end
   end
 
@@ -338,9 +466,7 @@ feature 'Edit Screening' do
       remove_react_select_option('Role', 'Perpetrator')
       expect(page).to have_no_content('Perpetrator')
 
-      marge.roles = ['Victim']
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
 
       within '.card-body' do
@@ -350,7 +476,7 @@ feature 'Edit Screening' do
 
     expect(
       a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
+      .with(body: hash_including('roles' => ['Victim']))
     ).to have_been_made
 
     expect(page).to have_selector(show_participant_card_selector(marge.id))
@@ -382,26 +508,30 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'when a user modifies existing person ethnicity to null' do
+  scenario 'when a user modifies existing person ethnicity from Yes to nothing selected' do
     visit edit_screening_path(id: screening.id)
 
+    marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: [] }
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .and_return(json_body(marge.to_json, status: 200))
+
     within edit_participant_card_selector(marge.id) do
-      within('#ethnicity') do
+      within 'fieldset', text: 'Hispanic/Latino Origin' do
         find('label', text: 'Yes').click
       end
-      marge.ethnicity = { hispanic_latino_origin: nil, ethnicity_detail: nil }
-
-      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
-        .and_return(json_body(marge.to_json, status: 200))
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .and_return(json_body(marge.to_json, status: 200))
 
       click_button 'Save'
-      expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge))))
-        .to have_been_made
     end
+
+    expect(
+      a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .with(body: hash_including(
+        'ethnicity' => hash_including(
+          'ethnicity_detail' => [],
+          'hispanic_latino_origin' => nil
+        )
+      ))
+    ).to have_been_made
 
     within show_participant_card_selector(marge.id) do
       expect(page).to_not have_content('Yes - Mexican')
@@ -434,8 +564,11 @@ feature 'Edit Screening' do
       fill_in_datepicker 'Date of birth', with: dob, blur: false
       click_button 'Save'
       expect(a_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(json_body(as_json_without_root_id(marge))))
-        .to have_been_made
+        .with(body: hash_including(
+          date_of_birth: marge.date_of_birth,
+          approximate_age: nil,
+          approximate_age_units: nil
+        ))).to have_been_made
     end
   end
 end

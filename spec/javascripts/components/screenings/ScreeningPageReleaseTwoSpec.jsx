@@ -85,7 +85,7 @@ describe('ScreeningPage when release two is active', () => {
 
       it('renders the search card', () => {
         expect(component.find('#search-card label').text()).toContain('Search for any person')
-        expect(component.html()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
+        expect(component.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
       })
 
       it('renders the autocompleter', () => {
@@ -114,11 +114,7 @@ describe('ScreeningPage when release two is active', () => {
         editable: true,
       }
       const component = shallow(<ScreeningPage {...props} />)
-      expect(component.find('HistoryCard').length).toEqual(1)
-      expect(component.find('HistoryCard').props().actions).toEqual(props.actions)
-      expect(component.find('HistoryCard').props().involvements).toEqual(involvements)
-      expect(component.find('HistoryCard').props().participants).toEqual(participants)
-      expect(component.find('HistoryCard').props().screeningId).toEqual(props.params.id)
+      expect(component.find('Connect(HistoryOfInvolvement)').exists()).toEqual(true)
     })
 
     it('does not render the allegations card', () => {

@@ -4,8 +4,8 @@ import React from 'react'
 export const Relationships = ({people}) => (
   <div className='card-body no-pad-top'>
     {
-      people.map((person) => (
-        <div className='row' key={1}>
+      people.map((person, index) => (
+        <div className='row' key={index}>
           <div className='col-md-6 gap-top'>
             <span className='person'>{person.name}</span>
             {

@@ -1,8 +1,6 @@
 import {createSelector} from 'reselect'
 import {List, Map} from 'immutable'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
 import nameFormatter from 'utils/nameFormatter'
-import {siblingAtRiskHasRequiredComplementaryAllegations} from 'utils/allegationsHelper'
 const FLATTEN_LEVEL = 1
 
 const getAllegationsSelector = createSelector(
@@ -18,13 +16,6 @@ const getAllegationsSelector = createSelector(
   })
 )
 
-const getAllegationsWithTypesSelector = createSelector(
-  getAllegationsSelector,
-  (allegations) => allegations.filter((allegation) => (
-    !allegation.get('allegation_types', List()).isEmpty()
-  ))
-)
-
 export const getFormattedAllegationsSelector = createSelector(
   getAllegationsSelector,
   (allegations) => (
@@ -38,25 +29,4 @@ export const getFormattedAllegationsSelector = createSelector(
       ))
     )).flatten(FLATTEN_LEVEL)
   )
-)
-
-export const getAllegationsRequiredValueSelector = createSelector(
-  getScreeningSelector,
-  (screening) => screening.get('screening_decision') === 'promote_to_referral'
-)
-
-export const getAllegationsAlertErrorMessageSelector = createSelector(
-  getScreeningSelector,
-  getAllegationsRequiredValueSelector,
-  getAllegationsSelector,
-  getAllegationsWithTypesSelector,
-  (screening, required, allegations, allegationsWithTypes) => {
-    if (!siblingAtRiskHasRequiredComplementaryAllegations(allegations)) {
-      return 'Any allegations of Sibling at Risk must be accompanied by another allegation.'
-    } else if (required && allegationsWithTypes.isEmpty()) {
-      return 'Any report that is promoted for referral must include at least one allegation.'
-    } else {
-      return undefined
-    }
-  }
 )

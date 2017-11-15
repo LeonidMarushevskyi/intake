@@ -5,12 +5,6 @@ import {
   UPDATE_SCREENING_COMPLETE,
   FETCH_SCREENING,
   FETCH_SCREENING_COMPLETE,
-  CREATE_PARTICIPANT,
-  CREATE_PARTICIPANT_COMPLETE,
-  DELETE_PARTICIPANT,
-  DELETE_PARTICIPANT_COMPLETE,
-  UPDATE_PARTICIPANT,
-  UPDATE_PARTICIPANT_COMPLETE,
   FETCH_HISTORY_OF_INVOLVEMENTS,
   FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE,
   FETCH_RELATIONSHIPS,
@@ -52,42 +46,6 @@ export function saveScreening(screening) {
     put(`/api/v1/screenings/${screening.id}`, {screening})
       .then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
   )
-}
-
-export function updateParticipantSuccess(participant) {
-  return {type: UPDATE_PARTICIPANT_COMPLETE, payload: {participant}}
-}
-
-export function updateParticipantFailure(error) {
-  return {type: UPDATE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
-}
-
-export function saveParticipant(participant) {
-  return {type: UPDATE_PARTICIPANT, payload: {participant}}
-}
-
-export function createParticipantSuccess(participant) {
-  return {type: CREATE_PARTICIPANT_COMPLETE, payload: {participant}}
-}
-
-export function createParticipantFailure(error) {
-  return {type: CREATE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
-}
-
-export function createParticipant(participant) {
-  return {type: CREATE_PARTICIPANT, payload: {participant}}
-}
-
-export function deleteParticipantSuccess(id) {
-  return {type: DELETE_PARTICIPANT_COMPLETE, payload: {id}}
-}
-
-export function deleteParticipantFailure(error) {
-  return {type: DELETE_PARTICIPANT_COMPLETE, payload: {error}, error: true}
-}
-
-export function deleteParticipant(id) {
-  return {type: DELETE_PARTICIPANT, payload: {id}}
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {

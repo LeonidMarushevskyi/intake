@@ -64,7 +64,7 @@ feature 'show allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
 
@@ -97,7 +97,7 @@ feature 'show allegations' do
       screening_id: screening.id,
       allegation_types: ['Exploitation']
     )
-    screening.allegations.unshift(new_allegation)
+    screening.allegations.push(new_allegation)
 
     expect(
       a_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -147,6 +147,7 @@ feature 'show allegations' do
       .and_return(json_body(nil, status: 204))
 
     screening.allegations = []
+    screening.participants = [lisa, homer]
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
@@ -164,7 +165,7 @@ feature 'show allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Homer')
@@ -214,7 +215,6 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -241,7 +241,6 @@ feature 'show allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
@@ -263,7 +262,7 @@ feature 'show allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
@@ -291,7 +290,7 @@ feature 'show allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
     end
 
@@ -339,7 +338,7 @@ feature 'show allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
 

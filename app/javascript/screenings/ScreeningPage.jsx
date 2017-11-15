@@ -1,51 +1,36 @@
-import * as AllegationsHelper from 'utils/allegationsHelper'
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
+import * as personCardActions from 'actions/personCardActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import Autocompleter from 'common/Autocompleter'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
-import HistoryCard from 'screenings/HistoryCard'
-import Immutable from 'immutable'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import NarrativeCardView from 'screenings/NarrativeCardView'
 import ParticipantCardView from 'screenings/ParticipantCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
-import RelationshipsCard from 'screenings/RelationshipsCard'
+import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
-import ScreeningValidator from 'screenings/ScreeningValidator'
 import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {IndexLink, Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
+import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
+import EmptyHistory from 'views/history/EmptyHistory'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      screening: props.screening,
-      screeningEdits: Immutable.Map(),
-      participantsEdits: Immutable.Map(),
-    }
-
     const methods = [
-      'cancelEdit',
-      'cancelParticipantEdit',
-      'cardSave',
       'createParticipant',
       'canCreateParticipant',
-      'deleteParticipant',
-      'mergeScreeningWithEdits',
-      'participants',
       'renderMode',
-      'saveParticipant',
-      'setField',
-      'setParticipantField',
     ]
     methods.forEach((method) => {
       this[method] = this[method].bind(this)
@@ -72,46 +57,6 @@ export class ScreeningPage extends React.Component {
     return this.props.mode
   }
 
-  setField(fieldSeq, value, callback) {
-    const screeningEdits = this.state.screeningEdits.setIn(fieldSeq, value)
-    this.setState({screeningEdits: screeningEdits}, callback)
-  }
-
-  setParticipantField(id, value) {
-    const participantsEdits = this.state.participantsEdits.set(id, value)
-    this.setState({participantsEdits: participantsEdits})
-  }
-
-  cardSave(fieldList) {
-    let screening
-    if (fieldList.includes('allegations')) {
-      const allegations = AllegationsHelper.sortedAllegationsList(
-        this.props.screening.get('id'),
-        this.props.participants,
-        this.props.screening.get('allegations'),
-        this.state.screeningEdits.get('allegations')
-      ).filterNot((allegation) => allegation.get('allegation_types').isEmpty())
-
-      screening = this.state.screening.set('allegations', allegations)
-    } else {
-      const changes = this.state.screeningEdits.filter((value, key) =>
-        fieldList.includes(key) && value !== undefined
-      )
-      screening = this.mergeScreeningWithEdits(changes)
-    }
-    return this.props.actions.saveScreening(screening.toJS())
-  }
-
-  cancelEdit(fieldList) {
-    const updatedEdits = this.state.screeningEdits.filterNot((value, key) => fieldList.includes(key))
-    this.setState({screeningEdits: updatedEdits})
-  }
-
-  cancelParticipantEdit(id) {
-    const updatedParticipantsEdits = this.state.participantsEdits.delete(id)
-    this.setState({participantsEdits: updatedParticipantsEdits})
-  }
-
   canCreateParticipant(person) {
     return (person.sensitive === false || this.props.hasAddSensitivePerson)
   }
@@ -123,132 +68,14 @@ export class ScreeningPage extends React.Component {
       legacy_id: person.id,
       id: null,
     })
-    this.props.actions.createParticipant(participant)
-  }
-
-  deleteParticipant(id) {
-    this.props.actions.deleteParticipant(id)
-  }
-
-  saveParticipant(participant) {
-    this.props.actions.saveParticipant(participant.toJS())
-    this.setField(
-      ['allegations'],
-      AllegationsHelper.removeInvalidAllegations(participant, this.state.screeningEdits.get('allegations'))
-    )
-  }
-
-  mergeScreeningWithEdits(changes) {
-    // Changes in lists are already applied and returned in `changes`.
-    // No need to merge old list with new list.
-    const lists = changes.filter((val) => Immutable.List.isList(val))
-    const nonlists = changes.filterNot((val) => Immutable.List.isList(val))
-    let screening = this.state.screening
-    lists.map((v, k) => {
-      screening = screening.set(k, v)
-    })
-    return screening.mergeDeep(nonlists)
-  }
-
-  participants() {
-    // We want to merge the keys of each participant, but we don't want deep merge
-    // to combine the address lists for us. So, we do a custom merge at one level deep.
-    const mergedParticipants = this.props.participants.map((participant) => {
-      const participantId = participant.get('id')
-      const relevantEdits = this.state.participantsEdits.get(participantId)
-      const participantEdits = (relevantEdits || Immutable.Map())
-      return participant.merge(participantEdits)
-    })
-
-    return mergedParticipants
-  }
-
-  renderAutocompleter() {
-    return (
-      <div className='card edit double-gap-top' id='search-card'>
-        <div className='card-header'>
-          <span>Search</span>
-        </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-12'>
-              <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
-              <Autocompleter id='screening_participants'
-                onSelect={this.createParticipant}
-                isSelectable={this.canCreateParticipant}
-                footer={
-                  IntakeConfig.isFeatureInactive('release_two') &&
-                  <CreateUnknownParticipant saveCallback={this.createParticipant}/>
-                }
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  renderParticipantsCard() {
-    const participants = this.participants()
-
-    return (
-      <div>
-        { this.renderMode() === 'edit' && this.renderAutocompleter() }
-        {
-          participants.map((participant) =>
-            <ParticipantCardView
-              editable={this.props.editable}
-              key={participant.get('id')}
-              onCancel={this.cancelParticipantEdit}
-              onDelete={this.deleteParticipant}
-              onChange={this.setParticipantField}
-              onSave={this.saveParticipant}
-              participant={participant}
-              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
-            />
-          )
-        }
-      </div>
-    )
-  }
-
-  renderFooterLinks() {
-    return (
-      <div>
-        <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
-        {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
-      </div>
-    )
+    this.props.actions.createPerson(participant)
   }
 
   render() {
-    const cardCallbacks = {
-      onCancel: this.cancelEdit,
-      onChange: this.setField,
-      onSave: this.cardSave,
-    }
-    const {screening} = this.state
-    const mergedScreening = this.mergeScreeningWithEdits(this.state.screeningEdits)
-    const editable = this.props.editable
+    const {screening, editable} = this.props
     const mode = this.renderMode()
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
-
-    let sortedAllegations
-    let cardErrors
-    if (releaseTwoInactive) {
-      sortedAllegations = AllegationsHelper.sortedAllegationsList(
-        screening.get('id'),
-        this.props.participants,
-        screening.get('allegations'),
-        this.state.screeningEdits.get('allegations')
-      )
-      const screeningValidator = new ScreeningValidator({
-        screening: mergedScreening,
-        allegations: sortedAllegations,
-      })
-      cardErrors = screeningValidator.validateScreening()
-    }
 
     if (this.props.loaded) {
       return (
@@ -257,8 +84,8 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
               <h1>
                 {mode === 'edit' && 'Edit '}
-                {`Screening #${mergedScreening.get('reference')}`}
-                {mergedScreening.get('referral_id') && ` - Referral #${mergedScreening.get('referral_id')}`}
+                {`Screening #${screening.get('reference')}`}
+                {screening.get('referral_id') && ` - Referral #${screening.get('referral_id')}`}
               </h1>
           }
           {
@@ -279,82 +106,44 @@ export class ScreeningPage extends React.Component {
                 </div>
               </div>
           }
-          {
-            releaseTwoInactive &&
-            <ScreeningInformationCardView
-              {...cardCallbacks}
-              editable={editable}
-              mode={mode}
-              screening={mergedScreening}
-            />
+          {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
+          {this.renderMode() === 'edit' &&
+            <div className='card edit double-gap-top' id='search-card'>
+              <div className='card-header'>
+                <span>Search</span>
+              </div>
+              <div className='card-body'>
+                <div className='row'>
+                  <div className='col-md-12'>
+                    <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
+                    <Autocompleter id='screening_participants'
+                      onSelect={this.createParticipant}
+                      isSelectable={this.canCreateParticipant}
+                      footer={
+                        IntakeConfig.isFeatureInactive('release_two') &&
+                        <CreateUnknownParticipant saveCallback={this.createParticipant}/>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           }
-          {this.renderParticipantsCard()}
+          {this.props.participants.map((participant) =>
+            <ParticipantCardView
+              key={participant.get('id')}
+              participant={participant}
+              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
+            />
+          )}
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
-          {
-            releaseTwoInactive &&
-            <IncidentInformationCardView
-              {...cardCallbacks}
-              editable={editable}
-              errors={cardErrors.get('incident_information_card') || Immutable.List()}
-              mode={mode}
-              screening={mergedScreening}
-            />
-          }
-          {
-            releaseTwoInactive &&
-              <AllegationsCardView
-                allegations={sortedAllegations}
-                required={AllegationsHelper.areAllegationsRequired(mergedScreening.toJS())}
-                {...cardCallbacks}
-                editable={editable}
-                mode={mode}
-              />
-          }
-          {
-            releaseTwoInactive &&
-            <RelationshipsCard
-              editable={editable}
-              participants={this.props.participants}
-              relationships={this.props.relationships}
-            />
-          }
-          {
-            releaseTwoInactive &&
-              <WorkerSafetyCardView
-                {...cardCallbacks}
-                editable={editable}
-                mode={mode}
-                screening={mergedScreening}
-              />
-          }
-          <HistoryCard
-            actions={this.props.actions}
-            editable={editable}
-            involvements={this.props.involvements}
-            participants={this.props.participants}
-            screeningId={this.props.params.id}
-          />
-          {
-            releaseTwoInactive &&
-              <CrossReportCardView
-                areCrossReportsRequired={AllegationsHelper.areCrossReportsRequired(sortedAllegations)}
-                {...cardCallbacks}
-                crossReports={mergedScreening.get('cross_reports')}
-                editable={editable}
-                actions={this.props.actions}
-                mode={mode}
-              />
-          }
-          {
-            releaseTwoInactive &&
-            <DecisionCardView
-              {...cardCallbacks}
-              editable={editable}
-              errors={cardErrors.get('decision_card')}
-              mode={mode}
-              screening={mergedScreening}
-            />
-          }
+          {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={mode}/>}
+          {releaseTwoInactive && <AllegationsCardView mode={mode} />}
+          {releaseTwoInactive && <RelationshipsCardContainer />}
+          {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={mode} />}
+          <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
+          {releaseTwoInactive && <CrossReportCardView editable={editable} mode={mode} />}
+          {releaseTwoInactive && <DecisionCardView mode={mode}/>}
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
@@ -377,7 +166,12 @@ export class ScreeningPage extends React.Component {
               </div>
             </div>
           }
-          { mode === 'show' && this.renderFooterLinks() }
+          { mode === 'show' &&
+            <div>
+              <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
+              {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
+            </div>
+          }
         </div>
       )
     } else {
@@ -390,7 +184,6 @@ ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
-  involvements: PropTypes.object.isRequired,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
@@ -408,7 +201,6 @@ export function mapStateToProps(state, ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
-    involvements: state.get('involvements'),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
     relationships: state.get('relationships'),
@@ -418,7 +210,7 @@ export function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, screeningActions, {checkStaffPermission})
+  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission})
   return {
     actions: bindActionCreators(actions, dispatch),
   }

@@ -3,8 +3,10 @@ import {
   fetchScreeningSuccess,
   createScreeningSuccess,
   updateScreeningSuccess,
-  createParticipantSuccess,
 } from 'actions/screeningActions'
+import {
+  createPersonSuccess,
+} from 'actions/personCardActions'
 import {fromJS} from 'immutable'
 import rootReducer from 'reducers'
 import {createStore} from 'redux'
@@ -15,6 +17,7 @@ describe('Store', () => {
   beforeEach(() => {
     jasmine.addMatchers(matchers)
     initialState = fromJS({
+      allegationsForm: [],
       allegationTypes: [],
       communicationMethods: [],
       contact: {},
@@ -24,17 +27,22 @@ describe('Store', () => {
       counties: [],
       countyAgencies: [],
       crossReportForm: {},
+      incidentInformationForm: {},
       investigation: {},
       involvements: [],
       locations: [],
       narrativeForm: {},
       participants: [],
+      peopleForm: {},
       relationships: [],
       remoteError: {},
       routing: {locationBeforeTransitions: null},
       screening: {},
+      screeningInformationForm: {},
+      screeningDecisionForm: {},
       screenings: [],
       staff: {},
+      workerSafetyForm: {},
     })
     store = createStore(rootReducer)
   })
@@ -48,6 +56,8 @@ describe('Store', () => {
       id: '1',
       name: 'Mock screening',
       participants: [{id: '2', legacy_id: '3', screening_id: '1'}],
+      allegations: [],
+      address: {},
     })
     const participants = screening.get('participants')
     const action = fetchScreeningSuccess(screening.toJS())
@@ -99,7 +109,7 @@ describe('Store', () => {
     it('handles create participant', () => {
       const participant = {id: '2', legacy_id: '3', screening_id: '1'}
       const participants = fromJS([participant])
-      const action = createParticipantSuccess(participant)
+      const action = createPersonSuccess(participant)
       store.dispatch(action)
       expect(store.getState().get('participants')).toEqualImmutable(participants)
     })

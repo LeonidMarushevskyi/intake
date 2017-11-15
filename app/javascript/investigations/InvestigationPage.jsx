@@ -2,9 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ScreeningSummaryContainer from 'investigations/ScreeningSummaryContainer'
 import ContactLogContainer from 'investigations/ContactLogContainer'
-import AllegationShowContainer from 'investigations/AllegationShowContainer'
-import HistoryOfInvolvementContainer from 'history/HistoryOfInvolvementContainer'
+import AllegationShowContainer from 'containers/investigations/AllegationShowContainer'
+import HistoryOfInvolvementContainer from 'investigations/HistoryOfInvolvementContainer'
 import RelationshipsCardContainer from 'investigations/RelationshipsCardContainer'
+import HistoryTableContainer from 'investigations/HistoryTableContainer'
+import EmptyHistory from 'views/history/EmptyHistory'
 
 export class InvestigationPage extends React.Component {
   componentDidMount() {
@@ -19,7 +21,10 @@ export class InvestigationPage extends React.Component {
         <ScreeningSummaryContainer />
         <AllegationShowContainer />
         <RelationshipsCardContainer />
-        <HistoryOfInvolvementContainer />
+        <HistoryOfInvolvementContainer
+          empty={<EmptyHistory />}
+          notEmpty={<HistoryTableContainer />}
+        />
         <ContactLogContainer id={id}/>
       </div>
     )

@@ -5,7 +5,6 @@ require 'spec_helper'
 
 feature 'Allegations Validations' do
   scenario 'User sees that allegations are required when decision is promote to referral' do
-    pending 'Redux refactor so we can pull the screening decision from the store'
     perpetrator = FactoryGirl.create(:participant, :perpetrator)
     victim = FactoryGirl.create(:participant, :victim)
     screening = FactoryGirl.create(
@@ -29,7 +28,7 @@ feature 'Allegations Validations' do
 
     error_message = 'must include at least one allegation'
 
-    within '#allegations-card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_content(error_message)
       click_button 'Cancel'
     end
@@ -39,7 +38,7 @@ feature 'Allegations Validations' do
       click_link 'Edit'
     end
 
-    within '#allegations-card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}", with: 'General neglect'
       expect(page).not_to have_content(error_message)
       remove_react_select_option "allegations_#{victim.id}_#{perpetrator.id}", 'General neglect'
@@ -47,10 +46,10 @@ feature 'Allegations Validations' do
     end
 
     within '#decision-card.edit' do
-      select '', from: 'Screening Decision'
+      select '', from: 'Screening decision'
     end
 
-    within '#allegations-card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).not_to have_content(error_message)
       click_button 'Cancel'
     end

@@ -41,7 +41,7 @@ feature 'Screening Decision Validations' do
           screening_updates: { screening_decision: 'screen_out' }
         ) do
           within '#decision-card.edit' do
-            select 'Screen out', from: 'Screening Decision'
+            select 'Screen out', from: 'Screening decision'
           end
         end
       end
@@ -63,7 +63,7 @@ feature 'Screening Decision Validations' do
         )
 
         within '#decision-card.edit' do
-          select 'Promote to referral', from: 'Screening Decision'
+          select 'Promote to referral', from: 'Screening decision'
           blur_field
           expect(page).to have_content(error_message)
           click_button 'Save'
@@ -76,10 +76,10 @@ feature 'Screening Decision Validations' do
 
       scenario 'Clearing promote to referral decision removes error message' do
         within '#decision-card.edit' do
-          select 'Promote to referral', from: 'Screening Decision'
+          select 'Promote to referral', from: 'Screening decision'
           blur_field
           expect(page).to have_content(error_message)
-          select 'Screen out', from: 'Screening Decision'
+          select 'Screen out', from: 'Screening decision'
           blur_field
           expect(page).not_to have_content(error_message)
         end
@@ -87,12 +87,12 @@ feature 'Screening Decision Validations' do
 
       scenario 'Adding and removing allegations shows or hides error message' do
         within '#decision-card.edit' do
-          select 'Promote to referral', from: 'Screening Decision'
+          select 'Promote to referral', from: 'Screening decision'
           blur_field
           expect(page).to have_content(error_message)
         end
 
-        within '#allegations-card.edit' do
+        within '.card.edit', text: 'Allegations' do
           fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}", with: 'General neglect'
         end
 
@@ -100,7 +100,7 @@ feature 'Screening Decision Validations' do
           expect(page).not_to have_content(error_message)
         end
 
-        within '#allegations-card.edit' do
+        within '.card.edit', text: 'Allegations' do
           remove_react_select_option "allegations_#{victim.id}_#{perpetrator.id}", 'General neglect'
         end
 
@@ -113,10 +113,10 @@ feature 'Screening Decision Validations' do
     context 'Screening decision is already set to promote to referral' do
       let(:screening_decision) { 'promote_to_referral' }
 
-      scenario 'Error message doesn not display until user has interacted with the field' do
+      scenario 'Error message does not display until user has interacted with the field' do
         within '#decision-card.edit' do
           expect(page).not_to have_content(error_message)
-          select 'Promote to referral', from: 'Screening Decision'
+          select 'Promote to referral', from: 'Screening decision'
           blur_field
           expect(page).to have_content(error_message)
         end
@@ -170,7 +170,7 @@ feature 'Screening Decision Validations' do
           click_link 'Edit'
         end
 
-        within '#allegations-card.edit' do
+        within '.card.edit', text: 'Allegations' do
           fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}", with: 'General neglect'
         end
 
@@ -178,7 +178,7 @@ feature 'Screening Decision Validations' do
           expect(page).not_to have_content(error_message)
         end
 
-        within '#allegations-card.edit' do
+        within '.card.edit', text: 'Allegations' do
           remove_react_select_option "allegations_#{victim.id}_#{perpetrator.id}", 'General neglect'
         end
 

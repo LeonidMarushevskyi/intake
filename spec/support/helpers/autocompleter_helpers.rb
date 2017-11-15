@@ -32,12 +32,6 @@ module AutocompleterHelpers
       fill_in locator, with: value
       sleep 0.5
     end
-
-    # Firefox doesn't trigger focus/blur when the window doesn't have system focus
-    # So, we added a click handler to the autocompleter as an alternative way to
-    # trigger the dropdown.
-    field = find_field(locator)
-    field.click unless field.base.click
   end
 
   def click_autocompleter_result(value, result_should_contain)

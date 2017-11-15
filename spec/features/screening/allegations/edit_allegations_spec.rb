@@ -38,7 +38,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within('tbody') do
         table_rows = page.all('tr')
         expect(table_rows.count).to eq(5)
@@ -94,6 +94,7 @@ feature 'edit allegations' do
       screening_id: screening.id
     )
     screening.allegations << allegation
+
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -101,7 +102,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
@@ -111,7 +112,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.allegations = []
@@ -137,7 +137,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.participants = [lisa, marge]
@@ -158,7 +157,7 @@ feature 'edit allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
@@ -177,7 +176,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'thead' do
         expect(page).to have_content('Alleged Victim/Children')
         expect(page).to have_content('Alleged Perpetrator')
@@ -191,18 +190,16 @@ feature 'edit allegations' do
       fill_in_react_select('Role', with: 'Perpetrator')
       marge.roles = ['Perpetrator']
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-        .with(body: as_json_without_root_id(marge))
         .and_return(json_body(marge.to_json, status: 200))
       click_button 'Save'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_no_selector('td')
     end
 
     lisa.roles = ['Victim']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(body: as_json_without_root_id(lisa))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.participants = [marge, lisa]
@@ -216,7 +213,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within('tbody tr') do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Marge')
@@ -235,7 +232,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within('tbody tr') do
         expect(page).to have_content('Lisa')
         expect(page).to have_content('Marge')
@@ -253,7 +250,7 @@ feature 'edit allegations' do
       click_button 'Delete person'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within('table') do
         expect(page).to have_no_content('Lisa')
         expect(page).to have_no_content('Marge')
@@ -291,7 +288,7 @@ feature 'edit allegations' do
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}",
         with: 'Severe neglect', exit_key: :tab
@@ -326,7 +323,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
       click_button 'Cancel'
     end
@@ -361,7 +358,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'Severe neglect'
       page.find('.card-header').click
       click_button 'Cancel'
@@ -395,7 +392,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
 
@@ -429,7 +426,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
         within(table_rows[0]) do
@@ -443,6 +440,10 @@ feature 'edit allegations' do
       end
     end
 
+    screening.participants = [lisa, homer]
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+
     within edit_participant_card_selector(marge.id) do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
@@ -450,7 +451,7 @@ feature 'edit allegations' do
       click_button 'Delete person'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_content('Lisa')
       expect(page).to have_content('Homer')
       expect(page).to_not have_content('Marge')
@@ -496,7 +497,7 @@ feature 'edit allegations' do
       ).merge('participants' => []))
       .and_return(json_body(screening.to_json, status: 200))
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
       click_button 'Save'
     end
@@ -509,7 +510,6 @@ feature 'edit allegations' do
 
     lisa.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
@@ -532,7 +532,7 @@ feature 'edit allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_no_content('Lisa')
       expect(page).to have_no_content('Marge')
       expect(page).to have_no_content('General neglect')
@@ -540,7 +540,6 @@ feature 'edit allegations' do
 
     lisa.roles = ['Anonymous Reporter', 'Victim']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(lisa.id)))
-      .with(json_body(as_json_without_root_id(lisa)))
       .and_return(json_body(lisa.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -550,7 +549,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_content('Lisa')
       expect(page).to have_content('Marge')
       expect(page).to have_no_content('General neglect')
@@ -595,7 +594,7 @@ feature 'edit allegations' do
       ).merge('participants' => []))
       .and_return(json_body(screening.to_json, status: 200))
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
       click_button 'Save'
     end
@@ -608,7 +607,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
 
     screening.assign_attributes(allegations: [])
@@ -631,7 +629,7 @@ feature 'edit allegations' do
       click_link 'Edit allegations'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_no_content('Lisa')
       expect(page).to have_no_content('Marge')
       expect(page).to have_no_content('General neglect')
@@ -639,7 +637,6 @@ feature 'edit allegations' do
 
     marge.roles = ['Anonymous Reporter', 'Perpetrator']
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(json_body(as_json_without_root_id(marge)))
       .and_return(json_body(marge.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -649,7 +646,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       expect(page).to have_content('Lisa')
       expect(page).to have_content('Marge')
       expect(page).to have_no_content('General neglect')
@@ -667,7 +664,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       fill_in_react_select "allegations_#{lisa.id}_#{marge.id}", with: 'General neglect'
     end
 
@@ -708,7 +705,7 @@ feature 'edit allegations' do
 
     visit edit_screening_path(id: screening.id)
 
-    within '#allegations-card.card.edit' do
+    within '.card.edit', text: 'Allegations' do
       within 'tbody' do
         table_rows = page.all('tr')
 

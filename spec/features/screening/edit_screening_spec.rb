@@ -53,7 +53,7 @@ feature 'Edit Screening' do
       stub_empty_relationships_for_screening(existing_screening)
       stub_empty_history_for_screening(existing_screening)
       visit edit_screening_path(id: existing_screening.id)
-      expect(page).to have_content 'Edit Screening #My Bad!'
+      expect(page.find('h1', text: 'Edit Screening #My Bad!')).to be_truthy
     end
 
     scenario 'edit an existing screening' do
@@ -86,7 +86,7 @@ feature 'Edit Screening' do
         expect(page).to have_content('Cancel')
       end
 
-      within '#allegations-card.edit', text: 'Allegations' do
+      within '.card.edit', text: 'Allegations' do
         expect(page).to have_css('th', text: 'Alleged Victim/Children')
         expect(page).to have_css('th', text: 'Alleged Perpetrator')
         expect(page).to have_css('th', text: 'Allegation(s)')
@@ -106,8 +106,8 @@ feature 'Edit Screening' do
       expect(page).to have_css('#history-card.show', text: 'History')
 
       within '#decision-card.edit', text: 'Decision ' do
-        expect(page.find('label', text: 'Screening Decision')[:class]).to include('required')
-        expect(page).to have_field('Screening Decision', with: 'screen_out')
+        expect(page.find('label', text: 'Screening decision')[:class]).to include('required')
+        expect(page).to have_field('Screening decision', with: 'screen_out')
         expect(page).to have_select('Category', selected: 'Information request')
         expect(page).to have_field(
           'Additional information', with: 'This is why I decided what I did'
@@ -145,6 +145,18 @@ feature 'Edit Screening' do
     end
 
     scenario 'adding multiple alerts to existing ones in a Worker Safety Card' do
+      stub_screening_put_request_with_anything_and_return(
+        existing_screening,
+        with_updated_attributes: {
+          safety_alerts: [
+            'Dangerous Animal on Premises',
+            'Firearms in Home',
+
+            'Hostile, Aggressive Client',
+            'Severe Mental Health Status'
+          ]
+        }
+      )
       within '#worker-safety-card', text: 'Worker Safety' do
         has_react_select_field(
           'Worker safety alerts',
@@ -164,9 +176,27 @@ feature 'Edit Screening' do
                  'Hostile, Aggressive Client', 'Severe Mental Health Status']
         )
         click_button 'Save'
-        expect(page).to have_content('Hostile, Aggressive Client')
+      end
+      expect(
+        a_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+        ).with(
+          body: hash_including(
+            'safety_alerts' => array_including(
+              'Dangerous Animal on Premises',
+              'Firearms in Home',
+              'Hostile, Aggressive Client',
+              'Severe Mental Health Status'
+            ),
+            'safety_information' => 'Potential safety alert: dangerous dog at home.'
+          )
+        )
+      ).to have_been_made
+
+      within '#worker-safety-card.show', text: 'Worker Safety' do
         expect(page).to have_content('Dangerous Animal on Premises')
         expect(page).to have_content('Firearms in Home')
+        expect(page).to have_content('Hostile, Aggressive Client')
         expect(page).to have_content('Severe Mental Health Status')
       end
     end
