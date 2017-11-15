@@ -212,9 +212,7 @@ feature 'Edit Person' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      within '.card-body' do
-        click_button 'Save'
-      end
+      click_button 'Save'
     end
 
     expect(

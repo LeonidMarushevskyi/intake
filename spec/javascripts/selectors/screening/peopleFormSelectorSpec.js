@@ -61,6 +61,8 @@ describe('peopleFormSelectors', () => {
           ],
           roles: {value: ['a', 'b']},
           ssn: {value: '123'},
+          sensitive: {value: true},
+          sealed: {value: true},
           ethnicity: {
             hispanic_latino_origin: {value: 'Yes'},
             ethnicity_detail: {value: ['Mexican']},
@@ -92,6 +94,8 @@ describe('peopleFormSelectors', () => {
           }],
           roles: {value: ['c']},
           ssn: {value: '321'},
+          sensitive: {value: false},
+          sealed: {value: false},
           ethnicity: {
             hispanic_latino_origin: {value: 'No'},
             ethnicity_detail: {value: ['Mexican']},
@@ -120,6 +124,8 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: {value: []},
           ssn: {value: null},
+          sensitive: {value: true},
+          sealed: {value: true},
           ethnicity: {
             hispanic_latino_origin: {value: null},
             ethnicity_detail: {value: []},
@@ -150,6 +156,8 @@ describe('peopleFormSelectors', () => {
           ],
           roles: ['a', 'b'],
           ssn: '123',
+          sensitive: true,
+          sealed: true,
           ethnicity: {
             hispanic_latino_origin: 'Yes',
             ethnicity_detail: ['Mexican'],
@@ -175,6 +183,8 @@ describe('peopleFormSelectors', () => {
           addresses: [{street_address: null, city: null, state: null, zip: null, type: null}],
           roles: ['c'],
           ssn: '321',
+          sensitive: false,
+          sealed: false,
           ethnicity: {
             hispanic_latino_origin: 'No',
             ethnicity_detail: [],
@@ -201,6 +211,8 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: null,
+          sensitive: true,
+          sealed: true,
           ethnicity: {
             hispanic_latino_origin: null,
             ethnicity_detail: [],
@@ -228,6 +240,8 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: {value: []},
           ssn: {value: ''},
+          sensitive: {value: true},
+          sealed: {value: true},
           ethnicity: {
             hispanic_latino_origin: {value: null},
             ethnicity_detail: {value: []},
@@ -255,6 +269,8 @@ describe('peopleFormSelectors', () => {
           addresses: [],
           roles: [],
           ssn: '',
+          sensitive: true,
+          sealed: true,
           ethnicity: {
             hispanic_latino_origin: null,
             ethnicity_detail: [],

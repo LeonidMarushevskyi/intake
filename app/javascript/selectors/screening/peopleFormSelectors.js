@@ -55,6 +55,8 @@ export const getPeopleWithEditsSelector = createSelector(
       })),
       roles: person.getIn(['roles', 'value']),
       ssn: person.getIn(['ssn', 'value']),
+      sensitive: person.getIn(['sensitive', 'value']),
+      sealed: person.getIn(['sealed', 'value']),
       ethnicity: {hispanic_latino_origin, ethnicity_detail},
       races: person.get('races', Map()).reduce((races, raceValue, raceKey) => {
         const raceDetails = person.getIn(['race_details', raceKey, 'value'], null)

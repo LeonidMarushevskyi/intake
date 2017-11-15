@@ -33,6 +33,8 @@ describe('peopleFormReducer', () => {
           name_suffix: 'name suffix one',
           phone_numbers: [],
           ssn: 'ssn one',
+          sensitive: true,
+          sealed: true,
           races: [
             {race: 'race_1', race_detail: 'race_detail_1'},
             {race: 'race_2', race_detail: 'race_detail_2'},
@@ -63,6 +65,8 @@ describe('peopleFormReducer', () => {
           name_suffix: 'name suffix two',
           phone_numbers: [{number: '1234567890', type: 'Home'}],
           ssn: 'ssn two',
+          sensitive: false,
+          sealed: false,
           races: [],
           ethnicity: {
             ethnicity_detail: [],
@@ -87,6 +91,8 @@ describe('peopleFormReducer', () => {
             name_suffix: {value: 'name suffix one'},
             phone_numbers: [],
             ssn: {value: 'ssn one'},
+            sensitive: {value: true},
+            sealed: {value: true},
             races: {
               race_1: {value: true},
               race_2: {value: true},
@@ -124,6 +130,8 @@ describe('peopleFormReducer', () => {
               type: {value: 'Home'},
             }],
             ssn: {value: 'ssn two'},
+            sensitive: {value: false},
+            sealed: {value: false},
             races: {},
             race_details: {},
             ethnicity: {
@@ -231,6 +239,8 @@ describe('peopleFormReducer', () => {
         last_name: {value: 'last name one'},
         name_suffix: {value: 'name suffix one'},
         ssn: {value: 'ssn one'},
+        sensitive: {value: true},
+        sealed: {value: true},
         phone_numbers: [],
         addresses: [],
         races: {},
@@ -256,6 +266,8 @@ describe('peopleFormReducer', () => {
         last_name: 'last name two',
         name_suffix: 'name suffix two',
         ssn: 'ssn two',
+        sensitive: false,
+        sealed: false,
         phone_numbers: [{number: '1234567890', type: 'Home'}],
         addresses: [{
           street_address: '1234 Some Lane',
@@ -285,6 +297,8 @@ describe('peopleFormReducer', () => {
           last_name: {value: 'last name one'},
           name_suffix: {value: 'name suffix one'},
           ssn: {value: 'ssn one'},
+          sensitive: {value: true},
+          sealed: {value: true},
           phone_numbers: [],
           addresses: [],
           races: {},
@@ -307,6 +321,8 @@ describe('peopleFormReducer', () => {
           last_name: {value: 'last name two'},
           name_suffix: {value: 'name suffix two'},
           ssn: {value: 'ssn two'},
+          sensitive: {value: false},
+          sealed: {value: false},
           phone_numbers: [{
             number: {value: '1234567890'},
             type: {value: 'Home'},

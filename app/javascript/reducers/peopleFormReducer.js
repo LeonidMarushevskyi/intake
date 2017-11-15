@@ -66,6 +66,8 @@ const buildPerson = ({
   phone_numbers,
   roles,
   ssn,
+  sensitive,
+  sealed,
   races,
   ethnicity,
 }) => fromJS({
@@ -83,6 +85,8 @@ const buildPerson = ({
   phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
   ssn: {value: ssn},
+  sensitive: {value: sensitive},
+  sealed: {value: sealed},
   races: buildRaces(races),
   race_details: buildRaceDetails(races),
   ethnicity: buildEthnicity(ethnicity),
