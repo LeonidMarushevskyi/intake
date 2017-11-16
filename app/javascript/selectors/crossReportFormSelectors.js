@@ -60,11 +60,17 @@ export const getScreeningWithEditsSelector = createSelector(
     inform_date,
     method,
     agencies
-  ) => screening
-    .setIn(['cross_reports', 0, 'county_id'], county_id)
-    .setIn(['cross_reports', 0, 'inform_date'], inform_date)
-    .setIn(['cross_reports', 0, 'method'], method)
-    .setIn(['cross_reports', 0, 'agencies'], agencies)
+  ) => {
+    if (agencies.size) {
+      return screening
+        .setIn(['cross_reports', 0, 'county_id'], county_id)
+        .setIn(['cross_reports', 0, 'inform_date'], inform_date)
+        .setIn(['cross_reports', 0, 'method'], method)
+        .setIn(['cross_reports', 0, 'agencies'], agencies)
+    } else {
+      return screening.set('cross_reports', List())
+    }
+  }
 )
 
 export const getErrorsSelector = createSelector(

@@ -613,6 +613,20 @@ describe('crossReportFormSelectors', () => {
     })
   })
   describe('getScreeningWithEditsSelector', () => {
+    it('returns a screening with an empty cross reports if no data set', () => {
+      const screening = {cross_reports: []}
+      const crossReportForm = getCrossReportState({
+        county_id: {
+          value: '',
+          touched: true,
+        },
+      })
+      const state = fromJS({screening, crossReportForm})
+      expect(getScreeningWithEditsSelector(state))
+        .toEqualImmutable(fromJS({
+          cross_reports: [],
+        }))
+    })
     it('returns a screening with an updated cross_reports if the form has a value', () => {
       const screening = {cross_reports: []}
       const crossReportForm = getCrossReportState({
