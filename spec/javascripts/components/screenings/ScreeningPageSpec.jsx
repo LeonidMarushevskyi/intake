@@ -12,18 +12,10 @@ export const requiredScreeningAttributes = {
 }
 
 export const requiredProps = {
-  actions: {
-    checkStaffPermission: () => null,
-    fetchScreening: () => null,
-    fetchCountyAgencies: () => null,
-  },
-  counties: [{code: '123', value: 'county'}],
-  countyAgencies: {DEPARTMENT_OF_JUSTICE: []},
+  actions: {},
   params: {id: '1'},
   participants: Immutable.List(),
   screening: Immutable.fromJS(requiredScreeningAttributes),
-  involvements: Immutable.fromJS({screenings: []}),
-  relationships: Immutable.List(),
   mode: 'edit',
   editable: true,
 }

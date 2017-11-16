@@ -44,12 +44,6 @@ export class ScreeningPage extends React.Component {
     this.props.actions.checkStaffPermission('add_sensitive_people')
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.screening.equals(nextProps.screening)) {
-      this.setState({screening: nextProps.screening})
-    }
-  }
-
   renderMode() {
     if (!this.props.editable) {
       return 'show'
@@ -188,7 +182,6 @@ ScreeningPage.propTypes = {
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
-  relationships: PropTypes.object.isRequired,
   screening: PropTypes.object.isRequired,
 }
 
@@ -203,7 +196,6 @@ export function mapStateToProps(state, ownProps) {
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     participants: state.get('participants'),
-    relationships: state.get('relationships'),
     screening: state.get('screening'),
     mode: ownProps.params.mode,
   }
