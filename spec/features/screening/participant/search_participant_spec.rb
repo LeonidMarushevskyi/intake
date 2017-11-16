@@ -32,7 +32,7 @@ feature 'searching a participant in autocompleter' do
       name_suffix: 'md',
       gender: 'female',
       last_name: 'Simpson',
-      ssn: '123-23-1234',
+      ssn: '123231234',
       languages: %w[French Italian],
       addresses: [address],
       phone_numbers: [phone_number],
@@ -109,6 +109,28 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
+    scenario 'search results format the SSN' do
+      marge = FactoryGirl.create(
+        :person_search,
+        first_name: 'Marge',
+        ssn: '123456789'
+      )
+      %w[M Ma Mar Marg].each do |search_text|
+        stub_request(
+          :get,
+          intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
+        ).and_return(json_body([marge].to_json, status: 200))
+      end
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Marg'
+      end
+
+      within '.react-autosuggest__suggestions-list' do
+        expect(page).to have_content '123-45-6789'
+      end
+    end
+
     scenario 'results include information about the legacy source information for a person' do
       marge = FactoryGirl.create(
         :person_search,
@@ -164,8 +186,7 @@ feature 'searching a participant in autocompleter' do
     scenario 'person without addresses' do
       person_with_out_addresses = person.as_json.except('addresses')
 
-      ['12', '123', '123-', '123-2', '123-23', '123-23-',
-       '123-23-1', '123-23-12', '123-23-123', '123-23-1234'].each do |search_text|
+      %w[12 123 1232 12323 123231 1232312 12323123 123231234].each do |search_text|
         stub_request(
           :get,
           intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
