@@ -19,19 +19,12 @@ describe('App', () => {
 
   describe('http errors', () => {
     it('are rendered when present', () => {
-      const remoteError = {why: 'Low quality plan'}
-      component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
+      component = shallow(<App actions={actions} hasGenericError={true}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(true)
       expect(component.find('.page-has-error').exists()).toEqual(true)
     })
-    it('are not rendered when absent', () => {
-      component = shallow(<App actions={actions}><div/></App>)
-      expect(component.find('PageError').exists()).toEqual(false)
-      expect(component.find('.page-has-remote-error').exists()).toEqual(false)
-    })
     it('are not rendered when empty', () => {
-      const remoteError = {}
-      component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
+      component = shallow(<App actions={actions} hasGenericError={false}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(false)
       expect(component.find('.page-has-error').exists()).toEqual(false)
     })

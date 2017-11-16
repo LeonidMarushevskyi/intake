@@ -9,13 +9,13 @@ describe('errorsSelectors', () => {
 
   describe('getHasGenericErrorValueSelector', () => {
     it('returns true when unknown errors exist', () => {
-      const errors = {unknown: {ACTION_TYPE: 'payload'}}
+      const errors = {UNKNOWN_ACTION_TYPE: 'error'}
       const state = fromJS({errors})
       expect(getHasGenericErrorValueSelector(state)).toEqualImmutable(true)
     })
 
     it('returns false when unknown errors do not exist', () => {
-      const errors = {unknown: {}}
+      const errors = {}
       const state = fromJS({errors})
       expect(getHasGenericErrorValueSelector(state)).toEqualImmutable(false)
     })

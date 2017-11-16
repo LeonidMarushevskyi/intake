@@ -1,9 +1,16 @@
-import {HTTP_COMPLETE} from 'actions/httpActions'
-import {createReducer} from 'utils/createReducer'
-import {Map, fromJS} from 'immutable'
+import {fromJS} from 'immutable'
 
-export default createReducer(Map(), {
-  [HTTP_COMPLETE](state, {payload: {url, response}, error}) {
-    return error ? state.set('unknown', fromJS({[url]: response})) : state.deleteIn(['unknown', url])
-  },
-})
+const initialState = fromJS({})
+
+export default function errorsReducer(state = initialState, action) {
+  const {payload, error, type} = action
+  if (error) {
+    switch (type) {
+      // eslint-disable-next-line no-case-declarations
+      default:
+        return state.set(type, fromJS(payload))
+    }
+  } else {
+    return state.delete(type)
+  }
+}

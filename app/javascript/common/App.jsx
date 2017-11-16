@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 import * as systemCodesActions from 'actions/systemCodesActions'
+import {getHasGenericErrorValueSelector} from 'selectors/errorsSelectors'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 
@@ -11,10 +12,10 @@ export class App extends React.Component {
     this.props.actions.fetch()
   }
   render() {
-    const hasRemoteError = this.props.remoteError && Object.keys(this.props.remoteError).length > 0
+    const {hasGenericError} = this.props
     return (
-      <div className={ClassNames({'page-has-error': hasRemoteError})}>
-        {hasRemoteError && <PageError />}
+      <div className={ClassNames({'page-has-error': hasGenericError})}>
+        {hasGenericError && <PageError />}
         {this.props.children}
       </div>
     )
@@ -23,10 +24,10 @@ export class App extends React.Component {
 App.propTypes = {
   actions: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
-  remoteError: PropTypes.object,
+  hasGenericError: PropTypes.bool,
 }
 const mapStateToProps = (state, _ownProps) => ({
-  remoteError: state.getIn(['remoteError']).toJS(),
+  hasGenericError: getHasGenericErrorValueSelector(state),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(systemCodesActions, dispatch),
