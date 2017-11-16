@@ -38,10 +38,9 @@ describe('ScreeningPage when release two is active', () => {
       expect(component.find('ScreeningSubmitButton').length).toEqual(0)
     })
 
-    it('does not show the create new person button', () => {
+    it('renders the person search form', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
-      expect(component.find('Autocompleter').length).toBe(1)
-      expect(component.find('Autocompleter').props().footer).toEqual(false)
+      expect(component.find('Connect(PersonSearchForm)').exists()).toBe(true)
     })
 
     it('renders the snapshot copy', () => {
@@ -77,22 +76,6 @@ describe('ScreeningPage when release two is active', () => {
         ])
         const props = {...requiredProps, participants, loaded: true, editable: true}
         component = shallow(<ScreeningPage {...props} />)
-      })
-
-      it('renders the card header', () => {
-        expect(component.find('#search-card .card-header').text()).toContain('Search')
-      })
-
-      it('renders the search card', () => {
-        expect(component.find('#search-card label').text()).toContain('Search for any person')
-        expect(component.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
-      })
-
-      it('renders the autocompleter', () => {
-        expect(component.find('Autocompleter').props().id).toEqual('screening_participants')
-        expect(component.find('Autocompleter').props().onSelect).toEqual(
-          component.instance().createParticipant
-        )
       })
 
       it('renders the participants card for each participant in show mode', () => {
