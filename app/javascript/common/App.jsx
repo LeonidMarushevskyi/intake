@@ -13,7 +13,7 @@ export class App extends React.Component {
   render() {
     const hasRemoteError = this.props.remoteError && Object.keys(this.props.remoteError).length > 0
     return (
-      <div className={ClassNames({'page-has-remote-error': hasRemoteError})}>
+      <div className={ClassNames({'page-has-error': hasRemoteError})}>
         {hasRemoteError && <PageError />}
         {this.props.children}
       </div>

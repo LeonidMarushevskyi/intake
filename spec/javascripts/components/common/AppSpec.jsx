@@ -22,7 +22,7 @@ describe('App', () => {
       const remoteError = {why: 'Low quality plan'}
       component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(true)
-      expect(component.find('.page-has-remote-error').exists()).toEqual(true)
+      expect(component.find('.page-has-error').exists()).toEqual(true)
     })
     it('are not rendered when absent', () => {
       component = shallow(<App actions={actions}><div/></App>)
@@ -33,7 +33,7 @@ describe('App', () => {
       const remoteError = {}
       component = shallow(<App actions={actions} remoteError={remoteError}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(false)
-      expect(component.find('.page-has-remote-error').exists()).toEqual(false)
+      expect(component.find('.page-has-error').exists()).toEqual(false)
     })
   })
 })
