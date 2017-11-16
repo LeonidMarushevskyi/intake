@@ -3,8 +3,6 @@ import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
-import Autocompleter from 'common/Autocompleter'
-import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
@@ -23,18 +21,12 @@ import {connect} from 'react-redux'
 import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
 import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
+import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormContainer'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    const methods = [
-      'createParticipant',
-      'canCreateParticipant',
-      'renderMode',
-    ]
-    methods.forEach((method) => {
-      this[method] = this[method].bind(this)
-    })
+    this.renderMode = this.renderMode.bind(this)
   }
 
   componentDidMount() {
@@ -49,20 +41,6 @@ export class ScreeningPage extends React.Component {
       return 'show'
     }
     return this.props.mode
-  }
-
-  canCreateParticipant(person) {
-    return (person.sensitive === false || this.props.hasAddSensitivePerson)
-  }
-
-  createParticipant(person) {
-    const {params} = this.props
-    const participant = Object.assign({}, person, {
-      screening_id: params.id,
-      legacy_id: person.id,
-      id: null,
-    })
-    this.props.actions.createPerson(participant)
   }
 
   render() {
@@ -101,28 +79,7 @@ export class ScreeningPage extends React.Component {
               </div>
           }
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
-          {this.renderMode() === 'edit' &&
-            <div className='card edit double-gap-top' id='search-card'>
-              <div className='card-header'>
-                <span>Search</span>
-              </div>
-              <div className='card-body'>
-                <div className='row'>
-                  <div className='col-md-12'>
-                    <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
-                    <Autocompleter id='screening_participants'
-                      onSelect={this.createParticipant}
-                      isSelectable={this.canCreateParticipant}
-                      footer={
-                        IntakeConfig.isFeatureInactive('release_two') &&
-                        <CreateUnknownParticipant saveCallback={this.createParticipant}/>
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
+          {this.renderMode() === 'edit' && <PersonSearchFormContainer />}
           {this.props.participants.map((participant) =>
             <ParticipantCardView
               key={participant.get('id')}

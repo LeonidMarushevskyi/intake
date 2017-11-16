@@ -388,43 +388,8 @@ describe('ScreeningPage', () => {
           component = shallow(<ScreeningPage {...props} />)
         })
 
-        it('renders the card header', () => {
-          expect(component.find('#search-card .card-header').text()).toContain('Search')
-        })
-
         it('renders the search card', () => {
-          const searchCard = component.find('#search-card')
-          const label = searchCard.children('.card-body').children('div').children('div').children('label')
-          expect(label.text()).toContain('Search for any person')
-          expect(label.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
-        })
-
-        describe('autocompleter', () => {
-          let autocompleter
-          beforeEach(() => {
-            autocompleter = component.find('Autocompleter')
-          })
-          it('is rendered', () => {
-            expect(autocompleter.length).toBe(1)
-          })
-          it('is passed an id', () => {
-            expect(autocompleter.props().id).toEqual('screening_participants')
-          })
-          it('is pass the correct isSelectable callback', () => {
-            expect(autocompleter.props().isSelectable).toEqual(
-              component.instance().canCreateParticipant
-            )
-          })
-          it('is pass the correct onSelect callback', () => {
-            expect(autocompleter.props().onSelect).toEqual(
-              component.instance().createParticipant
-            )
-          })
-          it('is passed a footer component', () => {
-            const footer = autocompleter.props().footer
-            expect(footer.type.name).toEqual('CreateUnknownParticipant')
-            expect(footer.props.saveCallback).toEqual(component.instance().createParticipant)
-          })
+          expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
         })
 
         it('renders the participants card for each participant', () => {
@@ -442,40 +407,6 @@ describe('ScreeningPage', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true}/>)
       expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
       expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
-    })
-  })
-
-  describe('canCreateParticipant', () => {
-    let instance
-    const sensitive = {sensitive: true}
-    const insensitive = {sensitive: false}
-
-    describe('with permission', () => {
-      beforeEach(() => {
-        instance = shallow(<ScreeningPage {...requiredProps} hasAddSensitivePerson={true} />).instance()
-      })
-
-      it('returns true for sensitive participant', () => {
-        expect(instance.canCreateParticipant(sensitive)).toBe(true)
-      })
-
-      it('returns true for insensitive participant', () => {
-        expect(instance.canCreateParticipant(insensitive)).toBe(true)
-      })
-    })
-
-    describe('without permission', () => {
-      beforeEach(() => {
-        instance = shallow(<ScreeningPage {...requiredProps} hasAddSensitivePerson={false} />).instance()
-      })
-
-      it('returns true for sensitive participant', () => {
-        expect(instance.canCreateParticipant(sensitive)).toBe(false)
-      })
-
-      it('returns true for insensitive participant', () => {
-        expect(instance.canCreateParticipant(insensitive)).toBe(true)
-      })
     })
   })
 })
