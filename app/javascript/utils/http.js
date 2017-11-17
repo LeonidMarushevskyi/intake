@@ -95,7 +95,7 @@ export function request(method, url, data, options) {
       })
       .fail((response) => {
         store.dispatch(httpError(url, response.responseJSON))
-        if (response.status === STATUS_CODES.forbidden) {
+        if (response.status === STATUS_CODES.unauthorized) {
           const firstIndex = 0
           const currentLocation = encodeURIComponent(window.location.href.split('?')[firstIndex])
           const loginBaseUrl = config().authentication_login_url
