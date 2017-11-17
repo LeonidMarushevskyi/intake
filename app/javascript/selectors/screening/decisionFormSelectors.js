@@ -35,33 +35,35 @@ export const getDecisionDetailOptionsSelector = createSelector(
 )
 
 export const getErrorsSelector = createSelector(
-  (state) => state.getIn(['screeningDecisionForm', 'screening_decision', 'value']),
-  (state) => state.getIn(['screeningDecisionForm', 'screening_decision_detail', 'value']),
+  getDecisionValueSelector,
+  getDecisionDetailValueSelector,
+  (state) => state.getIn(['screeningDecisionForm', 'restrictions_rationale', 'value']) || '',
   (state) => state.get('allegationsForm', List()),
-  (decision, decisionDetail, allegations) => (
-    fromJS({
-      screening_decision: combineCompact(
-        isRequiredCreate(decision, 'Please enter a decision'),
-        () => {
-          if (decision === 'promote_to_referral' &&
+  (decision, decisionDetail, restrictionsRationale, allegations) => fromJS({
+    screening_decision: combineCompact(
+      isRequiredCreate(decision, 'Please enter a decision'),
+      () => {
+        if (decision === 'promote_to_referral' &&
             allegations.every((allegation) => allegation.get('allegationTypes').isEmpty())) {
-            return 'Please enter at least one allegation to promote to referral.'
-          } else {
-            return undefined
-          }
+          return 'Please enter at least one allegation to promote to referral.'
+        } else {
+          return undefined
         }
-      ),
-      screening_decision_detail: combineCompact(
-        () => {
-          if (decision === 'promote_to_referral' && !decisionDetail) {
-            return 'Please enter a response time'
-          } else {
-            return undefined
-          }
+      }
+    ),
+    screening_decision_detail: combineCompact(
+      () => {
+        if (decision === 'promote_to_referral' && !decisionDetail) {
+          return 'Please enter a response time'
+        } else {
+          return undefined
         }
-      ),
-    })
-  )
+      }
+    ),
+    restrictions_rationale: combineCompact(
+      isRequiredCreate(restrictionsRationale, 'Please enter an access restriction reason')
+    ),
+  })
 )
 
 const getTouchedFieldsSelector = createSelector(
@@ -113,7 +115,8 @@ export const getAccessRestrictionSelector = createSelector(
 
 export const getRestrictionRationaleSelector = createSelector(
   (state) => state.getIn(['screeningDecisionForm', 'restrictions_rationale', 'value']),
-  (value) => Map({value: value || ''})
+  (state) => getVisibleErrorsSelector(state).get('restrictions_rationale'),
+  (value, errors) => Map({value: value || '', errors})
 )
 
 export const getScreeningWithEditsSelector = createSelector(

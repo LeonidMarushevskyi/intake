@@ -302,6 +302,28 @@ describe('screeningDecisionFormSelectors', () => {
           .toEqualImmutable(List())
       })
     })
+
+    describe('restrictions rationale', () => {
+      it('includes an error message if restrictions rationale is empty', () => {
+        const screeningDecisionForm = { }
+        const state = fromJS({screeningDecisionForm})
+        expect(getErrorsSelector(state).get('restrictions_rationale'))
+          .toEqualImmutable(List(['Please enter an access restriction reason'])
+          )
+      })
+
+      it('excludes an error message if restrictions rationale is not empty', () => {
+        const screeningDecisionForm = {
+          restrictions_rationale: {
+            value: 'a rationale',
+          },
+        }
+        const state = fromJS({screeningDecisionForm})
+        expect(getErrorsSelector(state).get('restrictions_rationale'))
+          .toEqualImmutable(List([])
+          )
+      })
+    })
   })
 
   describe('getVisibleErrorsSelector', () => {
