@@ -5,6 +5,7 @@ import {fetchScreeningSaga, fetchScreening} from 'sagas/fetchScreeningSaga'
 import {FETCH_SCREENING} from 'actions/actionTypes'
 import * as actions from 'actions/screeningActions'
 import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
+import {replace} from 'react-router-redux'
 
 describe('fetchScreeningSaga', () => {
   it('fetches screening on FETCH_SCREENING', () => {
@@ -51,12 +52,21 @@ describe('fetchScreening', () => {
       )
     })
   })
-  it('puts errors when errors are thrown', () => {
-    const gen = fetchScreening(action)
-    expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
-    const error = {responseJSON: 'some error'}
-    expect(gen.throw(error).value).toEqual(
-      put(actions.fetchScreeningFailure('some error'))
-    )
+  describe('when unsuccessful', () => {
+    it('returns the error', () => {
+      const gen = fetchScreening(action)
+      expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const error = {responseJSON: 'some error'}
+      expect(gen.throw(error).value).toEqual(
+        put(actions.fetchScreeningFailure('some error'))
+      )
+    })
+
+    it('redirects to unauthorized page if error is 401', () => {
+      const gen = fetchScreening(action)
+      expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
+      const error = {responseJSON: 'forbidden', status: 401}
+      expect(gen.throw(error).value).toEqual(put(replace('/unauthorized')))
+    })
   })
 })

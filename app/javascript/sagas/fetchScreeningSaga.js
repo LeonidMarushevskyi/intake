@@ -1,5 +1,6 @@
 import {takeEvery, put, call} from 'redux-saga/effects'
-import {get} from 'utils/http'
+import {replace} from 'react-router-redux'
+import {STATUS_CODES, get} from 'utils/http'
 import {
   fetchScreeningSuccess,
   fetchScreeningFailure,
@@ -19,7 +20,15 @@ export function* fetchScreening({payload: {id}}) {
     }
     yield put(fetchScreeningSuccess(response))
   } catch (error) {
-    yield put(fetchScreeningFailure(error.responseJSON))
+    switch (error.status) {
+      case STATUS_CODES.unauthorized: {
+        yield put(replace('/unauthorized'))
+        break
+      }
+      default: {
+        yield put(fetchScreeningFailure(error.responseJSON))
+      }
+    }
   }
 }
 export function* fetchScreeningSaga() {
