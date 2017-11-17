@@ -37,7 +37,8 @@ feature 'error pages' do
         .and_return(json_body('Forbidden!!', status: 401))
       visit edit_screening_path(id: 1)
       expect(page).to have_current_path('/unauthorized')
-      expect(page).to have_text('Sorry, you are restricted from accessing this page.')
+      expect(page).to have_text('This page is restricted.')
+      expect(page).to have_text("You don't have the appropriate permissions to view this page.")
       expect(page).to have_link('Return to your dashboard', href: dashboard_url)
     end
   end

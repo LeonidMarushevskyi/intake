@@ -13,8 +13,8 @@ describe('UnauthorizedPage', () => {
   })
 
   it('renders the error text', () => {
-    expect(component.text()).toContain('Sorry, you are restricted from accessing this page.')
-    expect(component.text()).toContain('Return to your dashboard.')
+    expect(component.text()).toContain('This page is restricted.')
+    expect(component.text()).toContain("You don't have the appropriate permissions to view this page.Return to your dashboard")
   })
 
   it('renders a link to dashboard', () => {

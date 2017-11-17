@@ -5,9 +5,11 @@ const UnauthorizedPage = () => (
   <div className='error-panel centered'>
     <h4>
       <i className='fa fa-warning c-red gap-right'/>
-      Sorry, you are restricted from accessing this page.
+      This page is restricted.
     </h4>
     <div className='gap-top'>
+      <span>You don&apos;t have the appropriate permissions to view this page.</span>
+      <br/>
       <a href={IntakeConfig.dashboardUrl()}>Return to your dashboard</a>
       <span>.</span>
     </div>
