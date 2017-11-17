@@ -3,6 +3,7 @@ import ScreeningDecisionShow from 'views/ScreeningDecisionShow'
 import {
   getDecisionSelector,
   getDecisionDetailSelector,
+  getRestrictionRationaleSelector,
 } from 'selectors/screening/decisionShowSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import * as IntakeConfig from 'common/config'
@@ -19,9 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     },
     decision: getDecisionSelector(state).toJS(),
     decisionDetail: getDecisionDetailSelector(state).toJS(),
-    restrictionRationale: {
-      value: getScreeningSelector(state).get('restrictions_rationale'),
-    },
+    restrictionRationale: getRestrictionRationaleSelector(state).toJS(),
     sdmPath: IntakeConfig.sdmPath(),
   }
   if (!getScreeningIsReadOnlySelector(state)) {

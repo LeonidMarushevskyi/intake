@@ -135,6 +135,64 @@ feature 'Screening Decision Validations' do
         end
       end
     end
+
+    context 'Access Restrictions is set to mark as sensitive' do
+      let(:error_message) { 'Please enter an access restriction reason' }
+      let(:screening_decision) { nil }
+
+      scenario 'displays no error on initial load' do
+        should_not_have_content error_message, inside: '#decision-card.edit'
+      end
+
+      scenario 'displays error on blur' do
+        within '#decision-card.edit' do
+          select 'Mark as Sensitive', from: 'Access Restrictions'
+          fill_in 'Restrictions Rationale', with: ''
+        end
+        blur_field
+        should_have_content error_message, inside: '#decision-card.edit'
+      end
+
+      scenario 'shows error on page save' do
+        within '#decision-card.edit' do
+          select 'Mark as Sensitive', from: 'Access Restrictions'
+          fill_in 'Restrictions Rationale', with: ''
+        end
+        blur_field
+        should_have_content error_message, inside: '#decision-card.edit'
+        save_card('decision')
+        should_have_content error_message, inside: '#decision-card .card-body'
+      end
+
+      scenario 'removes error on change' do
+        within '#decision-card.edit' do
+          select 'Mark as Sensitive', from: 'Access Restrictions'
+          fill_in 'Restrictions Rationale', with: ''
+        end
+        blur_field
+        should_have_content error_message, inside: '#decision-card.edit'
+        within '#decision-card.edit' do
+          fill_in 'Restrictions Rationale', with: 'a rationale'
+        end
+        blur_field
+        should_not_have_content error_message, inside: '#decision-card.edit'
+      end
+
+      scenario 'shows no error when there is content' do
+        within '#decision-card.edit' do
+          select 'Mark as Sensitive', from: 'Access Restrictions'
+          fill_in 'Restrictions Rationale', with: 'a rationale'
+        end
+        blur_field
+        should_not_have_content error_message, inside: '#decision-card.edit'
+        stub_screening_put_request_with_anything_and_return(
+          screening,
+          with_updated_attributes: { restrictions_rationale: 'a rationale' }
+        )
+        save_card('decision')
+        should_not_have_content error_message, inside: '#decision-card .card-body'
+      end
+    end
   end
 
   context 'When page is opened in show view' do

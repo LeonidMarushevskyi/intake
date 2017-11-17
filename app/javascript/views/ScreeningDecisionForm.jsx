@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SelectField from 'common/SelectField'
 import InputField from 'common/InputField'
+import FormField from 'common/FormField'
 
 const ScreeningDecisionForm = ({
   accessRestriction,
@@ -88,14 +89,20 @@ const ScreeningDecisionForm = ({
           </SelectField>
           {accessRestriction.value &&
             <div>
-              <label className='required' htmlFor='restrictions_rationale'>Restrictions Rationale</label>
-              <textarea
-                id='restrictions_rationale'
-                onChange={({target: {value}}) => onChange('restrictions_rationale', value)}
-                value={restrictionRationale.value}
-                onBlur={() => onBlur('restrictions_rationale')}
-                maxLength='255'
-              />
+              <FormField
+                htmlFor='restrictions_rationale'
+                label='Restrictions Rationale'
+                errors={restrictionRationale.errors}
+                required
+              >
+                <textarea
+                  id='restrictions_rationale'
+                  onChange={({target: {value}}) => onChange('restrictions_rationale', value)}
+                  value={restrictionRationale.value}
+                  onBlur={() => onBlur('restrictions_rationale')}
+                  maxLength='255'
+                />
+              </FormField>
             </div>
           }
         </div>

@@ -358,7 +358,7 @@ describe('ScreeningDecisionForm', () => {
     it('renders the restriction rationale text area when access restriction is set', () => {
       const accessRestriction = {value: 'sealed'}
       const component = renderScreeningDecisionForm({accessRestriction})
-      const restrictionRatinaleLabel = component.find('label[htmlFor="restrictions_rationale"]')
+      const restrictionRatinaleLabel = component.find('FormField[htmlFor="restrictions_rationale"]')
       expect(restrictionRatinaleLabel.exists()).toEqual(true)
       const restrictionRationaleTextArea = component.find('textarea[id="restrictions_rationale"]')
       expect(restrictionRationaleTextArea.exists()).toEqual(true)
