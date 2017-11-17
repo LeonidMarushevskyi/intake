@@ -187,7 +187,7 @@ describe('<Autocompleter />', () => {
           ethnicity_detail: ['Central American'],
         },
         date_of_birth: '1990-02-13',
-        ssn: '123-45-6789',
+        ssn: '123456789',
         addresses: [{
           id: '1',
           street_address: '234 Fake Street',
@@ -228,7 +228,7 @@ describe('<Autocompleter />', () => {
         ethnicity_detail: ['Central American'],
       })
       expect(attributes.dateOfBirth).toEqual('1990-02-13')
-      expect(attributes.ssn).toEqual('6789')
+      expect(attributes.ssn).toEqual('123-45-6789')
       expect(attributes.address).toEqual({
         streetAddress: '234 Fake Street',
         city: 'Flushing',
@@ -291,31 +291,44 @@ describe('<Autocompleter />', () => {
         first_name: 'Bart',
         last_name: 'Simpson',
         date_of_birth: '1990-02-13',
-        ssn: '123-45-6789',
+        ssn: '123456789',
         addresses: [],
         phone_numbers: [],
         highlight: {
           first_name: '<em>Bar</em>t',
           last_name: 'Sim<em>pson</em>',
-          ssn: '<em>123-45-</em>6789',
+          ssn: '<em>123456789</em>',
           date_of_birth: '<em>1990</em>-02-13',
         },
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
       expect(attributes.firstName).toEqual('<em>Bar</em>t')
       expect(attributes.lastName).toEqual('Sim<em>pson</em>')
-      expect(attributes.ssn).toEqual('<em>123-45-</em>6789')
+      expect(attributes.ssn).toEqual('<em>123-45-6789</em>')
       expect(attributes.dateOfBirth).toEqual('<em>1990</em>-02-13')
     })
 
-    it('slices off all but last 4 digits of ssn', () => {
+    it('formats ssn', () => {
       const suggestion = {
-        ssn: '___-__-6789',
+        ssn: '123456789',
         addresses: [],
         phone_numbers: [],
       }
       const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.ssn).toEqual('6789')
+      expect(attributes.ssn).toEqual('123-45-6789')
+    })
+
+    it('formats highlighted ssn', () => {
+      const suggestion = {
+        ssn: '123456789',
+        addresses: [],
+        phone_numbers: [],
+        highlight: {
+          ssn: '<em>123456789</em>',
+        },
+      }
+      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
+      expect(attributes.ssn).toEqual('<em>123-45-6789</em>')
     })
   })
 
@@ -351,7 +364,7 @@ describe('<Autocompleter />', () => {
           ethnicity_detail: ['Central American'],
         },
         date_of_birth: '1990-02-13',
-        ssn: '123-45-6789',
+        ssn: '123456789',
         addresses: [{
           id: '1',
           street_address: '234 Fake Street',
@@ -390,7 +403,7 @@ describe('<Autocompleter />', () => {
           ethnicity_detail: ['Central American'],
         },
         dateOfBirth: '1990-02-13',
-        ssn: '6789',
+        ssn: '123-45-6789',
         address: {
           streetAddress: '234 Fake Street',
           city: 'Flushing',

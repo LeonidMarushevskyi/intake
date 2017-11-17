@@ -86,11 +86,9 @@ export default class Autocompleter extends React.Component {
         return suggestion[fieldName]
       }
     }
-    var maskSSN = (suggestion) => {
-      const ssn = suggestion.ssn
-      const maxLength = 4
-      if (ssn && ssn.length > maxLength) {
-        return {ssn: `${ssn.substring(ssn.length - maxLength, ssn.length)}`}
+    var formatSSN = (suggestion) => {
+      if (suggestion && suggestion.ssn) {
+        return {ssn: `${suggestion.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')}`}
       } else {
         return suggestion
       }
@@ -106,7 +104,7 @@ export default class Autocompleter extends React.Component {
       races: races,
       ethnicity: ethnicity,
       dateOfBirth: highlightedText('date_of_birth', suggestion, highlight),
-      ssn: highlightedText('ssn', maskSSN(suggestion), highlight),
+      ssn: highlightedText('ssn', formatSSN(suggestion), formatSSN(highlight)),
       address: address && {
         city: address.city,
         state: address.state,
