@@ -7,6 +7,7 @@ import ContactFormContainer from 'investigations/ContactFormContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
 import InvestigationPageContainer from 'investigations/InvestigationPageContainer'
 import NotFoundPage from 'errors/NotFoundPage'
+import UnauthorizedPage from 'errors/UnauthorizedPage'
 import ServerErrorPage from 'errors/ServerErrorPage'
 import {store} from 'store/configureStore'
 import {Provider} from 'react-redux'
@@ -28,6 +29,7 @@ export default (
         <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />
         <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} />
         <Route path='server_error' component={ServerErrorPage}/>
+        <Route path='unauthorized' component={UnauthorizedPage}/>
         <Route path='*' component={NotFoundPage}/>
       </Route>
     </Router>
