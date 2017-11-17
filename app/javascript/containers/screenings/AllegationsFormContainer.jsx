@@ -7,7 +7,7 @@ import {
   getAllegationsRequiredValueSelector,
   getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {
   resetAllegations,
   setAllegationTypes,

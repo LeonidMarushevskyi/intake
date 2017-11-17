@@ -1,8 +1,6 @@
-import {put} from 'utils/http'
 import {
   CREATE_SCREENING,
   CREATE_SCREENING_COMPLETE,
-  UPDATE_SCREENING_COMPLETE,
   FETCH_SCREENING,
   FETCH_SCREENING_COMPLETE,
   FETCH_HISTORY_OF_INVOLVEMENTS,
@@ -13,6 +11,8 @@ import {
   SUBMIT_SCREENING_COMPLETE,
 } from 'actions/actionTypes'
 
+export const SAVE_SCREENING = 'SAVE_SCREENING'
+export const SAVE_SCREENING_COMPLETE = 'SAVE_SCREENING_COMPLETE'
 export function createScreeningSuccess(screening) {
   return {type: CREATE_SCREENING_COMPLETE, payload: {screening}}
 }
@@ -36,16 +36,14 @@ export function fetchScreeningFailure(error) {
 export function fetchScreening(id) {
   return {type: FETCH_SCREENING, payload: {id}}
 }
-
-export function updateScreeningSuccess(screening) {
-  return {type: UPDATE_SCREENING_COMPLETE, payload: {screening}}
+export function saveSuccess(screening) {
+  return {type: SAVE_SCREENING_COMPLETE, payload: {screening}}
 }
-
-export function saveScreening(screening) {
-  return (dispatch) => (
-    put(`/api/v1/screenings/${screening.id}`, {screening})
-      .then((jsonResponse) => dispatch(updateScreeningSuccess(jsonResponse)))
-  )
+export function saveFailure(error) {
+  return {type: SAVE_SCREENING_COMPLETE, payload: {error}, error: true}
+}
+export function save(screening) {
+  return {type: SAVE_SCREENING, payload: {screening}}
 }
 
 export function fetchHistoryOfInvolvementsSuccess(history_of_involvements) {

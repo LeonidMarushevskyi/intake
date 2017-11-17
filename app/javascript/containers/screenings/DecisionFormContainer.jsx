@@ -12,7 +12,7 @@ import {
   getRestrictionRationaleSelector,
   getScreeningWithEditsSelector,
 } from 'selectors/screening/decisionFormSelectors'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {
   resetFieldValues,
   setField,

@@ -6,7 +6,7 @@ import {
   fetchScreeningFailure,
   submitScreeningSuccess,
   submitScreeningFailure,
-  updateScreeningSuccess,
+  saveSuccess,
 } from 'actions/screeningActions'
 import {
   fetchSuccess as fetchAllegationsSuccess,
@@ -56,10 +56,10 @@ describe('screeningReducer', () => {
     })
   })
 
-  describe('on UPDATE_SCREENING_COMPLETE', () => {
+  describe('on SAVE_SCREENING_COMPLETE', () => {
     it('returns the screening from the action on success', () => {
       const screening = {id: '1'}
-      const action = updateScreeningSuccess(screening)
+      const action = saveSuccess(screening)
       expect(screeningReducer(Map(), action)).toEqualImmutable(
         Map({id: '1', fetch_status: 'FETCHED'})
       )
