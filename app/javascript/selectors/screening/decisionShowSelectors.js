@@ -8,8 +8,9 @@ import {isRequiredCreate, combineCompact} from 'utils/validator'
 export const getErrorsSelector = createSelector(
   (state) => state.getIn(['screening', 'screening_decision']),
   (state) => state.getIn(['screening', 'screening_decision_detail']),
+  (state) => state.getIn(['screening', 'restrictions_rationale']) || '',
   (state) => state.get('allegationsForm', List()),
-  (decision, decisionDetail, allegations) => (
+  (decision, decisionDetail, restrictionsRationale, allegations) => (
     fromJS({
       screening_decision: combineCompact(
         isRequiredCreate(decision, 'Please enter a decision'),
@@ -30,6 +31,9 @@ export const getErrorsSelector = createSelector(
             return undefined
           }
         }
+      ),
+      restrictions_rationale: combineCompact(
+        isRequiredCreate(restrictionsRationale, 'Please enter an access restriction reason')
       ),
     })
   )
@@ -63,4 +67,10 @@ export const getDecisionDetailSelector = createSelector(
       required: decision === 'promote_to_referral',
     })
   }
+)
+
+export const getRestrictionRationaleSelector = createSelector(
+  (state) => state.getIn(['screening', 'restrictions_rationale']),
+  (state) => getErrorsSelector(state).get('restrictions_rationale'),
+  (value, errors) => Map({value: value || '', errors})
 )

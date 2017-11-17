@@ -3,6 +3,7 @@ import {
   getDecisionSelector,
   getDecisionDetailSelector,
   getErrorsSelector,
+  getRestrictionRationaleSelector,
 } from 'selectors/screening/decisionShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -150,6 +151,36 @@ describe('allegationShowSelectors', () => {
         expect(getErrorsSelector(state).get('screening_decision_detail'))
           .toEqualImmutable(List())
       })
+    })
+
+    describe('restrictions rationale', () => {
+      it('returns an error if there is no rationale', () => {
+        const screening = { }
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('restrictions_rationale'))
+          .toEqualImmutable(List(['Please enter an access restriction reason']))
+      })
+
+      it('returns no error if there is a rationale', () => {
+        const screening = {restrictions_rationale: 'rationale'}
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('restrictions_rationale'))
+          .toEqualImmutable(List())
+      })
+    })
+  })
+
+  describe('getRestrictionRationaleSelector', () => {
+    it('returns the proper value if one exists', () => {
+      const screening = {restrictions_rationale: 'ABC'}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('value')).toEqual('ABC')
+    })
+
+    it('returns an empty string if current value is null', () => {
+      const screening = {restrictions_rationale: null}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('value')).toEqual('')
     })
   })
 })
