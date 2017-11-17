@@ -62,11 +62,11 @@ describe('fetchScreening', () => {
       )
     })
 
-    it('redirects to unauthorized page if error is 401', () => {
+    it('redirects to forbidden page if error is 403', () => {
       const gen = fetchScreening(action)
       expect(gen.next().value).toEqual(call(get, '/api/v1/screenings/123'))
-      const error = {responseJSON: 'forbidden', status: 401}
-      expect(gen.throw(error).value).toEqual(put(replace('/unauthorized')))
+      const error = {responseJSON: 'forbidden', status: 403}
+      expect(gen.throw(error).value).toEqual(put(replace('/forbidden')))
     })
   })
 })

@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe ErrorsController, type: :controller do
-  describe 'GET #unauthorized' do
-    it 'returns http 401' do
-      get :unauthorized
-      expect(response).to have_http_status(401)
+  describe 'GET #forbidden' do
+    it 'returns http 403' do
+      get :forbidden
+      expect(response).to have_http_status(403)
     end
   end
 

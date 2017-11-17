@@ -21,8 +21,8 @@ export function* fetchScreening({payload: {id}}) {
     yield put(fetchScreeningSuccess(response))
   } catch (error) {
     switch (error.status) {
-      case STATUS_CODES.unauthorized: {
-        yield put(replace('/unauthorized'))
+      case STATUS_CODES.forbidden: {
+        yield put(replace('/forbidden'))
         break
       }
       default: {

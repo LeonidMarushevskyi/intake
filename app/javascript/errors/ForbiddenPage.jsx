@@ -1,7 +1,7 @@
 import React from 'react'
 import * as IntakeConfig from 'common/config'
 
-const UnauthorizedPage = () => (
+const ForbiddenPage = () => (
   <div className='error-panel centered'>
     <h4>
       <i className='fa fa-warning c-red gap-right'/>
@@ -16,4 +16,4 @@ const UnauthorizedPage = () => (
   </div>
 )
 
-export default UnauthorizedPage
+export default ForbiddenPage

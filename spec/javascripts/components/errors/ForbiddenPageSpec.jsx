@@ -1,15 +1,15 @@
 import React from 'react'
-import UnauthorizedPage from 'errors/UnauthorizedPage'
+import ForbiddenPage from 'errors/ForbiddenPage'
 import {shallow} from 'enzyme'
 import * as IntakeConfig from 'common/config'
 
-describe('UnauthorizedPage', () => {
+describe('ForbiddenPage', () => {
   const dashboardUrl = 'my_dashboard_link'
   let component
 
   beforeEach(() => {
     spyOn(IntakeConfig, 'dashboardUrl').and.returnValue(dashboardUrl)
-    component = shallow(<UnauthorizedPage/>)
+    component = shallow(<ForbiddenPage/>)
   })
 
   it('renders the error text', () => {
