@@ -2,6 +2,11 @@
 
 # Errors Controller to handle errors
 class ErrorsController < ApplicationController
+  def unauthorized
+    @dashboard_url = Rails.application.config.intake[:dashboard_url]
+    render status: 401
+  end
+
   def not_found
     @dashboard_url = Rails.application.config.intake[:dashboard_url]
     render status: 404

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   root 'home#index'
   get '/404', to: 'errors#not_found', via: :all
   get '/500', to: 'errors#server_error', via: :all
+  get '/401', to: 'errors#unauthorized', via: :all
 
   resources :screenings,
     only: %i[edit],
