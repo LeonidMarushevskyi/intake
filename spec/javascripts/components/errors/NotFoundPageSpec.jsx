@@ -4,11 +4,11 @@ import {shallow} from 'enzyme'
 import * as IntakeConfig from 'common/config'
 
 describe('NotFoundPage', () => {
-  const dashboardUrl = 'my_dashboard_link'
+  const basePath = 'my_dashboard_link'
   let component
 
   beforeEach(() => {
-    spyOn(IntakeConfig, 'dashboardUrl').and.returnValue(dashboardUrl)
+    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
     component = shallow(<NotFoundPage/>)
   })
 
@@ -20,6 +20,6 @@ describe('NotFoundPage', () => {
   })
 
   it('renders a link to dashboard', () => {
-    expect(component.find(`a[href="${dashboardUrl}"]`).length).toEqual(1)
+    expect(component.find(`a[href="/${basePath}"]`).length).toEqual(1)
   })
 })

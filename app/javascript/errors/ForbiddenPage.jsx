@@ -10,7 +10,7 @@ const ForbiddenPage = () => (
     <div className='gap-top'>
       <span>You don&apos;t have the appropriate permissions to view this page.</span>
       <br/>
-      <a href={IntakeConfig.dashboardUrl()}>Return to your dashboard</a>
+      <a href={`/${IntakeConfig.basePath()}`}>Return to your dashboard</a>
       <span>.</span>
     </div>
   </div>

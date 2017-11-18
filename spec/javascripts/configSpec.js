@@ -1,4 +1,4 @@
-import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath, sdmPath, dashboardUrl} from 'common/config'
+import {isFeatureActive, isFeatureInactive, config, jsClipboardSupported, basePath, sdmPath} from 'common/config'
 
 describe('intake config', () => {
   let windowOrg
@@ -91,18 +91,6 @@ describe('intake config', () => {
 
     it('returns the proper base path', () => {
       expect(sdmPath()).toEqual(sdmPathString)
-    })
-  })
-
-  describe('.dashboardUrl', () => {
-    const dashboardUrlString = '/dashboard-url-test'
-
-    beforeEach(() => {
-      window.org = Object.freeze({intake: {config: {dashboard_url: dashboardUrlString}}})
-    })
-
-    it('returns the dashboard url', () => {
-      expect(dashboardUrl()).toEqual(dashboardUrlString)
     })
   })
 })

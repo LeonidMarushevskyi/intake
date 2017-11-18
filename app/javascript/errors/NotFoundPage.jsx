@@ -10,7 +10,7 @@ const NotFoundPage = () => (
     <div className='gap-top'>
       <span>It may have been deleted or doesn&apos;t exist. Please check the address or</span>
       <br/>
-      <a href={IntakeConfig.dashboardUrl()}>return to your dashboard</a>
+      <a href={`/${IntakeConfig.basePath()}`}>return to your dashboard</a>
       <span>.</span>
     </div>
   </div>

@@ -22,7 +22,3 @@ export function basePath() {
 export function sdmPath() {
   return config().sdm_path
 }
-
-export function dashboardUrl() {
-  return config().dashboard_url
-}
