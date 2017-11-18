@@ -21,6 +21,7 @@ feature 'error pages' do
         skip 'Pending as this test fails during parallel runs'
       end
       allow(Rails.configuration).to receive(:intake).and_return(dashboard_url: dashboard_url)
+      stub_request(:get, '/this_page_does_not_exist').and_return(json_body('NotFound', status: 404))
       visit '/this_page_does_not_exist'
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
