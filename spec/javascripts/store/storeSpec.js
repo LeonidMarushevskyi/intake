@@ -2,7 +2,7 @@ import * as matchers from 'jasmine-immutable-matchers'
 import {
   fetchScreeningSuccess,
   createScreeningSuccess,
-  updateScreeningSuccess,
+  saveSuccess,
 } from 'actions/screeningActions'
 import {
   createPersonSuccess,
@@ -98,7 +98,7 @@ describe('Store', () => {
     it('handles update screening', () => {
       const participants = fromJS([{id: '2', legacy_id: '3', screening_id: '1'}])
       const updatedScreening = initialState.get('screening').set('participants', participants)
-      const action = updateScreeningSuccess(updatedScreening.toJS())
+      const action = saveSuccess(updatedScreening.toJS())
       store.dispatch(action)
       expect(store.getState().get('screening')).toEqualImmutable(
         updatedScreening.set('fetch_status', 'FETCHED')

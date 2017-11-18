@@ -7,7 +7,7 @@ import {
 import {getSafetyAlertsSelector} from 'selectors/systemCodeSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues} from 'actions/workerSafetyFormActions'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state, _ownProps) => (

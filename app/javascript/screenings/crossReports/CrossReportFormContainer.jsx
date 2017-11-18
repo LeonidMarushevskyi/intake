@@ -29,7 +29,7 @@ import {
   touchAllFields,
   touchField,
 } from 'actions/crossReportFormActions'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
   getAllegationsRequireCrossReportsValueSelector,

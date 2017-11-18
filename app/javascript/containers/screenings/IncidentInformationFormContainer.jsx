@@ -18,7 +18,7 @@ import {
   touchField,
   resetFieldValues,
 } from 'actions/incidentInformationFormActions'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 
 const mapStateToProps = (state, _ownProps) => ({
   errors: getVisibleErrorsSelector(state).toJS(),

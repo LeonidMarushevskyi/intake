@@ -7,7 +7,7 @@ import {
   getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
 } from 'selectors/screeningInformationFormSelectors'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
 const mapStateToProps = (state, _ownProps) => {

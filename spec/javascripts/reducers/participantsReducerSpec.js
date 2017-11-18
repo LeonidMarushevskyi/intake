@@ -4,7 +4,7 @@ import {
   createScreeningFailure,
   fetchScreeningSuccess,
   fetchScreeningFailure,
-  updateScreeningSuccess,
+  saveSuccess,
 } from 'actions/screeningActions'
 import {
   createPersonSuccess,
@@ -45,11 +45,11 @@ describe('participantsReducer', () => {
     })
   })
 
-  describe('on UPDATE_SCREENING_COMPLETE', () => {
+  describe('on SAVE_SCREENING_COMPLETE', () => {
     it('returns the screening from the action on success', () => {
       const screening = fromJS({participants: [{id: '2'}]})
       const participants = screening.get('participants')
-      const action = updateScreeningSuccess(screening.toJS())
+      const action = saveSuccess(screening.toJS())
       expect(participantsReducer(List(), action)).toEqualImmutable(participants)
     })
   })

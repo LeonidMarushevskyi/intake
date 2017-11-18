@@ -6,7 +6,7 @@ import {
 } from 'selectors/narrativeFormSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/narrativeFormActions'
-import {saveScreening} from 'actions/screeningActions'
+import {save as saveScreening} from 'actions/screeningActions'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state, _ownProps) => (
