@@ -1,22 +1,20 @@
 import React from 'react'
-import NotFoundPage from 'errors/NotFoundPage'
+import ForbiddenPage from 'errors/ForbiddenPage'
 import {shallow} from 'enzyme'
 import * as IntakeConfig from 'common/config'
 
-describe('NotFoundPage', () => {
+describe('ForbiddenPage', () => {
   const basePath = 'my_dashboard_link'
   let component
 
   beforeEach(() => {
     spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
-    component = shallow(<NotFoundPage/>)
+    component = shallow(<ForbiddenPage/>)
   })
 
   it('renders the error text', () => {
-    expect(component.text()).toContain('Sorry, this is not the page you want.')
-    expect(component.text()).toContain(
-      "It may have been deleted or doesn't exist. Please check the address orreturn to your dashboard."
-    )
+    expect(component.text()).toContain('This page is restricted.')
+    expect(component.text()).toContain("You don't have the appropriate permissions to view this page.Return to your dashboard")
   })
 
   it('renders a link to dashboard', () => {

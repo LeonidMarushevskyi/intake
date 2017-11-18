@@ -4,28 +4,42 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'error pages' do
+  let(:dashboard_url) { 'http://fake_dashboard.ca.gov' }
   around do |example|
     Rails.application.config.consider_all_requests_local = false
     Rails.application.config.action_dispatch.show_exceptions = true
-    example.run
+    with_config(dashboard_url: dashboard_url) do
+      example.run
+    end
     Rails.application.config.consider_all_requests_local = true
     Rails.application.config.action_dispatch.show_exceptions = false
   end
 
   context 'page does not exist' do
-    let(:dashboard_url) { 'http://fake_dashboard.ca.gov' }
-
     scenario 'renders 404 page' do
       if ENV.key?('TEST_ENV_NUMBER')
         skip 'Pending as this test fails during parallel runs'
       end
       allow(Rails.configuration).to receive(:intake).and_return(dashboard_url: dashboard_url)
+      stub_request(:get, '/this_page_does_not_exist').and_return(json_body('NotFound', status: 404))
       visit '/this_page_does_not_exist'
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
         "It may have been deleted or doesn't exist. Please check the address or"
       )
       expect(page).to have_link('return to your dashboard', href: dashboard_url)
+    end
+  end
+
+  context 'when user attempts to access a screening created by another' do
+    scenario 'renders 403 page' do
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
+        .and_return(json_body('Forbidden!!', status: 403))
+      visit edit_screening_path(id: 1)
+      expect(page).to have_current_path('/forbidden')
+      expect(page).to have_text('This page is restricted.')
+      expect(page).to have_text("You don't have the appropriate permissions to view this page.")
+      expect(page).to have_link('Return to your dashboard', href: dashboard_url)
     end
   end
 

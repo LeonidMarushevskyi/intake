@@ -18,7 +18,7 @@ feature 'api responses' do
       end
     end
 
-    scenario 'User is redirected to login with full callback path on API 403',
+    scenario 'User is redirected to login with full callback path on API 401',
       browser: :poltergeist do
       stub_empty_relationships_for_screening(screening)
       stub_empty_history_for_screening(screening)
@@ -31,7 +31,7 @@ feature 'api responses' do
       login_url = "#{auth_login_url}#{redirect_url}"
 
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .and_return(json_body('I failed', status: 403))
+        .and_return(json_body('I failed', status: 401))
       visit screening_path(id: screening.id, params: { bar: 'foo' })
 
       # have_current_path waits for the async call to finish, but doesn't verify url params
