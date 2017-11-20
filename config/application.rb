@@ -34,7 +34,9 @@ module CaIntake # :nodoc:
       authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
       authentication_login_url: authentication_login_url,
       base_path: ENV.fetch('BASE_PATH', ''),
+      client_only_search: ENV.fetch('CLIENT_ONLY_SEARCH', 'false') == 'true',
       ferb_api_url: ENV.fetch('FERB_API_URL', nil),
+      dora_api_url: ENV.fetch('DORA_API_URL', nil),
       sdm_path: ExternalRoutes.sdm_path
     }
   end
