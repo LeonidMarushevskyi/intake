@@ -1,4 +1,11 @@
-= The Casebook Intake Accelerator
+[![Code Climate](https://codeclimate.com/github/ca-cwds/intake/badges/gpa.svg)](https://codeclimate.com/github/ca-cwds/intake)
+[![Build Status](https://ci.mycasebook.org/buildStatus/icon?job=intake(CI))](https://ci.mycasebook.org/job/intake(CI)/)
+
+== README
+
+Web application frontend for California CWDS Hotline - Intake 
+
+== Forked from the Casebook Intake Accelerator
 
 == Section 1. Introduction to the Casebook Intake Accelerator
 
