@@ -6,13 +6,6 @@ module ReactSelectHelpers
     input.native.send_keys with, exit_key
   end
 
-  def has_react_select_field(selector, with:)
-    input = find_field(selector)
-    input_container = input.find(:xpath, '../..')
-    selected_values = input_container.all('.Select-value-label').map(&:text)
-    expect(selected_values).to eq(with)
-  end
-
   def remove_react_select_option(selector, option)
     input = find_field(selector)
     close_icon = input.find(:xpath, <<-XPATH)

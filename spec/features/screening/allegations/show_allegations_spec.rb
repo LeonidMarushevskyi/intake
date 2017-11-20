@@ -73,14 +73,14 @@ feature 'show allegations' do
           expect(page).to have_content('Homer')
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
-          has_react_select_field(select_field_id, with: [])
+          expect(page).to have_react_select_field(select_field_id, with: [])
           fill_in_react_select(select_field_id, with: 'Exploitation')
         end
 
         within table_rows[1] do
           expect(page).to have_no_content('Lisa')
           expect(page).to have_content('Marge')
-          has_react_select_field(
+          expect(page).to have_react_select_field(
             "allegations_#{lisa.id}_#{marge.id}",
             with: ['General neglect', 'Severe neglect']
           )
@@ -266,7 +266,7 @@ feature 'show allegations' do
       within 'tbody tr' do
         expect(page).to have_content('Marge')
         expect(page).to have_content('Lisa')
-        has_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: []
+        expect(page).to have_react_select_field "allegations_#{lisa.id}_#{marge.id}", with: []
       end
     end
   end
@@ -347,14 +347,14 @@ feature 'show allegations' do
           expect(page).to have_content('Homer')
 
           select_field_id = "allegations_#{lisa.id}_#{homer.id}"
-          has_react_select_field(select_field_id, with: [])
+          expect(page).to have_react_select_field(select_field_id, with: [])
           fill_in_react_select(select_field_id, with: 'Exploitation')
         end
 
         within table_rows[1] do
           expect(page).to have_no_content('Lisa')
           expect(page).to have_content('Marge')
-          has_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
+          expect(page).to have_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
         end
       end
       click_button 'Save'

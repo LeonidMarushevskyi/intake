@@ -22,7 +22,9 @@ feature 'worker safety card' do
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
-      has_react_select_field('Worker safety alerts', with: ['Dangerous Environment'])
+      expect(page).to have_react_select_field(
+        'Worker safety alerts', with: ['Dangerous Environment']
+      )
       fill_in 'Additional safety information', with: 'Something else'
       fill_in_react_select 'Worker safety alerts', with: ['Firearms in Home']
       click_button 'Cancel'
@@ -57,7 +59,9 @@ feature 'worker safety card' do
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
-      has_react_select_field('Worker safety alerts', with: ['Dangerous Environment'])
+      expect(page).to have_react_select_field(
+        'Worker safety alerts', with: ['Dangerous Environment']
+      )
       fill_in 'Additional safety information', with: 'Something else'
       fill_in_react_select 'Worker safety alerts', with: ['Firearms in Home']
       click_button 'Cancel'
@@ -87,7 +91,9 @@ feature 'worker safety card' do
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
-      has_react_select_field('Worker safety alerts', with: ['Dangerous Environment'])
+      expect(page).to have_react_select_field(
+        'Worker safety alerts', with: ['Dangerous Environment']
+      )
       fill_in 'Additional safety information', with: 'Something else'
       fill_in_react_select 'Worker safety alerts', with: ['Firearms in Home']
     end
@@ -132,7 +138,9 @@ feature 'worker safety card' do
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
-      has_react_select_field('Worker safety alerts', with: ['Dangerous Environment'])
+      expect(page).to have_react_select_field(
+        'Worker safety alerts', with: ['Dangerous Environment']
+      )
       fill_in 'Additional safety information', with: 'Something else'
       fill_in_react_select 'Worker safety alerts', with: ['Firearms in Home']
       fill_in_react_select 'Worker safety alerts',

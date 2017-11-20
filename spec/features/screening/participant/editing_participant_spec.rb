@@ -67,7 +67,7 @@ feature 'Edit Person' do
         within '.card-body' do
           table_description = marge.legacy_descriptor.legacy_table_description
           ui_id = marge.legacy_descriptor.legacy_ui_id
-          has_react_select_field 'Role', with: %w[Victim Perpetrator]
+          expect(page).to have_react_select_field 'Role', with: %w[Victim Perpetrator]
           expect(page).to have_content("#{table_description} ID #{ui_id} in CWS-CMS")
           expect(page).to have_field('First Name', with: marge.first_name)
           expect(page).to have_field('Middle Name', with: marge.middle_name)
@@ -202,7 +202,9 @@ feature 'Edit Person' do
           expect(page).to have_field('Approximate Age', disabled: true)
           expect(page).to have_field('Approximate Age Units', disabled: true)
           expect(page).to have_field('Gender', with: marge.gender)
-          has_react_select_field('Language(s) (Primary First)', with: marge.languages)
+          expect(page).to have_react_select_field(
+            'Language(s) (Primary First)', with: marge.languages
+          )
         end
         click_button 'Save'
       end
@@ -263,7 +265,9 @@ feature 'Edit Person' do
         expect(page).to have_field('Phone Number', with: '(123)456-7890')
         expect(page).to have_field('Phone Number Type', with: 'Work')
         expect(page).to have_field('Gender', with: marge.gender)
-        has_react_select_field('Language(s) (Primary First)', with: marge.languages)
+        expect(page).to have_react_select_field(
+          'Language(s) (Primary First)', with: marge.languages
+        )
         # Date of birth should not have datepicker, but limiting by field ID will break when
         # DOB fields are correctly namespaced by participant ID. Feel free to make this more
         # specific once that's done.
@@ -417,7 +421,7 @@ feature 'Edit Person' do
     within edit_participant_card_selector(marge.id) do
       within('.col-md-12', text: 'Language(s)') do
         fill_in_react_select 'Language(s)', with: 'English', exit_key: :tab
-        has_react_select_field 'Language(s)', with: ['Russian']
+        expect(page).to have_react_select_field 'Language(s)', with: ['Russian']
       end
     end
   end
@@ -462,7 +466,7 @@ feature 'Edit Person' do
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
-      has_react_select_field('Role', with: %w[Victim Perpetrator])
+      expect(page).to have_react_select_field('Role', with: %w[Victim Perpetrator])
       remove_react_select_option('Role', 'Perpetrator')
       expect(page).to have_no_content('Perpetrator')
 
@@ -487,7 +491,7 @@ feature 'Edit Person' do
 
     within edit_participant_card_selector(marge.id) do
       fill_in_react_select 'Role', with: 'Family Member', exit_key: :tab
-      has_react_select_field 'Role', with: %w[Victim Perpetrator]
+      expect(page).to have_react_select_field 'Role', with: %w[Victim Perpetrator]
     end
   end
 
@@ -499,11 +503,11 @@ feature 'Edit Person' do
 
       within edit_participant_card_selector(marge.id) do
         fill_in_react_select('Role', with: 'Non-mandated Reporter')
-        has_react_select_field('Role', with: ['Mandated Reporter'])
+        expect(page).to have_react_select_field('Role', with: ['Mandated Reporter'])
 
         remove_react_select_option('Role', 'Mandated Reporter')
         fill_in_react_select('Role', with: 'Non-mandated Reporter')
-        has_react_select_field('Role', with: ['Non-mandated Reporter'])
+        expect(page).to have_react_select_field('Role', with: ['Non-mandated Reporter'])
       end
     end
   end

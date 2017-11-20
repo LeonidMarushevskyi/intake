@@ -215,7 +215,9 @@ feature 'Create participant' do
         expect(page).to have_field('Phone Number', with: '(971)287-6774')
         expect(page).to have_select('Phone Number Type', selected: homer.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: homer.gender)
-        has_react_select_field('Language(s) (Primary First)', with: homer.languages)
+        expect(page).to have_react_select_field(
+          'Language(s) (Primary First)', with: homer.languages
+        )
         expect(page).to have_field('Date of birth', with: homer_date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_field('Social security number', with: homer.ssn)
         expect(page).to have_field('Address', with: homer.addresses.first.street_address)
