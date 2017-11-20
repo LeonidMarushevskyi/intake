@@ -223,21 +223,21 @@ feature 'Create participant' do
         expect(page).to have_field('State', with: homer.addresses.first.state)
         expect(page).to have_field('Zip', with: homer.addresses.first.zip)
         expect(page).to have_select('Address Type', selected: homer.addresses.first.type)
-        within '#race' do
-          expect(page.find('input[value="Asian"]')).to be_checked
+        within 'fieldset', text: 'Race' do
+          expect(page).to have_checked_field('Asian')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-Asian-race-detail",
             selected: 'Chinese'
           )
-          expect(page.find('input[value="White"]')).to be_checked
+          expect(page).to have_checked_field('White')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-White-race-detail",
             selected: 'Romanian'
           )
-          expect(page.find('input[value="American Indian or Alaska Native"]')).to be_checked
+          expect(page).to have_checked_field('American Indian or Alaska Native')
         end
-        within '#ethnicity' do
-          expect(page.find('input[value="Yes"]')).to be_checked
+        within 'fieldset', text: 'Hispanic/Latino Origin' do
+          expect(page).to have_checked_field('Yes')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-ethnicity-detail",
             selected: 'Hispanic'
