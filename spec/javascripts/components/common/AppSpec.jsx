@@ -17,16 +17,23 @@ describe('App', () => {
     expect(actions.fetch).toHaveBeenCalled()
   })
 
-  describe('http errors', () => {
-    it('are rendered when present', () => {
-      component = shallow(<App actions={actions} hasGenericError={true}><div/></App>)
-      expect(component.find('PageError').exists()).toEqual(true)
-      expect(component.find('.page-has-error').exists()).toEqual(true)
-    })
-    it('are not rendered when empty', () => {
-      component = shallow(<App actions={actions} hasGenericError={false}><div/></App>)
+  describe('error banner', () => {
+    it('is not rendered when no errors', () => {
+      component = shallow(<App actions={actions} hasError={false} errorCount={0}><div/></App>)
       expect(component.find('PageError').exists()).toEqual(false)
-      expect(component.find('.page-has-error').exists()).toEqual(false)
+    })
+    describe('generic errors', () => {
+      it('is rendered when generic error occurs', () => {
+        component = shallow(<App actions={actions} hasError={true}><div/></App>)
+        expect(component.find('PageError').exists()).toEqual(true)
+      })
+    })
+    describe('countable errors', () => {
+      it('is rendered when errors count is passed', () => {
+        component = shallow(<App actions={actions} hasError={false} errorCount={15}><div/></App>)
+        expect(component.find('PageError').exists()).toEqual(true)
+        expect(component.find('PageError').props().errorCount).toEqual(15)
+      })
     })
   })
 })
