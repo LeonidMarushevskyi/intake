@@ -32,7 +32,7 @@ def build_participant_from_person_and_screening(person, screening)
   )
 end
 
-feature 'Edit Screening' do
+feature 'Create participant' do
   let(:existing_participant) { FactoryGirl.create(:participant) }
   let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
@@ -125,10 +125,10 @@ feature 'Edit Screening' do
     end
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)
-    visit edit_screening_path(id: existing_screening.id)
   end
 
-  scenario 'creating an unknown participant when autocompleter contains results' do
+  scenario 'creating an unknown participant' do
+    visit edit_screening_path(id: existing_screening.id)
     created_participant_unknown = FactoryGirl.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
@@ -167,7 +167,9 @@ feature 'Edit Screening' do
         example.run
       end
     end
+
     it 'hides the create new person button' do
+      visit edit_screening_path(id: existing_screening.id)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
         expect(page).to_not have_button('Create a new person')
@@ -175,17 +177,13 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'adding a participant from search results' do
+  scenario 'adding a participant from search' do
+    visit edit_screening_path(id: existing_screening.id)
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryGirl.build(:participant, homer_attributes)
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
-    existing_screening.participants << created_participant_homer
-    stub_request(
-      :get,
-      intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json, status: 200))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
@@ -419,6 +417,7 @@ feature 'Edit Screening' do
     end
 
     scenario 'creating a participant from search adds participant in show mode' do
+      visit edit_screening_path(id: existing_screening.id)
       homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
       participant_homer = FactoryGirl.build(:participant, homer_attributes)
       created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
