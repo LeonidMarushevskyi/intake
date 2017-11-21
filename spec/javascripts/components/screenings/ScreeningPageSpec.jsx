@@ -29,52 +29,98 @@ describe('ScreeningPage', () => {
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
-  describe('renderMode', () => {
-    it('uses the mode from props if editable is true', () => {
-      const props = {
-        ...requiredProps,
-        mode: 'show',
+  function mountScreeningPage({
+    actions: {
+      setPageMode = () => null,
+      fetchScreening = () => null,
+      fetchRelationships = () => null,
+      fetchHistoryOfInvolvements = () => null,
+      checkStaffPermission = () => null,
+    },
+    participants = {},
+    screening = {},
+    params = {},
+    editable,
+  }) {
+    const props = {
+      actions: {
+        setPageMode,
+        fetchScreening,
+        fetchRelationships,
+        fetchHistoryOfInvolvements,
+        checkStaffPermission,
+      },
+      params,
+      participants,
+      screening,
+      editable,
+    }
+    return mount(<ScreeningPage {...props}/>)
+  }
+
+  describe('componentDidMount', () => {
+    it("sets the page mode to 'edit' when url mode is 'edit' and editable is true", () => {
+      const setPageMode = jasmine.createSpy('setPageMode')
+      mountScreeningPage({
         editable: true,
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      expect(component.instance().renderMode()).toEqual('show')
+        actions: {setPageMode},
+        params: {mode: 'edit'},
+      })
+      expect(setPageMode).toHaveBeenCalledWith('edit')
     })
 
-    it('forces the page to show mode if editable is false', () => {
-      const screening = {
-        ...requiredScreeningAttributes,
-        referral_id: 'ABC123',
-      }
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS(screening),
-        params: {id: '1', mode: 'edit'},
-        mode: 'edit',
-        editable: false,
-      }
-
-      const component = shallow(<ScreeningPage {...props}/>)
-      expect(component.instance().renderMode()).toEqual('show')
+    it("sets the page mode to 'show' when url mode is 'show' and editable is true", () => {
+      const setPageMode = jasmine.createSpy('setPageMode')
+      mountScreeningPage({
+        editable: true,
+        actions: {setPageMode},
+        params: {mode: 'show'},
+      })
+      expect(setPageMode).toHaveBeenCalledWith('show')
     })
 
-    it('renders cards using the mode returned from the method', () => {
-      const screening = {
-        ...requiredScreeningAttributes,
-        referral_id: 'ABC123',
-      }
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS(screening),
-        params: {id: '1', mode: 'edit'},
-        mode: 'edit',
-        loaded: true,
+    it("sets the page mode to 'show' when url mode is 'edit' and editable is false", () => {
+      const setPageMode = jasmine.createSpy('setPageMode')
+      mountScreeningPage({
         editable: false,
-      }
+        actions: {setPageMode},
+        params: {mode: 'edit'},
+      })
+      expect(setPageMode).toHaveBeenCalledWith('show')
+    })
 
-      const component = shallow(<ScreeningPage {...props}/>)
-      const safetyAlerts = component.find('WorkerSafetyCardView')
-      expect(safetyAlerts.props().mode).toEqual('show')
+    describe('when the screening page URL ID is present', () => {
+      const id = '222'
+      let fetchScreening
+      let fetchRelationships
+      let fetchHistoryOfInvolvements
+      beforeEach(() => {
+        fetchScreening = jasmine.createSpy('fetchScreening')
+        fetchRelationships = jasmine.createSpy('fetchRelationships')
+        fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
+        mountScreeningPage({
+          actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements},
+          params: {id},
+        })
+      })
+
+      it('fetches screening from the url ID', () => {
+        expect(fetchScreening).toHaveBeenCalledWith(id)
+      })
+
+      it('fetches relationships for the screening from the url ID', () => {
+        expect(fetchRelationships).toHaveBeenCalledWith(id)
+      })
+
+      it('fetches HOI for the screening from the url ID', () => {
+        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(id)
+      })
+    })
+
+    it('fetches the current users staff permissions', () => {
+      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
+      mountScreeningPage({actions: {checkStaffPermission}})
+      expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
   })
 
@@ -163,40 +209,6 @@ describe('ScreeningPage', () => {
       }
       const component = shallow(<ScreeningPage {...props} mode='show'/>)
       expect(component.find('h1').text()).toEqual('Screening #ABCDEF - Referral #123456')
-    })
-  })
-
-  describe('componentDidMount', () => {
-    const fetchScreening = jasmine.createSpy('fetchScreening')
-    const fetchRelationships = jasmine.createSpy('fetchRelationships')
-    const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-    const fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
-    const promiseSpyObj = jasmine.createSpyObj('promiseSpyObj', ['then'])
-    beforeEach(() => {
-      const props = {
-        ...requiredProps,
-        actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements, checkStaffPermission},
-        params: {id: '222'},
-      }
-      fetchScreening.and.returnValue(promiseSpyObj)
-      checkStaffPermission.and.returnValue(promiseSpyObj)
-      mount(<ScreeningPage {...props} />)
-    })
-
-    it('GETs the screening from the server', () => {
-      expect(fetchScreening).toHaveBeenCalledWith('222')
-    })
-
-    it('GETs the felationships from the server', () => {
-      expect(fetchRelationships).toHaveBeenCalledWith('222')
-    })
-
-    it('GETs the history of involvement from the server', () => {
-      expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith('222')
-    })
-
-    it('GETs the staff permission from the server', () => {
-      expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
   })
 
