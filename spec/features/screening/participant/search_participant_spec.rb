@@ -62,7 +62,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([person].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do
@@ -96,7 +96,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within '.react-autosuggest__suggestions-list' do
@@ -116,7 +116,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within '.react-autosuggest__suggestions-list' do
@@ -132,7 +132,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([person_with_out_phone_numbers].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do
@@ -148,7 +148,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([person_with_out_addresses].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do
@@ -169,7 +169,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge' do
@@ -191,7 +191,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge' do
@@ -213,7 +213,7 @@ feature 'searching a participant in autocompleter' do
       ).and_return(json_body([marge].to_json, status: 200))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in_autocompleter 'Search for clients', with: 'Ma'
       end
 
       within 'li', text: 'Marge' do

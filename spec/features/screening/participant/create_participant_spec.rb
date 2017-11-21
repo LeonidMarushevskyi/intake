@@ -144,7 +144,7 @@ feature 'Create participant' do
       .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
       .and_return(json_body(created_participant_unknown.to_json, status: 201))
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Marge'
+      fill_in_autocompleter 'Search for clients', with: 'Marge'
       find('.btn', text: /Create a new person/).click
       expect(page).to_not have_content('Create a new person')
     end
@@ -171,7 +171,7 @@ feature 'Create participant' do
     it 'hides the create new person button' do
       visit edit_screening_path(id: existing_screening.id)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Marge'
+        fill_in_autocompleter 'Search for clients', with: 'Marge'
         expect(page).to_not have_button('Create a new person')
       end
     end
@@ -188,7 +188,7 @@ feature 'Create participant' do
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Homer'
+      fill_in_autocompleter 'Search for clients', with: 'Homer'
       find('li', text: 'Homer Simpson').click
     end
     expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
@@ -283,7 +283,7 @@ feature 'Create participant' do
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Marge'
+            fill_in_autocompleter 'Search for clients', with: 'Marge'
             find('li', text: 'Marge Simpson').click
           end
 
@@ -315,7 +315,7 @@ feature 'Create participant' do
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Ho'
+            fill_in_autocompleter 'Search for clients', with: 'Ho'
             find('li', text: 'Homer Simpson').click
           end
 
@@ -349,7 +349,7 @@ feature 'Create participant' do
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Marge'
+            fill_in_autocompleter 'Search for clients', with: 'Marge'
             find('li', text: 'Marge Simpson').click
           end
           expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
@@ -396,7 +396,7 @@ feature 'Create participant' do
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Ho'
+            fill_in_autocompleter 'Search for clients', with: 'Ho'
             find('li', text: 'Homer Simpson').click
           end
 
@@ -427,7 +427,7 @@ feature 'Create participant' do
         .and_return(json_body(created_participant_homer.to_json, status: 201))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ho'
+        fill_in_autocompleter 'Search for clients', with: 'Ho'
         find('li', text: 'Homer Simpson').click
       end
 
