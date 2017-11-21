@@ -36,8 +36,8 @@ const ScreeningDecisionForm = ({
             onChange={({target: {value}}) => onChange('screening_decision', value)}
           >
             <option key='' />
-            {decisionOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
+            {decisionOptions.map(({label, value}) => (
+              <option key={value} value={value}>{label}</option>
             ))}
           </SelectField>
           {decision.value && decisionDetailOptions.length === 0 &&
@@ -63,8 +63,8 @@ const ScreeningDecisionForm = ({
               onBlur={() => onBlur('screening_decision_detail')}
             >
               <option key='' />
-              {decisionDetailOptions.map((option) => (
-                <option key={option.value} value={option.value}>{option.label}</option>
+              {decisionDetailOptions.map(({value, label}) => (
+                <option key={value} value={value}>{label}</option>
               ))}
             </SelectField>
           }
@@ -83,8 +83,8 @@ const ScreeningDecisionForm = ({
             onChange={({target: {value}}) => onChange('access_restrictions', value)}
             onBlur={() => onBlur('access_restrictions')}
           >
-            {accessRestrictionOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
+            {accessRestrictionOptions.map(({label, value}) => (
+              <option key={value} value={value}>{label}</option>
             ))}
           </SelectField>
           {accessRestriction.value &&

@@ -32,7 +32,7 @@ def build_participant_from_person_and_screening(person, screening)
   )
 end
 
-feature 'Edit Screening' do
+feature 'Create participant' do
   let(:existing_participant) { FactoryGirl.create(:participant) }
   let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
@@ -125,10 +125,10 @@ feature 'Edit Screening' do
     end
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)
-    visit edit_screening_path(id: existing_screening.id)
   end
 
-  scenario 'creating an unknown participant when autocompleter contains results' do
+  scenario 'creating an unknown participant' do
+    visit edit_screening_path(id: existing_screening.id)
     created_participant_unknown = FactoryGirl.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
@@ -167,7 +167,9 @@ feature 'Edit Screening' do
         example.run
       end
     end
+
     it 'hides the create new person button' do
+      visit edit_screening_path(id: existing_screening.id)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Marge'
         expect(page).to_not have_button('Create a new person')
@@ -175,17 +177,13 @@ feature 'Edit Screening' do
     end
   end
 
-  scenario 'adding a participant from search results' do
+  scenario 'adding a participant from search' do
+    visit edit_screening_path(id: existing_screening.id)
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryGirl.build(:participant, homer_attributes)
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
-    existing_screening.participants << created_participant_homer
-    stub_request(
-      :get,
-      intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json, status: 200))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
@@ -217,7 +215,9 @@ feature 'Edit Screening' do
         expect(page).to have_field('Phone Number', with: '(971)287-6774')
         expect(page).to have_select('Phone Number Type', selected: homer.phone_numbers.first.type)
         expect(page).to have_field('Gender', with: homer.gender)
-        has_react_select_field('Language(s) (Primary First)', with: homer.languages)
+        expect(page).to have_react_select_field(
+          'Language(s) (Primary First)', with: homer.languages
+        )
         expect(page).to have_field('Date of birth', with: homer_date_of_birth.strftime('%m/%d/%Y'))
         expect(page).to have_field('Social security number', with: homer.ssn)
         expect(page).to have_field('Address', with: homer.addresses.first.street_address)
@@ -225,21 +225,21 @@ feature 'Edit Screening' do
         expect(page).to have_field('State', with: homer.addresses.first.state)
         expect(page).to have_field('Zip', with: homer.addresses.first.zip)
         expect(page).to have_select('Address Type', selected: homer.addresses.first.type)
-        within '#race' do
-          expect(page.find('input[value="Asian"]')).to be_checked
+        within 'fieldset', text: 'Race' do
+          expect(page).to have_checked_field('Asian')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-Asian-race-detail",
             selected: 'Chinese'
           )
-          expect(page.find('input[value="White"]')).to be_checked
+          expect(page).to have_checked_field('White')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-White-race-detail",
             selected: 'Romanian'
           )
-          expect(page.find('input[value="American Indian or Alaska Native"]')).to be_checked
+          expect(page).to have_checked_field('American Indian or Alaska Native')
         end
-        within '#ethnicity' do
-          expect(page.find('input[value="Yes"]')).to be_checked
+        within 'fieldset', text: 'Hispanic/Latino Origin' do
+          expect(page).to have_checked_field('Yes')
           expect(page).to have_select(
             "participant-#{created_participant_homer.id}-ethnicity-detail",
             selected: 'Hispanic'
@@ -419,6 +419,7 @@ feature 'Edit Screening' do
     end
 
     scenario 'creating a participant from search adds participant in show mode' do
+      visit edit_screening_path(id: existing_screening.id)
       homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
       participant_homer = FactoryGirl.build(:participant, homer_attributes)
       created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)

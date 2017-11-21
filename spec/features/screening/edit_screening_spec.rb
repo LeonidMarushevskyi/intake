@@ -93,7 +93,9 @@ feature 'Edit Screening' do
       end
 
       within '#worker-safety-card', text: 'Worker Safety' do
-        has_react_select_field('Worker safety alerts', with: existing_screening.safety_alerts)
+        expect(page).to have_react_select_field(
+          'Worker safety alerts', with: existing_screening.safety_alerts
+        )
         expect(page).to have_field(
           'Additional safety information', with: existing_screening.safety_information
         )
@@ -133,7 +135,7 @@ feature 'Edit Screening' do
         fill_in_react_select(
           'Worker safety alerts', with: 'Hostile, Aggressive Client'
         )
-        has_react_select_field(
+        expect(page).to have_react_select_field(
           'Worker safety alerts',
           with: ['Dangerous Animal on Premises', 'Firearms in Home', 'Hostile, Aggressive Client']
         )
@@ -158,7 +160,7 @@ feature 'Edit Screening' do
         }
       )
       within '#worker-safety-card', text: 'Worker Safety' do
-        has_react_select_field(
+        expect(page).to have_react_select_field(
           'Worker safety alerts',
           with: ['Dangerous Animal on Premises', 'Firearms in Home']
         )
@@ -170,7 +172,7 @@ feature 'Edit Screening' do
           'Worker safety alerts',
           with: 'Severe Mental Health Status'
         )
-        has_react_select_field(
+        expect(page).to have_react_select_field(
           'Worker safety alerts',
           with: ['Dangerous Animal on Premises', 'Firearms in Home',
                  'Hostile, Aggressive Client', 'Severe Mental Health Status']
