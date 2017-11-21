@@ -30,15 +30,27 @@ export class ScreeningPage extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.editable) {
-      this.props.actions.setPageMode(this.props.params.mode)
+    const {
+      actions: {
+        setPageMode,
+        fetchScreening,
+        fetchRelationships,
+        fetchHistoryOfInvolvements,
+        checkStaffPermission,
+      },
+      editable,
+      params: {mode, id},
+    } = this.props
+
+    if (editable) {
+      setPageMode(mode)
     } else {
-      this.props.actions.setPageMode('show')
+      setPageMode('show')
     }
-    this.props.actions.fetchScreening(this.props.params.id)
-    this.props.actions.fetchRelationships(this.props.params.id)
-    this.props.actions.fetchHistoryOfInvolvements(this.props.params.id)
-    this.props.actions.checkStaffPermission('add_sensitive_people')
+    fetchScreening(id)
+    fetchRelationships(id)
+    fetchHistoryOfInvolvements(id)
+    checkStaffPermission('add_sensitive_people')
   }
 
   render() {
