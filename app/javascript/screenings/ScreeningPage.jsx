@@ -124,7 +124,7 @@ export class ScreeningPage extends React.Component {
               </div>
             </div>
           }
-          { mode === 'show' &&
+          { releaseTwoInactive && mode === 'show' &&
             <div>
               <Link to='/' className='gap-right'>Home</Link>
               {editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
