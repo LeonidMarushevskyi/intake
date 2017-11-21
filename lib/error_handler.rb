@@ -24,7 +24,7 @@ module ErrorHandler
       error: :api_error,
       status: exception.api_error[:http_code],
       message: exception.message,
-      api_response_body: exception.api_error[:response_body],
+      api_response_body: api_response_body(exception.api_error[:response_body]),
       url: exception.api_error[:url],
       method: exception.api_error[:method],
       sent_attributes: exception.api_error[:sent_attributes]
@@ -50,5 +50,13 @@ module ErrorHandler
       Rails.logger.error " [#{type}] found processing an api call:
       - message: #{exception.message}\n      - backtrace: #{exception.backtrace}"
     end
+  end
+
+  private
+
+  def api_response_body(response_body)
+    JSON.parse(response_body)
+  rescue
+    response_body
   end
 end
