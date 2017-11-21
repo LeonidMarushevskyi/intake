@@ -54,19 +54,19 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const {screening, editable, mode} = this.props
+    const {referralId, reference, editable, mode, loaded} = this.props
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
-    if (this.props.loaded) {
+    if (loaded) {
       return (
         <div>
           {
             releaseTwoInactive &&
               <h1>
                 {mode === 'edit' && 'Edit '}
-                {`Screening #${screening.get('reference')}`}
-                {screening.get('referral_id') && ` - Referral #${screening.get('referral_id')}`}
+                {`Screening #${reference}`}
+                {referralId && ` - Referral #${referralId}`}
               </h1>
           }
           {
@@ -127,7 +127,7 @@ export class ScreeningPage extends React.Component {
           { mode === 'show' &&
             <div>
               <Link to='/' className='gap-right'>Home</Link>
-              {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
+              {editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
             </div>
           }
         </div>
@@ -146,7 +146,8 @@ ScreeningPage.propTypes = {
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
-  screening: PropTypes.object.isRequired,
+  reference: PropTypes.string,
+  referralId: PropTypes.string,
 }
 
 ScreeningPage.defaultProps = {
@@ -159,9 +160,10 @@ export function mapStateToProps(state, _ownProps) {
     editable: !state.getIn(['screening', 'referral_id']),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
-    participants: state.get('participants'),
-    screening: state.get('screening'),
     mode: state.getIn(['screeningPage', 'mode']),
+    participants: state.get('participants'),
+    reference: state.getIn(['screening', 'reference']),
+    referralId: state.getIn(['screening', 'referral_id']),
   }
 }
 

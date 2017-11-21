@@ -1,5 +1,5 @@
 import * as IntakeConfig from 'common/config'
-import Immutable from 'immutable'
+import {fromJS, List} from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
@@ -14,8 +14,7 @@ export const requiredScreeningAttributes = {
 export const requiredProps = {
   actions: {},
   params: {id: '1'},
-  participants: Immutable.List(),
-  screening: Immutable.fromJS(requiredScreeningAttributes),
+  participants: List(),
   mode: 'edit',
   editable: true,
 }
@@ -29,6 +28,28 @@ describe('ScreeningPage', () => {
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
+  function renderScreeningPage({
+    actions = {},
+    editable = true,
+    loaded,
+    mode,
+    params = {},
+    participants = List(),
+    reference,
+    referralId,
+  }) {
+    const props = {
+      actions,
+      editable,
+      loaded,
+      mode,
+      params,
+      participants,
+      reference,
+      referralId,
+    }
+    return shallow(<ScreeningPage {...props} />)
+  }
   function mountScreeningPage({
     actions: {
       setPageMode = () => null,
@@ -126,8 +147,8 @@ describe('ScreeningPage', () => {
 
   describe('render', () => {
     it('renders the history card', () => {
-      const involvements = Immutable.fromJS([{id: 1}, {id: 3}])
-      const participants = Immutable.fromJS([{id: 1, roles: []}])
+      const involvements = fromJS([{id: 1}, {id: 3}])
+      const participants = fromJS([{id: 1, roles: []}])
       const props = {
         ...requiredProps,
         involvements,
@@ -184,31 +205,32 @@ describe('ScreeningPage', () => {
       expect(safetyCard.props().mode).toEqual('edit')
     })
 
-    it('renders the screening reference', () => {
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS({
-          ...requiredScreeningAttributes,
-          reference: 'The Rocky Horror Picture Show',
-        }),
+    it('renders the screening reference in show', () => {
+      const heading = renderScreeningPage({
+        mode: 'show',
+        reference: 'The Rocky Horror Picture Show',
         loaded: true,
-      }
-      const component = shallow(<ScreeningPage {...props} mode='show'/>)
-      expect(component.find('h1').text()).toEqual('Screening #The Rocky Horror Picture Show')
+      }).find('h1')
+      expect(heading.text()).toEqual('Screening #The Rocky Horror Picture Show')
+    })
+
+    it('renders the screening reference in edit', () => {
+      const heading = renderScreeningPage({
+        mode: 'edit',
+        reference: 'The Rocky Horror Picture Show',
+        loaded: true,
+      }).find('h1')
+      expect(heading.text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
     })
 
     it('renders the referral id, if present', () => {
-      const props = {
-        ...requiredProps,
-        screening: Immutable.fromJS({
-          ...requiredScreeningAttributes,
-          reference: 'ABCDEF',
-          referral_id: '123456',
-        }),
+      const heading = renderScreeningPage({
+        mode: 'show',
+        reference: 'ABCDEF',
+        referralId: '123456',
         loaded: true,
-      }
-      const component = shallow(<ScreeningPage {...props} mode='show'/>)
-      expect(component.find('h1').text()).toEqual('Screening #ABCDEF - Referral #123456')
+      }).find('h1')
+      expect(heading.text()).toEqual('Screening #ABCDEF - Referral #123456')
     })
   })
 
@@ -224,16 +246,16 @@ describe('ScreeningPage', () => {
       beforeEach(() => {
         props = {
           ...requiredProps,
-          involvements: Immutable.fromJS([{id: 1}, {id: 3}]),
-          screening: Immutable.fromJS({
+          involvements: fromJS([{id: 1}, {id: 3}]),
+          screening: fromJS({
             ...requiredScreeningAttributes,
             report_narrative: 'this is a narrative report',
           }),
-          participants: Immutable.fromJS([
+          participants: fromJS([
             {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
             {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
           ]),
-          relationships: Immutable.fromJS([
+          relationships: fromJS([
             {id: '1', first_name: 'Melissa', last_name: 'Powers', relationships: []},
             {id: '2', first_name: 'Marshall', last_name: 'Powers', relationships: []},
           ]),
@@ -300,7 +322,7 @@ describe('ScreeningPage', () => {
     describe('is true', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({
+        screening: fromJS({
           ...requiredScreeningAttributes,
           report_narrative: 'this is a narrative report',
         }),
@@ -329,7 +351,7 @@ describe('ScreeningPage', () => {
     describe('is false', () => {
       const props = {
         ...requiredProps,
-        screening: Immutable.fromJS({
+        screening: fromJS({
           ...requiredScreeningAttributes,
           report_narrative: 'this is a narrative report',
         }),
@@ -367,7 +389,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the screening information in edit mode', () => {
-        const screening = Immutable.fromJS({
+        const screening = fromJS({
           ...requiredScreeningAttributes,
           name: 'The Rocky Horror Picture Show',
           started_at: '2016-08-13T10:00:00.000Z',
@@ -386,7 +408,7 @@ describe('ScreeningPage', () => {
       describe('participants card', () => {
         let component
         beforeEach(() => {
-          const participants = Immutable.fromJS([
+          const participants = fromJS([
             {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
             {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
           ])
