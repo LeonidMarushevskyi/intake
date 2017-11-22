@@ -57,7 +57,7 @@ namespace :spec do # rubocop:disable BlockLength
 
   desc 'Run specs in api container'
   task :api do
-    system "docker-compose exec api bash -c 'AUTHENTICATION=false bundle exec rspec #{file_list}'"
+    system "docker-compose run --rm -e AUTHENTICATION=false api bundle exec rspec #{file_list}"
   end
 
   namespace :api do
