@@ -8,10 +8,9 @@ engines:
     config:
       languages:
       - ruby
-      - javascript
   eslint:
     enabled: true
-    channel: "eslint-3"
+    channel: eslint-3
   fixme:
     enabled: true
   rubocop:
@@ -19,16 +18,20 @@ engines:
     channel: rubocop-0-48
 ratings:
   paths:
-  - Gemfile.lock
   - "**.erb"
   - "**.haml"
   - "**.rb"
   - "**.js"
   - "**.jsx"
 exclude_paths:
-- Gulpfile.js
-- karma.conf.js
+- bin/
 - config/
 - db/
+- docker/
+- karma.conf.js
+- legal/
+- lib/tasks/
+- log/
+- public/
 - spec/
 - vendor/
