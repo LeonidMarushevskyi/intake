@@ -15,7 +15,7 @@ import ScreeningInformationCardView from 'screenings/ScreeningInformationCardVie
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
 import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
-import {IndexLink, Link} from 'react-router'
+import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
@@ -117,7 +117,7 @@ export class ScreeningPage extends React.Component {
           }
           { mode === 'show' &&
             <div>
-              <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
+              <Link to='/' className='gap-right'>Home</Link>
               {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
             </div>
           }

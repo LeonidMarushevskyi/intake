@@ -232,10 +232,10 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the home and edit link', () => {
-        const homeLink = component.find({to: '/'})
-        const editLink = component.find({to: '/screenings/1/edit'})
-        expect(homeLink.html()).toContain('Home')
-        expect(editLink.html()).toContain('Edit')
+        const homeLink = component.find({children: 'Home', to: '/'})
+        const editLink = component.find({children: 'Edit', to: '/screenings/1/edit'})
+        expect(homeLink.exists()).toBe(true)
+        expect(editLink.exists()).toBe(true)
       })
 
       it('renders the screening information show card', () => {

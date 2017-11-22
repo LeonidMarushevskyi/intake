@@ -47,8 +47,8 @@ describe('ScreeningPage when release two is active', () => {
 
     it('does not render home and edit links', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
-      expect(component.find('IndexLink').length).toEqual(0)
-      expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
+      expect(component.find({children: 'Home'}).exists()).toBe(false)
+      expect(component.find({children: 'Edit'}).exists()).toBe(false)
     })
 
     it('does not render the screening information in edit mode', () => {
