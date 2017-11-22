@@ -15,10 +15,6 @@ export function jsClipboardSupported() {
   return window.clipboardData === undefined
 }
 
-export function basePath() {
-  return config().base_path
-}
-
 export function sdmPath() {
   return config().sdm_path
 }

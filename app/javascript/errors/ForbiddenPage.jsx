@@ -1,5 +1,5 @@
 import React from 'react'
-import * as IntakeConfig from 'common/config'
+import {Link} from 'react-router'
 
 const ForbiddenPage = () => (
   <div className='error-panel centered'>
@@ -10,7 +10,7 @@ const ForbiddenPage = () => (
     <div className='gap-top'>
       <span>You don&apos;t have the appropriate permissions to view this page.</span>
       <br/>
-      <a href={`/${IntakeConfig.basePath()}`}>Return to your dashboard</a>
+      <Link to='/'>Return to your dashboard</Link>
       <span>.</span>
     </div>
   </div>

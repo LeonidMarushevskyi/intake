@@ -15,7 +15,7 @@ import ScreeningInformationCardView from 'screenings/ScreeningInformationCardVie
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
 import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
-import {IndexLink, Link} from 'react-router'
+import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
@@ -111,15 +111,13 @@ export class ScreeningPage extends React.Component {
             releaseTwo &&
             <div className='row double-gap-top'>
               <div className='centered'>
-                <a href={IntakeConfig.basePath()} >
-                  <button className='btn btn-primary' href={IntakeConfig.basePath()} type='button'>Start Over</button>
-                </a>
+                <Link to='/' className='btn btn-primary'>Start Over</Link>
               </div>
             </div>
           }
           { mode === 'show' &&
             <div>
-              <IndexLink to={'/'} className='gap-right'>Home</IndexLink>
+              <Link to='/' className='gap-right'>Home</Link>
               {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
             </div>
           }

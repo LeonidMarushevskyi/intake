@@ -21,13 +21,11 @@ export const requiredProps = {
 }
 
 describe('ScreeningPage', () => {
-  const basePath = '/intake'
   const sdmPath = 'https://ca.sdmdata.org'
 
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
-    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
@@ -234,10 +232,10 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the home and edit link', () => {
-        const homeLink = component.find({to: '/'})
-        const editLink = component.find({to: '/screenings/1/edit'})
-        expect(homeLink.html()).toContain('Home')
-        expect(editLink.html()).toContain('Edit')
+        const homeLink = component.find({children: 'Home', to: '/'})
+        const editLink = component.find({children: 'Edit', to: '/screenings/1/edit'})
+        expect(homeLink.exists()).toBe(true)
+        expect(editLink.exists()).toBe(true)
       })
 
       it('renders the screening information show card', () => {

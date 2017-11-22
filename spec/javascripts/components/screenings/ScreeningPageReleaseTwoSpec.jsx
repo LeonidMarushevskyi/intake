@@ -5,12 +5,9 @@ import {shallow} from 'enzyme'
 import * as IntakeConfig from 'common/config'
 
 describe('ScreeningPage when release two is active', () => {
-  const basePath = '/base-path'
-
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(false)
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true)
-    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
   })
 
   describe('Edit mode', () => {
@@ -50,8 +47,8 @@ describe('ScreeningPage when release two is active', () => {
 
     it('does not render home and edit links', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
-      expect(component.find('IndexLink').length).toEqual(0)
-      expect(component.find({to: '/screenings/1/edit'}).length).toEqual(0)
+      expect(component.find({children: 'Home'}).exists()).toBe(false)
+      expect(component.find({children: 'Edit'}).exists()).toBe(false)
     })
 
     it('does not render the screening information in edit mode', () => {
@@ -61,10 +58,9 @@ describe('ScreeningPage when release two is active', () => {
 
     it('does render a start over button', () => {
       const component = shallow(<ScreeningPage {...requiredProps} loaded={true} />)
-      const button = component.find('button')
-      expect(button.length).toEqual(1)
-      expect(button.text()).toEqual('Start Over')
-      expect(button.props().href).toEqual(basePath)
+      const link = component.find('Link')
+      expect(link.props().children).toBe('Start Over')
+      expect(link.props().to).toBe('/')
     })
 
     describe('participants card', () => {
