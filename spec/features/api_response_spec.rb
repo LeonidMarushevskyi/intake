@@ -3,10 +3,10 @@
 require 'rails_helper'
 require 'feature/testing'
 
-feature 'api responses' do
+feature 'API call' do
   let(:screening) { create :screening, name: 'Little Shop Of Horrors' }
 
-  context '403 errors' do
+  context 'responds with unauthorized error' do
     let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
 
     around do |example|
@@ -18,7 +18,7 @@ feature 'api responses' do
       end
     end
 
-    scenario 'User is redirected to login with full callback path on API 401',
+    scenario 'redirectes user to login with full callback path',
       browser: :poltergeist do
       stub_empty_relationships_for_screening(screening)
       stub_empty_history_for_screening(screening)
@@ -42,7 +42,7 @@ feature 'api responses' do
     end
   end
 
-  scenario 'API returns a 500 and display an error message' do
+  scenario 'responds with server error' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body('I failed', status: 500))
     stub_empty_relationships_for_screening(screening)
@@ -50,7 +50,7 @@ feature 'api responses' do
     expect(page).to have_content 'Something went wrong, sorry! Please try your last action again.'
   end
 
-  scenario 'API returns a success' do
+  scenario 'returns a success' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)

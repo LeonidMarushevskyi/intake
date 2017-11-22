@@ -89,7 +89,7 @@ describe('intake config', () => {
       window.org = Object.freeze({intake: {config: {sdm_path: sdmPathString}}})
     })
 
-    it('returns the proper base path', () => {
+    it('returns the sdm path', () => {
       expect(sdmPath()).toEqual(sdmPathString)
     })
   })
