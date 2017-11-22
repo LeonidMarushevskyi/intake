@@ -11,7 +11,7 @@ const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
     <div className='card-body'>
       <div className='row'>
         <div className='col-md-12'>
-          <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
+          <label className='pull-left' htmlFor='screening_participants'>Search for clients</label>
           <Autocompleter id='screening_participants'
             onSelect={onSelect}
             isSelectable={isSelectable}

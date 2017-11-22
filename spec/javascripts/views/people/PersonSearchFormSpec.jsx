@@ -51,7 +51,6 @@ describe('PersonSearchForm', () => {
     const component = renderPersonSearchForm({})
     const searchCard = component.find('#search-card')
     const label = searchCard.children('.card-body').children('div').children('div').children('label')
-    expect(label.text()).toContain('Search for any person')
-    expect(label.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
+    expect(label.text()).toContain('Search for clients')
   })
 })
