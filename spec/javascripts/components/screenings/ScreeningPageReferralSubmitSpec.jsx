@@ -5,7 +5,6 @@ import {ScreeningPage} from 'screenings/ScreeningPage'
 import {shallow} from 'enzyme'
 
 describe('ScreeningPage when referral_submit feature is active', () => {
-  const basePath = '/intake'
   const sdmPath = 'https://ca.sdmdata.org'
 
   const requiredScreeningAttributes = {
@@ -46,7 +45,6 @@ describe('ScreeningPage when referral_submit feature is active', () => {
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.callFake(isFeatureInactiveFake)
     spyOn(IntakeConfig, 'isFeatureActive').and.callFake(isFeatureActiveFake)
-    spyOn(IntakeConfig, 'basePath').and.returnValue(basePath)
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 

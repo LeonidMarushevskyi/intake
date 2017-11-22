@@ -111,9 +111,7 @@ export class ScreeningPage extends React.Component {
             releaseTwo &&
             <div className='row double-gap-top'>
               <div className='centered'>
-                <a href={IntakeConfig.basePath()} >
-                  <button className='btn btn-primary' href={IntakeConfig.basePath()} type='button'>Start Over</button>
-                </a>
+                <Link to='/' className='btn btn-primary'>Start Over</Link>
               </div>
             </div>
           }
