@@ -217,7 +217,7 @@ feature 'Relationship card' do
         ).and_return(json_body([].to_json, status: 200))
 
         within '#search-card', text: 'Search' do
-          fill_in_autocompleter 'Search for clients', with: 'ma', skip_select: true
+          fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true
           find('.btn', text: /Create a new person/).click
           expect(page).not_to have_content('Create a new person')
         end
