@@ -4,6 +4,7 @@ import {
   getPeopleWithEditsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import {
+  getModeValueSelector,
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
 } from 'selectors/screening/personCardSelectors'
@@ -13,6 +14,7 @@ import {
 } from 'actions/personCardActions'
 
 const mapStateToProps = (state, {personId}) => ({
+  mode: getModeValueSelector(state),
   editable: !state.getIn(['screening', 'referral_id']),
   informationFlag: getPersonInformationFlagValuesSelector(state).get(personId),
   personName: getPersonNamesSelector(state).get(personId),
@@ -20,6 +22,7 @@ const mapStateToProps = (state, {personId}) => ({
 })
 const mergeProps = (stateProps, {dispatch}, ownProps) => {
   const {
+    mode,
     editable,
     informationFlag,
     personName,
@@ -27,7 +30,6 @@ const mergeProps = (stateProps, {dispatch}, ownProps) => {
   } = stateProps
   const {
     edit,
-    mode,
     personId,
     show,
     toggleMode,

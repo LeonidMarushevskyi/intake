@@ -25,11 +25,9 @@ export default class ParticipantCardView extends React.Component {
   }
 
   render() {
-    const {mode} = this.state
     const personId = this.props.participant.get('id')
     return (
       <PersonCardContainer
-        mode={mode}
         toggleMode={this.toggleMode}
         personId={personId}
         edit={

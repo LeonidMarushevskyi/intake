@@ -11,11 +11,9 @@ describe('ParticipantCardView', () => {
       last_name: 'Doe',
       sealed: true,
     })
-    const mode = 'show'
-    const props = {participant, mode}
+    const props = {participant}
     const component = shallow(<ParticipantCardView {...props} />)
     const header = component.find('Connect(PersonCard)')
-    expect(header.props().mode).toEqual(mode)
     expect(header.props().toggleMode).toEqual(jasmine.any(Function))
     expect(header.props().personId).toEqual('123')
   })

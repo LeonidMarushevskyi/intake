@@ -2,6 +2,7 @@ import {fromJS} from 'immutable'
 import {
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
+  getModeValueSelector,
 } from 'selectors/screening/personCardSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -36,6 +37,24 @@ describe('personCardSelectors', () => {
         124: 'Sealed',
         125: undefined,
       }))
+    })
+  })
+  describe('getModeValueSelector', () => {
+    describe("when screening page mode is 'edit'", () => {
+      const screeningPage = {mode: 'edit'}
+      const state = fromJS({screeningPage})
+
+      it("returns 'edit'", () => {
+        expect(getModeValueSelector(state)).toEqual('edit')
+      })
+    })
+    describe("when screening page mode is 'show'", () => {
+      const screeningPage = {mode: 'show'}
+      const state = fromJS({screeningPage})
+
+      it("returns 'show'", () => {
+        expect(getModeValueSelector(state)).toEqual('show')
+      })
     })
   })
 })
