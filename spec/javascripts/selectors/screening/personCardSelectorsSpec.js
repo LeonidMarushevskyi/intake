@@ -2,10 +2,10 @@ import {fromJS} from 'immutable'
 import {
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
-} from 'selectors/screening/peopleCardSelectors'
+} from 'selectors/screening/personCardSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
-describe('peopleCardSelectors', () => {
+describe('personCardSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getPersonNamesSelector', () => {

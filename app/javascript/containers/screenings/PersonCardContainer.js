@@ -6,7 +6,7 @@ import {
 import {
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
-} from 'selectors/screening/peopleCardSelectors'
+} from 'selectors/screening/personCardSelectors'
 import {
   savePerson,
   deletePerson,
