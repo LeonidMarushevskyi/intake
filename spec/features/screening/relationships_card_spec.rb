@@ -218,8 +218,8 @@ feature 'Relationship card' do
 
         within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true
-          find('.btn', text: /Create a new person/).click
-          expect(page).not_to have_content('Create a new person')
+          click_button 'Create a new person'
+          expect(page).not_to have_button('Create a new person')
         end
 
         within edit_participant_card_selector(new_participant.id) do

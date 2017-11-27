@@ -100,8 +100,8 @@ feature 'decision card' do
       expect(page).to have_select('Response time', selected: '3 days')
       expect(page).to have_select('Access Restrictions', selected: 'Do not restrict access')
       expect(page).to have_field('Additional information', with: 'this is why it is')
-      expect(page).to have_content('Save')
-      expect(page).to have_content('Cancel')
+      expect(page).to have_button('Save')
+      expect(page).to have_button('Cancel')
       fill_in 'Additional information', with: 'I changed my decision rationale'
       select 'Differential response', from: 'Screening decision'
       fill_in 'Service name', with: 'An arbitrary string'

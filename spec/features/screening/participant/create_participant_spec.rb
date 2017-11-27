@@ -145,8 +145,8 @@ feature 'Create participant' do
       .and_return(json_body(created_participant_unknown.to_json, status: 201))
     within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Marge'
-      find('.btn', text: /Create a new person/).click
-      expect(page).to_not have_content('Create a new person')
+      click_button 'Create a new person'
+      expect(page).to_not have_button('Create a new person')
     end
 
     expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
