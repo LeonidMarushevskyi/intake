@@ -306,8 +306,8 @@ describe('ScreeningPage', () => {
         expect(card.props().mode).toEqual('show')
       })
 
-      it('does not render the person search card', () => {
-        expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(false)
+      it('renders the person search card', () => {
+        expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
       })
 
       it('renders the submit button with a modal', () => {

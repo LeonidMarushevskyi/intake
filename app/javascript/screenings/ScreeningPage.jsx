@@ -91,7 +91,7 @@ export class ScreeningPage extends React.Component {
           }
           {releaseTwoInactive && hasErrors && <ErrorDetail errors={submitReferralErrors} />}
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
-          {mode === 'edit' && <PersonSearchFormContainer />}
+          <PersonSearchFormContainer />
           {this.props.participants.map((participant) =>
             <ParticipantCardView
               key={participant.get('id')}
