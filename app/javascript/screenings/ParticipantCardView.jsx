@@ -11,48 +11,34 @@ import PersonFormContainer from 'containers/screenings/PersonFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-export default class ParticipantCardView extends React.Component {
-  constructor() {
-    super(...arguments)
-    this.state = {mode: this.props.mode}
-    this.toggleMode = this.toggleMode.bind(this)
-  }
-
-  toggleMode() {
-    const currentMode = this.state.mode
-    const newMode = currentMode === 'show' ? 'edit' : 'show'
-    this.setState({mode: newMode})
-  }
-
-  render() {
-    const personId = this.props.participant.get('id')
-    return (
-      <PersonCardContainer
-        toggleMode={this.toggleMode}
-        personId={personId}
-        edit={
-          <div>
-            <PersonFormContainer personId={personId} />
-            <PersonDemographicsFormContainer personId={personId} />
-            <PersonRaceFormContainer personId={personId} />
-            <PersonEthnicityFormContainer personId={personId} />
-            <PersonPhoneNumbersFormContainer personId={personId} />
-            <PersonAddressesFormContainer personId={personId} />
-          </div>
-        }
-        show={
-          <div>
-            <PersonShowContainer personId={personId} />
-            <PersonPhoneNumbersContainer personId={personId} />
-            <PersonAddressesContainer personId={personId} />
-          </div>
-        }
-      />
-    )
-  }
+const ParticipantCardView = ({participant}) => {
+  const personId = participant.get('id')
+  return (
+    <PersonCardContainer
+      personId={personId}
+      edit={
+        <div>
+          <PersonFormContainer personId={personId} />
+          <PersonDemographicsFormContainer personId={personId} />
+          <PersonRaceFormContainer personId={personId} />
+          <PersonEthnicityFormContainer personId={personId} />
+          <PersonPhoneNumbersFormContainer personId={personId} />
+          <PersonAddressesFormContainer personId={personId} />
+        </div>
+      }
+      show={
+        <div>
+          <PersonShowContainer personId={personId} />
+          <PersonPhoneNumbersContainer personId={personId} />
+          <PersonAddressesContainer personId={personId} />
+        </div>
+      }
+    />
+  )
 }
 
 ParticipantCardView.propTypes = {
-  mode: PropTypes.oneOf(['edit', 'show']),
   participant: PropTypes.object.isRequired,
 }
+
+export default ParticipantCardView

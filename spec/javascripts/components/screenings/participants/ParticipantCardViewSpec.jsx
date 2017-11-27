@@ -14,16 +14,6 @@ describe('ParticipantCardView', () => {
     const props = {participant}
     const component = shallow(<ParticipantCardView {...props} />)
     const header = component.find('Connect(PersonCard)')
-    expect(header.props().toggleMode).toEqual(jasmine.any(Function))
     expect(header.props().personId).toEqual('123')
-  })
-
-  describe('#toggleMode', () => {
-    it('toggles the mode to edit', () => {
-      const component = shallow(<ParticipantCardView participant={Immutable.Map()} mode={'show'} />)
-      const instance = component.instance()
-      instance.toggleMode()
-      expect(instance.state.mode).toEqual('edit')
-    })
   })
 })
