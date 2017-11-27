@@ -1,6 +1,6 @@
-### Pivotal Story
+### Jira Story
 
-- [Name of Story NNNNN](https://www.pivotaltracker.com/story/show/NNNNN)
+- [Name of Story INT-NNN](https://osi-cwds.atlassian.net/browse/INT-NNN)
 
 ### Purpose
 

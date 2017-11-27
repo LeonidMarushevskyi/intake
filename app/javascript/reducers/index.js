@@ -8,6 +8,7 @@ import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import counties from 'reducers/systemCodes/countiesReducer'
 import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
 import crossReportForm from 'reducers/crossReportFormReducer'
+import errors from 'reducers/errorsReducer'
 import incidentInformationForm from 'reducers/incidentInformationFormReducer'
 import investigation from 'reducers/investigationReducer'
 import involvements from 'reducers/involvementsReducer'
@@ -16,7 +17,6 @@ import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import peopleForm from 'reducers/peopleFormReducer'
 import relationships from 'reducers/relationshipsReducer'
-import remoteError from 'reducers/remoteErrorReducer'
 import routing from 'reducers/routerReducer'
 import screening from 'reducers/screeningReducer'
 import screeningInformationForm from 'reducers/screeningInformationFormReducer'
@@ -37,6 +37,7 @@ const rootReducer = combineReducers({
   counties,
   countyAgencies,
   crossReportForm,
+  errors,
   incidentInformationForm,
   investigation,
   involvements,
@@ -45,7 +46,6 @@ const rootReducer = combineReducers({
   participants,
   peopleForm,
   relationships,
-  remoteError,
   routing,
   screening,
   screeningInformationForm,

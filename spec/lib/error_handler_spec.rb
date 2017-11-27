@@ -36,8 +36,10 @@ describe ErrorHandler do
 
       begin
         raise ApiError,
-          http_code: 500,
-          response_body: 'body',
+          response: OpenStruct.new(
+            status: 500,
+            body: '{"api_response_body": {"issue_details": ["one", "two", "three"]}}'
+          ),
           url: '/var/foo',
           method: :post,
           sent_attributes: { foo: 'bar' }
@@ -46,9 +48,11 @@ describe ErrorHandler do
       end
 
       standard_error_response = { error: 'api_error',
-                                  status: 'N/A',
+                                  status: 500,
                                   message: 'ApiError',
-                                  api_response_body: 'N/A',
+                                  api_response_body: {
+                                    api_response_body: { issue_details: %w[one two three] }
+                                  },
                                   url: '/var/foo',
                                   method: 'post',
                                   sent_attributes: { 'foo': 'bar' } }.as_json

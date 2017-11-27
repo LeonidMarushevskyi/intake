@@ -55,26 +55,104 @@ feature 'Submit Screening' do
     end
 
     context 'when error submitting referral' do
-      let(:error_json) { 'Unable to process JSON' }
+      let(:errors) do
+        {
+          issue_details: [
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'may not be empty',
+              property: 'screeningDecision'
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'must be a valid system code for category APV_STC',
+              property: 'approvalStatus',
+              invalid_value: 0
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'must be a valid system code for category CMM_MTHC',
+              property: 'communicationMethod'
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'must be a valid system code for category RFR_RSPC',
+              property: 'responseTime'
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'GVR_ENTC sys code is required',
+              property: 'incidentCounty.GVR_ENTC'
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'must contain at least one victim, only one reporter, and ...',
+              property: 'participants'
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'must be greater than or equal to 1',
+              property: 'id',
+              invalid_value: 0
+            },
+            {
+              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              type: 'constraint_validation',
+              user_message: 'may not be null',
+              property: 'responseTime'
+            }
+          ]
+        }
+      end
       before do
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
-        ).and_return(json_body(error_json, status: 400))
-      end
+        ).and_return(json_body(errors.to_json, status: 422))
 
-      scenario 'displays a success modal and alert with the error responseText' do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
+
         expect(
           a_request(
             :post,
             intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
           )
         ).to have_been_made
-
-        expect(page).not_to have_content '#submitModal'
+      end
+      scenario 'displays an error banner with count of errors' do
         expect(page).not_to have_content ' - Referral #'
+        expect(
+          page.find('.page-error')
+        ).to have_content(
+          '8 error(s) have been identified. Please fix them and try submitting again.'
+        )
+      end
+      scenario 'displays an error alert with details of errors' do
+        pending 'until completion of INT-35'
+        expect(page).not_to have_content ' - Referral #'
+        expect(page.find('.error-message div.alert-icon')).to have_css('i.fa-info-circle')
+        expect(
+          page.find('.error-message div.alert-text li').map(&:text)
+        ).to eq(
+          [
+            'screeningDecision may not be empty',
+            'approvalStatus must be a valid system code for category APV_STC',
+            'communicationMethod must be a valid system code for category CMM_MTHC',
+            'responseTime must be a valid system code for category RFR_RSPC',
+            'incidentCounty.GVR_ENTC GVR_ENTC sys code is required',
+            'participants must contain at least one victim, only one reporter, and ...',
+            'id must be greater than or equal to 1',
+            'responseTime may not be null'
+          ]
+        )
       end
     end
   end

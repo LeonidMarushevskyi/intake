@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 import * as systemCodesActions from 'actions/systemCodesActions'
+import {
+  getHasGenericErrorValueSelector,
+  getTotalScreeningSubmissionErrorValueSelector,
+} from 'selectors/errorsSelectors'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 
@@ -11,10 +15,10 @@ export class App extends React.Component {
     this.props.actions.fetch()
   }
   render() {
-    const hasRemoteError = this.props.remoteError && Object.keys(this.props.remoteError).length > 0
+    const {errorCount, hasError} = this.props
     return (
-      <div className={ClassNames({'page-has-remote-error': hasRemoteError})}>
-        {hasRemoteError && <PageError />}
+      <div>
+        {(hasError) && <PageError errorCount={errorCount} />}
         {this.props.children}
       </div>
     )
@@ -23,10 +27,12 @@ export class App extends React.Component {
 App.propTypes = {
   actions: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
-  remoteError: PropTypes.object,
+  errorCount: PropTypes.number,
+  hasError: PropTypes.bool,
 }
-const mapStateToProps = (state, _ownProps) => ({
-  remoteError: state.getIn(['remoteError']).toJS(),
+const mapStateToProps = (state, {errorCount}) => ({
+  errorCount: getTotalScreeningSubmissionErrorValueSelector(state),
+  hasError: getHasGenericErrorValueSelector(state) || Boolean(errorCount),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(systemCodesActions, dispatch),
