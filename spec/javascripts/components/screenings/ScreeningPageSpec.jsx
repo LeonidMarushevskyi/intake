@@ -266,9 +266,6 @@ describe('ScreeningPage', () => {
       it('renders the participants card for each participant', () => {
         const cards = component.find('ParticipantCardView')
         expect(cards.length).toEqual(2)
-        expect(cards.nodes.map((ele) => ele.props.mode)).toEqual(
-          ['show', 'show']
-        )
       })
 
       it('renders the narrative card', () => {
