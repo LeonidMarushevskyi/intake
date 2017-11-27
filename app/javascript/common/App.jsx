@@ -1,4 +1,3 @@
-import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -30,9 +29,9 @@ App.propTypes = {
   errorCount: PropTypes.number,
   hasError: PropTypes.bool,
 }
-const mapStateToProps = (state, {errorCount}) => ({
+const mapStateToProps = (state) => ({
   errorCount: getTotalScreeningSubmissionErrorValueSelector(state),
-  hasError: getHasGenericErrorValueSelector(state) || Boolean(errorCount),
+  hasError: getHasGenericErrorValueSelector(state) || Boolean(getTotalScreeningSubmissionErrorValueSelector(state)),
 })
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators(systemCodesActions, dispatch),

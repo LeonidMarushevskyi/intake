@@ -30,7 +30,7 @@ describe('App', () => {
     })
     describe('countable errors', () => {
       it('is rendered when errors count is passed', () => {
-        component = shallow(<App actions={actions} hasError={false} errorCount={15}><div/></App>)
+        component = shallow(<App actions={actions} hasError={true} errorCount={15}><div/></App>)
         expect(component.find('PageError').exists()).toEqual(true)
         expect(component.find('PageError').props().errorCount).toEqual(15)
       })
