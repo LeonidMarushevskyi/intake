@@ -61,7 +61,7 @@ feature 'error banner' do
     context 'with referral_submit' do
       let(:referral_id) { FFaker::Guid.guid }
 
-      scenario 'hide the error banner after a successful action' do
+      scenario 'hide the error banner after submit action succeeds on second try' do
         Feature.run_with_activated(:referral_submit) do
           stub_request(
             :get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id))
@@ -95,7 +95,7 @@ feature 'error banner' do
       end
     end
 
-    scenario 'hide the error banner after a successful action' do
+    scenario 'hide the error banner after save action succeeds on second try' do
       stub_request(
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id))
       ).and_return(json_body(screening.to_json, status: 200))
