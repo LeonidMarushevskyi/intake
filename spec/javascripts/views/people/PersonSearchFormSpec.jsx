@@ -2,8 +2,14 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
 import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
+import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
+  })
+
   const renderPersonSearchForm = ({...props}) => (
     shallow(<PersonSearchForm {...props}/>)
   )
@@ -47,10 +53,22 @@ describe('PersonSearchForm', () => {
     expect(component.children('.card-header').children('span').text()).toContain('Search')
   })
 
-  it('renders the search card', () => {
-    const component = renderPersonSearchForm({})
-    const searchCard = component.find('#search-card')
-    const label = searchCard.children('.card-body').children('div').children('div').children('label')
-    expect(label.text()).toContain('Search for clients')
+  describe('search card', () => {
+    it('is labeled as "search for any person" in hotline', () => {
+      const component = renderPersonSearchForm({})
+      const searchCard = component.find('#search-card')
+      const label = searchCard.children('.card-body').children('div').children('div').children('label')
+      expect(label.text()).toContain('Search for any person')
+      expect(label.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
+    })
+
+    it('is labeled as "search for clients" in snapshot', () => {
+      IntakeConfig.isFeatureInactive.and.returnValue(false)
+      IntakeConfig.isFeatureActive.and.returnValue(true)
+      const component = renderPersonSearchForm({})
+      const searchCard = component.find('#search-card')
+      const label = searchCard.children('.card-body').children('div').children('div').children('label')
+      expect(label.text()).toContain('Search for clients')
+    })
   })
 })
