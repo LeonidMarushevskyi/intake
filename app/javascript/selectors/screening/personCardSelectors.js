@@ -15,5 +15,8 @@ export const getPersonInformationFlagValuesSelector = createSelector(
     informationFlagMap.set(person.get('id'), participantFlag(person.toJS()))
   ), Map())
 )
-export const getModeValueSelector = (state) => state.getIn(['screeningPage', 'mode'])
-
+export const getModeValueSelector = (state, personId) => {
+  const screeningPage = state.get('screeningPage')
+  const mode = screeningPage.get('mode')
+  return screeningPage.getIn(['peopleCards', personId], mode)
+}

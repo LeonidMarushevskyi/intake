@@ -1,7 +1,7 @@
 import * as matchers from 'jasmine-immutable-matchers'
-import {setPageMode} from 'actions/screeningPageActions'
+import {setPageMode, setPersonCardMode} from 'actions/screeningPageActions'
 import screeningPageReducer from 'reducers/screeningPageReducer'
-import {Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 describe('screeningPageReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -10,7 +10,20 @@ describe('screeningPageReducer', () => {
     it('returns the screening page with the updated mode', () => {
       const action = setPageMode('edit')
       expect(screeningPageReducer(Map(), action)).toEqualImmutable(
-        Map({mode: 'edit'})
+        fromJS({mode: 'edit'})
+      )
+    })
+  })
+  describe('on SET_PERSON_CARD_MODE', () => {
+    it('returns the screening page with the updated person card mode', () => {
+      const personId = 'some-arbitrary-id'
+      const action = setPersonCardMode(personId, 'show')
+      const initialState = fromJS({mode: 'edit'})
+      expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+        fromJS({
+          mode: 'edit',
+          peopleCards: {'some-arbitrary-id': 'show'},
+        })
       )
     })
   })

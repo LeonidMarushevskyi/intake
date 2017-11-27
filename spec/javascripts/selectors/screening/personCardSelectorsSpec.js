@@ -40,20 +40,43 @@ describe('personCardSelectors', () => {
     })
   })
   describe('getModeValueSelector', () => {
-    describe("when screening page mode is 'edit'", () => {
-      const screeningPage = {mode: 'edit'}
+    describe('when a person id is present in screening page', () => {
+      const screeningPage = {
+        mode: 'edit',
+        peopleCards: {person_id_A: 'show'},
+      }
       const state = fromJS({screeningPage})
 
-      it("returns 'edit'", () => {
-        expect(getModeValueSelector(state)).toEqual('edit')
+      it('returns the mode stored for that person card', () => {
+        expect(getModeValueSelector(state, 'person_id_A')).toEqual('show')
       })
     })
-    describe("when screening page mode is 'show'", () => {
-      const screeningPage = {mode: 'show'}
+    describe('when a person id is not present in screening page', () => {
+      const screeningPage = {
+        mode: 'edit',
+        peopleCards: {person_id_A: 'show'},
+      }
       const state = fromJS({screeningPage})
 
-      it("returns 'show'", () => {
-        expect(getModeValueSelector(state)).toEqual('show')
+      it('returns the mode stored for the screening page', () => {
+        expect(getModeValueSelector(state, 'person_id_Z')).toEqual('edit')
+      })
+    })
+    describe('when no people card modes are stored', () => {
+      const personId = 'some_arbitrary_id'
+      describe("and mode is 'edit'", () => {
+        const screeningPage = {mode: 'edit'}
+        const state = fromJS({screeningPage})
+        it("returns 'edit'", () => {
+          expect(getModeValueSelector(state, personId)).toEqual('edit')
+        })
+      })
+      describe("and mode is 'show'", () => {
+        const screeningPage = {mode: 'show'}
+        const state = fromJS({screeningPage})
+        it("returns 'show'", () => {
+          expect(getModeValueSelector(state, personId)).toEqual('show')
+        })
       })
     })
   })
