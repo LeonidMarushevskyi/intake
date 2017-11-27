@@ -1,6 +1,7 @@
 import * as IntakeConfig from 'common/config'
 import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
+import {setPageMode} from 'actions/screeningPageActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
@@ -26,38 +27,46 @@ import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormCon
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.renderMode = this.renderMode.bind(this)
   }
 
   componentDidMount() {
-    this.props.actions.fetchScreening(this.props.params.id)
-    this.props.actions.fetchRelationships(this.props.params.id)
-    this.props.actions.fetchHistoryOfInvolvements(this.props.params.id)
-    this.props.actions.checkStaffPermission('add_sensitive_people')
-  }
+    const {
+      actions: {
+        setPageMode,
+        fetchScreening,
+        fetchRelationships,
+        fetchHistoryOfInvolvements,
+        checkStaffPermission,
+      },
+      editable,
+      params: {mode, id},
+    } = this.props
 
-  renderMode() {
-    if (!this.props.editable) {
-      return 'show'
+    if (editable) {
+      setPageMode(mode)
+    } else {
+      setPageMode('show')
     }
-    return this.props.mode
+    fetchScreening(id)
+    fetchRelationships(id)
+    fetchHistoryOfInvolvements(id)
+    checkStaffPermission('add_sensitive_people')
   }
 
   render() {
-    const {screening, editable} = this.props
-    const mode = this.renderMode()
+    const {referralId, reference, editable, mode, loaded} = this.props
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
-    if (this.props.loaded) {
+    if (loaded) {
       return (
         <div>
           {
             releaseTwoInactive &&
               <h1>
                 {mode === 'edit' && 'Edit '}
-                {`Screening #${screening.get('reference')}`}
-                {screening.get('referral_id') && ` - Referral #${screening.get('referral_id')}`}
+                {`Screening #${reference}`}
+                {referralId && ` - Referral #${referralId}`}
               </h1>
           }
           {
@@ -79,12 +88,12 @@ export class ScreeningPage extends React.Component {
               </div>
           }
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
-          {this.renderMode() === 'edit' && <PersonSearchFormContainer />}
+          {mode === 'edit' && <PersonSearchFormContainer />}
           {this.props.participants.map((participant) =>
             <ParticipantCardView
               key={participant.get('id')}
               participant={participant}
-              mode={IntakeConfig.isFeatureInactive('release_two') ? this.renderMode() : 'show'}
+              mode={IntakeConfig.isFeatureInactive('release_two') ? mode : 'show'}
             />
           )}
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
@@ -115,10 +124,10 @@ export class ScreeningPage extends React.Component {
               </div>
             </div>
           }
-          { mode === 'show' &&
+          { releaseTwoInactive && mode === 'show' &&
             <div>
               <Link to='/' className='gap-right'>Home</Link>
-              {this.props.editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
+              {editable && <Link to={`/screenings/${this.props.params.id}/edit`}>Edit</Link>}
             </div>
           }
         </div>
@@ -137,7 +146,8 @@ ScreeningPage.propTypes = {
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
-  screening: PropTypes.object.isRequired,
+  reference: PropTypes.string,
+  referralId: PropTypes.string,
 }
 
 ScreeningPage.defaultProps = {
@@ -145,19 +155,20 @@ ScreeningPage.defaultProps = {
   hasAddSensitivePerson: false,
 }
 
-export function mapStateToProps(state, ownProps) {
+export function mapStateToProps(state, _ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
+    mode: state.getIn(['screeningPage', 'mode']),
     participants: state.get('participants'),
-    screening: state.get('screening'),
-    mode: ownProps.params.mode,
+    reference: state.getIn(['screening', 'reference']),
+    referralId: state.getIn(['screening', 'referral_id']),
   }
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission})
+  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission, setPageMode})
   return {
     actions: bindActionCreators(actions, dispatch),
   }

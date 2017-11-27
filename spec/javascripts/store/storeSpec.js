@@ -40,6 +40,7 @@ describe('Store', () => {
       screening: {},
       screeningInformationForm: {},
       screeningDecisionForm: {},
+      screeningPage: {},
       screenings: [],
       staff: {},
       workerSafetyForm: {},
