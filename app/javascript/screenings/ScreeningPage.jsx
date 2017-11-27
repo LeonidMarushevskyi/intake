@@ -45,7 +45,7 @@ export class ScreeningPage extends React.Component {
     } = this.props
 
     if (editable) {
-      setPageMode(mode)
+      setPageMode(mode || 'show')
     } else {
       setPageMode('show')
     }
