@@ -17,6 +17,5 @@ export const getPersonInformationFlagValuesSelector = createSelector(
 )
 export const getModeValueSelector = (state, personId) => {
   const screeningPage = state.get('screeningPage')
-  const mode = screeningPage.get('mode')
-  return screeningPage.getIn(['peopleCards', personId], mode)
+  return screeningPage.getIn(['peopleCards', personId], 'show')
 }

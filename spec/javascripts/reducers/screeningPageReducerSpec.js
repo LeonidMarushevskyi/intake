@@ -4,6 +4,7 @@ import screeningPageReducer from 'reducers/screeningPageReducer'
 import {Map, fromJS} from 'immutable'
 import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
 import {setPageMode, setPersonCardMode} from 'actions/screeningPageActions'
+import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
 
 describe('screeningPageReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -30,6 +31,49 @@ describe('screeningPageReducer', () => {
           peopleCards: {'some-arbitrary-id': 'show'},
         })
       )
+    })
+  })
+  describe('on FETCH_SCREENING_COMPLETE', () => {
+    it('when an error occurs returns current screening page', () => {
+      const initialState = fromJS({mode: 'show'})
+      const action = fetchScreeningFailure()
+      expect(screeningPageReducer(initialState, action)).toEqualImmutable(initialState)
+    })
+    describe('on successful fetching of a screening', () => {
+      const participants = [
+        {id: 'participant_id_one'},
+        {id: 'participant_id_two'},
+      ]
+      const screening = {participants}
+      const action = fetchScreeningSuccess(screening)
+      describe("when screening page mode is 'show'", () => {
+        const initialState = fromJS({mode: 'show'})
+        it("returns screening page with each persons mode set to 'show'", () => {
+          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'show',
+              peopleCards: {
+                participant_id_one: 'show',
+                participant_id_two: 'show',
+              },
+            })
+          )
+        })
+      })
+      describe("when screening page mode is 'edit'", () => {
+        const initialState = fromJS({mode: 'edit'})
+        it("returns screening page with each persons mode set to 'edit'", () => {
+          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'edit',
+              peopleCards: {
+                participant_id_one: 'edit',
+                participant_id_two: 'edit',
+              },
+            })
+          )
+        })
+      })
     })
   })
   describe('on CREATE_PERSON_COMPLETE', () => {
