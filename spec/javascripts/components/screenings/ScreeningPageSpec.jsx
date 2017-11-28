@@ -22,6 +22,8 @@ describe('ScreeningPage', () => {
     participants = List(),
     reference,
     referralId,
+    hasErrors = false,
+    submitReferralErrors = List(),
   }) {
     const props = {
       actions,
@@ -32,6 +34,8 @@ describe('ScreeningPage', () => {
       participants,
       reference,
       referralId,
+      hasErrors,
+      submitReferralErrors,
     }
     return shallow(<ScreeningPage {...props} />)
   }
@@ -131,6 +135,33 @@ describe('ScreeningPage', () => {
   })
 
   describe('render', () => {
+    describe('with errors', () => {
+      it('renders the error detail card', () => {
+        const submitReferralErrors = ['a', 'b', 'c']
+        const component = renderScreeningPage({
+          loaded: true,
+          mode: 'edit',
+          submitReferralErrors,
+          hasErrors: true,
+        })
+        const card = component.find('ErrorDetail')
+        expect(card.exists()).toEqual(true)
+        expect(card.props().errors).toEqual(submitReferralErrors)
+      })
+    })
+    describe('without errors', () => {
+      it('does not render the error detail card', () => {
+        const submitReferralErrors = []
+        const component = renderScreeningPage({
+          loaded: true,
+          mode: 'edit',
+          submitReferralErrors,
+          hasErrors: false,
+        })
+        const card = component.find('ErrorDetail')
+        expect(card.exists()).toEqual(false)
+      })
+    })
     describe('in edit mode', () => {
       let component
       beforeEach(() => {
