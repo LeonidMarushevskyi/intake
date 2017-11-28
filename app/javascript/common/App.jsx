@@ -19,8 +19,7 @@ export class App extends React.Component {
 
   render() {
     const {errorCount, hasError} = this.props
-    const fullName = this.props.userInfo ? `${this.props.userInfo.get('first_name')} ${this.props.userInfo.get('last_name')}` : ''
-
+    const fullName = this.props.userInfo ? `${this.props.userInfo.get('first_name') || '' } ${this.props.userInfo.get('last_name') || ''}` : ''
     return (
       <div>
         <GlobalHeader profileName={fullName} />
