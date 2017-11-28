@@ -41,11 +41,11 @@ feature 'Submit Screening' do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
 
-        expect(
-          page.find('.page-error')
-        ).to_not have_content(
-          'error(s) have been identified. Please fix them and try submitting again.'
-        )
+        within '.page-error' do
+          expect(page).to_not have_content(
+            'error(s) have been identified. Please fix them and try submitting again.'
+          )
+        end
       end
 
       scenario 'does not display an error alert with details of errors' do
