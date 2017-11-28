@@ -1,8 +1,9 @@
+import * as IntakeConfig from 'common/config'
 import * as matchers from 'jasmine-immutable-matchers'
-import {setPageMode, setPersonCardMode} from 'actions/screeningPageActions'
 import screeningPageReducer from 'reducers/screeningPageReducer'
-import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
 import {Map, fromJS} from 'immutable'
+import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
+import {setPageMode, setPersonCardMode} from 'actions/screeningPageActions'
 
 describe('screeningPageReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
@@ -36,14 +37,31 @@ describe('screeningPageReducer', () => {
     const newPerson = {id: 'some-arbitrary-id'}
 
     describe('when there is no error', () => {
-      it('returns the screening page with the created person card in edit mode', () => {
-        const action = createPersonSuccess(newPerson)
-        expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-          fromJS({
-            mode: 'show',
-            peopleCards: {'some-arbitrary-id': 'edit'},
-          })
-        )
+      const action = createPersonSuccess(newPerson)
+
+      describe('when release two is not active', () => {
+        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false))
+
+        it('returns the screening page with the created person card in edit mode', () => {
+          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'show',
+              peopleCards: {'some-arbitrary-id': 'edit'},
+            })
+          )
+        })
+      })
+      describe('when release two is active', () => {
+        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true))
+
+        it('returns the screening page with the created person card in show mode', () => {
+          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'show',
+              peopleCards: {'some-arbitrary-id': 'show'},
+            })
+          )
+        })
       })
     })
     describe('when there is an error', () => {

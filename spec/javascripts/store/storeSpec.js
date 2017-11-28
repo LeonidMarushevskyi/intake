@@ -1,4 +1,5 @@
 import * as matchers from 'jasmine-immutable-matchers'
+import * as IntakeConfig from 'common/config'
 import {
   fetchScreeningSuccess,
   createScreeningSuccess,
@@ -109,6 +110,7 @@ describe('Store', () => {
     })
 
     it('handles create participant', () => {
+      spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
       const participant = {id: '2', legacy_id: '3', screening_id: '1'}
       const participants = fromJS([participant])
       const action = createPersonSuccess(participant)
