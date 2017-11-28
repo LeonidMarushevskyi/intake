@@ -37,6 +37,24 @@ feature 'Submit Screening' do
         ).and_return(json_body(screening_with_referral.to_json, status: 201))
       end
 
+      scenario 'does not display an error banner with count of errors' do
+        visit edit_screening_path(existing_screening.id)
+        click_button 'Submit'
+
+        within '.page-error' do
+          expect(page).to_not have_content(
+            'error(s) have been identified. Please fix them and try submitting again.'
+          )
+        end
+      end
+
+      scenario 'does not display an error alert with details of errors' do
+        visit edit_screening_path(existing_screening.id)
+        click_button 'Submit'
+
+        expect(page).to_not have_css('.error-message')
+      end
+
       scenario 'displays a success modal and submits a screening to the API' do
         visit edit_screening_path(existing_screening.id)
         click_button 'Submit'
@@ -55,55 +73,56 @@ feature 'Submit Screening' do
     end
 
     context 'when error submitting referral' do
+      let(:incident_id) { '0de2aea9-04f9-4fc4-bc16-75b6495839e0' }
       let(:errors) do
         {
           issue_details: [
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
               user_message: 'may not be empty',
               property: 'screeningDecision'
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
-              user_message: 'must be a valid system code for category APV_STC',
+              user_message: 'must be a valid system code for ...',
               property: 'approvalStatus',
               invalid_value: 0
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
-              user_message: 'must be a valid system code for category CMM_MTHC',
+              user_message: 'must be a valid system code for ...',
               property: 'communicationMethod'
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
-              user_message: 'must be a valid system code for category RFR_RSPC',
+              user_message: 'must be a valid system code for ...',
               property: 'responseTime'
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
-              user_message: 'GVR_ENTC sys code is required',
+              user_message: 'GVR_ENTC sys code is ...',
               property: 'incidentCounty.GVR_ENTC'
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
-              user_message: 'must contain at least one victim, only one reporter, and ...',
+              user_message: 'must contain at least one victim, ...',
               property: 'participants'
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
               user_message: 'must be greater than or equal to 1',
               property: 'id',
               invalid_value: 0
             },
             {
-              incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
+              incident_id: incident_id,
               type: 'constraint_validation',
               user_message: 'may not be null',
               property: 'responseTime'
@@ -136,21 +155,20 @@ feature 'Submit Screening' do
         )
       end
       scenario 'displays an error alert with details of errors' do
-        pending 'until completion of INT-35'
         expect(page).not_to have_content ' - Referral #'
-        expect(page.find('.error-message div.alert-icon')).to have_css('i.fa-info-circle')
+        expect(page.find('.error-message div.alert-icon')).to have_css('i.fa-warning')
         expect(
-          page.find('.error-message div.alert-text li').map(&:text)
+          page.all('.error-message div.alert-text li').map(&:text)
         ).to eq(
           [
-            'screeningDecision may not be empty',
-            'approvalStatus must be a valid system code for category APV_STC',
-            'communicationMethod must be a valid system code for category CMM_MTHC',
-            'responseTime must be a valid system code for category RFR_RSPC',
-            'incidentCounty.GVR_ENTC GVR_ENTC sys code is required',
-            'participants must contain at least one victim, only one reporter, and ...',
-            'id must be greater than or equal to 1',
-            'responseTime may not be null'
+            "screeningDecision may not be empty (Incident Id: #{incident_id})",
+            "approvalStatus must be a valid system code for ... (Incident Id: #{incident_id})",
+            "communicationMethod must be a valid system code for ... (Incident Id: #{incident_id})",
+            "responseTime must be a valid system code for ... (Incident Id: #{incident_id})",
+            "incidentCounty.GVR_ENTC GVR_ENTC sys code is ... (Incident Id: #{incident_id})",
+            "participants must contain at least one victim, ... (Incident Id: #{incident_id})",
+            "id must be greater than or equal to 1 (Incident Id: #{incident_id})",
+            "responseTime may not be null (Incident Id: #{incident_id})"
           ]
         )
       end

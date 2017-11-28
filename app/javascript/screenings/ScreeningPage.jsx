@@ -23,6 +23,8 @@ import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolv
 import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormContainer'
+import ErrorDetail from 'common/ErrorDetail'
+import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -54,7 +56,7 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const {referralId, reference, editable, mode, loaded} = this.props
+    const {referralId, reference, editable, mode, loaded, hasErrors, submitReferralErrors} = this.props
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
@@ -87,6 +89,7 @@ export class ScreeningPage extends React.Component {
                 </div>
               </div>
           }
+          {releaseTwoInactive && hasErrors && <ErrorDetail errors={submitReferralErrors} />}
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
           {mode === 'edit' && <PersonSearchFormContainer />}
           {this.props.participants.map((participant) =>
@@ -142,12 +145,14 @@ ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
+  hasErrors: PropTypes.bool,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
   participants: PropTypes.object.isRequired,
   reference: PropTypes.string,
   referralId: PropTypes.string,
+  submitReferralErrors: PropTypes.array,
 }
 
 ScreeningPage.defaultProps = {
@@ -164,6 +169,8 @@ export function mapStateToProps(state, _ownProps) {
     participants: state.get('participants'),
     reference: state.getIn(['screening', 'reference']),
     referralId: state.getIn(['screening', 'referral_id']),
+    hasErrors: Boolean(getTotalScreeningSubmissionErrorValueSelector(state)),
+    submitReferralErrors: getScreeningSubmissionErrorsSelector(state).toJS(),
   }
 }
 
