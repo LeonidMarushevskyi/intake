@@ -63,6 +63,7 @@ feature 'searching a participant in autocompleter' do
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
+        expect(page).to have_content 'Showing 1 of 1 results'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do
@@ -81,6 +82,18 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content '123 Fake St, Springfield, NY 12345'
         expect(page).to have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'
+      end
+    end
+
+    scenario 'search contains no results' do
+      stub_request(
+        :get,
+        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'No'))
+      ).and_return(json_body([].to_json, status: 200))
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
+        expect(page).to have_content 'No results were found for'
       end
     end
 

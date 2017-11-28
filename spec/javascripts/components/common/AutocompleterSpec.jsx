@@ -425,7 +425,21 @@ describe('<Autocompleter />', () => {
     it('renders the suggestions container', () => {
       const component = shallow(<Autocompleter />)
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
-      expect(shallow(container).html()).toBe('<div class="baz">foobar</div>')
+      expect(shallow(container).find('div.baz').html()).toContain('foobar')
+    })
+
+    it('renders no results were found', () => {
+      const component = shallow(<Autocompleter />)
+      component.instance().setState({value: 'Simpson', suggestions: [{footer: ''}]})
+      expect(component.html()).toContain('No results were found for &quot;Simpson&quot;')
+    })
+
+    it('renders number of results found', () => {
+      const suggestions = [{first_name: 'Bart', last_name: 'Simpson'}, {first_name: 'Lisa', last_name: 'Simpson'}, {footer: ''}]
+      const component = shallow(<Autocompleter />)
+      component.instance().setState({value: 'Simpson', suggestions: suggestions})
+      const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
+      expect(shallow(container).find('div.baz').html()).toContain('Showing 2 of 2 results for &quot;Simpson&quot;')
     })
   })
 })
