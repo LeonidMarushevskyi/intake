@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const CreateUnknownParticipant = ({saveCallback}) => (
+const CreateUnknownPerson = ({saveCallback}) => (
   <div className='col-md-12'>
     <button className='btn btn-default btn-block gap-bottom'
       aria-label='Create a new person'
@@ -13,8 +13,8 @@ const CreateUnknownParticipant = ({saveCallback}) => (
   </div>
 )
 
-CreateUnknownParticipant.propTypes = {
+CreateUnknownPerson.propTypes = {
   saveCallback: PropTypes.func.isRequired,
 }
 
-export default CreateUnknownParticipant
+export default CreateUnknownPerson
