@@ -69,7 +69,7 @@ describe('ScreeningPage when release two is active', () => {
     it('renders the participants card for each participant', () => {
       const participants = fromJS([{}, {}])
       const component = renderScreeningPage({participants, loaded: true, mode: 'edit'})
-      expect(component.find('ParticipantCardView').length).toEqual(2)
+      expect(component.find('PersonCardView').length).toEqual(2)
     })
 
     it('renders the history card', () => {

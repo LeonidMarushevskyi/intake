@@ -11,7 +11,7 @@ import PersonFormContainer from 'containers/screenings/PersonFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const ParticipantCardView = ({participant}) => {
+const PersonCardView = ({participant}) => {
   const personId = participant.get('id')
   return (
     <PersonCardContainer
@@ -37,8 +37,8 @@ const ParticipantCardView = ({participant}) => {
   )
 }
 
-ParticipantCardView.propTypes = {
+PersonCardView.propTypes = {
   participant: PropTypes.object.isRequired,
 }
 
-export default ParticipantCardView
+export default PersonCardView

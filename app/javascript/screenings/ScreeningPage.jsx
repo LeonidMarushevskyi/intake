@@ -8,7 +8,7 @@ import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import NarrativeCardView from 'screenings/NarrativeCardView'
-import ParticipantCardView from 'screenings/ParticipantCardView'
+import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
@@ -93,7 +93,7 @@ export class ScreeningPage extends React.Component {
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
           <PersonSearchFormContainer />
           {this.props.participants.map((participant) =>
-            <ParticipantCardView key={participant.get('id')} participant={participant} />
+            <PersonCardView key={participant.get('id')} participant={participant} />
           )}
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
           {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={mode}/>}

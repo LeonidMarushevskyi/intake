@@ -1,9 +1,9 @@
 import Immutable from 'immutable'
-import ParticipantCardView from 'screenings/ParticipantCardView'
+import PersonCardView from 'screenings/PersonCardView'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-describe('ParticipantCardView', () => {
+describe('PersonCardView', () => {
   it('renders the card header', () => {
     const participant = Immutable.fromJS({
       id: '123',
@@ -12,7 +12,7 @@ describe('ParticipantCardView', () => {
       sealed: true,
     })
     const props = {participant}
-    const component = shallow(<ParticipantCardView {...props} />)
+    const component = shallow(<PersonCardView {...props} />)
     const header = component.find('Connect(PersonCard)')
     expect(header.props().personId).toEqual('123')
   })

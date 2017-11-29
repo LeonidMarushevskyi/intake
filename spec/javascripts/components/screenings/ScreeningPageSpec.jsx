@@ -264,7 +264,7 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the participants card for each participant', () => {
-        const cards = component.find('ParticipantCardView')
+        const cards = component.find('PersonCardView')
         expect(cards.length).toEqual(2)
       })
 
