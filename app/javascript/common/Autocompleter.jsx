@@ -137,8 +137,21 @@ export default class Autocompleter extends React.Component {
 
   renderSuggestionsContainer(properties) {
     const children = properties.children
+    const footerSize = 1
+    const numberOfResults = this.state.suggestions.length - footerSize
+    let header
+
+    if (numberOfResults < 1) {
+      header = `No results were found for "${this.state.value}"`
+    } else {
+      header = `Showing ${numberOfResults} of ${numberOfResults} results for "${this.state.value}"`
+    }
+
     return (
       <div {...properties}>
+        <div className='react-autosuggest__suggestion'>
+          <strong>{header}</strong>
+        </div>
         {children}
       </div>
     )
