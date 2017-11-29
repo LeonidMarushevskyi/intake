@@ -40,15 +40,9 @@ export class ScreeningPage extends React.Component {
         fetchHistoryOfInvolvements,
         checkStaffPermission,
       },
-      editable,
       params: {mode, id},
     } = this.props
-
-    if (editable) {
-      setPageMode(mode || 'show')
-    } else {
-      setPageMode('show')
-    }
+    setPageMode(mode || 'show')
     fetchScreening(id)
     fetchRelationships(id)
     fetchHistoryOfInvolvements(id)

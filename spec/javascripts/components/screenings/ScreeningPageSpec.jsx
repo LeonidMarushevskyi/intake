@@ -89,16 +89,6 @@ describe('ScreeningPage', () => {
       expect(setPageMode).toHaveBeenCalledWith('show')
     })
 
-    it("sets the page mode to 'show' when url mode is 'edit' and editable is false", () => {
-      const setPageMode = jasmine.createSpy('setPageMode')
-      mountScreeningPage({
-        editable: false,
-        actions: {setPageMode},
-        params: {mode: 'edit'},
-      })
-      expect(setPageMode).toHaveBeenCalledWith('show')
-    })
-
     describe('when the screening page URL ID is present', () => {
       const id = '222'
       let fetchScreening
