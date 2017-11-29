@@ -23,7 +23,7 @@ describe('ScreeningPage', () => {
     reference,
     referralId,
     hasErrors = false,
-    submitReferralErrors = List(),
+    submitReferralErrors = [],
   }) {
     const props = {
       actions,
