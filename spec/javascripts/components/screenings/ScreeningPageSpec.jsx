@@ -1,5 +1,5 @@
 import * as IntakeConfig from 'common/config'
-import {List, Map} from 'immutable'
+import {List, fromJS} from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
@@ -245,7 +245,7 @@ describe('ScreeningPage', () => {
         component = renderScreeningPage({
           loaded: true,
           mode: 'show',
-          participants: List([Map(), Map()]),
+          participants: fromJS([{id: 'id-1'}, {id: 'id-2'}]),
           params: {id: '1'},
         })
       })

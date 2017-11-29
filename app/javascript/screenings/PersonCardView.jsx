@@ -11,34 +11,31 @@ import PersonFormContainer from 'containers/screenings/PersonFormContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const PersonCardView = ({participant}) => {
-  const personId = participant.get('id')
-  return (
-    <PersonCardContainer
-      personId={personId}
-      edit={
-        <div>
-          <PersonFormContainer personId={personId} />
-          <PersonDemographicsFormContainer personId={personId} />
-          <PersonRaceFormContainer personId={personId} />
-          <PersonEthnicityFormContainer personId={personId} />
-          <PersonPhoneNumbersFormContainer personId={personId} />
-          <PersonAddressesFormContainer personId={personId} />
-        </div>
-      }
-      show={
-        <div>
-          <PersonShowContainer personId={personId} />
-          <PersonPhoneNumbersContainer personId={personId} />
-          <PersonAddressesContainer personId={personId} />
-        </div>
-      }
-    />
-  )
-}
+const PersonCardView = ({personId}) => (
+  <PersonCardContainer
+    personId={personId}
+    edit={
+      <div>
+        <PersonFormContainer personId={personId} />
+        <PersonDemographicsFormContainer personId={personId} />
+        <PersonRaceFormContainer personId={personId} />
+        <PersonEthnicityFormContainer personId={personId} />
+        <PersonPhoneNumbersFormContainer personId={personId} />
+        <PersonAddressesFormContainer personId={personId} />
+      </div>
+    }
+    show={
+      <div>
+        <PersonShowContainer personId={personId} />
+        <PersonPhoneNumbersContainer personId={personId} />
+        <PersonAddressesContainer personId={personId} />
+      </div>
+    }
+  />
+)
 
 PersonCardView.propTypes = {
-  participant: PropTypes.object.isRequired,
+  personId: PropTypes.string.isRequired,
 }
 
 export default PersonCardView

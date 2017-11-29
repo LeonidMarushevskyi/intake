@@ -93,7 +93,7 @@ export class ScreeningPage extends React.Component {
           {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
           <PersonSearchFormContainer />
           {this.props.participants.map((participant) =>
-            <PersonCardView key={participant.get('id')} participant={participant} />
+            <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
           )}
           {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
           {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={mode}/>}

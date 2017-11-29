@@ -67,7 +67,7 @@ describe('ScreeningPage when release two is active', () => {
     })
 
     it('renders the participants card for each participant', () => {
-      const participants = fromJS([{}, {}])
+      const participants = fromJS([{id: 'id-1'}, {id: 'id-2'}])
       const component = renderScreeningPage({participants, loaded: true, mode: 'edit'})
       expect(component.find('PersonCardView').length).toEqual(2)
     })
