@@ -46,29 +46,47 @@ describe('screeningPageReducer', () => {
       ]
       const screening = {participants}
       const action = fetchScreeningSuccess(screening)
-      describe("when screening page mode is 'show'", () => {
-        const initialState = fromJS({mode: 'show'})
-        it("returns screening page with each persons mode set to 'show'", () => {
-          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-            fromJS({
-              mode: 'show',
-              peopleCards: {
-                participant_id_one: 'show',
-                participant_id_two: 'show',
-              },
-            })
-          )
+      describe('when release two is not active', () => {
+        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false))
+        describe("when screening page mode is 'show'", () => {
+          const initialState = fromJS({mode: 'show'})
+          it("returns screening page with each persons mode set to 'show'", () => {
+            expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+              fromJS({
+                mode: 'show',
+                peopleCards: {
+                  participant_id_one: 'show',
+                  participant_id_two: 'show',
+                },
+              })
+            )
+          })
+        })
+        describe("when screening page mode is 'edit'", () => {
+          const initialState = fromJS({mode: 'edit'})
+          it("returns screening page with each persons mode set to 'edit'", () => {
+            expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+              fromJS({
+                mode: 'edit',
+                peopleCards: {
+                  participant_id_one: 'edit',
+                  participant_id_two: 'edit',
+                },
+              })
+            )
+          })
         })
       })
-      describe("when screening page mode is 'edit'", () => {
+      describe('when release two is active', () => {
         const initialState = fromJS({mode: 'edit'})
-        it("returns screening page with each persons mode set to 'edit'", () => {
+        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true))
+        it("returns screening page with each persons mode set to 'show'", () => {
           expect(screeningPageReducer(initialState, action)).toEqualImmutable(
             fromJS({
               mode: 'edit',
               peopleCards: {
-                participant_id_one: 'edit',
-                participant_id_two: 'edit',
+                participant_id_one: 'show',
+                participant_id_two: 'show',
               },
             })
           )

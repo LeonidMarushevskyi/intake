@@ -11,6 +11,14 @@ function peopleCards({participants}, mode) {
   )
 }
 
+function modeOnScreeningFetch(state) {
+  if (IntakeConfig.isFeatureActive('release_two')) {
+    return 'show'
+  } else {
+    return state.get('mode')
+  }
+}
+
 function modeOnCreatePerson() {
   if (IntakeConfig.isFeatureActive('release_two')) {
     return 'show'
@@ -26,7 +34,7 @@ export default createReducer(Map(), {
     if (error) {
       return state
     } else {
-      const mode = state.get('mode')
+      const mode = modeOnScreeningFetch(state)
       return state.set('peopleCards', peopleCards(screening, mode))
     }
   },

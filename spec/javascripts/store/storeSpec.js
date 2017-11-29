@@ -55,6 +55,7 @@ describe('Store', () => {
   })
 
   it('handles fetch screening', () => {
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     const screening = fromJS({
       id: '1',
       name: 'Mock screening',
