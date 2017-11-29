@@ -11,8 +11,8 @@ function peopleCards({participants}, mode) {
   )
 }
 
-function modeOnScreeningFetch(state) {
-  if (IntakeConfig.isFeatureActive('release_two')) {
+function modeOnScreeningFetch(state, referralId) {
+  if (IntakeConfig.isFeatureActive('release_two') || referralId) {
     return 'show'
   } else {
     return state.get('mode')
@@ -34,8 +34,9 @@ export default createReducer(Map(), {
     if (error) {
       return state
     } else {
-      const mode = modeOnScreeningFetch(state)
-      return state.set('peopleCards', peopleCards(screening, mode))
+      const mode = modeOnScreeningFetch(state, screening.referral_id)
+      return state.set('mode', mode)
+        .set('peopleCards', peopleCards(screening, mode))
     }
   },
   [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {

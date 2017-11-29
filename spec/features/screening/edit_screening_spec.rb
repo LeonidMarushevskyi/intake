@@ -204,6 +204,58 @@ feature 'Edit Screening' do
     end
   end
 
+  context 'when a screening has already been submitted as a referral' do
+    let(:existing_screening) do
+      FactoryGirl.create(
+        :screening,
+        referral_id: '123ABC',
+        additional_information: 'The reasoning for this decision',
+        address: address,
+        assignee: 'Bob Loblaw',
+        communication_method: 'mail',
+        ended_at: '2016-08-22T11:00:00.000Z',
+        incident_county: 'sacramento',
+        incident_date: '2016-08-11',
+        location_type: "Child's Home",
+        name: 'The Rocky Horror Picture Show',
+        reference: 'My Bad!',
+        report_narrative: 'some narrative',
+        screening_decision: 'screen_out',
+        screening_decision_detail: 'consultation',
+        started_at: '2016-08-13T10:00:00.000Z',
+        cross_reports: [
+          { agency_type: 'DISTRICT_ATTORNEY', agency_code: '45Hvp7x00F' },
+          { agency_type: 'COUNTY_LICENSING' }
+        ]
+      )
+    end
+
+    before do
+      existing_screening.participants = Array.new(3) do
+        FactoryGirl.create :participant, screening_id: existing_screening.id
+      end
+    end
+
+    scenario 'the screening is in read only mode' do
+      stub_request(
+        :get,
+        intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json))
+      stub_empty_relationships_for_screening(existing_screening)
+      stub_empty_history_for_screening(existing_screening)
+
+      visit edit_screening_path(id: existing_screening.id)
+      expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
+      expect(page).to_not have_css('#search-card', text: 'Search')
+      expect(page).to_not have_css('.card.edit')
+      expect(page).not_to have_button 'Submit'
+      expect(page).not_to have_link 'Edit'
+      expect(page).not_to have_link 'Save'
+      expect(page).not_to have_link 'Cancel'
+      expect(page).not_to have_selector '.delete-button'
+    end
+  end
+
   context 'when release two is enabled' do
     around do |example|
       Feature.run_with_activated(:release_two) do

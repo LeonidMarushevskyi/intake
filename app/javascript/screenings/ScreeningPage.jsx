@@ -57,6 +57,10 @@ export class ScreeningPage extends React.Component {
 
   render() {
     const {referralId, reference, editable, mode, loaded, hasErrors, submitReferralErrors} = this.props
+    // TODO: Remove  cardStateMode once all the card modes in the store. Currently cardStateMode is required
+    // since existing cards that keep mode in state will not allow mode to change from the initial value passed
+    // from the screening.
+    const cardStateMode = editable ? mode : 'show'
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
@@ -90,19 +94,19 @@ export class ScreeningPage extends React.Component {
               </div>
           }
           {releaseTwoInactive && hasErrors && <ErrorDetail errors={submitReferralErrors} />}
-          {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={mode} />}
-          <PersonSearchFormContainer />
+          {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={cardStateMode} />}
+          {editable && <PersonSearchFormContainer />}
           {this.props.participants.map((participant) =>
             <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
           )}
-          {releaseTwoInactive && <NarrativeCardView editable={editable} mode={mode} />}
-          {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={mode}/>}
-          {releaseTwoInactive && <AllegationsCardView mode={mode} />}
+          {releaseTwoInactive && <NarrativeCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={cardStateMode}/>}
+          {releaseTwoInactive && <AllegationsCardView mode={cardStateMode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}
-          {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={mode} />}
+          {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={cardStateMode} />}
           <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
-          {releaseTwoInactive && <CrossReportCardView editable={editable} mode={mode} />}
-          {releaseTwoInactive && <DecisionCardView mode={mode}/>}
+          {releaseTwoInactive && <CrossReportCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive && <DecisionCardView mode={cardStateMode}/>}
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
