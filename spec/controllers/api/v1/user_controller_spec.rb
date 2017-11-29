@@ -19,11 +19,11 @@ describe Api::V1::UserController do
     end
   end
 
-  describe 'when the information from the user is not on the session, return not available' do
+  describe 'when the information from the user is not on the session, return empty json' do
     it 'returns nil' do
       process :user_info, method: :get, session: nil
       expect(response.status).to eq(200)
-      expect(response.body).to eq({ first_name: 'Not', last_name: 'Available' }.to_json)
+      expect(response.body).to eq({}.to_json)
     end
   end
 end

@@ -5,10 +5,8 @@ module Api
   module V1
     class UserController < ApiController # :nodoc:
       def user_info
-        user_payload = { first_name: 'Not', last_name: 'Available' }
-
+        user_payload = {}
         user_payload = session[:user_details] if session[:user_details]
-
         render json: user_payload, status: 200
       end
     end
