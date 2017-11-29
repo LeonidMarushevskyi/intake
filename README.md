@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/ca-cwds/intake/badges/gpa.svg)](https://codeclimate.com/github/ca-cwds/intake)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7bf605e7ecb5f268441e/maintainability)](https://codeclimate.com/github/ca-cwds/intake/maintainability)
 [![Build Status](https://ci.mycasebook.org/buildStatus/icon?job=intake(CI))](https://ci.mycasebook.org/job/intake(CI)/)
 
 # README
