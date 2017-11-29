@@ -5,11 +5,13 @@ import {
   getHasGenericErrorValueSelector,
   getTotalScreeningSubmissionErrorValueSelector,
 } from 'selectors/errorsSelectors'
+import {getUserNameSelector} from 'selectors/userInfoSelectors'
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
 import {fetch as fetchUserInfoAction} from 'actions/userInfoActions'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 import {GlobalHeader} from 'react-wood-duck'
+import userNameFormatter from 'utils/userNameFormatter'
 
 export class App extends React.Component {
   componentDidMount() {
@@ -18,8 +20,7 @@ export class App extends React.Component {
   }
 
   render() {
-    const {errorCount, hasError} = this.props
-    const fullName = this.props.userInfo ? `${this.props.userInfo.get('first_name') || '' } ${this.props.userInfo.get('last_name') || ''}` : ''
+    const {errorCount, hasError, fullName} = this.props
     return (
       <div>
         <GlobalHeader profileName={fullName} />
@@ -36,13 +37,13 @@ App.propTypes = {
   actions: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
   errorCount: PropTypes.number,
+  fullName: PropTypes.string,
   hasError: PropTypes.bool,
-  userInfo: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
   errorCount: getTotalScreeningSubmissionErrorValueSelector(state),
   hasError: getHasGenericErrorValueSelector(state) || Boolean(getTotalScreeningSubmissionErrorValueSelector(state)),
-  userInfo: state.get('userInfo'),
+  fullName: userNameFormatter(getUserNameSelector(state)),
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
