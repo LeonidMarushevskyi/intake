@@ -1,5 +1,6 @@
 import {takeEvery, put, call} from 'redux-saga/effects'
-import {get} from 'utils/http'
+import {replace} from 'react-router-redux'
+import {STATUS_CODES, get} from 'utils/http'
 import {
   fetchSuccess,
   fetchFailure,
@@ -12,7 +13,15 @@ export function* fetchContact({payload: {investigation_id, id}}) {
       get, `/api/v1/investigations/${investigation_id}/contacts/${id}`)
     yield put(fetchSuccess(investigation_id, contact))
   } catch (error) {
-    yield put(fetchFailure(error.responseJSON))
+    switch (error.status) {
+      case STATUS_CODES.notFound: {
+        yield put(replace('/notFound'))
+        break
+      }
+      default: {
+        yield put(fetchFailure(error.responseJSON))
+      }
+    }
   }
 }
 export function* fetchContactSaga() {

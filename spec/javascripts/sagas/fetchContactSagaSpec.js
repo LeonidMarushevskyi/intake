@@ -8,6 +8,7 @@ import {
   fetchSuccess,
   fetchFailure,
 } from 'actions/contactActions'
+import {replace} from 'react-router-redux'
 
 describe('fetchContactSaga', () => {
   it('creates contact on FETCH_CONTACT', () => {
@@ -32,14 +33,25 @@ describe('fetchContact', () => {
     )
   })
 
-  it('puts errors when errors are thrown', () => {
-    const error = {responseJSON: 'some error'}
-    const gen = fetchContact(action)
-    expect(gen.next().value).toEqual(
-      call(get, '/api/v1/investigations/123/contacts/456')
-    )
-    expect(gen.throw(error).value).toEqual(
-      put(fetchFailure('some error'))
-    )
+  describe('when unsuccessful', () => {
+    it('puts errors', () => {
+      const saga = fetchContact(action)
+      const error = {responseJSON: 'some error'}
+      expect(saga.next().value).toEqual(
+        call(get, '/api/v1/investigations/123/contacts/456')
+      )
+      expect(saga.throw(error).value).toEqual(
+        put(fetchFailure('some error'))
+      )
+    })
+
+    it('redirects to not found page if error is 404', () => {
+      const saga = fetchContact(action)
+      const error = {responseJSON: 'notFound', status: 404}
+      expect(saga.next().value).toEqual(
+        call(get, '/api/v1/investigations/123/contacts/456')
+      )
+      expect(saga.throw(error).value).toEqual(put(replace('/notFound')))
+    })
   })
 })
