@@ -28,6 +28,19 @@ feature 'error pages' do
     end
   end
 
+  context 'screening does not exist' do
+    scenario 'renders not found error page' do
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
+        .and_return(json_body('Screening is not found!!', status: 404))
+      visit edit_screening_path(id: 1)
+      expect(page).to have_text('Sorry, this is not the page you want.')
+      expect(page).to have_text(
+        "It may have been deleted or doesn't exist. Please check the address or"
+      )
+      expect(page).to have_link('return to your dashboard', href: '/')
+    end
+  end
+
   context 'when user attempts to access a screening created by another' do
     scenario 'renders 403 page' do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))

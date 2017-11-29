@@ -25,6 +25,10 @@ export function* fetchScreening({payload: {id}}) {
         yield put(replace('/forbidden'))
         break
       }
+      case STATUS_CODES.notFound: {
+        yield put(replace('/notFound'))
+        break
+      }
       default: {
         yield put(fetchScreeningFailure(error.responseJSON))
       }
