@@ -8,6 +8,7 @@ import {
   fetchSuccess,
   fetchFailure,
 } from 'actions/investigationActions'
+import {replace} from 'react-router-redux'
 
 describe('fetchInvestigationSaga', () => {
   it('loads the investigation on FETCH_INVESTIGATION', () => {
@@ -27,10 +28,19 @@ describe('loadInvestigation', () => {
     expect(saga.next(investigation).value).toEqual(put(fetchSuccess(investigation)))
   })
 
-  it('puts errors when errors are thrown', () => {
-    const error = {responseJSON: 'some error'}
-    const saga = loadInvestigation(action)
-    expect(saga.next().value).toEqual(call(get, '/api/v1/investigations/123'))
-    expect(saga.throw(error).value).toEqual(put(fetchFailure('some error')))
+  describe('when unsuccessful', () => {
+    it('puts errors', () => {
+      const saga = loadInvestigation(action)
+      const error = {responseJSON: 'some error'}
+      expect(saga.next().value).toEqual(call(get, '/api/v1/investigations/123'))
+      expect(saga.throw(error).value).toEqual(put(fetchFailure('some error')))
+    })
+
+    it('redirects to not found page if error is 404', () => {
+      const saga = loadInvestigation(action)
+      const error = {responseJSON: 'notFound', status: 404}
+      expect(saga.next().value).toEqual(call(get, '/api/v1/investigations/123'))
+      expect(saga.throw(error).value).toEqual(put(replace('/notFound')))
+    })
   })
 })
