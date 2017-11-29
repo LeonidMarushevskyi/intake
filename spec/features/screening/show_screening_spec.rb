@@ -97,7 +97,7 @@ feature 'Show Screening' do
     end
 
     within '#worker-safety-card', text: 'Worker Safety' do
-      expect(page).to have_content('Edit')
+      expect(page).to have_link('Edit')
       expect(page).to have_content('Worker safety alerts')
       expect(page).to have_content('Additional safety information')
     end

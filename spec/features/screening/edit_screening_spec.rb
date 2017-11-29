@@ -66,8 +66,8 @@ feature 'Edit Screening' do
         expect(page).to have_field('Screening Start Date/Time', with: '08/13/2016 3:00 AM')
         expect(page).to have_field('Screening End Date/Time', with: '08/13/2016 4:00 AM')
         expect(page).to have_field('Communication Method', with: 'phone')
-        expect(page).to have_content('Save')
-        expect(page).to have_content('Cancel')
+        expect(page).to have_button('Save')
+        expect(page).to have_button('Cancel')
       end
 
       within '#narrative-card.edit', text: 'Narrative' do
@@ -82,8 +82,8 @@ feature 'Edit Screening' do
         expect(page).to have_field('City', with: 'Faketown')
         expect(page).to have_field('State', with: 'DE')
         expect(page).to have_field('Zip', with: '20134')
-        expect(page).to have_content('Save')
-        expect(page).to have_content('Cancel')
+        expect(page).to have_button('Save')
+        expect(page).to have_button('Cancel')
       end
 
       within '.card.edit', text: 'Allegations' do
@@ -99,8 +99,8 @@ feature 'Edit Screening' do
         expect(page).to have_field(
           'Additional safety information', with: existing_screening.safety_information
         )
-        expect(page).to have_content('Save')
-        expect(page).to have_content('Cancel')
+        expect(page).to have_button('Save')
+        expect(page).to have_button('Cancel')
         remove_react_select_option('Worker safety alerts', existing_screening.safety_alerts.first)
         expect(page).to have_no_content(existing_screening.safety_alerts.first)
       end
@@ -236,7 +236,7 @@ feature 'Edit Screening' do
       expect(page).to_not have_css('.card', text: 'Cross Report')
       expect(page).to_not have_css('.card', text: 'Decision')
 
-      expect(page).to have_content 'Start Over'
+      expect(page).to have_link('Start Over')
       click_link 'Start Over'
       expect(page.current_url).to have_content(root_path)
     end

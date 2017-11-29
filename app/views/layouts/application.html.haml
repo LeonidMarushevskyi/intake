@@ -3,7 +3,7 @@
   %head
     = render 'layouts/head'
   %body
-    .container
+    .container-fluid.no-pad
       - Feature.with(:release_one) do
         #app-release-one= yield
       - Feature.without(:release_one) do
