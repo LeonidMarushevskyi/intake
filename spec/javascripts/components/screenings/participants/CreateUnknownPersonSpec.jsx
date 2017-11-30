@@ -1,15 +1,15 @@
-import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
+import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-describe('CreateUnknownParticipant', () => {
+describe('CreateUnknownPerson', () => {
   let component
   let saveCallback
 
   beforeEach(() => {
     saveCallback = jasmine.createSpy('saveCallback')
     component = shallow(
-      <CreateUnknownParticipant
+      <CreateUnknownPerson
         saveCallback={saveCallback}
       />
     )

@@ -66,19 +66,10 @@ describe('ScreeningPage when release two is active', () => {
       expect(link.props().to).toBe('/')
     })
 
-    it('renders the participants card for each participant in show mode', () => {
-      const participants = fromJS([
-        {id: '1', first_name: 'Melissa', last_name: 'Powers', roles: []},
-        {id: '2', first_name: 'Marshall', last_name: 'Powers', roles: []},
-      ])
-      const component = renderScreeningPage({
-        participants,
-        loaded: true,
-      })
-      expect(component.find('ParticipantCardView').length).toEqual(2)
-      expect(component.find('ParticipantCardView').nodes.every(
-        (ele) => ele.props.mode === 'show')
-      ).toEqual(true)
+    it('renders the participants card for each participant', () => {
+      const participants = fromJS([{id: 'id-1'}, {id: 'id-2'}])
+      const component = renderScreeningPage({participants, loaded: true, mode: 'edit'})
+      expect(component.find('PersonCardView').length).toEqual(2)
     })
 
     it('renders the history card', () => {

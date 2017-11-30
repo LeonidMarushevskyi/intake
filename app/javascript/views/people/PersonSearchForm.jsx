@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Autocompleter from 'common/Autocompleter'
-import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
+import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
 import * as IntakeConfig from 'common/config'
 
 const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
@@ -23,7 +23,7 @@ const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
           <Autocompleter id='screening_participants'
             onSelect={onSelect}
             isSelectable={isSelectable}
-            footer={canCreateNewPerson && <CreateUnknownParticipant saveCallback={onSelect}/>}
+            footer={canCreateNewPerson && <CreateUnknownPerson saveCallback={onSelect}/>}
           />
         </div>
       </div>

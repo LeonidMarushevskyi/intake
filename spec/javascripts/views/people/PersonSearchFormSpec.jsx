@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
-import CreateUnknownParticipant from 'screenings/CreateUnknownParticipant'
+import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
 import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
@@ -39,7 +39,7 @@ describe('PersonSearchForm', () => {
     const onSelect = () => {}
     const component = renderPersonSearchForm({canCreateNewPerson: true, onSelect})
     const autocompleter = component.find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(<CreateUnknownParticipant saveCallback={onSelect}/>)
+    expect(autocompleter.props().footer).toEqual(<CreateUnknownPerson saveCallback={onSelect}/>)
   })
 
   it('does not pass a footer if we cannot create new people', () => {

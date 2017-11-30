@@ -1,18 +1,16 @@
 import {connect} from 'react-redux'
 import PersonCard from 'views/people/PersonCard'
+import {getPeopleWithEditsSelector} from 'selectors/screening/peopleFormSelectors'
 import {
-  getPeopleWithEditsSelector,
-} from 'selectors/screening/peopleFormSelectors'
-import {
+  getModeValueSelector,
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
-} from 'selectors/screening/peopleCardSelectors'
-import {
-  savePerson,
-  deletePerson,
-} from 'actions/personCardActions'
+} from 'selectors/screening/personCardSelectors'
+import {savePerson, deletePerson} from 'actions/personCardActions'
+import {setPersonCardMode} from 'actions/screeningPageActions'
 
 const mapStateToProps = (state, {personId}) => ({
+  mode: getModeValueSelector(state, personId),
   editable: !state.getIn(['screening', 'referral_id']),
   informationFlag: getPersonInformationFlagValuesSelector(state).get(personId),
   personName: getPersonNamesSelector(state).get(personId),
@@ -20,6 +18,7 @@ const mapStateToProps = (state, {personId}) => ({
 })
 const mergeProps = (stateProps, {dispatch}, ownProps) => {
   const {
+    mode,
     editable,
     informationFlag,
     personName,
@@ -27,24 +26,16 @@ const mergeProps = (stateProps, {dispatch}, ownProps) => {
   } = stateProps
   const {
     edit,
-    mode,
     personId,
     show,
-    toggleMode,
   } = ownProps
 
-  const onCancel = () => {
-    toggleMode()
-  }
-  const onDelete = () => {
-    dispatch(deletePerson(personId))
-  }
-  const onEdit = () => {
-    toggleMode()
-  }
+  const onCancel = () => dispatch(setPersonCardMode(personId, 'show'))
+  const onDelete = () => dispatch(deletePerson(personId))
+  const onEdit = () => dispatch(setPersonCardMode(personId, 'edit'))
   const onSave = () => {
     dispatch(savePerson(personWithEdits))
-    toggleMode()
+    dispatch(setPersonCardMode(personId, 'show'))
   }
 
   return {

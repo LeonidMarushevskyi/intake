@@ -179,10 +179,12 @@ feature 'Show Screening' do
 
       visit screening_path(id: existing_screening.id)
       expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
-      expect(page).not_to have_content 'Submit'
-      expect(page).not_to have_content 'Edit'
-      expect(page).not_to have_content 'Save'
-      expect(page).not_to have_content 'Cancel'
+      expect(page).to_not have_css('#search-card', text: 'Search')
+      expect(page).to_not have_css('.card.edit')
+      expect(page).not_to have_button 'Submit'
+      expect(page).not_to have_link 'Edit'
+      expect(page).not_to have_link 'Save'
+      expect(page).not_to have_link 'Cancel'
       expect(page).not_to have_selector '.delete-button'
     end
   end

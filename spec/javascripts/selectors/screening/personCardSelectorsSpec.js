@@ -2,10 +2,11 @@ import {fromJS} from 'immutable'
 import {
   getPersonNamesSelector,
   getPersonInformationFlagValuesSelector,
-} from 'selectors/screening/peopleCardSelectors'
+  getModeValueSelector,
+} from 'selectors/screening/personCardSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
-describe('peopleCardSelectors', () => {
+describe('personCardSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
   describe('getPersonNamesSelector', () => {
@@ -36,6 +37,30 @@ describe('peopleCardSelectors', () => {
         124: 'Sealed',
         125: undefined,
       }))
+    })
+  })
+  describe('getModeValueSelector', () => {
+    const screeningPage = {
+      mode: 'edit',
+      peopleCards: {person_id_A: 'show'},
+    }
+    const state = fromJS({screeningPage})
+    describe('when a person id is present in screening page', () => {
+      it('returns the mode for that person card', () => {
+        expect(getModeValueSelector(state, 'person_id_A')).toEqual('show')
+      })
+    })
+    describe('when a person id is not present in screening page', () => {
+      it("returns 'show' by default", () => {
+        expect(getModeValueSelector(state, 'person_id_Z')).toEqual('show')
+      })
+    })
+    describe('when no people card modes are stored', () => {
+      const screeningPage = {mode: 'edit'}
+      const state = fromJS({screeningPage})
+      it("returns 'show' by default", () => {
+        expect(getModeValueSelector(state, 'person_id_Z')).toEqual('show')
+      })
     })
   })
 })

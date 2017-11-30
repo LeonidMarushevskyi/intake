@@ -1,5 +1,5 @@
 import * as IntakeConfig from 'common/config'
-import {List, Map} from 'immutable'
+import {List, fromJS} from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
@@ -23,7 +23,7 @@ describe('ScreeningPage', () => {
     reference,
     referralId,
     hasErrors = false,
-    submitReferralErrors = List(),
+    submitReferralErrors = [],
   }) {
     const props = {
       actions,
@@ -85,16 +85,6 @@ describe('ScreeningPage', () => {
         editable: true,
         actions: {setPageMode},
         params: {mode: 'show'},
-      })
-      expect(setPageMode).toHaveBeenCalledWith('show')
-    })
-
-    it("sets the page mode to 'show' when url mode is 'edit' and editable is false", () => {
-      const setPageMode = jasmine.createSpy('setPageMode')
-      mountScreeningPage({
-        editable: false,
-        actions: {setPageMode},
-        params: {mode: 'edit'},
       })
       expect(setPageMode).toHaveBeenCalledWith('show')
     })
@@ -245,7 +235,7 @@ describe('ScreeningPage', () => {
         component = renderScreeningPage({
           loaded: true,
           mode: 'show',
-          participants: List([Map(), Map()]),
+          participants: fromJS([{id: 'id-1'}, {id: 'id-2'}]),
           params: {id: '1'},
         })
       })
@@ -264,11 +254,8 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the participants card for each participant', () => {
-        const cards = component.find('ParticipantCardView')
+        const cards = component.find('PersonCardView')
         expect(cards.length).toEqual(2)
-        expect(cards.nodes.map((ele) => ele.props.mode)).toEqual(
-          ['show', 'show']
-        )
       })
 
       it('renders the narrative card', () => {
@@ -306,8 +293,8 @@ describe('ScreeningPage', () => {
         expect(card.props().mode).toEqual('show')
       })
 
-      it('does not render the person search card', () => {
-        expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(false)
+      it('renders the person search card', () => {
+        expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
       })
 
       it('renders the submit button with a modal', () => {

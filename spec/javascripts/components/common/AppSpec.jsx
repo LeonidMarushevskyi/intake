@@ -7,7 +7,7 @@ describe('App', () => {
     return mount(<App actions={{fetchSystemCodesAction, fetchUserInfoAction}}><div/></App>)
   }
 
-  function renderApp({actions, hasError = null, errorCount = null}) {
+  function renderApp({actions = {}, hasError = null, errorCount = null}) {
     return shallow(<App actions={actions} hasError={hasError} errorCount={errorCount} ><div/></App>)
   }
 
