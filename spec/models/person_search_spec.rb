@@ -18,6 +18,7 @@ describe PersonSearch do
     it 'returns the attributes of a person as a hash' do
       attributes = {
         id: '1',
+        legacy_id: '11',
         first_name: 'Homer',
         middle_name: 'Jay',
         last_name: 'Simpson',
@@ -63,6 +64,7 @@ describe PersonSearch do
       }
       expect(described_class.new(attributes).as_json).to eq(
         'id' => '1',
+        'legacy_id' => '11',
         'first_name' => 'Homer',
         'middle_name' => 'Jay',
         'last_name' => 'Simpson',
