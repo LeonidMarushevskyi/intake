@@ -4,6 +4,64 @@ require 'rails_helper'
 require 'spec_helper'
 require 'feature/testing'
 feature 'searching a participant in autocompleter' do
+  def build_marge_response_from_person(person)
+    sealed_and_sensitive = 'N'
+    sealed_and_sensitive = 'S' if person.sensitive
+    sealed_and_sensitive = 'R' if person.sealed
+
+    {
+      hits: {
+        hits: [{
+          _source: {
+            id: person.id,
+            legacy_source_table: 'CLIENT_T',
+            first_name: person.first_name,
+            gender: person.gender,
+            last_name: person.last_name,
+            middle_name: person.middle_name,
+            name_suffix: person.name_suffix,
+            ssn: person.ssn,
+            phone_numbers: [{ 'number' => phone_number.number, 'type' => phone_number.type }],
+            languages: [
+              { name: 'French', primary: true },
+              { name: 'Italian' }
+            ],
+            addresses: [{
+              'legacy_id' => person.addresses.first.legacy_id,
+              'legacy_source_table' => person.addresses.first.legacy_source_table,
+              'street_number' => 123,
+              'street_name' => 'Fake St',
+              'state_code' => 'NY',
+              city: 'Springfield',
+              zip: '12345',
+              'type' => 'Work'
+            }],
+            date_of_birth: date_of_birth.to_s(:db),
+            legacy_descriptor: {
+              legacy_last_updated: person.legacy_descriptor.legacy_last_updated,
+              legacy_id: person.legacy_descriptor.legacy_id,
+              legacy_ui_id: person.legacy_descriptor.legacy_ui_id,
+              legacy_table_name: person.legacy_descriptor.legacy_table_name,
+              legacy_table_description: person.legacy_descriptor.legacy_table_description
+            },
+            race_ethnicity: {
+              hispanic_origin_code: 'Y',
+              race_codes: [
+                { description: 'White - European*' },
+                { description: 'Alaskan Native*' }
+              ],
+              hispanic_codes: [
+                { description: 'Central American' }
+              ],
+              hispanic_unable_to_determine_code: ''
+            },
+            sensitivity_indicator: sealed_and_sensitive
+          }
+        }]
+      }
+    }
+  end
+
   let(:existing_screening) { FactoryGirl.create(:screening) }
   let(:date_of_birth) { 15.years.ago.to_date }
   let(:address) do
@@ -34,6 +92,7 @@ feature 'searching a participant in autocompleter' do
       last_name: 'Simpson',
       ssn: '123231234',
       languages: %w[French Italian],
+      legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
       addresses: [address],
       phone_numbers: [phone_number],
       races: [
@@ -44,6 +103,10 @@ feature 'searching a participant in autocompleter' do
       sensitive: true,
       sealed: false
     )
+  end
+
+  let(:marge_response) do
+    build_marge_response_from_person(person)
   end
   before do
     stub_request(
@@ -56,10 +119,8 @@ feature 'searching a participant in autocompleter' do
 
   context 'search for a person' do
     scenario 'search result contains person information' do
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([person].to_json, status: 200))
+      built_response = build_marge_response_from_person(person)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -86,10 +147,7 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'search contains no results' do
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'No'))
-      ).and_return(json_body([].to_json, status: 200))
+      stub_person_search('No', [].to_json)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
@@ -101,12 +159,12 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
+        addresses: [address],
+        legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
         ssn: '123456789'
       )
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([marge].to_json, status: 200))
+      built_response = build_marge_response_from_person(marge)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -121,12 +179,11 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
+        addresses: [address],
         legacy_descriptor: { legacy_ui_id: '123-456-789', legacy_table_description: 'Client' }
       )
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([marge].to_json, status: 200))
+      built_response = build_marge_response_from_person(marge)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -138,11 +195,7 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person without phone_numbers' do
-      person_with_out_phone_numbers = person.as_json.except('phone_numbers')
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([person_with_out_phone_numbers].to_json, status: 200))
+      stub_person_search('Ma', marge_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -154,11 +207,7 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person without addresses' do
-      person_with_out_addresses = person.as_json.except('addresses')
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([person_with_out_addresses].to_json, status: 200))
+      stub_person_search('Ma', marge_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -173,13 +222,13 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
+        addresses: [address],
+        legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
         sensitive: false,
         sealed: false
       )
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([marge].to_json, status: 200))
+      built_response = build_marge_response_from_person(marge)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -195,13 +244,13 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
+        addresses: [address],
+        legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
         sensitive: true,
         sealed: false
       )
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([marge].to_json, status: 200))
+      built_response = build_marge_response_from_person(marge)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -217,13 +266,13 @@ feature 'searching a participant in autocompleter' do
       marge = FactoryGirl.create(
         :person_search,
         first_name: 'Marge',
+        addresses: [address],
+        legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
         sensitive: false,
         sealed: true
       )
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'Ma'))
-      ).and_return(json_body([marge].to_json, status: 200))
+      built_response = build_marge_response_from_person(marge)
+      stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
