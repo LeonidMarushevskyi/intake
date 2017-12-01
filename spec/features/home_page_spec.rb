@@ -34,23 +34,20 @@ feature 'home page' do
     end
 
     scenario 'displays search bar' do
-      stub_request(
-        :post,
-        dora_api_url(Rails.application.routes.url_helpers.dora_people_path)
-      ).to_return(json_body(dora_response.to_json, status: 200))
+      stub_person_search('Marge', dora_response)
 
       visit root_path
 
       expect(page).to_not have_link 'Start Screening'
 
-      fill_in_autocompleter 'People', with: 'Marge', split: true
+      fill_in_autocompleter 'People', with: 'Marge'
 
       expect(
         a_request(
           :post,
           dora_api_url(Rails.application.routes.url_helpers.dora_people_path)
         )
-      ).to have_been_made.times(4)
+      ).to have_been_made.times(1)
     end
   end
 
