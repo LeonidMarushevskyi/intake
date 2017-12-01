@@ -103,14 +103,14 @@ module Api
         user_details = session[:user_details]
         return nil unless user_details
 
-        middle_initial = user_details['middle_initial']
-
-        assignee_name = user_details.first_name.dup
-        assignee_name << " #{middle_initial}." unless middle_initial.blank?
-        assignee_name << " #{user_details.last_name}"
-        assignee_name << " - #{user_details.county}"
-
-        assignee_name.strip
+        middle_initial = user_details.middle_initial
+        assignee_details = [
+          user_details.try(:first_name),
+          ("#{middle_initial}." unless middle_initial.blank?),
+          user_details.try(:last_name),
+          ("- #{user_details.county}" if user_details.county)
+        ]
+        assignee_details.join(' ').gsub(/\s+/, ' ').strip
       end
     end
   end
