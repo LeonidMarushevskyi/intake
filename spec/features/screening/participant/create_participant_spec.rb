@@ -72,7 +72,7 @@ feature 'Create participant' do
       phone_numbers: [marge_phone_number],
       races: [
         { race: 'White', race_detail: 'European' },
-        { race: 'American Indian or Alaska Native' }
+        { race: 'American Indian or Alaska Native', race_detail: 'Alaska Native' }
       ],
       ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: ['Central American'] }
     )
@@ -93,35 +93,137 @@ feature 'Create participant' do
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
-        { race: 'Asian' },
+        { race: 'Asian', race_detail: 'Other Asian' },
         { race: 'White' },
         { race: 'White', race_detail: 'Romanian' },
         { race: 'Asian', race_detail: 'Hmong' },
         { race: 'Asian', race_detail: 'Chinese' },
-        { race: 'American Indian or Alaska Native' }
+        { race: 'American Indian or Alaska Native', race_detail: 'Alaska Native' }
       ],
       ethnicity: { hispanic_latino_origin: 'Yes', ethnicity_detail: %w[Hispanic Mexican] }
     )
+  end
+
+  let(:marge_response) do
+    {
+      hits: {
+        hits: [{
+          _source: {
+            id: marge.id,
+            legacy_source_table: 'CLIENT_T',
+            first_name: 'Marge',
+            gender: 'female',
+            last_name: 'Simpson',
+            ssn: '123231234',
+            phone_numbers: [{ 'number' => '9712876774', 'type' => 'Home' }],
+            languages: [
+              { name: 'French', primary: true },
+              { name: 'Italian' }
+            ],
+            addresses: [{
+              'legacy_id' => marge_address.legacy_id,
+              'legacy_source_table' => 'ADDR_T',
+              'street_number' => 123,
+              'street_name' => 'Fake St',
+              'state_code' => 'NY',
+              city: 'Springfield',
+              zip: '12345',
+              'type' => 'Home'
+            }],
+            date_of_birth: marge_date_of_birth.to_s(:db),
+            legacy_descriptor: {
+              legacy_last_updated: marge.legacy_descriptor.legacy_last_updated,
+              legacy_id: marge.legacy_descriptor.legacy_id,
+              legacy_ui_id: marge.legacy_descriptor.legacy_ui_id,
+              legacy_table_name: marge.legacy_descriptor.legacy_table_name,
+              legacy_table_description: marge.legacy_descriptor.legacy_table_description
+            },
+            race_ethnicity: {
+              hispanic_origin_code: 'Y',
+              race_codes: [
+                { description: 'White - European*' },
+                { description: 'Alaskan Native*' }
+              ],
+              hispanic_codes: [
+                { description: 'Central American' }
+              ],
+              hispanic_unable_to_determine_code: ''
+            },
+            sensitivity_indicator: 'S'
+          }
+        }]
+      }
+    }
+  end
+
+  let(:homer_response) do
+    {
+      hits: {
+        hits: [{
+          _source: {
+            id: homer.id,
+            legacy_source_table: 'CLIENT_T',
+            first_name: 'Homer',
+            gender: 'male',
+            last_name: 'Simpson',
+            ssn: '123231234',
+            phone_numbers: [{ 'number' => '9712876774', 'type' => 'Home' }],
+            languages: [
+              { name: 'French', primary: true },
+              { name: 'Italian' }
+            ],
+            addresses: [{
+              'legacy_id' => marge_address.legacy_id,
+              'legacy_source_table' => 'ADDR_T',
+              'street_number' => 123,
+              'street_name' => 'Fake St',
+              'state_code' => 'NY',
+              city: 'Springfield',
+              zip: '12345',
+              'type' => 'Home'
+            }],
+            date_of_birth: homer_date_of_birth.to_s(:db),
+            legacy_descriptor: {
+              legacy_last_updated: homer.legacy_descriptor.legacy_last_updated,
+              legacy_id: homer.legacy_descriptor.legacy_id,
+              legacy_ui_id: homer.legacy_descriptor.legacy_ui_id,
+              legacy_table_name: homer.legacy_descriptor.legacy_table_name,
+              legacy_table_description: homer.legacy_descriptor.legacy_table_description
+            },
+            race_ethnicity: {
+              hispanic_origin_code: 'Y',
+              race_codes: [
+                { description: 'Other Asian*' },
+                { description: 'White*' },
+                { description: 'White - Romanian*' },
+                { description: 'Hmong*' },
+                { description: 'Chinese*' },
+                { description: 'Alaskan Native*' }
+              ],
+              hispanic_codes: [
+                { description: 'Hispanic' },
+                { description: 'Mexican' }
+              ],
+              hispanic_unable_to_determine_code: ''
+            }
+          }
+        }]
+      }
+    }
   end
 
   before do
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
-    %w[Ma Mar Marg Marge].each do |search_text|
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
-      ).and_return(json_body([marge].to_json, status: 200))
+    %w[ma mar marg marge marge\ simpson].each do |search_text|
+      stub_person_search(search_text, marge_response)
     end
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
-    %w[Ho Homer].each do |search_text|
-      stub_request(
-        :get,
-        intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: search_text))
-      ).and_return(json_body([homer].to_json, status: 200))
+    %w[ho hom home homer].each do |search_text|
+      stub_person_search(search_text, homer_response)
     end
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)
@@ -414,7 +516,7 @@ feature 'Create participant' do
           fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Marge'
+            fill_in_autocompleter 'Search for any person', with: 'Ma'
             find('li', text: 'Marge Simpson').click
           end
           expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
@@ -495,7 +597,6 @@ feature 'Create participant' do
         fill_in_autocompleter 'Search for clients', with: 'Ho'
         find('li', text: 'Homer Simpson').click
       end
-
       expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
         .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
 

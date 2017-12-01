@@ -78,6 +78,11 @@ Rails.application.routes.draw do
     end
   end
 
+  scope host: Rails.configuration.intake[:dora_api_url] do
+    post '/dora/screenings/screening/_search' => 'dev#null', as: :dora_screenings
+    post '/dora/people/person/_search' => 'dev#null', as: :dora_people
+  end
+
   resources :version, only: :index
 
   get '/pages/*id' => 'pages#show', as: :page, format: false
