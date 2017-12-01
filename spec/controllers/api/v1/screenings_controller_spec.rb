@@ -60,6 +60,16 @@ describe Api::V1::ScreeningsController do
         expect(response).to be_successful
       end
 
+      it 'is blank if user_details is empty' do
+        staff = FactoryGirl.build(:staff, first_name: nil, last_name: nil, county: nil)
+        session = { 'security_token' => security_token, 'user_details' => staff }
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil)
+          .and_return(blank_screening)
+        process :create, method: :post, session: session
+        expect(response).to be_successful
+      end
+
       describe 'when user_details is set' do
         it 'formats assignee as first mi. last - county if all exist' do
           staff = FactoryGirl.build(:staff, middle_initial: 'Q', staff_id: '456')
