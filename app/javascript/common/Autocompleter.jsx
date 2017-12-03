@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import _ from 'lodash'
+import SuggestionHeader from 'common/SuggestionHeader'
 const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {
@@ -11,6 +12,7 @@ export default class Autocompleter extends React.Component {
     super(props)
     this.state = {
       value: '',
+      total: 0,
       suggestions: [],
       isLoading: false,
       isAutocompleterFocused: false,
@@ -130,23 +132,15 @@ export default class Autocompleter extends React.Component {
     }
   }
 
-  renderSuggestionsContainer(properties) {
-    const children = properties.children
-    const footerSize = 1
-    const numberOfResults = this.state.suggestions.length - footerSize
-    let header
-
-    if (numberOfResults < 1) {
-      header = `No results were found for "${this.state.value}"`
-    } else {
-      header = `Showing ${numberOfResults} of ${numberOfResults} results for "${this.state.value}"`
-    }
-
+  renderSuggestionsContainer({children, ...props}) {
+    const {total, value} = this.state
     return (
-      <div {...properties}>
-        <div className='react-autosuggest__suggestion'>
-          <strong>{header}</strong>
-        </div>
+      <div {...props}>
+        <SuggestionHeader
+          currentNumberOfResults={total}
+          total={total}
+          searchTerm={value}
+        />
         {children}
       </div>
     )
