@@ -12,6 +12,7 @@ import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
+import CardContainer from 'containers/screenings/CardContainer'
 import ScreeningInformationCardView from 'screenings/ScreeningInformationCardView'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
@@ -24,6 +25,8 @@ import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormContainer'
 import ErrorDetail from 'common/ErrorDetail'
+import ScreeningInformationFormContainer from 'containers/screenings/ScreeningInformationFormContainer'
+import ScreeningInformationShowContainer from 'containers/screenings/ScreeningInformationShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -88,7 +91,14 @@ export class ScreeningPage extends React.Component {
               </div>
           }
           {releaseTwoInactive && hasErrors && <ErrorDetail errors={submitReferralErrors} />}
-          {releaseTwoInactive && <ScreeningInformationCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Screening Information'
+              id='screening-information-card'
+              edit={<ScreeningInformationFormContainer />}
+              show={<ScreeningInformationShowContainer />}
+            />
+          }
           {editable && <PersonSearchFormContainer />}
           {this.props.participants.map((participant) =>
             <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
