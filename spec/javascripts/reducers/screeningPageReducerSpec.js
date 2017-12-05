@@ -44,7 +44,7 @@ describe('screeningPageReducer', () => {
       expect(screeningPageReducer(initialState, action)).toEqualImmutable(
         fromJS({
           mode: 'edit',
-          cards: {'some-card': 'show'}
+          cards: {'some-card': 'show'},
         })
       )
     })
@@ -75,6 +75,9 @@ describe('screeningPageReducer', () => {
                   participant_id_one: 'show',
                   participant_id_two: 'show',
                 },
+                cards: {
+                  'screening-information-card': 'show',
+                },
               })
             )
           })
@@ -88,6 +91,9 @@ describe('screeningPageReducer', () => {
                 peopleCards: {
                   participant_id_one: 'edit',
                   participant_id_two: 'edit',
+                },
+                cards: {
+                  'screening-information-card': 'edit',
                 },
               })
             )
@@ -109,6 +115,9 @@ describe('screeningPageReducer', () => {
                   participant_id_one: 'show',
                   participant_id_two: 'show',
                 },
+                cards: {
+                  'screening-information-card': 'show',
+                },
               })
             )
           })
@@ -124,6 +133,9 @@ describe('screeningPageReducer', () => {
               peopleCards: {
                 participant_id_one: 'show',
                 participant_id_two: 'show',
+              },
+              cards: {
+                'screening-information-card': 'show',
               },
             })
           )

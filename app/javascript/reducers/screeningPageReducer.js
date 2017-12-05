@@ -9,6 +9,12 @@ import {
 } from 'actions/screeningPageActions'
 import {createReducer} from 'utils/createReducer'
 
+function cards(mode) {
+  return Map(
+    ['screening-information-card'].reduce((cards, card) => ({...cards, [card]: mode}), {})
+  )
+}
+
 function peopleCards({participants}, mode) {
   return Map(
     participants.reduce((peopleCards, {id}) => ({...peopleCards, [id]: mode}), {})
@@ -42,6 +48,7 @@ export default createReducer(Map(), {
       const mode = modeOnScreeningFetch(state, screening.referral_id)
       return state.set('mode', mode)
         .set('peopleCards', peopleCards(screening, mode))
+        .set('cards', cards(mode))
     }
   },
   [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {
