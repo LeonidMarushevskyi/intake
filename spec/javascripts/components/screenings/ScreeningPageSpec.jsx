@@ -248,9 +248,8 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the screening information card', () => {
-        const card = component.find('ScreeningInformationCardView')
+        const card = component.find({title: 'Screening Information'})
         expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('show')
       })
 
       it('renders the participants card for each participant', () => {
