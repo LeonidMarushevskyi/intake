@@ -3,7 +3,7 @@ import * as matchers from 'jasmine-immutable-matchers'
 import screeningPageReducer from 'reducers/screeningPageReducer'
 import {Map, fromJS} from 'immutable'
 import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
-import {setPageMode, setPersonCardMode} from 'actions/screeningPageActions'
+import {setPageMode, setPersonCardMode, setCardMode} from 'actions/screeningPageActions'
 import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningActions'
 
 describe('screeningPageReducer', () => {
@@ -19,6 +19,7 @@ describe('screeningPageReducer', () => {
       )
     })
   })
+
   describe('on SET_PERSON_CARD_MODE', () => {
     const initialState = fromJS({mode: 'edit'})
 
@@ -33,6 +34,22 @@ describe('screeningPageReducer', () => {
       )
     })
   })
+
+  describe('on SET_SCREENING_CARD_MODE', () => {
+    const initialState = fromJS({mode: 'edit'})
+
+    it('returns the screening page with the updated mode for the given card', () => {
+      const cardId = 'some-card'
+      const action = setCardMode(cardId, 'show')
+      expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+        fromJS({
+          mode: 'edit',
+          cards: {'some-card': 'show'}
+        })
+      )
+    })
+  })
+
   describe('on FETCH_SCREENING_COMPLETE', () => {
     it('when an error occurs returns current screening page', () => {
       const initialState = fromJS({mode: 'show'})
