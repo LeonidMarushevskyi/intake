@@ -1,5 +1,5 @@
-import CrossReportFormContainer from 'screenings/crossReports/CrossReportFormContainer'
-import CrossReportShowContainer from 'screenings/crossReports/CrossReportShowContainer'
+import CrossReportFormContainer from 'containers/screenings/CrossReportFormContainer'
+import CrossReportShowContainer from 'containers/screenings/CrossReportShowContainer'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningCardHeader from 'screenings/ScreeningCardHeader'
