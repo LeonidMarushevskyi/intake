@@ -19,8 +19,9 @@ import {
   resetFieldValues,
 } from 'actions/incidentInformationFormActions'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 
-const mapStateToProps = (state, _ownProps) => ({
+const mapStateToProps = (state) => ({
   errors: getVisibleErrorsSelector(state).toJS(),
   incidentDate: getIncidentDateSelector(state),
   screening: getScreeningSelector(state).toJS(),
@@ -33,24 +34,23 @@ const mapStateToProps = (state, _ownProps) => ({
   locationTypes: getLocationTypes(),
 })
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
+const mergeProps = (stateProps, dispatchProps) => {
   const {dispatch} = dispatchProps
   const {
     screening,
     screeningWithEdits,
     ...usedProps
   } = stateProps
-  const {toggleShow} = ownProps
 
   const onSave = () => {
     dispatch(saveScreening(screeningWithEdits))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('incident-information-card', SHOW_MODE))
   }
   const onCancel = () => {
     dispatch(resetFieldValues(screening))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('incident-information-card', SHOW_MODE))
   }
   const onChange = (fieldName, value) => dispatch(setField(fieldName, value))
   const onBlur = (fieldName) => dispatch(touchField(fieldName))

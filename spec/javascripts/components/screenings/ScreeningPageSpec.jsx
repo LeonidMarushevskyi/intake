@@ -263,9 +263,8 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the incident information show card', () => {
-        const card = component.find('IncidentInformationCardView')
+        const card = component.find({title: 'Incident Information'})
         expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('show')
       })
 
       it('renders the worker safety card', () => {

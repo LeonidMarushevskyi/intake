@@ -6,7 +6,6 @@ import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
-import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -27,6 +26,8 @@ import ScreeningInformationFormContainer from 'containers/screenings/ScreeningIn
 import ScreeningInformationShowContainer from 'containers/screenings/ScreeningInformationShowContainer'
 import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer'
 import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
+import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
+import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -111,7 +112,14 @@ export class ScreeningPage extends React.Component {
               show={<NarrativeShowContainer />}
             />
           }
-          {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={cardStateMode}/>}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Incident Information'
+              id='incident-information-card'
+              edit={<IncidentInformationFormContainer />}
+              show={<IncidentInformationShowContainer />}
+            />
+          }
           {releaseTwoInactive && <AllegationsCardView mode={cardStateMode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}
           {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={cardStateMode} />}
