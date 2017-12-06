@@ -19,7 +19,7 @@ node('Slave') {
             curStage = 'Test'
             sh 'make test'
         }
-        
+
         if (branch == 'master' || branch == 'development') {
             stage('Build') {
                 curStage = 'Build'
@@ -42,33 +42,33 @@ node('Slave') {
         throw e
     }
     finally {
-        // try {
-        //     stage ('Reports') {
-        //         step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
+        try {
+            stage ('Reports') {
+                step([$class: 'JUnitResultArchiver', testResults: '**/reports/*.xml'])
 
-        //         publishHTML (target: [
-        //             allowMissing: false,
-        //             alwaysLinkToLastBuild: false,
-        //             keepAll: true,
-        //             reportDir: 'reports/coverage/js',
-        //             reportFiles: 'index.html',
-        //             reportName: 'JS Code Coverage'
-        //         ])
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'reports/coverage/js',
+                    reportFiles: 'index.html',
+                    reportName: 'JS Code Coverage'
+                ])
 
-        //         publishHTML (target: [
-        //             allowMissing: false,
-        //             alwaysLinkToLastBuild: false,
-        //             keepAll: true,
-        //             reportDir: 'reports/coverage/ruby',
-        //             reportFiles: 'index.html',
-        //             reportName: 'Ruby Code Coverage'
-        //         ])
-        //     }
-        // }
-        // catch(e) {
-        //     pipelineStatus = 'FAILED'
-        //     currentBuild.result = 'FAILURE'
-        // }
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'reports/coverage/ruby',
+                    reportFiles: 'index.html',
+                    reportName: 'Ruby Code Coverage'
+                ])
+            }
+        }
+        catch(e) {
+            pipelineStatus = 'FAILED'
+            currentBuild.result = 'FAILURE'
+        }
 
         // disabling slack alerts when using a branch different from master or development.
         // if (branch == 'master' || branch == 'development') {
