@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import AllegationsForm from 'views/allegations/AllegationsForm'
+import AllegationsForm from 'views/AllegationsForm'
 import {
   getAllegationTypesSelector,
   getFormattedAllegationsSelector,
@@ -8,6 +8,7 @@ import {
   getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {
   resetAllegations,
   setAllegationTypes,
@@ -24,7 +25,7 @@ const mapStateToProps = (state) => (
   }
 )
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
+const mergeProps = (stateProps, dispatchProps) => {
   const {dispatch} = dispatchProps
   const {
     alertErrorMessage,
@@ -34,16 +35,15 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     required,
     screeningWithEdits,
   } = stateProps
-  const {toggleMode} = ownProps
 
   const onSave = () => {
-    toggleMode()
     dispatch(saveScreening(screeningWithEdits))
+    dispatch(setCardMode('allegations-card', SHOW_MODE))
   }
 
   const onCancel = () => {
-    toggleMode()
     dispatch(resetAllegations({allegations: persistedAllegations}))
+    dispatch(setCardMode('allegations-card', SHOW_MODE))
   }
 
   const onChange = (props) => {

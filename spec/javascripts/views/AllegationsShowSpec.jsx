@@ -1,8 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import AllegationShow from 'views/allegations/AllegationShow'
+import AllegationShow from 'views/AllegationsShow'
 
-describe('AllegationShow', () => {
+describe('AllegationsShow', () => {
   const renderAllegationShow = ({...props}) => (
     shallow(<AllegationShow {...props}/>)
   )

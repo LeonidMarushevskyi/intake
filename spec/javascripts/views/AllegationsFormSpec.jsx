@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import AllegationsForm from 'views/allegations/AllegationsForm'
+import AllegationsForm from 'views/AllegationsForm'
 
 describe('AllegationsForm', () => {
   const renderAllegationsForm = ({allegations = [], ...args}) => {
