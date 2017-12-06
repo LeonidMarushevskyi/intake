@@ -7,6 +7,7 @@ import HistoryOfInvolvementContainer from 'investigations/HistoryOfInvolvementCo
 import RelationshipsCardContainer from 'investigations/RelationshipsCardContainer'
 import HistoryTableContainer from 'investigations/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
+import CardContainer from 'containers/investigations/CardContainer'
 
 export class InvestigationPage extends React.Component {
   componentDidMount() {
@@ -19,7 +20,11 @@ export class InvestigationPage extends React.Component {
     return (
       <div>
         <ScreeningSummaryContainer />
-        <AllegationShowContainer />
+        <CardContainer
+          title='Allegations'
+          id='allegations-card'
+          show={<AllegationShowContainer />}
+        />
         <RelationshipsCardContainer />
         <HistoryOfInvolvementContainer
           empty={<EmptyHistory />}
