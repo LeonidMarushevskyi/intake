@@ -160,6 +160,10 @@ feature 'Screening Decision Validations' do
         end
         blur_field
         should_have_content error_message, inside: '#decision-card.edit'
+        stub_screening_put_request_with_anything_and_return(
+          screening,
+          with_updated_attributes: { access_restrictions: 'sensitive' }
+        )
         save_card('decision')
         should_have_content error_message, inside: '#decision-card .card-body'
       end
@@ -189,6 +193,18 @@ feature 'Screening Decision Validations' do
           screening,
           with_updated_attributes: { restrictions_rationale: 'a rationale' }
         )
+        save_card('decision')
+        should_not_have_content error_message, inside: '#decision-card .card-body'
+      end
+    end
+
+    context 'Access Restrictions is set to null' do
+      let(:error_message) { 'Please enter an access restriction reason' }
+      let(:screening_decision) { nil }
+
+      scenario 'do not show error on restriction_rationale' do
+        blur_field
+        should_not_have_content error_message, inside: '#decision-card.edit'
         save_card('decision')
         should_not_have_content error_message, inside: '#decision-card .card-body'
       end

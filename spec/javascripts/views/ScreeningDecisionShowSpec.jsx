@@ -117,6 +117,22 @@ describe('ScreeningDecisionShow', () => {
     expect(accessRestriction.children().text()).toEqual('Sealed')
   })
 
+  it('does not render access restrictions if access restrictions is null', () => {
+    const component = renderScreeningDecisionShow({
+      accessRestriction: {value: null},
+    })
+    const accessRestriction = component.find('ShowField[label="Access restrictions"]')
+    expect(accessRestriction.exists()).toEqual(false)
+  })
+
+  it('does not render restrictions rationale if access restrictions is null', () => {
+    const component = renderScreeningDecisionShow({
+      accessRestriction: {value: null},
+    })
+    const restrictionRationale = component.find('ShowField[label="Restrictions rationale"]')
+    expect(restrictionRationale.exists()).toEqual(false)
+  })
+
   it('renders restriction rationale when a value is present', () => {
     const component = renderScreeningDecisionShow({
       restrictionRationale: {value: 'This person needs to be protected'},

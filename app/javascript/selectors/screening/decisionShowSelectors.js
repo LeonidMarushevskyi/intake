@@ -3,14 +3,15 @@ import {List, Map, fromJS} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
-import {isRequiredCreate, combineCompact} from 'utils/validator'
+import {isRequiredCreate, isRequiredIfCreate, combineCompact} from 'utils/validator'
 
 export const getErrorsSelector = createSelector(
   (state) => state.getIn(['screening', 'screening_decision']),
   (state) => state.getIn(['screening', 'screening_decision_detail']),
+  (state) => state.getIn(['screening', 'access_restrictions']) || '',
   (state) => state.getIn(['screening', 'restrictions_rationale']) || '',
   (state) => state.get('allegationsForm', List()),
-  (decision, decisionDetail, restrictionsRationale, allegations) => (
+  (decision, decisionDetail, accessRestrictions, restrictionsRationale, allegations) => (
     fromJS({
       screening_decision: combineCompact(
         isRequiredCreate(decision, 'Please enter a decision'),
@@ -33,7 +34,7 @@ export const getErrorsSelector = createSelector(
         }
       ),
       restrictions_rationale: combineCompact(
-        isRequiredCreate(restrictionsRationale, 'Please enter an access restriction reason')
+        isRequiredIfCreate(restrictionsRationale, 'Please enter an access restriction reason', () => (accessRestrictions))
       ),
     })
   )

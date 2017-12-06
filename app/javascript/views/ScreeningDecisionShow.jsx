@@ -50,12 +50,16 @@ const ScreeningDecisionShow = ({
           <ShowField label='Additional information'>
             {additionalInformation.value}
           </ShowField>
-          <ShowField label='Access restrictions'>
-            {accessRestriction.value}
-          </ShowField>
-          <ShowField label='Restrictions rationale' errors={restrictionRationale.errors} required>
-            {restrictionRationale.value}
-          </ShowField>
+          {accessRestriction.value &&
+            <ShowField label='Access restrictions'>
+              {accessRestriction.value}
+            </ShowField>
+          }
+          {(accessRestriction.value || restrictionRationale.value) &&
+            <ShowField label='Restrictions rationale' errors={restrictionRationale.errors} required>
+              {restrictionRationale.value}
+            </ShowField>
+          }
         </div>
       </div>
     </div>
