@@ -5,7 +5,6 @@ REPO_NAME ?= intake
 
 export HTTP_PORT ?= 81
 export APP_VERSION ?= 1.$(BUILD_NUMBER)
-
 include Makefile.settings
 
 .PHONY: test build release clean tag buildtag login logout publish
