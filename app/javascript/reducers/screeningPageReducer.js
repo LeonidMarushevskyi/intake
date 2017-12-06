@@ -2,8 +2,18 @@ import * as IntakeConfig from 'common/config'
 import {CREATE_PERSON_COMPLETE} from 'actions/personCardActions'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {Map} from 'immutable'
-import {SET_SCREENING_PAGE_MODE, SET_PERSON_CARD_MODE} from 'actions/screeningPageActions'
+import {
+  SET_SCREENING_PAGE_MODE,
+  SET_PERSON_CARD_MODE,
+  SET_SCREENING_CARD_MODE,
+} from 'actions/screeningPageActions'
 import {createReducer} from 'utils/createReducer'
+
+function cards(mode) {
+  return Map(
+    ['screening-information-card'].reduce((cards, card) => ({...cards, [card]: mode}), {})
+  )
+}
 
 function peopleCards({participants}, mode) {
   return Map(
@@ -30,6 +40,7 @@ function modeOnCreatePerson() {
 export default createReducer(Map(), {
   [SET_SCREENING_PAGE_MODE]: (state, {payload: {mode}}) => state.set('mode', mode),
   [SET_PERSON_CARD_MODE]: (state, {payload: {personId, mode}}) => state.setIn(['peopleCards', personId], mode),
+  [SET_SCREENING_CARD_MODE]: (state, {payload: {card, mode}}) => state.setIn(['cards', card], mode),
   [FETCH_SCREENING_COMPLETE]: (state, {payload: {screening}, error}) => {
     if (error) {
       return state
@@ -37,6 +48,7 @@ export default createReducer(Map(), {
       const mode = modeOnScreeningFetch(state, screening.referral_id)
       return state.set('mode', mode)
         .set('peopleCards', peopleCards(screening, mode))
+        .set('cards', cards(mode))
     }
   },
   [CREATE_PERSON_COMPLETE]: (state, {payload: {person}, error}) => {

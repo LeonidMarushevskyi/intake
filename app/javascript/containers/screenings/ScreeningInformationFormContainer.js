@@ -8,9 +8,10 @@ import {
   getVisibleErrorsSelector,
 } from 'selectors/screeningInformationFormSelectors'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
-const mapStateToProps = (state, _ownProps) => {
+const mapStateToProps = (state) => {
   const screening = getScreeningSelector(state)
   const screeningInformationForm = getScreeningInformationFormSelector(state)
   const communicationMethods = Object.keys(COMMUNICATION_METHOD)
@@ -28,7 +29,7 @@ const mapStateToProps = (state, _ownProps) => {
     startedAt: screeningInformationForm.getIn(['started_at', 'value']),
   }
 }
-const mergeProps = (stateProps, {dispatch}, {toggleShow}) => {
+const mergeProps = (stateProps, {dispatch}) => {
   const {
     screening,
     screeningWithEdits,
@@ -44,12 +45,12 @@ const mergeProps = (stateProps, {dispatch}, {toggleShow}) => {
   const onCancel = () => {
     dispatch(resetFieldValues(screening))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('screening-information-card', SHOW_MODE))
   }
   const onSave = () => {
     dispatch(saveScreening(screeningWithEdits))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('screening-information-card', SHOW_MODE))
   }
   const onBlur = (fieldName) => dispatch(touchField(fieldName))
   const onChange = (fieldName, value) => dispatch(setField(fieldName, value))
