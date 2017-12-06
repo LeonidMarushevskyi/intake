@@ -1,4 +1,4 @@
-import NarrativeForm from 'screenings/narrative/NarrativeForm'
+import NarrativeForm from 'views/NarrativeForm'
 import {
   getReportNarrativeValueSelector,
   getScreeningWithEditsSelector,

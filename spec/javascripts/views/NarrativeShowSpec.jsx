@@ -1,4 +1,4 @@
-import NarrativeShow from 'screenings/narrative/NarrativeShow'
+import NarrativeShow from 'views/NarrativeShow'
 import React from 'react'
 import {shallow} from 'enzyme'
 
