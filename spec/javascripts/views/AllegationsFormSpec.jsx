@@ -8,11 +8,6 @@ describe('AllegationsForm', () => {
     return shallow(<AllegationsForm {...props}/>)
   }
 
-  it('renders the card header', () => {
-    const component = renderAllegationsForm({})
-    expect(component.find('.card-header').text()).toEqual('Allegations')
-  })
-
   it('calls onSave when the save button is clicked', () => {
     const onSave = jasmine.createSpy('onSave')
     const component = renderAllegationsForm({onSave})

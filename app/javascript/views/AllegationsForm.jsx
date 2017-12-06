@@ -12,58 +12,53 @@ const AllegationsForm = ({
   onSave,
   required,
 }) => (
-  <div className='card edit double-gap-top'>
-    <div className='card-header'>
-      <span>Allegations</span>
-    </div>
-    <div className='card-body no-pad-top'>
-      { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
-      <div className='row'>
-        <div className='col-md-12'>
-          <table className='table table-hover'>
-            <thead>
-              <tr>
-                <th scope='col'>Alleged Victim/Children</th>
-                <th scope='col'>Alleged Perpetrator</th>
-                <th scope='col'>Allegation(s){required && ' (Required)'}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allegations.map((allegation, index) => {
-                const {victimName, victimId, perpetratorName, perpetratorId} = allegation
-                return (
-                  <tr key={index}>
-                    <td>{victimName}</td>
-                    <td>{perpetratorName}</td>
-                    <td>
-                      <Select
-                        options={allegationTypes}
-                        value={allegation.allegationTypes.map((type) => ({value: type, label: type}))}
-                        onChange={(selectedAllegationTypes) => onChange({
-                          victimId,
-                          perpetratorId,
-                          allegationTypes: selectedAllegationTypes.map((type) => type.value),
-                        })}
-                        aria-label={`allegations ${victimName} ${perpetratorName}`}
-                        inputProps={{id: `allegations_${victimId}_${perpetratorId}`}}
-                        tabSelectsValue={false}
-                        clearable={false}
-                        placeholder=''
-                        multi
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+  <div className='card-body no-pad-top'>
+    { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
+    <div className='row'>
+      <div className='col-md-12'>
+        <table className='table table-hover'>
+          <thead>
+            <tr>
+              <th scope='col'>Alleged Victim/Children</th>
+              <th scope='col'>Alleged Perpetrator</th>
+              <th scope='col'>Allegation(s){required && ' (Required)'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allegations.map((allegation, index) => {
+              const {victimName, victimId, perpetratorName, perpetratorId} = allegation
+              return (
+                <tr key={index}>
+                  <td>{victimName}</td>
+                  <td>{perpetratorName}</td>
+                  <td>
+                    <Select
+                      options={allegationTypes}
+                      value={allegation.allegationTypes.map((type) => ({value: type, label: type}))}
+                      onChange={(selectedAllegationTypes) => onChange({
+                        victimId,
+                        perpetratorId,
+                        allegationTypes: selectedAllegationTypes.map((type) => type.value),
+                      })}
+                      aria-label={`allegations ${victimName} ${perpetratorName}`}
+                      inputProps={{id: `allegations_${victimId}_${perpetratorId}`}}
+                      tabSelectsValue={false}
+                      clearable={false}
+                      placeholder=''
+                      multi
+                    />
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
-      <div className='row'>
-        <div className='centered'>
-          <button className='btn btn-primary' onClick={onSave}>Save</button>
-          <button className='btn btn-default' onClick={onCancel}>Cancel</button>
-        </div>
+    </div>
+    <div className='row'>
+      <div className='centered'>
+        <button className='btn btn-primary' onClick={onSave}>Save</button>
+        <button className='btn btn-default' onClick={onCancel}>Cancel</button>
       </div>
     </div>
   </div>

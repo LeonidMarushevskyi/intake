@@ -3,7 +3,6 @@ import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
 import {setPageMode} from 'actions/screeningPageActions'
 import {checkStaffPermission} from 'actions/staffActions'
-import AllegationsCardView from 'screenings/AllegationsCardView'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -24,6 +23,8 @@ import ScreeningInformationShowContainer from 'containers/screenings/ScreeningIn
 import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer'
 import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
+import AllegationsFormContainer from 'containers/screenings/AllegationsFormContainer'
+import AllegationsShowContainer from 'containers/screenings/AllegationsShowContainer'
 import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
 import WorkerSafetyFormContainer from 'containers/screenings/WorkerSafetyFormContainer'
 import WorkerSafetyShowContainer from 'containers/screenings/WorkerSafetyShowContainer'
@@ -123,7 +124,14 @@ export class ScreeningPage extends React.Component {
               show={<IncidentInformationShowContainer />}
             />
           }
-          {releaseTwoInactive && <AllegationsCardView mode={cardStateMode} />}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Allegations'
+              id='allegations-card'
+              edit={<AllegationsFormContainer />}
+              show={<AllegationsShowContainer />}
+            />
+          }
           {releaseTwoInactive && <RelationshipsCardContainer />}
           {releaseTwoInactive &&
             <CardContainer

@@ -7,11 +7,6 @@ describe('AllegationsShow', () => {
     shallow(<AllegationShow {...props}/>)
   )
 
-  it('renders "Allegations" in the card header', () => {
-    const component = renderAllegationShow()
-    expect(component.find('.card-header').text()).toEqual('Allegations')
-  })
-
   it('renders a table of allegations with column headings', () => {
     const component = renderAllegationShow()
     const table = component.find('table')
@@ -57,23 +52,4 @@ describe('AllegationsShow', () => {
     const component = renderAllegationShow({})
     expect(component.text()).not.toContain('(Required)')
   })
-
-  it('displays an edit button if onEdit is available', () => {
-    const onEdit = jasmine.createSpy('onEdit')
-    const component = renderAllegationShow({onEdit})
-    expect(component.find('EditLink').exists()).toEqual(true)
-  })
-
-  it('calls onEdit when the edit button is clicked', () => {
-    const onEdit = jasmine.createSpy('onEdit')
-    const component = renderAllegationShow({onEdit})
-    component.find('EditLink').simulate('click', {preventDefault: () => {}})
-    expect(onEdit).toHaveBeenCalled()
-  })
-
-  it('does not display an edit button if no onEdit callback is passed', () => {
-    const component = renderAllegationShow({})
-    expect(component.find('EditLink').exists()).toEqual(false)
-  })
 })
-

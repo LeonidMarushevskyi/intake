@@ -82,6 +82,7 @@ describe('screeningPageReducer', () => {
                   'cross-report-card': 'show',
                   'worker-safety-card': 'show',
                   'decision-card': 'show',
+                  'allegations-card': 'show',
                 },
               })
             )
@@ -104,6 +105,7 @@ describe('screeningPageReducer', () => {
                   'cross-report-card': 'edit',
                   'worker-safety-card': 'edit',
                   'decision-card': 'edit',
+                  'allegations-card': 'edit',
                 },
               })
             )
@@ -132,6 +134,7 @@ describe('screeningPageReducer', () => {
                   'cross-report-card': 'show',
                   'worker-safety-card': 'show',
                   'decision-card': 'show',
+                  'allegations-card': 'show',
                 },
               })
             )
@@ -156,6 +159,7 @@ describe('screeningPageReducer', () => {
                 'cross-report-card': 'show',
                 'worker-safety-card': 'show',
                 'decision-card': 'show',
+                'allegations-card': 'show',
               },
             })
           )

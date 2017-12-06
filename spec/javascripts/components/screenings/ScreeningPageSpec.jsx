@@ -168,12 +168,6 @@ describe('ScreeningPage', () => {
         expect(card.exists()).toEqual(true)
       })
 
-      it('renders the allegations card', () => {
-        const card = component.find('AllegationsCardView')
-        expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('edit')
-      })
-
       it('renders the relations card', () => {
         const card = component.find('Connect(RelationshipsCard)')
         expect(card.exists()).toEqual(true)
@@ -252,6 +246,11 @@ describe('ScreeningPage', () => {
 
       it('renders the incident information show card', () => {
         const card = component.find({title: 'Incident Information'})
+        expect(card.exists()).toEqual(true)
+      })
+
+      it('renders the allegations card', () => {
+        const card = component.find({title: 'Allegations'})
         expect(card.exists()).toEqual(true)
       })
 
