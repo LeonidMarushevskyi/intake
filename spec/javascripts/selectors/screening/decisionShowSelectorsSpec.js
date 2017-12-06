@@ -154,15 +154,15 @@ describe('allegationShowSelectors', () => {
     })
 
     describe('restrictions rationale', () => {
-      it('returns an error if there is no rationale', () => {
-        const screening = { }
+      it('returns an error if there is no rationale and access_restrictions is sensitive', () => {
+        const screening = {access_restrictions: 'sensitive'}
         const state = fromJS({screening})
         expect(getErrorsSelector(state).get('restrictions_rationale'))
           .toEqualImmutable(List(['Please enter an access restriction reason']))
       })
 
-      it('returns no error if there is a rationale', () => {
-        const screening = {restrictions_rationale: 'rationale'}
+      it('returns no error if access_restrictions is null', () => {
+        const screening = {access_restrictions: null}
         const state = fromJS({screening})
         expect(getErrorsSelector(state).get('restrictions_rationale'))
           .toEqualImmutable(List())
