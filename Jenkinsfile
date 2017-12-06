@@ -14,27 +14,28 @@ node('Slave') {
     }
 
     try {
-        stage('Tagging Test') {
-            curStage = 'Tagging Test'
-            sh 'echo make tag latest \$(git rev-parse --short HEAD)'
+
+        stage('Test') {
+            curStage = 'Test'
+            sh 'make test'
         }
+        
+        if (branch == 'master' || branch == 'development') {
+            stage('Build') {
+                curStage = 'Build'
+                sh 'make build'
+            }
 
-        // if (branch == 'master' || branch == 'development') {
-        //     stage('Build') {
-        //         curStage = 'Build'
-        //         sh 'make build'
-        //     }
-
-        //     stage('Publish') {
-        //         curStage = 'Publish'
-        //         sh "make tag latest \$(git rev-parse --short HEAD)"
-        //         withEnv(["DOCKER_USER=${DOCKER_USER}",
-        //                  "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-        //             sh "make login"
-        //             sh "make publish"
-        //         }
-        //     }
-        // }
+            stage('Publish') {
+                curStage = 'Publish'
+                sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1)).$BUILD_NUMBER'
+                withEnv(["DOCKER_USER=${DOCKER_USER}",
+                         "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
+                    sh "make login"
+                    sh "make publish"
+                }
+            }
+        }
     }
     catch (e) {
         pipelineStatus = 'FAILED'
@@ -70,7 +71,7 @@ node('Slave') {
         // }
 
         // disabling slack alerts when using a branch different from master or development.
-        // if (branch == 'master') {
+        // if (branch == 'master' || branch == 'development') {
         //   try {
         //       emailext (
         //           to: emailList,
