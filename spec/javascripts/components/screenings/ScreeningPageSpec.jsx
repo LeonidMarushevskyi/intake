@@ -179,12 +179,6 @@ describe('ScreeningPage', () => {
         expect(card.exists()).toEqual(true)
       })
 
-      it('renders the worker safety card', () => {
-        const card = component.find('WorkerSafetyCardView')
-        expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('edit')
-      })
-
       it('renders the screening reference in show', () => {
         const heading = renderScreeningPage({
           mode: 'show',
@@ -262,9 +256,8 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the worker safety card', () => {
-        const card = component.find('WorkerSafetyCardView')
+        const card = component.find({title: 'Worker Safety'})
         expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('show')
       })
 
       it('renders the history card', () => {

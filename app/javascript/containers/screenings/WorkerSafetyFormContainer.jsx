@@ -8,9 +8,10 @@ import {getSafetyAlertsSelector} from 'selectors/systemCodeSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues} from 'actions/workerSafetyFormActions'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {connect} from 'react-redux'
 
-const mapStateToProps = (state, _ownProps) => (
+const mapStateToProps = (state) => (
   {
     alertOptions: getSafetyAlertsSelector(state),
     safetyAlerts: {
@@ -24,20 +25,19 @@ const mapStateToProps = (state, _ownProps) => (
   }
 )
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
+const mergeProps = (stateProps, dispatchProps) => {
   const {dispatch} = dispatchProps
   const {alertOptions, safetyAlerts, safetyInformation, screening, screeningWithEdits} = stateProps
-  const {toggleMode} = ownProps
 
   const onCancel = () => {
     const {safety_alerts, safety_information} = screening
     dispatch(resetFieldValues({safety_alerts, safety_information}))
-    toggleMode()
+    dispatch(setCardMode('worker-safety-card', SHOW_MODE))
   }
 
   const onSave = () => {
     dispatch(saveScreening(screeningWithEdits))
-    toggleMode()
+    dispatch(setCardMode('worker-safety-card', SHOW_MODE))
   }
 
   return {
@@ -47,7 +47,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     alertOptions,
     safetyAlerts,
     safetyInformation,
-    toggleMode,
   }
 }
 

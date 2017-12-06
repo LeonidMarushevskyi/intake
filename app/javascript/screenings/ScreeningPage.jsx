@@ -12,7 +12,6 @@ import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import CardContainer from 'containers/screenings/CardContainer'
 import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
 import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
-import WorkerSafetyCardView from 'screenings/WorkerSafetyCardView'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -27,6 +26,8 @@ import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer
 import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
 import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
+import WorkerSafetyFormContainer from 'containers/screenings/WorkerSafetyFormContainer'
+import WorkerSafetyShowContainer from 'containers/screenings/WorkerSafetyShowContainer'
 import CrossReportFormContainer from 'containers/screenings/CrossReportFormContainer'
 import CrossReportShowContainer from 'containers/screenings/CrossReportShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
@@ -123,7 +124,14 @@ export class ScreeningPage extends React.Component {
           }
           {releaseTwoInactive && <AllegationsCardView mode={cardStateMode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}
-          {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Worker Safety'
+              id='worker-safety-card'
+              edit={<WorkerSafetyFormContainer />}
+              show={<WorkerSafetyShowContainer />}
+            />
+          }
           <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
           {releaseTwoInactive &&
             <CardContainer

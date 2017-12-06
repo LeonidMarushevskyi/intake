@@ -10,8 +10,6 @@ describe('WorkerSafetyForm', () => {
     onSave,
     safetyAlerts = {value: []},
     safetyInformation = {value: ''},
-    showEdit = false,
-    toggleMode = jasmine.createSpy('toggleMode'),
   }) {
     const props = {
       alertOptions,
@@ -20,21 +18,9 @@ describe('WorkerSafetyForm', () => {
       onSave,
       safetyAlerts,
       safetyInformation,
-      showEdit,
-      toggleMode,
     }
     return shallow(<WorkerSafetyForm {...props} />)
   }
-
-  it('renders the card header', () => {
-    const toggleMode = jasmine.createSpy('toggleMode')
-    const component = renderWorkerSafety({toggleMode})
-    const header = component.find('ScreeningCardHeader')
-    expect(header.exists()).toEqual(true)
-    expect(header.props().onEdit).toEqual(toggleMode)
-    expect(header.props().showEdit).toEqual(false)
-    expect(header.props().title).toEqual('Worker Safety')
-  })
 
   it('displays the worker safety alerts', () => {
     const component = renderWorkerSafety({
