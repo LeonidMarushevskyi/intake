@@ -5,7 +5,7 @@ import InlineHeader from 'common/InlineHeader'
 import PropTypes from 'prop-types'
 import React from 'react'
 import SelectField from 'common/SelectField'
-import AgencyField from 'screenings/crossReports/AgencyField'
+import CrossReportAgencyField from 'views/CrossReportAgencyField'
 import {
   ALLEGATIONS_REQUIRE_CROSS_REPORTS_MESSAGE,
   COMMUNICATION_METHODS,
@@ -94,7 +94,7 @@ const CrossReportForm = ({
           <div className='col-md-6'>
             <ul className='unstyled-list'>
               <li key={DISTRICT_ATTORNEY}>
-                <AgencyField
+                <CrossReportAgencyField
                   type={DISTRICT_ATTORNEY}
                   selected={districtAttorney.selected}
                   value={districtAttorney.agency.value}
@@ -105,7 +105,7 @@ const CrossReportForm = ({
                 />
               </li>
               <li key={LAW_ENFORCEMENT}>
-                <AgencyField
+                <CrossReportAgencyField
                   type={LAW_ENFORCEMENT}
                   selected={lawEnforcement.selected}
                   value={lawEnforcement.agency.value}
@@ -120,7 +120,7 @@ const CrossReportForm = ({
           <div className='col-md-6'>
             <ul className='unstyled-list'>
               <li key={DEPARTMENT_OF_JUSTICE}>
-                <AgencyField
+                <CrossReportAgencyField
                   type={DEPARTMENT_OF_JUSTICE}
                   selected={departmentOfJustice.selected}
                   value={departmentOfJustice.agency.value}
@@ -130,7 +130,7 @@ const CrossReportForm = ({
                 />
               </li>
               <li key={COUNTY_LICENSING}>
-                <AgencyField
+                <CrossReportAgencyField
                   type={COUNTY_LICENSING}
                   selected={countyLicensing.selected}
                   value={countyLicensing.agency.value}
@@ -140,7 +140,7 @@ const CrossReportForm = ({
                 />
               </li>
               <li key={COMMUNITY_CARE_LICENSING}>
-                <AgencyField
+                <CrossReportAgencyField
                   type={COMMUNITY_CARE_LICENSING}
                   selected={communityCareLicensing.selected}
                   value={communityCareLicensing.agency.value}

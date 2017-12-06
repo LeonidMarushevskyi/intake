@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import CrossReportShow from 'screenings/crossReports/CrossReportShow'
+import CrossReportShow from 'views/CrossReportShow'
 import {
   getCrossReportSelector,
   getErrorsSelector,

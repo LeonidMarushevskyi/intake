@@ -1,8 +1,8 @@
-import AgencyField from 'screenings/crossReports/AgencyField'
+import CrossReportAgencyField from 'views/CrossReportAgencyField'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-describe('AgencyField', () => {
+describe('CrossReportAgencyField', () => {
   function renderAgencyField({
     actions = {},
     countyAgencies = [],
@@ -21,7 +21,7 @@ describe('AgencyField', () => {
       selected,
       value,
     }
-    return shallow(<AgencyField {...props} />)
+    return shallow(<CrossReportAgencyField {...props} />)
   }
 
   it('renders errors', () => {

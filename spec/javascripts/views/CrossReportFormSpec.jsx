@@ -1,4 +1,4 @@
-import CrossReportForm from 'screenings/crossReports/CrossReportForm'
+import CrossReportForm from 'views/CrossReportForm'
 import React from 'react'
 import {shallow} from 'enzyme'
 
@@ -184,7 +184,7 @@ describe('CrossReportForm', () => {
             LAW_ENFORCEMENT: [],
           },
         })
-        const field = component.find('AgencyField[type="DISTRICT_ATTORNEY"]')
+        const field = component.find('CrossReportAgencyField[type="DISTRICT_ATTORNEY"]')
         expect(field.props().required).toEqual(true)
       })
       it('makes LAW_ENFORCEMENT required', () => {
@@ -200,7 +200,7 @@ describe('CrossReportForm', () => {
             LAW_ENFORCEMENT: [{id: '123', value: 'asdf'}],
           },
         })
-        const field = component.find('AgencyField[type="LAW_ENFORCEMENT"]')
+        const field = component.find('CrossReportAgencyField[type="LAW_ENFORCEMENT"]')
         expect(field.props().required).toEqual(true)
       })
     })
@@ -220,7 +220,7 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      const field = component.find('AgencyField[type="DISTRICT_ATTORNEY"]')
+      const field = component.find('CrossReportAgencyField[type="DISTRICT_ATTORNEY"]')
       expect(field.props().selected).toEqual(true)
       expect(field.props().value).toEqual('1234')
       expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
@@ -243,7 +243,7 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      const field = component.find('AgencyField[type="LAW_ENFORCEMENT"]')
+      const field = component.find('CrossReportAgencyField[type="LAW_ENFORCEMENT"]')
       expect(field.props().selected).toEqual(true)
       expect(field.props().value).toEqual('1234')
       expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
@@ -266,7 +266,7 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      const field = component.find('AgencyField[type="DEPARTMENT_OF_JUSTICE"]')
+      const field = component.find('CrossReportAgencyField[type="DEPARTMENT_OF_JUSTICE"]')
       expect(field.props().selected).toEqual(true)
       expect(field.props().value).toEqual('1234')
       expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
@@ -289,7 +289,7 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      const field = component.find('AgencyField[type="COUNTY_LICENSING"]')
+      const field = component.find('CrossReportAgencyField[type="COUNTY_LICENSING"]')
       expect(field.props().selected).toEqual(true)
       expect(field.props().value).toEqual('1234')
       expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
@@ -312,7 +312,7 @@ describe('CrossReportForm', () => {
         },
         actions,
       })
-      const field = component.find('AgencyField[type="COMMUNITY_CARE_LICENSING"]')
+      const field = component.find('CrossReportAgencyField[type="COMMUNITY_CARE_LICENSING"]')
       expect(field.props().selected).toEqual(true)
       expect(field.props().value).toEqual('1234')
       expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])

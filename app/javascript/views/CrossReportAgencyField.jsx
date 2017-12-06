@@ -6,7 +6,7 @@ import SelectField from 'common/SelectField'
 import ErrorMessages from 'common/ErrorMessages'
 import {AGENCY_TYPES} from 'enums/CrossReport'
 
-const AgencyField = ({
+const CrossReportAgencyField = ({
   actions: {
     clearAllAgencyFields,
     setAgencyTypeField,
@@ -56,7 +56,7 @@ const AgencyField = ({
     <ErrorMessages errors={errors} />
   </div>
 )
-AgencyField.propTypes = {
+CrossReportAgencyField.propTypes = {
   actions: PropTypes.object.isRequired,
   countyAgencies: PropTypes.array.isRequired,
   errors: PropTypes.array,
@@ -66,4 +66,4 @@ AgencyField.propTypes = {
   value: PropTypes.string.isRequired,
 }
 
-export default AgencyField
+export default CrossReportAgencyField
