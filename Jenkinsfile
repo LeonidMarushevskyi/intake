@@ -1,6 +1,6 @@
 node('Slave') {
     checkout scm
-    def branch = env.BRANCH_NAME ?: 'master'
+    def branch = env.BRANCH_NAME ?: 'development'
     def curStage = 'Start'
     def emailList = 'thomas.ramirez@osi.ca.gov'
     def pipelineStatus = 'SUCCESS'
