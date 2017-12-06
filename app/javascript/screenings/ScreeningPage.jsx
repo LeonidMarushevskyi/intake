@@ -7,7 +7,6 @@ import AllegationsCardView from 'screenings/AllegationsCardView'
 import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
 import IncidentInformationCardView from 'screenings/IncidentInformationCardView'
-import NarrativeCardView from 'screenings/NarrativeCardView'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -26,6 +25,8 @@ import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormCon
 import ErrorDetail from 'common/ErrorDetail'
 import ScreeningInformationFormContainer from 'containers/screenings/ScreeningInformationFormContainer'
 import ScreeningInformationShowContainer from 'containers/screenings/ScreeningInformationShowContainer'
+import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer'
+import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -102,7 +103,14 @@ export class ScreeningPage extends React.Component {
           {this.props.participants.map((participant) =>
             <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
           )}
-          {releaseTwoInactive && <NarrativeCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Narrative'
+              id='narrative-card'
+              edit={<NarrativeFormContainer />}
+              show={<NarrativeShowContainer />}
+            />
+          }
           {releaseTwoInactive && <IncidentInformationCardView editable={editable} mode={cardStateMode}/>}
           {releaseTwoInactive && <AllegationsCardView mode={cardStateMode} />}
           {releaseTwoInactive && <RelationshipsCardContainer />}

@@ -11,7 +11,7 @@ import {createReducer} from 'utils/createReducer'
 
 function cards(mode) {
   return Map(
-    ['screening-information-card'].reduce((cards, card) => ({...cards, [card]: mode}), {})
+    ['screening-information-card', 'narrative-card'].reduce((cards, card) => ({...cards, [card]: mode}), {})
   )
 }
 

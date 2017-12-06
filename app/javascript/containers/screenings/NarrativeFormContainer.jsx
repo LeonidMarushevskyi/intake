@@ -7,9 +7,10 @@ import {
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/narrativeFormActions'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {connect} from 'react-redux'
 
-const mapStateToProps = (state, _ownProps) => (
+const mapStateToProps = (state) => (
   {
     screening: getScreeningSelector(state).toJS(),
     screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
@@ -20,21 +21,20 @@ const mapStateToProps = (state, _ownProps) => (
   }
 )
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
+const mergeProps = (stateProps, dispatchProps) => {
   const {dispatch} = dispatchProps
   const {reportNarrative, screening, screeningWithEdits} = stateProps
-  const {toggleShow} = ownProps
 
   const onCancel = () => {
     dispatch(resetFieldValues(screening))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('narrative-card', SHOW_MODE))
   }
 
   const onSave = () => {
     dispatch(saveScreening(screeningWithEdits))
     dispatch(touchAllFields())
-    toggleShow()
+    dispatch(setCardMode('narrative-card', SHOW_MODE))
   }
 
   return {

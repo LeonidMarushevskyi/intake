@@ -77,6 +77,7 @@ describe('screeningPageReducer', () => {
                 },
                 cards: {
                   'screening-information-card': 'show',
+                  'narrative-card': 'show',
                 },
               })
             )
@@ -94,6 +95,7 @@ describe('screeningPageReducer', () => {
                 },
                 cards: {
                   'screening-information-card': 'edit',
+                  'narrative-card': 'edit',
                 },
               })
             )
@@ -117,6 +119,7 @@ describe('screeningPageReducer', () => {
                 },
                 cards: {
                   'screening-information-card': 'show',
+                  'narrative-card': 'show',
                 },
               })
             )
@@ -136,6 +139,7 @@ describe('screeningPageReducer', () => {
               },
               cards: {
                 'screening-information-card': 'show',
+                'narrative-card': 'show',
               },
             })
           )
