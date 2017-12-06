@@ -4,7 +4,6 @@ import * as personCardActions from 'actions/personCardActions'
 import {setPageMode} from 'actions/screeningPageActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
-import CrossReportCardView from 'screenings/crossReports/CrossReportCardView'
 import DecisionCardView from 'screenings/DecisionCardView'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
@@ -28,6 +27,8 @@ import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer
 import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
 import IncidentInformationShowContainer from 'containers/screenings/IncidentInformationShowContainer'
+import CrossReportFormContainer from 'containers/screenings/CrossReportFormContainer'
+import CrossReportShowContainer from 'containers/screenings/CrossReportShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -124,7 +125,15 @@ export class ScreeningPage extends React.Component {
           {releaseTwoInactive && <RelationshipsCardContainer />}
           {releaseTwoInactive && <WorkerSafetyCardView editable={editable} mode={cardStateMode} />}
           <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
-          {releaseTwoInactive && <CrossReportCardView editable={editable} mode={cardStateMode} />}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Cross Report'
+              id='cross-report-card'
+              edit={<CrossReportFormContainer />}
+              show={<CrossReportShowContainer />}
+            />
+          }
+
           {releaseTwoInactive && <DecisionCardView mode={cardStateMode}/>}
           {
             releaseTwoInactive &&

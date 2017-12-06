@@ -30,6 +30,7 @@ import {
   touchField,
 } from 'actions/crossReportFormActions'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
   getAllegationsRequireCrossReportsValueSelector,
@@ -80,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
     touchField,
     saveScreening,
     fetchCountyAgencies,
+    setCardMode,
   }, dispatch),
 })
 

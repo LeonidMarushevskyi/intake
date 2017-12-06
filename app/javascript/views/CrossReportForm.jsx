@@ -15,6 +15,7 @@ import {
   DISTRICT_ATTORNEY,
   LAW_ENFORCEMENT,
 } from 'enums/CrossReport'
+import {SHOW_MODE} from 'actions/screeningPageActions'
 
 const CrossReportForm = ({
   allegationsRequireCrossReports,
@@ -33,7 +34,6 @@ const CrossReportForm = ({
   method,
   screening,
   screeningWithEdits,
-  toggleShow,
   actions: {
     clearAllAgencyFields,
     clearAllFields,
@@ -43,6 +43,7 @@ const CrossReportForm = ({
     saveScreening,
     setAgencyField,
     setAgencyTypeField,
+    setCardMode,
     setField,
     touchAgencyField,
     touchAllFields,
@@ -51,13 +52,13 @@ const CrossReportForm = ({
 }) => {
   const cancel = () => {
     resetFieldValues(screening)
-    toggleShow()
+    setCardMode('cross-report-card', SHOW_MODE)
   }
   const save = () => {
     saveScreening(screeningWithEdits)
     saveCrossReport(screeningWithEdits)
     touchAllFields()
-    toggleShow()
+    setCardMode('cross-report-card', SHOW_MODE)
   }
   const agencyFieldActions = {
     setAgencyTypeField,
@@ -217,7 +218,6 @@ CrossReportForm.propTypes = {
   method: PropTypes.string,
   screening: PropTypes.object,
   screeningWithEdits: PropTypes.object,
-  toggleShow: PropTypes.func.isRequired,
 }
 
 export default CrossReportForm

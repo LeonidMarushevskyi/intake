@@ -79,6 +79,7 @@ describe('screeningPageReducer', () => {
                   'screening-information-card': 'show',
                   'narrative-card': 'show',
                   'incident-information-card': 'show',
+                  'cross-report-card': 'show',
                 },
               })
             )
@@ -98,6 +99,7 @@ describe('screeningPageReducer', () => {
                   'screening-information-card': 'edit',
                   'narrative-card': 'edit',
                   'incident-information-card': 'edit',
+                  'cross-report-card': 'edit',
                 },
               })
             )
@@ -123,6 +125,7 @@ describe('screeningPageReducer', () => {
                   'screening-information-card': 'show',
                   'narrative-card': 'show',
                   'incident-information-card': 'show',
+                  'cross-report-card': 'show',
                 },
               })
             )
@@ -144,6 +147,7 @@ describe('screeningPageReducer', () => {
                 'screening-information-card': 'show',
                 'narrative-card': 'show',
                 'incident-information-card': 'show',
+                'cross-report-card': 'show',
               },
             })
           )
