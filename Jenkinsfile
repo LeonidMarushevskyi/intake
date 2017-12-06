@@ -19,15 +19,10 @@ node('Slave') {
             sh 'make test'
         }
 
-        if (branch == 'master') {
+        if (branch == 'master' || branch == 'development') {
             stage('Build') {
                 curStage = 'Build'
                 sh 'make build'
-            }
-
-            stage('Release') {
-                curStage = 'Release'
-                sh 'make release'
             }
 
             stage('Publish') {
@@ -74,7 +69,7 @@ node('Slave') {
             currentBuild.result = 'FAILURE'
         }
 
-        // disabling slack alerts when using a branch different from master.
+        // disabling slack alerts when using a branch different from master or development.
         if (branch == 'master') {
           try {
               emailext (

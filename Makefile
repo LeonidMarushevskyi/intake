@@ -3,12 +3,8 @@ PROJECT_NAME ?= intake_accelerator
 ORG_NAME ?= cwds
 REPO_NAME ?= intake
 
-# DOCKER_REGISTRY ?= 429614120872.dkr.ecr.us-west-2.amazonaws.com
-# AWS_ACCOUNT_ID ?= 429614120872
-# DOCKER_LOGIN_EXPRESSION := eval $$(aws ecr get-login --registry-ids $(AWS_ACCOUNT_ID))
-
 export HTTP_PORT ?= 81
-export APP_VERSION ?= 1.$(GIT_HASH)
+export APP_VERSION ?= 1.$(BUILD_NUMBER)
 
 include Makefile.settings
 
@@ -78,7 +74,7 @@ tag:
 	${INFO} "Tagging complete"
 
 tag%default:
-	@ make tag latest $(APP_VERSION) $(GIT_TAG)
+	@ make tag latest $(GIT_TAG).$(BUILD_NUMBER) 
 
 login:
 	${INFO} "Logging in to Docker registry $$DOCKER_REGISTRY..."
