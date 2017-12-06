@@ -28,11 +28,6 @@ describe('ScreeningDecisionForm', () => {
     return shallow(<ScreeningDecisionForm {...props}/>)
   }
 
-  it('renders "Screening Decision" in the card header', () => {
-    const component = renderScreeningDecisionForm({})
-    expect(component.find('.card-header').text()).toEqual('Decision')
-  })
-
   it('renders text about completing the SDM tool', () => {
     const component = renderScreeningDecisionForm({})
     expect(component.text()).toContain('SDM Hotline Tool')

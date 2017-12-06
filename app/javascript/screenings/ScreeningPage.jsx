@@ -4,7 +4,6 @@ import * as personCardActions from 'actions/personCardActions'
 import {setPageMode} from 'actions/screeningPageActions'
 import {checkStaffPermission} from 'actions/staffActions'
 import AllegationsCardView from 'screenings/AllegationsCardView'
-import DecisionCardView from 'screenings/DecisionCardView'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -30,6 +29,8 @@ import WorkerSafetyFormContainer from 'containers/screenings/WorkerSafetyFormCon
 import WorkerSafetyShowContainer from 'containers/screenings/WorkerSafetyShowContainer'
 import CrossReportFormContainer from 'containers/screenings/CrossReportFormContainer'
 import CrossReportShowContainer from 'containers/screenings/CrossReportShowContainer'
+import DecisionFormContainer from 'containers/screenings/DecisionFormContainer'
+import DecisionShowContainer from 'containers/screenings/DecisionShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
 
 export class ScreeningPage extends React.Component {
@@ -141,8 +142,14 @@ export class ScreeningPage extends React.Component {
               show={<CrossReportShowContainer />}
             />
           }
-
-          {releaseTwoInactive && <DecisionCardView mode={cardStateMode}/>}
+          {releaseTwoInactive &&
+            <CardContainer
+              title='Decision'
+              id='decision-card'
+              edit={<DecisionFormContainer />}
+              show={<DecisionShowContainer />}
+            />
+          }
           {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&

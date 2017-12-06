@@ -271,9 +271,8 @@ describe('ScreeningPage', () => {
       })
 
       it('renders the decision show card', () => {
-        const card = component.find('DecisionCardView')
+        const card = component.find({title: 'Decision'})
         expect(card.exists()).toEqual(true)
-        expect(card.props().mode).toEqual('show')
       })
 
       it('renders the person search card', () => {

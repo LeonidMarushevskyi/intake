@@ -17,6 +17,7 @@ function cards(mode) {
       'incident-information-card',
       'cross-report-card',
       'worker-safety-card',
+      'decision-card',
     ].reduce((cards, card) => ({...cards, [card]: mode}), {})
   )
 }

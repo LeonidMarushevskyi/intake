@@ -22,21 +22,6 @@ describe('ScreeningDecisionShow', () => {
     return shallow(<ScreeningDecisionShow {...props}/>)
   }
 
-  it('renders "Screening decision" in the card header', () => {
-    const component = renderScreeningDecisionShow({})
-    expect(component.find('.card-header').text()).toEqual('Decision')
-  })
-
-  it('renders an Edit Link with the correct props if onEdit is passed', () => {
-    const onEdit = jasmine.createSpy('onEdit')
-    const component = renderScreeningDecisionShow({onEdit})
-    const editLink = component.find('EditLink')
-    expect(editLink.exists()).toEqual(true)
-    expect(editLink.props().ariaLabel).toEqual('Edit decision')
-    editLink.simulate('click', {preventDefault: () => {}})
-    expect(onEdit).toHaveBeenCalled()
-  })
-
   it('does not render an Edit Link if no onEdit is passed', () => {
     const component = renderScreeningDecisionShow({})
     const editLink = component.find('EditLink')

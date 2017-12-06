@@ -1,4 +1,3 @@
-import EditLink from 'common/EditLink'
 import React from 'react'
 import PropTypes from 'prop-types'
 import ShowField from 'common/ShowField'
@@ -8,42 +7,27 @@ const ScreeningDecisionShow = ({
   additionalInformation,
   decision,
   decisionDetail,
-  onEdit,
   restrictionRationale,
   sdmPath,
 }) => (
-  <div className='card show double-gap-top' id='decision-card'>
-    <div className='card-header'>
-      <span>Decision</span>
-      {onEdit &&
-        <EditLink
-          ariaLabel={'Edit decision'}
-          onClick={(event) => {
-            event.preventDefault()
-            onEdit()
-          }}
-        />
-      }
-    </div>
-    <div className='card-body'>
-      <div className='row'>
-        <div className='col-md-6'>
-          <ShowField label='Screening decision' errors={decision.errors} required>
-            {decision.value}
-          </ShowField>
-          <ShowField
-            label={decisionDetail.label}
-            required={decisionDetail.required}
-            errors={decisionDetail.errors}
-          >
-            {decisionDetail.value}
-          </ShowField>
-        </div>
-        <div className='col-md-6'>
-          <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
-          <div>Determine Decision and Response Time by using Structured Decision Making.</div>
-          <a href={sdmPath} target='_blank' id='complete_sdm'>Complete SDM</a>
-        </div>
+  <div className='card-body'>
+    <div className='row'>
+      <div className='col-md-6'>
+        <ShowField label='Screening decision' errors={decision.errors} required>
+          {decision.value}
+        </ShowField>
+        <ShowField
+          label={decisionDetail.label}
+          required={decisionDetail.required}
+          errors={decisionDetail.errors}
+        >
+          {decisionDetail.value}
+        </ShowField>
+      </div>
+      <div className='col-md-6'>
+        <p className='double-gap-top'><strong>SDM Hotline Tool</strong></p>
+        <div>Determine Decision and Response Time by using Structured Decision Making.</div>
+        <a href={sdmPath} target='_blank' id='complete_sdm'>Complete SDM</a>
       </div>
       <div className='row'>
         <div className='col-md-12'>
@@ -83,7 +67,6 @@ ScreeningDecisionShow.propTypes = {
     required: PropTypes.bool,
     value: PropTypes.string,
   }),
-  onEdit: PropTypes.func,
   restrictionRationale: PropTypes.shape({
     value: PropTypes.string,
   }),

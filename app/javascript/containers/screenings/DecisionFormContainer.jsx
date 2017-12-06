@@ -13,6 +13,7 @@ import {
   getScreeningWithEditsSelector,
 } from 'selectors/screening/decisionFormSelectors'
 import {save as saveScreening} from 'actions/screeningActions'
+import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {
   resetFieldValues,
   setField,
@@ -37,7 +38,7 @@ const mapStateToProps = (state) => (
   }
 )
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
+const mergeProps = (stateProps, dispatchProps) => {
   const {dispatch} = dispatchProps
   const {
     accessRestriction,
@@ -52,17 +53,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     screeningWithEdits,
     sdmPath,
   } = stateProps
-  const {toggleMode} = ownProps
 
   const onSave = () => {
-    toggleMode()
     dispatch(saveScreening(screeningWithEdits))
     dispatch(touchAllFields())
+    dispatch(setCardMode('decision-card', SHOW_MODE))
   }
 
   const onCancel = () => {
-    toggleMode()
     dispatch(resetFieldValues({...resetValues}))
+    dispatch(setCardMode('decision-card', SHOW_MODE))
   }
 
   const onChange = (field, value) => {
