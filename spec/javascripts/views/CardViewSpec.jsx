@@ -59,8 +59,8 @@ describe('Card View', () => {
       const edit = <span>Edit</span>
       const show = <span>Show</span>
       const card = renderCardView({edit, mode, show})
-      expect(card.find('.card-body').text()).toContain('Edit')
-      expect(card.find('.card-body').text()).not.toContain('Show')
+      expect(card.text()).toContain('Edit')
+      expect(card.text()).not.toContain('Show')
     })
   })
 
@@ -77,8 +77,8 @@ describe('Card View', () => {
       const edit = <span>Edit</span>
       const show = <span>Show</span>
       const card = renderCardView({edit, mode, show})
-      expect(card.find('.card-body').text()).toContain('Show')
-      expect(card.find('.card-body').text()).not.toContain('Edit')
+      expect(card.text()).toContain('Show')
+      expect(card.text()).not.toContain('Edit')
     })
   })
 })
