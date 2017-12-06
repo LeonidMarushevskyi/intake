@@ -14,10 +14,10 @@ node('Slave') {
     }
 
     try {
-        stage('Test') {
-            curStage = 'Test'
-            sh 'make test'
-        }
+        // stage('Test') {
+        //     curStage = 'Test'
+        //     sh 'make test'
+        // }
 
         if (branch == 'master' || branch == 'development') {
             stage('Build') {
