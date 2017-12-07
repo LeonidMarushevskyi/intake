@@ -10,13 +10,24 @@ describe ParticipantRepository do
     let(:response) do
       double(:response, body: { 'id' => participant_id, 'first_name' => 'New Participant' })
     end
+    let(:screening_id) { '1' }
     let(:participant) do
-      { id: nil, first_name: 'New Participant' }
+      Participant.new(id: nil, first_name: 'New Participant', screening_id: screening_id)
+    end
+
+    let(:payload) do
+      {
+        screening_id: screening_id,
+        legacy_descriptor: {
+          legacy_id: participant.legacy_descriptor&.legacy_id,
+          legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+        }
+      }.as_json
     end
 
     before do
       expect(IntakeAPI).to receive(:make_api_call)
-        .with(security_token, '/api/v1/participants', :post, 'first_name' => 'New Participant')
+        .with(security_token, '/api/v1/screenings/1/people', :post, payload)
         .and_return(response)
     end
 
