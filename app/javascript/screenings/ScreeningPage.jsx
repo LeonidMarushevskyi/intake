@@ -59,10 +59,6 @@ export class ScreeningPage extends React.Component {
 
   render() {
     const {referralId, reference, editable, mode, loaded, hasErrors, submitReferralErrors} = this.props
-    // TODO: Remove  cardStateMode once all the card modes in the store. Currently cardStateMode is required
-    // since existing cards that keep mode in state will not allow mode to change from the initial value passed
-    // from the screening.
-    const cardStateMode = editable ? mode : 'show'
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
