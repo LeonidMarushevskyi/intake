@@ -93,11 +93,11 @@ node('Slave') {
         //   catch(e) { /* Nothing to do */ }
         // }
 
-        // stage('Clean') {
-        //     retry(2) {
-        //         sh 'make clean'
-        //     }
-        //     sh 'make logout'
-        // }
+        stage('Clean') {
+            retry(2) {
+                sh 'make clean'
+            }
+            sh 'make logout'
+        }
     }
 }
