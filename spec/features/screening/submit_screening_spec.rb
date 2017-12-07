@@ -22,6 +22,61 @@ feature 'Submit Screening' do
       end
     end
 
+    context 'screening has people' do
+      let(:participant) { FactoryGirl.create(:participant) }
+      let(:existing_screening) { FactoryGirl.create(:screening, participants: [participant]) }
+
+      scenario 'submit button is disabled until all cards are saved' do
+        visit edit_screening_path(existing_screening.id)
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: 'Screening Information') { click_button 'Save' }
+        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+          click_button 'Save'
+        end
+        within('.card', text: 'Narrative') { click_button 'Save' }
+        within('.card', text: 'Incident Information') { click_button 'Save' }
+        within('.card', text: 'Allegations') { click_button 'Save' }
+        within('.card', text: 'Worker Safety') { click_button 'Save' }
+        within('.card', text: 'Cross Report') { click_button 'Save' }
+        within('.card', text: 'Decision') { click_button 'Save' }
+        expect(page).to have_button('Submit', disabled: false)
+      end
+
+      scenario 'submit button is disabled if screening cards are saved but person cards are not' do
+        visit edit_screening_path(existing_screening.id)
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: 'Screening Information') { click_button 'Save' }
+        within('.card', text: 'Narrative') { click_button 'Save' }
+        within('.card', text: 'Incident Information') { click_button 'Save' }
+        within('.card', text: 'Allegations') { click_button 'Save' }
+        within('.card', text: 'Worker Safety') { click_button 'Save' }
+        within('.card', text: 'Cross Report') { click_button 'Save' }
+        within('.card', text: 'Decision') { click_button 'Save' }
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+          click_button 'Save'
+        end
+        expect(page).to have_button('Submit', disabled: false)
+      end
+
+      scenario 'submit button is disabled if person cards are saved but screening cards are not' do
+        visit edit_screening_path(existing_screening.id)
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: 'Screening Information') { click_button 'Save' }
+        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+          click_button 'Save'
+        end
+        within('.card', text: 'Narrative') { click_button 'Save' }
+        within('.card', text: 'Incident Information') { click_button 'Save' }
+        within('.card', text: 'Allegations') { click_button 'Save' }
+        within('.card', text: 'Worker Safety') { click_button 'Save' }
+        within('.card', text: 'Cross Report') { click_button 'Save' }
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: 'Decision') { click_button 'Save' }
+        expect(page).to have_button('Submit', disabled: false)
+      end
+    end
+
     context 'when successfully submmitting referral' do
       let(:referral_id) { FFaker::Guid.guid }
       let(:screening_with_referral) do
