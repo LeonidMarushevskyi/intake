@@ -96,6 +96,26 @@ module ScreeningHelpers
     # TODO: remove this once we can consistently have a fresh page for these specs
     page.driver.browser.navigate.refresh
   end
+
+  def save_all_cards
+    within('.card', text: 'Screening Information') { click_button 'Save' }
+    within('.card', text: 'Narrative') { click_button 'Save' }
+    within('.card', text: 'Incident Information') { click_button 'Save' }
+    within('.card', text: 'Allegations') { click_button 'Save' }
+    within('.card', text: 'Worker Safety') { click_button 'Save' }
+    within('.card', text: 'Cross Report') { click_button 'Save' }
+    within('.card', text: 'Decision') { click_button 'Save' }
+  end
+
+  def cancel_all_cards
+    within('.card', text: 'Screening Information') { click_button 'Cancel' }
+    within('.card', text: 'Narrative') { click_button 'Cancel' }
+    within('.card', text: 'Incident Information') { click_button 'Cancel' }
+    within('.card', text: 'Allegations') { click_button 'Cancel' }
+    within('.card', text: 'Worker Safety') { click_button 'Cancel' }
+    within('.card', text: 'Cross Report') { click_button 'Cancel' }
+    within('.card', text: 'Decision') { click_button 'Cancel' }
+  end
 end
 
 RSpec.configure do |config|

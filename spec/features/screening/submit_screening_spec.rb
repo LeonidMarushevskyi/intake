@@ -94,6 +94,7 @@ feature 'Submit Screening' do
 
       scenario 'does not display an error banner with count of errors' do
         visit edit_screening_path(existing_screening.id)
+        save_all_cards
         click_button 'Submit'
 
         within '.page-error' do
@@ -105,6 +106,7 @@ feature 'Submit Screening' do
 
       scenario 'does not display an error alert with details of errors' do
         visit edit_screening_path(existing_screening.id)
+        save_all_cards
         click_button 'Submit'
 
         expect(page).to_not have_css('.error-message')
@@ -112,6 +114,7 @@ feature 'Submit Screening' do
 
       scenario 'displays a success modal and submits a screening to the API' do
         visit edit_screening_path(existing_screening.id)
+        save_all_cards
         click_button 'Submit'
 
         expect(
@@ -192,6 +195,7 @@ feature 'Submit Screening' do
         ).and_return(json_body(errors.to_json, status: 422))
 
         visit edit_screening_path(existing_screening.id)
+        save_all_cards
         click_button 'Submit'
 
         expect(

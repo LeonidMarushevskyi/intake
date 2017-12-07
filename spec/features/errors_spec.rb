@@ -116,6 +116,7 @@ feature 'error banner' do
           expect(page).to_not have_text(
             'Something went wrong, sorry! Please try your last action again.'
           )
+          cancel_all_cards
           click_button 'Submit'
           expect(page).to have_text(
             'Something went wrong, sorry! Please try your last action again.'
