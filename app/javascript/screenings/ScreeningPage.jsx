@@ -33,6 +33,7 @@ import CrossReportShowContainer from 'containers/screenings/CrossReportShowConta
 import DecisionFormContainer from 'containers/screenings/DecisionFormContainer'
 import DecisionShowContainer from 'containers/screenings/DecisionShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
+import {getAllCardsAreSavedValueSelector} from 'selectors/screening/screeningPageSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -158,7 +159,7 @@ export class ScreeningPage extends React.Component {
             releaseTwoInactive &&
             IntakeConfig.isFeatureActive('referral_submit') &&
             editable &&
-            <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} />
+            <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} disabled={this.props.disableSubmitButton} />
           }
           {
             releaseTwoInactive &&
@@ -190,6 +191,7 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  disableSubmitButton: PropTypes.bool,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
   hasErrors: PropTypes.bool,
@@ -210,6 +212,7 @@ ScreeningPage.defaultProps = {
 export function mapStateToProps(state, _ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
+    disableSubmitButton: !getAllCardsAreSavedValueSelector(state),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     mode: state.getIn(['screeningPage', 'mode']),
