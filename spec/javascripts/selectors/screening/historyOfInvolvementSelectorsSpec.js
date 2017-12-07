@@ -154,7 +154,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns the county name', () => {
-      const referrals = [{county_name: 'Yolo'}]
+      const referrals = [{county: {id: '1101', description: 'Yolo'}}]
       const state = fromJS({involvements: {referrals}})
       expect(getFormattedReferralsSelector(state).getIn([0, 'county'])).toEqual('Yolo')
     })

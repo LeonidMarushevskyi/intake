@@ -69,7 +69,7 @@ export const getFormattedReferralsSelector = createSelector(
       referralId: referral.getIn(['legacy_descriptor', 'legacy_ui_id']),
       status: [status, responseTime].filter((n) => n).join(' - '),
       notification: accessDescription(limitedAccessCode),
-      county: referral.get('county_name'),
+      county: referral.getIn(['county', 'description']),
       peopleAndRoles: peopleAndRoles,
       worker: nameFormatter({name_default: '', ...referral.get('assigned_social_worker', Map()).toJS()}),
       reporter: nameFormatter({name_default: '', ...referral.get('reporter', Map()).toJS()}),
