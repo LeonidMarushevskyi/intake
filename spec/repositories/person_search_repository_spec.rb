@@ -6,20 +6,8 @@ require 'feature/testing'
 describe PersonSearchRepository do
   describe '.search' do
     let(:security_token) { 'my_security_token' }
-    let(:results) do
-      {
-        'hits' =>  {
-          'hits' =>  [
-            { '_source' => { 'id' => '1' } },
-            { '_source' => { 'id' => '2' } }
-          ]
-        }
-      }
-    end
-
-    let(:response) { double(:response, body: results, status: 200) }
     let(:search_term) { 'Robert Barathian' }
-    let(:post) do
+    let(:query) do
       {
         query: {
           bool: {
@@ -73,17 +61,61 @@ describe PersonSearchRepository do
       }
     end
 
-    it 'returns the people results using Intake API' do
-      expect(DoraAPI).to receive(:make_api_call)
-        .with(
-          security_token,
-          '/dora/people/person/_search',
-          :post,
-          post
-        ).and_return(response)
-      person_results = PersonSearchRepository.search(security_token, search_term)
-      expect(person_results.first.id).to eq('1')
-      expect(person_results.last.id).to eq('2')
+    context 'when response from DORA is successful' do
+      let(:results) do
+        {
+          'hits' =>  {
+            'total' => 456,
+            'hits' =>  [
+              { '_source' => { 'id' => '1' } },
+              { '_source' => { 'id' => '2' } }
+            ]
+          }
+        }
+      end
+      let(:response) { double(:response, body: results, status: 200) }
+      it 'returns the people search results' do
+        expect(DoraAPI).to receive(:make_api_call)
+          .with(security_token, '/dora/people/person/_search', :post, query)
+          .and_return(response)
+        expect(
+          described_class.search(security_token, search_term)
+        ).to match a_hash_including(
+          'hits' => a_hash_including(
+            'total' => 456,
+            'hits' => array_including(
+              a_hash_including(
+                'id' => '1',
+                'sensitive' => false,
+                'sealed' => false,
+                'highlight' => {},
+                'legacy_id' => '1'
+              ),
+              a_hash_including(
+                'id' => '2',
+                'sensitive' => false,
+                'sealed' => false,
+                'highlight' => {},
+                'legacy_id' => '2'
+              )
+            )
+          )
+        )
+      end
+    end
+
+    context 'when response from DORA is successful' do
+      let(:response) { double(:response, body: 'Some error payload', status: 401) }
+      before do
+        allow(DoraAPI).to receive(:make_api_call)
+          .with(security_token, '/dora/people/person/_search', :post, query)
+          .and_return(response)
+      end
+      it 'raises an error' do
+        expect do
+          described_class.search(security_token, search_term)
+        end.to raise_error('Some error payload')
+      end
     end
   end
 end

@@ -227,4 +227,20 @@ describe PeopleSearchResultsInterpreter do
         .to eq(expected_races)
     end
   end
+
+  describe '.interpret_legacy_id' do
+    it 'assigns legacy_id to id' do
+      document = {
+        '_source' => {
+          'id' => 'I1dyXvW00b'
+        }
+      }
+      expect(described_class.interpret_legacy_id(document)).to match a_hash_including(
+        '_source' => a_hash_including(
+          'id' => 'I1dyXvW00b',
+          'legacy_id' => 'I1dyXvW00b'
+        )
+      )
+    end
+  end
 end
