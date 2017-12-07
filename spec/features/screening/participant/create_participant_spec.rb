@@ -107,6 +107,7 @@ feature 'Create participant' do
   let(:marge_response) do
     {
       hits: {
+        total: 1,
         hits: [{
           _source: {
             id: marge.id,
@@ -159,6 +160,7 @@ feature 'Create participant' do
   let(:homer_response) do
     {
       hits: {
+        total: 1,
         hits: [{
           _source: {
             id: homer.id,

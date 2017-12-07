@@ -11,6 +11,7 @@ feature 'searching a participant in autocompleter' do
 
     {
       hits: {
+        total: 1,
         hits: [{
           _source: {
             id: person.id,
@@ -124,7 +125,6 @@ feature 'searching a participant in autocompleter' do
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
-        expect(page).to have_content 'Showing 1 of 1 results'
       end
 
       within 'li', text: 'Marge Jacqueline Simpson MD' do
@@ -277,13 +277,50 @@ feature 'searching a participant in autocompleter' do
 
     scenario 'search displays no results when none are returned' do
       no_search_results = {
-        hits: { hits: [] }
+        hits: {
+          total: 0,
+          hits: []
+        }
       }
-      stub_person_search('No results', no_search_results.to_json)
-
+      stub_person_search('No', no_search_results)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'No results', skip_select: true
-        expect(page).to have_content 'No results were found for \"No\"'
+        fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
+        expect(page).to have_content 'No results were found for "No"'
+      end
+    end
+
+    scenario 'search displays the number of results in results header' do
+      search_results = {
+        hits: {
+          total: 25,
+          hits: [{
+            _source: {
+              race_ethnicity: {},
+              addresses: [],
+              gender: 'male',
+              languages: [],
+              date_of_birth: '1991-08-08',
+              legacy_descriptor: {},
+              last_name: 'Person',
+              middle_name: 'Middle name',
+              ssn: '',
+              phone_numbers: [],
+              id: 'Ca10L2205I',
+              first_name: 'Random',
+              sensitivity_indicator: 'N',
+              sensitive: false,
+              sealed: false,
+              races: [],
+              ethnicity: {},
+              legacy_id: 'Ca10L2205I'
+            }
+          }]
+        }
+      }
+      stub_person_search('So', search_results)
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'So', skip_select: true
+        expect(page).to have_content 'Showing 1-25 of 25 results for "So"'
       end
     end
   end
