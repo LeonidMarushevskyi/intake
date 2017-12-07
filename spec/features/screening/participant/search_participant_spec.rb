@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 require 'feature/testing'
 feature 'searching a participant in autocompleter' do
-  def build_marge_response_from_person(person)
+  def build_response_from_person(person)
     sealed_and_sensitive = 'N'
     sealed_and_sensitive = 'S' if person.sensitive
     sealed_and_sensitive = 'R' if person.sealed
@@ -106,7 +106,7 @@ feature 'searching a participant in autocompleter' do
   end
 
   let(:marge_response) do
-    build_marge_response_from_person(person)
+    build_response_from_person(person)
   end
   before do
     stub_request(
@@ -119,7 +119,7 @@ feature 'searching a participant in autocompleter' do
 
   context 'search for a person' do
     scenario 'search result contains person information' do
-      built_response = build_marge_response_from_person(person)
+      built_response = build_response_from_person(person)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -146,15 +146,6 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
-    scenario 'search contains no results' do
-      stub_person_search('No', [].to_json)
-
-      within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
-        expect(page).to have_content 'No results were found for'
-      end
-    end
-
     scenario 'search results format the SSN' do
       marge = FactoryGirl.create(
         :person_search,
@@ -163,7 +154,7 @@ feature 'searching a participant in autocompleter' do
         legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
         ssn: '123456789'
       )
-      built_response = build_marge_response_from_person(marge)
+      built_response = build_response_from_person(marge)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -182,7 +173,7 @@ feature 'searching a participant in autocompleter' do
         addresses: [address],
         legacy_descriptor: { legacy_ui_id: '123-456-789', legacy_table_description: 'Client' }
       )
-      built_response = build_marge_response_from_person(marge)
+      built_response = build_response_from_person(marge)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -227,7 +218,7 @@ feature 'searching a participant in autocompleter' do
         sensitive: false,
         sealed: false
       )
-      built_response = build_marge_response_from_person(marge)
+      built_response = build_response_from_person(marge)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -249,7 +240,7 @@ feature 'searching a participant in autocompleter' do
         sensitive: true,
         sealed: false
       )
-      built_response = build_marge_response_from_person(marge)
+      built_response = build_response_from_person(marge)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -271,7 +262,7 @@ feature 'searching a participant in autocompleter' do
         sensitive: false,
         sealed: true
       )
-      built_response = build_marge_response_from_person(marge)
+      built_response = build_response_from_person(marge)
       stub_person_search('Ma', built_response)
 
       within '#search-card', text: 'Search' do
@@ -281,6 +272,18 @@ feature 'searching a participant in autocompleter' do
       within 'li', text: 'Marge' do
         expect(page).to_not have_content 'Sensitive'
         expect(page).to have_content 'Sealed'
+      end
+    end
+
+    scenario 'search displays no results when none are returned' do
+      no_search_results = {
+        hits: { hits: [] }
+      }
+      stub_person_search('No results', no_search_results.to_json)
+
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'No results', skip_select: true
+        expect(page).to have_content 'No results were found for \"No\"'
       end
     end
   end
