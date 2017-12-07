@@ -76,7 +76,7 @@ describe PersonSearchRepository do
       let(:response) { double(:response, body: results, status: 200) }
       it 'returns the people search results' do
         expect(DoraAPI).to receive(:make_api_call)
-          .with(security_token, '/dora/people/person/_search', :post, query)
+          .with(security_token, '/dora/people-summary/person-summary/_search', :post, query)
           .and_return(response)
         expect(
           described_class.search(security_token, search_term)
@@ -108,7 +108,7 @@ describe PersonSearchRepository do
       let(:response) { double(:response, body: 'Some error payload', status: 401) }
       before do
         allow(DoraAPI).to receive(:make_api_call)
-          .with(security_token, '/dora/people/person/_search', :post, query)
+          .with(security_token, '/dora/people-summary/person-summary/_search', :post, query)
           .and_return(response)
       end
       it 'raises an error' do
