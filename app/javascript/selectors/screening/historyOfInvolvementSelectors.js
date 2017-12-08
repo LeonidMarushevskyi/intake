@@ -21,7 +21,7 @@ const formatDisposition = (disposition) => {
 export const getFormattedCasesSelector = createSelector(
   getCasesSelector,
   (cases) => cases.map((hoiCase) => {
-    const limitedAccessCode = hoiCase.getIn(['access_limitation', 'limited_access_code'], 'N')
+    const limitedAccessCode = hoiCase.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
     const serviceComponent = hoiCase.get('service_component')
     return fromJS({
@@ -47,7 +47,7 @@ export const getFormattedReferralsSelector = createSelector(
   (referrals) => referrals.map((referral) => {
     const status = referral.get('end_date') ? 'Closed' : 'Open'
     const responseTime = referral.get('response_time')
-    const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'N')
+    const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const peopleAndRoles = referral.get('allegations', List()).map((allegation) => (Map({
       victim: nameFormatter({
         first_name: allegation.getIn(['victim', 'first_name']),

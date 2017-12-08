@@ -69,8 +69,8 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedCasesSelector(state).getIn([0, 'parents'])).toEqual('')
     })
 
-    it('returns Sealed if the access indicator is R', () => {
-      const cases = [{access_limitation: {limited_access_code: 'R'}}]
+    it('returns Sealed if the access indicator is SEALED', () => {
+      const cases = [{access_limitation: {limited_access_code: 'SEALED'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'restrictedAccessStatus'])).toEqual('Sealed')
     })
@@ -148,7 +148,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns a restrictedAccessStatus if one is present', () => {
-      const referrals = [{access_limitation: {limited_access_code: 'R'}}]
+      const referrals = [{access_limitation: {limited_access_code: 'SEALED'}}]
       const state = fromJS({involvements: {referrals}})
       expect(getFormattedReferralsSelector(state).getIn([0, 'notification'])).toEqual('Sealed')
     })

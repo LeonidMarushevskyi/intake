@@ -22,12 +22,18 @@ describe('accessDescription', () => {
   it('returns Sealed when accessCode is R', () => {
     expect(accessDescription('R')).toEqual('Sealed')
   })
+  it('returns Sealed when accessCode is SEALED', () => {
+    expect(accessDescription('SEALED')).toEqual('Sealed')
+  })
 
   it('returns Sensitive when accessCode is S', () => {
     expect(accessDescription('S')).toEqual('Sensitive')
   })
+  it('returns Sensitive when accessCode is SENSITIVE', () => {
+    expect(accessDescription('SENSITIVE')).toEqual('Sensitive')
+  })
 
-  it('returns undefined when accessCode is neither R nor S', () => {
+  it('returns undefined when accessCode is neither R, S, SEALED nor SENSITIVE', () => {
     expect(accessDescription({})).toEqual(undefined)
   })
 })
