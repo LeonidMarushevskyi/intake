@@ -31,10 +31,11 @@ export default class Autocompleter extends React.Component {
   loadSuggestions(value) {
     this.setState({isLoading: true})
     Utils.request('GET', '/api/v1/people/search', {search_term: value})
-      .then((result) =>
+      .then(({hits: {total, hits}}) =>
         this.setState({
           isLoading: false,
-          suggestions: result,
+          total,
+          suggestions: hits,
         })
       )
   }
@@ -68,10 +69,18 @@ export default class Autocompleter extends React.Component {
 
   mapPersonSearchAttributes(suggestion) {
     const {
-      middle_name, name_suffix, legacy_descriptor,
-      gender, languages, races, ethnicity,
-      addresses, phone_numbers, highlight,
-      sensitive, sealed,
+      middle_name,
+      name_suffix,
+      legacy_descriptor,
+      gender,
+      languages,
+      races,
+      ethnicity,
+      addresses = [],
+      phone_numbers = [],
+      highlight,
+      sensitive,
+      sealed,
     } = suggestion
     const first = 0
     const address = addresses[first] || null

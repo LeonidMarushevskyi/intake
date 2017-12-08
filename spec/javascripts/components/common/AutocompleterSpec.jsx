@@ -7,9 +7,9 @@ import {shallow, mount} from 'enzyme'
 import _ from 'lodash'
 
 describe('<Autocompleter />', () => {
-  function stubSuggestions(suggestions) {
+  function stubSuggestions(results) {
     const promise = jasmine.createSpyObj('promise', ['then'])
-    promise.then.and.callFake((thenFunc) => thenFunc(suggestions))
+    promise.then.and.callFake((thenFunc) => thenFunc({hits: {hits: results}}))
     spyOn(Utils, 'request')
     Utils.request.and.returnValue(promise)
   }
