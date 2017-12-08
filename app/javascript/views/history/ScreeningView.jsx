@@ -11,11 +11,11 @@ const ScreeningView = ({dateRange, status, county, people, reporter, worker}) =>
     <td>{county}</td>
     <td>
       <div className='row'>
-        <span className='col-md-12 people'>{people}</span>
+        <div className='col-md-12 people'>{people}</div>
       </div>
       <div className='row'>
-        <span className='col-md-6 reporter'>Reporter: {reporter}</span>
-        <span className='col-md-6 worker'>Worker: {worker}</span>
+        <div className='col-md-6 reporter'>Reporter: {reporter}</div>
+        <div className='col-md-6 worker'>Worker: {worker}</div>
       </div>
     </td>
   </tr>

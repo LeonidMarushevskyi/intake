@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import CaseView from 'views/history/CaseView'
 import ReferralView from 'views/history/ReferralView'
 import ScreeningView from 'views/history/ScreeningView'
-import clipboard from 'clipboard-js'
+import Clipboard from 'react-clipboard.js'
 
 export default class HistoryTable extends React.Component {
   render() {
-    const {cases, referrals, screenings, showCopyButton} = this.props
+    const {cases, referrals, screenings} = this.props
     return (<div className='card-body no-pad-top'>
-      <div className='table-responsive'>
-        <table className='table table-hover' ref={(history) => { this.historyTable = history }}>
+      <div className='table-responsive' ref={(history) => { this.historyTable = history }}>
+        <table className='table table-hover'>
           <colgroup>
             <col className='col-md-2' />
             <col className='col-md-2'/>
@@ -34,20 +34,9 @@ export default class HistoryTable extends React.Component {
       </div>
       <div className='row'>
         <div className='centered'>
-          { showCopyButton &&
-            <button
-              onClick={() => this.historyTable && clipboard.copy({
-                'text/plain': this.historyTable.innerText,
-                'text/html': this.historyTable.outerHTML,
-              })}
-              className='btn btn-primary'
-            >
-              Copy
-            </button>
-          }
-          { !showCopyButton &&
-              <p>To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select &quot;Copy.&quot;</p>
-          }
+          <Clipboard className='btn btn-primary' option-target={() => (this.historyTable)}>
+            Copy
+          </Clipboard>
         </div>
       </div>
     </div>
@@ -59,5 +48,4 @@ HistoryTable.propTypes = {
   cases: PropTypes.array,
   referrals: PropTypes.array,
   screenings: PropTypes.array,
-  showCopyButton: PropTypes.bool,
 }
