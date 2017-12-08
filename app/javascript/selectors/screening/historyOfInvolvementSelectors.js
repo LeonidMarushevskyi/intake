@@ -50,19 +50,19 @@ export const getFormattedReferralsSelector = createSelector(
     const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'N')
     const peopleAndRoles = referral.get('allegations', List()).map((allegation) => (Map({
       victim: nameFormatter({
-        first_name: allegation.get('victim_first_name'),
-        middle_name: allegation.get('victim_middle_name'),
-        last_name: allegation.get('victim_last_name'),
-        name_suffix: allegation.get('victim_name_suffix'),
+        first_name: allegation.getIn(['victim', 'first_name']),
+        middle_name: allegation.getIn(['victim', 'middle_name']),
+        last_name: allegation.getIn(['victim', 'last_name']),
+        name_suffix: allegation.getIn(['victim', 'name_suffix']),
         name_default: ''}),
       perpetrator: nameFormatter({
-        first_name: allegation.get('perpetrator_first_name'),
-        middle_name: allegation.get('perpetrator_middle_name'),
-        last_name: allegation.get('perpetrator_last_name'),
-        name_suffix: allegation.get('perpetrator_name_suffix'),
+        first_name: allegation.getIn(['perpetrator', 'first_name']),
+        middle_name: allegation.getIn(['perpetrator', 'middle_name']),
+        last_name: allegation.getIn(['perpetrator', 'last_name']),
+        name_suffix: allegation.getIn(['perpetrator', 'name_suffix']),
         name_default: ''}),
-      allegations: allegation.get('allegation_description', ''),
-      disposition: formatDisposition(allegation.get('disposition_description')),
+      allegations: allegation.getIn(['type', 'description'], ''),
+      disposition: formatDisposition(allegation.getIn(['disposition', 'description'])),
     })))
     return fromJS({
       dateRange: dateRangeFormatter(referral.toJS()),

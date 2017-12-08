@@ -186,12 +186,10 @@ describe('historyOfInvolvementSelectors', () => {
     it('returns an object that includes a victim, a perpetrator, allegations, and a disposition', () => {
       const referrals = [{
         allegations: [{
-          victim_last_name: 'W.',
-          victim_first_name: 'Sharon',
-          perpetrator_last_name: 'W.',
-          perpetrator_first_name: 'Ricky',
-          disposition_description: 'Substantiated',
-          allegation_description: 'Sexual Abuse',
+          type: {id: '2179', description: 'Sexual Abuse'},
+          disposition: {id: '45', description: 'Substantiated'},
+          victim: {first_name: 'Sharon', last_name: 'W.'},
+          perpetrator: {first_name: 'Ricky', last_name: 'W.'},
         }],
       }]
       const state = fromJS({involvements: {referrals}})
