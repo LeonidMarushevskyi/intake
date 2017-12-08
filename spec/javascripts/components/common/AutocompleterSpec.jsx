@@ -413,21 +413,22 @@ describe('<Autocompleter />', () => {
   })
 
   describe('#renderSuggestionsContainer', () => {
+    const footer = (<span>Footer</span>)
     it('renders the suggestions container', () => {
-      const component = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter footer={footer} />)
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).find('div.baz').html()).toContain('foobar')
     })
 
     it('renders no results were found', () => {
-      const component = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter footer={footer} />)
       component.instance().setState({value: 'Simpson', suggestions: [], total: 0})
       expect(component.html()).toContain('No results were found for &quot;Simpson&quot;')
     })
 
     it('renders number of results found', () => {
       const suggestions = [{first_name: 'Bart', last_name: 'Simpson'}, {first_name: 'Lisa', last_name: 'Simpson'}, {footer: ''}]
-      const component = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter footer={footer} />)
       component.instance().setState({value: 'Simpson', suggestions, total: 2})
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).find('div.baz').html()).toContain('Showing 1-2 of 2 results for &quot;Simpson&quot;')

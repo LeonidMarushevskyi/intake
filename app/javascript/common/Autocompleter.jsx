@@ -159,9 +159,6 @@ export default class Autocompleter extends React.Component {
   render() {
     const {value, suggestions} = this.state
     const {id, footer} = this.props
-    if (footer && suggestions[suggestions.length - 1] !== footer) {
-      suggestions.push(footer)
-    }
     const inputProps = {
       id,
       value,
@@ -169,7 +166,7 @@ export default class Autocompleter extends React.Component {
     }
     return (
       <ReactAutosuggest
-        suggestions={suggestions}
+        suggestions={footer ? [...suggestions, footer] : suggestions}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
