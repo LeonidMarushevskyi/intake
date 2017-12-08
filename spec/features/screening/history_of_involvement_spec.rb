@@ -37,11 +37,14 @@ feature 'History card' do
     let(:screenings) do
       [
         {
+          id: '1234',
           start_date: '2016-09-10',
-          county_name: 'el_dorado',
-          # until we have users, TPT is saving the entire name in the last_name field
-          assigned_social_worker: { first_name: nil, last_name: 'Bob Smith' },
-          reporter: { first_name: 'Alex', last_name: 'Hanson' },
+          county: {
+            id: '1101',
+            description: 'El Dorado'
+          },
+          assigned_social_worker: { id: 'wrk1234', first_name: 'Bob', last_name: 'Smith' },
+          reporter: { id: 'rpt1234', first_name: 'Alex', last_name: 'Hanson' },
           all_people: [
             { first_name: 'Bob', last_name: 'Bob Smith', roles: ['Assigned Social Worker'] },
             { first_name: 'Alex', last_name: 'Hanson', roles: ['Reporter'] },
@@ -53,7 +56,10 @@ feature 'History card' do
         {
           start_date: '2016-08-10',
           end_date: '2016-11-12',
-          county_name: 'el_dorado',
+          county: {
+            id: '1101',
+            description: 'El Dorado'
+          },
           reporter: { first_name: nil, last_name: nil },
           assigned_social_worker: { first_name: nil, last_name: nil },
           all_people: []
@@ -64,10 +70,17 @@ feature 'History card' do
     let(:referrals) do
       [
         {
+          id: '1234',
           start_date: '2016-11-14',
           end_date: '2016-12-14',
-          response_time: 'Immediate',
-          county_name: 'Madera',
+          county: {
+            id: '1234',
+            description: 'Madera'
+          },
+          response_time: {
+            id: '1518',
+            description: 'Immediate'
+          },
           reporter: {
             first_name: 'Reporter1',
             last_name: 'r1LastName'
@@ -78,24 +91,34 @@ feature 'History card' do
           },
           allegations: [
             {
-              allegation_description: 'General Neglect',
-              disposition_description: 'Entered in Error',
-              perpetrator_first_name: 'Perpetrator1',
-              perpetrator_last_name: 'p1LastName',
-              victim_first_name: 'Victim1',
-              victim_last_name: 'v1LastName'
+              description: 'General Neglect',
+              disposition: {
+                id: '45',
+                description: 'Entered in Error'
+              },
+              victim: {
+                first_name: 'Victim1',
+                last_name: 'v1LastName'
+              },
+              perpetrator: {
+                first_name: 'Perpetrator1',
+                last_name: 'p1LastName'
+              }
             }
           ],
           legacy_descriptor: {
             legacy_ui_id: '0853-2115-5670-6000802'
           },
           access_limitation: {
-            limited_access_code: 'R'
+            limited_access_code: 'SEALED'
           }
         },
         {
           start_date: '2016-05-06',
-          county_name: 'San Francisco',
+          county: {
+            id: '415',
+            description: 'San Francisco'
+          },
           reporter: {
             first_name: 'Reporter2',
             last_name: 'r2LastName'
@@ -106,18 +129,22 @@ feature 'History card' do
           },
           allegations: [
             {
-              allegation_description: 'Severe Neglect',
-              perpetrator_first_name: 'Perpetrator2',
-              perpetrator_last_name: 'p2LastName',
-              victim_first_name: 'Victim2',
-              victim_last_name: 'v2LastName'
+              description: 'Severe Neglect',
+              victim: {
+                first_name: 'Victim2',
+                last_name: 'v2LastName'
+              },
+              perpetrator: {
+                first_name: 'Perpetrator2',
+                last_name: 'p2LastName'
+              }
             }
           ],
           legacy_descriptor: {
             legacy_ui_id: '0202-9769-1248-2000283'
           },
           access_limitation: {
-            limited_access_code: 'S'
+            limited_access_code: 'SENSETIVE'
           }
         }
       ]
@@ -133,18 +160,32 @@ feature 'History card' do
             id: '0rumtwQ0Bn',
             first_name: 'fChild1'
           },
-          county_name: 'El Dorado',
-          service_component: 'Family Reunification',
+          county: {
+            id: '1101',
+            description: 'El Dorado'
+          },
+          service_component: {
+            id: '1695',
+            description: 'Family Reunification'
+          },
           parents: [
             {
               last_name: 'p1Last',
               id: 'AbiQA5q0Bo',
-              first_name: 'Parent1'
+              first_name: 'Parent1',
+              relationship: {
+                id: 'p1234',
+                description: 'Father/Son (Step)'
+              }
             },
             {
               last_name: 'p2Last',
               id: 'CaTvuzq0Bo',
-              first_name: 'Parent2'
+              first_name: 'Parent2',
+              relationship: {
+                id: 'p1234',
+                description: 'Mother/Son (Adoptive)'
+              }
             }
           ],
           assigned_social_worker: {
@@ -155,7 +196,7 @@ feature 'History card' do
             legacy_ui_id: '0393-5909-1798-6027230'
           },
           access_limitation: {
-            limited_access_code: 'R'
+            limited_access_code: 'SEALED'
           }
         },
         {
@@ -165,17 +206,28 @@ feature 'History card' do
             id: '1234567',
             first_name: 'fChild2'
           },
-          county_name: 'Plumas',
+          county: {
+            id: 'p123',
+            description: 'Plumas'
+          },
           parents: [
             {
               last_name: 'p3Last',
               id: 'ABC123',
-              first_name: 'Parent3'
+              first_name: 'Parent3',
+              relationship: {
+                id: 'p1234',
+                description: 'Father/Son (Adoptive)'
+              }
             },
             {
               last_name: 'p4Last',
               id: 'ABCDEFG',
-              first_name: 'Parent4'
+              first_name: 'Parent4',
+              relationship: {
+                id: 'p1234',
+                description: 'Mother/Son (Adoptive)'
+              }
             }
           ],
           assigned_social_worker: {
@@ -186,7 +238,7 @@ feature 'History card' do
             legacy_ui_id: '0208-9997-9274-0000863'
           },
           access_limitation: {
-            limited_access_code: 'N'
+            limited_access_code: 'NONE'
           }
         }
       ]
@@ -201,6 +253,7 @@ feature 'History card' do
     end
 
     before do
+      pending 'Completion of HOI frontend'
       existing_screening.participants = [FactoryGirl.create(:participant)]
 
       stub_request(
