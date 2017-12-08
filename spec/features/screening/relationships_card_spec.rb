@@ -121,6 +121,7 @@ feature 'Relationship card' do
 
     describe 'editing a screening' do
       scenario 'loads relationships on initial page load' do
+        stub_empty_history_for_screening(participants_screening)
         visit edit_screening_path(id: participants_screening.id)
 
         within '#relationships-card.card.show', text: 'Relationships' do
