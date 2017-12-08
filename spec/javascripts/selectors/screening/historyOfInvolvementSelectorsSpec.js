@@ -142,7 +142,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('includes the response time for a given referral in the status, if present', () => {
-      const referrals = [{response_time: 'Immediate'}]
+      const referrals = [{response_time: {id: '1518', description: 'Immediate'}}]
       const state = fromJS({involvements: {referrals}})
       expect(getFormattedReferralsSelector(state).getIn([0, 'status'])).toEqual('Open - Immediate')
     })

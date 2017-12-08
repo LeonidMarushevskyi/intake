@@ -46,7 +46,7 @@ export const getFormattedReferralsSelector = createSelector(
   getReferralsSelector,
   (referrals) => referrals.map((referral) => {
     const status = referral.get('end_date') ? 'Closed' : 'Open'
-    const responseTime = referral.get('response_time')
+    const responseTime = referral.getIn(['response_time', 'description'])
     const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const peopleAndRoles = referral.get('allegations', List()).map((allegation) => (Map({
       victim: nameFormatter({
