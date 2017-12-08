@@ -80,6 +80,14 @@ describe ExternalRoutes do
     end
   end
 
+  describe '.ferb_api_screening_history_of_involvements_path' do
+    it 'returns /screenings/:id/history_of_involvements' do
+      expect(described_class.ferb_api_screening_history_of_involvements_path(82)).to eq(
+        '/screenings/82/history_of_involvements'
+      )
+    end
+  end
+
   describe '.ferb_api_investigations_contacts_path' do
     it 'returns /investigations/:id/contacts' do
       expect(described_class.ferb_api_investigations_contacts_path(33)).to eq(
