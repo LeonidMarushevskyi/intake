@@ -13,7 +13,7 @@ module WebmockHelpers
   def stub_person_search(search_term, person_response)
     stub_request(
       :post,
-      dora_api_url(Rails.application.routes.url_helpers.dora_people_path)
+      dora_api_url(Rails.application.routes.url_helpers.dora_people_light_index_path)
     )
       .with('body' => {
               'query' => {
