@@ -5,6 +5,14 @@ require 'spec_helper'
 
 feature 'Relationship card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:empty_response) do
+    {
+      hits: {
+        total: 1,
+        hits: []
+      }
+    }.to_json
+  end
 
   context 'a screening without participants' do
     scenario 'edit an existing screening' do
@@ -171,15 +179,10 @@ feature 'Relationship card' do
           :participant, :unpopulated,
           screening_id: participants_screening.id
         )
-        new_participant_request = {
-          screening_id: participants_screening.id,
-          legacy_id: nil,
-          legacy_source_table: nil,
-          legacy_descriptor: nil
-        }
+        screening_id = participants_screening.id
 
-        stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-          .with(body: new_participant.as_json(except: :id).merge(new_participant_request))
+        stub_request(:post,
+          intake_api_url(ExternalRoutes.intake_api_screening_people_path(screening_id)))
           .and_return(json_body(new_participant.to_json, status: 201))
 
         new_relationships = [
@@ -212,9 +215,8 @@ feature 'Relationship card' do
           )
         ).and_return(json_body(new_relationships.to_json, status: 200))
 
-        stub_request(
-          :get, intake_api_url(ExternalRoutes.intake_api_people_search_v2_path(search_term: 'ma'))
-        ).and_return(json_body([].to_json, status: 200))
+        stub_person_search('ma', empty_response)
+        stub_person_search('undefined undefined', empty_response)
 
         within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true
