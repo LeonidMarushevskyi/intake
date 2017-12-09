@@ -23,10 +23,10 @@ export const getFormattedCasesSelector = createSelector(
   (cases) => cases.map((hoiCase) => {
     const limitedAccessCode = hoiCase.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
-    const serviceComponent = hoiCase.get('service_component')
+    const serviceComponent = hoiCase.getIn(['service_component', 'description'])
     return fromJS({
       caseId: hoiCase.getIn(['legacy_descriptor', 'legacy_ui_id']),
-      county: hoiCase.get('county_name'),
+      county: hoiCase.getIn(['county', 'description']),
       dateRange: dateRangeFormatter(hoiCase.toJS()),
       focusChild: nameFormatter(hoiCase.get('focus_child', Map()).toJS()),
       parents: hoiCase.get('parents', List()).map((parent) => nameFormatter(parent.toJS())).join(', '),

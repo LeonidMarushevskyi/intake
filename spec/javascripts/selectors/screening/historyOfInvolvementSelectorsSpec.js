@@ -37,7 +37,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns the county_name as county', () => {
-      const cases = [{county_name: 'Amador'}]
+      const cases = [{county: {id: '1101', description: 'Amador'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'county'])).toEqual('Amador')
     })
@@ -93,7 +93,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('adds the service component to the status if one exists', () => {
-      const cases = [{end_date: '2003-01-01', service_component: 'Family reunification'}]
+      const cases = [{end_date: '2003-01-01', service_component: {id: '1695', description: 'Family reunification'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'status'])).toEqual('Closed - Family reunification')
     })
