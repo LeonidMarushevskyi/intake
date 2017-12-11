@@ -1,16 +1,14 @@
 import HistoryTable from 'views/history/HistoryTable'
 import React from 'react'
-import {shallow, mount} from 'enzyme'
-import clipboard from 'clipboard-js'
+import {shallow} from 'enzyme'
 
 describe('HistoryTable', () => {
   function renderHistoryTable({
     cases = [],
     referrals = [],
     screenings = [],
-    showCopyButton = false,
   }) {
-    const props = {cases, referrals, screenings, showCopyButton}
+    const props = {cases, referrals, screenings}
     return shallow(<HistoryTable {...props}/>)
   }
 
@@ -45,37 +43,10 @@ describe('HistoryTable', () => {
     })
 
     describe('copy button', () => {
-      const manualCopyMessage = 'To copy the history to your clipboard, highlight the table above, click the right button of your mouse, and select "Copy."'
-
-      it('shows help text instead of copybutton if showCopyButton is set to false', () => {
-        const component = renderHistoryTable({showCopyButton: false})
-        expect(component.find('button[children="Copy"]').exists()).toEqual(false)
-        expect(component.text()).toContain(manualCopyMessage)
-      })
-
-      it('displays a copy button with an onClick callback if showCopyButton is set to true', () => {
-        const component = renderHistoryTable({showCopyButton: true})
-        const copyButton = component.find('button[children="Copy"]')
-        expect(copyButton.props().onClick).toEqual(jasmine.any(Function))
-        expect(component.text()).not.toContain(manualCopyMessage)
-      })
-
-      it('calls the clipboard library when clicked', () => {
-        spyOn(clipboard, 'copy')
-        const component = mount(
-          <HistoryTable
-            cases={[]}
-            referrals={[]}
-            screenings={[]}
-            showCopyButton={true}
-          />
-        )
-        const resultsTable = component.find('table').node
-        component.find('button[children="Copy"]').simulate('click')
-        expect(clipboard.copy).toHaveBeenCalledWith({
-          'text/plain': resultsTable.innerText,
-          'text/html': resultsTable.outerHTML,
-        })
+      it('renders', () => {
+        const component = renderHistoryTable({})
+        const copyButton = component.find('ClipboardButton')
+        expect(copyButton.props()['option-target']).toBeDefined()
       })
     })
   })

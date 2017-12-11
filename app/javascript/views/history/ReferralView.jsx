@@ -42,12 +42,8 @@ const ReferralView = ({dateRange, referralId, status, notification, county, peop
         </div>
       </div>
       <div className='row'>
-        <span className='col-md-6 reporter'>
-          Reporter: {reporter}
-        </span>
-        <span className='col-md-6 assignee'>
-          Worker: {worker}
-        </span>
+        <div className='col-md-6 reporter'>Reporter: {reporter}</div>
+        <div className='col-md-6 assignee'>Worker: {worker}</div>
       </div>
     </td>
   </tr>
