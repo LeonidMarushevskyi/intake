@@ -26,15 +26,6 @@ describe('<Autocompleter />', () => {
     expect(component.find(ReactAutosuggest).length).toBe(1)
   })
 
-  describe('#onChange', () => {
-    it('updates the value of the "value" state', () => {
-      const component = shallow(<Autocompleter />)
-      expect(component.state('value')).toBe('')
-      component.instance().onChange('some_event', {newValue: 'foobar', method: 'baz'})
-      expect(component.state('value')).toBe('foobar')
-    })
-  })
-
   describe('#onSuggestionsFetchRequested', () => {
     const bart_simpson = {first_name: 'Bart', last_name: 'Simpson'}
     let component

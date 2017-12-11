@@ -22,7 +22,6 @@ export default class Autocompleter extends React.Component {
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
     this.renderSuggestion = this.renderSuggestion.bind(this)
     this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
-    this.onChange = this.onChange.bind(this)
     this.loadSuggestions = this.loadSuggestions.bind(this)
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, debounceDelay)
   }
@@ -36,10 +35,6 @@ export default class Autocompleter extends React.Component {
           suggestions: result,
         })
       )
-  }
-
-  onChange(event, {newValue}) {
-    this.setState({value: newValue})
   }
 
   onSuggestionsFetchRequested({value}) {
@@ -166,7 +161,7 @@ export default class Autocompleter extends React.Component {
     const inputProps = {
       id: this.props.id,
       value,
-      onChange: this.onChange,
+      onChange: (event, {newValue}) => this.setState({value: newValue}),
     }
     return (
       <ReactAutosuggest
