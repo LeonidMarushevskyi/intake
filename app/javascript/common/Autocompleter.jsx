@@ -82,18 +82,17 @@ export default class Autocompleter extends React.Component {
       sensitive,
       sealed,
     } = suggestion
-    const first = 0
-    const address = addresses[first] || null
-    const phoneNumber = phone_numbers[first] || null
-    var highlightedText = (fieldName, suggestion, highlight) => {
-      if (highlight && highlight[fieldName]) {
+    const [address = null] = addresses
+    const [phoneNumber = null] = phone_numbers
+    var highlightedText = (fieldName, suggestion, highlight = {}) => {
+      if (highlight[fieldName]) {
         return highlight[fieldName]
       } else {
         return suggestion[fieldName]
       }
     }
-    var formatSSN = (suggestion) => {
-      if (suggestion && suggestion.ssn) {
+    var formatSSN = (suggestion = {}) => {
+      if (suggestion.ssn) {
         return {ssn: `${suggestion.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')}`}
       } else {
         return suggestion
