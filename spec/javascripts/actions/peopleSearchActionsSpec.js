@@ -1,4 +1,10 @@
-import {search, fetchSuccess, fetchFailure, clear} from 'actions/peopleSearchActions'
+import {
+  search,
+  fetchSuccess,
+  fetchFailure,
+  clear,
+  setSearchTerm,
+} from 'actions/peopleSearchActions'
 import {isFSA} from 'flux-standard-action'
 
 describe('peopleSearchActions', () => {
@@ -24,6 +30,11 @@ describe('peopleSearchActions', () => {
 
   it('clear is FSA compliant', () => {
     const action = clear()
+    expect(isFSA(action)).toEqual(true)
+  })
+
+  it('setSearchTerm is FSA compliant', () => {
+    const action = setSearchTerm('hello')
     expect(isFSA(action)).toEqual(true)
   })
 })
