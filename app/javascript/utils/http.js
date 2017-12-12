@@ -103,8 +103,8 @@ export function request(method, url, data, options) {
   })
 }
 
-export function get(url) {
-  return request('GET', url, null, {contentType: 'application/json'})
+export function get(url, data = null) {
+  return request('GET', url, data, {contentType: 'application/json'})
 }
 
 export function destroy(url) {
