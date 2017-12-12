@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
 import _ from 'lodash'
+import SuggestionHeader from 'common/SuggestionHeader'
 const MIN_SEARCHABLE_CHARS = 2
 
 export default class Autocompleter extends React.Component {
@@ -11,6 +12,7 @@ export default class Autocompleter extends React.Component {
     super(props)
     this.state = {
       value: '',
+      total: 0,
       suggestions: [],
       isLoading: false,
       isAutocompleterFocused: false,
@@ -22,7 +24,6 @@ export default class Autocompleter extends React.Component {
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
     this.renderSuggestion = this.renderSuggestion.bind(this)
     this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
-    this.onChange = this.onChange.bind(this)
     this.loadSuggestions = this.loadSuggestions.bind(this)
     this.debouncedLoadSuggestions = _.debounce(this.loadSuggestions, debounceDelay)
   }
@@ -30,16 +31,13 @@ export default class Autocompleter extends React.Component {
   loadSuggestions(value) {
     this.setState({isLoading: true})
     Utils.request('GET', '/api/v1/people/search', {search_term: value})
-      .then((result) =>
+      .then(({hits: {total, hits}}) =>
         this.setState({
           isLoading: false,
-          suggestions: result,
+          total,
+          suggestions: hits,
         })
       )
-  }
-
-  onChange(event, {newValue}) {
-    this.setState({value: newValue})
   }
 
   onSuggestionsFetchRequested({value}) {
@@ -71,10 +69,18 @@ export default class Autocompleter extends React.Component {
 
   mapPersonSearchAttributes(suggestion) {
     const {
-      middle_name, name_suffix, legacy_descriptor,
-      gender, languages, races, ethnicity,
-      addresses, phone_numbers, highlight,
-      sensitive, sealed,
+      middle_name,
+      name_suffix,
+      legacy_descriptor,
+      gender,
+      languages,
+      races,
+      ethnicity,
+      addresses = [],
+      phone_numbers = [],
+      highlight,
+      sensitive,
+      sealed,
     } = suggestion
     const first = 0
     const address = addresses[first] || null
@@ -135,23 +141,15 @@ export default class Autocompleter extends React.Component {
     }
   }
 
-  renderSuggestionsContainer(properties) {
-    const children = properties.children
-    const footerSize = 1
-    const numberOfResults = this.state.suggestions.length - footerSize
-    let header
-
-    if (numberOfResults < 1) {
-      header = `No results were found for "${this.state.value}"`
-    } else {
-      header = `Showing ${numberOfResults} of ${numberOfResults} results for "${this.state.value}"`
-    }
-
+  renderSuggestionsContainer({children, ...props}) {
+    const {total, value} = this.state
     return (
-      <div {...properties}>
-        <div className='react-autosuggest__suggestion'>
-          <strong>{header}</strong>
-        </div>
+      <div {...props}>
+        <SuggestionHeader
+          currentNumberOfResults={total}
+          total={total}
+          searchTerm={value}
+        />
         {children}
       </div>
     )
@@ -160,17 +158,15 @@ export default class Autocompleter extends React.Component {
   /*eslint no-magic-numbers: ["error", { "ignore": [1] }]*/
   render() {
     const {value, suggestions} = this.state
-    if (this.props.footer && suggestions[suggestions.length - 1] !== this.props.footer) {
-      suggestions.push(this.props.footer)
-    }
+    const {id, footer} = this.props
     const inputProps = {
-      id: this.props.id,
+      id,
       value,
-      onChange: this.onChange,
+      onChange: (event, {newValue}) => this.setState({value: newValue}),
     }
     return (
       <ReactAutosuggest
-        suggestions={suggestions}
+        suggestions={footer ? [...suggestions, footer] : suggestions}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}

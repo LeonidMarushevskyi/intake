@@ -7,9 +7,9 @@ import {shallow, mount} from 'enzyme'
 import _ from 'lodash'
 
 describe('<Autocompleter />', () => {
-  function stubSuggestions(suggestions) {
+  function stubSuggestions(results) {
     const promise = jasmine.createSpyObj('promise', ['then'])
-    promise.then.and.callFake((thenFunc) => thenFunc(suggestions))
+    promise.then.and.callFake((thenFunc) => thenFunc({hits: {hits: results}}))
     spyOn(Utils, 'request')
     Utils.request.and.returnValue(promise)
   }
@@ -24,15 +24,6 @@ describe('<Autocompleter />', () => {
   it('renders a Autosuggest component', () => {
     const component = shallow(<Autocompleter />)
     expect(component.find(ReactAutosuggest).length).toBe(1)
-  })
-
-  describe('#onChange', () => {
-    it('updates the value of the "value" state', () => {
-      const component = shallow(<Autocompleter />)
-      expect(component.state('value')).toBe('')
-      component.instance().onChange('some_event', {newValue: 'foobar', method: 'baz'})
-      expect(component.state('value')).toBe('foobar')
-    })
   })
 
   describe('#onSuggestionsFetchRequested', () => {
@@ -422,24 +413,25 @@ describe('<Autocompleter />', () => {
   })
 
   describe('#renderSuggestionsContainer', () => {
+    const footer = (<span>Footer</span>)
     it('renders the suggestions container', () => {
-      const component = shallow(<Autocompleter />)
+      const component = shallow(<Autocompleter footer={footer} />)
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(container).find('div.baz').html()).toContain('foobar')
     })
 
     it('renders no results were found', () => {
-      const component = shallow(<Autocompleter />)
-      component.instance().setState({value: 'Simpson', suggestions: [{footer: ''}]})
+      const component = shallow(<Autocompleter footer={footer} />)
+      component.instance().setState({value: 'Simpson', suggestions: [], total: 0})
       expect(component.html()).toContain('No results were found for &quot;Simpson&quot;')
     })
 
     it('renders number of results found', () => {
       const suggestions = [{first_name: 'Bart', last_name: 'Simpson'}, {first_name: 'Lisa', last_name: 'Simpson'}, {footer: ''}]
-      const component = shallow(<Autocompleter />)
-      component.instance().setState({value: 'Simpson', suggestions: suggestions})
+      const component = shallow(<Autocompleter footer={footer} />)
+      component.instance().setState({value: 'Simpson', suggestions, total: 2})
       const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
-      expect(shallow(container).find('div.baz').html()).toContain('Showing 2 of 2 results for &quot;Simpson&quot;')
+      expect(shallow(container).find('div.baz').html()).toContain('Showing 1-2 of 2 results for &quot;Simpson&quot;')
     })
   })
 })

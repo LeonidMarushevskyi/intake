@@ -107,6 +107,7 @@ feature 'Create participant' do
   let(:marge_response) do
     {
       hits: {
+        total: 1,
         hits: [{
           _source: {
             id: marge.id,
@@ -159,6 +160,7 @@ feature 'Create participant' do
   let(:homer_response) do
     {
       hits: {
+        total: 1,
         hits: [{
           _source: {
             id: homer.id,
@@ -437,30 +439,13 @@ feature 'Create participant' do
       scenario 'cannot add sensitive' do
         Feature.run_with_activated(:authentication) do
           visit edit_screening_path(id: existing_screening.id, token: insensitive_token)
-          sensitive_marge_attributes = build_participant_from_person_and_screening(
-            marge,
-            existing_screening
-          )
-          sensitive_participant_marge = FactoryGirl.build(:participant, sensitive_marge_attributes)
-          created_participant_marge = FactoryGirl.create(
-            :participant,
-            sensitive_participant_marge.as_json
-          )
-
-          fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Marge'
             find('li', text: 'Marge Simpson').click
           end
-
-          # adding participant doesnt change screening modifications
-          expect(page)
-            .to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
-
-          # The new participant was NOT added
-          expect(page)
-            .to_not have_selector(edit_participant_card_selector(created_participant_marge.id))
+          expect(
+            a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+          ).to_not have_been_made
         end
       end
 
@@ -478,18 +463,10 @@ feature 'Create participant' do
           )
           stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
-
-          fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ho'
             find('li', text: 'Homer Simpson').click
           end
-
-          # adding participant doesnt change screening modifications
-          expect(page)
-            .to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
-
           # The new participant was NOT added
           expect(page)
             .to have_selector(edit_participant_card_selector(created_participant_homer.id))
@@ -512,21 +489,12 @@ feature 'Create participant' do
           )
           stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_marge.to_json, status: 201))
-
-          fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ma'
             find('li', text: 'Marge Simpson').click
           end
           expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .with(json_body(sensitive_participant_marge.to_json(except: :id)))).to have_been_made
-
-          # adding participant doesnt change screening modifications
-          expect(page)
-            .to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
-
-          # The new participant was added to the top of the list of participants
           created_participant_selector = edit_participant_card_selector(
             created_participant_marge.id
           )
@@ -559,18 +527,10 @@ feature 'Create participant' do
           )
           stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
-
-          fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ho'
             find('li', text: 'Homer Simpson').click
           end
-
-          # adding participant doesnt change screening modifications
-          expect(page)
-            .to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
-
           expect(page)
             .to have_selector(edit_participant_card_selector(created_participant_homer.id))
         end

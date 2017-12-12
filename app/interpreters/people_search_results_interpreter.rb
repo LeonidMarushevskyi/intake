@@ -96,5 +96,13 @@ class PeopleSearchResultsInterpreter # :nodoc:
       return ['Abandoned'] if unable_to_determine_code == 'A'
       ['Unknown']
     end
+
+    def interpret_legacy_id(document)
+      document.tap do |doc|
+        doc['_source'].merge!(
+          'legacy_id' => doc['_source']['id']
+        )
+      end
+    end
   end
 end
