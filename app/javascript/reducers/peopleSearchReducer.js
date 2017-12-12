@@ -4,6 +4,7 @@ import {
   CLEAR_PEOPLE_SEARCH,
   FETCH_PEOPLE_SEARCH,
   FETCH_PEOPLE_SEARCH_COMPLETE,
+  SET_SEARCH_TERM_PEOPLE_SEARCH,
 } from 'actions/peopleSearchActions'
 
 const initialState = fromJS({
@@ -27,5 +28,8 @@ export default createReducer(initialState, {
   [CLEAR_PEOPLE_SEARCH](state, _action) {
     return state.set('results', fromJS([]))
       .set('total', 0)
+  },
+  [SET_SEARCH_TERM_PEOPLE_SEARCH](state, {payload: {searchTerm}}) {
+    return state.set('searchTerm', searchTerm)
   },
 })

@@ -1,5 +1,11 @@
 import * as matchers from 'jasmine-immutable-matchers'
-import {clear, search, fetchSuccess, fetchFailure} from 'actions/peopleSearchActions'
+import {
+  clear,
+  fetchFailure,
+  fetchSuccess,
+  search,
+  setSearchTerm,
+} from 'actions/peopleSearchActions'
 import peopleSearchReducer from 'reducers/peopleSearchReducer'
 import {Map, fromJS} from 'immutable'
 
@@ -58,6 +64,23 @@ describe('peopleSearchReducer', () => {
           searchTerm: 'newSearchTerm',
           total: 0,
           results: [],
+        })
+      )
+    })
+  })
+  describe('on SET_SEARCH_TERM_PEOPLE_SEARCH', () => {
+    const initialState = fromJS({
+      searchTerm: 'newSearchTerm',
+      total: 3,
+      results: ['result_one', 'result_two', 'result_three'],
+    })
+    const action = setSearchTerm('something')
+    it('resets results and total', () => {
+      expect(peopleSearchReducer(initialState, action)).toEqualImmutable(
+        fromJS({
+          searchTerm: 'something',
+          total: 3,
+          results: ['result_one', 'result_two', 'result_three'],
         })
       )
     })
