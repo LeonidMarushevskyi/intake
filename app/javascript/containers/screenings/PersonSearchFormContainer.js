@@ -40,13 +40,14 @@ const mergeProps = (stateProps, {onSearch, onClear, onChange, dispatch}) => {
     searchTerm,
     total,
   } = stateProps
-  const isSelectable = (person) => (person.sensitive === false || hasAddSensitivePerson)
+  const isSelectable = ({isSensitive}) => (isSensitive === false || hasAddSensitivePerson)
   const onSelect = (person) => {
     const personOnScreening = {
-      ...person,
       screening_id: screeningId,
-      legacy_id: person.id,
-      id: null,
+      legacy_descriptor: {
+        legacy_id: person.legacyDescriptor && person.legacyDescriptor.legacy_id,
+        legacy_source_table: person.legacyDescriptor && person.legacyDescriptor.legacy_table_name,
+      },
     }
     dispatch(createPerson(personOnScreening))
   }
