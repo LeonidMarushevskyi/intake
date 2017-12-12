@@ -4,14 +4,23 @@
 # resource via the API
 class ParticipantRepository
   def self.create(security_token, participant)
-    participant_data = participant.as_json(except: :id)
     response = IntakeAPI.make_api_call(
       security_token,
-      ExternalRoutes.intake_api_participants_path,
+      ExternalRoutes.intake_api_screening_people_path(participant.screening_id.to_s),
       :post,
-      participant_data
+      post_data(participant).as_json
     )
     Participant.new(response.body)
+  end
+
+  def self.post_data(participant)
+    {
+      screening_id: participant.screening_id.to_s,
+      legacy_descriptor: {
+        legacy_id: participant.legacy_descriptor&.legacy_id,
+        legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+      }
+    }
   end
 
   def self.delete(security_token, id)

@@ -237,15 +237,9 @@ feature 'Create participant' do
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
-    new_participant_request = {
-      screening_id: existing_screening.id,
-      legacy_id: nil,
-      legacy_source_table: nil,
-      legacy_descriptor: nil
-    }
 
-    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-      .with(body: created_participant_unknown.as_json(except: :id).merge(new_participant_request))
+    stub_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body(created_participant_unknown.to_json, status: 201))
 
     within '#search-card', text: 'Search' do
@@ -254,8 +248,8 @@ feature 'Create participant' do
       expect(page).to_not have_button('Create a new person')
     end
 
-    expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-      .with(body: hash_including(new_participant_request)))
+    expect(a_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made
 
     within edit_participant_card_selector(created_participant_unknown.id) do
@@ -287,15 +281,17 @@ feature 'Create participant' do
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryGirl.build(:participant, homer_attributes)
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+    stub_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
 
     within '#search-card', text: 'Search' do
       fill_in_autocompleter 'Search for any person', with: 'Homer'
       find('li', text: 'Homer Simpson').click
     end
-    expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-      .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
+    expect(a_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
+      .to have_been_made
 
     within edit_participant_card_selector(created_participant_homer.id) do
       within '.card-header' do
@@ -351,7 +347,8 @@ feature 'Create participant' do
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryGirl.build(:participant, homer_attributes)
     created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-    stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+    stub_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
 
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
@@ -360,8 +357,9 @@ feature 'Create participant' do
       fill_in_autocompleter 'Search for any person', with: 'Homer'
       find('li', text: 'Homer Simpson').click
     end
-    expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-      .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
+    expect(a_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
+      .to have_been_made
 
     # adding participant doesnt change screening modifications
     expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
@@ -461,7 +459,8 @@ feature 'Create participant' do
             :participant,
             participant_homer.as_json
           )
-          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post,
+            intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ho'
@@ -487,14 +486,16 @@ feature 'Create participant' do
             :participant,
             sensitive_participant_marge.as_json
           )
-          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post,
+            intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_marge.to_json, status: 201))
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ma'
             find('li', text: 'Marge Simpson').click
           end
-          expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-            .with(json_body(sensitive_participant_marge.to_json(except: :id)))).to have_been_made
+          expect(a_request(:post,
+            intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
+            .to have_been_made
           created_participant_selector = edit_participant_card_selector(
             created_participant_marge.id
           )
@@ -525,7 +526,8 @@ feature 'Create participant' do
             :participant,
             participant_homer.as_json
           )
-          stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+          stub_request(:post,
+            intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
           within '#search-card', text: 'Search' do
             fill_in_autocompleter 'Search for any person', with: 'Ho'
@@ -550,15 +552,18 @@ feature 'Create participant' do
       homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
       participant_homer = FactoryGirl.build(:participant, homer_attributes)
       created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-      stub_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
+      stub_request(:post,
+        intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
         .and_return(json_body(created_participant_homer.to_json, status: 201))
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for clients', with: 'Ho'
         find('li', text: 'Homer Simpson').click
       end
-      expect(a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-        .with(json_body(participant_homer.to_json(except: :id)))).to have_been_made
+      expect(
+        a_request(:post,
+          intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
+      ).to have_been_made
 
       within show_participant_card_selector(created_participant_homer.id) do
         within '.card-header' do

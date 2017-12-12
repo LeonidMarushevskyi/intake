@@ -53,6 +53,13 @@ describe ExternalRoutes do
     end
   end
 
+  describe '.intake_api_screening_people_path' do
+    it 'returns /api/v1/screenings/:id/people' do
+      route = '/api/v1/screenings/31/people'
+      expect(described_class.intake_api_screening_people_path(31)).to eq(route)
+    end
+  end
+
   describe '.intake_api_participant_path' do
     it 'returns /api/v1/participants/:id' do
       expect(described_class.intake_api_participant_path(31)).to eq('/api/v1/participants/31')

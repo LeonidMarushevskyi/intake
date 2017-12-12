@@ -81,6 +81,7 @@ Rails.application.routes.draw do
   scope host: Rails.configuration.intake[:dora_api_url] do
     post '/dora/screenings/screening/_search' => 'dev#null', as: :dora_screenings
     post '/dora/people/person/_search' => 'dev#null', as: :dora_people
+    post '/dora/people-summary/person-summary/_search' => 'dev#null', as: :dora_people_light_index
   end
 
   resources :version, only: :index

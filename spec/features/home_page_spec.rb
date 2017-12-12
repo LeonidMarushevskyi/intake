@@ -45,7 +45,7 @@ feature 'home page' do
       expect(
         a_request(
           :post,
-          dora_api_url(Rails.application.routes.url_helpers.dora_people_path)
+          dora_api_url(Rails.application.routes.url_helpers.dora_people_light_index_path)
         )
       ).to have_been_made.times(1)
     end

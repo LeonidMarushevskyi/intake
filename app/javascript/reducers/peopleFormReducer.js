@@ -81,7 +81,7 @@ const buildPerson = ({
   gender: {value: gender},
   languages: {value: languages},
   last_name: {value: last_name},
-  legacy_descriptor: {value: legacy_descriptor},
+  legacy_descriptor: {value: legacy_descriptor || {}},
   middle_name: {value: middle_name},
   name_suffix: {value: name_suffix},
   phone_numbers: buildPhoneNumbers(phone_numbers),

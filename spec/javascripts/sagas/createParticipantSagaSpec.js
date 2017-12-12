@@ -18,12 +18,13 @@ describe('createParticipantSaga', () => {
 })
 
 describe('createParticipant', () => {
-  const participant = {first_name: 'Michael'}
+  const params = {screening_id: '1', legacy_descriptor: {legacy_id: '1', legacy_table_name: 'table'}}
+  const participant = {first_name: 'Michael', ...params}
   const action = personCardActions.createPerson(participant)
 
   it('creates and puts participant and fetches relationships and history', () => {
     const gen = createParticipant(action)
-    expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
+    expect(gen.next().value).toEqual(call(post, '/api/v1/participants', {participant: params}))
     expect(gen.next(participant).value).toEqual(
       put(personCardActions.createPersonSuccess(participant))
     )
@@ -41,7 +42,7 @@ describe('createParticipant', () => {
 
   it('puts errors when errors are thrown', () => {
     const gen = createParticipant(action)
-    expect(gen.next().value).toEqual(call(post, '/api/v1/participants', participant))
+    expect(gen.next().value).toEqual(call(post, '/api/v1/participants', {participant: params}))
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
       put(personCardActions.createPersonFailure('some error'))
