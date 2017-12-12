@@ -281,7 +281,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns the enum mapped value for the county', () => {
-      const screenings = [{county_name: 'amador'}]
+      const screenings = [{county: {description: 'Amador'}}]
       const state = fromJS({involvements: {screenings}})
       expect(getFormattedScreeningsSelector(state).getIn([0, 'county'])).toEqual('Amador')
     })

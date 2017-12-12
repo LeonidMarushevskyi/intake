@@ -4,7 +4,6 @@ import nameFormatter from 'utils/nameFormatter'
 import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'enums/RoleType'
-import COUNTIES from 'enums/Counties'
 
 const getHistoryOfInvolvementsSelector = (state) => state.get('involvements', Map())
 
@@ -90,7 +89,7 @@ export const getFormattedScreeningsSelector = createSelector(
       return roles.some((role) => ROLE_TYPE_NON_REPORTER.includes(role)) || roles.isEmpty()
     })
     return fromJS({
-      county: COUNTIES[screening.get('county_name')] || '',
+      county: screening.getIn(['county', 'description'], ''),
       dateRange: dateRangeFormatter(screening.toJS()),
       people: notJustReporters.map((person) => nameFormatter(person.toJS())).join(', '),
       reporter: nameFormatter({name_default: '', ...screening.get('reporter', Map()).toJS()}),
