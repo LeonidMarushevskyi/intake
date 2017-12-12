@@ -155,11 +155,12 @@ export default class Autocompleter extends React.Component {
   /*eslint no-magic-numbers: ["error", { "ignore": [1] }]*/
   render() {
     const {value, suggestions} = this.state
-    if (this.props.footer && suggestions[suggestions.length - 1] !== this.props.footer) {
-      suggestions.push(this.props.footer)
+    const {id, footer} = this.props
+    if (footer && suggestions[suggestions.length - 1] !== footer) {
+      suggestions.push(footer)
     }
     const inputProps = {
-      id: this.props.id,
+      id,
       value,
       onChange: (event, {newValue}) => this.setState({value: newValue}),
     }
