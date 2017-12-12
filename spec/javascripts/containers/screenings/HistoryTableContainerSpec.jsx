@@ -8,6 +8,70 @@ import * as IntakeConfig from 'common/config'
 describe('HistoryTableContainer', () => {
   const state = fromJS({
     involvements: {
+      screenings: [
+        {
+          id: '1234',
+          start_date: '2017-12-02',
+          end_date: '2017-12-02',
+          county: {
+            id: '1101',
+            description: 'Sacramento',
+          },
+          decision: 'promote to referral',
+          decision_detail: 'drug counseling',
+          reporter: {
+            id: 'jhgjhgjh',
+            first_name: 'Reporter First Name',
+            last_name: 'Reporter Last Name',
+            role: 'MANDATED_REPORTER',
+            legacy_descriptor: {
+              legacy_id: 'jhgjhgjh',
+              legacy_ui_id: 'jhgjhgjh-hohj-jkj',
+              legacy_last_updated: '2017-12-03T09:11:22.204-0800',
+              legacy_table_name: 'REPTR_T',
+              legacy_table_description: 'Reporter',
+            },
+          },
+          assigned_social_worker: {
+            id: 'jhgguhgjh',
+            first_name: 'Worker First Name',
+            last_name: 'Worker Last Name',
+            legacy_descriptor: {
+              legacy_id: 'jhgguhgjh',
+              legacy_ui_id: 'jhgguhgjh-hohj-jkj',
+              legacy_last_updated: '2017-12-03T09:11:22.091-0800',
+              legacy_table_name: 'STFPERST',
+              legacy_table_description: 'Staff',
+            },
+          },
+          all_people: [
+            {
+              id: 'bbbbbbbbb',
+              first_name: 'John',
+              last_name: 'S',
+              legacy_descriptor: {
+                legacy_id: 'bbbbbbbbb',
+                legacy_ui_id: 'bbbbbbbbb-hohj-jkj',
+                legacy_last_updated: '2017-12-03T09:11:22.204-0800',
+                legacy_table_name: 'CLIENT_T',
+                legacy_table_description: 'Client',
+              },
+            },
+            {
+              id: 'aaaaaaa',
+              first_name: 'Jane',
+              last_name: 'S',
+              legacy_descriptor: {
+                legacy_id: 'aaaaaaaaa',
+                legacy_ui_id: 'aaaaaaaaa-hohj-jkj',
+                legacy_last_updated: '2017-12-03T09:11:22.204-0800',
+                legacy_table_name: 'CLIENT_T',
+                legacy_table_description: 'Client',
+              },
+            },
+          ],
+        },
+      ],
       cases: [
         {
           id: 'ccccccccc',
@@ -193,7 +257,7 @@ describe('HistoryTableContainer', () => {
   let component
   beforeEach(() => {
     const context = {store}
-    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     component = shallow(<HistoryTableContainer />, {context})
   })
 
@@ -227,5 +291,15 @@ describe('HistoryTableContainer', () => {
       status: 'Closed - Permanent Placement',
       worker: 'Worker First Name Worker Last Name'},
     ])
+  })
+  it('passes formatted screenings HistoryTable view', () => {
+    expect(component.find('HistoryTable').props().screenings).toEqual([{
+      county: 'Sacramento',
+      dateRange: '12/02/2017 - 12/02/2017',
+      people: 'John S, Jane S',
+      reporter: 'Reporter First Name Reporter Last Name',
+      status: 'Closed',
+      worker: 'Worker Last Name',
+    }])
   })
 })
