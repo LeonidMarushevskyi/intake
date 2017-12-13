@@ -299,7 +299,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns the last name for the worker when present', () => {
-      const screenings = [{assigned_social_worker: {last_name: 'John Smith'}}]
+      const screenings = [{assigned_social_worker: {first_name: 'John', last_name: 'Smith'}}]
       const state = fromJS({involvements: {screenings}})
       expect(getFormattedScreeningsSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
     })

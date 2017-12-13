@@ -94,7 +94,7 @@ export const getFormattedScreeningsSelector = createSelector(
       people: notJustReporters.map((person) => nameFormatter(person.toJS())).join(', '),
       reporter: nameFormatter({name_default: '', ...screening.get('reporter', Map()).toJS()}),
       status: screening.get('end_date') ? 'Closed' : 'In Progress',
-      worker: screening.getIn(['assigned_social_worker', 'last_name'], ''),
+      worker: nameFormatter({name_default: '', ...screening.get('assigned_social_worker', Map()).toJS()}),
     })
   })
 )

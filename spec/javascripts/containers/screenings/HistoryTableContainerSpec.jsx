@@ -299,7 +299,7 @@ describe('HistoryTableContainer', () => {
       people: 'John S, Jane S',
       reporter: 'Reporter First Name Reporter Last Name',
       status: 'Closed',
-      worker: 'Worker Last Name',
+      worker: 'Worker First Name Worker Last Name',
     }])
   })
 })

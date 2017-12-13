@@ -46,7 +46,7 @@ feature 'History card' do
           assigned_social_worker: { id: 'wrk1234', first_name: 'Bob', last_name: 'Smith' },
           reporter: { id: 'rpt1234', first_name: 'Alex', last_name: 'Hanson' },
           all_people: [
-            { first_name: 'Bob', last_name: 'Bob Smith', roles: ['Assigned Social Worker'] },
+            { first_name: 'Bob', last_name: 'Smith', roles: ['Assigned Social Worker'] },
             { first_name: 'Alex', last_name: 'Hanson', roles: ['Reporter'] },
             { first_name: 'Sally', last_name: 'Johnson', roles: ['Victim'] },
             { first_name: 'Sam', last_name: 'Anderson', roles: ['Perpetrator'] },
