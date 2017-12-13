@@ -185,7 +185,6 @@ describe('<Autocompleter />', () => {
           city: 'Flushing',
           state: 'NM',
           zip: '11344',
-          type: 'School',
         }],
         phone_numbers: [{
           id: '2',
@@ -225,7 +224,7 @@ describe('<Autocompleter />', () => {
         city: 'Flushing',
         state: 'NM',
         zip: '11344',
-        type: 'School',
+        type: '',
       })
       expect(attributes.phoneNumber).toEqual({
         number: '994-907-6774',
@@ -266,7 +265,7 @@ describe('<Autocompleter />', () => {
         city: 'Flushing',
         state: 'NM',
         zip: '11344',
-        type: 'School',
+        type: '',
       })
     })
 
@@ -400,7 +399,7 @@ describe('<Autocompleter />', () => {
           city: 'Flushing',
           state: 'NM',
           zip: '11344',
-          type: 'School',
+          type: '',
         },
         phoneNumber: {
           number: '994-907-6774',

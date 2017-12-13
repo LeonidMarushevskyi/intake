@@ -33,9 +33,9 @@ feature 'searching a participant in autocompleter' do
               'street_number' => 123,
               'street_name' => 'Fake St',
               'state_code' => 'NY',
-              city: 'Springfield',
-              zip: '12345',
-              'type' => 'Work'
+              'city' => 'Springfield',
+              'zip' => '12345',
+              'type' => ''
             }],
             date_of_birth: date_of_birth.to_s(:db),
             legacy_descriptor: {
@@ -139,7 +139,6 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content 'SSN'
         expect(page).to have_content '1234'
         expect(page).to have_content '123-23-1234'
-        expect(page).to have_content 'Work'
         expect(page).to have_content '123 Fake St, Springfield, NY 12345'
         expect(page).to have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'

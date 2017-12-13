@@ -115,7 +115,7 @@ export default class Autocompleter extends React.Component {
         city: address.city,
         state: address.state,
         streetAddress: address.street_address,
-        type: address.type,
+        type: '',
         zip: address.zip,
       },
       phoneNumber: phoneNumber && {
