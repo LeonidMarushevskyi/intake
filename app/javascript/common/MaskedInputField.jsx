@@ -2,7 +2,6 @@ import FormField from 'common/FormField'
 import MaskedInput from 'react-maskedinput'
 import PropTypes from 'prop-types'
 import React from 'react'
-import _ from 'lodash'
 
 const MaskedInputField = ({
   errors,
@@ -26,7 +25,7 @@ const MaskedInputField = ({
         placeholder={''} required={required} aria-required={required}
         onBlur={(event) => {
           event.target.placeholder = ''
-          if (!_.isEmpty(onBlur)) onBlur(id, event.target.value)
+          if (onBlur) { onBlur(id, event.target.value) }
         }}
         onFocus={(event) => (event.target.placeholder = placeholder)}
         onChange={onChange}
