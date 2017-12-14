@@ -13,6 +13,7 @@ feature 'home page' do
     let(:dora_response) do
       {
         hits: {
+          total: 1,
           hits: [{
             _source: {
               first_name: 'Marge',
@@ -41,6 +42,7 @@ feature 'home page' do
       expect(page).to_not have_link 'Start Screening'
 
       fill_in_autocompleter 'People', with: 'Marge'
+      expect(page).to have_content('Showing 1-1 of 1 results for "Marge"')
 
       expect(
         a_request(
