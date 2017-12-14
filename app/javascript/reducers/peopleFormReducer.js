@@ -3,6 +3,7 @@ import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {
   SET_PEOPLE_FORM_FIELD,
+  TOUCH_PEOPLE_FORM_FIELD,
   ADD_PEOPLE_FORM_ADDRESS,
   DELETE_PEOPLE_FORM_ADDRESS,
   ADD_PEOPLE_FORM_PHONE_NUMBER,
@@ -86,7 +87,7 @@ const buildPerson = ({
   name_suffix: {value: name_suffix},
   phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
-  ssn: {value: ssn},
+  ssn: {value: ssn, touched: false},
   sensitive: {value: sensitive},
   sealed: {value: sealed},
   races: buildRaces(races),
@@ -111,6 +112,7 @@ export default createReducer(Map(), {
     }
   },
   [SET_PEOPLE_FORM_FIELD]: (state, {payload: {personId, fieldSet, value}}) => state.setIn([personId, ...fieldSet, 'value'], fromJS(value)),
+  [TOUCH_PEOPLE_FORM_FIELD]: (state, {payload: {personId, field}}) => state.setIn([personId, ...field, 'touched'], true),
   [ADD_PEOPLE_FORM_ADDRESS]: (state, {payload: {personId}}) => {
     const currentAddresses = state.getIn([personId, 'addresses'])
     const nullValue = {value: null}

@@ -3,6 +3,7 @@ import {fetchScreeningSuccess, fetchScreeningFailure} from 'actions/screeningAct
 import {createPersonSuccess, createPersonFailure} from 'actions/personCardActions'
 import {
   setField,
+  touchField,
   addAddress,
   deleteAddress,
   addPhone,
@@ -189,6 +190,30 @@ describe('peopleFormReducer', () => {
           },
           participant_two: {
             roles: {value: ['c']},
+          },
+        })
+      )
+    })
+  })
+
+  describe('on touch person form field', () => {
+    it('returns the updated form state', () => {
+      const lastState = fromJS({
+        participant_one: {
+          ssn: {touched: false},
+        },
+        participant_two: {
+          ssn: {touched: false},
+        },
+      })
+      const action = touchField('participant_one', ['ssn'])
+      expect(peopleFormReducer(lastState, action)).toEqualImmutable(
+        fromJS({
+          participant_one: {
+            ssn: {touched: true},
+          },
+          participant_two: {
+            ssn: {touched: false},
           },
         })
       )
