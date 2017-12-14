@@ -96,15 +96,16 @@ const PersonInformationForm = ({
         label='Social security number'
         mask='111-11-1111'
         placeholder='___-__-____'
-        value={ssn || ''}
+        value={ssn.value || ''}
+        onBlur={() => onBlur('ssn')}
         onChange={({target: {value}}) => onChange('ssn', value)}
+        errors={ssn.errors}
       />
     </div>
   </div>
 )
 PersonInformationForm.propTypes = {
   alertErrorMessage: PropTypes.string,
-  errors: PropTypes.object,
   firstName: PropTypes.shape({
     value: PropTypes.string,
     errors: PropTypes.arrayOf(PropTypes.string),
@@ -124,6 +125,9 @@ PersonInformationForm.propTypes = {
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
   roles: PropTypes.array,
-  ssn: PropTypes.string,
+  ssn: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.arrayOf(PropTypes.string),
+  }),
 }
 export default PersonInformationForm
