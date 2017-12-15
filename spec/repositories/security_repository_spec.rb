@@ -16,6 +16,19 @@ describe SecurityRepository do
     end
   end
 
+  describe '.access_code_mapping_url' do
+    before do
+      allow(Rails.configuration).to receive(:intake)
+        .and_return(authentication_base_url: 'http://www.example.com')
+    end
+
+    it 'returns the access code token mapping url' do
+      expect(described_class.access_code_mapping_url('123')).to eq(
+        'http://www.example.com/authn/token?accessCode=123'
+      )
+    end
+  end
+
   describe '.token_validation_url' do
     before do
       allow(Rails.configuration).to receive(:intake)
