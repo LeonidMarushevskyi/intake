@@ -4,6 +4,14 @@
 # to the security API
 class SecurityRepository
   class << self
+    def retrieve_security_token(access_code: nil, token: nil)
+      if Feature.active?(:perry_version_two)
+        return unless access_code.present?
+        call_api_to_map_token(access_code)
+      else
+        token
+      end
+    end
 
     def auth_artifact_for_token(token)
       return unless token.present?
@@ -24,5 +32,11 @@ class SecurityRepository
       "#{Rails.configuration.intake[:authentication_base_url]}/authn/validate?token=#{token}"
     end
 
+    private
+
+    def call_api_to_map_token(access_code)
+      response = Faraday.get(access_code_mapping_url(access_code))
+      response.body if response.status == 200
+    end
   end
 end
