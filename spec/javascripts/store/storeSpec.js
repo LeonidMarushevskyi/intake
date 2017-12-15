@@ -25,6 +25,7 @@ describe('Store', () => {
       contactForm: {},
       contactPurposes: [],
       contactStatuses: [],
+      usStates: [],
       hispanicOriginCodes: [],
       unableToDetermineCodes: [],
       raceTypes: [],

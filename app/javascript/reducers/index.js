@@ -30,6 +30,7 @@ import staff from 'reducers/staffReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
 import {combineReducers} from 'redux-immutable'
 import userInfo from 'reducers/userInfoReducer'
+import usStates from 'reducers/systemCodes/usStatesReducer'
 
 const rootReducer = combineReducers({
   allegationsForm,
@@ -63,6 +64,7 @@ const rootReducer = combineReducers({
   staff,
   workerSafetyForm,
   userInfo,
+  usStates,
 })
 
 export default rootReducer
