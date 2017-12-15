@@ -13,6 +13,7 @@ import incidentInformationForm from 'reducers/incidentInformationFormReducer'
 import investigation from 'reducers/investigationReducer'
 import involvements from 'reducers/involvementsReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
+import ethnicityTypes from 'reducers/systemCodes/ethnicityTypesReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import peopleForm from 'reducers/peopleFormReducer'
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   countyAgencies,
   crossReportForm,
   errors,
+  ethnicityTypes,
   incidentInformationForm,
   investigation,
   involvements,
