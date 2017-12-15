@@ -11,39 +11,26 @@ feature 'home page' do
     end
 
     let(:dora_response) do
-      {
-        hits: {
-          total: 1,
-          hits: [{
-            _source: {
-              first_name: 'Marge',
-              gender: 'female',
-              last_name: 'Simpson',
-              ssn: '123-23-1234',
-              addresses: [
-                {
-                  'street_number' => 123,
-                  'street_name' => 'Fake St',
-                  'state_code' => 'CA',
-                  'type' => 'Home'
-                }
-              ]
-            }
-          }]
-        }
-      }
+      SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_last_name('Simpson')
+        builder.with_ssn('123-23-1234')
+        builder.with_gender('female')
+        builder.with_address(
+          street_number: 123,
+          street_name: 'Fake St',
+          state_code: 'CA',
+          type: 'Home'
+        )
+      end
     end
 
     scenario 'displays search bar' do
       stub_person_search('Marge', dora_response)
-
       visit root_path
-
       expect(page).to_not have_link 'Start Screening'
-
-      fill_in_autocompleter 'People', with: 'Marge'
+      fill_in_autocompleter 'People', with: 'Marge', skip_select: true
       expect(page).to have_content('Showing 1-1 of 1 results for "Marge"')
-
       expect(
         a_request(
           :post,

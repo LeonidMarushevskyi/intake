@@ -105,113 +105,17 @@ feature 'Create participant' do
   end
 
   let(:marge_response) do
-    {
-      hits: {
-        total: 1,
-        hits: [{
-          _source: {
-            id: marge.id,
-            legacy_source_table: 'CLIENT_T',
-            first_name: 'Marge',
-            gender: 'female',
-            last_name: 'Simpson',
-            ssn: '123231234',
-            phone_numbers: [{ 'number' => '9712876774', 'type' => 'Home' }],
-            languages: [
-              { name: 'French', primary: true },
-              { name: 'Italian' }
-            ],
-            addresses: [{
-              'legacy_id' => marge_address.legacy_id,
-              'legacy_source_table' => 'ADDR_T',
-              'street_number' => 123,
-              'street_name' => 'Fake St',
-              'state_code' => 'NY',
-              city: 'Springfield',
-              zip: '12345',
-              'type' => 'Home'
-            }],
-            date_of_birth: marge_date_of_birth.to_s(:db),
-            legacy_descriptor: {
-              legacy_last_updated: marge.legacy_descriptor.legacy_last_updated,
-              legacy_id: marge.legacy_descriptor.legacy_id,
-              legacy_ui_id: marge.legacy_descriptor.legacy_ui_id,
-              legacy_table_name: marge.legacy_descriptor.legacy_table_name,
-              legacy_table_description: marge.legacy_descriptor.legacy_table_description
-            },
-            race_ethnicity: {
-              hispanic_origin_code: 'Y',
-              race_codes: [
-                { description: 'White - European*' },
-                { description: 'Alaskan Native*' }
-              ],
-              hispanic_codes: [
-                { description: 'Central American' }
-              ],
-              hispanic_unable_to_determine_code: ''
-            },
-            sensitivity_indicator: 'S'
-          }
-        }]
-      }
-    }
+    SearchResultBuilder.build do |builder|
+      builder.with_first_name('Marge')
+      builder.with_last_name('Simpson')
+    end
   end
 
   let(:homer_response) do
-    {
-      hits: {
-        total: 1,
-        hits: [{
-          _source: {
-            id: homer.id,
-            legacy_source_table: 'CLIENT_T',
-            first_name: 'Homer',
-            gender: 'male',
-            last_name: 'Simpson',
-            ssn: '123231234',
-            phone_numbers: [{ 'number' => '9712876774', 'type' => 'Home' }],
-            languages: [
-              { name: 'French', primary: true },
-              { name: 'Italian' }
-            ],
-            addresses: [{
-              'legacy_id' => marge_address.legacy_id,
-              'legacy_source_table' => 'ADDR_T',
-              'street_number' => 123,
-              'street_name' => 'Fake St',
-              'state_code' => 'NY',
-              city: 'Springfield',
-              zip: '12345',
-              'type' => 'Home'
-            }],
-            date_of_birth: homer_date_of_birth.to_s(:db),
-            legacy_descriptor: {
-              legacy_last_updated: homer.legacy_descriptor.legacy_last_updated,
-              legacy_id: homer.legacy_descriptor.legacy_id,
-              legacy_ui_id: homer.legacy_descriptor.legacy_ui_id,
-              legacy_table_name: homer.legacy_descriptor.legacy_table_name,
-              legacy_table_description: homer.legacy_descriptor.legacy_table_description
-            },
-            race_ethnicity: {
-              hispanic_origin_code: 'Y',
-              race_codes: [
-                { description: 'Other Asian*' },
-                { description: 'White*' },
-                { description: 'White - Romanian*' },
-                { description: 'Hmong*' },
-                { description: 'Chinese*' },
-                { description: 'Alaskan Native*' }
-              ],
-              hispanic_codes: [
-                { description: 'Hispanic' },
-                { description: 'Mexican' }
-              ],
-              hispanic_unable_to_determine_code: ''
-            }
-          }
-        }]
-      }
-    }
+    SearchResultBuilder.build do |builder|
+      builder.with_first_name('Homer')
+      builder.with_last_name('Simpson')
+    end
   end
 
   before do

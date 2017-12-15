@@ -17,53 +17,43 @@ feature 'searching a participant in autocompleter' do
 
   context 'search for a person' do
     scenario 'search result contains person information' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: 'female',
-            last_name: 'Simpson',
-            middle_name: 'Jacqueline',
-            name_suffix: 'md',
-            ssn: '123231234',
-            phone_numbers: [
-              { 'number' => '971-287-6774', 'type' => 'Home' }
-            ],
-            languages: [
-              { name: 'French', primary: true },
-              { name: 'Italian' }
-            ],
-            race_ethnicity: {
-              hispanic_origin_code: 'Y',
-              race_codes: [
-                { description: 'White - European*' },
-                { description: 'Alaskan Native*' }
-              ],
-              hispanic_codes: [
-                { description: 'Central American' }
-              ],
-              hispanic_unable_to_determine_code: ''
-            },
-            addresses: [{
-              'legacy_id' => '',
-              'legacy_source_table' => '',
-              'street_number' => 123,
-              'street_name' => 'Fake St',
-              'state_code' => 'NY',
-              'city' => 'Springfield',
-              'zip' => '11222',
-              'type' => ''
-            }],
-            date_of_birth: date_of_birth.to_s(:db),
-            legacy_descriptor: {},
-            sensitivity_indicator: 'S'
-          }
-        }]
-        }
-      }
+      languages = [
+        { name: 'French', primary: true },
+        { name: 'Italian' }
+      ]
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_middle_name('Jacqueline')
+        builder.with_last_name('Simpson')
+        builder.with_name_suffix('md')
+        builder.with_gender('female')
+        builder.with_dob(date_of_birth)
+        builder.with_ssn('123231234')
+        builder.with_languages(languages)
+        builder.with_phone_number(number: '971-287-6774', type: 'Home')
+        builder.with_address(
+          legacy_id: '',
+          legacy_source_table: '',
+          street_number: 123,
+          street_name: 'Fake St',
+          state_code: 'NY',
+          city: 'Springfield',
+          zip: '11222',
+          type: ''
+        )
+        builder.with_race_and_ethinicity(
+          hispanic_origin_code: 'Y',
+          race_codes: [
+            { description: 'White - European*' },
+            { description: 'Alaskan Native*' }
+          ],
+          hispanic_codes: [
+            { description: 'Central American' }
+          ],
+          hispanic_unable_to_determine_code: ''
+        )
+        builder.with_sensitivity
+      end
       stub_person_search('Ma', search_response)
 
       within '#search-card', text: 'Search' do
@@ -88,29 +78,10 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'search results format the SSN' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: 'CLIENT_T',
-            first_name: 'Marge',
-            gender: '',
-            last_name: '',
-            middle_name: '',
-            name_suffix: '',
-            ssn: '123456789',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: ''
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_ssn('123456789')
+      end
       stub_person_search('Ma', search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -121,31 +92,14 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'results include information about the legacy source information for a person' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: '',
-            middle_name: '',
-            name_suffix: '',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: { legacy_ui_id: '123-456-789', legacy_table_description: 'Client' },
-            race_ethnicity: {},
-            sensitivity_indicator: ''
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_legacy_descriptor(
+          legacy_ui_id: '123-456-789',
+          legacy_table_description: 'Client'
+        )
+      end
       stub_person_search('Ma', search_response)
-
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -156,64 +110,30 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person without phone_numbers' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: 'Simpson',
-            middle_name: 'Jacqueline',
-            name_suffix: 'md',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: ''
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_middle_name('Jacqueline')
+        builder.with_last_name('Simpson')
+        builder.with_name_suffix('md')
+        builder.with_phone_number({})
+      end
       stub_person_search('Ma', search_response)
-
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
-
       within 'li', text: 'Marge Jacqueline Simpson MD' do
         expect(page).to_not have_css 'fa-phone'
       end
     end
 
     scenario 'person without addresses' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: 'Simpson',
-            middle_name: 'Jacqueline',
-            name_suffix: 'md',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: ''
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_middle_name('Jacqueline')
+        builder.with_last_name('Simpson')
+        builder.with_name_suffix('md')
+        builder.with_address({})
+      end
       stub_person_search('Ma', search_response)
 
       within '#search-card', text: 'Search' do
@@ -226,29 +146,10 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person who is neither sensitive nor sealed' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: '',
-            middle_name: '',
-            name_suffix: '',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: 'N'
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.without_sealed_or_sensitive
+      end
       stub_person_search('Ma', search_response)
 
       within '#search-card', text: 'Search' do
@@ -262,29 +163,10 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person who is sensitive' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: '',
-            middle_name: '',
-            name_suffix: '',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: 'S'
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_sensitivity
+      end
       stub_person_search('Ma', search_response)
 
       within '#search-card', text: 'Search' do
@@ -298,29 +180,10 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person who is sealed' do
-      search_response = {
-        hits: {
-          total: 1,
-          hits: [{
-          _source: {
-            legacy_source_table: '',
-            first_name: 'Marge',
-            gender: '',
-            last_name: '',
-            middle_name: '',
-            name_suffix: '',
-            ssn: '',
-            phone_numbers: [],
-            languages: [],
-            addresses: [],
-            date_of_birth: '',
-            legacy_descriptor: {},
-            race_ethnicity: {},
-            sensitivity_indicator: 'R'
-          }
-        }]
-        }
-      }
+      search_response = SearchResultBuilder.build do |builder|
+        builder.with_first_name('Marge')
+        builder.with_sealed
+      end
       stub_person_search('Ma', search_response)
 
       within '#search-card', text: 'Search' do
