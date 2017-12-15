@@ -29,6 +29,7 @@ describe('Store', () => {
       unableToDetermineCodes: [],
       raceTypes: [],
       ethnicityTypes: [],
+      languages: [],
       counties: [],
       countyAgencies: [],
       crossReportForm: {},
