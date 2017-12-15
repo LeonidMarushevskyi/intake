@@ -36,6 +36,11 @@ describe('Store', () => {
       narrativeForm: {},
       participants: [],
       peopleForm: {},
+      peopleSearch: {
+        results: [],
+        searchTerm: '',
+        total: 0,
+      },
       relationships: [],
       routing: {locationBeforeTransitions: null},
       screening: {},

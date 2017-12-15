@@ -16,6 +16,7 @@ import locations from 'reducers/systemCodes/locationsReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import peopleForm from 'reducers/peopleFormReducer'
+import peopleSearch from 'reducers/peopleSearchReducer'
 import relationships from 'reducers/relationshipsReducer'
 import routing from 'reducers/routerReducer'
 import screening from 'reducers/screeningReducer'
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   narrativeForm,
   participants,
   peopleForm,
+  peopleSearch,
   relationships,
   routing,
   screening,

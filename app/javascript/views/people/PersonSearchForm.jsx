@@ -4,7 +4,17 @@ import Autocompleter from 'common/Autocompleter'
 import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
 import * as IntakeConfig from 'common/config'
 
-const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
+const PersonSearchForm = ({
+  canCreateNewPerson,
+  isSelectable,
+  onSelect,
+  onClear,
+  onSearch,
+  onChange,
+  searchTerm,
+  total,
+  results,
+}) => (
   <div className='card edit double-gap-top' id='search-card'>
     <div className='card-header'>
       <span>Search</span>
@@ -20,10 +30,17 @@ const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
             IntakeConfig.isFeatureInactive('release_two') &&
               <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
           }
-          <Autocompleter id='screening_participants'
+          <Autocompleter
+            id='screening_participants'
             onSelect={onSelect}
             isSelectable={isSelectable}
             footer={canCreateNewPerson && <CreateUnknownPerson saveCallback={onSelect}/>}
+            onClear={onClear}
+            onSearch={onSearch}
+            onChange={onChange}
+            searchTerm={searchTerm}
+            total={total}
+            results={results}
           />
         </div>
       </div>
@@ -34,7 +51,13 @@ const PersonSearchForm = ({canCreateNewPerson, isSelectable, onSelect}) => (
 PersonSearchForm.propTypes = {
   canCreateNewPerson: PropTypes.bool,
   isSelectable: PropTypes.func,
+  onChange: PropTypes.func,
+  onClear: PropTypes.func,
+  onSearch: PropTypes.func,
   onSelect: PropTypes.func,
+  results: PropTypes.array,
+  searchTerm: PropTypes.string,
+  total: PropTypes.number,
 }
 
 export default PersonSearchForm

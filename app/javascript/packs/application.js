@@ -11,11 +11,9 @@ import 'jquery'
 import 'common/jquery-helpers'
 
 import 'bootstrap'
-import React from 'react'
 import ReactDOM from 'react-dom'
 import routes from 'common/routes'
-
-import Autocompleter from 'common/Autocompleter'
+import release_one from 'common/release_one'
 
 // CSS
 import 'bootstrap/dist/css/bootstrap'
@@ -39,11 +37,5 @@ if (document.getElementById('app')) {
 }
 
 if (document.getElementById('app-release-one')) {
-  ReactDOM.render(
-    <div>
-      <label className='no-gap' htmlFor='people'>People</label>
-      <Autocompleter id='people' />
-    </div>,
-    document.getElementById('app-release-one')
-  )
+  ReactDOM.render(release_one, document.getElementById('app-release-one'))
 }

@@ -1,436 +1,204 @@
-import * as Utils from 'utils/http'
 import Autocompleter from 'common/Autocompleter'
 import React from 'react'
 import ReactAutosuggest from 'react-autosuggest'
-import matchers from 'jasmine-immutable-matchers'
 import {shallow, mount} from 'enzyme'
-import _ from 'lodash'
 
 describe('<Autocompleter />', () => {
-  function stubSuggestions(results) {
-    const promise = jasmine.createSpyObj('promise', ['then'])
-    promise.then.and.callFake((thenFunc) => thenFunc({hits: {hits: results}}))
-    spyOn(Utils, 'request')
-    Utils.request.and.returnValue(promise)
+  function renderAutocompleter({
+    onSelect = () => null,
+    onClear = () => null,
+    isSelectable = () => true,
+    onSearch = () => null,
+    onChange = () => null,
+    searchTerm = '',
+    results = [],
+    total,
+  }) {
+    return shallow(
+      <Autocompleter
+        onSelect={onSelect}
+        onClear={onClear}
+        onChange={onChange}
+        isSelectable={isSelectable}
+        total={total}
+        results={results}
+        searchTerm={searchTerm}
+        onSearch={onSearch}
+      />
+    )
   }
 
-  beforeEach(() => {
-    spyOn(_, 'debounce').and.callFake(
-      (callback) => () => { callback() }
+  function mountAutocompleter({
+    searchTerm = '',
+    onChange = () => null,
+    onClear = () => null,
+    onSearch = () => null,
+    footer,
+    results = [],
+    total = 25,
+  }) {
+    return mount(
+      <Autocompleter
+        searchTerm={searchTerm}
+        onChange={onChange}
+        onClear={onClear}
+        onSearch={onSearch}
+        footer={footer}
+        results={results}
+        total={total}
+      />
     )
-    jasmine.addMatchers(matchers)
-  })
+  }
 
   it('renders a Autosuggest component', () => {
-    const component = shallow(<Autocompleter />)
-    expect(component.find(ReactAutosuggest).length).toBe(1)
-  })
-
-  describe('#onSuggestionsFetchRequested', () => {
-    const bart_simpson = {first_name: 'Bart', last_name: 'Simpson'}
-    let component
-
-    beforeEach(() => {
-      stubSuggestions([bart_simpson])
-      component = shallow(<Autocompleter />)
-      component.instance().onSuggestionsFetchRequested({value: 'Simpson'})
-    })
-
-    it('uses the people search api to get the result for the search term', () => {
-      expect(component.state('suggestions')).toEqual([bart_simpson])
-    })
-
-    it('it debounces loadSuggestions for 400 ms', () => {
-      expect(_.debounce).toHaveBeenCalledWith(component.instance().loadSuggestions, 400)
-    })
+    expect(renderAutocompleter({}).find(ReactAutosuggest).length).toBe(1)
   })
 
   describe('#onSuggestionSelected', () => {
     let onSelect
+    let onClear
+    let onChange
     let component
     beforeEach(() => {
       onSelect = jasmine.createSpy('onSelectSpy')
-      component = shallow(<Autocompleter onSelect={onSelect} />)
+      onClear = jasmine.createSpy('onClear')
+      onChange = jasmine.createSpy('onChange')
+      component = renderAutocompleter({onSelect, onClear, onChange})
     })
     describe('selection is selectable', () => {
       let isSelectable
       beforeEach(() => {
         isSelectable = jasmine.createSpy('isSelectable')
-        component = shallow(<Autocompleter onSelect={onSelect} isSelectable={isSelectable} />)
+        onClear = jasmine.createSpy('onClear')
+        onChange = jasmine.createSpy('onChang')
+        component = renderAutocompleter({
+          onSelect, onClear, isSelectable, onChange,
+        })
       })
       describe('with permission to add sensitive', () => {
         it('clears the search Text and adds the suggestion', () => {
           isSelectable.and.returnValue(true)
-          const suggestion = {id: '1', first_name: 'Bart'}
+          const suggestion = {id: '1'}
           component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
           expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
-          expect(component.state('value')).toEqual('')
+          expect(onClear).toHaveBeenCalled()
+          expect(onChange).toHaveBeenCalledWith('')
         })
       })
       describe('without permission to add sensitive', () => {
         it('skips onSelect and does not clear suggestions', () => {
           isSelectable.and.returnValue(false)
-          const suggestion = {id: '1', first_name: 'Bart'}
+          const suggestion = {id: '1'}
           component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
           expect(onSelect).not.toHaveBeenCalled()
-          expect(component.state('value')).toEqual('')
         })
       })
     })
     describe('selection is a component', () => {
       it('skips onSelect for component selections', () => {
-        component.instance().onSuggestionSelected(null, {suggestion: <p>Test Footer</p>})
+        const suggestion = (<p>footer</p>)
+        component.instance().onSuggestionSelected(null, {suggestion})
         expect(onSelect).not.toHaveBeenCalled()
+        expect(onClear).toHaveBeenCalled()
+        expect(onChange).toHaveBeenCalledWith('')
       })
     })
     it('clears the search Text and adds the suggestion', () => {
-      const suggestion = {id: '1', first_name: 'Bart'}
-      component.instance().onSuggestionSelected('selected', {suggestion: suggestion})
+      const suggestion = {id: '1'}
+      component.instance().onSuggestionSelected('selected', {suggestion})
       expect(onSelect.calls.argsFor(0)[0]).toEqual(suggestion)
-      expect(component.state('value')).toEqual('')
+      expect(onClear).toHaveBeenCalled()
+      expect(onChange).toHaveBeenCalledWith('')
     })
   })
 
   describe('#onSuggestionsClearRequested', () => {
-    it('clears the suggestions', () => {
-      const component = shallow(<Autocompleter />)
-      component.setState({suggestions: ['foo', 'bar']})
-      expect(component.state('suggestions')).toEqual(['foo', 'bar'])
-      component.instance().onSuggestionsClearRequested()
-      expect(component.state('suggestions')).toEqual([])
+    it('pass onClear to ReactAutoSuggest', () => {
+      const onClear = jasmine.createSpy('onClear')
+      const component = renderAutocompleter({onClear}).find(ReactAutosuggest)
+      expect(component.props().onSuggestionsClearRequested).toEqual(onClear)
     })
   })
 
   describe('#getSuggestionValue', () => {
     it('return the suggestion to display on the input field', () => {
-      const component = shallow(<Autocompleter />)
-      const suggestion = {first_name: 'Bart', last_name: 'Simpson'}
-      const value = component.instance().getSuggestionValue(suggestion)
-      expect(value).toBe('Bart Simpson')
+      const suggestion = {firstName: 'Bart', lastName: 'Simpson'}
+      const suggestionValue = renderAutocompleter({})
+        .instance().getSuggestionValue(suggestion)
+      expect(suggestionValue).toBe('Bart Simpson')
     })
   })
 
   describe('with footer', () => {
-    let component
-    beforeEach(() => {
-      stubSuggestions([])
-      component = mount(<Autocompleter footer={<p>Test Footer</p>} />)
+    const footer = (<p>Test Footer</p>)
+
+    it('has no footer displayed when closed', () => {
+      const component = mountAutocompleter({searchTerm: 'Te', footer, results: []})
+      expect(component.html()).not.toContain('Test Footer')
     })
 
-    describe('is closed', () => {
-      it('has no footer displayed', () => {
-        expect(component.html()).not.toContain('Test Footer')
-      })
-    })
-    describe('is open', () => {
-      beforeEach(() => {
-        component.find('input').simulate('focus')
-        component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
-      })
-      it('renders the footer', () => {
-        expect(component.html()).toContain('Test Footer')
-      })
+    it('renders the footer when open', () => {
+      const component = mountAutocompleter({searchTerm: 'Te', footer, results: []})
+      component.find('input').simulate('focus')
+      expect(component.html()).toContain('Test Footer')
     })
   })
 
   describe('#shouldRenderSuggestions', () => {
+    const instance = renderAutocompleter({}).instance()
     it('returns true when search value contains two non whitespace characters', () => {
-      const instance = shallow(<Autocompleter />).instance()
       expect(instance.shouldRenderSuggestions('aa')).toEqual(true)
     })
 
     it('returns true when search value contains a character then a whitespace', () => {
-      const instance = shallow(<Autocompleter />).instance()
       expect(instance.shouldRenderSuggestions('a ')).toEqual(true)
     })
 
     it('returns false when search value contains two whitespace characters', () => {
-      const instance = shallow(<Autocompleter />).instance()
       expect(instance.shouldRenderSuggestions('  ')).toEqual(false)
     })
 
     it('returns false when search value contains a whitespace then a character', () => {
-      const instance = shallow(<Autocompleter />).instance()
       expect(instance.shouldRenderSuggestions(' a')).toEqual(false)
     })
   })
 
-  describe('mapPersonSearchAttributes', () => {
-    let component
-    beforeEach(() => {
-      component = shallow(<Autocompleter />)
-    })
-
-    it('maps person search attributes to suggestion attributes', () => {
-      const suggestion = {
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        middle_name: 'Jacqueline',
-        name_suffix: 'md',
-        gender: 'female',
-        languages: ['French', 'Italian'],
-        races: [
-          {race: 'White', race_detail: 'European'},
-          {race: 'American Indian or Alaska Native'},
-        ],
-        ethnicity: {
-          hispanic_latino_origin: 'Yes',
-          ethnicity_detail: ['Central American'],
-        },
-        date_of_birth: '1990-02-13',
-        ssn: '123456789',
-        addresses: [{
-          id: '1',
-          street_address: '234 Fake Street',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11344',
-        }],
-        phone_numbers: [{
-          id: '2',
-          number: '994-907-6774',
-          type: 'Home',
-        }],
-        legacy_descriptor: {
-          legacy_ui_id: '123-456-789',
-          legacy_table_description: 'Client',
-        },
-        sensitive: true,
-        sealed: false,
-      }
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.firstName).toEqual('Bart')
-      expect(attributes.lastName).toEqual('Simpson')
-      expect(attributes.middleName).toEqual('Jacqueline')
-      expect(attributes.nameSuffix).toEqual('md')
-      expect(attributes.gender).toEqual('female')
-      expect(attributes.legacyDescriptor).toEqual({
-        legacy_ui_id: '123-456-789',
-        legacy_table_description: 'Client',
-      })
-      expect(attributes.languages).toEqual(['French', 'Italian'])
-      expect(attributes.races).toEqual([
-        {race: 'White', race_detail: 'European'},
-        {race: 'American Indian or Alaska Native'},
-      ])
-      expect(attributes.ethnicity).toEqual({
-        hispanic_latino_origin: 'Yes',
-        ethnicity_detail: ['Central American'],
-      })
-      expect(attributes.dateOfBirth).toEqual('1990-02-13')
-      expect(attributes.ssn).toEqual('123-45-6789')
-      expect(attributes.address).toEqual({
-        streetAddress: '234 Fake Street',
-        city: 'Flushing',
-        state: 'NM',
-        zip: '11344',
-        type: '',
-      })
-      expect(attributes.phoneNumber).toEqual({
-        number: '994-907-6774',
-        type: 'Home',
-      })
-      expect(attributes.isSensitive).toEqual(true)
-      expect(attributes.isSealed).toEqual(false)
-    })
-
-    it('maps the first address and phone number result to addressi and phone number', () => {
-      const suggestion = {
-        addresses: [{
-          id: '1',
-          street_address: '234 Fake Street',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11344',
-          type: 'School',
-        }, {
-          id: '2',
-          street_address: '2 Camden Crt',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11222',
-          type: 'Home',
-        }],
-        phone_numbers: [{
-          number: '994-907-6774',
-          type: 'Home',
-        }, {
-          number: '111-222-6774',
-          type: 'Work',
-        }],
-      }
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.address).toEqual({
-        streetAddress: '234 Fake Street',
-        city: 'Flushing',
-        state: 'NM',
-        zip: '11344',
-        type: '',
-      })
-    })
-
-    it('maps person search attributes when phone numbers and addresses are empty', () => {
-      const suggestion = {phone_numbers: [], addresses: []}
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.address).toEqual(null)
-      expect(attributes.phoneNumber).toEqual(null)
-    })
-
-    it('maps person search hightlight fields', () => {
-      const suggestion = {
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        date_of_birth: '1990-02-13',
-        ssn: '123456789',
-        addresses: [],
-        phone_numbers: [],
-        highlight: {
-          first_name: '<em>Bar</em>t',
-          last_name: 'Sim<em>pson</em>',
-          ssn: '<em>123456789</em>',
-          date_of_birth: '<em>1990</em>-02-13',
-        },
-      }
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.firstName).toEqual('<em>Bar</em>t')
-      expect(attributes.lastName).toEqual('Sim<em>pson</em>')
-      expect(attributes.ssn).toEqual('<em>123-45-6789</em>')
-      expect(attributes.dateOfBirth).toEqual('<em>1990</em>-02-13')
-    })
-
-    it('formats ssn', () => {
-      const suggestion = {
-        ssn: '123456789',
-        addresses: [],
-        phone_numbers: [],
-      }
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.ssn).toEqual('123-45-6789')
-    })
-
-    it('formats highlighted ssn', () => {
-      const suggestion = {
-        ssn: '123456789',
-        addresses: [],
-        phone_numbers: [],
-        highlight: {
-          ssn: '<em>123456789</em>',
-        },
-      }
-      const attributes = component.instance().mapPersonSearchAttributes(suggestion)
-      expect(attributes.ssn).toEqual('<em>123-45-6789</em>')
-    })
-  })
-
   describe('#renderSuggestion', () => {
-    let component
-
     it('can render a component', () => {
-      component = mount(<Autocompleter />)
-      expect(component.instance().renderSuggestion(<p>render me</p>).props.children).toEqual('render me')
-      expect(component.instance().renderSuggestion({
-        id: '1',
-        first_name: 'Selma',
-        addresses: [],
-        phone_numbers: [],
-      }).props.firstName).toEqual('Selma')
+      const element = mountAutocompleter({})
+        .instance()
+        .renderSuggestion(<p>render me</p>)
+      expect(element.props.children).toEqual('render me')
     })
 
     it('renders the PersonSuggestion view', () => {
-      component = mount(<Autocompleter />)
-      const result = [{
-        first_name: 'Bart',
-        last_name: 'Simpson',
-        middle_name: 'Jacqueline',
-        name_suffix: 'md',
-        gender: 'female',
-        languages: ['French', 'Italian'],
-        races: [
-          {race: 'White', race_detail: 'European'},
-          {race: 'American Indian or Alaska Native'},
-        ],
-        ethnicity: {
-          hispanic_latino_origin: 'Yes',
-          ethnicity_detail: ['Central American'],
-        },
-        date_of_birth: '1990-02-13',
-        ssn: '123456789',
-        addresses: [{
-          id: '1',
-          street_address: '234 Fake Street',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11344',
-          type: 'School',
-        }],
-        phone_numbers: [{
-          id: '2',
-          number: '994-907-6774',
-          type: 'Home',
-        }],
-        legacy_descriptor: {},
-        sensitive: false,
-        sealed: false,
-      }]
-      stubSuggestions(result)
-
-      component.find('input').simulate('focus')
-      component.find('input').simulate('change', {target: {value: 'Bart Simpson'}})
-      expect(component.find('PersonSuggestion').props()).toEqual({
-        firstName: 'Bart',
-        lastName: 'Simpson',
-        middleName: 'Jacqueline',
-        nameSuffix: 'md',
-        legacyDescriptor: {},
-        gender: 'female',
-        languages: ['French', 'Italian'],
-        races: [
-          {race: 'White', race_detail: 'European'},
-          {race: 'American Indian or Alaska Native'},
-        ],
-        ethnicity: {
-          hispanic_latino_origin: 'Yes',
-          ethnicity_detail: ['Central American'],
-        },
-        dateOfBirth: '1990-02-13',
-        ssn: '123-45-6789',
-        address: {
-          streetAddress: '234 Fake Street',
-          city: 'Flushing',
-          state: 'NM',
-          zip: '11344',
-          type: '',
-        },
-        phoneNumber: {
-          number: '994-907-6774',
-          type: 'Home',
-        },
-        isSensitive: false,
-        isSealed: false,
-      })
+      const element = mountAutocompleter({})
+        .instance()
+        .renderSuggestion({firstName: 'test'})
+      expect(element.props).toEqual({firstName: 'test'})
+      expect(element.type.name).toEqual('PersonSuggestion')
     })
   })
 
   describe('#renderSuggestionsContainer', () => {
     const footer = (<span>Footer</span>)
     it('renders the suggestions container', () => {
-      const component = shallow(<Autocompleter footer={footer} />)
-      const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
-      expect(shallow(container).find('div.baz').html()).toContain('foobar')
+      const component = renderAutocompleter({footer, searchTerm: 'Te'})
+        .instance()
+        .renderSuggestionsContainer({children: 'foobar', className: 'baz'})
+      expect(shallow(component).find('div.baz').html()).toContain('foobar')
     })
 
     it('renders no results were found', () => {
-      const component = shallow(<Autocompleter footer={footer} />)
-      component.instance().setState({value: 'Simpson', suggestions: [], total: 0})
+      const component = renderAutocompleter({footer, total: 0, searchTerm: 'Simpson'})
       expect(component.html()).toContain('No results were found for &quot;Simpson&quot;')
     })
 
     it('renders number of results found', () => {
-      const suggestions = [{first_name: 'Bart', last_name: 'Simpson'}, {first_name: 'Lisa', last_name: 'Simpson'}, {footer: ''}]
-      const component = shallow(<Autocompleter footer={footer} />)
-      component.instance().setState({value: 'Simpson', suggestions, total: 2})
-      const container = component.instance().renderSuggestionsContainer({children: 'foobar', className: 'baz'})
-      expect(shallow(container).find('div.baz').html()).toContain('Showing 1-2 of 2 results for &quot;Simpson&quot;')
+      const component = renderAutocompleter({footer, total: 2, searchTerm: 'Simpson'})
+        .instance()
+        .renderSuggestionsContainer({children: 'foobar', className: 'baz'})
+      expect(shallow(component).find('div.baz').html()).toContain('Showing 1-2 of 2 results for &quot;Simpson&quot;')
     })
   })
 })
