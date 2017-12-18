@@ -2,7 +2,7 @@ import NarrativeShow from 'views/NarrativeShow'
 import {
   getErrorsSelector,
   getReportNarrativeValueSelector,
-} from 'selectors/narrativeShowSelectors'
+} from 'selectors/screening/narrativeShowSelectors'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state) => (

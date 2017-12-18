@@ -3,7 +3,7 @@ import {
   getReportNarrativeValueSelector,
   getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
-} from 'selectors/narrativeFormSelectors'
+} from 'selectors/screening/narrativeFormSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/narrativeFormActions'
 import {save as saveScreening} from 'actions/screeningActions'

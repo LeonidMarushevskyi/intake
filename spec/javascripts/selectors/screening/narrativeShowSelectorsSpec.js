@@ -2,7 +2,7 @@ import {List, fromJS} from 'immutable'
 import {
   getErrorsSelector,
   getReportNarrativeValueSelector,
-} from 'selectors/narrativeShowSelectors'
+} from 'selectors/screening/narrativeShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('contactFormSelectors', () => {

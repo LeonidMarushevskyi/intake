@@ -5,7 +5,7 @@ import {
   getScreeningWithEditsSelector,
   getTouchedFieldsSelector,
   getVisibleErrorsSelector,
-} from 'selectors/narrativeFormSelectors'
+} from 'selectors/screening/narrativeFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('narrativeFormSelectors', () => {
