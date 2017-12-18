@@ -11,17 +11,24 @@ feature 'home page' do
     end
 
     let(:dora_response) do
-      SearchResultBuilder.build do |builder|
-        builder.with_first_name('Marge')
-        builder.with_last_name('Simpson')
-        builder.with_ssn('123-23-1234')
-        builder.with_gender('female')
-        builder.with_address(
-          street_number: 123,
-          street_name: 'Fake St',
-          state_code: 'CA',
-          type: 'Home'
-        )
+      PersonSearchResponseBuilder.build do |response|
+        response.with_total(1)
+        response.with_hits do
+          [
+            PersonSearchResultBuilder.build do |builder|
+              builder.with_first_name('Marge')
+              builder.with_last_name('Simpson')
+              builder.with_ssn('123-23-1234')
+              builder.with_gender('female')
+              builder.with_address(
+                street_number: 123,
+                street_name: 'Fake St',
+                state_code: 'CA',
+                type: 'Home'
+              )
+            end
+          ]
+        end
       end
     end
 

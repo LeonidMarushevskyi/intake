@@ -105,16 +105,30 @@ feature 'Create participant' do
   end
 
   let(:marge_response) do
-    SearchResultBuilder.build do |builder|
-      builder.with_first_name('Marge')
-      builder.with_last_name('Simpson')
+    PersonSearchResponseBuilder.build do |response|
+      response.with_total(1)
+      response.with_hits do
+        [
+          PersonSearchResultBuilder.build do |builder|
+            builder.with_first_name('Marge')
+            builder.with_last_name('Simpson')
+          end
+        ]
+      end
     end
   end
 
   let(:homer_response) do
-    SearchResultBuilder.build do |builder|
-      builder.with_first_name('Homer')
-      builder.with_last_name('Simpson')
+    PersonSearchResponseBuilder.build do |response|
+      response.with_total(1)
+      response.with_hits do
+        [
+          PersonSearchResultBuilder.build do |builder|
+            builder.with_first_name('Homer')
+            builder.with_last_name('Simpson')
+          end
+        ]
+      end
     end
   end
 
