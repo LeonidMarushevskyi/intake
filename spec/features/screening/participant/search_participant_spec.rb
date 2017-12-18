@@ -289,5 +289,24 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content 'Showing 1-25 of 25 results for "So"'
       end
     end
+
+    scenario 'person search supports pagination' do
+      search_results = PersonSearchResponseBuilder.build do |builder|
+        builder.with_total(100)
+        builder.with_hits do
+          25.times.map do
+            PersonSearchResultBuilder.build do |result|
+              result.with_first_name(Faker::Name.first_name)
+            end
+          end
+        end
+      end
+      stub_person_search('First', search_results)
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'First', skip_select: true
+        expect(page).to have_content 'Showing 1-25 of 100 results for "First"'
+        expect(page).to have_button 'Show 25 more results'
+      end
+    end
   end
 end
