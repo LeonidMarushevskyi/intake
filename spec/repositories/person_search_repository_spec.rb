@@ -9,6 +9,9 @@ describe PersonSearchRepository do
     let(:search_term) { 'Robert Barathian' }
     let(:query) do
       {
+        size: 25,
+        track_scores: true,
+        sort: [{ _score: 'desc', _uid: 'desc' }],
         query: {
           bool: {
             must: [{

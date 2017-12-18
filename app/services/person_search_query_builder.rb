@@ -18,17 +18,20 @@ class PersonSearchQueryBuilder
 
   def build
     {
-      query: {
-        bool: {
-          must: must
-        }
-      },
+      size: 25,
+      track_scores: true,
+      sort: [{ _score: 'desc', _uid: 'desc' }],
+      query: query,
       _source: fields,
       highlight: highlight
     }
   end
 
   private
+
+  def query
+    { bool: { must: must } }
+  end
 
   def must
     return [base_query] unless Rails.configuration.intake[:client_only_search]
