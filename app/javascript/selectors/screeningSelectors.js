@@ -12,3 +12,14 @@ export const getScreeningIsReadOnlySelector = createSelector(
   getScreeningSelector,
   (screening) => Boolean(screening.get('referral_id'))
 )
+
+export const getScreeningNameValueSelector = createSelector(
+  getScreeningSelector,
+  (screening) => screening.get('name')
+)
+
+export const getScreeningTitleSelector = createSelector(
+  getScreeningIdValueSelector,
+  getScreeningNameValueSelector,
+  (id, name) => name || `Screening: ${id}`
+)
