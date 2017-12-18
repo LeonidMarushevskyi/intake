@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
 import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
+import ShowMoreResults from 'common/ShowMoreResults'
 import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
@@ -14,12 +15,14 @@ describe('PersonSearchForm', () => {
     onSelect = () => null,
     isSelectable,
     canCreateNewPerson,
+    loadMoreResults,
   }) {
     return shallow(
       <PersonSearchForm
         onSelect={onSelect}
         isSelectable={isSelectable}
         canCreateNewPerson={canCreateNewPerson}
+        loadMoreResults={loadMoreResults}
       />
     )
   }
@@ -64,19 +67,28 @@ describe('PersonSearchForm', () => {
   })
 
   describe('when creating a new person is NOT allowed', () => {
-    let component
+    let autocompleter
     let onSelect
     beforeEach(() => {
       onSelect = jasmine.createSpy('onSelect')
-      component = renderPersonSearchForm({canCreateNewPerson: false})
+      autocompleter = renderPersonSearchForm({canCreateNewPerson: false})
+        .find('Autocompleter')
     })
 
-    it('does not pass the CreateUnknownPerson footer', () => {
-      const autocompleter = component.find('Autocompleter')
+    it('does not render autocompleter with CreateUnknownPerson footer', () => {
       expect(autocompleter.props().footers).not.toContain(
         <CreateUnknownPerson saveCallback={onSelect}/>
       )
     })
+  })
+
+  it('renders autocompleter with ShowMoreResults footer', () => {
+    const loadMoreResults = jasmine.createSpy('loadMoreResults')
+    const autocompleter = renderPersonSearchForm({loadMoreResults})
+      .find('Autocompleter')
+    expect(autocompleter.props().footers).toContain(
+      <ShowMoreResults key='show-more-results' onSelect={loadMoreResults} />
+    )
   })
 
   it('renders the card header', () => {
