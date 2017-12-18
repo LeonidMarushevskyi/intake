@@ -33,7 +33,7 @@ import CrossReportShowContainer from 'containers/screenings/CrossReportShowConta
 import DecisionFormContainer from 'containers/screenings/DecisionFormContainer'
 import DecisionShowContainer from 'containers/screenings/DecisionShowContainer'
 import {getScreeningSubmissionErrorsSelector, getTotalScreeningSubmissionErrorValueSelector} from 'selectors/errorsSelectors'
-import {getAllCardsAreSavedValueSelector} from 'selectors/screening/screeningPageSelectors'
+import {getAllCardsAreSavedValueSelector, getScreeningHasErrorsSelector} from 'selectors/screening/screeningPageSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -212,7 +212,7 @@ ScreeningPage.defaultProps = {
 export function mapStateToProps(state, _ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
-    disableSubmitButton: !getAllCardsAreSavedValueSelector(state),
+    disableSubmitButton: !getAllCardsAreSavedValueSelector(state) || getScreeningHasErrorsSelector(state),
     hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     mode: state.getIn(['screeningPage', 'mode']),
