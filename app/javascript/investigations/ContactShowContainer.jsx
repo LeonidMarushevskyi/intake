@@ -5,7 +5,7 @@ import {
   getLocationValueSelector,
   getPurposeValueSelector,
   getStatusValueSelector,
-} from 'selectors/contactSelectors'
+} from 'selectors/investigation/contactSelectors'
 import {push} from 'react-router-redux'
 import * as actions from 'actions/contactActions'
 import {bindActionCreators} from 'redux'

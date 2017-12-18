@@ -5,7 +5,7 @@ import {
   getLocationValueSelector,
   getCommunicationMethodValueSelector,
   getFormattedPeopleSelector,
-} from 'selectors/contactSelectors'
+} from 'selectors/investigation/contactSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('contactSelectors', () => {

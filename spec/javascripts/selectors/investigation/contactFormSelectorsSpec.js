@@ -8,7 +8,7 @@ import {
   getPeopleSelector,
   getFormattedPeopleSelector,
   getSelectedPeopleIdsSelector,
-} from 'selectors/contactFormSelectors'
+} from 'selectors/investigation/contactFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('contactFormSelectors', () => {

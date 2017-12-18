@@ -1,5 +1,5 @@
 import {fromJS, List} from 'immutable'
-import {getContactLogsSelector} from 'selectors/contactLogSelectors'
+import {getContactLogsSelector} from 'selectors/investigation/contactLogSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('contactLogSelectors', () => {

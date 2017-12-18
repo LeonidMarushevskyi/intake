@@ -18,7 +18,7 @@ import {
   getHasErrorsValueSelector,
   getFormattedPeopleSelector,
   getSelectedPeopleIdsSelector,
-} from 'selectors/contactFormSelectors'
+} from 'selectors/investigation/contactFormSelectors'
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')

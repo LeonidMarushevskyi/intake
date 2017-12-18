@@ -1,5 +1,5 @@
 import ContactLog from 'investigations/ContactLog'
-import {getContactLogsSelector} from 'selectors/contactLogSelectors'
+import {getContactLogsSelector} from 'selectors/investigation/contactLogSelectors'
 import {connect} from 'react-redux'
 
 const mapStateToProps = (state, ownProps) => {
