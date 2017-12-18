@@ -305,7 +305,7 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'First', skip_select: true
         expect(page).to have_content 'Showing 1-25 of 100 results for "First"'
-        expect(page).to have_button 'Show 25 more results'
+        expect(page).to have_button 'Show more results'
       end
     end
   end

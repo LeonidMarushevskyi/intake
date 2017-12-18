@@ -24,7 +24,7 @@ export default class Autocompleter extends React.Component {
       onClear()
       onChange('')
       if (!suggestion.props) {
-        // Assume footer components handle their own clicks.
+        // Assume footers components handle their own clicks.
         onSelect(suggestion)
       }
     }
@@ -64,7 +64,7 @@ export default class Autocompleter extends React.Component {
 
   render() {
     const {
-      footer,
+      footers,
       id,
       onChange,
       onClear,
@@ -79,7 +79,7 @@ export default class Autocompleter extends React.Component {
     }
     return (
       <ReactAutosuggest
-        suggestions={footer ? [...results, footer] : results}
+        suggestions={[...results, ...footers]}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionsFetchRequested={({value}) => onSearch(value)}
         onSuggestionsClearRequested={onClear}
@@ -94,10 +94,7 @@ export default class Autocompleter extends React.Component {
 }
 
 Autocompleter.propTypes = {
-  footer: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.bool,
-  ]),
+  footers: PropTypes.arrayOf(PropTypes.element),
   id: PropTypes.string,
   isSelectable: PropTypes.func,
   onChange: PropTypes.func,
@@ -110,7 +107,7 @@ Autocompleter.propTypes = {
 }
 
 Autocompleter.defaultProps = {
-  footer: false,
+  footers: [],
   isSelectable: () => true,
 }
 

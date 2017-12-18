@@ -33,7 +33,7 @@ describe('<Autocompleter />', () => {
     onChange = () => null,
     onClear = () => null,
     onSearch = () => null,
-    footer,
+    footers = [],
     results = [],
     total = 25,
   }) {
@@ -43,7 +43,7 @@ describe('<Autocompleter />', () => {
         onChange={onChange}
         onClear={onClear}
         onSearch={onSearch}
-        footer={footer}
+        footers={footers}
         results={results}
         total={total}
       />
@@ -129,16 +129,18 @@ describe('<Autocompleter />', () => {
     })
   })
 
-  describe('with footer', () => {
-    const footer = (<p>Test Footer</p>)
+  describe('with footers', () => {
+    const footers = [
+      <p key='test-footer'>Test Footer</p>,
+    ]
 
-    it('has no footer displayed when closed', () => {
-      const component = mountAutocompleter({searchTerm: 'Te', footer, results: []})
+    it('not displayed when closed', () => {
+      const component = mountAutocompleter({searchTerm: 'Te', footers, results: []})
       expect(component.html()).not.toContain('Test Footer')
     })
 
-    it('renders the footer when open', () => {
-      const component = mountAutocompleter({searchTerm: 'Te', footer, results: []})
+    it('displayed when open', () => {
+      const component = mountAutocompleter({searchTerm: 'Te', footers, results: []})
       component.find('input').simulate('focus')
       expect(component.html()).toContain('Test Footer')
     })
@@ -181,16 +183,15 @@ describe('<Autocompleter />', () => {
   })
 
   describe('#renderSuggestionsContainer', () => {
-    const footer = (<span>Footer</span>)
     it('renders the suggestions container', () => {
-      const component = renderAutocompleter({footer, searchTerm: 'Te'})
+      const component = renderAutocompleter({searchTerm: 'Te'})
         .instance()
         .renderSuggestionsContainer({children: 'foobar', className: 'baz'})
       expect(shallow(component).find('div.baz').html()).toContain('foobar')
     })
 
     it('renders no results were found', () => {
-      const component = renderAutocompleter({footer, total: 0, searchTerm: 'Simpson'})
+      const component = renderAutocompleter({total: 0, searchTerm: 'Simpson'})
       expect(component.html()).toContain('No results were found for &quot;Simpson&quot;')
     })
 
@@ -199,7 +200,6 @@ describe('<Autocompleter />', () => {
         Array(5).keys()
       ).map(() => ({}))
       const component = renderAutocompleter({
-        footer,
         results: five_results,
         total: 10,
         searchTerm: 'Simpson',

@@ -14,39 +14,45 @@ const PersonSearchForm = ({
   searchTerm,
   total,
   results,
-}) => (
-  <div className='card edit double-gap-top' id='search-card'>
-    <div className='card-header'>
-      <span>Search</span>
-    </div>
-    <div className='card-body'>
-      <div className='row'>
-        <div className='col-md-12'>
-          {
-            IntakeConfig.isFeatureActive('release_two') &&
-              <label className='pull-left' htmlFor='screening_participants'>Search for clients</label>
-          }
-          {
-            IntakeConfig.isFeatureInactive('release_two') &&
-              <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
-          }
-          <Autocompleter
-            id='screening_participants'
-            onSelect={onSelect}
-            isSelectable={isSelectable}
-            footer={canCreateNewPerson && <CreateUnknownPerson saveCallback={onSelect}/>}
-            onClear={onClear}
-            onSearch={onSearch}
-            onChange={onChange}
-            searchTerm={searchTerm}
-            total={total}
-            results={results}
-          />
+}) => {
+  let footers = []
+  if (canCreateNewPerson) {
+    footers = [<CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>]
+  }
+  return (
+    <div className='card edit double-gap-top' id='search-card'>
+      <div className='card-header'>
+        <span>Search</span>
+      </div>
+      <div className='card-body'>
+        <div className='row'>
+          <div className='col-md-12'>
+            {
+              IntakeConfig.isFeatureActive('release_two') &&
+                <label className='pull-left' htmlFor='screening_participants'>Search for clients</label>
+            }
+            {
+              IntakeConfig.isFeatureInactive('release_two') &&
+                <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
+            }
+            <Autocompleter
+              id='screening_participants'
+              onSelect={onSelect}
+              isSelectable={isSelectable}
+              footers={footers}
+              onClear={onClear}
+              onSearch={onSearch}
+              onChange={onChange}
+              searchTerm={searchTerm}
+              total={total}
+              results={results}
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 PersonSearchForm.propTypes = {
   canCreateNewPerson: PropTypes.bool,

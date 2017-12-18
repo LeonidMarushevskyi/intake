@@ -39,13 +39,15 @@ describe('PersonSearchForm', () => {
     const onSelect = () => {}
     const component = renderPersonSearchForm({canCreateNewPerson: true, onSelect})
     const autocompleter = component.find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(<CreateUnknownPerson saveCallback={onSelect}/>)
+    expect(autocompleter.props().footers).toEqual([
+      <CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>,
+    ])
   })
 
   it('does not pass a footer if we cannot create new people', () => {
     const component = renderPersonSearchForm({canCreateNewPerson: false})
     const autocompleter = component.find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(false)
+    expect(autocompleter.props().footers).toEqual([])
   })
 
   it('renders the card header', () => {
