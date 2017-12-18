@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect'
 import {Map, List} from 'immutable'
-import {getInvestigationSelector} from 'selectors/investigationSelectors'
+import {getInvestigationSelector} from 'selectors/investigation/investigationSelectors'
 import nameFormatter from 'utils/nameFormatter'
 
 export const getPeopleWithRelationships = createSelector(

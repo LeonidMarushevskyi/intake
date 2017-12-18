@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect'
 import {List, Map, Set} from 'immutable'
-import {getInvestigationSelector} from 'selectors/investigationSelectors'
+import {getInvestigationSelector} from 'selectors/investigation/investigationSelectors'
 
 export const getScreeningSummarySelector = createSelector(
   getInvestigationSelector,

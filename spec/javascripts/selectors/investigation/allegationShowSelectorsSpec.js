@@ -1,7 +1,7 @@
 import {fromJS, List} from 'immutable'
 import {
   getFormattedAllegationsSelector,
-} from 'selectors/allegationShowSelectors'
+} from 'selectors/investigation/allegationShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('allegationShowSelectors', () => {

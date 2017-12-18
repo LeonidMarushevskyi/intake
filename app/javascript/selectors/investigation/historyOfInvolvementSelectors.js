@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect'
 import {Map, List, fromJS} from 'immutable'
-import {getInvestigationSelector} from 'selectors/investigationSelectors'
+import {getInvestigationSelector} from 'selectors/investigation/investigationSelectors'
 import nameFormatter from 'utils/nameFormatter'
 import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'

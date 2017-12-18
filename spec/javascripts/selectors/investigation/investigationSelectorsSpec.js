@@ -1,5 +1,5 @@
 import {fromJS, Map} from 'immutable'
-import {getInvestigationSelector} from 'selectors/investigationSelectors'
+import {getInvestigationSelector} from 'selectors/investigation/investigationSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('investigationSelectors', () => {
