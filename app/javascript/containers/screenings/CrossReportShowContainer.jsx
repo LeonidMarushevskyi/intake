@@ -5,7 +5,7 @@ import {
   getErrorsSelector,
   getSelectedCrossReportAgencyNamesSelector,
   getAllegationsRequireCrossReportsValueSelector,
-} from 'selectors/crossReportShowSelectors'
+} from 'selectors/screening/crossReportShowSelectors'
 
 const mapStateToProps = (state) => {
   const firstCrossReport = getCrossReportSelector(state)

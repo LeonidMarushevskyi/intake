@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import {getCountyAgenciesSelector} from 'selectors/countyAgenciesSelectors'
+import {getCountyAgenciesSelector} from 'selectors/screening/countyAgenciesSelectors'
 import {Map, List, fromJS} from 'immutable'
 import {
   AGENCY_TYPES,

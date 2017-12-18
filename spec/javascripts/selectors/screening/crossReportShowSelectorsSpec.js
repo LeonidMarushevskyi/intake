@@ -4,7 +4,7 @@ import {
   getAllegationsRequireCrossReportsValueSelector,
   getErrorsSelector,
   getSelectedCrossReportAgencyNamesSelector,
-} from 'selectors/crossReportShowSelectors'
+} from 'selectors/screening/crossReportShowSelectors'
 import {List, fromJS} from 'immutable'
 
 describe('crossReportShowSelectors', () => {

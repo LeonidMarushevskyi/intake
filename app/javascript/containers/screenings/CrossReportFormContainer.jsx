@@ -12,7 +12,7 @@ import {
   getLawEnforcementAgenciesSelector,
   getCountyLicensingAgenciesSelector,
   getCommunityCareLicensingAgenciesSelector,
-} from 'selectors/countyAgenciesSelectors'
+} from 'selectors/screening/countyAgenciesSelectors'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import CrossReportForm from 'views/CrossReportForm'
@@ -41,7 +41,7 @@ import {
   getLawEnforcementFormSelector,
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
-} from 'selectors/crossReportFormSelectors'
+} from 'selectors/screening/crossReportFormSelectors'
 
 const mapStateToProps = (state) => ({
   allegationsRequireCrossReports: getAllegationsRequireCrossReportsValueSelector(state),

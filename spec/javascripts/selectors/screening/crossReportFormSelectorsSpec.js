@@ -11,7 +11,7 @@ import {
   getLawEnforcementFormSelector,
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
-} from 'selectors/crossReportFormSelectors'
+} from 'selectors/screening/crossReportFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
 describe('crossReportFormSelectors', () => {

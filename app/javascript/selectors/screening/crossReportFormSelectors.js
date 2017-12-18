@@ -18,7 +18,7 @@ import {
   getDepartmentOfJusticeErrors,
   getDistrictAttorneyErrors,
   getLawEnforcementErrors,
-} from 'selectors/crossReportShowSelectors'
+} from 'selectors/screening/crossReportShowSelectors'
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
