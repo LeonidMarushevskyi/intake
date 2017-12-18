@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 import {Map, List, fromJS} from 'immutable'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
-import {isRequiredCreate, combineCompact} from 'utils/validator'
+import {isRequiredIfCreate, isRequiredCreate, combineCompact} from 'utils/validator'
 import SCREENING_DECISION from 'enums/ScreeningDecision'
 import ACCESS_RESTRICTIONS from 'enums/AccessRestrictions'
 import SCREENING_DECISION_OPTIONS from 'enums/ScreeningDecisionOptions'
@@ -39,7 +39,8 @@ export const getErrorsSelector = createSelector(
   getDecisionDetailValueSelector,
   (state) => state.getIn(['screeningDecisionForm', 'restrictions_rationale', 'value']) || '',
   (state) => state.get('allegationsForm', List()),
-  (decision, decisionDetail, restrictionsRationale, allegations) => fromJS({
+  (state) => state.getIn(['screeningDecisionForm', 'additional_information', 'value']) || '',
+  (decision, decisionDetail, restrictionsRationale, allegations, additionalInformation) => fromJS({
     screening_decision: combineCompact(
       isRequiredCreate(decision, 'Please enter a decision'),
       () => {
@@ -59,6 +60,11 @@ export const getErrorsSelector = createSelector(
           return undefined
         }
       }
+    ),
+    additional_information: combineCompact(
+      isRequiredIfCreate(additionalInformation, 'Please enter Additional Information', () => (
+        decision === 'screen_out' && decisionDetail === 'evaluate_out'
+      ))
     ),
     restrictions_rationale: combineCompact(
       isRequiredCreate(restrictionsRationale, 'Please enter an access restriction reason')
@@ -103,9 +109,16 @@ export const getDecisionSelector = createSelector(
   (value, errors) => Map({value, errors})
 )
 
+export const getAdditionalInfoRequiredSelector = createSelector(
+  getDecisionValueSelector,
+  getDecisionDetailValueSelector,
+  (decision, decisionDetail) => (decision && decisionDetail && decision === 'screen_out' && decisionDetail === 'evaluate_out')
+)
+
 export const getAdditionalInformationSelector = createSelector(
   (state) => state.getIn(['screeningDecisionForm', 'additional_information', 'value']),
-  (value) => Map({value: value || ''})
+  (state) => getVisibleErrorsSelector(state).get('additional_information'),
+  (value, errors) => Map({value: value || '', errors})
 )
 
 export const getAccessRestrictionSelector = createSelector(

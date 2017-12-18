@@ -11,7 +11,8 @@ export const getErrorsSelector = createSelector(
   (state) => state.getIn(['screening', 'access_restrictions']) || '',
   (state) => state.getIn(['screening', 'restrictions_rationale']) || '',
   (state) => state.get('allegationsForm', List()),
-  (decision, decisionDetail, accessRestrictions, restrictionsRationale, allegations) => (
+  (state) => state.getIn(['screening', 'additional_information']) || '',
+  (decision, decisionDetail, accessRestrictions, restrictionsRationale, allegations, additionalInformation) => (
     fromJS({
       screening_decision: combineCompact(
         isRequiredCreate(decision, 'Please enter a decision'),
@@ -33,11 +34,26 @@ export const getErrorsSelector = createSelector(
           }
         }
       ),
+      additional_information: combineCompact(
+        isRequiredIfCreate(additionalInformation, 'Please enter Additional Information', () => (
+          decision === 'screen_out' && decisionDetail === 'evaluate_out'
+        ))
+      ),
       restrictions_rationale: combineCompact(
         isRequiredIfCreate(restrictionsRationale, 'Please enter an access restriction reason', () => (accessRestrictions))
       ),
     })
   )
+)
+
+export const getAdditionalInfoRequiredSelector = createSelector(
+  getScreeningSelector,
+  (screening) => {
+    const decision = screening.get('screening_decision')
+    const decisionDetail = screening.get('screening_decision_detail')
+    return (decision && decisionDetail && decision === 'screen_out' && decisionDetail === 'evaluate_out')
+  }
+
 )
 
 export const getDecisionSelector = createSelector(
@@ -73,5 +89,11 @@ export const getDecisionDetailSelector = createSelector(
 export const getRestrictionRationaleSelector = createSelector(
   (state) => state.getIn(['screening', 'restrictions_rationale']),
   (state) => getErrorsSelector(state).get('restrictions_rationale'),
+  (value, errors) => Map({value: value || '', errors})
+)
+
+export const getAdditionalInformationSelector = createSelector(
+  (state) => state.getIn(['screening', 'additional_information']),
+  (state) => getErrorsSelector(state).get('additional_information'),
   (value, errors) => Map({value: value || '', errors})
 )

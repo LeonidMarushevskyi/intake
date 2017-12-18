@@ -4,6 +4,8 @@ import {
   getDecisionDetailSelector,
   getErrorsSelector,
   getRestrictionRationaleSelector,
+  getAdditionalInfoRequiredSelector,
+  getAdditionalInformationSelector,
 } from 'selectors/screening/decisionShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -153,6 +155,29 @@ describe('allegationShowSelectors', () => {
       })
     })
 
+    describe('additional information', () => {
+      it('includes an error message if decision is screen out and decision detail is evaluate out', () => {
+        const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out'}
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('additional_information'))
+          .toEqualImmutable(List(['Please enter Additional Information']))
+      })
+
+      it('does not include an error message if decision is screen out and decision detail is anything other than evaluate out', () => {
+        const screening = {screening_decision: 'screen_out', screening_decision_detail: 'consultation'}
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('additional_information'))
+          .toEqualImmutable(List())
+      })
+
+      it('does not include an error message if decision is screen out, and decision detail is empty', () => {
+        const screening = {screening_decision: 'screen_out'}
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('additional_information'))
+          .toEqualImmutable(List())
+      })
+    })
+
     describe('restrictions rationale', () => {
       it('returns an error if there is no rationale and access_restrictions is sensitive', () => {
         const screening = {access_restrictions: 'sensitive'}
@@ -170,6 +195,26 @@ describe('allegationShowSelectors', () => {
     })
   })
 
+  describe('getAdditionalInfoRequiredSelector', () => {
+    it('returns the true if screening decision is screen_out and screening_decision_detail is evaluate_out', () => {
+      const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out'}
+      const state = fromJS({screening})
+      expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(true))
+    })
+
+    it('returns the false if screening decision is screen_out and screening_decision_detail is not evaluate_out', () => {
+      const screening = {screening_decision: 'screen_out', screening_decision_detail: 'not evaluate_out'}
+      const state = fromJS({screening})
+      expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(false))
+    })
+
+    it('returns the false if screening decision is not screen_out', () => {
+      const screening = {screening_decision: 'not screen_out', screening_decision_detail: 'Immediate'}
+      const state = fromJS({screening})
+      expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(false))
+    })
+  })
+
   describe('getRestrictionRationaleSelector', () => {
     it('returns the proper value if one exists', () => {
       const screening = {restrictions_rationale: 'ABC'}
@@ -181,6 +226,26 @@ describe('allegationShowSelectors', () => {
       const screening = {restrictions_rationale: null}
       const state = fromJS({screening})
       expect(getRestrictionRationaleSelector(state).get('value')).toEqual('')
+    })
+  })
+
+  describe('getAdditionalInformationSelector', () => {
+    it('returns errors for screening decision', () => {
+      const screening = {additional_information: 'additional_information'}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('errors')).toEqualImmutable(List())
+    })
+
+    it('returns the proper value if one exists', () => {
+      const screening = {additional_information: 'ABC'}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('value')).toEqual('ABC')
+    })
+
+    it('returns an empty string if current value is null', () => {
+      const screening = {additional_information: null}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('value')).toEqual('')
     })
   })
 })
