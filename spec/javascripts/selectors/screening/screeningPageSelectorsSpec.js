@@ -2,6 +2,7 @@ import {
   getCardModeValueSelector,
   getCardIsEditableSelector,
   getAllCardsAreSavedValueSelector,
+  getScreeningHasErrorsSelector,
 } from 'selectors/screening/screeningPageSelectors'
 import {fromJS} from 'immutable'
 
@@ -63,6 +64,32 @@ describe('screeningPageSelectors', () => {
       }
       const state = fromJS({screeningPage})
       expect(getAllCardsAreSavedValueSelector(state)).toEqual(false)
+    })
+  })
+
+  describe('getScreeningHasErrorsSelector', () => {
+    it('returns false if there are no errors for the screening', () => {
+      const screening = {
+        report_narrative: 'My narrative',
+        screening_decision: 'differential_response',
+        communication_method: 'fax',
+        assignee: 'Bob Smith',
+        started_at: '2002-01-02',
+      }
+      const state = fromJS({screening})
+      expect(getScreeningHasErrorsSelector(state)).toEqual(false)
+    })
+
+    it('returns true if the screening has errors for a field', () => {
+      const screening = {
+        report_narrative: 'My narrative',
+        screening_decision: 'differential_response',
+        communication_method: 'fax',
+        assignee: 'Bob Smith',
+        started_at: null,
+      }
+      const state = fromJS({screening})
+      expect(getScreeningHasErrorsSelector(state)).toEqual(true)
     })
   })
 })

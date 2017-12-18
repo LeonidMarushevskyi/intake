@@ -1,6 +1,11 @@
 import {Map} from 'immutable'
 import {getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
 import {EDIT_MODE, SHOW_MODE} from 'actions/screeningPageActions'
+import {getErrorsSelector as crossReportErrorsSelector} from 'selectors/screening/crossReportShowSelectors'
+import {getErrorsSelector as narrativeErrorsSelector} from 'selectors/screening/narrativeShowSelectors'
+import {getErrorsSelector as screeningInformationErrorsSelector} from 'selectors/screening/screeningInformationShowSelectors'
+import {getErrorsSelector as screeningDecisionErrorsSelector} from 'selectors/screening/decisionShowSelectors'
+import {getErrorsSelector as incidentInformationErrorsSelector} from 'selectors/screening/incidentInformationShowSelector'
 
 export const getCardModeValueSelector = (state, card) => (
   state.getIn(['screeningPage', 'cards', card])
@@ -22,3 +27,12 @@ export const getAllCardsAreSavedValueSelector = (state) => {
   const allPeopleCardsSaved = screeningPage.get('peopleCards', Map()).every((cardMode) => cardMode === SHOW_MODE)
   return allCardsSaved && allPeopleCardsSaved
 }
+
+export const getScreeningHasErrorsSelector = (state) => (
+  crossReportErrorsSelector(state)
+    .merge(narrativeErrorsSelector(state))
+    .merge(screeningInformationErrorsSelector(state))
+    .merge(screeningDecisionErrorsSelector(state))
+    .merge(incidentInformationErrorsSelector(state))
+    .some((errors) => !errors.isEmpty())
+)
