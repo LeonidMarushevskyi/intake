@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {getErrorsSelector} from 'selectors/screeningInformationSelectors'
+import {getErrorsSelector} from 'selectors/screening/screeningInformationShowSelectors'
 import ScreeningInformationShow from 'views/ScreeningInformationShow'
 import {dateTimeFormatter} from 'utils/dateFormatter'
 import COMMUNICATION_METHOD from 'enums/CommunicationMethod'

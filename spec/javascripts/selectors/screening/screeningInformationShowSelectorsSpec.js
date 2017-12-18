@@ -1,4 +1,4 @@
-import {getErrorsSelector} from 'selectors/screeningInformationSelectors'
+import {getErrorsSelector} from 'selectors/screening/screeningInformationShowSelectors'
 import {fromJS, List} from 'immutable'
 import * as matchers from 'jasmine-immutable-matchers'
 import moment from 'moment'

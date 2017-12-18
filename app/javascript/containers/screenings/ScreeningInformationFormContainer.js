@@ -6,7 +6,7 @@ import {
   getScreeningInformationFormSelector,
   getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
-} from 'selectors/screeningInformationFormSelectors'
+} from 'selectors/screening/screeningInformationFormSelectors'
 import {save as saveScreening} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
