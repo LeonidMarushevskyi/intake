@@ -77,6 +77,36 @@ feature 'Submit Screening' do
       end
     end
 
+    context 'the screening does not have all of the information to be promoted to a referral' do
+      let(:existing_screening) do
+        FactoryGirl.create(
+          :screening,
+          started_at: Time.now,
+          assignee: 'Jane Smith',
+          report_narrative: 'My narrative',
+          screening_decision: 'differential_response'
+        )
+      end
+
+      scenario 'the submit button is disabled until the screening is valid' do
+        visit edit_screening_path(existing_screening.id)
+        save_all_cards
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: 'Screening Information') { click_link 'Edit' }
+
+        stub_screening_put_request_with_anything_and_return(
+          existing_screening,
+          with_updated_attributes: { communication_method: 'fax' }
+        )
+
+        within('.card', text: 'Screening Information') do
+          select 'Fax', from: 'Communication Method'
+          click_button 'Save'
+        end
+        expect(page).to have_button('Submit', disabled: false)
+      end
+    end
+
     context 'when successfully submmitting referral' do
       let(:referral_id) { FFaker::Guid.guid }
       let(:screening_with_referral) do
