@@ -4,6 +4,8 @@ import {
   getDecisionSelector,
   getDecisionDetailSelector,
   getRestrictionRationaleSelector,
+  getAdditionalInfoRequiredSelector,
+  getAdditionalInformationSelector,
 } from 'selectors/screening/decisionShowSelectors'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import * as IntakeConfig from 'common/config'
@@ -15,13 +17,12 @@ const mapStateToProps = (state, ownProps) => {
     accessRestriction: {
       value: _.capitalize(getScreeningSelector(state).get('access_restrictions')),
     },
-    additionalInformation: {
-      value: getScreeningSelector(state).get('additional_information'),
-    },
+    additionalInformation: getAdditionalInformationSelector(state).toJS(),
     decision: getDecisionSelector(state).toJS(),
     decisionDetail: getDecisionDetailSelector(state).toJS(),
     restrictionRationale: getRestrictionRationaleSelector(state).toJS(),
     sdmPath: IntakeConfig.sdmPath(),
+    isAdditionalInfoRequired: getAdditionalInfoRequiredSelector(state),
   }
   if (!getScreeningIsReadOnlySelector(state)) {
     props = {

@@ -11,6 +11,7 @@ import {
   getResetValuesSelector,
   getRestrictionRationaleSelector,
   getScreeningWithEditsSelector,
+  getAdditionalInfoRequiredSelector,
 } from 'selectors/screening/decisionFormSelectors'
 import {save as saveScreening} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
@@ -35,6 +36,7 @@ const mapStateToProps = (state) => (
     restrictionRationale: getRestrictionRationaleSelector(state).toJS(),
     screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
     sdmPath: sdmPath(),
+    isAdditionalInfoRequired: getAdditionalInfoRequiredSelector(state),
   }
 )
 
@@ -52,6 +54,7 @@ const mergeProps = (stateProps, dispatchProps) => {
     restrictionRationale,
     screeningWithEdits,
     sdmPath,
+    isAdditionalInfoRequired,
   } = stateProps
 
   const onSave = () => {
@@ -73,6 +76,9 @@ const mergeProps = (stateProps, dispatchProps) => {
     if (field === 'access_restrictions' && value === '') {
       dispatch(setField({field: 'restrictions_rationale', value: null}))
     }
+    if (field === 'additional_information' && value === '') {
+      dispatch(setField({field: 'additional_information', value: null}))
+    }
   }
   const onBlur = (field) => dispatch(touchField({field}))
 
@@ -90,6 +96,7 @@ const mergeProps = (stateProps, dispatchProps) => {
     onSave,
     restrictionRationale,
     sdmPath,
+    isAdditionalInfoRequired,
   }
 }
 
