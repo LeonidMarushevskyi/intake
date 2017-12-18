@@ -195,10 +195,18 @@ describe('<Autocompleter />', () => {
     })
 
     it('renders number of results found', () => {
-      const component = renderAutocompleter({footer, total: 2, searchTerm: 'Simpson'})
+      const five_results = Array.from(
+        Array(5).keys()
+      ).map(() => ({}))
+      const component = renderAutocompleter({
+        footer,
+        results: five_results,
+        total: 10,
+        searchTerm: 'Simpson',
+      })
         .instance()
         .renderSuggestionsContainer({children: 'foobar', className: 'baz'})
-      expect(shallow(component).find('div.baz').html()).toContain('Showing 1-2 of 2 results for &quot;Simpson&quot;')
+      expect(shallow(component).find('div.baz').html()).toContain('Showing 1-5 of 10 results for &quot;Simpson&quot;')
     })
   })
 })

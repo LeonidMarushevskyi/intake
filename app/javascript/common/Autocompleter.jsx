@@ -49,11 +49,11 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm} = this.props
+    const {total, searchTerm, results} = this.props
     return (
       <div {...props}>
         <SuggestionHeader
-          currentNumberOfResults={total}
+          currentNumberOfResults={results.length}
           total={total}
           searchTerm={searchTerm}
         />
