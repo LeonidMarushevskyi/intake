@@ -13,7 +13,7 @@ import 'common/jquery-helpers'
 import 'bootstrap'
 import ReactDOM from 'react-dom'
 import routes from 'common/routes'
-import release_one from 'common/release_one'
+import ReleaseOneContainer from 'common/ReleaseOneContainer'
 
 // CSS
 import 'bootstrap/dist/css/bootstrap'
@@ -37,5 +37,5 @@ if (document.getElementById('app')) {
 }
 
 if (document.getElementById('app-release-one')) {
-  ReactDOM.render(release_one, document.getElementById('app-release-one'))
+  ReactDOM.render(ReleaseOneContainer, document.getElementById('app-release-one'))
 }
