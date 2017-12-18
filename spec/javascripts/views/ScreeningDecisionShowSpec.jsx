@@ -92,6 +92,18 @@ describe('ScreeningDecisionShow', () => {
     expect(additionalInformation.children().text()).toEqual('My additional information')
   })
 
+  it('renders the additional information label with required', () => {
+    const component = renderScreeningDecisionShow({isAdditionalInfoRequired: true})
+    const additionalInformationLabel = component.find('ShowField[label="Additional information"]')
+    expect(additionalInformationLabel.props().required).toEqual(true)
+  })
+
+  it('renders the additional information label without required', () => {
+    const component = renderScreeningDecisionShow({isAdditionalInfoRequired: false})
+    const additionalInformationLabel = component.find('ShowField[label="Additional information"]')
+    expect(additionalInformationLabel.props().required).toEqual(false)
+  })
+
   it('renders access restrictions', () => {
     const component = renderScreeningDecisionShow({
       accessRestriction: {value: 'Sealed'},

@@ -12,6 +12,7 @@ describe('ScreeningDecisionForm', () => {
     decisionDetail = {label: ''},
     decisionDetailOptions = [],
     restrictionRationale = {},
+    isAdditionalInfoRequired = false,
     ...options
   }) => {
     const props = {
@@ -23,6 +24,7 @@ describe('ScreeningDecisionForm', () => {
       decisionDetail,
       decisionDetailOptions,
       restrictionRationale,
+      isAdditionalInfoRequired,
       ...options,
     }
     return shallow(<ScreeningDecisionForm {...props}/>)
@@ -273,10 +275,22 @@ describe('ScreeningDecisionForm', () => {
   describe('additional information text area', () => {
     it('renders the additional information text area with the proper default props', () => {
       const component = renderScreeningDecisionForm({})
-      const additionalInformationLabel = component.find('label[htmlFor="additional_information"]')
+      const additionalInformationLabel = component.find('FormField[htmlFor="additional_information"]')
       expect(additionalInformationLabel.exists()).toEqual(true)
       const additionalInformationTextArea = component.find('textarea[id="additional_information"]')
       expect(additionalInformationTextArea.exists()).toEqual(true)
+    })
+
+    it('renders the additional information label with required', () => {
+      const component = renderScreeningDecisionForm({isAdditionalInfoRequired: true})
+      const additionalInformationLabel = component.find('FormField[htmlFor="additional_information"]')
+      expect(additionalInformationLabel.props().required).toEqual(true)
+    })
+
+    it('renders the additional information label without required', () => {
+      const component = renderScreeningDecisionForm({isAdditionalInfoRequired: false})
+      const additionalInformationLabel = component.find('FormField[htmlFor="additional_information"]')
+      expect(additionalInformationLabel.props().required).toEqual(false)
     })
 
     it('passes the current value to the additional information text area', () => {

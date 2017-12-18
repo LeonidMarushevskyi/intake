@@ -18,6 +18,7 @@ const ScreeningDecisionForm = ({
   onSave,
   restrictionRationale,
   sdmPath,
+  isAdditionalInfoRequired,
 }) => (
   <div className='card-body'>
     <div className='row'>
@@ -65,12 +66,20 @@ const ScreeningDecisionForm = ({
               </SelectField>
         }
         <div>
-          <label htmlFor='additional_information'>Additional information</label>
-          <textarea
-            id='additional_information'
-            onChange={({target: {value}}) => onChange('additional_information', value)}
-            value={additionalInformation.value}
-          />
+          <FormField
+            htmlFor='additional_information'
+            label='Additional information'
+            errors={additionalInformation.errors}
+            required = {isAdditionalInfoRequired}
+          >
+            <textarea
+              id='additional_information'
+              onChange={({target: {value}}) => onChange('additional_information', value)}
+              value={additionalInformation.value}
+              onBlur={() => onBlur('additional_information')}
+              maxLength='255'
+            />
+          </FormField>
         </div>
         <SelectField
           id='access_restrictions'
@@ -84,22 +93,22 @@ const ScreeningDecisionForm = ({
           ))}
         </SelectField>
         {accessRestriction.value &&
-                    <div>
-                      <FormField
-                        htmlFor='restrictions_rationale'
-                        label='Restrictions Rationale'
-                        errors={restrictionRationale.errors}
-                        required
-                      >
-                        <textarea
-                          id='restrictions_rationale'
-                          onChange={({target: {value}}) => onChange('restrictions_rationale', value)}
-                          value={restrictionRationale.value}
-                          onBlur={() => onBlur('restrictions_rationale')}
-                          maxLength='255'
-                        />
-                      </FormField>
-                    </div>
+          <div>
+            <FormField
+              htmlFor='restrictions_rationale'
+              label='Restrictions Rationale'
+              errors={restrictionRationale.errors}
+              required
+            >
+              <textarea
+                id='restrictions_rationale'
+                onChange={({target: {value}}) => onChange('restrictions_rationale', value)}
+                value={restrictionRationale.value}
+                onBlur={() => onBlur('restrictions_rationale')}
+                maxLength='255'
+              />
+            </FormField>
+          </div>
         }
       </div>
       <div className='col-md-6'>
@@ -146,6 +155,7 @@ ScreeningDecisionForm.propTypes = {
     value: PropTypes.string,
     label: PropTypes.string,
   })),
+  isAdditionalInfoRequired: PropTypes.bool,
   onBlur: PropTypes.func,
   onCancel: PropTypes.func,
   onChange: PropTypes.func,

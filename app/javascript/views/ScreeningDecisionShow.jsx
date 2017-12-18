@@ -9,6 +9,7 @@ const ScreeningDecisionShow = ({
   decisionDetail,
   restrictionRationale,
   sdmPath,
+  isAdditionalInfoRequired,
 }) => (
   <div className='card-body'>
     <div className='row'>
@@ -31,7 +32,7 @@ const ScreeningDecisionShow = ({
       </div>
       <div className='row'>
         <div className='col-md-12'>
-          <ShowField label='Additional information'>
+          <ShowField label='Additional information' errors={additionalInformation.errors} required={isAdditionalInfoRequired}>
             {additionalInformation.value}
           </ShowField>
           {accessRestriction.value &&
@@ -67,6 +68,7 @@ ScreeningDecisionShow.propTypes = {
     required: PropTypes.bool,
     value: PropTypes.string,
   }),
+  isAdditionalInfoRequired: PropTypes.bool,
   restrictionRationale: PropTypes.shape({
     value: PropTypes.string,
   }),
