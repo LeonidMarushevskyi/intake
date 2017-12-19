@@ -5,7 +5,7 @@ import {fetchPeopleSearchSaga, fetchPeopleSearch} from 'sagas/fetchPeopleSearchS
 import {PEOPLE_SEARCH_FETCH, search, fetchSuccess, fetchFailure} from 'actions/peopleSearchActions'
 
 describe('fetchPeopleSearchSaga', () => {
-  it('fetches user info on PEOPLE_SEARCH_FETCH', () => {
+  it('fetches people search results on PEOPLE_SEARCH_FETCH', () => {
     const peopleSeachSagaGenerator = fetchPeopleSearchSaga()
     expect(peopleSeachSagaGenerator.next().value).toEqual(takeLatest(PEOPLE_SEARCH_FETCH, fetchPeopleSearch))
   })
@@ -22,7 +22,7 @@ describe('fetchPeopleSearch', () => {
     expect(peopleSeachGenerator.throw(error).value).toEqual(put(fetchFailure('Something went wrong')))
   })
 
-  it('fetches user info successfully', () => {
+  it('fetches people search results successfully', () => {
     const searchResults = {
       hits: {
         total: 0,
