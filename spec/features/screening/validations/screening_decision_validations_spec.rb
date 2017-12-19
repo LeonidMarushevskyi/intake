@@ -156,7 +156,7 @@ feature 'Screening Decision Validations' do
           error_message: error_message,
           screening_updates: { additional_information: 'My reason for evaluating out' }
         ) do
-          within '#decision-card.edit' do
+          within '.card', text: 'Decision' do
             fill_in 'Additional information', with: 'My reason for evaluating out'
           end
         end
