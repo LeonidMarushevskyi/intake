@@ -95,7 +95,7 @@ feature 'error pages' do
 end
 
 feature 'error banner' do
-  let(:screening) { FactoryGirl.create(:screening) }
+  let(:screening) { FactoryGirl.create(:screening, :submittable) }
   context 'error occurred after page was loaded' do
     context 'with referral_submit' do
       let(:referral_id) { FFaker::Guid.guid }

@@ -24,4 +24,12 @@ FactoryGirl.define do
     end
     safety_information { ['Scary and dangerous', 'Fear of gangs', 'Feeling tense'].sample }
   end
+
+  trait :submittable do
+    started_at Time.now
+    assignee 'Jane Smith'
+    report_narrative 'My narrative'
+    screening_decision 'differential_response'
+    communication_method 'fax'
+  end
 end

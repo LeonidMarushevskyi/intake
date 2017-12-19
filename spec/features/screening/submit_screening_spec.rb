@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'Submit Screening' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_screening) { FactoryGirl.create(:screening, :submittable) }
   before do
     no_screenings = []
     stub_request(
@@ -24,7 +24,13 @@ feature 'Submit Screening' do
 
     context 'screening has people' do
       let(:participant) { FactoryGirl.create(:participant) }
-      let(:existing_screening) { FactoryGirl.create(:screening, participants: [participant]) }
+      let(:existing_screening) do
+        FactoryGirl.create(
+          :screening,
+          :submittable,
+          participants: [participant]
+        )
+      end
 
       scenario 'submit button is disabled until all cards are saved' do
         visit edit_screening_path(existing_screening.id)
@@ -112,6 +118,7 @@ feature 'Submit Screening' do
       let(:screening_with_referral) do
         FactoryGirl.create(
           :screening,
+          :submittable,
           referral_id: referral_id
         )
       end
