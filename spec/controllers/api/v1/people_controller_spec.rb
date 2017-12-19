@@ -10,7 +10,7 @@ describe Api::V1::PeopleController do
 
   describe '#search' do
     it 'searches for people and renders a json with person attributes' do
-      people = double(:people_results, as_json: 'people results')
+      people = double(:search_response, as_json: 'search response')
       allow(PersonSearchRepository).to receive(:search)
         .with(security_token, 'foobarbaz')
         .and_return(people)
@@ -18,7 +18,7 @@ describe Api::V1::PeopleController do
       process :search, method: :get, params: { search_term: 'foobarbaz' }, session: session
 
       expect(response).to be_successful
-      expect(response.body).to eq('"people results"')
+      expect(response.body).to eq('"search response"')
     end
   end
 end
