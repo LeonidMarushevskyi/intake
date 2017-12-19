@@ -280,33 +280,87 @@ feature 'searching a participant in autocompleter' do
     end
 
     scenario 'person search supports pagination' do
-      search_results = PersonSearchResponseBuilder.build do |builder|
-        builder.with_total(100)
+      search_results_one = PersonSearchResponseBuilder.build do |builder|
+        builder.with_total(51)
         builder.with_hits do
           Array.new(25) do |index|
             PersonSearchResultBuilder.build do |result|
-              result.with_first_name(Faker::Name.first_name)
+              result.with_first_name("Result #{index}")
               result.with_sort(["result_#{index}_score", "result_#{index}_uuid"])
             end
           end
         end
       end
-      stub_person_search(search_term: 'First', person_response: search_results)
+      search_results_two = PersonSearchResponseBuilder.build do |builder|
+        builder.with_total(51)
+        builder.with_hits do
+          Array.new(25) do |index|
+            PersonSearchResultBuilder.build do |result|
+              result.with_first_name("Result #{index + 25}")
+              result.with_sort(["result_#{index + 25}_score", "result_#{index + 25}_uuid"])
+            end
+          end
+        end
+      end
+      search_results_three = PersonSearchResponseBuilder.build do |builder|
+        builder.with_total(51)
+        builder.with_hits do
+          [
+            PersonSearchResultBuilder.build do |result|
+              result.with_first_name('Result 50')
+              result.with_sort(%w[result_50_score result_50_uuid])
+            end
+          ]
+        end
+      end
+      stub_person_search(search_term: 'Fi', person_response: search_results_one)
+      stub_person_search(
+        search_term: 'Fi',
+        person_response: search_results_two,
+        search_after: %w[result_24_score result_24_uuid]
+      )
+      stub_person_search(
+        search_term: 'Fi',
+        person_response: search_results_three,
+        search_after: %w[result_49_score result_49_uuid]
+      )
       search_path = dora_api_url(
         Rails.application.routes.url_helpers.dora_people_light_index_path
       )
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Fi', skip_select: true, split: true
+        expect(page).to have_content 'Showing 1-25 of 51 results for "Fi"'
+        expect(page).to have_content 'Result 24'
+      end
+      expect(a_request(:post, search_path)).to have_been_made
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'First', skip_select: true
-        expect(page).to have_content 'Showing 1-25 of 100 results for "First"'
         click_button 'Show more results'
       end
-
-      stub_person_search(search_term: 'First', person_response: search_results)
+      within '#search-card', text: 'Search' do
+        expect(page).to have_content 'Showing 1-50 of 51 results for "Fi"'
+        expect(page).to have_content 'Result 49'
+      end
       expect(
         a_request(:post, search_path)
         .with(body: hash_including('search_after' => %w[result_24_score result_24_uuid]))
       ).to have_been_made
+
+      within '#search-card', text: 'Search' do
+        click_button 'Show more results'
+      end
+      within '#search-card', text: 'Search' do
+        expect(page).to have_content 'Showing 1-51 of 51 results for "Fi"'
+        expect(page).to have_content 'Result 50'
+      end
+      expect(
+        a_request(:post, search_path)
+        .with(body: hash_including('search_after' => %w[result_49_score result_49_uuid]))
+      ).to have_been_made
+
+      within '#search-card', text: 'Search' do
+        expect(page).to_not have_button('Show more results')
+      end
     end
   end
 end
