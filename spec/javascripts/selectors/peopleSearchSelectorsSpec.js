@@ -1,9 +1,29 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import {fromJS, Map} from 'immutable'
-import {getPeopleResultsSelector} from 'selectors/peopleSearchSelectors'
+import {
+  getPeopleResultsSelector,
+  getLastResultsSortValueSelector,
+} from 'selectors/peopleSearchSelectors'
 
 describe('peopleSearchSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
+
+  describe('getLastResultsSortValueSelector', () => {
+    it('returns the last results sort attribute', () => {
+      const peopleSearch = {
+        results: [{
+          sort: ['first_sort'],
+        }, {
+          sort: ['other_sort'],
+        }, {
+          sort: ['last_sort'],
+        }],
+      }
+      const state = fromJS({peopleSearch})
+      const lastSort = getLastResultsSortValueSelector(state)
+      expect(lastSort).toEqual(['last_sort'])
+    })
+  })
 
   describe('getPeopleResultsSelector', () => {
     it('maps person search attributes to suggestion attributes', () => {
