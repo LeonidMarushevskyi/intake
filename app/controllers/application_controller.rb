@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base # :nodoc:
   private
 
   def authenticate_user
+    security_token = SecurityRepository.retrieve_security_token(
+      access_code: params[:accessCode], token: params[:token]
+    )
     session.delete(:security_token) if security_token
     return if session[:security_token]
 
@@ -37,10 +40,6 @@ class ApplicationController < ActionController::Base # :nodoc:
       session[:user_details] = Staff.new('staffId' => staff_id)
     end
     session[:user_details]['privileges'] = auth_data['privileges']
-  end
-
-  def security_token
-    params[:token]
   end
 
   def authentication_enabled?

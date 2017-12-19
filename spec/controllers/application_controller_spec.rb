@@ -38,6 +38,8 @@ describe ApplicationController do
       before do
         allow(Feature).to receive(:active?)
           .with(:authentication).and_return(true)
+        allow(Feature).to receive(:active?)
+          .with(:perry_version_two).and_return(false)
       end
 
       context 'when already authenticated' do
@@ -50,6 +52,7 @@ describe ApplicationController do
         end
 
         context 'when a new token is provided' do
+          let(:new_access_code) { 'new_code' }
           let(:new_security_token) { 'new_token' }
           let(:new_auth_artifact) do
             { 'user' => 'user1', 'roles' => %w[role3 role4], 'staffId' => 'def' }
@@ -61,6 +64,9 @@ describe ApplicationController do
             expect(SecurityRepository).to receive(:auth_artifact_for_token)
               .with(new_security_token)
               .and_return(new_auth_artifact.to_json)
+            expect(SecurityRepository).to receive(:retrieve_security_token)
+              .with(access_code: new_access_code, token: new_security_token)
+              .and_return(new_security_token)
             expect(StaffRepository).to receive(:find)
               .with(new_security_token, 'def')
               .and_return(new_user_details)
@@ -70,7 +76,7 @@ describe ApplicationController do
             process :custom,
               method: :get,
               session: { security_token: 'my_secure_token' },
-              params: { token: new_security_token }
+              params: { accessCode: new_access_code, token: new_security_token }
 
             expect(session[:security_token]).to eq(new_security_token)
             expect(session[:user_details]).to eq(new_user_details)
@@ -82,6 +88,7 @@ describe ApplicationController do
         context 'when not provided valid security token' do
           before do
             allow(SecurityRepository).to receive(:auth_artifact_for_token).and_return(false)
+            allow(SecurityRepository).to receive(:retrieve_security_token).and_return(nil)
             allow(Rails.configuration).to receive(:intake)
               .and_return(
                 authentication_login_url: 'http://authentication_url/authn/login?callback='
@@ -97,30 +104,42 @@ describe ApplicationController do
         context 'when provided valid security token but non-json auth_artifact' do
           let(:auth_artifact) { 'guest' }
 
+          let(:access_code) { 'my_access_code' }
           let(:security_token) { 'my_secure_token' }
           before do
             expect(SecurityRepository).to receive(:auth_artifact_for_token)
               .with(security_token)
               .and_return(auth_artifact.to_json)
+            expect(SecurityRepository).to receive(:retrieve_security_token)
+              .with(access_code: access_code, token: security_token)
+              .and_return(security_token)
           end
 
           it 'sets session security token without errors' do
-            process :custom, method: :get, params: { token: security_token }
+            process :custom, method: :get, params: {
+              accessCode: access_code, token: security_token
+            }
             expect(session[:security_token]).to eq security_token
             expect(session).not_to have_key(:user_details)
           end
         end
 
         context 'when provided valid security token but nil auth_artifact' do
+          let(:access_code) { 'my_access_code' }
           let(:security_token) { 'my_secure_token' }
           before do
             expect(SecurityRepository).to receive(:auth_artifact_for_token)
               .with(security_token)
               .and_return(nil)
+            expect(SecurityRepository).to receive(:retrieve_security_token)
+              .with(access_code: access_code, token: security_token)
+              .and_return(security_token)
           end
 
           it 'does not set session security token as it is unconfirmed' do
-            process :custom, method: :get, params: { token: security_token }
+            process :custom, method: :get, params: {
+              accessCode: access_code, token: security_token
+            }
             expect(session).not_to have_key(:security_token)
             expect(session).not_to have_key(:user_details)
           end
@@ -149,18 +168,24 @@ describe ApplicationController do
             }
           end
 
+          let(:access_code) { 'my_access_code' }
           let(:security_token) { 'my_secure_token' }
           before do
             expect(SecurityRepository).to receive(:auth_artifact_for_token)
               .with(security_token)
               .and_return(auth_artifact.to_json)
+            expect(SecurityRepository).to receive(:retrieve_security_token)
+              .with(access_code: access_code, token: security_token)
+              .and_return(security_token)
             expect(StaffRepository).to receive(:find)
               .with(security_token, 'abc')
               .and_return(staff_repo_result)
           end
 
           it 'sets session security token' do
-            process :custom, method: :get, params: { token: security_token }
+            process :custom, method: :get, params: {
+              accessCode: access_code, token: security_token
+            }
             expect(session[:security_token]).to eq security_token
             expect(session[:user_details]).to eq user_details
           end
@@ -172,7 +197,9 @@ describe ApplicationController do
             end
 
             it 'sets session security token' do
-              process :custom, method: :get, params: { token: security_token }
+              process :custom, method: :get, params: {
+                accessCode: access_code, token: security_token
+              }
               expect(session[:security_token]).to eq security_token
               expect(session[:user_details]).to eq user_details
             end
