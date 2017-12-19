@@ -6,7 +6,9 @@ describe PersonSearchQueryBuilder do
   let(:search_term) { 'This is my search term' }
   describe '.build' do
     it 'builds a person search query' do
-      expect(described_class.new(search_term).build).to eq(
+      expect(
+        described_class.new(search_term: search_term).build
+      ).to eq(
         _source: [
           'id',
           'legacy_source_table',
