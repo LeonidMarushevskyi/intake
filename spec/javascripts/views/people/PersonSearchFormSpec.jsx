@@ -15,14 +15,14 @@ describe('PersonSearchForm', () => {
     onSelect = () => null,
     isSelectable,
     canCreateNewPerson,
-    loadMoreResults,
+    onLoadMoreResults,
   }) {
     return shallow(
       <PersonSearchForm
         onSelect={onSelect}
         isSelectable={isSelectable}
         canCreateNewPerson={canCreateNewPerson}
-        loadMoreResults={loadMoreResults}
+        onLoadMoreResults={onLoadMoreResults}
       />
     )
   }
@@ -83,11 +83,11 @@ describe('PersonSearchForm', () => {
   })
 
   it('renders autocompleter with ShowMoreResults footer', () => {
-    const loadMoreResults = jasmine.createSpy('loadMoreResults')
-    const autocompleter = renderPersonSearchForm({loadMoreResults})
+    const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
+    const autocompleter = renderPersonSearchForm({onLoadMoreResults})
       .find('Autocompleter')
     expect(autocompleter.props().footers).toContain(
-      <ShowMoreResults key='show-more-results' onSelect={loadMoreResults} />
+      <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults} />
     )
   })
 

@@ -7,7 +7,7 @@ import {
   getSearchTermValueSelector,
 } from 'selectors/peopleSearchSelectors'
 import {createPerson} from 'actions/personCardActions'
-import {search, setSearchTerm, clear} from 'actions/peopleSearchActions'
+import {search, setSearchTerm, clear, loadMoreResults} from 'actions/peopleSearchActions'
 import * as IntakeConfig from 'common/config'
 
 const mapStateToProps = (state) => ({
@@ -23,15 +23,17 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
   const onClear = () => dispatch(clear())
   const onChange = (value) => dispatch(setSearchTerm(value))
   const onSearch = (value) => dispatch(search(value))
+  const onLoadMoreResults = () => dispatch(loadMoreResults())
   return {
     onSearch,
     onClear,
     onChange,
+    onLoadMoreResults,
     dispatch,
   }
 }
 
-const mergeProps = (stateProps, {onSearch, onClear, onChange, dispatch}) => {
+const mergeProps = (stateProps, {onSearch, onClear, onChange, onLoadMoreResults, dispatch}) => {
   const {
     canCreateNewPerson,
     hasAddSensitivePerson,
@@ -56,6 +58,7 @@ const mergeProps = (stateProps, {onSearch, onClear, onChange, dispatch}) => {
     isSelectable,
     onChange,
     onClear,
+    onLoadMoreResults,
     onSearch,
     onSelect,
     results,

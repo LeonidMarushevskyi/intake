@@ -8,16 +8,16 @@ import * as IntakeConfig from 'common/config'
 const PersonSearchForm = ({
   canCreateNewPerson,
   isSelectable,
-  loadMoreResults,
   onChange,
   onClear,
+  onLoadMoreResults,
   onSearch,
   onSelect,
   results,
   searchTerm,
   total,
 }) => {
-  let footers = [<ShowMoreResults key='show-more-results' onSelect={loadMoreResults}/>]
+  let footers = [<ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults}/>]
   if (canCreateNewPerson) {
     footers = [
       ...footers,
@@ -62,9 +62,9 @@ const PersonSearchForm = ({
 PersonSearchForm.propTypes = {
   canCreateNewPerson: PropTypes.bool,
   isSelectable: PropTypes.func,
-  loadMoreResults: PropTypes.func,
   onChange: PropTypes.func,
   onClear: PropTypes.func,
+  onLoadMoreResults: PropTypes.func,
   onSearch: PropTypes.func,
   onSelect: PropTypes.func,
   results: PropTypes.array,
