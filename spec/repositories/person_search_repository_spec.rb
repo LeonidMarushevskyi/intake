@@ -82,7 +82,7 @@ describe PersonSearchRepository do
           .with(security_token, '/dora/people-summary/person-summary/_search', :post, query)
           .and_return(response)
         expect(
-          described_class.search(security_token, search_term)
+          described_class.search(security_token: security_token, search_term: search_term)
         ).to match a_hash_including(
           'hits' => a_hash_including(
             'total' => 456,
@@ -116,7 +116,7 @@ describe PersonSearchRepository do
       end
       it 'raises an error' do
         expect do
-          described_class.search(security_token, search_term)
+          described_class.search(security_token: security_token, search_term: search_term)
         end.to raise_error('Some error payload')
       end
     end

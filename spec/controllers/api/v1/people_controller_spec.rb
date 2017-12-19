@@ -12,7 +12,7 @@ describe Api::V1::PeopleController do
     it 'searches for people and renders a json with person attributes' do
       people = double(:search_response, as_json: 'search response')
       allow(PersonSearchRepository).to receive(:search)
-        .with(security_token, 'foobarbaz')
+        .with(security_token: security_token, search_term: 'foobarbaz')
         .and_return(people)
 
       process :search, method: :get, params: { search_term: 'foobarbaz' }, session: session

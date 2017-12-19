@@ -9,8 +9,8 @@ module Api
 
       def search
         search_response = PersonSearchRepository.search(
-          session[:security_token],
-          params[:search_term]
+          security_token: session[:security_token],
+          search_term: params[:search_term]
         )
         render json: search_response
       end
