@@ -49,8 +49,9 @@ export class PageLayout extends React.Component {
 
     return (
       <div>
-        <PageHeader pageTitle={pageHeaderTitle} button={this.pageHeaderButton()} />
-        {(hasError) && <PageError errorCount={errorCount} />}
+        <PageHeader pageTitle={pageHeaderTitle} button={this.pageHeaderButton()}>
+          {(hasError) && <PageError errorCount={errorCount} />}
+        </PageHeader>
         <div className='container'>
           {this.props.children}
         </div>
