@@ -11,7 +11,7 @@ import {Map, fromJS} from 'immutable'
 
 describe('peopleSearchReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
-  describe('on FETCH_PEOPLE_SEARCH', () => {
+  describe('on PEOPLE_SEARCH_FETCH', () => {
     it('updates the search term and total', () => {
       const action = search('newSearchTerm')
       expect(peopleSearchReducer(Map(), action)).toEqualImmutable(
@@ -22,7 +22,7 @@ describe('peopleSearchReducer', () => {
       )
     })
   })
-  describe('on FETCH_PEOPLE_SEARCH_COMPLETE', () => {
+  describe('on PEOPLE_SEARCH_FETCH_COMPLETE', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 0,
@@ -51,7 +51,7 @@ describe('peopleSearchReducer', () => {
       })
     })
   })
-  describe('on CLEAR_PEOPLE_SEARCH', () => {
+  describe('on PEOPLE_SEARCH_CLEAR', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 3,
@@ -68,7 +68,7 @@ describe('peopleSearchReducer', () => {
       )
     })
   })
-  describe('on SET_SEARCH_TERM_PEOPLE_SEARCH', () => {
+  describe('on SET_SEARCH_TERM', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 3,
