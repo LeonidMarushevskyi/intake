@@ -9,16 +9,49 @@ describe Api::V1::PeopleController do
   end
 
   describe '#search' do
-    it 'searches for people and renders a json with person attributes' do
-      people = double(:search_response, as_json: 'search response')
-      allow(PersonSearchRepository).to receive(:search)
-        .with(security_token: security_token, search_term: 'foobarbaz')
-        .and_return(people)
+    let(:people) { double(:search_response, as_json: 'search response') }
 
-      process :search, method: :get, params: { search_term: 'foobarbaz' }, session: session
+    context 'when search_after is not provied as a param' do
+      let(:params) do
+        { search_term: 'foobarbaz' }
+      end
+      before do
+        allow(PersonSearchRepository).to receive(:search)
+          .with(
+            security_token: security_token,
+            search_term: params[:search_term],
+            search_after: nil
+          ).and_return(people)
+      end
 
-      expect(response).to be_successful
-      expect(response.body).to eq('"search response"')
+      it 'searches for people and renders a json with person attributes' do
+        process :search, method: :get, params: params, session: session
+        expect(response).to be_successful
+        expect(response.body).to eq('"search response"')
+      end
+    end
+
+    context 'when search_after is provied as a param' do
+      let(:params) do
+        {
+          search_term: 'foobarbaz',
+          search_after: %w[one two]
+        }
+      end
+      before do
+        allow(PersonSearchRepository).to receive(:search)
+          .with(
+            security_token: security_token,
+            search_term: params[:search_term],
+            search_after: params[:search_after]
+          ).and_return(people)
+      end
+
+      it 'searches for people and renders a json with person attributes' do
+        process :search, method: :get, params: params, session: session
+        expect(response).to be_successful
+        expect(response.body).to eq('"search response"')
+      end
     end
   end
 end

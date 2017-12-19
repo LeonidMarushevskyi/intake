@@ -3,8 +3,11 @@
 # PeopleSearchQueryBuilder is a service class responsible for creation
 # of an elastic search person search query
 class PersonSearchQueryBuilder
-  def initialize(search_term: '')
+  attr_reader :search_after
+
+  def initialize(search_term: '', search_after: nil)
     @search_term = search_term
+    @search_after = search_after
   end
 
   def build
@@ -15,7 +18,9 @@ class PersonSearchQueryBuilder
       query: query,
       _source: fields,
       highlight: highlight
-    }
+    }.tap do |query|
+      query[:search_after] = search_after if search_after
+    end
   end
 
   private
