@@ -196,8 +196,8 @@ feature 'Relationship card' do
           )
         ).and_return(json_body(new_relationships.to_json, status: 200))
 
-        stub_person_search('ma', empty_response)
-        stub_person_search('undefined undefined', empty_response)
+        stub_person_search(search_term: 'ma', person_response: empty_response)
+        stub_person_search(search_term: 'undefined undefined', person_response: empty_response)
 
         within '#search-card', text: 'Search' do
           fill_in_autocompleter 'Search for any person', with: 'ma', skip_select: true

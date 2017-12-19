@@ -33,7 +33,7 @@ feature 'home page' do
     end
 
     scenario 'displays search bar' do
-      stub_person_search('Marge', dora_response)
+      stub_person_search(search_term: 'Marge', person_response: dora_response)
       visit root_path
       expect(page).to_not have_button 'Start Screening'
       fill_in_autocompleter 'People', with: 'Marge', skip_select: true

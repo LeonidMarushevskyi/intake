@@ -59,7 +59,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
 
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
@@ -95,12 +95,15 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma 12345', search_response)
-
+      stub_person_search(search_term: 'Ma 12345', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person',
           with: 'Ma 123-45',
           select_option_with: 'Marge'
+      end
+
+      within '.react-autosuggest__suggestions-list' do
+        expect(page).to have_content '123-45-6789'
       end
 
       expect(
@@ -116,13 +119,12 @@ feature 'searching a participant in autocompleter' do
                    }
                  },
                  '_source' => anything,
-                 'highlight' => anything
+                 'highlight' => anything,
+                 'track_scores' => anything,
+                 'sort' => anything,
+                 'size' => anything
                })
       ).to have_been_made
-
-      within '.react-autosuggest__suggestions-list' do
-        expect(page).to have_content '123-45-6789'
-      end
     end
 
     scenario 'results include information about the legacy source information for a person' do
@@ -140,7 +142,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -164,7 +166,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -189,8 +191,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
-
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -211,7 +212,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -233,7 +234,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -255,7 +256,7 @@ feature 'searching a participant in autocompleter' do
           ]
         end
       end
-      stub_person_search('Ma', search_response)
+      stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'Ma'
       end
@@ -271,7 +272,7 @@ feature 'searching a participant in autocompleter' do
         builder.with_total(0)
         builder.with_hits { [] }
       end
-      stub_person_search('No', no_search_results)
+      stub_person_search(search_term: 'No', person_response: no_search_results)
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
         expect(page).to have_content 'No results were found for "No"'
@@ -290,7 +291,7 @@ feature 'searching a participant in autocompleter' do
           end
         end
       end
-      stub_person_search('First', search_results)
+      stub_person_search(search_term: 'First', person_response: search_results)
       search_path = dora_api_url(
         Rails.application.routes.url_helpers.dora_people_light_index_path
       )
@@ -301,11 +302,10 @@ feature 'searching a participant in autocompleter' do
         click_button 'Show more results'
       end
 
+      stub_person_search(search_term: 'First', person_response: search_results)
       expect(
         a_request(:post, search_path)
-        .with(
-          'body' => a_hash_including('search_after' => %w[result_24_score result_24_uuid])
-        )
+        .with(body: hash_including('search_after' => %w[result_24_score result_24_uuid]))
       ).to have_been_made
     end
   end
