@@ -278,35 +278,35 @@ feature 'searching a participant in autocompleter' do
       end
     end
 
-    scenario 'search displays the number of results in results header' do
-      search_results = PersonSearchResponseBuilder.build do |builder|
-        builder.with_total(25)
-        builder.with_hits { [] }
-      end
-      stub_person_search('So', search_results)
-      within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'So', skip_select: true
-        expect(page).to have_content 'Showing 1-25 of 25 results for "So"'
-      end
-    end
-
     scenario 'person search supports pagination' do
       search_results = PersonSearchResponseBuilder.build do |builder|
         builder.with_total(100)
         builder.with_hits do
-          25.times.map do
+          Array.new(25) do |index|
             PersonSearchResultBuilder.build do |result|
               result.with_first_name(Faker::Name.first_name)
+              result.with_sort(["result_#{index}_score", "result_#{index}_uuid"])
             end
           end
         end
       end
       stub_person_search('First', search_results)
+      search_path = dora_api_url(
+        Rails.application.routes.url_helpers.dora_people_light_index_path
+      )
+
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person', with: 'First', skip_select: true
         expect(page).to have_content 'Showing 1-25 of 100 results for "First"'
-        expect(page).to have_button 'Show more results'
+        click_button 'Show more results'
       end
+
+      expect(
+        a_request(:post, search_path)
+        .with(
+          'body' => a_hash_including('search_after' => %w[result_24_score result_24_uuid])
+        )
+      ).to have_been_made
     end
   end
 end

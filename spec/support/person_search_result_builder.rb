@@ -24,7 +24,8 @@ class PersonSearchResultBuilder
         date_of_birth: '',
         legacy_descriptor: {},
         sensitivity_indicator: ''
-      }
+      },
+      sort: nil
     }
   end
 
@@ -90,6 +91,10 @@ class PersonSearchResultBuilder
 
   def without_sealed_or_sensitive
     @search_result[:_source][:sensitivity_indicator] = 'N'
+  end
+
+  def with_sort(sort)
+    @search_result[:sort] = sort
   end
 
   attr_reader :search_result
