@@ -307,6 +307,15 @@ describe('ScreeningDecisionForm', () => {
       additionalInformationTextArea.simulate('change', {target: {value: 'My new additional information'}})
       expect(onChange).toHaveBeenCalledWith('additional_information', 'My new additional information')
     })
+
+    it('calls the onBlur function when additional information is blurred', () => {
+      const additionalInformation = {value: 'My additional information about this screening!'}
+      const onBlur = jasmine.createSpy('onBlur')
+      const component = renderScreeningDecisionForm({additionalInformation, onBlur})
+      const additionalInformationTextArea = component.find('textarea[id="additional_information"]')
+      additionalInformationTextArea.simulate('blur')
+      expect(onBlur).toHaveBeenCalledWith('additional_information')
+    })
   })
 
   describe('access restriction select field', () => {
