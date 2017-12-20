@@ -51,6 +51,8 @@ const mergeProps = (stateProps, {onSearch, onClear, onChange, onLoadMoreResults,
         legacy_source_table: person.legacyDescriptor && person.legacyDescriptor.legacy_table_name,
       },
     }
+    onClear()
+    onChange('')
     dispatch(createPerson(personOnScreening))
   }
   return {

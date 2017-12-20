@@ -23,33 +23,25 @@ export default class Autocompleter extends React.Component {
     if (isSelectable(suggestion)) {
       onClear()
       onChange('')
-      if (!suggestion.props) {
-        // Assume footers components handle their own clicks.
-        onSelect(suggestion)
-      }
+      onSelect(suggestion)
     }
   }
 
-  getSuggestionValue(suggestion) {
-    return `${suggestion.firstName} ${suggestion.lastName}`
-  }
-
-  shouldRenderSuggestions(value) {
-    return value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
-  }
-
   renderSuggestion(suggestion) {
-    if (suggestion.props && suggestion.type) {
-      // It's a component and we let React render it
-      return suggestion
+    if (suggestion.emptyResult) {
+      return false
     } else {
-      // It's a real result
       return (<PersonSuggestion {...suggestion} />)
     }
   }
 
   renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm, results} = this.props
+    const {total, searchTerm, results, footers} = this.props
+    let newChildren = null
+    if (children) {
+      const items = children.props.items.filter((item) => !item.emptyResult)
+      newChildren = React.cloneElement(children, {items})
+    }
     return (
       <div {...props}>
         <SuggestionHeader
@@ -57,14 +49,14 @@ export default class Autocompleter extends React.Component {
           total={total}
           searchTerm={searchTerm}
         />
-        {children}
+        {newChildren}
+        {footers}
       </div>
     )
   }
 
   render() {
     const {
-      footers,
       id,
       onChange,
       onClear,
@@ -79,12 +71,12 @@ export default class Autocompleter extends React.Component {
     }
     return (
       <ReactAutosuggest
-        suggestions={[...results, ...footers]}
-        shouldRenderSuggestions={this.shouldRenderSuggestions}
+        suggestions={[...results, {emptyResult: true}]}
+        shouldRenderSuggestions={(value) => (value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS)}
         onSuggestionsFetchRequested={({value}) => onSearch(value)}
         onSuggestionsClearRequested={onClear}
         onSuggestionSelected={this.onSuggestionSelected}
-        getSuggestionValue={this.getSuggestionValue}
+        getSuggestionValue={() => searchTerm}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
         renderSuggestionsContainer={this.renderSuggestionsContainer}
