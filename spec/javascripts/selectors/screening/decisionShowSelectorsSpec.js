@@ -196,19 +196,19 @@ describe('allegationShowSelectors', () => {
   })
 
   describe('getAdditionalInfoRequiredSelector', () => {
-    it('returns the true if screening decision is screen_out and screening_decision_detail is evaluate_out', () => {
+    it('returns true if screening decision is screen_out and screening_decision_detail is evaluate_out', () => {
       const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out'}
       const state = fromJS({screening})
       expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(true))
     })
 
-    it('returns the false if screening decision is screen_out and screening_decision_detail is not evaluate_out', () => {
+    it('returns false if screening decision is screen_out and screening_decision_detail is not evaluate_out', () => {
       const screening = {screening_decision: 'screen_out', screening_decision_detail: 'not evaluate_out'}
       const state = fromJS({screening})
       expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(false))
     })
 
-    it('returns the false if screening decision is not screen_out', () => {
+    it('returns false if screening decision is not screen_out', () => {
       const screening = {screening_decision: 'not screen_out', screening_decision_detail: 'Immediate'}
       const state = fromJS({screening})
       expect(getAdditionalInfoRequiredSelector(state)).toEqualImmutable(fromJS(false))
