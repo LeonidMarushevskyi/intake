@@ -62,7 +62,7 @@ export const getErrorsSelector = createSelector(
       }
     ),
     additional_information: combineCompact(
-      isRequiredIfCreate(additionalInformation, 'Please enter Additional Information', () => (
+      isRequiredIfCreate(additionalInformation, 'Please enter additional information', () => (
         decision === 'screen_out' && decisionDetail === 'evaluate_out'
       ))
     ),
