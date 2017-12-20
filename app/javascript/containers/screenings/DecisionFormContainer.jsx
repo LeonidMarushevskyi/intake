@@ -76,9 +76,6 @@ const mergeProps = (stateProps, dispatchProps) => {
     if (field === 'access_restrictions' && value === '') {
       dispatch(setField({field: 'restrictions_rationale', value: null}))
     }
-    if (field === 'additional_information' && value === '') {
-      dispatch(setField({field: 'additional_information', value: null}))
-    }
   }
   const onBlur = (field) => dispatch(touchField({field}))
 
