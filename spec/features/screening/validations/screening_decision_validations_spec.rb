@@ -7,10 +7,14 @@ feature 'Screening Decision Validations' do
   let(:error_message) { 'Please enter at least one allegation to promote to referral.' }
   let(:perpetrator) { FactoryGirl.create(:participant, :perpetrator) }
   let(:victim) { FactoryGirl.create(:participant, :victim) }
+  let(:screening_decision_detail) { nil }
+  let(:additional_information) { nil }
   let(:screening) do
     FactoryGirl.create(
       :screening,
       participants: [perpetrator, victim],
+      screening_decision_detail: screening_decision_detail,
+      additional_information: additional_information,
       screening_decision: screening_decision
     )
   end
@@ -132,6 +136,35 @@ feature 'Screening Decision Validations' do
           within '#decision-card.edit' do
             select '3 days', from: 'Response time'
           end
+        end
+      end
+    end
+
+    context 'when screening decision is ScreenOut, decision detail is EvaluateOut in edit mode' do
+      let(:screening_decision) { 'screen_out' }
+      let(:screening_decision_detail) { 'evaluate_out' }
+      let(:error_message) { 'Please enter Additional Information' }
+
+      scenario 'displays no error on initial load' do
+        should_not_have_content error_message, inside: '#decision-card.edit'
+      end
+
+      scenario 'card displays errors until user enters additional information' do
+        validate_message_as_user_interacts_with_card(
+          invalid_screening: screening,
+          card_name: 'decision',
+          error_message: error_message,
+          screening_updates: { additional_information: 'My reason for evaluating out' }
+        ) do
+          within '.card', text: 'Decision' do
+            fill_in 'Additional information', with: 'My reason for evaluating out'
+          end
+        end
+      end
+
+      scenario 'additional information is required' do
+        within '.card', text: 'Decision' do
+          expect(page).to have_css 'label.required', text: 'Additional information'
         end
       end
     end
@@ -258,6 +291,25 @@ feature 'Screening Decision Validations' do
 
         within '#decision-card.show' do
           expect(page).to have_content(error_message)
+        end
+      end
+    end
+
+    context 'when screening decision is ScreenOut, decision detail is EvaluateOut in show mode' do
+      let(:screening_decision) { 'screen_out' }
+      let(:screening_decision_detail) { 'evaluate_out' }
+      let(:error_message) { 'Please enter Additional Information' }
+
+      context 'displays no error' do
+        let(:additional_information) { 'not null' }
+        scenario 'when additional information is not null' do
+          should_not_have_content error_message, inside: '#decision-card.show'
+        end
+      end
+
+      context 'displays error' do
+        scenario 'when additional information is null' do
+          should_have_content error_message, inside: '#decision-card.show'
         end
       end
     end
