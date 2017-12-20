@@ -38,7 +38,6 @@ class PersonSearchRepository
       search_body.dig('hits', 'hits').map do |document|
         PeopleSearchResultsInterpreter.interpret_sensitivity_indicator(document)
         PeopleSearchResultsInterpreter.interpret_addresses(document)
-        PeopleSearchResultsInterpreter.interpret_languages(document)
         PeopleSearchResultsInterpreter.interpret_highlights(document)
         PeopleSearchResultsInterpreter.interpret_race_ethnicity(document)
         PeopleSearchResultsInterpreter.interpret_ssn(document)

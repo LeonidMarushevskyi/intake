@@ -3,6 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {
   getPeopleResultsSelector,
   getLastResultsSortValueSelector,
+  getResultLanguagesSelector,
 } from 'selectors/peopleSearchSelectors'
 
 describe('peopleSearchSelectors', () => {
@@ -25,7 +26,35 @@ describe('peopleSearchSelectors', () => {
     })
   })
 
+  describe('getResultLanguagesSelector', () => {
+    const languageLovs = [
+      {code: '1', value: 'English'},
+      {code: '2', value: 'French'},
+      {code: '3', value: 'Italian'},
+    ]
+
+    it('maps languages to lov values by id, sorting by primary', () => {
+      const result = fromJS({
+        languages: [
+          {id: '3', primary: true},
+          {id: '2', primary: false},
+          {id: '1', primary: true}],
+      })
+      const state = fromJS({languages: languageLovs})
+      const languageResult = getResultLanguagesSelector(state, result)
+      expect(languageResult).toEqualImmutable(
+        fromJS(['French', 'English', 'Italian'])
+      )
+    })
+  })
+
   describe('getPeopleResultsSelector', () => {
+    const languageLovs = [
+      {code: '1', value: 'English'},
+      {code: '2', value: 'French'},
+      {code: '3', value: 'Italian'},
+    ]
+
     it('maps person search attributes to suggestion attributes', () => {
       const peopleSearch = {
         results: [{
@@ -34,7 +63,7 @@ describe('peopleSearchSelectors', () => {
           middle_name: 'Jacqueline',
           name_suffix: 'md',
           gender: 'female',
-          languages: ['French', 'Italian'],
+          languages: [{id: '3'}, {id: '2'}],
           races: [
             {race: 'White', race_detail: 'European'},
             {race: 'American Indian or Alaska Native'},
@@ -66,7 +95,7 @@ describe('peopleSearchSelectors', () => {
           sealed: false,
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({languages: languageLovs, peopleSearch})
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults).toEqualImmutable(
         fromJS([{
@@ -79,7 +108,7 @@ describe('peopleSearchSelectors', () => {
             legacy_ui_id: '123-456-789',
             legacy_table_description: 'Client',
           },
-          languages: ['French', 'Italian'],
+          languages: ['Italian', 'French'],
           races: [
             {race: 'White', race_detail: 'European'},
             {race: 'American Indian or Alaska Native'},

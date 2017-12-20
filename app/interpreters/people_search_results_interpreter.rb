@@ -16,15 +16,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
       end
     end
 
-    def interpret_languages(document)
-      source = document['_source']
-      return unless source['languages']&.any?
-      sorted_languages = source['languages'].partition do |language|
-        language['primary'] == true
-      end.flatten
-      source['languages'] = sorted_languages.map { |language| language['name'] }
-    end
-
     def interpret_addresses(document)
       source = document['_source']
       return unless source['addresses']&.any?
