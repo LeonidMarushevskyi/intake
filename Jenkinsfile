@@ -32,7 +32,13 @@ node('Slave') {
 
             stage('Publish') {
                 curStage = 'Publish'
-                sh "make tag latest \$(git rev-parse --short HEAD)"
+                if(VERSION_STRATEGY.startsWith('CALCULATE')) {
+                    int offset = VERSION_STRATEGY.split(':')[1]
+                    int buildNumber = (BUILD_NUMBER.toInteger() - offset).toString()
+                    sh "make tag latest \$(git describe --tags \$(git rev-list --tags --max-count=1)).${buildNumber}"
+                } else {
+                    sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
+                }
                 withEnv(["DOCKER_USER=${DOCKER_USER}",
                          "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
                     sh "make login"
