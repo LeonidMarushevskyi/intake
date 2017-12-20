@@ -160,7 +160,7 @@ describe('allegationShowSelectors', () => {
         const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out'}
         const state = fromJS({screening})
         expect(getErrorsSelector(state).get('additional_information'))
-          .toEqualImmutable(List(['Please enter Additional Information']))
+          .toEqualImmutable(List(['Please enter additional information']))
       })
 
       it('does not include an error message if decision is screen out and decision detail is anything other than evaluate out', () => {
@@ -172,6 +172,13 @@ describe('allegationShowSelectors', () => {
 
       it('does not include an error message if decision is screen out, and decision detail is empty', () => {
         const screening = {screening_decision: 'screen_out'}
+        const state = fromJS({screening})
+        expect(getErrorsSelector(state).get('additional_information'))
+          .toEqualImmutable(List())
+      })
+
+      it('does not include an error message if decision is not screen out', () => {
+        const screening = {screening_decision: 'not screen_out'}
         const state = fromJS({screening})
         expect(getErrorsSelector(state).get('additional_information'))
           .toEqualImmutable(List())
@@ -227,6 +234,36 @@ describe('allegationShowSelectors', () => {
       const state = fromJS({screening})
       expect(getRestrictionRationaleSelector(state).get('value')).toEqual('')
     })
+
+    it('returns no error if access_restrictions is null and if restrictions_rationale is null', () => {
+      const screening = {access_restrictions: null, restrictions_rationale: null}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('errors')).toEqualImmutable(List())
+    })
+
+    it('returns error if access_restrictions is sealed and if restrictions_rationale is null', () => {
+      const screening = {access_restrictions: 'sealed', restrictions_rationale: null}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('errors')).toEqualImmutable(List(['Please enter an access restriction reason']))
+    })
+
+    it('returns no error if access_restrictions is sealed and if restrictions_rationale is not null', () => {
+      const screening = {access_restrictions: 'sealed', restrictions_rationale: 'My access restriction reason'}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('errors')).toEqualImmutable(List())
+    })
+
+    it('returns error if access_restrictions is sensitive and if restrictions_rationale is null', () => {
+      const screening = {access_restrictions: 'sensitive', restrictions_rationale: null}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('errors')).toEqualImmutable(List(['Please enter an access restriction reason']))
+    })
+
+    it('returns no error if access_restrictions is sensitive and if restrictions_rationale is not null', () => {
+      const screening = {access_restrictions: 'sensitive', restrictions_rationale: 'My access restriction reason'}
+      const state = fromJS({screening})
+      expect(getRestrictionRationaleSelector(state).get('errors')).toEqualImmutable(List())
+    })
   })
 
   describe('getAdditionalInformationSelector', () => {
@@ -246,6 +283,24 @@ describe('allegationShowSelectors', () => {
       const screening = {additional_information: null}
       const state = fromJS({screening})
       expect(getAdditionalInformationSelector(state).get('value')).toEqual('')
+    })
+
+    it('returns error if screening_decision is screen_out, screening_decision_detail is evaluate_out and additional_information is null', () => {
+      const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out', additional_information: null}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('errors')).toEqualImmutable(List(['Please enter additional information']))
+    })
+
+    it('returns error if screening_decision is screen_out, screening_decision_detail is evaluate_out and additional_information is not null', () => {
+      const screening = {screening_decision: 'screen_out', screening_decision_detail: 'evaluate_out', additional_information: 'My additional information'}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('errors')).toEqualImmutable(List())
+    })
+
+    it('returns error if screening_decision is screen_out, screening_decision_detail is not evaluate_out and additional_information is null', () => {
+      const screening = {screening_decision: 'screen_out', screening_decision_detail: 'not evaluate_out', additional_information: null}
+      const state = fromJS({screening})
+      expect(getAdditionalInformationSelector(state).get('errors')).toEqualImmutable(List())
     })
   })
 })

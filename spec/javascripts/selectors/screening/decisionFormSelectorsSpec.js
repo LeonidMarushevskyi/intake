@@ -351,6 +351,13 @@ describe('screeningDecisionFormSelectors', () => {
         expect(getErrorsSelector(state).get('additional_information'))
           .toEqualImmutable(List())
       })
+
+      it('does not include an error message if decision is not screen out', () => {
+        const screeningDecisionForm = {screening_decision: 'not screen_out'}
+        const state = fromJS({screeningDecisionForm})
+        expect(getErrorsSelector(state).get('additional_information'))
+          .toEqualImmutable(List())
+      })
     })
 
     describe('restrictions rationale', () => {
