@@ -140,7 +140,7 @@ feature 'Screening Decision Validations' do
       end
     end
 
-    context 'when screening decision is Screen Out and decision detail is Evaluate Out' do
+    context 'when screening decision is ScreenOut, decision detail is EvaluateOut in edit mode' do
       let(:screening_decision) { 'screen_out' }
       let(:screening_decision_detail) { 'evaluate_out' }
       let(:error_message) { 'Please enter Additional Information' }
@@ -295,7 +295,7 @@ feature 'Screening Decision Validations' do
       end
     end
 
-    context 'when screening decision is Screen Out and decision detail is Evaluate Out' do
+    context 'when screening decision is ScreenOut, decision detail is EvaluateOut in show mode' do
       let(:screening_decision) { 'screen_out' }
       let(:screening_decision_detail) { 'evaluate_out' }
       let(:error_message) { 'Please enter Additional Information' }
