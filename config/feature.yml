@@ -4,7 +4,7 @@ development:
     release_one: false
     release_two: false
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
-    perry_version_two: true
+    perry_version_two: false
     centralized_sessions: true
     referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
     investigations: true
