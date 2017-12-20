@@ -47,13 +47,9 @@ export const getErrorsSelector = createSelector(
 )
 
 export const getAdditionalInfoRequiredSelector = createSelector(
-  getScreeningSelector,
-  (screening) => {
-    const decision = screening.get('screening_decision')
-    const decisionDetail = screening.get('screening_decision_detail')
-    return (decision && decisionDetail && decision === 'screen_out' && decisionDetail === 'evaluate_out')
-  }
-
+  (state) => state.getIn(['screening', 'screening_decision']),
+  (state) => state.getIn(['screening', 'screening_decision_detail']),
+  (decision, decisionDetail) => (decision && decisionDetail && decision === 'screen_out' && decisionDetail === 'evaluate_out')
 )
 
 export const getDecisionSelector = createSelector(

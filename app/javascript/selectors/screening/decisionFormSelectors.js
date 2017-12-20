@@ -112,7 +112,7 @@ export const getDecisionSelector = createSelector(
 export const getAdditionalInfoRequiredSelector = createSelector(
   getDecisionValueSelector,
   getDecisionDetailValueSelector,
-  (decision, decisionDetail) => (decision && decisionDetail && decision === 'screen_out' && decisionDetail === 'evaluate_out')
+  (decision, decisionDetail) => (decision && decision === 'screen_out' && decisionDetail && decisionDetail === 'evaluate_out')
 )
 
 export const getAdditionalInformationSelector = createSelector(
