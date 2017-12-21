@@ -332,7 +332,7 @@ describe('screeningDecisionFormSelectors', () => {
         }
         const state = fromJS({screeningDecisionForm})
         expect(getErrorsSelector(state).get('additional_information'))
-          .toEqualImmutable(List(['Please enter Additional Information']))
+          .toEqualImmutable(List(['Please enter additional information']))
       })
 
       it('does not include an error message if decision is screen out and decision detail is anything other than evaluate out', () => {

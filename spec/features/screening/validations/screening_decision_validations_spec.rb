@@ -143,7 +143,7 @@ feature 'Screening Decision Validations' do
     context 'when screening decision is ScreenOut, decision detail is EvaluateOut in edit mode' do
       let(:screening_decision) { 'screen_out' }
       let(:screening_decision_detail) { 'evaluate_out' }
-      let(:error_message) { 'Please enter Additional Information' }
+      let(:error_message) { 'Please enter additional information' }
 
       scenario 'displays no error on initial load' do
         should_not_have_content error_message, inside: '#decision-card.edit'
@@ -298,7 +298,7 @@ feature 'Screening Decision Validations' do
     context 'when screening decision is ScreenOut, decision detail is EvaluateOut in show mode' do
       let(:screening_decision) { 'screen_out' }
       let(:screening_decision_detail) { 'evaluate_out' }
-      let(:error_message) { 'Please enter Additional Information' }
+      let(:error_message) { 'Please enter additional information' }
 
       context 'displays no error' do
         let(:additional_information) { 'not null' }
