@@ -27,6 +27,9 @@ export const getResultLanguagesSelector = (state, result) => createSelector(
   )
 )(state)
 
+export const getIsSensitiveSelector = (result) => (result.get('sensitivity_indicator', '').toUpperCase() === 'S')
+export const getIsSealedSelector = (result) => (result.get('sensitivity_indicator', '').toUpperCase() === 'R')
+
 export const getResultRacesSelector = (state, result) => createSelector(
   (state) => state.get('ethnicityTypes'),
   (state) => state.get('raceTypes'),
@@ -85,7 +88,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
         number: phoneNumber.get('number'),
         type: phoneNumber.get('type'),
       }),
-      isSensitive: result.get('sensitive'),
-      isSealed: result.get('sealed'),
+      isSensitive: getIsSensitiveSelector(result),
+      isSealed: getIsSealedSelector(result),
     })
   })

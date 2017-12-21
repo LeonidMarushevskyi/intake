@@ -35,7 +35,6 @@ class PersonSearchRepository
 
     def search_hits(search_body)
       search_body.dig('hits', 'hits').map do |document|
-        PeopleSearchResultsInterpreter.interpret_sensitivity_indicator(document)
         PeopleSearchResultsInterpreter.interpret_addresses(document)
         PeopleSearchResultsInterpreter.interpret_highlights(document)
         PeopleSearchResultsInterpreter.interpret_ssn(document)

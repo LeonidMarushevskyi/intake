@@ -6,6 +6,8 @@ import {
   getResultLanguagesSelector,
   getResultRacesSelector,
   getResultEthnicitiesSelector,
+  getIsSensitiveSelector,
+  getIsSealedSelector,
 } from 'selectors/peopleSearchSelectors'
 
 describe('peopleSearchSelectors', () => {
@@ -63,6 +65,42 @@ describe('peopleSearchSelectors', () => {
       expect(languageResult).toEqualImmutable(
         fromJS(['French', 'English', 'Italian'])
       )
+    })
+  })
+
+  describe('getIsSensitiveSelector', () => {
+    it('returns true if the result is sensitive', () => {
+      const result = fromJS({
+        sensitivity_indicator: 'S',
+      })
+      const sensitiveResult = getIsSensitiveSelector(result)
+      expect(sensitiveResult).toEqual(true)
+    })
+
+    it('returns false if the result is not sensitive', () => {
+      const result = fromJS({
+        sensitivity_indicator: 'R',
+      })
+      const sensitiveResult = getIsSensitiveSelector(result)
+      expect(sensitiveResult).toEqual(false)
+    })
+  })
+
+  describe('getIsSealedSelector', () => {
+    it('returns true if the result is sealed', () => {
+      const result = fromJS({
+        sensitivity_indicator: 'R',
+      })
+      const sensitiveResult = getIsSealedSelector(result)
+      expect(sensitiveResult).toEqual(true)
+    })
+
+    it('returns false if the result is not sealed', () => {
+      const result = fromJS({
+        sensitivity_indicator: 'S',
+      })
+      const sensitiveResult = getIsSealedSelector(result)
+      expect(sensitiveResult).toEqual(false)
     })
   })
 

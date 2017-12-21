@@ -4,18 +4,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
   class << self
     ALLOWABLE_SSN_CHARS = 4
 
-    def interpret_sensitivity_indicator(document)
-      source = document['_source']
-      # sensitivity_indicator { S => Sensitive, R => Sealed, otherwise neither }
-      if source && source['sensitivity_indicator']
-        source['sensitive'] = source['sensitivity_indicator'].casecmp('s').zero?
-        source['sealed'] = source['sensitivity_indicator'].casecmp('r').zero?
-      else
-        source['sensitive'] = false
-        source['sealed'] = false
-      end
-    end
-
     def interpret_addresses(document)
       source = document['_source']
       return unless source['addresses']&.any?
