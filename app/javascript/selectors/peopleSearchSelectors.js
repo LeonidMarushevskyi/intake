@@ -1,4 +1,4 @@
-import {Map, List} from 'immutable'
+import {Map, List, fromJS} from 'immutable'
 import {findByCode} from 'selectors'
 import {createSelector} from 'reselect'
 
@@ -27,6 +27,35 @@ export const getResultLanguagesSelector = (state, result) => createSelector(
   )
 )(state)
 
+export const getResultRacesSelector = (state, result) => createSelector(
+  (state) => state.get('ethnicityTypes'),
+  (state) => state.get('raceTypes'),
+  (state) => state.get('unableToDetermineCodes'),
+  () => (result.getIn(['race_ethnicity', 'race_codes']) || List()),
+  () => result.get('unable_to_determine_code'),
+  (ethnicityTypes, raceTypes, unableToDetermineCodes, races, unableToDetermineCode) => {
+    if (unableToDetermineCode) {
+      return List([findByCode(unableToDetermineCodes.toJS(), unableToDetermineCode).value])
+    } else {
+      return races
+        .map((race) => (Map({
+          race: findByCode(raceTypes.toJS(), race.get('id')).value,
+          race_detail: findByCode(ethnicityTypes.toJS(), race.get('id')).value,
+        })))
+    }
+  }
+)(state)
+
+export const getResultEthnicitiesSelector = (state, result) => createSelector(
+  (state) => state.get('hispanicOriginCodes'),
+  () => (result.getIn(['race_ethnicity', 'hispanic_codes']) || List()),
+  () => (result.getIn(['race_ethnicity', 'hispanic_origin_code'])),
+  (hispanicOriginCodes, ethnicities, hispanicLatinoOriginCode) => fromJS({
+    hispanic_latino_origin: findByCode(hispanicOriginCodes.toJS(), hispanicLatinoOriginCode).value,
+    ethnicity_detail: ethnicities.map((ethnicity) => ethnicity.get('description')).toJS(),
+  })
+)(state)
+
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
@@ -41,7 +70,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
       legacyDescriptor: result.get('legacy_descriptor'),
       gender: result.get('gender'),
       languages: getResultLanguagesSelector(state, result),
-      races: result.get('races'),
+      races: getResultRacesSelector(state, result),
       ethnicity: result.get('ethnicity'),
       dateOfBirth: result.getIn(['highlight', 'date_of_birth'], result.get('date_of_birth')),
       ssn: formatSSN(result.getIn(['highlight', 'ssn'], result.get('ssn'))),

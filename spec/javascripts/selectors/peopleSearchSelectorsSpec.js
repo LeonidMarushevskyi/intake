@@ -4,10 +4,28 @@ import {
   getPeopleResultsSelector,
   getLastResultsSortValueSelector,
   getResultLanguagesSelector,
+  getResultRacesSelector,
+  getResultEthnicitiesSelector,
 } from 'selectors/peopleSearchSelectors'
 
 describe('peopleSearchSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
+
+  const ethnicityTypeLovs = [
+    {code: '1', value: 'European'},
+    {code: '2', value: 'French'},
+    {code: '3', value: 'Romanian'},
+  ]
+  const raceTypeLovs = [
+    {code: '1', value: 'Race 1'},
+    {code: '2', value: 'Race 2'},
+    {code: '3', value: 'Race 3'},
+  ]
+  const unableToDetermineCodes = [
+    {code: 'A', value: 'Abandoned'},
+    {code: 'I', value: 'Unknown'},
+    {code: 'K', value: 'Unknown'},
+  ]
 
   describe('getLastResultsSortValueSelector', () => {
     it('returns the last results sort attribute', () => {
@@ -44,6 +62,87 @@ describe('peopleSearchSelectors', () => {
       const languageResult = getResultLanguagesSelector(state, result)
       expect(languageResult).toEqualImmutable(
         fromJS(['French', 'English', 'Italian'])
+      )
+    })
+  })
+
+  describe('getResultRacesSelector', () => {
+    it('maps races to lov values by id', () => {
+      const result = fromJS({
+        race_ethnicity: {
+          race_codes: [
+            {id: '3', description: 'Romanian'},
+            {id: '2', description: 'French'},
+            {id: '1', description: 'European'},
+          ],
+        },
+      })
+      const state = fromJS({ethnicityTypes: ethnicityTypeLovs, raceTypes: raceTypeLovs})
+      const racesResult = getResultRacesSelector(state, result)
+      expect(racesResult).toEqualImmutable(
+        fromJS([
+          {race: 'Race 3', race_detail: 'Romanian'},
+          {race: 'Race 2', race_detail: 'French'},
+          {race: 'Race 1', race_detail: 'European'},
+        ])
+      )
+    })
+
+    it('maps races to "Abandoned" if unableToDetermineCode is "A"', () => {
+      const result = fromJS({
+        unable_to_determine_code: 'A',
+      })
+      const state = fromJS({unableToDetermineCodes})
+
+      const racesResult = getResultRacesSelector(state, result)
+      expect(racesResult).toEqualImmutable(
+        fromJS(['Abandoned'])
+      )
+    })
+
+    it('maps races to "Unknown" if unableToDetermineCode is "I"', () => {
+      const result = fromJS({
+        unable_to_determine_code: 'I',
+      })
+      const state = fromJS({unableToDetermineCodes})
+
+      const racesResult = getResultRacesSelector(state, result)
+      expect(racesResult).toEqualImmutable(
+        fromJS(['Unknown'])
+      )
+    })
+
+    it('maps races to "Unknown" if unableToDetermineCode is "K"', () => {
+      const result = fromJS({
+        unable_to_determine_code: 'K',
+      })
+      const state = fromJS({unableToDetermineCodes})
+
+      const racesResult = getResultRacesSelector(state, result)
+      expect(racesResult).toEqualImmutable(
+        fromJS(['Unknown'])
+      )
+    })
+  })
+
+  describe('getResultEthnicitiesSelector', () => {
+    it('maps hispanic codes to lov values', () => {
+      const result = fromJS({
+        race_ethnicity: {
+          hispanic_origin_code: 'Y',
+          hispanic_codes: [
+            {id: '3', description: 'Romanian'},
+            {id: '2', description: 'French'},
+            {id: '1', description: 'European'},
+          ],
+        },
+      })
+      const state = fromJS({hispanicOriginCodes, ethnicityTypes: ethnicityTypeLovs, raceTypes: raceTypeLovs})
+      const racesResult = getResultEthnicitiesSelector(state, result)
+      expect(racesResult).toEqualImmutable(
+        fromJS({
+          hispanic_latino_origin: 'yes', ethnicity_detail: ['Romanian', 'French', 'European']}
+        )
       )
     })
   })

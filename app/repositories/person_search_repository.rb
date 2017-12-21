@@ -33,19 +33,16 @@ class PersonSearchRepository
       }
     end
 
-    # rubocop:disable MethodLength
     def search_hits(search_body)
       search_body.dig('hits', 'hits').map do |document|
         PeopleSearchResultsInterpreter.interpret_sensitivity_indicator(document)
         PeopleSearchResultsInterpreter.interpret_addresses(document)
         PeopleSearchResultsInterpreter.interpret_highlights(document)
-        PeopleSearchResultsInterpreter.interpret_race_ethnicity(document)
         PeopleSearchResultsInterpreter.interpret_ssn(document)
         PeopleSearchResultsInterpreter.interpret_legacy_id(document)
         PeopleSearchResultsInterpreter.interpret_sort(document)
         document['_source']
       end
     end
-    # rubocop:enable MethodLength
   end
 end
