@@ -33,13 +33,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
       }
     end
 
-    def interpret_ssn(document)
-      source = document['_source']
-      ssn = source['ssn']
-      return unless source['ssn']&.length == 9
-      source['ssn'] = "#{ssn[0..2]}-#{ssn[3..4]}-#{ssn[5..8]}"
-    end
-
     def hispanic_latino_origin_for_code(code)
       {
         'Y' => 'Yes',
