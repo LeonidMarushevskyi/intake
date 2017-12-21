@@ -8,6 +8,7 @@ import {
   getResultEthnicitiesSelector,
   getIsSensitiveSelector,
   getIsSealedSelector,
+  getResultAddressSelector,
 } from 'selectors/peopleSearchSelectors'
 
 describe('peopleSearchSelectors', () => {
@@ -104,6 +105,34 @@ describe('peopleSearchSelectors', () => {
     })
   })
 
+  describe('getResultAddressSelector', () => {
+    const usStates = [
+      {id: '1', value: 'state'},
+    ]
+
+    it('returns the city, state, zip, empty type, and a joined street address', () => {
+      const result = fromJS({
+        addresses: [{
+          city: 'city',
+          state_code: 'state',
+          zip: 'zip',
+          type: 'blah',
+          street_number: '123',
+          street_name: 'C Street',
+
+        }],
+      })
+      const addressResult = getResultAddressSelector(result)
+      expect(addressResult).toEqualImmutable(fromJS({
+        city: 'city',
+        state: 'state',
+        zip: 'zip',
+        type: '',
+        streetAddress: '123 C Street',
+      }))
+    })
+  })
+
   describe('getResultRacesSelector', () => {
     it('maps races to lov values by id', () => {
       const result = fromJS({
@@ -195,41 +224,41 @@ describe('peopleSearchSelectors', () => {
     it('maps person search attributes to suggestion attributes', () => {
       const peopleSearch = {
         results: [{
-          first_name: 'Bart',
-          last_name: 'Simpson',
-          middle_name: 'Jacqueline',
-          name_suffix: 'md',
-          gender: 'female',
-          languages: [{id: '3'}, {id: '2'}],
-          races: [
-            {race: 'White', race_detail: 'European'},
-            {race: 'American Indian or Alaska Native'},
-          ],
-          ethnicity: {
-            hispanic_latino_origin: 'Yes',
-            ethnicity_detail: ['Central American'],
+          _source: {
+            first_name: 'Bart',
+            last_name: 'Simpson',
+            middle_name: 'Jacqueline',
+            name_suffix: 'md',
+            gender: 'female',
+            languages: [{id: '3'}, {id: '2'}],
+            race_ethnicity: {
+              hispanic_origin_code: 'Y',
+              hispanic_unable_to_determine_code: 'Y',
+              race_codes: [{id: '1'}],
+              hispanic_codes: [{description: 'Central American'}],
+            },
+            date_of_birth: '1990-02-13',
+            ssn: '123456789',
+            addresses: [{
+              id: '1',
+              street_number: '234',
+              street_name: 'Fake Street',
+              city: 'Flushing',
+              state_code: 'state',
+              zip: '11344',
+              type: 'School',
+            }],
+            phone_numbers: [{
+              id: '2',
+              number: '994-907-6774',
+              type: 'Home',
+            }],
+            legacy_descriptor: {
+              legacy_ui_id: '123-456-789',
+              legacy_table_description: 'Client',
+            },
+            sensitivity_indicator: 'S',
           },
-          date_of_birth: '1990-02-13',
-          ssn: '123456789',
-          addresses: [{
-            id: '1',
-            street_address: '234 Fake Street',
-            city: 'Flushing',
-            state: 'NM',
-            zip: '11344',
-            type: 'School',
-          }],
-          phone_numbers: [{
-            id: '2',
-            number: '994-907-6774',
-            type: 'Home',
-          }],
-          legacy_descriptor: {
-            legacy_ui_id: '123-456-789',
-            legacy_table_description: 'Client',
-          },
-          sensitive: true,
-          sealed: false,
         }],
       }
       const state = fromJS({languages: languageLovs, peopleSearch})
@@ -259,9 +288,9 @@ describe('peopleSearchSelectors', () => {
           address: {
             city: 'Flushing',
             state: 'NM',
-            streetAddress: '234 Fake Street',
-            type: '',
             zip: '11344',
+            type: '',
+            streetAddress: '234 Fake Street',
           },
           phoneNumber: {
             number: '994-907-6774',
@@ -276,39 +305,43 @@ describe('peopleSearchSelectors', () => {
     it('maps the first address and phone number result to address and phone number', () => {
       const peopleSearch = {
         results: [{
-          addresses: [{
-            id: '1',
-            street_address: '234 Fake Street',
-            city: 'Flushing',
-            state: 'NM',
-            zip: '11344',
-            type: 'School',
-          }, {
-            id: '2',
-            street_address: '2 Camden Crt',
-            city: 'Flushing',
-            state: 'NM',
-            zip: '11222',
-            type: 'Home',
-          }],
-          phone_numbers: [{
-            number: '994-907-6774',
-            type: 'Home',
-          }, {
-            number: '111-222-6774',
-            type: 'Work',
-          }],
+          _source: {
+            addresses: [{
+              id: '1',
+              street_number: '234',
+              street_name: 'Fake Street',
+              city: 'Flushing',
+              state_code: 'state',
+              zip: '11344',
+              type: 'School',
+            }, {
+              id: '2',
+              street_number: '2',
+              street_name: 'Camden Crt',
+              city: 'Flushing',
+              state_code: 'state',
+              zip: '11222',
+              type: 'Home',
+            }],
+            phone_numbers: [{
+              number: '994-907-6774',
+              type: 'Home',
+            }, {
+              number: '111-222-6774',
+              type: 'Work',
+            }],
+          },
         }],
       }
       const state = fromJS({peopleSearch})
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'address'])).toEqualImmutable(
         Map({
-          streetAddress: '234 Fake Street',
           city: 'Flushing',
           state: 'NM',
           zip: '11344',
           type: '',
+          streetAddress: '234 Fake Street',
         })
       )
       expect(peopleResults.getIn([0, 'phoneNumber'])).toEqualImmutable(

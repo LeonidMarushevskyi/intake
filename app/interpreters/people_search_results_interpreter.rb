@@ -4,19 +4,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
   class << self
     ALLOWABLE_SSN_CHARS = 4
 
-    def interpret_addresses(document)
-      source = document['_source']
-      return unless source['addresses']&.any?
-      translated_addresses = source['addresses'].map do |address|
-        address['street_address'] = [
-          address['street_number'], address['street_name']
-        ].join(' ')
-        address['state'] = address['state_code']
-        address.except('state_code', 'street_number', 'street_name')
-      end
-      source['addresses'] = translated_addresses
-    end
-
     def interpret_highlights(document)
       highlight = {}
       if document['highlight']

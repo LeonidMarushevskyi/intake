@@ -59,11 +59,30 @@ export const getResultEthnicitiesSelector = (state, result) => createSelector(
   })
 )(state)
 
+export const getResultAddressSelector = (result) => createSelector(
+  (result) => (result.get('addresses') || List()).isEmpty(),
+  (result) => result.getIn(['addresses', 0, 'city']),
+  (result) => result.getIn(['addresses', 0, 'state_code']),
+  (result) => result.getIn(['addresses', 0, 'zip']),
+  (result) => result.getIn(['addresses', 0, 'street_number']),
+  (result) => result.getIn(['addresses', 0, 'street_name']),
+  (addressesEmpty, city, stateCode, zip, streetNumber, streetName) => {
+    if (addressesEmpty) { return null } else {
+      return Map({
+        city: city,
+        state: stateCode,
+        zip: zip,
+        type: '', // TODO: Implement as part of #INT-537
+        streetAddress: `${streetNumber} ${streetName}`,
+      })
+    }
+  }
+)(result)
+
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
   .map((result) => {
-    const address = result.getIn(['addresses', 0], null)
     const phoneNumber = result.getIn(['phone_numbers', 0], null)
     return Map({
       firstName: result.getIn(['highlight', 'first_name'], result.get('first_name')),
@@ -77,13 +96,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
       ethnicity: result.get('ethnicity'),
       dateOfBirth: result.getIn(['highlight', 'date_of_birth'], result.get('date_of_birth')),
       ssn: formatSSN(result.getIn(['highlight', 'ssn'], result.get('ssn'))),
-      address: address && Map({
-        city: address.get('city'),
-        state: address.get('state'),
-        streetAddress: address.get('street_address'),
-        type: '', // TODO: Implement as part of #INT-537
-        zip: address.get('zip'),
-      }),
+      address: getResultAddressSelector(result),
       phoneNumber: phoneNumber && Map({
         number: phoneNumber.get('number'),
         type: phoneNumber.get('type'),
