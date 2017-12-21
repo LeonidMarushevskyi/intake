@@ -1,8 +1,4 @@
 FROM ruby:2.4.0
-ENV BUILD_DATE unknown
-ENV BUILD_NUMBER unknown
-ENV VERSION unknown
-ENV VCS-REF unknown
 
 RUN \
   apt-get update -y && \
@@ -21,13 +17,17 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
+ARG BUILD_DATE
+ARG BUILD_NUMBER
+ARG VERSION
+ARG VCS_REF
 LABEL application=intake_accelerator \
-  gov.ca.cwds.build-date=$BUILD_DATE \
-  gov.ca.cwds.build-number=$BUILD_NUMBER \
-  gov.ca.cwds.version=$VERSION \
+  gov.ca.cwds.build-date=${BUILD_DATE} \
+  gov.ca.cwds.build-number=${BUILD_NUMBER} \
+  gov.ca.cwds.version=${VERSION} \
   gov.ca.cwds.name=Intake \
   gov.ca.cwds.license=Apache-2.0 \
-  gov.ca.cwds.vcs-ref=$VCS-REF \
+  gov.ca.cwds.vcs-ref=${VCS_REF} \
   gov.ca.cwds.vcs-type=git \
   gov.ca.cwds.vcs-url=git@github.com:ca-cwds/intake.git \
   gov.ca.cwds.vendor=Intake

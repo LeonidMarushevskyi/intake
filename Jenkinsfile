@@ -20,6 +20,9 @@ node('Slave') {
         }
 
         if (branch == 'master') {
+            int offset = VERSION_STRATEGY.split(':')[1]
+            int buildNumber = (BUILD_NUMBER.toInteger() - offset).toString()
+
             stage('Build') {
                 curStage = 'Build'
                 sh 'make build'
@@ -27,14 +30,14 @@ node('Slave') {
 
             stage('Release') {
                 curStage = 'Release'
-                sh 'make release'
+                withEnv(["BUILD_DATE=??", "BUILD_NUMBER=${buildNumber}", "VERSION=?", "VCS-REF=?"]) {
+                    sh 'make release'
+                }
             }
 
             stage('Publish') {
                 curStage = 'Publish'
                 if(VERSION_STRATEGY.startsWith('CALCULATE')) {
-                    int offset = VERSION_STRATEGY.split(':')[1]
-                    int buildNumber = (BUILD_NUMBER.toInteger() - offset).toString()
                     sh "make tag latest \$(git describe --tags \$(git rev-list --tags --max-count=1)).${buildNumber}"
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
