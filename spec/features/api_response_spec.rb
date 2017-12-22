@@ -23,7 +23,7 @@ feature 'API call' do
       stub_empty_relationships_for_screening(screening)
       stub_empty_history_for_screening(screening)
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path)).and_return(
-        json_body({ screenings: [] }.to_json, status: 200)
+        json_body([], status: 200)
       )
 
       visit root_path
