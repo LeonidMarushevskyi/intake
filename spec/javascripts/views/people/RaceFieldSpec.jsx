@@ -49,8 +49,15 @@ describe('RaceField', () => {
   it('renders the select field for race detail when race is checked', () => {
     const raceDetail = 'Ethopian'
     const race = 'Black or African'
-    const component = renderRaceField({personId: '123', race, raceDetail, raceDetailOptions: ['European'], checked: true})
+    const component = renderRaceField({
+      personId: '123',
+      race,
+      raceDetail,
+      raceDetailOptions: [{label: 'European', value: 'european'}],
+      checked: true,
+    })
     const select = component.find('SelectField[id="participant-123-Black_or_African-race-detail"]')
+
     expect(select.exists()).toEqual(true)
     expect(select.props().label).toEqual('')
     expect(select.props().value).toEqual(raceDetail)
@@ -70,7 +77,7 @@ describe('RaceField', () => {
       personId: '123',
       checked: true,
       race,
-      raceDetailOptions: ['European'],
+      raceDetailOptions: [{label: 'European', value: 'european'}],
     })
     component.find('SelectField')
       .simulate('change', {target: {value: raceDetail}})
