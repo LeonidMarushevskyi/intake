@@ -8,8 +8,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import CardContainer from 'containers/screenings/CardContainer'
-import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
-import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -154,18 +152,6 @@ export class ScreeningPage extends React.Component {
               edit={<DecisionFormContainer />}
               show={<DecisionShowContainer />}
             />
-          }
-          {
-            releaseTwoInactive &&
-            IntakeConfig.isFeatureActive('referral_submit') &&
-            editable &&
-            <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} disabled={this.props.disableSubmitButton} />
-          }
-          {
-            releaseTwoInactive &&
-            editable &&
-            IntakeConfig.isFeatureInactive('referral_submit') &&
-            <ScreeningSubmitButtonWithModal />
           }
           {
             releaseTwo &&

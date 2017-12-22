@@ -282,35 +282,4 @@ feature 'Submit Screening' do
       expect(page).not_to have_button('Submit')
     end
   end
-
-  context 'when referral submit is deactivated' do
-    around do |example|
-      Feature.run_with_deactivated(:referral_submit) do
-        example.run
-      end
-    end
-
-    scenario 'The user submits and clicks proceed' do
-      visit edit_screening_path(existing_screening.id)
-      click_button 'Submit'
-
-      within '#submitModal' do
-        expect(page).to have_content 'You have completed the process to submit a screening.'
-        click_button 'Proceed'
-        expect(page).to have_current_path('/')
-      end
-    end
-
-    scenario 'The user submits the screening and clicks cancel' do
-      visit edit_screening_path(existing_screening.id)
-      click_button 'Submit'
-
-      within '#submitModal' do
-        within '.modal-footer' do
-          click_button 'Close'
-        end
-        expect(page).to have_current_path(edit_screening_path(id: existing_screening.id))
-      end
-    end
-  end
 end

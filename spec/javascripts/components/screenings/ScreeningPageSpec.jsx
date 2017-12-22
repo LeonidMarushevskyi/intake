@@ -204,11 +204,6 @@ describe('ScreeningPage', () => {
       it('renders the search card', () => {
         expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
       })
-
-      it('renders the submit button with a modal', () => {
-        expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
-        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
-      })
     })
 
     describe('in show mode', () => {
@@ -276,11 +271,6 @@ describe('ScreeningPage', () => {
 
       it('renders the person search card', () => {
         expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
-      })
-
-      it('renders the submit button with a modal', () => {
-        expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
-        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
       })
     })
   })
