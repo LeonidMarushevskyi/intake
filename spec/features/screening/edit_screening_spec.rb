@@ -56,7 +56,6 @@ feature 'Edit Screening' do
       within '.page-header-mast' do
         expect(page).to have_content('Little Shop Of Horrors')
       end
-      expect(page.find('h1', text: 'Edit Screening #My Bad!')).to be_truthy
     end
 
     scenario 'edit an existing screening' do
@@ -251,7 +250,7 @@ feature 'Edit Screening' do
       within '.page-header-mast' do
         expect(page).to have_content('The Rocky Horror Picture Show')
       end
-      expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
+      expect(page).to have_content "Referral ##{existing_screening.referral_id}"
       expect(page).to_not have_css('#search-card', text: 'Search')
       expect(page).to_not have_css('.card.edit')
       expect(page).not_to have_button 'Submit'

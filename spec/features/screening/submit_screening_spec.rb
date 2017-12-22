@@ -162,7 +162,7 @@ feature 'Submit Screening' do
         ).to have_been_made
 
         expect(page).not_to have_content '#submitModal'
-        expect(page).to have_content " - Referral ##{referral_id}"
+        expect(page).to have_content "Referral ##{referral_id}"
         expect(page).not_to have_content 'Submit'
       end
     end
@@ -243,7 +243,7 @@ feature 'Submit Screening' do
         ).to have_been_made
       end
       scenario 'displays an error banner with count of errors' do
-        expect(page).not_to have_content ' - Referral #'
+        expect(page).not_to have_content 'Referral #'
         expect(
           page.find('.page-error')
         ).to have_content(
@@ -251,7 +251,7 @@ feature 'Submit Screening' do
         )
       end
       scenario 'displays an error alert with details of errors' do
-        expect(page).not_to have_content ' - Referral #'
+        expect(page).not_to have_content 'Referral #'
         expect(page.find('.error-message div.alert-icon')).to have_css('i.fa-warning')
         expect(
           page.all('.error-message div.alert-text li').map(&:text)
