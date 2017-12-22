@@ -30,7 +30,7 @@ feature 'Create Screening' do
         .and_return(json_body(new_screening.to_json, status: 200))
 
       visit root_path
-      click_link 'Start Screening'
+      click_button 'Start Screening'
 
       expect(
         a_request(
@@ -104,7 +104,7 @@ feature 'Create Screening' do
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
         expect(page).to have_content('Edit Screening #DQJIYK')
         expect(page).to have_field(
@@ -154,7 +154,7 @@ feature 'Create Screening' do
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
         expect(page).to have_content('Edit Screening #DQJIYK')
         expect(page).to have_field(
@@ -192,7 +192,7 @@ feature 'Create Screening' do
           .and_return(status: 200)
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
         expect(page).to have_content('Edit Screening #DQJIYK')
         expect(page).to have_field('Assigned Social Worker', with: '', disabled: false)
@@ -221,7 +221,7 @@ feature 'Create Screening' do
       .and_return(json_body(new_screening.to_json, status: 200))
 
     visit root_path
-    click_link 'Start Screening'
+    click_button 'Start Screening'
 
     expect(
       a_request(

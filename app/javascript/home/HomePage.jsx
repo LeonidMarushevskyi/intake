@@ -3,7 +3,6 @@ import {fetch as fetchScreenings} from 'actions/screeningsActions'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ScreeningsTable from 'screenings/ScreeningsTable'
-import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as IntakeConfig from 'common/config'
@@ -22,9 +21,7 @@ export class HomePage extends React.Component {
   render() {
     return (
       <div className='row gap-top'>
-        <div className='col-md-3'>
-          <Link to='#' onClick={() => { this.props.actions.createScreening() }}>Start Screening</Link>
-        </div>
+        <div className='col-md-3' />
         <div className='col-md-9'>
           { IntakeConfig.isFeatureInactive('release_two') && <ScreeningsTable screenings={this.props.screenings} /> }
         </div>
