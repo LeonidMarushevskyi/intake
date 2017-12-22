@@ -4,36 +4,27 @@ import {getAllCardsAreSavedValueSelector} from 'selectors/screening/screeningPag
 import {isFeatureActive} from 'common/config'
 
 export const getPageHeaderDetailSelector = (path, state) => {
+  let pageHeaderDetails = {pageHeaderTitle: '', pageHeaderButton: null}
   if (path === '/') {
-    return {
-      pageHeaderButtonDisabled: false,
-      pageHeaderButtonText: 'Start Screening',
-      pageHeaderHasButton: true,
-      pageHeaderLocation: 'dashboard',
-      pageHeaderTitle: 'Dashboard',
+    pageHeaderDetails = {
+      pageHeaderButtonDisabled: false, pageHeaderButtonText: 'Start Screening',
+      pageHeaderHasButton: true, pageHeaderLocation: 'dashboard', pageHeaderTitle: 'Dashboard',
     }
   } else if (path.includes('screenings')) {
-    const pageHeaderHasButton =
-      !((getScreeningIsReadOnlySelector(state) || isFeatureActive('release_two')))
-    return {
+    const pageHeaderHasButton = !((getScreeningIsReadOnlySelector(state) || isFeatureActive('release_two')))
+    pageHeaderDetails = {
       pageHeaderButtonDisabled: !getAllCardsAreSavedValueSelector(state),
-      pageHeaderButtonText: 'Submit',
-      pageHeaderHasButton: pageHeaderHasButton,
-      pageHeaderLocation: 'screening',
-      pageHeaderTitle: getScreeningTitleSelector(state),
+      pageHeaderButtonText: 'Submit', pageHeaderHasButton: pageHeaderHasButton,
+      pageHeaderLocation: 'screening', pageHeaderTitle: getScreeningTitleSelector(state),
     }
   } else if (path.includes('contacts')) {
-    return {
-      pageHeaderHasButton: false,
-      pageHeaderLocation: 'contact',
+    pageHeaderDetails = {
+      pageHeaderHasButton: false, pageHeaderLocation: 'contact',
       pageHeaderTitle: `Contact for ${getInvestigationTitleSelector(state)}`,
     }
   } else if (path.includes('investigations')) {
-    return {
-      pageHeaderHasButton: false,
-      pageHeaderLocation: 'investigation',
-      pageHeaderTitle: getInvestigationTitleSelector(state),
-    }
+    pageHeaderDetails = {pageHeaderHasButton: false, pageHeaderLocation: 'investigation',
+      pageHeaderTitle: getInvestigationTitleSelector(state)}
   }
-  return {pageHeaderTitle: '', pageHeaderButton: null}
+  return pageHeaderDetails
 }
