@@ -56,14 +56,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
       ['Unknown']
     end
 
-    def interpret_legacy_id(document)
-      document.tap do |doc|
-        doc['_source'].merge!(
-          'legacy_id' => doc['_source']['id']
-        )
-      end
-    end
-
     def interpret_sort(document)
       document.tap do |doc|
         doc['_source'].merge!(
