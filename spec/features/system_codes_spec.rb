@@ -9,7 +9,7 @@ feature 'System codes' do
     stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov_path))
       .and_return(json_body([].to_json, status: 200))
     visit root_path
-    click_link 'Start Screening'
+    click_button 'Start Screening'
     expect(a_request(:get, ferb_api_url(ExternalRoutes.ferb_api_lov_path))).to have_been_made.once
   end
 end

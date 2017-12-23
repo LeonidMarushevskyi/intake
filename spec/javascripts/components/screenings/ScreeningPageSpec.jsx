@@ -173,41 +173,17 @@ describe('ScreeningPage', () => {
         expect(card.exists()).toEqual(true)
       })
 
-      it('renders the screening reference in show', () => {
-        const heading = renderScreeningPage({
-          mode: 'show',
-          reference: 'The Rocky Horror Picture Show',
-          loaded: true,
-        }).find('h1')
-        expect(heading.text()).toEqual('Screening #The Rocky Horror Picture Show')
-      })
-
-      it('renders the screening reference in edit', () => {
-        const heading = renderScreeningPage({
-          mode: 'edit',
-          reference: 'The Rocky Horror Picture Show',
-          loaded: true,
-        }).find('h1')
-        expect(heading.text()).toEqual('Edit Screening #The Rocky Horror Picture Show')
-      })
-
       it('renders the referral id, if present', () => {
         const heading = renderScreeningPage({
           mode: 'show',
-          reference: 'ABCDEF',
           referralId: '123456',
           loaded: true,
         }).find('h1')
-        expect(heading.text()).toEqual('Screening #ABCDEF - Referral #123456')
+        expect(heading.text()).toEqual('Referral #123456')
       })
 
       it('renders the search card', () => {
         expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
-      })
-
-      it('renders the submit button with a modal', () => {
-        expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
-        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
       })
     })
 
@@ -276,11 +252,6 @@ describe('ScreeningPage', () => {
 
       it('renders the person search card', () => {
         expect(component.find('Connect(PersonSearchForm)').exists()).toEqual(true)
-      })
-
-      it('renders the submit button with a modal', () => {
-        expect(component.find('ScreeningSubmitButton').exists()).toEqual(false)
-        expect(component.find('ScreeningSubmitButtonWithModal').exists()).toEqual(true)
       })
     })
   })

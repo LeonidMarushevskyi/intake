@@ -28,12 +28,6 @@ describe('HomePage', () => {
       })
     })
 
-    it('renders the create screening link', () => {
-      component = shallow(<HomePage {...requiredProps} />)
-      const createScreeningLink = component.find('Link')
-      expect(createScreeningLink.props().children).toEqual('Start Screening')
-    })
-
     it('renders the screening index table', () => {
       component = shallow(<HomePage {...requiredProps} />)
       expect(component.find('ScreeningsTable').length).toEqual(1)
@@ -45,20 +39,6 @@ describe('HomePage', () => {
       component = shallow(<HomePage {...props} />)
       const table = component.find('ScreeningsTable')
       expect(table.props().screenings).toEqual(screenings)
-    })
-
-    describe('when a user creates a new screening', () => {
-      let createScreening
-      beforeEach(() => {
-        createScreening = jasmine.createSpy('createScreening')
-        component = shallow(<HomePage actions={{createScreening}} />)
-        const createScreeningLink = component.find('Link')
-        createScreeningLink.simulate('click')
-      })
-
-      it('calls the create screening action', () => {
-        expect(createScreening).toHaveBeenCalled()
-      })
     })
   })
 

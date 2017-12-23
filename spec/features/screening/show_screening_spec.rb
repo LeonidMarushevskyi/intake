@@ -53,8 +53,9 @@ feature 'Show Screening' do
     stub_empty_history_for_screening(existing_screening)
 
     visit screening_path(id: existing_screening.id)
-
-    expect(page).to have_content 'Screening #My Bad!'
+    within '.page-header-mast' do
+      expect(page).to have_content('The Rocky Horror Picture Show')
+    end
 
     within '#screening-information-card.show', text: 'Screening Information' do
       expect(page.find('label', text: 'Assigned Social Worker')[:class]).to include('required')
@@ -178,7 +179,10 @@ feature 'Show Screening' do
       stub_empty_history_for_screening(existing_screening)
 
       visit screening_path(id: existing_screening.id)
-      expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
+      within '.page-header-mast' do
+        expect(page).to have_content('The Rocky Horror Picture Show')
+      end
+      expect(page).to have_content "Referral ##{existing_screening.referral_id}"
       expect(page).to_not have_css('#search-card', text: 'Search')
       expect(page).to_not have_css('.card.edit')
       expect(page).not_to have_button 'Submit'

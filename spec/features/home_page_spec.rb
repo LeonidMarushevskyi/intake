@@ -28,7 +28,7 @@ feature 'home page' do
     scenario 'displays search bar' do
       stub_person_search('Marge', dora_response)
       visit root_path
-      expect(page).to_not have_link 'Start Screening'
+      expect(page).to_not have_button 'Start Screening'
       fill_in_autocompleter 'People', with: 'Marge', skip_select: true
       expect(page).to have_content('Showing 1-1 of 1 results for "Marge"')
       expect(
@@ -53,7 +53,7 @@ feature 'home page' do
       expect(
         a_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       ).to_not have_been_made
-      expect(page).to have_link 'Start Screening'
+      expect(page).to have_button 'Start Screening'
       expect(page).not_to have_content screening.name
       expect(page).not_to have_content screening.reference
       expect(page).not_to have_css 'table'
@@ -64,7 +64,7 @@ feature 'home page' do
     scenario 'includes title and navigation links' do
       visit root_path
       expect(page).to have_title 'Intake'
-      expect(page).to have_link 'Start Screening'
+      expect(page).to have_button 'Start Screening'
     end
 
     scenario 'includes a list of saved screenings' do

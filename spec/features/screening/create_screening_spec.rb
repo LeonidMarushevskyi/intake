@@ -30,7 +30,7 @@ feature 'Create Screening' do
         .and_return(json_body(new_screening.to_json, status: 200))
 
       visit root_path
-      click_link 'Start Screening'
+      click_button 'Start Screening'
 
       expect(
         a_request(
@@ -43,7 +43,6 @@ feature 'Create Screening' do
           'The Child Welfare History Snapshot allows you to search CWS/CMS for people and their'
         )
       end
-      expect(page).to_not have_content('Edit Screening #DQJIYK')
     end
   end
 
@@ -104,9 +103,12 @@ feature 'Create Screening' do
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
-        expect(page).to have_content('Edit Screening #DQJIYK')
+        within '.page-header-mast' do
+          expect(page).to have_content("Screening: #{new_screening.id}")
+        end
+
         expect(page).to have_field(
           'Assigned Social Worker',
           with: user_name_display,
@@ -154,9 +156,12 @@ feature 'Create Screening' do
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
-        expect(page).to have_content('Edit Screening #DQJIYK')
+        within '.page-header-mast' do
+          expect(page).to have_content("Screening: #{new_screening.id}")
+        end
+
         expect(page).to have_field(
           'Assigned Social Worker',
           with: user_name_display,
@@ -192,9 +197,12 @@ feature 'Create Screening' do
           .and_return(status: 200)
 
         visit root_path(token: 123)
-        click_link 'Start Screening'
+        click_button 'Start Screening'
 
-        expect(page).to have_content('Edit Screening #DQJIYK')
+        within '.page-header-mast' do
+          expect(page).to have_content("Screening: #{new_screening.id}")
+        end
+
         expect(page).to have_field('Assigned Social Worker', with: '', disabled: false)
       end
     end
@@ -221,7 +229,7 @@ feature 'Create Screening' do
       .and_return(json_body(new_screening.to_json, status: 200))
 
     visit root_path
-    click_link 'Start Screening'
+    click_button 'Start Screening'
 
     expect(
       a_request(
@@ -229,6 +237,8 @@ feature 'Create Screening' do
       ).with(body: as_json_without_root_id(new_screening))
     ).to have_been_made
 
-    expect(page).to have_content('Edit Screening #DQJIYK')
+    within '.page-header-mast' do
+      expect(page).to have_content("Screening: #{new_screening.id}")
+    end
   end
 end

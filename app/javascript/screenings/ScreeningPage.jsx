@@ -8,8 +8,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import RelationshipsCardContainer from 'screenings/RelationshipsCardContainer'
 import CardContainer from 'containers/screenings/CardContainer'
-import ScreeningSubmitButton from 'screenings/ScreeningSubmitButton'
-import ScreeningSubmitButtonWithModal from 'screenings/ScreeningSubmitButtonWithModal'
 import {Link} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -59,7 +57,7 @@ export class ScreeningPage extends React.Component {
   }
 
   render() {
-    const {referralId, reference, editable, mode, loaded, hasErrors, submitReferralErrors} = this.props
+    const {referralId, editable, mode, loaded, hasErrors, submitReferralErrors} = this.props
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
 
@@ -68,11 +66,7 @@ export class ScreeningPage extends React.Component {
         <div>
           {
             releaseTwoInactive &&
-              <h1>
-                {mode === 'edit' && 'Edit '}
-                {`Screening #${reference}`}
-                {referralId && ` - Referral #${referralId}`}
-              </h1>
+              <h1>{referralId && `Referral #${referralId}`}</h1>
           }
           {
             releaseTwo &&
@@ -154,18 +148,6 @@ export class ScreeningPage extends React.Component {
               edit={<DecisionFormContainer />}
               show={<DecisionShowContainer />}
             />
-          }
-          {
-            releaseTwoInactive &&
-            IntakeConfig.isFeatureActive('referral_submit') &&
-            editable &&
-            <ScreeningSubmitButton actions={this.props.actions} params={this.props.params} disabled={this.props.disableSubmitButton} />
-          }
-          {
-            releaseTwoInactive &&
-            editable &&
-            IntakeConfig.isFeatureInactive('referral_submit') &&
-            <ScreeningSubmitButtonWithModal />
           }
           {
             releaseTwo &&

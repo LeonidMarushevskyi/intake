@@ -3,6 +3,8 @@ import {
   getScreeningSelector,
   getScreeningIdValueSelector,
   getScreeningIsReadOnlySelector,
+  getScreeningNameValueSelector,
+  getScreeningTitleSelector,
 } from 'selectors/screeningSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -38,6 +40,25 @@ describe('screeningSelectors', () => {
     it('returns false if referral id is null', () => {
       const state = fromJS({screening: {referral_id: null}})
       expect(getScreeningIsReadOnlySelector(state)).toEqual(false)
+    })
+  })
+
+  describe('getScreeningNameValueSelector', () => {
+    it('returns the name for the screening currently in the store', () => {
+      const state = fromJS({screening: {name: 'the addams family'}})
+      expect(getScreeningNameValueSelector(state)).toEqual('the addams family')
+    })
+  })
+
+  describe('getScreeningTitleSelector', () => {
+    it('returns the screening name if screening has a name', () => {
+      const state = fromJS({screening: {id: 1, name: 'the addams family'}})
+      expect(getScreeningTitleSelector(state)).toEqual('the addams family')
+    })
+
+    it('returns the screening id if screening does not have a name', () => {
+      const state = fromJS({screening: {id: 1}})
+      expect(getScreeningTitleSelector(state)).toEqual('Screening: 1')
     })
   })
 })

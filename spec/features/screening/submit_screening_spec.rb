@@ -162,7 +162,7 @@ feature 'Submit Screening' do
         ).to have_been_made
 
         expect(page).not_to have_content '#submitModal'
-        expect(page).to have_content " - Referral ##{referral_id}"
+        expect(page).to have_content "Referral ##{referral_id}"
         expect(page).not_to have_content 'Submit'
       end
     end
@@ -243,7 +243,7 @@ feature 'Submit Screening' do
         ).to have_been_made
       end
       scenario 'displays an error banner with count of errors' do
-        expect(page).not_to have_content ' - Referral #'
+        expect(page).not_to have_content 'Referral #'
         expect(
           page.find('.page-error')
         ).to have_content(
@@ -251,7 +251,7 @@ feature 'Submit Screening' do
         )
       end
       scenario 'displays an error alert with details of errors' do
-        expect(page).not_to have_content ' - Referral #'
+        expect(page).not_to have_content 'Referral #'
         expect(page.find('.error-message div.alert-icon')).to have_css('i.fa-warning')
         expect(
           page.all('.error-message div.alert-text li').map(&:text)
@@ -280,37 +280,6 @@ feature 'Submit Screening' do
     scenario 'The user submits and clicks proceed' do
       visit edit_screening_path(existing_screening.id)
       expect(page).not_to have_button('Submit')
-    end
-  end
-
-  context 'when referral submit is deactivated' do
-    around do |example|
-      Feature.run_with_deactivated(:referral_submit) do
-        example.run
-      end
-    end
-
-    scenario 'The user submits and clicks proceed' do
-      visit edit_screening_path(existing_screening.id)
-      click_button 'Submit'
-
-      within '#submitModal' do
-        expect(page).to have_content 'You have completed the process to submit a screening.'
-        click_button 'Proceed'
-        expect(page).to have_current_path('/')
-      end
-    end
-
-    scenario 'The user submits the screening and clicks cancel' do
-      visit edit_screening_path(existing_screening.id)
-      click_button 'Submit'
-
-      within '#submitModal' do
-        within '.modal-footer' do
-          click_button 'Close'
-        end
-        expect(page).to have_current_path(edit_screening_path(id: existing_screening.id))
-      end
     end
   end
 end

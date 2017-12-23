@@ -53,7 +53,9 @@ feature 'Edit Screening' do
       stub_empty_relationships_for_screening(existing_screening)
       stub_empty_history_for_screening(existing_screening)
       visit edit_screening_path(id: existing_screening.id)
-      expect(page.find('h1', text: 'Edit Screening #My Bad!')).to be_truthy
+      within '.page-header-mast' do
+        expect(page).to have_content('Little Shop Of Horrors')
+      end
     end
 
     scenario 'edit an existing screening' do
@@ -245,7 +247,10 @@ feature 'Edit Screening' do
       stub_empty_history_for_screening(existing_screening)
 
       visit edit_screening_path(id: existing_screening.id)
-      expect(page).to have_content " - Referral ##{existing_screening.referral_id}"
+      within '.page-header-mast' do
+        expect(page).to have_content('The Rocky Horror Picture Show')
+      end
+      expect(page).to have_content "Referral ##{existing_screening.referral_id}"
       expect(page).to_not have_css('#search-card', text: 'Search')
       expect(page).to_not have_css('.card.edit')
       expect(page).not_to have_button 'Submit'
@@ -275,6 +280,9 @@ feature 'Edit Screening' do
         expect(page).to have_content(
           'The Child Welfare History Snapshot allows you to search CWS/CMS for people'
         )
+      end
+      within '.page-header-mast' do
+        expect(page).to have_content('Little Shop Of Horrors')
       end
       expect(page).to have_css('.card', text: 'Search')
       expect(page).to have_css('.card', text: 'History')

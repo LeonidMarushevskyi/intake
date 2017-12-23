@@ -39,6 +39,9 @@ feature 'Show Investigation' do
         :get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
       ).and_return(json_body({ screening_summary: screening_summary }.to_json, status: 200))
       visit investigation_path(id: investigation_id)
+      within '.page-header-mast' do
+        expect(page).to have_content('My Screening')
+      end
       within '.card.show', text: 'Screening Summary' do
         within '.card-body' do
           within :xpath, ".//div[@class='row'][1]" do
