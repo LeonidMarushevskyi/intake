@@ -1,6 +1,6 @@
 import {getInvestigationTitleSelector} from 'selectors/investigation/investigationSelectors'
 import {getScreeningTitleSelector, getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
-import {getAllCardsAreSavedValueSelector} from 'selectors/screening/screeningPageSelectors'
+import {getAllCardsAreSavedValueSelector, getScreeningHasErrorsSelector} from 'selectors/screening/screeningPageSelectors'
 import {isFeatureActive} from 'common/config'
 
 export const getPageHeaderDetailSelector = (path, state) => {
@@ -13,7 +13,7 @@ export const getPageHeaderDetailSelector = (path, state) => {
   } else if (path.includes('screenings')) {
     const pageHeaderHasButton = !((getScreeningIsReadOnlySelector(state) || isFeatureActive('release_two')))
     pageHeaderDetails = {
-      pageHeaderButtonDisabled: !getAllCardsAreSavedValueSelector(state),
+      pageHeaderButtonDisabled: !getAllCardsAreSavedValueSelector(state) || getScreeningHasErrorsSelector(state),
       pageHeaderButtonText: 'Submit', pageHeaderHasButton: pageHeaderHasButton,
       pageHeaderLocation: 'screening', pageHeaderTitle: getScreeningTitleSelector(state),
     }

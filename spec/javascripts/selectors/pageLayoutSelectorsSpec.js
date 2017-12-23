@@ -17,7 +17,38 @@ describe('getPageHeaderDetailSelector', () => {
 
   it('returns page header details for a screening page', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
+    spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
+    spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
+    expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
+      pageHeaderButtonDisabled: false,
+      pageHeaderButtonText: 'Submit',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'screening',
+      pageHeaderTitle: 'Screening 1',
+    })
+  })
+
+  it('disables the submit button if not all cards are saved in a screening', () => {
+    spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
+    spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
+    spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
+    expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
+      pageHeaderButtonDisabled: true,
+      pageHeaderButtonText: 'Submit',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'screening',
+      pageHeaderTitle: 'Screening 1',
+    })
+  })
+
+  it('disables the submit button if the screening is not valid', () => {
+    spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(true)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
@@ -32,6 +63,7 @@ describe('getPageHeaderDetailSelector', () => {
   it('sets pageHeaderHasButton to true for a new hotline screening', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {}).pageHeaderHasButton).toEqual(true)
@@ -40,6 +72,7 @@ describe('getPageHeaderDetailSelector', () => {
   it('sets pageHeaderHasButton to false for a submitted screening', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(true)
     expect(getPageHeaderDetailSelector('/screenings/1', {}).pageHeaderHasButton).toEqual(false)
@@ -48,6 +81,7 @@ describe('getPageHeaderDetailSelector', () => {
   it('sets pageHeaderHasButton to false for a screening in snapshot', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(true)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {}).pageHeaderHasButton).toEqual(false)
