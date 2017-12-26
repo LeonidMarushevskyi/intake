@@ -82,5 +82,24 @@ describe PersonSearchQueryBuilder do
         }
       )
     end
+    it 'build new person with DOB search query' do
+      search_term = 'search-query with dashes 10-12/1999'
+      expect(described_class.new(search_term).build).to eq(
+        _source: source,
+        highlight: highlight,
+        query: {
+          bool: {
+            must: [{
+              multi_match: {
+                query: 'search query with dashes 10121999',
+                type: 'cross_fields',
+                operator: 'and',
+                fields: %w[searchable_name searchable_date_of_birth ssn]
+              }
+            }]
+          }
+        }
+      )
+    end
   end
 end
