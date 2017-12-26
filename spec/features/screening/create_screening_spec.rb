@@ -106,7 +106,7 @@ feature 'Create Screening' do
         click_button 'Start Screening'
 
         within '.page-header-mast' do
-          expect(page).to have_content("Screening: #{new_screening.id}")
+          expect(page).to have_content("Screening #{new_screening.id}")
         end
 
         expect(page).to have_field(
@@ -159,7 +159,7 @@ feature 'Create Screening' do
         click_button 'Start Screening'
 
         within '.page-header-mast' do
-          expect(page).to have_content("Screening: #{new_screening.id}")
+          expect(page).to have_content("Screening #{new_screening.id}")
         end
 
         expect(page).to have_field(
@@ -200,7 +200,7 @@ feature 'Create Screening' do
         click_button 'Start Screening'
 
         within '.page-header-mast' do
-          expect(page).to have_content("Screening: #{new_screening.id}")
+          expect(page).to have_content("Screening #{new_screening.id}")
         end
 
         expect(page).to have_field('Assigned Social Worker', with: '', disabled: false)
@@ -238,7 +238,7 @@ feature 'Create Screening' do
     ).to have_been_made
 
     within '.page-header-mast' do
-      expect(page).to have_content("Screening: #{new_screening.id}")
+      expect(page).to have_content("Screening #{new_screening.id}")
     end
   end
 end

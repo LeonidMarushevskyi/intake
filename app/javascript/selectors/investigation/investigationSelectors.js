@@ -16,5 +16,5 @@ export const getInvestigationNameValueSelector = createSelector(
 export const getInvestigationTitleSelector = createSelector(
   getInvestigationIdValueSelector,
   getInvestigationNameValueSelector,
-  (id, name) => name || `Investigation: ${id}`
+  (id, name) => name || `Investigation ${id}`
 )

@@ -49,7 +49,7 @@ feature 'Show Investigation Contact' do
   scenario 'user can view an existing contact' do
     within '.page-header-mast' do
       # TODO: Implement investigationTitleSelector for PageHeader in Contact page
-      expect(page).to have_content('Contact for Investigation: ')
+      expect(page).to have_content('Contact for Investigation ')
     end
     within '.card-header' do
       expect(page).to have_content("Contact - Investigation #{investigation_id}")

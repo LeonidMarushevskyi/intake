@@ -45,7 +45,7 @@ describe('investigationSelectors', () => {
 
     it('returns the screening id if screening does not have a name', () => {
       const state = fromJS({investigation: {id: 1}})
-      expect(getInvestigationTitleSelector(state)).toEqual('Investigation: 1')
+      expect(getInvestigationTitleSelector(state)).toEqual('Investigation 1')
     })
   })
 })

@@ -58,7 +58,7 @@ describe('screeningSelectors', () => {
 
     it('returns the screening id if screening does not have a name', () => {
       const state = fromJS({screening: {id: 1}})
-      expect(getScreeningTitleSelector(state)).toEqual('Screening: 1')
+      expect(getScreeningTitleSelector(state)).toEqual('Screening 1')
     })
   })
 })
