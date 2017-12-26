@@ -6,7 +6,10 @@ class PersonSearchQueryBuilder
   attr_reader :search_term
 
   def initialize(search_term = '')
-    @search_term = search_term.downcase.delete('/')
+    new_search = search_term.split(' ').map do |search_term_filter|
+      search_term_filter.gsub(/[^0-9A-Za-z]/, search_term_filter.to_i != 0 ? '' : ' ')
+    end
+    @search_term = new_search.join(' ')
   end
 
   def build
