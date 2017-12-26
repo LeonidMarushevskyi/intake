@@ -80,15 +80,12 @@ feature 'error pages' do
   end
 
   context 'server has error' do
-    scenario 'renders 500 page' do
-      pending 'implemented but fails because react recovers'
-      stub_request(:get, '/screenings/2').and_return(json_body('I failed', status: 500))
+    scenario 'renders error banner' do
+      expect(ScreeningRepository).to receive(:find).and_raise(StandardError)
       visit '/screenings/2'
 
-      expect(page).to have_text('Sorry, something went wrong.')
       expect(page).to have_text(
-        "It's nothing you did. Due to an entirely internal error, "\
-        'your request could not be completred. Please try refreshing the page.'
+        /Something went wrong, sorry! Please try your last action again. \(Ref #:.*\)/
       )
     end
   end
