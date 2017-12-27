@@ -257,14 +257,14 @@ feature 'Submit Screening' do
           page.all('.error-message div.alert-text li').map(&:text)
         ).to eq(
           [
-            "screeningDecision may not be empty (Incident Id: #{incident_id})",
-            "approvalStatus must be a valid system code for ... (Incident Id: #{incident_id})",
-            "communicationMethod must be a valid system code for ... (Incident Id: #{incident_id})",
-            "responseTime must be a valid system code for ... (Incident Id: #{incident_id})",
-            "incidentCounty.GVR_ENTC GVR_ENTC sys code is ... (Incident Id: #{incident_id})",
-            "participants must contain at least one victim, ... (Incident Id: #{incident_id})",
-            "id must be greater than or equal to 1 (Incident Id: #{incident_id})",
-            "responseTime may not be null (Incident Id: #{incident_id})"
+            "screeningDecision may not be empty (Ref #: #{incident_id})",
+            "approvalStatus must be a valid system code for ... (Ref #: #{incident_id})",
+            "communicationMethod must be a valid system code for ... (Ref #: #{incident_id})",
+            "responseTime must be a valid system code for ... (Ref #: #{incident_id})",
+            "incidentCounty.GVR_ENTC GVR_ENTC sys code is ... (Ref #: #{incident_id})",
+            "participants must contain at least one victim, ... (Ref #: #{incident_id})",
+            "id must be greater than or equal to 1 (Ref #: #{incident_id})",
+            "responseTime may not be null (Ref #: #{incident_id})"
           ]
         )
       end
