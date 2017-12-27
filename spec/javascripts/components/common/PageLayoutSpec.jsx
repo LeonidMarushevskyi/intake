@@ -5,12 +5,11 @@ import {shallow, mount} from 'enzyme'
 describe('PageLayout', () => {
   function renderLayout({
     actions = {},
-    errorCount = null,
     hasError = null,
     pageHeaderDetails = {},
   }) {
     return shallow(
-      <PageLayout errorCount={errorCount} hasError={hasError} actions={actions}
+      <PageLayout hasError={hasError} actions={actions}
         pageHeaderDetails={pageHeaderDetails}
       ><span id='child'/></PageLayout>
     )
@@ -99,21 +98,16 @@ describe('PageLayout', () => {
 
   describe('error banner', () => {
     it('is not rendered when no errors', () => {
-      const component = renderLayout({hasError: false, errorCount: 0})
+      const component = renderLayout({hasError: false})
       expect(component.find('PageError').exists()).toEqual(false)
     })
-    describe('generic errors', () => {
-      it('is rendered when generic error occurs', () => {
-        const component = renderLayout({hasError: true})
-        expect(component.find('PageError').exists()).toEqual(true)
-      })
+    it('is rendered when generic error occurs', () => {
+      const component = renderLayout({hasError: true})
+      expect(component.find('PageError').exists()).toEqual(true)
     })
-    describe('countable errors', () => {
-      it('is rendered when errors count is passed', () => {
-        const component = renderLayout({hasError: true, errorCount: 15})
-        expect(component.find('PageError').exists()).toEqual(true)
-        expect(component.find('PageError').props().errorCount).toEqual(15)
-      })
+    it('is rendered when pageErrorMessage exists', () => {
+      const component = renderLayout({hasError: true, pageErrorMessage: 'pageErrorMessage'})
+      expect(component.find('PageError').exists()).toEqual(true)
     })
   })
 })

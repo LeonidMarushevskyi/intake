@@ -42,12 +42,14 @@ feature 'API call' do
     end
   end
 
-  scenario 'responds with server error' do
+  scenario 'responds with server error and include incident ids' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body('I failed', status: 500))
     stub_empty_relationships_for_screening(screening)
     visit root_path
-    expect(page).to have_content 'Something went wrong, sorry! Please try your last action again.'
+    expect(page).to have_content(
+      /Something went wrong, sorry! Please try your last action again. \(Ref #:.*\)/
+    )
   end
 
   scenario 'returns a success' do

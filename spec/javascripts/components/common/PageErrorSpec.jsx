@@ -15,16 +15,14 @@ describe('PageError', () => {
       expect(component.text()).toContain('Something went wrong, sorry! Please try your last action again.')
     })
   })
-  describe('when a count of errors is passed', () => {
-    const errorCount = 12
+
+  describe('when pageErrorMessage is passed', () => {
     beforeEach(() => {
-      component = shallow(<PageError errorCount={errorCount} />)
+      const pageErrorMessage = 'pageErrorMessage'
+      component = shallow(<PageError pageErrorMessage={pageErrorMessage} />)
     })
-    it('renders the div wrapper', () => {
-      expect(component.find('div.page-error').exists()).toEqual(true)
-    })
-    it('does render the generic message', () => {
-      expect(component.text()).toContain(`${errorCount} error(s) have been identified. Please fix them and try submitting again.`)
+    it('does render pageErrorMessage', () => {
+      expect(component.text()).toContain('pageErrorMessage')
     })
   })
 })
