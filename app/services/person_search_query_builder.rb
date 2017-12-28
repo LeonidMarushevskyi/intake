@@ -5,11 +5,15 @@
 class PersonSearchQueryBuilder
   attr_reader :search_term
 
+  def self.format_search_term(term)
+    term
+      .downcase
+      .gsub(/(\d+\s*)[^a-z0-9 ]+/, '\1') # Remove special chars after digits
+      .gsub(/([a-z]+\s*)[^a-z0-9 ]+/, '\1 ') # Replace special chars after letters w/ space
+  end
+
   def initialize(search_term = '')
-    new_search = search_term.split(' ').map do |search_term_filter|
-      search_term_filter.gsub(/[^0-9A-Za-z]/, search_term_filter.to_i != 0 ? '' : ' ')
-    end
-    @search_term = new_search.join(' ')
+    @search_term = self.class.format_search_term(search_term)
   end
 
   def build
