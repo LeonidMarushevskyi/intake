@@ -43,6 +43,31 @@ describe PersonSearchQueryBuilder do
       fields: { '*': {} }
     }
   end
+
+  describe '.format_search_term' do
+    it 'removes special characters from ssn' do
+      expect(described_class.format_search_term('123-45-6789')).to eq('123456789')
+    end
+
+    it 'removes special characters from dates' do
+      expect(described_class.format_search_term('3/14/1592')).to eq('3141592')
+    end
+
+    it 'replaces special characters in words with spaces' do
+      expect(described_class.format_search_term('he who shall !@# be named'))
+        .to eq('he who shall   be named')
+    end
+
+    it 'returns search term in all lower case' do
+      expect(described_class.format_search_term('NO SCREAMING')).to eq('no screaming')
+    end
+
+    it 'returns search term without special characters' do
+      expect(described_class.format_search_term('L.V. El-Reve 26/12/2017 123-45-6789'))
+        .to eq('l v  el reve 26122017 123456789')
+    end
+  end
+
   describe '.build' do
     it 'builds a person search query' do
       search_term = 'this is my search term'
