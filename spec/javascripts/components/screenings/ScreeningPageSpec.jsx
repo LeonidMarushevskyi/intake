@@ -6,17 +6,18 @@ import {mount, shallow} from 'enzyme'
 
 describe('ScreeningPage', () => {
   const sdmPath = 'https://ca.sdmdata.org'
+  let isFeatureActiveSpy
 
   beforeEach(() => {
     spyOn(IntakeConfig, 'isFeatureInactive').and.returnValue(true)
-    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
+    isFeatureActiveSpy = spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(IntakeConfig, 'sdmPath').and.returnValue(sdmPath)
   })
 
   function renderScreeningPage({
     actions = {},
     editable = true,
-    loaded,
+    loaded = true,
     mode,
     params = {},
     participants = List(),
@@ -129,7 +130,6 @@ describe('ScreeningPage', () => {
       it('renders the error detail card', () => {
         const submitReferralErrors = ['a', 'b', 'c']
         const component = renderScreeningPage({
-          loaded: true,
           mode: 'edit',
           submitReferralErrors,
           hasApiValidationErrors: true,
@@ -143,7 +143,6 @@ describe('ScreeningPage', () => {
       it('does not render the error detail card', () => {
         const submitReferralErrors = []
         const component = renderScreeningPage({
-          loaded: true,
           mode: 'edit',
           submitReferralErrors,
           hasApiValidationErrors: false,
@@ -155,7 +154,7 @@ describe('ScreeningPage', () => {
     describe('in edit mode', () => {
       let component
       beforeEach(() => {
-        component = renderScreeningPage({loaded: true, mode: 'edit'})
+        component = renderScreeningPage({mode: 'edit'})
       })
 
       it('does not render home and edit links', () => {
@@ -177,7 +176,6 @@ describe('ScreeningPage', () => {
         const heading = renderScreeningPage({
           mode: 'show',
           referralId: '123456',
-          loaded: true,
         }).find('h1')
         expect(heading.text()).toEqual('Referral #123456')
       })
@@ -191,7 +189,6 @@ describe('ScreeningPage', () => {
       let component
       beforeEach(() => {
         component = renderScreeningPage({
-          loaded: true,
           mode: 'show',
           participants: fromJS([{id: 'id-1'}, {id: 'id-2'}]),
           params: {id: '1'},
@@ -258,7 +255,21 @@ describe('ScreeningPage', () => {
 
   describe('when screening is not loaded', () => {
     it('renders an empty div', () => {
+      isFeatureActiveSpy.and.returnValue(true)
       expect(renderScreeningPage({loaded: false}).html()).toEqual('<div></div>')
+    })
+  })
+
+  describe('in snapshot', () => {
+    it('does not render a sidebar', () => {
+      isFeatureActiveSpy.and.returnValue(true)
+      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(false)
+    })
+  })
+
+  describe('in hotline', () => {
+    it('renders a sidebar', () => {
+      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(true)
     })
   })
 })

@@ -18,6 +18,7 @@ import PersonSearchFormContainer from 'containers/screenings/PersonSearchFormCon
 import ErrorDetail from 'common/ErrorDetail'
 import ScreeningInformationFormContainer from 'containers/screenings/ScreeningInformationFormContainer'
 import ScreeningInformationShowContainer from 'containers/screenings/ScreeningInformationShowContainer'
+import ScreeningSideBar from 'screenings/ScreeningSideBar'
 import NarrativeFormContainer from 'containers/screenings/NarrativeFormContainer'
 import NarrativeShowContainer from 'containers/screenings/NarrativeShowContainer'
 import IncidentInformationFormContainer from 'containers/screenings/IncidentInformationFormContainer'
@@ -56,7 +57,7 @@ export class ScreeningPage extends React.Component {
     checkStaffPermission('add_sensitive_people')
   }
 
-  render() {
+  renderScreeningPage() {
     const {referralId, editable, mode, loaded, hasApiValidationErrors, submitReferralErrors} = this.props
     const releaseTwoInactive = IntakeConfig.isFeatureInactive('release_two')
     const releaseTwo = IntakeConfig.isFeatureActive('release_two')
@@ -167,6 +168,19 @@ export class ScreeningPage extends React.Component {
       )
     } else {
       return (<div />)
+    }
+  }
+
+  render() {
+    if (IntakeConfig.isFeatureActive('release_two')) {
+      return this.renderScreeningPage()
+    } else {
+      return (
+        <div className='row'>
+          <ScreeningSideBar />
+          <div className='col-md-10'>{this.renderScreeningPage()}</div>
+        </div>
+      )
     }
   }
 }
