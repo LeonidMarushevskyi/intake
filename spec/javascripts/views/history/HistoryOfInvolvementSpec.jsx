@@ -7,6 +7,11 @@ describe('HistoryOfInvolvement', () => {
     return shallow(<HistoryOfInvolvement historyIsEmpty={historyIsEmpty} />)
   }
 
+  it('renders a card anchor', () => {
+    const component = renderHistoryOfInvolvement({})
+    expect(component.find('.anchor').exists()).toBe(true)
+  })
+
   it('displays a card header', () => {
     const component = renderHistoryOfInvolvement({})
     const cardHead = component.find('.card-header')
@@ -21,7 +26,7 @@ describe('HistoryOfInvolvement', () => {
         notEmpty={<p>Goodbye!</p>}
       />
     )
-    expect(component.children('p').at(0).text()).toEqual('Hello!')
+    expect(component.find('p').text()).toEqual('Hello!')
     expect(component.text()).not.toContain('Goodbye!')
   })
 
@@ -33,7 +38,7 @@ describe('HistoryOfInvolvement', () => {
         notEmpty={<p>Goodbye!</p>}
       />
     )
-    expect(component.children('p').at(0).text()).toEqual('Goodbye!')
+    expect(component.find('p').text()).toEqual('Goodbye!')
     expect(component.text()).not.toContain('Hello!')
   })
 })

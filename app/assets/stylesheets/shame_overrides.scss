@@ -5,3 +5,10 @@ $react-wood-duck-warning-red: #ad2213;
   button.btn-warning { background-color: $react-wood-duck-warning-red; }
   button.btn.pull-right { margin-left: 15px; }
 }
+
+.anchor {
+  display: block;
+  height: 8rem;
+  margin-top: -8rem;
+  visibility: hidden;
+}

@@ -16,6 +16,11 @@ describe('RelationshipsCard', () => {
     })
   })
 
+  it('renders a card anchor', () => {
+    const component = renderRelationshipsCard({areRelationshipsEmpty: true})
+    expect(component.find('.anchor').exists()).toBe(true)
+  })
+
   it('renders a relationships component when there are relationships', () => {
     const component = renderRelationshipsCard({areRelationshipsEmpty: false})
     expect(component.find(RelationshipsContainer).exists()).toEqual(true)
