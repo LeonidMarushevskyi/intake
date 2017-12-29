@@ -19,8 +19,8 @@ class ApiError < StandardError
 
   def generate_base_message(exception_info)
     {
-      response_body: 'N/A',
-      http_code: 'N/A'
+      response_body: 'Internal Server Error',
+      http_code: 500
     }.merge! exception_info.extract!(:url, :method, :sent_attributes)
   end
 end
