@@ -55,14 +55,11 @@ feature 'home page' do
     end
 
     scenario 'hide list of screenings when release two is enabled' do
-      screening = FactoryGirl.create :screening, name: 'Test Screening', reference: 'ABCD'
       visit root_path
       expect(
         a_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       ).to_not have_been_made
       expect(page).to have_button 'Start Screening'
-      expect(page).not_to have_content screening.name
-      expect(page).not_to have_content screening.reference
       expect(page).not_to have_css 'table'
     end
   end
