@@ -13,6 +13,9 @@ feature 'Submit Screening' do
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(no_screenings.to_json, status: 200))
+    stub_empty_history_for_screening(existing_screening)
+    stub_empty_relationships_for_screening(existing_screening)
+    stub_screening_put_request_with_anything_and_return(existing_screening)
   end
 
   context 'when referral submit is activated' do
@@ -134,11 +137,7 @@ feature 'Submit Screening' do
         save_all_cards
         click_button 'Submit'
 
-        within '.page-error' do
-          expect(page).to_not have_content(
-            'error(s) have been identified. Please fix them and try submitting again.'
-          )
-        end
+        expect(page).to_not have_css('.page-error')
       end
 
       scenario 'does not display an error alert with details of errors' do

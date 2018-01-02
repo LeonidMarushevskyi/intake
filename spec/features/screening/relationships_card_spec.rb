@@ -11,7 +11,7 @@ feature 'Relationship card' do
         total: 1,
         hits: []
       }
-    }.to_json
+    }
   end
 
   context 'a screening without participants' do
