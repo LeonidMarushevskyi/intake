@@ -12,17 +12,25 @@ describe('PersonSearchForm', () => {
   })
 
   function renderPersonSearchForm({
-    onSelect = () => null,
-    isSelectable,
     canCreateNewPerson,
+    isSelectable,
     onLoadMoreResults,
+    onSelect = () => null,
+    total,
+    results,
   }) {
     return shallow(
       <PersonSearchForm
-        onSelect={onSelect}
-        isSelectable={isSelectable}
         canCreateNewPerson={canCreateNewPerson}
+        isSelectable={isSelectable}
         onLoadMoreResults={onLoadMoreResults}
+        onSelect={onSelect}
+        onChange={() => null}
+        onClear={() => null}
+        onSearch={() => null}
+        results={results}
+        searchTerm=''
+        total={total}
       />
     )
   }
@@ -71,24 +79,48 @@ describe('PersonSearchForm', () => {
     let onSelect
     beforeEach(() => {
       onSelect = jasmine.createSpy('onSelect')
-      autocompleter = renderPersonSearchForm({canCreateNewPerson: false})
-        .find('Autocompleter')
+      autocompleter = renderPersonSearchForm({
+        canCreateNewPerson: false,
+        onSelect,
+      }).find('Autocompleter')
     })
 
     it('does not render autocompleter with CreateUnknownPerson footer', () => {
       expect(autocompleter.props().footers).not.toContain(
-        <CreateUnknownPerson saveCallback={onSelect}/>
+        <CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>
       )
     })
   })
 
   it('renders autocompleter with ShowMoreResults footer', () => {
     const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
-    const autocompleter = renderPersonSearchForm({onLoadMoreResults})
-      .find('Autocompleter')
+    const autocompleter = renderPersonSearchForm({
+      results: [],
+      total: 2,
+      onLoadMoreResults,
+    }).find('Autocompleter')
     expect(autocompleter.props().footers).toContain(
       <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults} />
     )
+  })
+
+  describe('when the number of results equals the total number of results', () => {
+    let autocompleter
+    const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
+    beforeEach(() => {
+      const twoResults = [{}, {}]
+      autocompleter = renderPersonSearchForm({
+        total: 2,
+        results: twoResults,
+        onLoadMoreResults: onLoadMoreResults,
+      }).find('Autocompleter')
+    })
+
+    it('does not render autocompleter with ShowMoreResults footer', () => {
+      expect(autocompleter.props().footers).not.toContain(
+        <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults} />
+      )
+    })
   })
 
   it('renders the card header', () => {

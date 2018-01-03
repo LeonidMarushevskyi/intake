@@ -17,7 +17,12 @@ const PersonSearchForm = ({
   searchTerm,
   total,
 }) => {
-  let footers = [<ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults}/>]
+  let footers = []
+  if (results && total !== results.length) {
+    footers = [
+      <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults}/>,
+    ]
+  }
   if (canCreateNewPerson) {
     footers = [
       ...footers,
