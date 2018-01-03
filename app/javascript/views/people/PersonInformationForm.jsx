@@ -4,6 +4,7 @@ import Select from 'react-select'
 import InputField from 'common/InputField'
 import SelectField from 'common/SelectField'
 import MaskedInputField from 'common/MaskedInputField'
+import AlertErrorMessage from 'common/AlertErrorMessage'
 
 const PersonInformationForm = ({
   firstName,
@@ -17,6 +18,8 @@ const PersonInformationForm = ({
   roles,
   ssn,
   onChange,
+  onBlur,
+  alertErrorMessage,
 }) => (
   <div>
     {
@@ -27,6 +30,7 @@ const PersonInformationForm = ({
           </div>
         </div>
     }
+    { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
     <div className='row'>
       <div className='col-md-12'>
         <label htmlFor={`roles_${personId}`}>Role</label>
@@ -39,17 +43,21 @@ const PersonInformationForm = ({
           options={roleOptions}
           placeholder=''
           onChange={(values) => onChange('roles', values.map(({value}) => value))}
+          onBlur={() => onBlur('roles')}
         />
       </div>
     </div>
     <div className='row'>
       <InputField
+        errors={firstName.errors}
         gridClassName='col-md-4'
         id='first_name'
         label='First Name'
         maxLength='64'
-        value={firstName || ''}
+        value={firstName.value || ''}
         onChange={({target: {value}}) => onChange('first_name', value)}
+        onBlur={() => onBlur('first_name')}
+        required={firstName.required}
       />
       <InputField
         gridClassName='col-md-4'
@@ -60,12 +68,15 @@ const PersonInformationForm = ({
         onChange={({target: {value}}) => onChange('middle_name', value)}
       />
       <InputField
+        errors={lastName.errors}
         gridClassName='col-md-4'
         id='last_name'
         label='Last Name'
         maxLength='64'
-        value={lastName || ''}
+        value={lastName.value || ''}
         onChange={({target: {value}}) => onChange('last_name', value)}
+        onBlur={() => onBlur('last_name')}
+        required={lastName.required}
       />
     </div>
     <div className='row'>
@@ -92,12 +103,23 @@ const PersonInformationForm = ({
   </div>
 )
 PersonInformationForm.propTypes = {
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
+  alertErrorMessage: PropTypes.string,
+  errors: PropTypes.object,
+  firstName: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.arrayOf(PropTypes.string),
+    required: PropTypes.bool,
+  }),
+  lastName: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.arrayOf(PropTypes.string),
+    required: PropTypes.bool,
+  }),
   legacySourceDescription: PropTypes.string,
   middleName: PropTypes.string,
   nameSuffix: PropTypes.string,
   nameSuffixOptions: PropTypes.array,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,

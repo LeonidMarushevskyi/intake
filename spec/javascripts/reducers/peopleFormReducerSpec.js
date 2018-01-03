@@ -4,6 +4,7 @@ import {createPersonSuccess, createPersonFailure} from 'actions/personCardAction
 import {
   setField,
   touchField,
+  touchAllFields,
   addAddress,
   deleteAddress,
   addPhone,
@@ -87,9 +88,9 @@ describe('peopleFormReducer', () => {
             gender: {value: 'male'},
             languages: {value: ['English']},
             legacy_descriptor: {value: 'legacy descriptor one'},
-            first_name: {value: 'first name one'},
+            first_name: {value: 'first name one', touched: false},
             middle_name: {value: 'middle name one'},
-            last_name: {value: 'last name one'},
+            last_name: {value: 'last name one', touched: false},
             name_suffix: {value: 'name suffix one'},
             phone_numbers: [],
             ssn: {value: 'ssn one'},
@@ -124,9 +125,9 @@ describe('peopleFormReducer', () => {
             gender: {value: ''},
             languages: {value: []},
             legacy_descriptor: {value: 'legacy descriptor two'},
-            first_name: {value: 'first name two'},
+            first_name: {value: 'first name two', touched: false},
             middle_name: {value: 'middle name two'},
-            last_name: {value: 'last name two'},
+            last_name: {value: 'last name two', touched: false},
             name_suffix: {value: 'name suffix two'},
             phone_numbers: [{
               id: 'DEF456',
@@ -217,6 +218,32 @@ describe('peopleFormReducer', () => {
           },
         })
       )
+    })
+  })
+
+  describe('on touch all person form fields', () => {
+    it('returns people form with the fields updated to touched', () => {
+      const state = fromJS({
+        participant_one: {
+          first_name: {touched: false},
+          last_name: {touched: false},
+        },
+        participant_two: {
+          first_name: {touched: false},
+          last_name: {touched: false},
+        },
+      })
+      const action = touchAllFields('participant_one')
+      expect(peopleFormReducer(state, action)).toEqualImmutable(fromJS({
+        participant_one: {
+          first_name: {touched: true},
+          last_name: {touched: true},
+        },
+        participant_two: {
+          first_name: {touched: false},
+          last_name: {touched: false},
+        },
+      }))
     })
   })
 
@@ -345,9 +372,9 @@ describe('peopleFormReducer', () => {
           languages: {value: []},
           roles: {value: ['c']},
           legacy_descriptor: {value: 'legacy descriptor two'},
-          first_name: {value: 'first name two'},
+          first_name: {value: 'first name two', touched: false},
           middle_name: {value: 'middle name two'},
-          last_name: {value: 'last name two'},
+          last_name: {value: 'last name two', touched: false},
           name_suffix: {value: 'name suffix two'},
           ssn: {value: 'ssn two'},
           sensitive: {value: false},

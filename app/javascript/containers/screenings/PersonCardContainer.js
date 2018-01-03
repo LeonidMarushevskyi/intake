@@ -8,6 +8,7 @@ import {
 } from 'selectors/screening/personCardSelectors'
 import {savePerson, deletePerson} from 'actions/personCardActions'
 import {setPersonCardMode} from 'actions/screeningPageActions'
+import {touchAllFields} from 'actions/peopleFormActions'
 
 const mapStateToProps = (state, {personId}) => ({
   mode: getModeValueSelector(state, personId),
@@ -35,6 +36,7 @@ const mergeProps = (stateProps, {dispatch}, ownProps) => {
   const onEdit = () => dispatch(setPersonCardMode(personId, 'edit'))
   const onSave = () => {
     dispatch(savePerson(personWithEdits))
+    dispatch(touchAllFields(personId))
     dispatch(setPersonCardMode(personId, 'show'))
   }
 
