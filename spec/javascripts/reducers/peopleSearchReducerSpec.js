@@ -5,6 +5,8 @@ import {
   fetchSuccess,
   search,
   setSearchTerm,
+  loadMoreResultsSuccess,
+  loadMoreResultsFailure,
 } from 'actions/peopleSearchActions'
 import peopleSearchReducer from 'reducers/peopleSearchReducer'
 import {Map, fromJS} from 'immutable'
@@ -83,6 +85,37 @@ describe('peopleSearchReducer', () => {
           results: ['result_one', 'result_two', 'result_three'],
         })
       )
+    })
+  })
+  describe('on LOAD_MORE_RESULTS_COMPLETE', () => {
+    const initialState = fromJS({
+      searchTerm: 'newSearchTerm',
+      total: 4,
+      results: ['result_one', 'result_two'],
+    })
+    describe('on success', () => {
+      const action = loadMoreResultsSuccess({
+        hits: {
+          hits: ['result_three', 'result_four'],
+        },
+      })
+      it('updates search results with hits', () => {
+        expect(peopleSearchReducer(initialState, action)).toEqualImmutable(
+          fromJS({
+            searchTerm: 'newSearchTerm',
+            total: 4,
+            results: [
+              'result_one', 'result_two', 'result_three', 'result_four',
+            ],
+          })
+        )
+      })
+    })
+    describe('on failure', () => {
+      const action = loadMoreResultsFailure()
+      it('leaves state unchanged', () => {
+        expect(peopleSearchReducer(initialState, action)).toEqualImmutable(initialState)
+      })
     })
   })
 })

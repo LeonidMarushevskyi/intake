@@ -5,6 +5,7 @@ import {
   PEOPLE_SEARCH_FETCH,
   PEOPLE_SEARCH_FETCH_COMPLETE,
   SET_SEARCH_TERM,
+  LOAD_MORE_RESULTS_COMPLETE,
 } from 'actions/peopleSearchActions'
 
 const initialState = fromJS({
@@ -31,5 +32,12 @@ export default createReducer(initialState, {
   },
   [SET_SEARCH_TERM](state, {payload: {searchTerm}}) {
     return state.set('searchTerm', searchTerm)
+  },
+  [LOAD_MORE_RESULTS_COMPLETE](state, {payload: {results}, error}) {
+    if (error) {
+      return state
+    } else {
+      return state.update('results', (arr) => arr.concat(fromJS(results)))
+    }
   },
 })

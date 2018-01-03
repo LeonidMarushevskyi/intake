@@ -17,7 +17,7 @@ export const loadMoreResults = () => ({
 })
 export const loadMoreResultsFailure = (error) => ({
   type: LOAD_MORE_RESULTS_COMPLETE,
-  payload: error,
+  payload: {error},
   error: true,
 })
 export const loadMoreResultsSuccess = ({hits: {hits}}) => ({
