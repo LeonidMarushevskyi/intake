@@ -21,9 +21,14 @@ describe('PersonShowContainer', () => {
   })
   it('renders PersonInformationShow', () => {
     expect(component.find('PersonInformationShow').props()).toEqual({
+      alertErrorMessage: undefined,
       approximateAge: undefined,
       dateOfBirth: '01/15/2014',
-      name: 'John Q Public',
+      name: {
+        value: 'John Q Public',
+        errors: [],
+        required: false,
+      },
       ethnicity: 'Yes - Mexican',
       gender: 'Female',
       languages: 'Javascript (Primary), Ruby',
