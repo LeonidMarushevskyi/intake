@@ -45,6 +45,8 @@ feature 'Create Screening' do
           'The Child Welfare History Snapshot allows you to search CWS/CMS for people and their'
         )
       end
+
+      expect(page).not_to have_css('.side-bar')
     end
   end
 

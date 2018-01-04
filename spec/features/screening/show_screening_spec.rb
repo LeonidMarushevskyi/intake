@@ -44,6 +44,56 @@ feature 'Show Screening' do
     )
   end
 
+  scenario 'showing screening side bar' do
+    stub_county_agencies('c41')
+    stub_request(
+      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+    ).and_return(json_body(existing_screening.to_json))
+    stub_empty_relationships_for_screening(existing_screening)
+    stub_empty_history_for_screening(existing_screening)
+
+    visit screening_path(id: existing_screening.id)
+
+    within '.side-bar' do
+      expect(page.find('a.link', text: 'Screening Information')[:href])
+        .to include('#screening-information-card-anchor')
+      expect(page.find('a.link', text: 'Narrative')[:href])
+        .to include('#narrative-card-anchor')
+      expect(page.find('a.link', text: 'Incident Information')[:href])
+        .to include('#incident-information-card-anchor')
+      expect(page.find('a.link', text: 'Allegations')[:href])
+        .to include('#allegations-card-anchor')
+      expect(page.find('a.link', text: 'Relationships')[:href])
+        .to include('#relationships-card-anchor')
+      expect(page.find('a.link', text: 'Worker Safety')[:href])
+        .to include('#worker-safety-card-anchor')
+      expect(page.find('a.link', text: 'History')[:href])
+        .to include('#history-card-anchor')
+      expect(page.find('a.link', text: 'Cross Report')[:href])
+        .to include('#cross-report-card-anchor')
+      expect(page.find('a.link', text: 'Decision')[:href])
+        .to include('#decision-card-anchor')
+    end
+
+    within '.col-md-10' do
+      expect(page).to have_css('span.anchor#screening-information-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#narrative-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#incident-information-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#allegations-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#relationships-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#worker-safety-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#history-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#cross-report-card-anchor', visible: false)
+      expect(page).to have_css('span.anchor#decision-card-anchor', visible: false)
+    end
+
+    expect(page).to have_selector('#decision-card', visible: false)
+    click_link 'Decision'
+    expect(page).to have_selector('#decision-card', visible: true)
+    click_link 'Screening Information'
+    expect(page).to have_selector('#screening-information-card', visible: true)
+  end
+
   scenario 'showing existing screening' do
     stub_county_agencies('c41')
     stub_request(
