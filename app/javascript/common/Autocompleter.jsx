@@ -36,7 +36,7 @@ export default class Autocompleter extends React.Component {
   }
 
   renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm, results, footers} = this.props
+    const {total, searchTerm, results, footer} = this.props
     let newChildren = null
     if (children) {
       const items = children.props.items.filter((item) => !item.emptyResult)
@@ -50,7 +50,7 @@ export default class Autocompleter extends React.Component {
           searchTerm={searchTerm}
         />
         {newChildren}
-        {footers}
+        {footer}
       </div>
     )
   }
@@ -86,7 +86,7 @@ export default class Autocompleter extends React.Component {
 }
 
 Autocompleter.propTypes = {
-  footers: PropTypes.arrayOf(PropTypes.element),
+  footer: PropTypes.element,
   id: PropTypes.string,
   isSelectable: PropTypes.func,
   onChange: PropTypes.func,
@@ -99,7 +99,7 @@ Autocompleter.propTypes = {
 }
 
 Autocompleter.defaultProps = {
-  footers: [],
+  footer: null,
   isSelectable: () => true,
 }
 

@@ -1,8 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
-import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
-import ShowMoreResults from 'common/ShowMoreResults'
+import AutocompleterFooter from 'common/AutocompleterFooter'
 import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
@@ -56,71 +55,26 @@ describe('PersonSearchForm', () => {
     expect(autocompleter.props().onSelect).toEqual(onSelect)
   })
 
-  describe('when creating a new person is allowed', () => {
-    let onSelect
-    let autocompleter
-    beforeEach(() => {
-      onSelect = jasmine.createSpy('onSelect')
-      autocompleter = renderPersonSearchForm({
-        canCreateNewPerson: true,
-        onSelect,
-      }).find('Autocompleter')
-    })
-
-    it('renders autocompleter with CreateUnknownPerson footer', () => {
-      expect(autocompleter.props().footers).toContain(
-        <CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>
-      )
-    })
-  })
-
-  describe('when creating a new person is NOT allowed', () => {
-    let autocompleter
-    let onSelect
-    beforeEach(() => {
-      onSelect = jasmine.createSpy('onSelect')
-      autocompleter = renderPersonSearchForm({
-        canCreateNewPerson: false,
-        onSelect,
-      }).find('Autocompleter')
-    })
-
-    it('does not render autocompleter with CreateUnknownPerson footer', () => {
-      expect(autocompleter.props().footers).not.toContain(
-        <CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>
-      )
-    })
-  })
-
-  it('renders autocompleter with ShowMoreResults footer', () => {
+  it('renders the autocompleter footer', () => {
     const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
+    const onSelect = jasmine.createSpy('onSelect')
+    const results = []
+    const total = 2
     const autocompleter = renderPersonSearchForm({
-      results: [],
-      total: 2,
+      canCreateNewPerson: true,
+      results,
+      total,
+      onSelect,
       onLoadMoreResults,
     }).find('Autocompleter')
-    expect(autocompleter.props().footers).toContain(
-      <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults} />
+    expect(autocompleter.props().footer).toEqual(
+      <AutocompleterFooter
+        canCreateNewPerson={true}
+        canLoadMoreResults={true}
+        onLoadMoreResults={onLoadMoreResults}
+        onCreateNewPerson={onSelect}
+      />
     )
-  })
-
-  describe('when the number of results equals the total number of results', () => {
-    let autocompleter
-    const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
-    beforeEach(() => {
-      const twoResults = [{}, {}]
-      autocompleter = renderPersonSearchForm({
-        total: 2,
-        results: twoResults,
-        onLoadMoreResults: onLoadMoreResults,
-      }).find('Autocompleter')
-    })
-
-    it('does not render autocompleter with ShowMoreResults footer', () => {
-      expect(autocompleter.props().footers).not.toContain(
-        <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults} />
-      )
-    })
   })
 
   it('renders the card header', () => {

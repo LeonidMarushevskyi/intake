@@ -12,7 +12,7 @@ describe('<Autocompleter />', () => {
     onChange = () => null,
     searchTerm = '',
     results = [],
-    footers = null,
+    footer = null,
     total = 0,
   }) {
     return shallow(
@@ -24,7 +24,7 @@ describe('<Autocompleter />', () => {
         total={total}
         results={results}
         searchTerm={searchTerm}
-        footers={footers}
+        footer={footer}
         onSearch={onSearch}
       />
     )
@@ -125,11 +125,11 @@ describe('<Autocompleter />', () => {
       expect(suggestionHeader.html()).toContain('Showing 1-5 of 10 results for &quot;Simpson&quot;')
     })
 
-    it('renders the suggestions footers', () => {
-      const footers = [<p key='footer-1' className='footer-1'>Footer #1</p>]
-      const footer = renderAutocompleter({searchTerm: 'Te', footers})
+    it('renders the footer', () => {
+      const footer = <p className='footer-1'>Footer #1</p>
+      const component = renderAutocompleter({searchTerm: 'Te', footer})
         .dive('.footer-1')
-      expect(footer.html()).toContain('Footer #1')
+      expect(component.html()).toContain('Footer #1')
     })
   })
 })

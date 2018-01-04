@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Autocompleter from 'common/Autocompleter'
-import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
-import ShowMoreResults from 'common/ShowMoreResults'
+import AutocompleterFooter from 'common/AutocompleterFooter'
 import * as IntakeConfig from 'common/config'
 
 const PersonSearchForm = ({
@@ -17,18 +16,14 @@ const PersonSearchForm = ({
   searchTerm,
   total,
 }) => {
-  let footers = []
-  if (results && total !== results.length) {
-    footers = [
-      <ShowMoreResults key='show-more-results' onSelect={onLoadMoreResults}/>,
-    ]
-  }
-  if (canCreateNewPerson) {
-    footers = [
-      ...footers,
-      <CreateUnknownPerson key='create-unknown-person' saveCallback={onSelect}/>,
-    ]
-  }
+  const footer = (
+    <AutocompleterFooter
+      canCreateNewPerson={canCreateNewPerson}
+      canLoadMoreResults={results && total !== results.length}
+      onLoadMoreResults={onLoadMoreResults}
+      onCreateNewPerson={onSelect}
+    />
+  )
   return (
     <div className='card edit double-gap-top' id='search-card'>
       <div className='card-header'>
@@ -49,7 +44,7 @@ const PersonSearchForm = ({
               id='screening_participants'
               onSelect={onSelect}
               isSelectable={isSelectable}
-              footers={footers}
+              footer={footer}
               onClear={onClear}
               onSearch={onSearch}
               onChange={onChange}
