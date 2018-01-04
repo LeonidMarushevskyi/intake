@@ -14,7 +14,7 @@ services:
       FERB_API_URL: "https://ferbapi.preint.cwds.io"
       DORA_API_URL: "https://dora.preint.cwds.io"
       NODE_ENV: development
-      AUTHENTICATION_URL: "https://perry.preint.cwds.io/perry"
+      AUTHENTICATION_URL: ${AUTHENTICATION_URL:-https://web.preint.cwds.io/perry}
       AUTHENTICATION: ${AUTHENTICATION:-true}
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
@@ -37,7 +37,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      AUTHENTICATION_URL: 'https://perry.preint.cwds.io/perry'
+      AUTHENTICATION_URL: ${AUTHENTICATION_URL:-https://web.preint.cwds.io/perry}
       AUTHENTICATION: ${AUTHENTICATION:-true}
       DORA_URL: 'https://dora.preint.cwds.io/'
       FERB_URL: 'https://ferbapi.preint.cwds.io'
