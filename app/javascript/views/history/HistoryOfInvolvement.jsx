@@ -7,7 +7,7 @@ class HistoryOfInvolvement extends React.Component {
     return (
       <div>
         <span className='anchor' id='history-card-anchor'/>
-        <div className='card show double-gap-top' id='history-card'>
+        <div className='card show double-gap-bottom' id='history-card'>
           <div className='card-header'>
             <span>History</span>
           </div>

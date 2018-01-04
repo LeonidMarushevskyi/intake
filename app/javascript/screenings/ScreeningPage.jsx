@@ -71,7 +71,7 @@ export class ScreeningPage extends React.Component {
           }
           {
             releaseTwo &&
-              <div className='card edit double-gap-top' id='snapshot-card'>
+              <div className='card edit double-gap-bottom' id='snapshot-card'>
                 <div className='card-body'>
                   <div className='row'>
                     <div className='col-md-12'>
