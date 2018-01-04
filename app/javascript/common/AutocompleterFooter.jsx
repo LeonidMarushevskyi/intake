@@ -5,8 +5,8 @@ import ShowMoreResults from 'common/ShowMoreResults'
 
 const AutocompleterFooter = ({canCreateNewPerson, canLoadMoreResults, onLoadMoreResults, onCreateNewPerson}) => (
   <div>
-    { canLoadMoreResults && <ShowMoreResults onSelect={onLoadMoreResults}/> }
-    { canCreateNewPerson && <CreateUnknownPerson saveCallback={onCreateNewPerson} /> }
+    { canLoadMoreResults && <ShowMoreResults onClick={onLoadMoreResults}/> }
+    { canCreateNewPerson && <CreateUnknownPerson onClick={onCreateNewPerson} /> }
   </div>
 )
 

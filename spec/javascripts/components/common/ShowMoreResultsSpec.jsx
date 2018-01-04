@@ -4,12 +4,12 @@ import {shallow} from 'enzyme'
 
 describe('ShowMoreResults', () => {
   let button
-  let onSelect
+  let onClick
 
   beforeEach(() => {
-    onSelect = jasmine.createSpy('onSelect')
+    onClick = jasmine.createSpy('onClick')
     button = shallow(
-      <ShowMoreResults onSelect={onSelect} />
+      <ShowMoreResults onClick={onClick} />
     ).find('button')
   })
 
@@ -17,8 +17,8 @@ describe('ShowMoreResults', () => {
     expect(button.text()).toContain('Show more results')
   })
 
-  it('calls onSelect when the button is clicked', () => {
+  it('calls onClick when the button is clicked', () => {
     button.simulate('click')
-    expect(onSelect).toHaveBeenCalled()
+    expect(onClick).toHaveBeenCalled()
   })
 })

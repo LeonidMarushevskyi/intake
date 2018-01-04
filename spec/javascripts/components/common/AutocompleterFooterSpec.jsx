@@ -38,7 +38,7 @@ describe('<AutocompleterFooter />', () => {
       onLoadMoreResults,
     }).find('ShowMoreResults')
     expect(component.exists()).toEqual(true)
-    expect(component.props().onSelect).toEqual(onLoadMoreResults)
+    expect(component.props().onClick).toEqual(onLoadMoreResults)
   })
 
   it('renders CreateUnknownPerson when can create new person', () => {
@@ -48,6 +48,6 @@ describe('<AutocompleterFooter />', () => {
       onCreateNewPerson,
     }).find('CreateUnknownPerson')
     expect(component.exists()).toEqual(true)
-    expect(component.props().saveCallback).toEqual(onCreateNewPerson)
+    expect(component.props().onClick).toEqual(onCreateNewPerson)
   })
 })

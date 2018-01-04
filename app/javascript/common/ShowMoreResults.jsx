@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const ShowMoreResults = ({onSelect}) => (
+const ShowMoreResults = ({onClick}) => (
   <button
     className='btn btn-default btn-block gap-bottom'
-    onClick={onSelect}
+    onClick={onClick}
   >
     Show more results
   </button>
 )
 ShowMoreResults.propTypes = {
-  onSelect: PropTypes.func,
+  onClick: PropTypes.func,
 }
 export default ShowMoreResults

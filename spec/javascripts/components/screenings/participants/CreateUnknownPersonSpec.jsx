@@ -4,13 +4,13 @@ import {shallow} from 'enzyme'
 
 describe('CreateUnknownPerson', () => {
   let component
-  let saveCallback
+  let onClick
 
   beforeEach(() => {
-    saveCallback = jasmine.createSpy('saveCallback')
+    onClick = jasmine.createSpy('onClick')
     component = shallow(
       <CreateUnknownPerson
-        saveCallback={saveCallback}
+        onClick={onClick}
       />
     )
   })
@@ -19,10 +19,10 @@ describe('CreateUnknownPerson', () => {
     expect(component.find('button').text()).toContain('Create a new person')
   })
 
-  it('calls saveCallback when the button is clicked', () => {
+  it('calls onClick when the button is clicked', () => {
     const button = component.find('button')
     button.simulate('click')
-    expect(saveCallback).toHaveBeenCalledWith({id: null})
-    expect(saveCallback.calls.count()).toEqual(1)
+    expect(onClick).toHaveBeenCalledWith({id: null})
+    expect(onClick.calls.count()).toEqual(1)
   })
 })
