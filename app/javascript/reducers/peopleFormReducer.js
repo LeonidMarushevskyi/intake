@@ -102,7 +102,7 @@ const buildPerson = ({
   name_suffix: {value: name_suffix},
   phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
-  ssn: {value: ssn},
+  ssn: {value: ssn, touched: false},
   sensitive: {value: sensitive},
   sealed: {value: sealed},
   races: buildRaces(races),
@@ -132,6 +132,7 @@ export default createReducer(Map(), {
     const fieldsWithTouch = [
       'first_name',
       'last_name',
+      'ssn',
     ]
     return fieldsWithTouch.reduce((newState, field) => newState.setIn([personId, field, 'touched'], true), state)
   },
