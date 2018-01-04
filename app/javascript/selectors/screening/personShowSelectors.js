@@ -1,4 +1,4 @@
-import {fromJS, List, Map} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 import GENDERS from 'enums/Genders'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
 import nameFormatter from 'utils/nameFormatter'
@@ -7,19 +7,6 @@ import {dateFormatter} from 'utils/dateFormatter'
 import {flagPrimaryLanguage} from 'common/LanguageInfo'
 import US_STATE from 'enums/USState'
 import {isRequiredIfCreate, combineCompact} from 'utils/validator'
-
-export const getErrorsSelector = (state, personId) => {
-  const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
-  const lastName = person.get('last_name')
-  const firstName = person.get('first_name')
-  const roles = person.get('roles', List())
-  return fromJS({
-    name: combineCompact(
-      isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim') || roles.includes('Collateral'))),
-      isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim') || roles.includes('Collateral')))
-    ),
-  })
-}
 
 export const getNamesRequiredSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
@@ -48,8 +35,62 @@ export const getPersonAlertErrorMessageSelector = (state, personId) => {
   return undefined
 }
 
+const VALID_SSN_LENGTH = 9
+const SSN_MIDDLE_SECTION_START = 3
+const SSN_MIDDLE_SECTION_END = 5
+
+export const getErrorsSelector = (state, personId) => {
+  const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
+  const ssn = person.get('ssn') || ''
+  const ssnWithoutHyphens = ssn.replace(/-|_/g, '')
+  const lastName = person.get('last_name')
+  const firstName = person.get('first_name')
+  const roles = person.get('roles', List())
+  return fromJS({
+    name: combineCompact(
+      isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim') || roles.includes('Collateral'))),
+      isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim') || roles.includes('Collateral')))
+    ),
+    ssn: combineCompact(
+      () => {
+        if (ssnWithoutHyphens.length > 0 && ssnWithoutHyphens.length < VALID_SSN_LENGTH) {
+          return 'Social security number must be 9 digits long.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (ssnWithoutHyphens.startsWith('9')) {
+          return 'Social security number cannot begin with 9.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (ssnWithoutHyphens.startsWith('666')) {
+          return 'Social security number cannot begin with 666.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (
+          ssnWithoutHyphens.startsWith('000') ||
+          ssnWithoutHyphens.endsWith('0000') ||
+          ssnWithoutHyphens.substring(SSN_MIDDLE_SECTION_START, SSN_MIDDLE_SECTION_END) === '00'
+        ) {
+          return 'Social security number cannot contain all 0s in a group.'
+        } else {
+          return undefined
+        }
+      }
+    ),
+  })
+}
+
 export const getFormattedPersonInformationSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
+  const errors = getErrorsSelector(state, personId)
   const legacyDescriptor = person.get('legacy_descriptor')
   const showApproximateAge = !person.get('date_of_birth') && person.get('approximate_age')
   const approximateAge = showApproximateAge ?
@@ -63,7 +104,7 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
     return `${race}${raceDetailText}`
   }).join(', ')
   const {hispanic_latino_origin, ethnicity_detail} = person.toJS().ethnicity || {}
-  return Map({
+  return fromJS({
     approximateAge: approximateAge,
     dateOfBirth: dateOfBirth,
     ethnicity: hispanic_latino_origin && `${hispanic_latino_origin}${(ethnicity_detail.length > 0 && ` - ${ethnicity_detail}`) || ''}`,
@@ -72,12 +113,12 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
     legacySource: legacyDescriptor && legacySourceFormatter(legacyDescriptor.toJS()),
     name: Map({
       value: nameFormatter(person.toJS()),
-      errors: getErrorsSelector(state, personId).get('name'),
+      errors: errors.get('name'),
       required: getNamesRequiredSelector(state, personId),
     }),
     races: races,
     roles: person.get('roles', List()),
-    ssn: person.get('ssn') && ssnFormatter(person.get('ssn')),
+    ssn: {value: ssnFormatter(person.get('ssn')), errors: errors.get('ssn')},
     alertErrorMessage: getPersonAlertErrorMessageSelector(state, personId),
   })
 }

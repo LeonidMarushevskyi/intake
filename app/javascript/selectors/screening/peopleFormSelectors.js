@@ -7,6 +7,9 @@ import {fromJS, List, Map} from 'immutable'
 import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
 import {isRequiredIfCreate, combineCompact} from 'utils/validator'
 
+const VALID_SSN_LENGTH = 9
+const SSN_MIDDLE_SECTION_START = 3
+const SSN_MIDDLE_SECTION_END = 5
 const formatEnums = (enumObject) =>
   Object.keys(enumObject).map((item) => ({label: enumObject[item], value: item}))
 
@@ -19,12 +22,49 @@ import {RACE_DETAILS} from 'enums/Races'
 import {ETHNICITY_DETAILS} from 'enums/Ethnicity'
 
 export const getErrorsSelector = (state, personId) => {
-  const firstName = state.getIn(['peopleForm', personId, 'first_name', 'value'])
-  const lastName = state.getIn(['peopleForm', personId, 'last_name', 'value'])
-  const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
+  const person = state.getIn(['peopleForm', personId]) || Map()
+  const firstName = person.getIn(['first_name', 'value'])
+  const lastName = person.getIn(['last_name', 'value'])
+  const roles = person.getIn(['roles', 'value'], List())
+  const ssn = person.getIn(['ssn', 'value']) || ''
+  const ssnWithoutHyphens = ssn.replace(/-|_/g, '')
   return fromJS({
     first_name: combineCompact(isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim') || roles.includes('Collateral')))),
     last_name: combineCompact(isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim') || roles.includes('Collateral')))),
+    ssn: combineCompact(
+      () => {
+        if (ssnWithoutHyphens.length > 0 && ssnWithoutHyphens.length < VALID_SSN_LENGTH) {
+          return 'Social security number must be 9 digits long.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (ssnWithoutHyphens.startsWith('9')) {
+          return 'Social security number cannot begin with 9.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (ssnWithoutHyphens.startsWith('666')) {
+          return 'Social security number cannot begin with 666.'
+        } else {
+          return undefined
+        }
+      },
+      () => {
+        if (
+          ssnWithoutHyphens.startsWith('000') ||
+          ssnWithoutHyphens.endsWith('0000') ||
+          ssnWithoutHyphens.substring(SSN_MIDDLE_SECTION_START, SSN_MIDDLE_SECTION_END) === '00'
+        ) {
+          return 'Social security number cannot contain all 0s in a group.'
+        } else {
+          return undefined
+        }
+      }
+    ),
   })
 }
 
@@ -73,6 +113,13 @@ export const getLastNameSelector = (state, personId) => {
     required: required,
   })
 }
+
+export const getSocialSecurityNumberSelector = (state, personId) => (
+  fromJS({
+    value: state.getIn(['peopleForm', personId, 'ssn', 'value']) || '',
+    errors: getVisibleErrorsSelector(state, personId).get('ssn'),
+  })
+)
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,

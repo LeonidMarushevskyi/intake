@@ -24,12 +24,13 @@ describe('personShowSelectors', () => {
         languages: undefined,
         dateOfBirth: undefined,
         approximateAge: undefined,
-        ssn: undefined,
+        ssn: {value: '', errors: []},
         races: undefined,
         ethnicity: undefined,
         alertErrorMessage: undefined,
       }))
     })
+
     it('includes the legacy source for the given person', () => {
       const participants = [
         {id: '1', legacy_descriptor: {legacy_ui_id: '1-4', legacy_table_description: 'Client'}},
@@ -38,6 +39,7 @@ describe('personShowSelectors', () => {
       expect(getFormattedPersonInformationSelector(state, '1').get('legacySource'))
         .toEqual('Client ID 1-4 in CWS-CMS')
     })
+
     it('includes the display name for the given person', () => {
       const participants = [{id: '1', first_name: 'John', middle_name: 'Q', last_name: 'Public'}]
       const state = fromJS({participants})
@@ -49,28 +51,33 @@ describe('personShowSelectors', () => {
         })
         )
     })
+
     it('includes the gender for the given person', () => {
       const participants = [{id: '1', gender: 'female'}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('gender')).toEqual('Female')
     })
+
     it('includes the roles for the given person as is', () => {
       const participants = [{id: '1', roles: ['super-hero', 'anti-hero']}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('roles'))
         .toEqualImmutable(fromJS(['super-hero', 'anti-hero']))
     })
+
     it('includes the formatted languages for the given person', () => {
       const participants = [{id: '1', languages: ['Javascript', 'Ruby']}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('languages'))
         .toEqual('Javascript (Primary), Ruby')
     })
+
     it('includes the formatted date of birth for the given person', () => {
       const participants = [{id: '1', date_of_birth: '2014-01-15'}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('dateOfBirth')).toEqual('01/15/2014')
     })
+
     it('does not include approximate age if person has a date of birth', () => {
       const participants = [{
         id: '1',
@@ -80,16 +87,23 @@ describe('personShowSelectors', () => {
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('approximateAge')).toEqual(undefined)
     })
+
     it('includes the approximate age for the given person', () => {
       const participants = [{id: '1', approximate_age: '9', approximate_age_units: 'dog years'}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('approximateAge')).toEqual('9 dog years')
     })
-    it('includes the formatted social security number for the given person', () => {
+
+    it('includes the value and errors for the social security number for the given person', () => {
       const participants = [{id: '1', ssn: '123456789'}]
       const state = fromJS({participants})
-      expect(getFormattedPersonInformationSelector(state, '1').get('ssn')).toEqual('123-45-6789')
+      expect(getFormattedPersonInformationSelector(state, '1').get('ssn'))
+        .toEqualImmutable(fromJS({
+          value: '123-45-6789',
+          errors: [],
+        }))
     })
+
     it('includes the formatted races for the given person', () => {
       const participants = [
         {id: '1', races: [
@@ -274,6 +288,104 @@ describe('personShowSelectors', () => {
     })
   })
   describe('getErrorsSelector', () => {
+    describe('social security number', () => {
+      it('must be 9 digits long', () => {
+        const people = [{id: 'one', ssn: '88756123'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number must be 9 digits long.']))
+      })
+
+      it('does not count hyphens as part of the number length', () => {
+        const people = [{id: 'one', ssn: '887-56-123'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number must be 9 digits long.']))
+      })
+
+      it('does not count underscores as part of the number length', () => {
+        // our masked input adds underscores as part of the placeholder
+        const people = [{id: 'one', ssn: '8__-__-____'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number must be 9 digits long.']))
+      })
+
+      it('cannot begin with 9.', () => {
+        const people = [{id: 'one', ssn: '987561234'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot begin with 9.']))
+      })
+
+      it('cannot begin with 666.', () => {
+        const people = [{id: 'one', ssn: '666561234'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot begin with 666.']))
+      })
+
+      it('cannot contain all 0s in the first group', () => {
+        const people = [{id: 'one', ssn: '000-56-1234'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot contain all 0s in a group.']))
+      })
+
+      it('cannot contain all 0s in second group', () => {
+        const people = [{id: 'one', ssn: '768-00-1234'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot contain all 0s in a group.']))
+      })
+
+      it('cannot contain all 0s in third group', () => {
+        const people = [{id: 'one', ssn: '768-56-0000'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot contain all 0s in a group.']))
+      })
+
+      it('only shows one error message related to all 0s in a group', () => {
+        const people = [{id: 'one', ssn: '000-00-0000'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List(['Social security number cannot contain all 0s in a group.']))
+      })
+
+      it('can have multiple errors at the same time', () => {
+        const people = [{id: 'one', ssn: '666-00-'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List([
+            'Social security number must be 9 digits long.',
+            'Social security number cannot begin with 666.',
+            'Social security number cannot contain all 0s in a group.',
+          ]))
+      })
+
+      it('does not return an error message for a valid number', () => {
+        const people = [{id: 'one', ssn: '767561234'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List())
+      })
+
+      it('does not return an error message for a valid number that contains hyphens', () => {
+        const people = [{id: 'one', ssn: '323-56-4321'}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List())
+      })
+
+      it('does not return an error message if the current value is null', () => {
+        const people = [{id: 'one', ssn: null}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, 'one').get('ssn'))
+          .toEqualImmutable(List())
+      })
+    })
+
     it('returns last name error if last name is empty and role includes Victim', () => {
       const people = [{id: '1', roles: ['Victim', 'other role'],
         first_name: 'John'}]
