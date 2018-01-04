@@ -23,7 +23,7 @@ export const getScreeningSubmissionErrorsSelector = createSelector(
 )
 export const getSystemErrorIncidentIdsSelector = createSelector(
   getSystemErrorsSelector,
-  (systemErrors) => (systemErrors.map((error) => (error.get('incident_id'))))
+  (systemErrors) => (systemErrors.map((error) => (error.get('incident_id'))).filter((item) => item))
 )
 export const getPageErrorMessageValueSelector = createSelector(
   getErrors,

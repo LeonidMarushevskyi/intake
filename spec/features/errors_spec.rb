@@ -81,8 +81,8 @@ feature 'error pages' do
 
   context 'server has error' do
     scenario 'renders error banner' do
-      expect(ScreeningRepository).to receive(:find).and_raise(StandardError)
-      visit '/screenings/2'
+      expect(ScreeningRepository).to receive(:search).and_raise(StandardError)
+      visit root_path
 
       expect(page).to have_text(
         /Something went wrong, sorry! Please try your last action again. \(Ref #:.*\)/
