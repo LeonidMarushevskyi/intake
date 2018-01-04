@@ -36,7 +36,7 @@ describe('PersonShowContainer', () => {
       personId: '1',
       races: 'White - Romanian, Asian - Chinese',
       roles: ['super-hero', 'anti-hero'],
-      ssn: '123-45-6789',
+      ssn: {value: '123-45-6789', errors: []},
     })
   })
 })

@@ -2,11 +2,13 @@ import {connect} from 'react-redux'
 import PersonInformationForm from 'views/people/PersonInformationForm'
 import NAME_SUFFIXES from 'enums/NameSuffixes'
 import {Map} from 'immutable'
-import {getPeopleSelector,
+import {
+  getPeopleSelector,
   getFilteredPersonRolesSelector,
   getFirstNameSelector,
   getLastNameSelector,
   getPersonAlertErrorMessageSelector,
+  getSocialSecurityNumberSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import {setField, touchField} from 'actions/peopleFormActions'
 import legacySourceFormatter from 'utils/legacySourceFormatter'
@@ -27,7 +29,7 @@ const mapStateToProps = (state, {personId}) => {
     middleName: person.getIn(['middle_name', 'value']),
     lastName: getLastNameSelector(state, personId).toJS(),
     nameSuffix: person.getIn(['name_suffix', 'value']),
-    ssn: person.getIn(['ssn', 'value']),
+    ssn: getSocialSecurityNumberSelector(state, personId).toJS(),
     nameSuffixOptions,
     roleOptions: getFilteredPersonRolesSelector(state, personId).toJS(),
   }
@@ -46,8 +48,8 @@ const mergeProps = ({
   nameSuffixOptions,
   roleOptions,
 }, {dispatch}) => {
-  const onChange = (field, value) => dispatch(setField(personId, [field], value))
   const onBlur = (field) => dispatch(touchField(personId, [field]))
+  const onChange = (field, value) => dispatch(setField(personId, [field], value))
   return {
     alertErrorMessage,
     personId,
@@ -60,8 +62,8 @@ const mergeProps = ({
     ssn,
     nameSuffixOptions,
     roleOptions,
-    onChange,
     onBlur,
+    onChange,
   }
 }
 export default connect(mapStateToProps, null, mergeProps)(PersonInformationForm)
