@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {getPageHeaderDetailSelector} from 'selectors/pageLayoutSelectors'
 import {
   getHasGenericErrorValueSelector,
-  getTotalScreeningSubmissionErrorValueSelector,
+  getPageErrorMessageValueSelector,
 } from 'selectors/errorsSelectors'
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
 import {createScreening, submitScreening} from 'actions/screeningActions'
@@ -44,13 +44,13 @@ export class PageLayout extends React.Component {
   }
 
   render() {
-    const {errorCount, hasError} = this.props
+    const {hasError, pageErrorMessage} = this.props
     const {pageHeaderTitle} = this.props.pageHeaderDetails
 
     return (
       <div>
         <PageHeader pageTitle={pageHeaderTitle} button={this.pageHeaderButton()}>
-          {(hasError) && <PageError errorCount={errorCount} />}
+          {(hasError) && <PageError pageErrorMessage={pageErrorMessage} />}
         </PageHeader>
         <div className='container'>
           {this.props.children}
@@ -63,8 +63,8 @@ export class PageLayout extends React.Component {
 PageLayout.propTypes = {
   actions: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
-  errorCount: PropTypes.number,
   hasError: PropTypes.bool,
+  pageErrorMessage: PropTypes.string,
   pageHeaderDetails: PropTypes.object.isRequired,
   params: PropTypes.object,
 }
@@ -73,8 +73,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-  errorCount: getTotalScreeningSubmissionErrorValueSelector(state),
-  hasError: getHasGenericErrorValueSelector(state) || Boolean(getTotalScreeningSubmissionErrorValueSelector(state)),
+  hasError: getHasGenericErrorValueSelector(state),
+  pageErrorMessage: getPageErrorMessageValueSelector(state),
   pageHeaderDetails: getPageHeaderDetailSelector(ownProps.location.pathname, state),
 })
 

@@ -13,6 +13,9 @@ feature 'Submit Screening' do
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(no_screenings.to_json, status: 200))
+    stub_empty_history_for_screening(existing_screening)
+    stub_empty_relationships_for_screening(existing_screening)
+    stub_screening_put_request_with_anything_and_return(existing_screening)
   end
 
   context 'when referral submit is activated' do
@@ -134,11 +137,7 @@ feature 'Submit Screening' do
         save_all_cards
         click_button 'Submit'
 
-        within '.page-error' do
-          expect(page).to_not have_content(
-            'error(s) have been identified. Please fix them and try submitting again.'
-          )
-        end
+        expect(page).to_not have_css('.page-error')
       end
 
       scenario 'does not display an error alert with details of errors' do
@@ -257,14 +256,14 @@ feature 'Submit Screening' do
           page.all('.error-message div.alert-text li').map(&:text)
         ).to eq(
           [
-            "screeningDecision may not be empty (Incident Id: #{incident_id})",
-            "approvalStatus must be a valid system code for ... (Incident Id: #{incident_id})",
-            "communicationMethod must be a valid system code for ... (Incident Id: #{incident_id})",
-            "responseTime must be a valid system code for ... (Incident Id: #{incident_id})",
-            "incidentCounty.GVR_ENTC GVR_ENTC sys code is ... (Incident Id: #{incident_id})",
-            "participants must contain at least one victim, ... (Incident Id: #{incident_id})",
-            "id must be greater than or equal to 1 (Incident Id: #{incident_id})",
-            "responseTime may not be null (Incident Id: #{incident_id})"
+            "screeningDecision may not be empty (Ref #: #{incident_id})",
+            "approvalStatus must be a valid system code for ... (Ref #: #{incident_id})",
+            "communicationMethod must be a valid system code for ... (Ref #: #{incident_id})",
+            "responseTime must be a valid system code for ... (Ref #: #{incident_id})",
+            "incidentCounty.GVR_ENTC GVR_ENTC sys code is ... (Ref #: #{incident_id})",
+            "participants must contain at least one victim, ... (Ref #: #{incident_id})",
+            "id must be greater than or equal to 1 (Ref #: #{incident_id})",
+            "responseTime may not be null (Ref #: #{incident_id})"
           ]
         )
       end

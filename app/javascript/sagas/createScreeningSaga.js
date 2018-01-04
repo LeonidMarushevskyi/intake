@@ -15,7 +15,7 @@ export function* createScreening() {
     yield put(createScreeningSuccess(response))
     yield put(push(screeningEditPath))
   } catch (error) {
-    yield put(createScreeningFailure(error.responseJSON))
+    yield put(createScreeningFailure(error))
   }
 }
 export function* createScreeningSaga() {

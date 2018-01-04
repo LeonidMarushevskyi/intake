@@ -14,7 +14,7 @@ export function* submitScreening({payload: {id}}) {
     const screening = yield select(getScreeningSelector)
     yield call(console.log, `Successfully created referral ${screening.get('referral_id')}`)
   } catch (error) {
-    yield put(submitScreeningFailure(error.responseJSON))
+    yield put(submitScreeningFailure(error))
     yield call(console.log, error)
   }
 }

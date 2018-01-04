@@ -10,7 +10,7 @@ describe('errorsReducer', () => {
     it('stores the list of issue_details', () => {
       const state = fromJS({})
       const action = {
-        payload: {error: {api_response_body: {issue_details: [
+        payload: {error: {responseJSON: {api_response_body: {issue_details: [
           {
             incident_id: '0de2aea9-04f9-4fc4-bc16-75b6495839e0',
             type: 'constraint_validation',
@@ -24,7 +24,7 @@ describe('errorsReducer', () => {
             property: 'approvalStatus',
             invalid_value: 0,
           },
-        ]}}},
+        ]}}}},
         type: SUBMIT_SCREENING_COMPLETE,
         error: true,
       }

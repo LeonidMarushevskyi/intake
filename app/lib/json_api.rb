@@ -12,6 +12,7 @@ class JsonAPI # :nodoc:
     end
   end
 
+  # rubocop:disable MethodLength
   def self.make_api_call(security_token, url, method, payload = nil)
     connection.send(method) do |req|
       req.url url
@@ -21,7 +22,9 @@ class JsonAPI # :nodoc:
     end
   rescue Faraday::Error => e
     raise ApiError,
-      message: e.message, sent_attributes: payload.to_json,
-      url: url, method: method
+      message: e.message,
+      sent_attributes: payload ? payload.to_json : '',
+      url: url,
+      method: method
   end
 end

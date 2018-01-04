@@ -5,8 +5,10 @@ require 'rails_helper'
 describe JsonAPI do
   let(:api_class) do
     Class.new(JsonAPI) do
-      def self.connection
-        Faraday.new(url: 'http://api_url')
+      class << self
+        def api_url
+          'http://api_url'
+        end
       end
     end
   end
@@ -62,6 +64,30 @@ describe JsonAPI do
       api_class.make_api_call(security_token, '/api/v1/screening/1', :delete)
       expect(
         a_request(:delete, 'http://api_url/api/v1/screening/1')
+        .with(headers: { Authorization: security_token })
+      ).to have_been_made
+    end
+
+    it 'rescue exception and return an ApiError' do
+      stub_request(:get, 'http://api_url/api/v1/screening/1')
+        .and_raise(Errno::ECONNREFUSED.new)
+
+      expect do
+        api_class.make_api_call(security_token, '/api/v1/screening/1', :get)
+      end.to(raise_error do |error|
+        expect(error).to be_a(ApiError)
+        expect(error.message).to eq('Connection refused')
+        expect(error.api_error).to match a_hash_including(
+          response_body: 'Internal Server Error',
+          http_code: 500,
+          url: '/api/v1/screening/1',
+          method: :get,
+          sent_attributes: ''
+        )
+      end)
+
+      expect(
+        a_request(:get, 'http://api_url/api/v1/screening/1')
         .with(headers: { Authorization: security_token })
       ).to have_been_made
     end

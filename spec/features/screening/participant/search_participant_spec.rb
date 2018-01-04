@@ -100,8 +100,7 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in_autocompleter 'Search for any person',
           with: 'Ma 123-45',
-          select_option_with: 'Marge',
-          split: true
+          select_option_with: 'Marge'
       end
 
       expect(

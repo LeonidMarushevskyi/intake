@@ -32,7 +32,7 @@ describe('saveScreening', () => {
     )
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
-      put(saveFailure('some error'))
+      put(saveFailure(error))
     )
   })
 })

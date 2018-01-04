@@ -9,7 +9,7 @@ export function* saveScreening({payload: {screening}}) {
     const response = yield call(api.put, path, screening)
     yield put(saveSuccess(response))
   } catch (error) {
-    yield put(saveFailure(error.responseJSON))
+    yield put(saveFailure(error))
   }
 }
 export function* saveScreeningSaga() {

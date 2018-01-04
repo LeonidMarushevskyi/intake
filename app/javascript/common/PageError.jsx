@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const PageError = ({errorCount}) => (
+const PageError = ({pageErrorMessage}) => (
   <div className='page-error'>
     <div className='container'>
       <div className='row'>
         <p className='text-center'>
-          {!errorCount && 'Something went wrong, sorry! Please try your last action again.'}
-          {Boolean(errorCount) && `${errorCount} error(s) have been identified. Please fix them and try submitting again.`}
+          {pageErrorMessage || 'Something went wrong, sorry! Please try your last action again.'}
         </p>
       </div>
     </div>
@@ -15,7 +14,7 @@ const PageError = ({errorCount}) => (
 )
 
 PageError.propTypes = {
-  errorCount: PropTypes.number,
+  pageErrorMessage: PropTypes.string,
 }
 
 export default PageError

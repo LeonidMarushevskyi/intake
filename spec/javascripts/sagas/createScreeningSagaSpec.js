@@ -37,7 +37,7 @@ describe('createScreening', () => {
     const gen = createScreening()
     expect(gen.next().value).toEqual(call(post, '/api/v1/screenings'))
     expect(gen.throw(error).value).toEqual(
-      put(createScreeningFailure('some error'))
+      put(createScreeningFailure(error))
     )
   })
 })
