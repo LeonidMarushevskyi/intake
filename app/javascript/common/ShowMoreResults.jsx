@@ -3,7 +3,7 @@ import React from 'react'
 
 const ShowMoreResults = ({onClick}) => (
   <button
-    className='btn btn-default btn-block gap-bottom'
+    className='btn btn-primary btn-block gap-bottom'
     onClick={onClick}
   >
     Show more results
