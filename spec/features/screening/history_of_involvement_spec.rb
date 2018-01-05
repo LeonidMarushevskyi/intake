@@ -8,23 +8,16 @@ feature 'History card' do
   let(:existing_screening) { FactoryGirl.create(:screening) }
 
   context 'with no history of envolvements' do
-    before do
-      stub_request(
-        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-      ).and_return(json_body(existing_screening.to_json))
-      stub_empty_relationships_for_screening(existing_screening)
-      stub_empty_history_for_screening(existing_screening)
-    end
-
     scenario 'while editting an existing screening displays the no HOI copy' do
-      visit edit_screening_path(id: existing_screening.id)
+      stub_and_visit_edit_screening(existing_screening)
 
       within '.card', text: 'History' do
         expect(page).to have_content('Search for people and add them to see their')
       end
     end
 
-    scenario 'while editting an existing screening displays the no HOI copy' do
+    scenario 'while viewing an existing screening displays the no HOI copy' do
+      stub_and_visit_show_screening(existing_screening)
       visit screening_path(id: existing_screening.id)
 
       within '.card', text: 'History' do
@@ -78,8 +71,7 @@ feature 'History card' do
             description: 'Madera'
           },
           response_time: {
-            id: '1518',
-            description: 'Immediate'
+            id: '1520'
           },
           reporter: {
             first_name: 'Reporter1',

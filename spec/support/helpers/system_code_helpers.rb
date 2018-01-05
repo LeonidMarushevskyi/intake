@@ -72,6 +72,12 @@ module SystemCodeHelpers
     ]
   end
 
+  def response_time_codes
+    [
+      { code: '1520', value: 'Immediate', category: 'screen_response_time', sub_category: nil }
+    ]
+  end
+
   def stub_system_codes
     system_codes = [
       *allegation_type_codes,
@@ -79,7 +85,8 @@ module SystemCodeHelpers
       *contact_status_codes,
       *communication_method_codes,
       *contact_location_codes,
-      *county_type_codes
+      *county_type_codes,
+      *response_time_codes
     ]
     stub_request(:get, /#{ExternalRoutes.ferb_api_lov_path}/).and_return(
       json_body(system_codes, status: 200)

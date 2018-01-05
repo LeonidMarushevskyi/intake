@@ -4,6 +4,7 @@ import nameFormatter from 'utils/nameFormatter'
 import {accessDescription} from 'utils/accessIndicator'
 import {dateRangeFormatter} from 'utils/dateFormatter'
 import {ROLE_TYPE_NON_REPORTER} from 'enums/RoleType'
+import {systemCodeDisplayValue, getScreenResponseTimesSelector} from 'selectors/systemCodeSelectors'
 
 const getHistoryOfInvolvementsSelector = (state) => state.get('involvements', Map())
 
@@ -43,9 +44,11 @@ const getReferralsSelector = createSelector(
 
 export const getFormattedReferralsSelector = createSelector(
   getReferralsSelector,
-  (referrals) => referrals.map((referral) => {
+  getScreenResponseTimesSelector,
+  (referrals, responseTimes) => referrals.map((referral) => {
     const status = referral.get('end_date') ? 'Closed' : 'Open'
-    const responseTime = referral.getIn(['response_time', 'description'])
+    const responseTimeID = referral.getIn(['response_time', 'id'])
+    const responseTime = systemCodeDisplayValue(responseTimeID, responseTimes)
     const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const peopleAndRoles = referral.get('allegations', List()).map((allegation) => (Map({
       victim: nameFormatter({

@@ -7,6 +7,7 @@ import * as IntakeConfig from 'common/config'
 
 describe('HistoryTableContainer', () => {
   const state = fromJS({
+    screenResponseTimes: [{code: '1518', value: 'Immediate'}],
     involvements: {
       screenings: [
         {
