@@ -5,9 +5,10 @@ export function participantFlag(participant) {
 }
 
 export function accessDescription(accessCode) {
-  if (accessCode === 'R') { return 'Sealed' }
-  if (accessCode === 'S') { return 'Sensitive' }
-  if (accessCode === 'SEALED') { return 'Sealed' }
-  if (accessCode === 'SENSITIVE') { return 'Sensitive' }
-  return undefined
+  let description = undefined
+  if (accessCode === 'R') { description = 'Sealed' }
+  if (accessCode === 'S') { description = 'Sensitive' }
+  if (accessCode === 'SEALED') { description = 'Sealed' }
+  if (accessCode === 'SENSITIVE') { description = 'Sensitive' }
+  return description
 }
