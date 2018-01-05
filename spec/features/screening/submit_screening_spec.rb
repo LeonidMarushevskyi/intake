@@ -116,6 +116,43 @@ feature 'Submit Screening' do
       end
     end
 
+    context 'a person on the screening does not have all of the information to be valid' do
+      let(:person) { FactoryGirl.create(:participant, ssn: '666-12-3456') }
+      let(:person_name) { "#{person.first_name} #{person.last_name}" }
+      let(:existing_screening) do
+        FactoryGirl.create(
+          :screening,
+          started_at: Time.now,
+          assignee: 'Jane Smith',
+          report_narrative: 'My narrative',
+          screening_decision: 'differential_response',
+          communication_method: 'fax',
+          participants: [person]
+        )
+      end
+
+      scenario 'the submit button is disabled until the person is valid' do
+        visit edit_screening_path(existing_screening.id)
+        save_all_cards
+        within('.card', text: person_name) { click_button 'Save' }
+        expect(page).to have_button('Submit', disabled: true)
+        within('.card', text: person_name) { click_link 'Edit' }
+
+        person.ssn = '123-45-6789'
+        stub_request(
+          :put,
+          intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
+        ).and_return(json_body(person.to_json))
+
+        within('.card', text: person_name) do
+          fill_in 'Social security number', with: '123-45-6789'
+          click_button 'Save'
+        end
+
+        expect(page).to have_button('Submit', disabled: false)
+      end
+    end
+
     context 'when successfully submmitting referral' do
       let(:referral_id) { FFaker::Guid.guid }
       let(:screening_with_referral) do
