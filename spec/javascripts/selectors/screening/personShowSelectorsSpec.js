@@ -3,6 +3,9 @@ import {
   getFormattedPersonInformationSelector,
   getPersonFormattedPhoneNumbersSelector,
   getPersonFormattedAddressesSelector,
+  getNamesRequiredSelector,
+  getPersonAlertErrorMessageSelector,
+  getErrorsSelector,
 } from 'selectors/screening/personShowSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -15,7 +18,7 @@ describe('personShowSelectors', () => {
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '2')).toEqualImmutable(fromJS({
         legacySource: undefined,
-        name: 'Unknown Person',
+        name: {value: 'Unknown Person', errors: [], required: false},
         gender: undefined,
         roles: [],
         languages: undefined,
@@ -24,6 +27,7 @@ describe('personShowSelectors', () => {
         ssn: undefined,
         races: undefined,
         ethnicity: undefined,
+        alertErrorMessage: undefined,
       }))
     })
     it('includes the legacy source for the given person', () => {
@@ -38,7 +42,12 @@ describe('personShowSelectors', () => {
       const participants = [{id: '1', first_name: 'John', middle_name: 'Q', last_name: 'Public'}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('name'))
-        .toEqual('John Q Public')
+        .toEqual(fromJS({
+          value: 'John Q Public',
+          errors: [],
+          required: false,
+        })
+        )
     })
     it('includes the gender for the given person', () => {
       const participants = [{id: '1', gender: 'female'}]
@@ -200,6 +209,73 @@ describe('personShowSelectors', () => {
       const state = fromJS({participants: people})
       expect(getPersonFormattedAddressesSelector(state, '1').first().get('type'))
         .toEqual('Home')
+    })
+  })
+
+  describe('getNamesRequiredSelector', () => {
+    it('returns true if roles includes Victim', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role']}]
+      const state = fromJS({participants: people})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(true)
+    })
+
+    it('returns false if roles does not include Victim', () => {
+      const people = [{id: '1', roles: ['some role', 'other role']}]
+      const state = fromJS({participants: people})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(false)
+    })
+  })
+
+  describe('getPersonAlertErrorMessageSelector', () => {
+    it('returns alert if roles include Victim and firstName is empty', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        last_name: 'Smith'}]
+      const state = fromJS({participants: people})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18')
+    })
+
+    it('returns alert if roles include Victim and lastName is empty', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        first_name: 'John'}]
+      const state = fromJS({participants: people})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18')
+    })
+
+    it('returns undefined if roles include Victim and lastName and firstName is not empty', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        first_name: 'John',
+        last_name: 'Smoth'}]
+      const state = fromJS({participants: people})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(undefined)
+    })
+  })
+  describe('getErrorsSelector', () => {
+    it('returns last name error if last name is empty and role includes Victim', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        first_name: 'John'}]
+      const state = fromJS({participants: people})
+      expect(getErrorsSelector(state, '1').get('name').first()).toEqual('Please enter a last name.')
+    })
+    it('returns first name error if first name is empty and role includes Victim', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        last_name: 'Smith'}]
+      const state = fromJS({participants: people})
+      expect(getErrorsSelector(state, '1').get('name').first()).toEqual('Please enter a first name.')
+    })
+    it('returns undefined if first name and last name is not empty and role includes Victim', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        last_name: 'Smith', first_name: 'John'}]
+      const state = fromJS({participants: people})
+      expect(getErrorsSelector(state, '1').get('name').first()).toEqual(undefined)
+    })
+    it('returns first name error and last name error if first name and last name are empty and role includes Victim', () => {
+      const people = [{id: '1', roles: ['Victim', 'other role'],
+        last_name: '', first_name: ''}]
+      const state = fromJS({participants: people})
+      expect(getErrorsSelector(state, '1').get('name').includes('Please enter a first name.')).toEqual(true)
+      expect(getErrorsSelector(state, '1').get('name').includes('Please enter a last name.')).toEqual(true)
     })
   })
 })

@@ -3,21 +3,26 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('PersonInformationForm', () => {
+  const firstNameStub = {value: '', errors: []}
+  const lastNameStub = {value: '', errors: []}
   function renderPersonForm({
     personId = '123',
+    alertErrorMessage,
     roles,
     roleOptions,
     legacySourceDescription,
-    firstName,
+    firstName = firstNameStub,
     middleName,
-    lastName,
+    lastName = lastNameStub,
     nameSuffix,
     nameSuffixOptions = [],
     ssn,
     onChange,
+    onBlur,
   }) {
     const props = {
       personId,
+      alertErrorMessage,
       roles,
       roleOptions,
       legacySourceDescription,
@@ -28,6 +33,7 @@ describe('PersonInformationForm', () => {
       nameSuffixOptions,
       ssn,
       onChange,
+      onBlur,
     }
     return shallow(<PersonInformationForm {...props}/>)
   }
@@ -76,7 +82,7 @@ describe('PersonInformationForm', () => {
   })
 
   it('renders the first name field', () => {
-    const field = renderPersonForm({firstName: 'a sample first name'})
+    const field = renderPersonForm({firstName: {value: 'a sample first name', errors: []}})
       .find('InputField[label="First Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample first name')
@@ -84,7 +90,7 @@ describe('PersonInformationForm', () => {
 
   it('changing the first name fires onChange', () => {
     const onChange = jasmine.createSpy('onChange')
-    renderPersonForm({firstName: 'a sample first name', onChange})
+    renderPersonForm({firstName: {value: 'a sample first name', errors: []}, onChange})
       .find('InputField[label="First Name"]')
       .simulate('change', {target: {value: 'my new name'}})
     expect(onChange).toHaveBeenCalledWith('first_name', 'my new name')
@@ -106,7 +112,7 @@ describe('PersonInformationForm', () => {
   })
 
   it('renders the last name field', () => {
-    const field = renderPersonForm({lastName: 'a sample last name'})
+    const field = renderPersonForm({lastName: {value: 'a sample last name', errors: []}})
       .find('InputField[label="Last Name"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('a sample last name')
@@ -114,7 +120,7 @@ describe('PersonInformationForm', () => {
 
   it('changing the last name fires onChange', () => {
     const onChange = jasmine.createSpy('onChange')
-    renderPersonForm({lastName: 'a sample last name', onChange})
+    renderPersonForm({lastName: {value: 'a sample last name', errors: []}, onChange})
       .find('InputField[label="Last Name"]')
       .simulate('change', {target: {value: 'my new name'}})
     expect(onChange).toHaveBeenCalledWith('last_name', 'my new name')
@@ -159,5 +165,39 @@ describe('PersonInformationForm', () => {
       .find('MaskedInputField[label="Social security number"]')
       .simulate('change', {target: {value: '111-11-1111'}})
     expect(onChange).toHaveBeenCalledWith('ssn', '111-11-1111')
+  })
+  it('displays an errorMessage alert if one is passed', () => {
+    const alert = 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
+    const component = renderPersonForm({alertErrorMessage: alert})
+    expect(component.find('AlertErrorMessage').exists()).toEqual(true)
+    expect(component.find('AlertErrorMessage').props().message).toEqual(alert)
+  })
+  it('does not display an errorMessage alert if one is not passed', () => {
+    const component = renderPersonForm({})
+    expect(component.find('AlertErrorMessage').exists()).toEqual(false)
+  })
+  it('renders the first name required flag', () => {
+    const field = renderPersonForm({firstName: {value: 'a sample first name', errors: [], required: true}})
+      .find('InputField[label="First Name"]')
+    expect(field.props().required).toEqual(true)
+  })
+  it('renders the last name required flag', () => {
+    const field = renderPersonForm({lastName: {value: 'a sample last name', errors: [], required: true}})
+      .find('InputField[label="Last Name"]')
+    expect(field.props().required).toEqual(true)
+  })
+  it('blurring the last name fires onBlur', () => {
+    const onBlur = jasmine.createSpy('onBlur')
+    renderPersonForm({onBlur})
+      .find('InputField[label="Last Name"]')
+      .simulate('blur')
+    expect(onBlur).toHaveBeenCalledWith('last_name')
+  })
+  it('blurring the first name fires onBlur', () => {
+    const onBlur = jasmine.createSpy('onBlur')
+    renderPersonForm({onBlur})
+      .find('InputField[label="First Name"]')
+      .simulate('blur')
+    expect(onBlur).toHaveBeenCalledWith('first_name')
   })
 })

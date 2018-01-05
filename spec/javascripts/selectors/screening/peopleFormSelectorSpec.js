@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map, Seq} from 'immutable'
 import {
   getFilteredPersonRolesSelector,
   getPeopleWithEditsSelector,
@@ -19,6 +19,13 @@ import {
   getEthnicityDetailOptionsSelector,
   getPersonEthnicityDetaiValueSelector,
   getIsRaceIndeterminateValueSelector,
+  getErrorsSelector,
+  getNamesRequiredSelector,
+  getPersonAlertErrorMessageSelector,
+  getLastNameSelector,
+  getFirstNameSelector,
+  getTouchedFieldsForPersonSelector,
+  getVisibleErrorsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 
@@ -659,6 +666,210 @@ describe('peopleFormSelectors', () => {
       const state = fromJS({peopleForm})
       expect(getIsRaceIndeterminateValueSelector(state, 'one')).toEqual(true)
       expect(getIsRaceIndeterminateValueSelector(state, 'two')).toEqual(false)
+    })
+  })
+
+  describe('getErrorsSelector', () => {
+    it('returns last name error if last name is empty and role includes Victim', () => {
+      const peopleForm = {1: {first_name: {value: 'John', errors: []}, roles: {value: ['Victim']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('last_name').first()).toEqual('Please enter a last name.')
+    })
+    it('returns first name error if first name is empty and role includes Victim', () => {
+      const peopleForm = {1: {last_name: {value: 'Smith', errors: []}, roles: {value: ['Victim']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('first_name').first()).toEqual('Please enter a first name.')
+    })
+    it('returns undefined if first name is not empty and role includes Victim', () => {
+      const peopleForm = {1: {
+        first_name: {value: 'John', errors: []},
+        roles: {value: ['Victim']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('first_name').first()).toEqual(undefined)
+    })
+    it('returns undefined if last name is not empty and role includes Victim', () => {
+      const peopleForm = {1: {
+        last_name: {value: 'John', errors: []},
+        roles: {value: ['Victim']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('last_name').first()).toEqual(undefined)
+    })
+    it('returns undefined if first name is empty and role does not include Victim', () => {
+      const peopleForm = {1: {roles: {value: ['Some role']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('first_name').first()).toEqual(undefined)
+    })
+    it('returns undefined if last name is empty and role does not include Victim', () => {
+      const peopleForm = {1: {roles: {value: ['Some role']}}}
+      const state = fromJS({peopleForm})
+      expect(getErrorsSelector(state, '1').get('last_name').first()).toEqual(undefined)
+    })
+  })
+
+  describe('getNamesRequiredSelector', () => {
+    it('returns true if roles includes Victim', () => {
+      const peopleForm = {1: {roles: {value: ['Victim', 'Some role']}}}
+      const state = fromJS({peopleForm})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(true)
+    })
+
+    it('returns false if roles does not include Victim', () => {
+      const peopleForm = {1: {roles: {value: ['other role', 'Some role']}}}
+      const state = fromJS({peopleForm})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(false)
+    })
+  })
+
+  describe('getPersonAlertErrorMessageSelector', () => {
+    it('returns alert if roles include sVictim and firstName is empty', () => {
+      const peopleForm = {1: {roles: {value: ['Victim', 'Some role']}, last_name: {value: 'Smith', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18')
+    })
+
+    it('returns alert if roles includes Victim and lastName is empty', () => {
+      const peopleForm = {1: {roles: {value: ['Victim', 'Some role']}, first_name: {value: 'John', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18')
+    })
+
+    it('returns undefined if roles includes Victim and lastName and firstName is not empty', () => {
+      const peopleForm = {1: {
+        roles: {value: ['Victim', 'Some role']},
+        first_name: {value: 'John', errors: []},
+        last_name: {value: 'Smith', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(undefined)
+    })
+  })
+
+  describe('getLastNameSelector', () => {
+    it('returns last name', () => {
+      const peopleForm = {
+        1: {roles: {value: ['Victim', 'Some role']}, last_name: {value: 'Smith', errors: [], required: true}},
+        2: {roles: {value: ['Other role', 'Some role']}, last_name: {value: 'Smith2', errors: [], required: false}}}
+      const state = fromJS({peopleForm})
+      expect(getLastNameSelector(state, '1')).toEqual(fromJS(
+        {
+          value: 'Smith',
+          errors: [],
+          required: true,
+        }))
+      expect(getLastNameSelector(state, '2')).toEqual(fromJS(
+        {
+          value: 'Smith2',
+          errors: [],
+          required: false,
+        }))
+    })
+  })
+
+  describe('getFirstNameSelector', () => {
+    it('returns first name', () => {
+      const peopleForm = {
+        1: {roles: {value: ['Victim', 'Some role']}, first_name: {value: 'John', errors: [], required: true}},
+        2: {roles: {value: ['Other role', 'Some role']}, first_name: {value: 'Jessy', errors: [], required: false}}}
+      const state = fromJS({peopleForm})
+      expect(getFirstNameSelector(state, '1')).toEqual(fromJS(
+        {
+          value: 'John',
+          errors: [],
+          required: true,
+        }))
+      expect(getFirstNameSelector(state, '2')).toEqual(fromJS(
+        {
+          value: 'Jessy',
+          errors: [],
+          required: false,
+        }))
+    })
+  })
+  describe('getTouchedFieldsForPersonSelector', () => {
+    it('returns the contactForm field names that are touched', () => {
+      const peopleForm = {
+        1: {
+          fieldA: {touched: false},
+          fieldB: {touched: true},
+          fieldC: {},
+          fieldD: {touched: true},
+        }}
+      const state = fromJS({peopleForm})
+      expect(getTouchedFieldsForPersonSelector(state, '1')).toEqualImmutable(Seq(['fieldB', 'fieldD']))
+    })
+
+    it('returns empty list when no contact', () => {
+      const peopleForm = {1: {}}
+      const state = fromJS({peopleForm})
+      expect(getTouchedFieldsForPersonSelector(state, '1')).toEqualImmutable(Seq())
+    })
+  })
+  describe('getVisibleErrorsSelector', () => {
+    it('returns an error if the first name has a validation and is touched', () => {
+      const peopleForm = {
+        1: {
+          roles: {
+            value: ['Victim'],
+          },
+          first_name: {
+            value: undefined,
+            touched: true,
+          },
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getVisibleErrorsSelector(state, '1').get('first_name'))
+        .toEqualImmutable(List(['Please enter a first name.']))
+    })
+    it('returns an error if the last name has a validation and is touched', () => {
+      const peopleForm = {
+        1: {
+          roles: {
+            value: ['Victim'],
+          },
+          last_name: {
+            value: undefined,
+            touched: true,
+          },
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getVisibleErrorsSelector(state, '1').get('last_name'))
+        .toEqualImmutable(List(['Please enter a last name.']))
+    })
+
+    it('does not return an error if the last name has not been touched', () => {
+      const peopleForm = {
+        1: {
+          roles: {
+            value: ['Victim'],
+          },
+          last_name: {
+            value: undefined,
+            touched: true,
+          },
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getVisibleErrorsSelector(state).get('last_name'))
+        .toEqualImmutable(List())
+    })
+    it('does not return an error if the first name has not been touched', () => {
+      const peopleForm = {
+        1: {
+          roles: {
+            value: ['Victim'],
+          },
+          first_name: {
+            value: undefined,
+            touched: true,
+          },
+        },
+      }
+      const state = fromJS({peopleForm})
+      expect(getVisibleErrorsSelector(state).get('first_name'))
+        .toEqualImmutable(List())
     })
   })
 })

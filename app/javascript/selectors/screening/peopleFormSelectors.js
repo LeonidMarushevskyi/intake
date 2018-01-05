@@ -5,6 +5,7 @@ import LANGUAGES from 'enums/Languages'
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
+import {isRequiredIfCreate, combineCompact} from 'utils/validator'
 
 const formatEnums = (enumObject) =>
   Object.keys(enumObject).map((item) => ({label: enumObject[item], value: item}))
@@ -16,6 +17,62 @@ import ADDRESS_TYPE from 'enums/AddressType'
 import US_STATE from 'enums/USState'
 import {RACE_DETAILS} from 'enums/Races'
 import {ETHNICITY_DETAILS} from 'enums/Ethnicity'
+
+export const getErrorsSelector = (state, personId) => {
+  const firstName = state.getIn(['peopleForm', personId, 'first_name', 'value'])
+  const lastName = state.getIn(['peopleForm', personId, 'last_name', 'value'])
+  const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
+  return fromJS({
+    first_name: combineCompact(isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim')))),
+    last_name: combineCompact(isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim')))),
+  })
+}
+
+export const getTouchedFieldsForPersonSelector = (state, personId) => {
+  const peopleForm = state.getIn(['peopleForm', personId], Map())
+  return peopleForm.filter((field) => field.get('touched')).keySeq().toList()
+}
+
+export const getVisibleErrorsSelector = (state, personId) => {
+  const touchedFields = getTouchedFieldsForPersonSelector(state, personId)
+  const errors = getErrorsSelector(state, personId)
+  return errors.reduce(
+    (filteredErrors, fieldErrors, field) => {
+      if (touchedFields.includes(field)) {
+        return filteredErrors.set(field, fieldErrors)
+      } else {
+        return filteredErrors.set(field, List())
+      }
+    },
+    Map())
+}
+
+export const getNamesRequiredSelector = (state, personId) => {
+  const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
+  return (roles.includes('Victim'))
+}
+
+export const getFirstNameSelector = (state, personId) => {
+  const value = state.getIn(['peopleForm', personId, 'first_name', 'value'])
+  const errors = getVisibleErrorsSelector(state, personId).get('first_name')
+  const required = getNamesRequiredSelector(state, personId)
+  return fromJS({
+    value: value || '',
+    errors: errors,
+    required: required,
+  })
+}
+
+export const getLastNameSelector = (state, personId) => {
+  const value = state.getIn(['peopleForm', personId, 'last_name', 'value'])
+  const errors = getVisibleErrorsSelector(state, personId).get('last_name')
+  const required = getNamesRequiredSelector(state, personId)
+  return fromJS({
+    value: value || '',
+    errors: errors,
+    required: required,
+  })
+}
 
 export const getPeopleWithEditsSelector = createSelector(
   getPeopleSelector,
@@ -71,6 +128,18 @@ export const getPeopleWithEditsSelector = createSelector(
     })
   })
 )
+
+export const getPersonAlertErrorMessageSelector = (state, personId) => {
+  const required = getNamesRequiredSelector(state, personId)
+  const lastName = state.getIn(['peopleForm', personId, 'last_name', 'value'])
+  const firstName = state.getIn(['peopleForm', personId, 'first_name', 'value'])
+  if (required && (!firstName || !lastName)) {
+    return 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
+  } else {
+    return undefined
+  }
+}
+
 export const getPhoneNumberTypeOptions = () => fromJS(PHONE_NUMBER_TYPE.map((type) => ({value: type, label: type})))
 export const getPersonPhoneNumbersSelector = (state, personId) => (
   state.get('peopleForm', Map()).get(personId).get('phone_numbers', List()).map((phoneNumber) => (

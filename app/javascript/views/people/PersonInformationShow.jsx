@@ -2,6 +2,7 @@ import AvatarImg from '../../../assets/images/default-profile.svg'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ShowField from 'common/ShowField'
+import AlertErrorMessage from 'common/AlertErrorMessage'
 
 const PersonInformationShow = ({
   approximateAge,
@@ -14,8 +15,10 @@ const PersonInformationShow = ({
   races,
   roles,
   ssn,
+  alertErrorMessage,
 }) => (
   <div>
+    { alertErrorMessage && <AlertErrorMessage message={alertErrorMessage} /> }
     <div className='row'>
       <div className='col-md-2'><img src={AvatarImg}/></div>
       <div className='col-md-10'>
@@ -24,7 +27,7 @@ const PersonInformationShow = ({
         }
         <div className='row'>
           <div className='col-md-5'>
-            <ShowField label='Name'>{name}</ShowField>
+            <ShowField errors={name.errors} required={name.required} label='Name'>{name.value}</ShowField>
             <ShowField label='Gender'>{gender}</ShowField>
           </div>
           <div className='col-md-5'>
@@ -57,13 +60,18 @@ const PersonInformationShow = ({
 )
 
 PersonInformationShow.propTypes = {
+  alertErrorMessage: PropTypes.string,
   approximateAge: PropTypes.string,
   dateOfBirth: PropTypes.string,
   ethnicity: PropTypes.string,
   gender: PropTypes.string,
   languages: PropTypes.string,
   legacySource: PropTypes.string,
-  name: PropTypes.string,
+  name: PropTypes.shape({
+    value: PropTypes.string,
+    errors: PropTypes.arrayOf(PropTypes.string),
+    required: PropTypes.bool,
+  }),
   races: PropTypes.string,
   roles: PropTypes.arrayOf(PropTypes.string),
   ssn: PropTypes.string,

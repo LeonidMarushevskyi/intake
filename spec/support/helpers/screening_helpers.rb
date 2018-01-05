@@ -21,30 +21,6 @@ module ScreeningHelpers
     end
   end
 
-  def validate_message_as_user_interacts_with_card(
-    card_name:, error_message:, invalid_screening:, screening_updates:
-  )
-    should_not_have_content error_message, inside: "##{card_name}-card.edit"
-    stub_screening_put_request_with_anything_and_return invalid_screening
-    save_card(card_name)
-
-    should_have_content error_message, inside: "##{card_name}-card.show"
-    edit_card(card_name)
-
-    should_have_content error_message, inside: "##{card_name}-card.edit"
-
-    yield # make field valid to clear errors
-
-    should_not_have_content error_message, inside: "##{card_name}-card.edit"
-
-    stub_screening_put_request_with_anything_and_return(
-      screening,
-      with_updated_attributes: screening_updates
-    )
-    save_card(card_name)
-    should_not_have_content error_message, inside: "##{card_name}-card.show"
-  end
-
   def stub_empty_relationships_for_screening(screening)
     stub_request(
       :get,
@@ -57,20 +33,6 @@ module ScreeningHelpers
       :get,
       intake_api_url(ExternalRoutes.intake_api_history_of_involvements_path(screening.id))
     ).and_return(json_body([].to_json, status: 200))
-  end
-
-  def validate_message_as_user_interacts_with_date_field(
-    card_name:, error_message:, field:, invalid_value:, valid_value:
-  )
-    within "##{card_name}-card.edit" do
-      expect(page).not_to have_content(error_message)
-      fill_in_datepicker field, with: invalid_value, blur: false
-      expect(page).not_to have_content(error_message)
-      blur_field
-      expect(page).to have_content(error_message)
-      fill_in_datepicker field, with: valid_value, blur: true
-      expect(page).not_to have_content(error_message)
-    end
   end
 
   def stub_and_visit_edit_screening(screening)

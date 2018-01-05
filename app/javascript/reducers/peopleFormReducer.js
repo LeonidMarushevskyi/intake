@@ -3,10 +3,12 @@ import {Map, fromJS} from 'immutable'
 import {FETCH_SCREENING_COMPLETE} from 'actions/actionTypes'
 import {
   SET_PEOPLE_FORM_FIELD,
+  TOUCH_PEOPLE_FORM_FIELD,
   ADD_PEOPLE_FORM_ADDRESS,
   DELETE_PEOPLE_FORM_ADDRESS,
   ADD_PEOPLE_FORM_PHONE_NUMBER,
   DELETE_PEOPLE_FORM_PHONE_NUMBER,
+  TOUCH_ALL_PEOPLE_FORM_FIELDS,
 } from 'actions/peopleFormActions'
 import {CREATE_PERSON_COMPLETE} from 'actions/personCardActions'
 
@@ -22,6 +24,20 @@ const buildAddresses = (addresses) => {
     }))
   } else {
     return []
+  }
+}
+
+const buildName = (name) => {
+  if (name) {
+    return {
+      value: name,
+      touched: false,
+    }
+  } else {
+    return {
+      value: '',
+      touched: false,
+    }
   }
 }
 
@@ -77,10 +93,10 @@ const buildPerson = ({
   approximate_age: {value: approximate_age},
   approximate_age_units: {value: approximate_age_units},
   date_of_birth: {value: date_of_birth},
-  first_name: {value: first_name},
+  first_name: buildName(first_name),
   gender: {value: gender},
   languages: {value: languages},
-  last_name: {value: last_name},
+  last_name: buildName(last_name),
   legacy_descriptor: {value: legacy_descriptor || {}},
   middle_name: {value: middle_name},
   name_suffix: {value: name_suffix},
@@ -111,6 +127,14 @@ export default createReducer(Map(), {
     }
   },
   [SET_PEOPLE_FORM_FIELD]: (state, {payload: {personId, fieldSet, value}}) => state.setIn([personId, ...fieldSet, 'value'], fromJS(value)),
+  [TOUCH_PEOPLE_FORM_FIELD]: (state, {payload: {personId, field}}) => state.setIn([personId, ...field, 'touched'], true),
+  [TOUCH_ALL_PEOPLE_FORM_FIELDS]: (state, {payload: {personId}}) => {
+    const fieldsWithTouch = [
+      'first_name',
+      'last_name',
+    ]
+    return fieldsWithTouch.reduce((newState, field) => newState.setIn([personId, field, 'touched'], true), state)
+  },
   [ADD_PEOPLE_FORM_ADDRESS]: (state, {payload: {personId}}) => {
     const currentAddresses = state.getIn([personId, 'addresses'])
     const nullValue = {value: null}
