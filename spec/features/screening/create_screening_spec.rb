@@ -88,6 +88,7 @@ feature 'Create Screening' do
         )
 
         stub_empty_history_for_screening(new_screening)
+        stub_empty_relationships_for_screening(new_screening)
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
@@ -144,6 +145,7 @@ feature 'Create Screening' do
           assignee_staff_id: '1234'
         )
         stub_empty_history_for_screening(new_screening)
+        stub_empty_relationships_for_screening(new_screening)
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
@@ -187,6 +189,7 @@ feature 'Create Screening' do
           assignee_staff_id: nil
         )
         stub_empty_history_for_screening(new_screening)
+        stub_empty_relationships_for_screening(new_screening)
         stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
           .with(body: as_json_without_root_id(new_screening))
           .and_return(json_body(new_screening.to_json, status: 201))
@@ -223,6 +226,8 @@ feature 'Create Screening' do
       address: { city: nil },
       assignee: nil
     )
+    stub_empty_history_for_screening(new_screening)
+    stub_empty_relationships_for_screening(new_screening)
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .with(body: as_json_without_root_id(new_screening))
       .and_return(json_body(new_screening.to_json, status: 201))

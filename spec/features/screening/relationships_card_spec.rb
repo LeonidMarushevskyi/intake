@@ -123,12 +123,7 @@ feature 'Relationship card' do
       end
 
       scenario 'removing a person updates relationships' do
-        stub_request(
-          :get,
-          intake_api_url(
-            ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
-          )
-        ).and_return(json_body([].to_json, status: 200))
+        stub_empty_relationships_for_screening(participants_screening)
         stub_request(
           :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
         )
