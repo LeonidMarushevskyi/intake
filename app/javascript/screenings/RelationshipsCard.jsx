@@ -2,17 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {EmptyRelationships} from 'investigations/Relationships'
 import RelationshipsContainer from 'screenings/RelationshipsContainer'
+import CardView from 'views/CardView'
 
 const RelationshipsCard = ({areRelationshipsEmpty}) => (
-  <div>
-    <span className='anchor' id='relationships-card-anchor'/>
-    <div id='relationships-card' className='card show double-gap-bottom'>
-      <div className='card-header'>
-        <span>Relationships</span>
-      </div>
-      {areRelationshipsEmpty ? <EmptyRelationships /> : <RelationshipsContainer />}
-    </div>
-  </div>
+  <CardView
+    id='relationships-card'
+    title='Relationships'
+    mode='show'
+    show={areRelationshipsEmpty ? <EmptyRelationships /> : <RelationshipsContainer />}
+  />
 )
 
 RelationshipsCard.propTypes = {

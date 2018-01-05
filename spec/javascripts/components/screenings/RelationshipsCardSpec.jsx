@@ -9,20 +9,13 @@ describe('RelationshipsCard', () => {
     shallow(<RelationshipsCard {...props}/>)
   )
 
-  describe('EmptyRelationships', () => {
-    it('renders an empty relationships component', () => {
-      const component = renderRelationshipsCard({areRelationshipsEmpty: true})
-      expect(component.find(EmptyRelationships).exists()).toEqual(true)
-    })
-  })
-
-  it('renders a card anchor', () => {
+  it('renders an empty relationships component when there are no relationships', () => {
     const component = renderRelationshipsCard({areRelationshipsEmpty: true})
-    expect(component.find('.anchor').exists()).toBe(true)
+    expect(component.find('CardView').props().show).toEqual(<EmptyRelationships />)
   })
 
-  it('renders a relationships component when there are relationships', () => {
+  it('renders a relationships container when there are relationships', () => {
     const component = renderRelationshipsCard({areRelationshipsEmpty: false})
-    expect(component.find(RelationshipsContainer).exists()).toEqual(true)
+    expect(component.find('CardView').props().show).toEqual(<RelationshipsContainer />)
   })
 })
