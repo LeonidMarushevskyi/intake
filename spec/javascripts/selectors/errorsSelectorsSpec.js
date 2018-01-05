@@ -156,6 +156,19 @@ describe('errorsSelectors', () => {
       const state = fromJS({errors})
       expect(getSystemErrorIncidentIdsSelector(state)).toEqualImmutable(fromJS(['1', '2']))
     })
+    it('remove errors that do not include an incident id', () => {
+      const errors = {[SUBMIT_SCREENING_COMPLETE]: [
+        {
+          type: 'not_constraint_validation',
+        },
+        {
+          incident_id: '2',
+          type: 'not_constraint_validation',
+        },
+      ]}
+      const state = fromJS({errors})
+      expect(getSystemErrorIncidentIdsSelector(state)).toEqualImmutable(fromJS(['2']))
+    })
   })
   describe('getPageErrorMessageSelector', () => {
     it('returns apiValidationErrors if it exists', () => {
