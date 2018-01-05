@@ -1,20 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import CardView from 'views/CardView'
 
 class HistoryOfInvolvement extends React.Component {
   render() {
     const {historyIsEmpty, empty, notEmpty} = this.props
     return (
-      <div>
-        <span className='anchor' id='history-card-anchor'/>
-        <div className='card show double-gap-bottom' id='history-card'>
-          <div className='card-header'>
-            <span>History</span>
-          </div>
-          {historyIsEmpty && empty}
-          {!historyIsEmpty && notEmpty}
-        </div>
-      </div>
+      <CardView
+        id='history-card'
+        title='History'
+        mode='show'
+        show={historyIsEmpty ? empty : notEmpty}
+      />
     )
   }
 }
