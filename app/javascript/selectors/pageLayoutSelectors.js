@@ -1,6 +1,10 @@
 import {getInvestigationTitleSelector} from 'selectors/investigation/investigationSelectors'
 import {getScreeningTitleSelector, getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
-import {getAllCardsAreSavedValueSelector, getScreeningHasErrorsSelector} from 'selectors/screening/screeningPageSelectors'
+import {
+  getAllCardsAreSavedValueSelector,
+  getScreeningHasErrorsSelector,
+  getPeopleHaveErrorsSelector,
+} from 'selectors/screening/screeningPageSelectors'
 import {isFeatureActive} from 'common/config'
 
 const getDashboardDetailSelector = () => ({
@@ -12,7 +16,11 @@ const getDashboardDetailSelector = () => ({
 })
 
 const getScreeningDetailSelector = (state) => {
-  const buttonDisabled = (!getAllCardsAreSavedValueSelector(state) || getScreeningHasErrorsSelector(state))
+  const buttonDisabled = (
+    !getAllCardsAreSavedValueSelector(state) ||
+    getScreeningHasErrorsSelector(state) ||
+    getPeopleHaveErrorsSelector(state)
+  )
   const hasButton = !((getScreeningIsReadOnlySelector(state) || isFeatureActive('release_two')))
   return {
     pageHeaderButtonDisabled: buttonDisabled,

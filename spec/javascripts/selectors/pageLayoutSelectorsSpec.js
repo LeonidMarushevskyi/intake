@@ -19,6 +19,7 @@ describe('getPageHeaderDetailSelector', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)
     spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getPeopleHaveErrorsSelector').and.returnValue(false)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
@@ -34,6 +35,7 @@ describe('getPageHeaderDetailSelector', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getPeopleHaveErrorsSelector').and.returnValue(false)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
@@ -49,6 +51,23 @@ describe('getPageHeaderDetailSelector', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)
     spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(true)
+    spyOn(screeningPageSelectors, 'getPeopleHaveErrorsSelector').and.returnValue(false)
+    spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
+    spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
+    expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
+      pageHeaderButtonDisabled: true,
+      pageHeaderButtonText: 'Submit',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'screening',
+      pageHeaderTitle: 'Screening 1',
+    })
+  })
+
+  it('disables the submit button if any person on a screening is not valid', () => {
+    spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)
+    spyOn(screeningPageSelectors, 'getScreeningHasErrorsSelector').and.returnValue(false)
+    spyOn(screeningPageSelectors, 'getPeopleHaveErrorsSelector').and.returnValue(true)
     spyOn(screeningSelectors, 'getScreeningTitleSelector').and.returnValue('Screening 1')
     spyOn(screeningSelectors, 'getScreeningIsReadOnlySelector').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/screenings/1', {})).toEqual({
