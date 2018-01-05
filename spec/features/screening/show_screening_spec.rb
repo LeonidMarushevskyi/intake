@@ -76,15 +76,15 @@ feature 'Show Screening' do
     end
 
     within '.col-md-10' do
-      expect(page).to have_css('span.anchor#screening-information-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#narrative-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#incident-information-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#allegations-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#relationships-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#worker-safety-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#history-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#cross-report-card-anchor', visible: false)
-      expect(page).to have_css('span.anchor#decision-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#screening-information-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#narrative-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#incident-information-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#allegations-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#relationships-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#worker-safety-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#history-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#cross-report-card-anchor', visible: false)
+      expect(page).to have_css('a.anchor#decision-card-anchor', visible: false)
     end
 
     expect(page).to have_selector('#decision-card', visible: false)

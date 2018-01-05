@@ -26,7 +26,7 @@ const PersonSearchForm = ({
   )
   return (
     <div>
-      <span className='anchor' id='search-card-anchor'/>
+      <a className='anchor' id='search-card-anchor'/>
       <div className='card edit double-gap-top' id='search-card'>
         <div className='card-header'>
           <span>Search</span>
