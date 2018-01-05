@@ -3,6 +3,7 @@ import {
   getCardIsEditableSelector,
   getAllCardsAreSavedValueSelector,
   getScreeningHasErrorsSelector,
+  getPeopleHaveErrorsSelector,
 } from 'selectors/screening/screeningPageSelectors'
 import {fromJS} from 'immutable'
 
@@ -90,6 +91,26 @@ describe('screeningPageSelectors', () => {
       }
       const state = fromJS({screening})
       expect(getScreeningHasErrorsSelector(state)).toEqual(true)
+    })
+  })
+
+  describe('getPeopleHaveErrorsSelector', () => {
+    it('returns false if there are no errors for people on the screening', () => {
+      const people = [
+        {id: 'one', ssn: '123-45-6789'},
+        {id: 'two', ssn: '087-65-4321'},
+      ]
+      const state = fromJS({participants: people})
+      expect(getPeopleHaveErrorsSelector(state)).toEqual(false)
+    })
+
+    it('returns true if any person on the screening has an error', () => {
+      const people = [
+        {id: 'one', ssn: '123-45-6789'},
+        {id: 'two', ssn: '666-12-3456'},
+      ]
+      const state = fromJS({participants: people})
+      expect(getPeopleHaveErrorsSelector(state)).toEqual(true)
     })
   })
 })
