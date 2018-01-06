@@ -23,8 +23,8 @@ export const getErrorsSelector = (state, personId) => {
   const lastName = state.getIn(['peopleForm', personId, 'last_name', 'value'])
   const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
   return fromJS({
-    first_name: combineCompact(isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim')))),
-    last_name: combineCompact(isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim')))),
+    first_name: combineCompact(isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim') || roles.includes('Collateral')))),
+    last_name: combineCompact(isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim') || roles.includes('Collateral')))),
   })
 }
 
@@ -49,7 +49,7 @@ export const getVisibleErrorsSelector = (state, personId) => {
 
 export const getNamesRequiredSelector = (state, personId) => {
   const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
-  return (roles.includes('Victim'))
+  return (roles.includes('Victim') || roles.includes('Collateral'))
 }
 
 export const getFirstNameSelector = (state, personId) => {
@@ -129,15 +129,24 @@ export const getPeopleWithEditsSelector = createSelector(
   })
 )
 
+const getAlertMessageByRole = (roles) => {
+  if (roles.includes('Victim')) {
+    return 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
+  } else if (roles.includes('Collateral')) {
+    return 'Collateral must be identified with a name, even Doe or Unknown.'
+  }
+  return undefined
+}
+
 export const getPersonAlertErrorMessageSelector = (state, personId) => {
   const required = getNamesRequiredSelector(state, personId)
   const lastName = state.getIn(['peopleForm', personId, 'last_name', 'value'])
   const firstName = state.getIn(['peopleForm', personId, 'first_name', 'value'])
-  if (required && (!firstName || !lastName)) {
-    return 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
-  } else {
-    return undefined
+  const roles = state.getIn(['peopleForm', personId, 'roles', 'value'], List())
+  if (required && !(firstName && lastName)) {
+    return getAlertMessageByRole(roles)
   }
+  return undefined
 }
 
 export const getPhoneNumberTypeOptions = () => fromJS(PHONE_NUMBER_TYPE.map((type) => ({value: type, label: type})))
