@@ -40,12 +40,21 @@ describe('createParticipant', () => {
     )
   })
 
-  it('puts errors when errors are thrown', () => {
+  it('puts errors when non-403 errors are thrown', () => {
     const gen = createParticipant(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', {participant: params}))
     const error = {responseJSON: 'some error'}
     expect(gen.throw(error).value).toEqual(
       put(personCardActions.createPersonFailure('some error'))
+    )
+  })
+
+  it('calls an alert when the error status is 403', () => {
+    const gen = createParticipant(action)
+    expect(gen.next().value).toEqual(call(post, '/api/v1/participants', {participant: params}))
+    const error = {responseJSON: 'some error', status: 403}
+    expect(gen.throw(error).value).toEqual(
+      call(alert, 'You are not authorized to add this person.')
     )
   })
 })
