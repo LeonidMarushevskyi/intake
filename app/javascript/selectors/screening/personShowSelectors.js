@@ -15,8 +15,8 @@ export const getErrorsSelector = (state, personId) => {
   const roles = person.get('roles', List())
   return fromJS({
     name: combineCompact(
-      isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim'))),
-      isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim')))
+      isRequiredIfCreate(firstName, 'Please enter a first name.', () => (roles.includes('Victim') || roles.includes('Collateral'))),
+      isRequiredIfCreate(lastName, 'Please enter a last name.', () => (roles.includes('Victim') || roles.includes('Collateral')))
     ),
   })
 }
@@ -24,7 +24,16 @@ export const getErrorsSelector = (state, personId) => {
 export const getNamesRequiredSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
   const roles = person.get('roles', List())
-  return roles.includes('Victim')
+  return (roles.includes('Victim') || roles.includes('Collateral'))
+}
+
+const getAlertMessageByRole = (roles) => {
+  if (roles.includes('Victim')) {
+    return 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
+  } else if (roles.includes('Collateral')) {
+    return 'Collateral must be identified with a name, even Doe or Unknown.'
+  }
+  return undefined
 }
 
 export const getPersonAlertErrorMessageSelector = (state, personId) => {
@@ -32,11 +41,11 @@ export const getPersonAlertErrorMessageSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
   const lastName = person.get('last_name')
   const firstName = person.get('first_name')
-  if (required && (!firstName || !lastName)) {
-    return 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
-  } else {
-    return undefined
+  const roles = person.get('roles', List())
+  if (required && !(firstName && lastName)) {
+    return getAlertMessageByRole(roles)
   }
+  return undefined
 }
 
 export const getFormattedPersonInformationSelector = (state, personId) => {

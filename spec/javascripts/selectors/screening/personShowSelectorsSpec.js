@@ -219,7 +219,13 @@ describe('personShowSelectors', () => {
       expect(getNamesRequiredSelector(state, '1')).toEqual(true)
     })
 
-    it('returns false if roles does not include Victim', () => {
+    it('returns true if roles includes Collateral', () => {
+      const people = [{id: '1', roles: ['Collateral', 'other role']}]
+      const state = fromJS({participants: people})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(true)
+    })
+
+    it('returns false if roles does not include Victim or Collateral', () => {
       const people = [{id: '1', roles: ['some role', 'other role']}]
       const state = fromJS({participants: people})
       expect(getNamesRequiredSelector(state, '1')).toEqual(false)
@@ -241,6 +247,22 @@ describe('personShowSelectors', () => {
       const state = fromJS({participants: people})
       expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
         'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18')
+    })
+
+    it('returns alert if roles include Collateral and firstName is empty', () => {
+      const people = [{id: '1', roles: ['Collateral', 'other role'],
+        last_name: 'Smith'}]
+      const state = fromJS({participants: people})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Collateral must be identified with a name, even Doe or Unknown.')
+    })
+
+    it('returns alert if roles include Collateral and lastName is empty', () => {
+      const people = [{id: '1', roles: ['Collateral', 'other role'],
+        first_name: 'John'}]
+      const state = fromJS({participants: people})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Collateral must be identified with a name, even Doe or Unknown.')
     })
 
     it('returns undefined if roles include Victim and lastName and firstName is not empty', () => {
