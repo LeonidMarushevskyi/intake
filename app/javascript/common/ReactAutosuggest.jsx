@@ -273,6 +273,14 @@ export default class Autosuggest extends Component {
       event.target;
 
     while (node !== null && node !== document) {
+      if (event.target.innerText === 'SHOW MORE RESULTS') {
+        event.preventDefault();
+      }
+
+      if (event.target.innerText === ' CREATE A NEW PERSON') {
+        event.preventDefault();
+      }
+
       if (node.getAttribute('data-suggestion-index') !== null) {
         // Suggestion was clicked
         return;
