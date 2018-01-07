@@ -1,7 +1,7 @@
 import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
 import React from 'react'
-import ReactAutosuggest from 'react-autosuggest'
+import ReactAutosuggest from 'common/ReactAutosuggest'
 import SuggestionHeader from 'common/SuggestionHeader'
 const MIN_SEARCHABLE_CHARS = 2
 

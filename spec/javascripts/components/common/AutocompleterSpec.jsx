@@ -1,6 +1,5 @@
 import Autocompleter from 'common/Autocompleter'
 import React from 'react'
-import ReactAutosuggest from 'react-autosuggest'
 import {shallow} from 'enzyme'
 
 describe('<Autocompleter />', () => {
@@ -31,7 +30,8 @@ describe('<Autocompleter />', () => {
   }
 
   it('renders a Autosuggest component', () => {
-    expect(renderAutocompleter({}).find(ReactAutosuggest).length).toBe(1)
+    const autosuggest = renderAutocompleter({})
+    expect(autosuggest.find('Autosuggest').length).toBe(1)
   })
 
   describe('#onSuggestionSelected', () => {
@@ -97,7 +97,8 @@ describe('<Autocompleter />', () => {
   describe('#onSuggestionsClearRequested', () => {
     it('pass onClear to ReactAutoSuggest', () => {
       const onClear = jasmine.createSpy('onClear')
-      const component = renderAutocompleter({onClear}).find(ReactAutosuggest)
+      const component = renderAutocompleter({onClear})
+        .find('Autosuggest')
       expect(component.props().onSuggestionsClearRequested).toEqual(onClear)
     })
   })
