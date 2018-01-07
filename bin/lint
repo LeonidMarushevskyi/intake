@@ -16,10 +16,10 @@ js_files() {
 js() {
   if [[ "$GENERATE_TEST_REPORTS" = 'yes' ]]; then
     unblacken_cmd ./node_modules/.bin/eslint \
-      --format junit --output-file "$CI_REPORTS"/LINT-Eslint.xml \
+      --quiet --format junit --output-file "$CI_REPORTS"/LINT-Eslint.xml \
       --color $(js_files)
   else
-    unblacken_cmd ./node_modules/.bin/eslint --color $(js_files) $1
+    unblacken_cmd ./node_modules/.bin/eslint --quiet --color $(js_files) $1
   fi
 }
 

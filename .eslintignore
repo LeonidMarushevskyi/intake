@@ -1,0 +1,4 @@
+# Ignore ReactAutosuggest.jsx library copied from 
+# https://github.com/moroshko/react-autosuggest/tree/v8.0.1
+
+app/javascript/common/ReactAutosuggest.jsx
