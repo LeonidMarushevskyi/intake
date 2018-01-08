@@ -273,11 +273,8 @@ export default class Autosuggest extends Component {
       event.target;
 
     while (node !== null && node !== document) {
-      if (event.target.innerText === 'SHOW MORE RESULTS') {
-        event.preventDefault();
-      }
-
-      if (event.target.innerText === ' CREATE A NEW PERSON') {
+      const targetText = event.target.innerText
+      if (['show more results', 'create a new person'].includes(targetText.trim().toLowerCase())) {
         event.preventDefault();
       }
 
