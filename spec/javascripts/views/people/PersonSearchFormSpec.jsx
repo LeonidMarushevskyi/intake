@@ -34,6 +34,11 @@ describe('PersonSearchForm', () => {
     )
   }
 
+  it('renders a card anchor', () => {
+    const component = renderPersonSearchForm({})
+    expect(component.find('.anchor').exists()).toBe(true)
+  })
+
   it('renders the autocompleter', () => {
     const component = renderPersonSearchForm({})
     const autocompleter = component.find('Autocompleter')
@@ -79,7 +84,7 @@ describe('PersonSearchForm', () => {
 
   it('renders the card header', () => {
     const component = renderPersonSearchForm({})
-    expect(component.children('.card-header').children('span').text()).toContain('Search')
+    expect(component.find('.card-header').children('span').text()).toContain('Search')
   })
 
   describe('search card', () => {

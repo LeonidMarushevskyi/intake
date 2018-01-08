@@ -7,6 +7,11 @@ describe('Card View', () => {
     shallow(<CardView {...props} />)
   )
 
+  it('renders a card anchor', () => {
+    const card = renderCardView()
+    expect(card.find('.anchor').exists()).toBe(true)
+  })
+
   it('renders a card', () => {
     const card = renderCardView()
     expect(card.find('.card').exists()).toEqual(true)
