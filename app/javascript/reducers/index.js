@@ -14,6 +14,7 @@ import investigation from 'reducers/investigationReducer'
 import involvements from 'reducers/involvementsReducer'
 import languages from 'reducers/systemCodes/languagesReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
+import unableToDetermineCodes from 'reducers/systemCodes/unableToDetermineCodesReducer'
 import ethnicityTypes from 'reducers/systemCodes/ethnicityTypesReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
   involvements,
   languages,
   locations,
+  unableToDetermineCodes,
   narrativeForm,
   participants,
   peopleForm,
