@@ -4,17 +4,6 @@ class PeopleSearchResultsInterpreter # :nodoc:
   class << self
     ALLOWABLE_SSN_CHARS = 4
 
-    def interpret_highlights(document)
-      highlight = {}
-      if document['highlight']
-        highlight = document['highlight'].each_with_object({}) do |(k, v), memo|
-          memo[k] = v.first
-          memo
-        end
-      end
-      document['_source'] = document['_source'].merge('highlight' => highlight)
-    end
-
     def interpret_race_ethnicity(document)
       source = document['_source']
       race_ethnicity = source.stringify_keys['race_ethnicity']
