@@ -17,6 +17,7 @@ import locations from 'reducers/systemCodes/locationsReducer'
 import unableToDetermineCodes from 'reducers/systemCodes/unableToDetermineCodesReducer'
 import hispanicOriginCodes from 'reducers/systemCodes/hispanicOriginCodesReducer'
 import ethnicityTypes from 'reducers/systemCodes/ethnicityTypesReducer'
+import raceTypes from 'reducers/systemCodes/raceTypesReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import peopleForm from 'reducers/peopleFormReducer'
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   crossReportForm,
   errors,
   ethnicityTypes,
+  raceTypes,
   incidentInformationForm,
   investigation,
   involvements,
