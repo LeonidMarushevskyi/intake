@@ -11,13 +11,7 @@ feature 'worker safety card' do
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
     )
-    stub_request(
-      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
-    stub_empty_history_for_screening(existing_screening)
-
-    visit screening_path(id: existing_screening.id)
+    stub_and_visit_show_screening(existing_screening)
     click_link 'Edit worker safety'
 
     within '#worker-safety-card.edit' do
@@ -49,13 +43,7 @@ feature 'worker safety card' do
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
     )
-    stub_request(
-      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
-    stub_empty_history_for_screening(existing_screening)
-
-    visit edit_screening_path(id: existing_screening.id)
+    stub_and_visit_edit_screening(existing_screening)
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
@@ -80,13 +68,7 @@ feature 'worker safety card' do
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
     )
-    stub_request(
-      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
-    stub_empty_history_for_screening(existing_screening)
-
-    visit screening_path(id: existing_screening.id)
+    stub_and_visit_show_screening(existing_screening)
     click_link 'Edit worker safety'
 
     within '#worker-safety-card.edit' do
@@ -104,7 +86,6 @@ feature 'worker safety card' do
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
 
     within '#worker-safety-card.edit' do
       click_button 'Save'
@@ -129,12 +110,7 @@ feature 'worker safety card' do
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
     )
-    stub_request(
-      :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-    ).and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
-
-    visit edit_screening_path(id: existing_screening.id)
+    stub_and_visit_edit_screening(existing_screening)
 
     within '#worker-safety-card.edit' do
       expect(page).to have_field('Additional safety information', with: 'Important safety stuff')
@@ -153,7 +129,6 @@ feature 'worker safety card' do
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
       .and_return(json_body(existing_screening.to_json))
-    stub_empty_relationships_for_screening(existing_screening)
 
     within '#worker-safety-card.edit' do
       click_button 'Save'

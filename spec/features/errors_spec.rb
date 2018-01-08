@@ -32,6 +32,7 @@ feature 'error pages' do
     scenario 'renders not found error page' do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
         .and_return(json_body('Screening is not found!!', status: 404))
+      stub_empty_history_for_screening(id: 1)
       visit edit_screening_path(id: 1)
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
@@ -45,6 +46,7 @@ feature 'error pages' do
     scenario 'renders not found error page' do
       stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_investigation_path(1)))
         .and_return(json_body('Investigation is not found!!', status: 404))
+      stub_empty_history_for_screening(id: 1)
       visit investigation_path(id: 1)
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
@@ -71,6 +73,7 @@ feature 'error pages' do
     scenario 'renders 403 page' do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
         .and_return(json_body('Forbidden!!', status: 403))
+      stub_empty_history_for_screening(id: 1)
       visit edit_screening_path(id: 1)
       expect(page).to have_current_path('/forbidden')
       expect(page).to have_text('This page is restricted.')

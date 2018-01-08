@@ -108,21 +108,30 @@ describe ScreeningRepository do
 
   describe '.history_of_involvements' do
     let(:screening_id) { '11' }
-    let(:response) { double(:response, body: screenings.to_json) }
-    let(:screening_one) { { id: '123456789' } }
-    let(:screening_two) { { id: '987654321' } }
-    let(:screenings) { [screening_one, screening_two] }
+    let(:cases) { [{ legacy_descriptor: '1234' }, { legacy_descriptor: '1235' }] }
+    let(:referrals) { [{ legacy_descriptor: '1236' }, { legacy_descriptor: '1237' }] }
+    let(:screenings) { [{ legacy_descriptor: '1238' }, { legacy_descriptor: '1239' }] }
+    let(:response) do
+      double(
+        :response,
+        body: { screenings: screenings, cases: cases, referrals: referrals }.to_json
+      )
+    end
 
     before do
-      expect(IntakeAPI).to receive(:make_api_call)
-        .with(security_token, "/api/v1/screenings/#{screening_id}/history_of_involvements", :get)
+      expect(FerbAPI).to receive(:make_api_call)
+        .with(security_token, "/screenings/#{screening_id}/history_of_involvements", :get)
         .and_return(response)
     end
 
     it 'returns the history of involvements' do
-      screenings = JSON.parse described_class.history_of_involvements(security_token, screening_id)
-      expect(screenings[0]['id']).to eq('123456789')
-      expect(screenings[1]['id']).to eq('987654321')
+      hoi = JSON.parse described_class.history_of_involvements(security_token, screening_id)
+      expect(hoi['cases'].first['legacy_descriptor']).to eq('1234')
+      expect(hoi['cases'].last['legacy_descriptor']).to eq('1235')
+      expect(hoi['referrals'].first['legacy_descriptor']).to eq('1236')
+      expect(hoi['referrals'].last['legacy_descriptor']).to eq('1237')
+      expect(hoi['screenings'].first['legacy_descriptor']).to eq('1238')
+      expect(hoi['screenings'].last['legacy_descriptor']).to eq('1239')
     end
   end
 
