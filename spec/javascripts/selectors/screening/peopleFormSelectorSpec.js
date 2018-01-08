@@ -713,7 +713,13 @@ describe('peopleFormSelectors', () => {
       expect(getNamesRequiredSelector(state, '1')).toEqual(true)
     })
 
-    it('returns false if roles does not include Victim', () => {
+    it('returns true if roles includes Collateral', () => {
+      const peopleForm = {1: {roles: {value: ['Collateral', 'Some role']}}}
+      const state = fromJS({peopleForm})
+      expect(getNamesRequiredSelector(state, '1')).toEqual(true)
+    })
+
+    it('returns false if roles does not include Victim or Collateral', () => {
       const peopleForm = {1: {roles: {value: ['other role', 'Some role']}}}
       const state = fromJS({peopleForm})
       expect(getNamesRequiredSelector(state, '1')).toEqual(false)
@@ -721,7 +727,7 @@ describe('peopleFormSelectors', () => {
   })
 
   describe('getPersonAlertErrorMessageSelector', () => {
-    it('returns alert if roles include sVictim and firstName is empty', () => {
+    it('returns alert if roles includes Victim and firstName is empty', () => {
       const peopleForm = {1: {roles: {value: ['Victim', 'Some role']}, last_name: {value: 'Smith', errors: []}}}
       const state = fromJS({peopleForm})
       expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
@@ -742,6 +748,29 @@ describe('peopleFormSelectors', () => {
         last_name: {value: 'Smith', errors: []}}}
       const state = fromJS({peopleForm})
       expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(undefined)
+    })
+
+    it('returns undefined if roles includes Collateral and lastName and firstName is not empty', () => {
+      const peopleForm = {1: {
+        roles: {value: ['Collateral', 'Some role']},
+        first_name: {value: 'John', errors: []},
+        last_name: {value: 'Smith', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(undefined)
+    })
+
+    it('returns alert if roles includes Collateral and firstName is empty', () => {
+      const peopleForm = {1: {roles: {value: ['Collateral', 'Some role']}, last_name: {value: 'Smith', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Collateral must be identified with a name, even Doe or Unknown.')
+    })
+
+    it('returns alert if roles includes Collateral and lastName is empty', () => {
+      const peopleForm = {1: {roles: {value: ['Collateral', 'Some role']}, first_name: {value: 'John', errors: []}}}
+      const state = fromJS({peopleForm})
+      expect(getPersonAlertErrorMessageSelector(state, '1')).toEqual(
+        'Collateral must be identified with a name, even Doe or Unknown.')
     })
   })
 
