@@ -15,6 +15,7 @@ import involvements from 'reducers/involvementsReducer'
 import languages from 'reducers/systemCodes/languagesReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
 import unableToDetermineCodes from 'reducers/systemCodes/unableToDetermineCodesReducer'
+import hispanicOriginCodes from 'reducers/systemCodes/hispanicOriginCodesReducer'
 import ethnicityTypes from 'reducers/systemCodes/ethnicityTypesReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   languages,
   locations,
   unableToDetermineCodes,
+  hispanicOriginCodes,
   narrativeForm,
   participants,
   peopleForm,
