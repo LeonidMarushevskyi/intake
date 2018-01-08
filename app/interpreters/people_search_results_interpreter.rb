@@ -104,5 +104,13 @@ class PeopleSearchResultsInterpreter # :nodoc:
         )
       end
     end
+
+    def interpret_sort(document)
+      document.tap do |doc|
+        doc['_source'].merge!(
+          'sort' => document['sort']
+        )
+      end
+    end
   end
 end

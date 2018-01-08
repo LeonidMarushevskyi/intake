@@ -5,13 +5,15 @@ import {
   fetchSuccess,
   search,
   setSearchTerm,
+  loadMoreResultsSuccess,
+  loadMoreResultsFailure,
 } from 'actions/peopleSearchActions'
 import peopleSearchReducer from 'reducers/peopleSearchReducer'
 import {Map, fromJS} from 'immutable'
 
 describe('peopleSearchReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
-  describe('on FETCH_PEOPLE_SEARCH', () => {
+  describe('on PEOPLE_SEARCH_FETCH', () => {
     it('updates the search term and total', () => {
       const action = search('newSearchTerm')
       expect(peopleSearchReducer(Map(), action)).toEqualImmutable(
@@ -22,7 +24,7 @@ describe('peopleSearchReducer', () => {
       )
     })
   })
-  describe('on FETCH_PEOPLE_SEARCH_COMPLETE', () => {
+  describe('on PEOPLE_SEARCH_FETCH_COMPLETE', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 0,
@@ -51,7 +53,7 @@ describe('peopleSearchReducer', () => {
       })
     })
   })
-  describe('on CLEAR_PEOPLE_SEARCH', () => {
+  describe('on PEOPLE_SEARCH_CLEAR', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 3,
@@ -68,7 +70,7 @@ describe('peopleSearchReducer', () => {
       )
     })
   })
-  describe('on SET_SEARCH_TERM_PEOPLE_SEARCH', () => {
+  describe('on SET_SEARCH_TERM', () => {
     const initialState = fromJS({
       searchTerm: 'newSearchTerm',
       total: 3,
@@ -83,6 +85,37 @@ describe('peopleSearchReducer', () => {
           results: ['result_one', 'result_two', 'result_three'],
         })
       )
+    })
+  })
+  describe('on LOAD_MORE_RESULTS_COMPLETE', () => {
+    const initialState = fromJS({
+      searchTerm: 'newSearchTerm',
+      total: 4,
+      results: ['result_one', 'result_two'],
+    })
+    describe('on success', () => {
+      const action = loadMoreResultsSuccess({
+        hits: {
+          hits: ['result_three', 'result_four'],
+        },
+      })
+      it('updates search results with hits', () => {
+        expect(peopleSearchReducer(initialState, action)).toEqualImmutable(
+          fromJS({
+            searchTerm: 'newSearchTerm',
+            total: 4,
+            results: [
+              'result_one', 'result_two', 'result_three', 'result_four',
+            ],
+          })
+        )
+      })
+    })
+    describe('on failure', () => {
+      const action = loadMoreResultsFailure()
+      it('leaves state unchanged', () => {
+        expect(peopleSearchReducer(initialState, action)).toEqualImmutable(initialState)
+      })
     })
   })
 })

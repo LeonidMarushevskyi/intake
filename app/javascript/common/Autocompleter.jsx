@@ -1,7 +1,7 @@
 import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
 import React from 'react'
-import ReactAutosuggest from 'react-autosuggest'
+import ReactAutosuggest from 'common/ReactAutosuggest'
 import SuggestionHeader from 'common/SuggestionHeader'
 const MIN_SEARCHABLE_CHARS = 2
 
@@ -23,48 +23,44 @@ export default class Autocompleter extends React.Component {
     if (isSelectable(suggestion)) {
       onClear()
       onChange('')
-      if (!suggestion.props) {
-        // Assume footer components handle their own clicks.
-        onSelect(suggestion)
-      }
+      onSelect(suggestion)
     }
   }
 
-  getSuggestionValue(suggestion) {
-    return `${suggestion.firstName} ${suggestion.lastName}`
-  }
-
-  shouldRenderSuggestions(value) {
-    return value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
-  }
-
   renderSuggestion(suggestion) {
-    if (suggestion.props && suggestion.type) {
-      // It's a component and we let React render it
-      return suggestion
+    if (suggestion.emptyResult) {
+      return false
     } else {
-      // It's a real result
       return (<PersonSuggestion {...suggestion} />)
     }
   }
 
   renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm} = this.props
+    const {total, searchTerm, results, footer} = this.props
+    let newChildren = null
+    if (children) {
+      const items = children.props.items.filter((item) => !item.emptyResult)
+      newChildren = React.cloneElement(children, {items})
+    }
     return (
       <div {...props}>
         <SuggestionHeader
-          currentNumberOfResults={total}
+          currentNumberOfResults={results.length}
           total={total}
           searchTerm={searchTerm}
         />
-        {children}
+        {newChildren}
+        {footer}
       </div>
     )
   }
 
+  shouldRenderSuggestions(value) {
+    return value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
+  }
+
   render() {
     const {
-      footer,
       id,
       onChange,
       onClear,
@@ -79,12 +75,12 @@ export default class Autocompleter extends React.Component {
     }
     return (
       <ReactAutosuggest
-        suggestions={footer ? [...results, footer] : results}
+        suggestions={[...results, {emptyResult: true}]}
         shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionsFetchRequested={({value}) => onSearch(value)}
         onSuggestionsClearRequested={onClear}
         onSuggestionSelected={this.onSuggestionSelected}
-        getSuggestionValue={this.getSuggestionValue}
+        getSuggestionValue={() => searchTerm}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
         renderSuggestionsContainer={this.renderSuggestionsContainer}
@@ -94,10 +90,7 @@ export default class Autocompleter extends React.Component {
 }
 
 Autocompleter.propTypes = {
-  footer: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.bool,
-  ]),
+  footer: PropTypes.element,
   id: PropTypes.string,
   isSelectable: PropTypes.func,
   onChange: PropTypes.func,
@@ -110,7 +103,7 @@ Autocompleter.propTypes = {
 }
 
 Autocompleter.defaultProps = {
-  footer: false,
+  footer: null,
   isSelectable: () => true,
 }
 

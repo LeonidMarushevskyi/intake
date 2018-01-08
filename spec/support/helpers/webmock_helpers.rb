@@ -10,23 +10,29 @@ module WebmockHelpers
       .and_return(json_body(screening.to_json))
   end
 
-  def stub_person_search(search_term, person_response)
-    stub_request(
-      :post,
-      dora_api_url(Rails.application.routes.url_helpers.dora_people_light_index_path)
+  def stub_person_search(search_term:, person_response:, search_after: nil)
+    request_path = dora_api_url(
+      Rails.application.routes.url_helpers.dora_people_light_index_path
     )
-      .with('body' => {
-              'query' => {
-                'bool' => {
-                  'must' => array_including(
-                    'multi_match' => hash_including('query' => search_term.downcase)
-                  )
-                }
-              },
-              '_source' => anything,
-              'highlight' => anything
-            })
-      .to_return(json_body(person_response.to_json, status: 200))
+    request_payload = {
+      'body' => {
+        'size' => 25,
+        'track_scores' => true,
+        'sort' => [{ '_score' => 'desc', '_uid' => 'desc' }],
+        'query' => {
+          'bool' => {
+            'must' => array_including(
+              'multi_match' => hash_including('query' => search_term.downcase)
+            )
+          }
+        },
+        '_source' => anything,
+        'highlight' => anything
+      }
+    }
+    request_payload['body'][:search_after] = search_after unless search_after.nil?
+    response_payload = json_body(person_response.to_json, status: 200)
+    stub_request(:post, request_path).with(request_payload).to_return(response_payload)
   end
 
   def as_json_without_root_id(model)

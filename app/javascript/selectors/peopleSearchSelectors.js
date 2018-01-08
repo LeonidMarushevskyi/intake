@@ -6,6 +6,10 @@ export const getSearchTermValueSelector = (state) => (
 export const getResultsTotalValueSelector = (state) => (
   getPeopleSearchSelector(state).get('total')
 )
+export const getLastResultsSortValueSelector = (state) => {
+  const lastResult = getPeopleSearchSelector(state).get('results').last()
+  return lastResult.get('sort').toJS()
+}
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')

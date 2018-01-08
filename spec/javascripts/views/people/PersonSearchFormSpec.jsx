@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
-import CreateUnknownPerson from 'screenings/CreateUnknownPerson'
+import AutocompleterFooter from 'common/AutocompleterFooter'
 import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
@@ -10,9 +10,29 @@ describe('PersonSearchForm', () => {
     spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
   })
 
-  const renderPersonSearchForm = ({...props}) => (
-    shallow(<PersonSearchForm {...props}/>)
-  )
+  function renderPersonSearchForm({
+    canCreateNewPerson,
+    isSelectable,
+    onLoadMoreResults,
+    onSelect = () => null,
+    total,
+    results,
+  }) {
+    return shallow(
+      <PersonSearchForm
+        canCreateNewPerson={canCreateNewPerson}
+        isSelectable={isSelectable}
+        onLoadMoreResults={onLoadMoreResults}
+        onSelect={onSelect}
+        onChange={() => null}
+        onClear={() => null}
+        onSearch={() => null}
+        results={results}
+        searchTerm=''
+        total={total}
+      />
+    )
+  }
 
   it('renders the autocompleter', () => {
     const component = renderPersonSearchForm({})
@@ -22,7 +42,7 @@ describe('PersonSearchForm', () => {
   })
 
   it('passes isSelectable from props to the autocompleter', () => {
-    const isSelectable = () => {}
+    const isSelectable = jasmine.createSpy('isSelectable')
     const component = renderPersonSearchForm({isSelectable})
     const autocompleter = component.find('Autocompleter')
     expect(autocompleter.props().isSelectable).toEqual(isSelectable)
@@ -35,17 +55,26 @@ describe('PersonSearchForm', () => {
     expect(autocompleter.props().onSelect).toEqual(onSelect)
   })
 
-  it('passes the footer if we can create new people', () => {
-    const onSelect = () => {}
-    const component = renderPersonSearchForm({canCreateNewPerson: true, onSelect})
-    const autocompleter = component.find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(<CreateUnknownPerson saveCallback={onSelect}/>)
-  })
-
-  it('does not pass a footer if we cannot create new people', () => {
-    const component = renderPersonSearchForm({canCreateNewPerson: false})
-    const autocompleter = component.find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(false)
+  it('renders the autocompleter footer', () => {
+    const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
+    const onSelect = jasmine.createSpy('onSelect')
+    const results = []
+    const total = 2
+    const autocompleter = renderPersonSearchForm({
+      canCreateNewPerson: true,
+      results,
+      total,
+      onSelect,
+      onLoadMoreResults,
+    }).find('Autocompleter')
+    expect(autocompleter.props().footer).toEqual(
+      <AutocompleterFooter
+        canCreateNewPerson={true}
+        canLoadMoreResults={true}
+        onLoadMoreResults={onLoadMoreResults}
+        onCreateNewPerson={onSelect}
+      />
+    )
   })
 
   it('renders the card header', () => {

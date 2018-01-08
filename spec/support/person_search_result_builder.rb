@@ -1,32 +1,5 @@
 # frozen_string_literal: true
 
-class PersonSearchResponseBuilder
-  def self.build
-    builder = new
-    yield(builder)
-    builder.search_response
-  end
-
-  def initialize
-    @search_response = {
-      hits: {
-        total: 0,
-        hits: []
-      }
-    }
-  end
-
-  def with_total(total)
-    @search_response[:hits][:total] = total
-  end
-
-  def with_hits
-    @search_response[:hits][:hits] = yield
-  end
-
-  attr_reader :search_response
-end
-
 class PersonSearchResultBuilder
   def self.build
     builder = new
@@ -51,7 +24,8 @@ class PersonSearchResultBuilder
         date_of_birth: '',
         legacy_descriptor: {},
         sensitivity_indicator: ''
-      }
+      },
+      sort: nil
     }
   end
 
@@ -117,6 +91,10 @@ class PersonSearchResultBuilder
 
   def without_sealed_or_sensitive
     @search_result[:_source][:sensitivity_indicator] = 'N'
+  end
+
+  def with_sort(sort)
+    @search_result[:sort] = sort
   end
 
   attr_reader :search_result

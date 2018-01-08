@@ -137,13 +137,13 @@ feature 'Create participant' do
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     %w[ma mar marg marge marge\ simpson].each do |search_text|
-      stub_person_search(search_text, marge_response)
+      stub_person_search(search_term: search_text, person_response: marge_response)
     end
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
     %w[ho hom home homer].each do |search_text|
-      stub_person_search(search_text, homer_response)
+      stub_person_search(search_term: search_text, person_response: homer_response)
     end
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)

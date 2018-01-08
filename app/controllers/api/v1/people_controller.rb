@@ -8,11 +8,12 @@ module Api
       respond_to :json
 
       def search
-        people_results = PersonSearchRepository.search(
-          session[:security_token],
-          params[:search_term]
+        search_response = PersonSearchRepository.search(
+          security_token: session[:security_token],
+          search_term: params[:search_term],
+          search_after: params[:search_after]
         )
-        render json: people_results
+        render json: search_response
       end
     end
   end

@@ -5855,13 +5855,6 @@ react-addons-test-utils@^15.6.0:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
 
-react-autosuggest@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/react-autosuggest/-/react-autosuggest-8.0.1.tgz#b2df95b69d5aa4541fee1521ad015a98c74d68f3"
-  dependencies:
-    react-autowhatever "^7.0.0"
-    shallow-equal "^1.0.0"
-
 react-autosuggest@^9.3.2:
   version "9.3.2"
   resolved "https://registry.yarnpkg.com/react-autosuggest/-/react-autosuggest-9.3.2.tgz#dd8c0fbe9c25aa94afe296180353647f6ecc10a7"
@@ -5870,18 +5863,18 @@ react-autosuggest@^9.3.2:
     react-autowhatever "^10.1.0"
     shallow-equal "^1.0.0"
 
+react-autowhatever@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-autowhatever/-/react-autowhatever-7.0.0.tgz#7ea19f8024183acf1568fc8e4b76c0d0cc250d00"
+  dependencies:
+    react-themeable "^1.1.0"
+    section-iterator "^2.0.0"
+
 react-autowhatever@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/react-autowhatever/-/react-autowhatever-10.1.0.tgz#41f6d69382437d3447a0a3c8913bb8ca2feaabc1"
   dependencies:
     prop-types "^15.5.8"
-    react-themeable "^1.1.0"
-    section-iterator "^2.0.0"
-
-react-autowhatever@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-autowhatever/-/react-autowhatever-7.0.0.tgz#7ea19f8024183acf1568fc8e4b76c0d0cc250d00"
-  dependencies:
     react-themeable "^1.1.0"
     section-iterator "^2.0.0"
 

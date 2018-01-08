@@ -1,10 +1,11 @@
 import {createReducer} from 'utils/createReducer'
 import {fromJS} from 'immutable'
 import {
-  CLEAR_PEOPLE_SEARCH,
-  FETCH_PEOPLE_SEARCH,
-  FETCH_PEOPLE_SEARCH_COMPLETE,
-  SET_SEARCH_TERM_PEOPLE_SEARCH,
+  PEOPLE_SEARCH_CLEAR,
+  PEOPLE_SEARCH_FETCH,
+  PEOPLE_SEARCH_FETCH_COMPLETE,
+  SET_SEARCH_TERM,
+  LOAD_MORE_RESULTS_COMPLETE,
 } from 'actions/peopleSearchActions'
 
 const initialState = fromJS({
@@ -13,11 +14,11 @@ const initialState = fromJS({
   total: 0,
 })
 export default createReducer(initialState, {
-  [FETCH_PEOPLE_SEARCH](state, {payload: {searchTerm}}) {
+  [PEOPLE_SEARCH_FETCH](state, {payload: {searchTerm}}) {
     return state.set('searchTerm', searchTerm)
       .set('total', 0)
   },
-  [FETCH_PEOPLE_SEARCH_COMPLETE](state, {payload: {results, total}, error}) {
+  [PEOPLE_SEARCH_FETCH_COMPLETE](state, {payload: {results, total}, error}) {
     if (error) {
       return state
     } else {
@@ -25,11 +26,18 @@ export default createReducer(initialState, {
         .set('total', total)
     }
   },
-  [CLEAR_PEOPLE_SEARCH](state, _action) {
+  [PEOPLE_SEARCH_CLEAR](state, _action) {
     return state.set('results', fromJS([]))
       .set('total', 0)
   },
-  [SET_SEARCH_TERM_PEOPLE_SEARCH](state, {payload: {searchTerm}}) {
+  [SET_SEARCH_TERM](state, {payload: {searchTerm}}) {
     return state.set('searchTerm', searchTerm)
+  },
+  [LOAD_MORE_RESULTS_COMPLETE](state, {payload: {results}, error}) {
+    if (error) {
+      return state
+    } else {
+      return state.update('results', (arr) => arr.concat(fromJS(results)))
+    }
   },
 })

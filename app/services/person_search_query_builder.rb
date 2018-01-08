@@ -3,32 +3,38 @@
 # PeopleSearchQueryBuilder is a service class responsible for creation
 # of an elastic search person search query
 class PersonSearchQueryBuilder
-  attr_reader :search_term
+  attr_reader :search_after
 
-  def self.format_search_term(term)
-    term
+  def initialize(search_term: '', search_after: nil)
+    @search_term = search_term
+    @search_after = search_after
+  end
+
+  def build
+    {
+      size: 25,
+      track_scores: true,
+      sort: [{ _score: 'desc', _uid: 'desc' }],
+      query: query,
+      _source: fields,
+      highlight: highlight
+    }.tap do |query|
+      query[:search_after] = search_after if search_after
+    end
+  end
+
+  private
+
+  def formatted_search_term
+    @search_term
       .downcase
       .gsub(/(\d+\s*)[^a-z0-9 ]+/, '\1') # Remove special chars after digits
       .gsub(/([a-z]+\s*)[^a-z0-9 ]+/, '\1 ') # Replace special chars after letters w/ space
   end
 
-  def initialize(search_term = '')
-    @search_term = self.class.format_search_term(search_term)
+  def query
+    { bool: { must: must } }
   end
-
-  def build
-    {
-      query: {
-        bool: {
-          must: must
-        }
-      },
-      _source: fields,
-      highlight: highlight
-    }
-  end
-
-  private
 
   def must
     return [base_query] unless Rails.configuration.intake[:client_only_search]
@@ -38,7 +44,7 @@ class PersonSearchQueryBuilder
   def base_query
     {
       multi_match: {
-        query: search_term,
+        query: formatted_search_term,
         type: 'cross_fields',
         operator: 'and',
         fields: %w[searchable_name searchable_date_of_birth ssn]
