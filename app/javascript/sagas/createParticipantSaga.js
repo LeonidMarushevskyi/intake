@@ -1,5 +1,5 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects'
-import {post} from 'utils/http'
+import {STATUS_CODES, post} from 'utils/http'
 import {
   CREATE_PERSON,
   createPersonSuccess,
@@ -29,7 +29,11 @@ export function* createParticipant({payload: {person}}) {
     yield put(fetchRelationships(screeningId))
     yield put(fetchHistoryOfInvolvements(screeningId))
   } catch (error) {
-    yield put(createPersonFailure(error.responseJSON))
+    if (error.status === STATUS_CODES.forbidden) {
+      yield call(alert, 'You are not authorized to add this person.')
+    } else {
+      yield put(createPersonFailure(error.responseJSON))
+    }
   }
 }
 export function* createParticipantSaga() {

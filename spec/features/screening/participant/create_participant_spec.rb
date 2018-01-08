@@ -178,6 +178,21 @@ feature 'Create participant' do
     end
   end
 
+  scenario 'API returns a 403 response when trying to add a person' do
+    visit edit_screening_path(id: existing_screening.id)
+
+    stub_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
+      .and_return(json_body('', status: 403))
+
+    within '#search-card', text: 'Search' do
+      fill_in_autocompleter 'Search for any person', with: 'Marge'
+      click_button 'Create a new person'
+    end
+
+    expect(accept_alert).to eq('You are not authorized to add this person.')
+  end
+
   context 'release_two enabled' do
     around do |example|
       Feature.run_with_activated(:release_two) do
