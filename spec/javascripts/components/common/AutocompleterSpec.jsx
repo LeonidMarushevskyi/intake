@@ -133,4 +133,27 @@ describe('<Autocompleter />', () => {
       expect(component.html()).toContain('Footer #1')
     })
   })
+
+  describe('#shouldRenderSuggestions', () => {
+    let instance
+    beforeEach(() => {
+      instance = renderAutocompleter({}).instance()
+    })
+
+    it('returns true when search value contains two non whitespace characters', () => {
+      expect(instance.shouldRenderSuggestions('aa')).toEqual(true)
+    })
+
+    it('returns true when search value contains a character then a whitespace', () => {
+      expect(instance.shouldRenderSuggestions('a ')).toEqual(true)
+    })
+
+    it('returns false when search value contains two whitespace characters', () => {
+      expect(instance.shouldRenderSuggestions('  ')).toEqual(false)
+    })
+
+    it('returns false when search value contains a whitespace then a character', () => {
+      expect(instance.shouldRenderSuggestions(' a')).toEqual(false)
+    })
+  })
 })

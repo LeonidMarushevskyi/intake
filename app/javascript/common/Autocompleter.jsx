@@ -55,6 +55,10 @@ export default class Autocompleter extends React.Component {
     )
   }
 
+  shouldRenderSuggestions(value) {
+    return value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
+  }
+
   render() {
     const {
       id,
@@ -72,7 +76,7 @@ export default class Autocompleter extends React.Component {
     return (
       <ReactAutosuggest
         suggestions={[...results, {emptyResult: true}]}
-        shouldRenderSuggestions={(value) => (value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS)}
+        shouldRenderSuggestions={this.shouldRenderSuggestions}
         onSuggestionsFetchRequested={({value}) => onSearch(value)}
         onSuggestionsClearRequested={onClear}
         onSuggestionSelected={this.onSuggestionSelected}
