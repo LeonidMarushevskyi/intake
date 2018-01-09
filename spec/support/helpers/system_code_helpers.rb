@@ -137,6 +137,15 @@ module SystemCodeHelpers
     ]
   end
 
+  def find_system_code(value:, category:)
+    system_code = system_codes.find do |code|
+      code[:category] == category && code[:value] == value
+    end
+    error_message = "cannot find system code for value: '#{value}', category: '#{category}'"
+    raise error_message unless system_code
+    system_code
+  end
+
   def stub_system_codes
     stub_request(:get, /#{ExternalRoutes.ferb_api_lov_path}/).and_return(
       json_body(system_codes, status: 200)
