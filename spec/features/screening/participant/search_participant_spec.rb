@@ -12,15 +12,12 @@ feature 'searching a participant in autocompleter' do
     ).and_return(json_body(existing_screening.to_json, status: 200))
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)
+    stub_system_codes
     visit edit_screening_path(id: existing_screening.id)
   end
 
   context 'search for a person' do
     scenario 'search result contains person information' do
-      languages = [
-        { name: 'French', primary: true },
-        { name: 'Italian' }
-      ]
       search_response = PersonSearchResponseBuilder.build do |response|
         response.with_total(1)
         response.with_hits do
@@ -33,28 +30,37 @@ feature 'searching a participant in autocompleter' do
               builder.with_gender('female')
               builder.with_dob(date_of_birth)
               builder.with_ssn('123231234')
-              builder.with_languages(languages)
+              builder.with_languages do
+                [
+                  LanguageSearchResultBuilder.build('French') do |language|
+                    language.with_primary true
+                  end,
+                  LanguageSearchResultBuilder.build('Italian')
+                ]
+              end
               builder.with_phone_number(number: '971-287-6774', type: 'Home')
-              builder.with_address(
-                legacy_id: '',
-                legacy_source_table: '',
-                street_number: 123,
-                street_name: 'Fake St',
-                state_code: 'NY',
-                city: 'Springfield',
-                zip: '11222',
-                type: ''
-              )
-              builder.with_race_and_ethinicity(
-                hispanic_origin_code: 'Y',
-                race_codes: [
-                  { description: 'White - European*' },
-                  { description: 'Alaskan Native*' }
-                ],
-                hispanic_codes: [{ description: 'Central American' }],
-                hispanic_unable_to_determine_code: ''
-              )
+              builder.with_addresses([{
+                                       street_number: '123',
+                                       street_name: 'Fake St',
+                                       state_code: 'NY',
+                                       city: 'Springfield',
+                                       zip: '11222',
+                                       type: ''
+                                     }])
+              builder.with_race_and_ethnicity do
+                RaceEthnicitySearchResultBuilder.build do |race_ethnicity|
+                  race_ethnicity.with_hispanic_origin_code('Y')
+                  race_ethnicity.with_hispanic_unable_to_determine_code('')
+                  race_ethnicity.with_race_codes do
+                    [
+                      RaceCodesSearchResultBuilder.build('White'),
+                      RaceCodesSearchResultBuilder.build('American Indian or Alaska Native')
+                    ]
+                  end
+                end
+              end
               builder.with_sensitivity
+              builder.with_sort('1')
             end
           ]
         end
@@ -186,7 +192,7 @@ feature 'searching a participant in autocompleter' do
               builder.with_middle_name('Jacqueline')
               builder.with_last_name('Simpson')
               builder.with_name_suffix('md')
-              builder.with_address({})
+              builder.with_addresses({})
             end
           ]
         end
