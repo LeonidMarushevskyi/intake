@@ -82,21 +82,22 @@ export const getResultAddressSelector = (result) => createSelector(
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
-  .map((result) => {
+  .map((fullResult) => {
+    const result = fullResult.get('_source')
     const phoneNumber = result.getIn(['phone_numbers', 0], null)
     return Map({
       legacy_id: result.get('id'),
-      firstName: result.getIn(['highlight', 'first_name'], result.get('first_name')),
-      lastName: result.getIn(['highlight', 'last_name'], result.get('last_name')),
+      firstName: fullResult.getIn(['highlight', 'first_name', 0], result.get('first_name')),
+      lastName: fullResult.getIn(['highlight', 'last_name', 0], result.get('last_name')),
       middleName: result.get('middle_name'),
       nameSuffix: result.get('name_suffix'),
       legacyDescriptor: result.get('legacy_descriptor'),
       gender: result.get('gender'),
       languages: getResultLanguagesSelector(state, result),
       races: getResultRacesSelector(state, result),
-      ethnicity: result.get('ethnicity'),
-      dateOfBirth: result.getIn(['highlight', 'date_of_birth'], result.get('date_of_birth')),
-      ssn: formatSSN(result.getIn(['highlight', 'ssn'], result.get('ssn'))),
+      ethnicity: getResultEthnicitiesSelector(state, result),
+      dateOfBirth: fullResult.getIn(['highlight', 'date_of_birth', 0], result.get('date_of_birth')),
+      ssn: formatSSN(fullResult.getIn(['highlight', 'ssn', 0], result.get('ssn'))),
       address: getResultAddressSelector(result),
       phoneNumber: phoneNumber && Map({
         number: phoneNumber.get('number'),
