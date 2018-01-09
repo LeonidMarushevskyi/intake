@@ -41,7 +41,7 @@ describe('PersonInformationForm', () => {
   it('renders the legacySourceDescription', () => {
     const legacySource = renderPersonForm({
       legacySourceDescription: 'from some legacy source',
-    }).find('.c-dark-grey.double-gap-top')
+    }).find('.c-dark-grey.double-gap-bottom')
     expect(legacySource.exists()).toEqual(true)
     expect(legacySource.text()).toContain('from some legacy source')
   })
