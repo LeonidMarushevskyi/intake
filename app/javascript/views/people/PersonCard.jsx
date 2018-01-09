@@ -16,7 +16,7 @@ const PersonCard = ({
   personName,
   show,
 }) => (
-  <div className={`card ${mode} double-gap-top`} id={`participants-card-${personId}`}>
+  <div className={`card ${mode} double-gap-bottom`} id={`participants-card-${personId}`}>
     <PersonCardHeader
       informationFlag={informationFlag}
       onDelete={onDelete}

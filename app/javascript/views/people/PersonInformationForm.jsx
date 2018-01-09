@@ -26,7 +26,7 @@ const PersonInformationForm = ({
       Boolean(legacySourceDescription) &&
         <div className='row'>
           <div className='col-md-12'>
-            <div className='c-dark-grey double-gap-top'>{legacySourceDescription}</div>
+            <div className='c-dark-grey double-gap-bottom'>{legacySourceDescription}</div>
           </div>
         </div>
     }
