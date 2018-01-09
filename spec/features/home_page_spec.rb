@@ -20,7 +20,7 @@ feature 'home page' do
               builder.with_last_name('Simpson')
               builder.with_ssn('123-23-1234')
               builder.with_gender('female')
-              builder.with_address(
+              builder.with_addresses(
                 street_number: 123,
                 street_name: 'Fake St',
                 state_code: 'CA',
