@@ -13,7 +13,7 @@ class PersonSearchRepository
       )
       search_body = response.body
       raise search_body unless response.status == 200
-      build_response(search_body)
+      search_body
     end
 
     private
@@ -22,23 +22,6 @@ class PersonSearchRepository
       PersonSearchQueryBuilder.new(
         search_term: search_term, search_after: search_after
       ).build
-    end
-
-    def build_response(search_body)
-      {
-        'hits' => {
-          'total' => search_body.dig('hits', 'total'),
-          'hits' => search_hits(search_body)
-        }
-      }
-    end
-
-    def search_hits(search_body)
-      search_body.dig('hits', 'hits').map do |document|
-        PeopleSearchResultsInterpreter.interpret_highlights(document)
-        PeopleSearchResultsInterpreter.interpret_sort(document)
-        document['_source']
-      end
     end
   end
 end

@@ -102,27 +102,7 @@ describe PersonSearchRepository do
               search_term: search_term,
               search_after: search_after
             )
-          ).to match a_hash_including(
-            'hits' => a_hash_including(
-              'total' => 456,
-              'hits' => array_including(
-                a_hash_including(
-                  'id' => '1',
-                  'sensitive' => false,
-                  'sealed' => false,
-                  'highlight' => {},
-                  'legacy_id' => '1'
-                ),
-                a_hash_including(
-                  'id' => '2',
-                  'sensitive' => false,
-                  'sealed' => false,
-                  'highlight' => {},
-                  'legacy_id' => '2'
-                )
-              )
-            )
-          )
+          ).to eq(response.body)
         end
       end
 
@@ -152,32 +132,12 @@ describe PersonSearchRepository do
               search_term: search_term,
               search_after: nil
             )
-          ).to match a_hash_including(
-            'hits' => a_hash_including(
-              'total' => 456,
-              'hits' => array_including(
-                a_hash_including(
-                  'id' => '1',
-                  'sensitive' => false,
-                  'sealed' => false,
-                  'highlight' => {},
-                  'legacy_id' => '1'
-                ),
-                a_hash_including(
-                  'id' => '2',
-                  'sensitive' => false,
-                  'sealed' => false,
-                  'highlight' => {},
-                  'legacy_id' => '2'
-                )
-              )
-            )
-          )
+          ).to eq(response.body)
         end
       end
     end
 
-    context 'when response from DORA is successful' do
+    context 'when response from DORA is unsuccessful' do
       let(:response) { double(:response, body: 'Some error payload', status: 401) }
       let(:request_body) do
         {
