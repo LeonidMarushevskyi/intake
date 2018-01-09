@@ -14,6 +14,11 @@ import {
 describe('peopleSearchSelectors', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
+  const languageLovs = [
+    {code: '1', value: 'English'},
+    {code: '2', value: 'French'},
+    {code: '3', value: 'Italian'},
+  ]
   const ethnicityTypeLovs = [
     {code: '1', value: 'European'},
     {code: '2', value: 'French'},
@@ -28,6 +33,13 @@ describe('peopleSearchSelectors', () => {
     {code: 'A', value: 'Abandoned'},
     {code: 'I', value: 'Unknown'},
     {code: 'K', value: 'Unknown'},
+  ]
+  const hispanicOriginCodes = [
+    {code: 'Y', value: 'yes'},
+    {code: 'N', value: 'no'},
+  ]
+  const usStates = [
+    {code: '1', value: 'state'},
   ]
 
   describe('getLastResultsSortValueSelector', () => {
@@ -48,12 +60,6 @@ describe('peopleSearchSelectors', () => {
   })
 
   describe('getResultLanguagesSelector', () => {
-    const languageLovs = [
-      {code: '1', value: 'English'},
-      {code: '2', value: 'French'},
-      {code: '3', value: 'Italian'},
-    ]
-
     it('maps languages to lov values by id, sorting by primary', () => {
       const result = fromJS({
         languages: [
@@ -106,10 +112,6 @@ describe('peopleSearchSelectors', () => {
   })
 
   describe('getResultAddressSelector', () => {
-    const usStates = [
-      {id: '1', value: 'state'},
-    ]
-
     it('returns the city, state, zip, empty type, and a joined street address', () => {
       const result = fromJS({
         addresses: [{
@@ -225,6 +227,7 @@ describe('peopleSearchSelectors', () => {
       const peopleSearch = {
         results: [{
           _source: {
+            id: '1',
             first_name: 'Bart',
             last_name: 'Simpson',
             middle_name: 'Jacqueline',
@@ -261,10 +264,19 @@ describe('peopleSearchSelectors', () => {
           },
         }],
       }
-      const state = fromJS({languages: languageLovs, peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults).toEqualImmutable(
         fromJS([{
+          legacy_id: '1',
           firstName: 'Bart',
           lastName: 'Simpson',
           middleName: 'Jacqueline',
@@ -276,18 +288,17 @@ describe('peopleSearchSelectors', () => {
           },
           languages: ['Italian', 'French'],
           races: [
-            {race: 'White', race_detail: 'European'},
-            {race: 'American Indian or Alaska Native'},
+            {race: 'Race 1', race_detail: 'European'},
           ],
           ethnicity: {
-            hispanic_latino_origin: 'Yes',
+            hispanic_latino_origin: 'yes',
             ethnicity_detail: ['Central American'],
           },
           dateOfBirth: '1990-02-13',
           ssn: '123-45-6789',
           address: {
             city: 'Flushing',
-            state: 'NM',
+            state: 'state',
             zip: '11344',
             type: '',
             streetAddress: '234 Fake Street',
@@ -333,12 +344,20 @@ describe('peopleSearchSelectors', () => {
           },
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'address'])).toEqualImmutable(
         Map({
           city: 'Flushing',
-          state: 'NM',
+          state: 'state',
           zip: '11344',
           type: '',
           streetAddress: '234 Fake Street',
@@ -355,11 +374,21 @@ describe('peopleSearchSelectors', () => {
     it('maps person search attributes when phone numbers and addresses are empty', () => {
       const peopleSearch = {
         results: [{
-          phone_numbers: [],
-          addresses: [],
+          _source: {
+            phone_numbers: [],
+            addresses: [],
+          },
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'address'])).toEqual(null)
       expect(peopleResults.getIn([0, 'phoneNumber'])).toEqual(null)
@@ -368,21 +397,31 @@ describe('peopleSearchSelectors', () => {
     it('maps person search hightlight fields', () => {
       const peopleSearch = {
         results: [{
-          first_name: 'Bart',
-          last_name: 'Simpson',
-          date_of_birth: '1990-02-13',
-          ssn: '123456789',
-          addresses: [],
-          phone_numbers: [],
+          _source: {
+            first_name: 'Bart',
+            last_name: 'Simpson',
+            date_of_birth: '1990-02-13',
+            ssn: '123456789',
+            addresses: [],
+            phone_numbers: [],
+          },
           highlight: {
-            first_name: '<em>Bar</em>t',
-            last_name: 'Sim<em>pson</em>',
-            ssn: '<em>123456789</em>',
-            date_of_birth: '<em>1990</em>-02-13',
+            first_name: ['<em>Bar</em>t'],
+            last_name: ['Sim<em>pson</em>'],
+            ssn: ['<em>123456789</em>'],
+            date_of_birth: ['<em>1990</em>-02-13'],
           },
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
       expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
@@ -393,10 +432,20 @@ describe('peopleSearchSelectors', () => {
     it('formats ssn', () => {
       const peopleSearch = {
         results: [{
-          ssn: '123456789',
+          _source: {
+            ssn: '123456789',
+          },
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'ssn'])).toEqual('123-45-6789')
     })
@@ -404,13 +453,23 @@ describe('peopleSearchSelectors', () => {
     it('formats highlighted ssn', () => {
       const peopleSearch = {
         results: [{
-          ssn: '123456789',
+          _source: {
+            ssn: '123456789',
+          },
           highlight: {
-            ssn: '<em>123456789</em>',
+            ssn: ['<em>123456789</em>'],
           },
         }],
       }
-      const state = fromJS({peopleSearch})
+      const state = fromJS({
+        languages: languageLovs,
+        ethnicityTypes: ethnicityTypeLovs,
+        raceTypes: raceTypeLovs,
+        unableToDetermineCodes,
+        hispanicOriginCodes,
+        usStates,
+        peopleSearch,
+      })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'ssn'])).toEqual('<em>123-45-6789</em>')
     })
