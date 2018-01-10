@@ -27,6 +27,15 @@ System dependencies:
 * Node version: > 6.3.1, npm
 * The accelerator app is built on Rails 5.0.0
 * Database creation: This app is a frontend app for intake accelerator and does not host it’s own database. Instead, in “real” environments it integrates with an api. 
+* Jenkinsfile uses the following parameters:
+
+| Parameter               | Usage                                                                                                  |
+| ---------               | -----                                                                                                  |
+| DOCKER_USER             | username for uploading image to dockerhub                                                              |
+| DOCKER_PASSWORD         | password for uploading image to dockerhub                                                              |
+| DEPLOY_JOB              | name of Jenkins pipleline that deploys the image to target environment                                 |
+| EMAIL_NOTIFICATION_LIST | Comma and/or line separated list of email addresses to be notified if the pipeline fails.              |
+| VERSION_STRATEGY        | CALCULATE:Offset - use current git tag + (.$BUILD_NUMBER - Offset); Anything else - use current git tag |
 
 ### Tools included with the accelerator
 * All the features of the latest Rails release(currently at 5.0.0)

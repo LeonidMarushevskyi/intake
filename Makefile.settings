@@ -47,6 +47,7 @@ RELEASE_ARGS = -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) $(VERBOSE_FLAG)
 TEST_ARGS = -p $(TEST_PROJECT) -f $(TEST_COMPOSE_FILE) $(VERBOSE_FLAG)
 VERBOSE_FLAG = $(if $(VERBOSE_ARG),--verbose,)
 NOPULL_FLAG = $(if $(NOPULL_ARG),,--pull)
+BUILD_ARGS = --build-arg BUILD_DATE=$$BUILD_DATE --build-arg BUILD_NUMBER=$$BUILD_NUMBER  --build-arg VERSION=$$VERSION --build-arg VCS_REF=$$VCS_REF
 
 # Extract extra arguments
 ifeq ($(firstword $(MAKECMDGOALS)),$(filter $(firstword $(MAKECMDGOALS)),release test clean compose dcompose))

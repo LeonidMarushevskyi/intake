@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 node('Slave') {
     checkout scm
     def branch = env.BRANCH_NAME ?: 'master'
@@ -6,6 +8,10 @@ node('Slave') {
     def pipelineStatus = 'SUCCESS'
     def successColor = '11AB1B'
     def failureColor = '#FF0000'
+    SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    def buildDate = dateFormatGmt.format(new Date())
+
+    /* dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT")); */
 
     try {
         emailList = EMAIL_NOTIFICATION_LIST
@@ -20,6 +26,17 @@ node('Slave') {
         }
 
         if (branch == 'master') {
+            int offset = VERSION_STRATEGY.split(':')[1]
+            int buildNumber = (BUILD_NUMBER.toInteger() - offset).toString()
+            VERSION = sh(
+                script: 'git describe --tags $(git rev-list --tags --max-count=1)',
+                returnStdout: true
+            )
+            VCS_REF = sh(
+                script: 'git rev-parse --short HEAD',
+                returnStdout: true
+            )
+
             stage('Build') {
                 curStage = 'Build'
                 sh 'make build'
@@ -27,14 +44,14 @@ node('Slave') {
 
             stage('Release') {
                 curStage = 'Release'
-                sh 'make release'
+                withEnv(["BUILD_DATE=${buildDate}","BUILD_NUMBER=${BUILD_NUMBER}","VERSION=${VERSION}","VCS_REF=${VCS_REF}"]) {
+                    sh 'make release'
+                }
             }
 
             stage('Publish') {
                 curStage = 'Publish'
                 if(VERSION_STRATEGY.startsWith('CALCULATE')) {
-                    int offset = VERSION_STRATEGY.split(':')[1]
-                    int buildNumber = (BUILD_NUMBER.toInteger() - offset).toString()
                     sh "make tag latest \$(git describe --tags \$(git rev-list --tags --max-count=1)).${buildNumber}"
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
