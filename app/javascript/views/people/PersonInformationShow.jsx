@@ -43,7 +43,7 @@ const PersonInformationShow = ({
           <div className='col-md-5'>
             {dateOfBirth && <ShowField label='Date of birth'>{dateOfBirth}</ShowField>}
             {approximateAge && <ShowField label='Approximate Age'>{approximateAge}</ShowField>}
-            <ShowField label='Social security number'>{ssn}</ShowField>
+            <ShowField label='Social security number' errors={ssn.errors}>{ssn.value}</ShowField>
           </div>
         </div>
       </div>
@@ -74,7 +74,10 @@ PersonInformationShow.propTypes = {
   }),
   races: PropTypes.string,
   roles: PropTypes.arrayOf(PropTypes.string),
-  ssn: PropTypes.string,
+  ssn: PropTypes.shape({
+    errors: PropTypes.array,
+    value: PropTypes.string,
+  }),
 }
 
 export default PersonInformationShow

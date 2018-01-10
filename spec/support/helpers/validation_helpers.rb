@@ -26,38 +26,60 @@ module ValidationHelpers
   end
 
   def validate_message_as_user_interacts_with_person_card(
-    person_name:, error_message:, invalid_person:, person_updates:
+    error_message: nil, person:, person_updates:, error_messages: nil
   )
-    within('.card.edit', text: person_name) { expect(page).not_to have_content(error_message) }
+    error_messages ||= [error_message]
+    person_name = "#{person.first_name} #{person.last_name}"
+    within('.card.edit', text: person_name) do
+      error_messages.each do |message|
+        expect(page).not_to have_content(message)
+      end
+    end
 
     stub_request(
       :put,
-      intake_api_url(ExternalRoutes.intake_api_participant_path(invalid_person.id))
-    ).and_return(json_body(invalid_person.to_json))
+      intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
+    ).and_return(json_body(person.to_json))
 
     within('.card.edit', text: person_name) { click_button 'Save' }
 
     within('.card.show', text: person_name) do
-      expect(page).to have_content(error_message)
+      error_messages.each do |message|
+        expect(page).to have_content(message, count: 1)
+      end
       click_link 'Edit'
     end
 
-    within '.card.edit', text: person_name { expect(page).to have_content(error_message) }
+    within('.card.edit', text: person_name) do
+      error_messages.each do |message|
+        expect(page).to have_content(message, count: 1)
+      end
+    end
 
     yield # make field valid to clear errors
 
-    invalid_person.update_attributes(person_updates)
+    # Participant is not an ActiveModel, so we can't use assign_attributes
+    person_updates.each do |attribute, value|
+      person.send("#{attribute}=", value)
+    end
+
     stub_request(
       :put,
-      intake_api_url(ExternalRoutes.intake_api_participant_path(invalid_person.id))
-    ).and_return(json_body(invalid_person.to_json))
+      intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
+    ).and_return(json_body(person.to_json))
 
-    within '.card.edit', text: person_name do
-      expect(page).not_to have_content(error_message)
+    within('.card.edit', text: person_name) do
+      error_messages.each do |message|
+        expect(page).not_to have_content(message)
+      end
       click_button 'Save'
     end
 
-    within '.card.show', text: person_name { expect(page).not_to have_content(error_message) }
+    within('.card.show', text: person_name) do
+      error_messages.each do |message|
+        expect(page).not_to have_content(message)
+      end
+    end
   end
 
   def validate_message_as_user_interacts_with_date_field(

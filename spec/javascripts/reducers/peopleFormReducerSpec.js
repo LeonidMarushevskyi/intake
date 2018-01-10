@@ -93,7 +93,7 @@ describe('peopleFormReducer', () => {
             last_name: {value: 'last name one', touched: false},
             name_suffix: {value: 'name suffix one'},
             phone_numbers: [],
-            ssn: {value: 'ssn one'},
+            ssn: {value: 'ssn one', touched: false},
             sensitive: {value: true},
             sealed: {value: true},
             races: {
@@ -134,7 +134,7 @@ describe('peopleFormReducer', () => {
               number: {value: '1234567890'},
               type: {value: 'Home'},
             }],
-            ssn: {value: 'ssn two'},
+            ssn: {value: 'ssn two', touched: false},
             sensitive: {value: false},
             sealed: {value: false},
             races: {},
@@ -227,10 +227,12 @@ describe('peopleFormReducer', () => {
         participant_one: {
           first_name: {touched: false},
           last_name: {touched: false},
+          ssn: {touched: false},
         },
         participant_two: {
           first_name: {touched: false},
           last_name: {touched: false},
+          ssn: {touched: false},
         },
       })
       const action = touchAllFields('participant_one')
@@ -238,10 +240,12 @@ describe('peopleFormReducer', () => {
         participant_one: {
           first_name: {touched: true},
           last_name: {touched: true},
+          ssn: {touched: true},
         },
         participant_two: {
           first_name: {touched: false},
           last_name: {touched: false},
+          ssn: {touched: false},
         },
       }))
     })
@@ -293,7 +297,7 @@ describe('peopleFormReducer', () => {
         middle_name: {value: 'middle name one'},
         last_name: {value: 'last name one'},
         name_suffix: {value: 'name suffix one'},
-        ssn: {value: 'ssn one'},
+        ssn: {value: 'ssn one', touched: true},
         sensitive: {value: true},
         sealed: {value: true},
         phone_numbers: [],
@@ -352,7 +356,7 @@ describe('peopleFormReducer', () => {
           middle_name: {value: 'middle name one'},
           last_name: {value: 'last name one'},
           name_suffix: {value: 'name suffix one'},
-          ssn: {value: 'ssn one'},
+          ssn: {value: 'ssn one', touched: true},
           sensitive: {value: true},
           sealed: {value: true},
           phone_numbers: [],
@@ -376,7 +380,7 @@ describe('peopleFormReducer', () => {
           middle_name: {value: 'middle name two'},
           last_name: {value: 'last name two', touched: false},
           name_suffix: {value: 'name suffix two'},
-          ssn: {value: 'ssn two'},
+          ssn: {value: 'ssn two', touched: false},
           sensitive: {value: false},
           sealed: {value: false},
           phone_numbers: [{

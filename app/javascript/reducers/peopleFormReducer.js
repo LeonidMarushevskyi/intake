@@ -27,20 +27,6 @@ const buildAddresses = (addresses) => {
   }
 }
 
-const buildName = (name) => {
-  if (name) {
-    return {
-      value: name,
-      touched: false,
-    }
-  } else {
-    return {
-      value: '',
-      touched: false,
-    }
-  }
-}
-
 const buildPhoneNumbers = (phoneNumbers) => {
   if (phoneNumbers) {
     return phoneNumbers.map(({id, number, type}) => ({
@@ -93,16 +79,16 @@ const buildPerson = ({
   approximate_age: {value: approximate_age},
   approximate_age_units: {value: approximate_age_units},
   date_of_birth: {value: date_of_birth},
-  first_name: buildName(first_name),
+  first_name: {value: first_name, touched: false},
   gender: {value: gender},
   languages: {value: languages},
-  last_name: buildName(last_name),
+  last_name: {value: last_name, touched: false},
   legacy_descriptor: {value: legacy_descriptor || {}},
   middle_name: {value: middle_name},
   name_suffix: {value: name_suffix},
   phone_numbers: buildPhoneNumbers(phone_numbers),
   roles: {value: roles},
-  ssn: {value: ssn},
+  ssn: {value: ssn, touched: false},
   sensitive: {value: sensitive},
   sealed: {value: sealed},
   races: buildRaces(races),
@@ -132,6 +118,7 @@ export default createReducer(Map(), {
     const fieldsWithTouch = [
       'first_name',
       'last_name',
+      'ssn',
     ]
     return fieldsWithTouch.reduce((newState, field) => newState.setIn([personId, field, 'touched'], true), state)
   },

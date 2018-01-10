@@ -3,37 +3,23 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 describe('PersonInformationForm', () => {
-  const firstNameStub = {value: '', errors: []}
-  const lastNameStub = {value: '', errors: []}
   function renderPersonForm({
     personId = '123',
-    alertErrorMessage,
-    roles,
-    roleOptions,
-    legacySourceDescription,
-    firstName = firstNameStub,
-    middleName,
-    lastName = lastNameStub,
-    nameSuffix,
     nameSuffixOptions = [],
-    ssn,
-    onChange,
-    onBlur,
+    errors = {},
+    firstName = {},
+    lastName = {},
+    ssn = {},
+    ...args
   }) {
     const props = {
       personId,
-      alertErrorMessage,
-      roles,
-      roleOptions,
-      legacySourceDescription,
-      firstName,
-      middleName,
-      lastName,
-      nameSuffix,
       nameSuffixOptions,
+      errors,
+      firstName,
+      lastName,
       ssn,
-      onChange,
-      onBlur,
+      ...args,
     }
     return shallow(<PersonInformationForm {...props}/>)
   }
@@ -153,10 +139,18 @@ describe('PersonInformationForm', () => {
 
   it('renders the SSN field', () => {
     const field = renderPersonForm({
-      ssn: 'example-ssn',
+      ssn: {value: 'example-ssn'},
     }).find('MaskedInputField[label="Social security number"]')
     expect(field.exists()).toEqual(true)
     expect(field.props().value).toEqual('example-ssn')
+  })
+
+  it('renders errors for the SSN field', () => {
+    const field = renderPersonForm({
+      ssn: {errors: ['this is not correct']},
+    }).find('MaskedInputField[label="Social security number"]')
+    expect(field.exists()).toEqual(true)
+    expect(field.props().errors).toEqual(['this is not correct'])
   })
 
   it('changing the ssn fires onChange', () => {
@@ -166,26 +160,31 @@ describe('PersonInformationForm', () => {
       .simulate('change', {target: {value: '111-11-1111'}})
     expect(onChange).toHaveBeenCalledWith('ssn', '111-11-1111')
   })
+
   it('displays an errorMessage alert if one is passed', () => {
     const alert = 'Alleged victims must be identified with a name, even Doe or Unknown, and must be under the age of 18'
     const component = renderPersonForm({alertErrorMessage: alert})
     expect(component.find('AlertErrorMessage').exists()).toEqual(true)
     expect(component.find('AlertErrorMessage').props().message).toEqual(alert)
   })
+
   it('does not display an errorMessage alert if one is not passed', () => {
     const component = renderPersonForm({})
     expect(component.find('AlertErrorMessage').exists()).toEqual(false)
   })
+
   it('renders the first name required flag', () => {
     const field = renderPersonForm({firstName: {value: 'a sample first name', errors: [], required: true}})
       .find('InputField[label="First Name"]')
     expect(field.props().required).toEqual(true)
   })
+
   it('renders the last name required flag', () => {
     const field = renderPersonForm({lastName: {value: 'a sample last name', errors: [], required: true}})
       .find('InputField[label="Last Name"]')
     expect(field.props().required).toEqual(true)
   })
+
   it('blurring the last name fires onBlur', () => {
     const onBlur = jasmine.createSpy('onBlur')
     renderPersonForm({onBlur})
@@ -193,11 +192,20 @@ describe('PersonInformationForm', () => {
       .simulate('blur')
     expect(onBlur).toHaveBeenCalledWith('last_name')
   })
+
   it('blurring the first name fires onBlur', () => {
     const onBlur = jasmine.createSpy('onBlur')
     renderPersonForm({onBlur})
       .find('InputField[label="First Name"]')
       .simulate('blur')
     expect(onBlur).toHaveBeenCalledWith('first_name')
+
+    it('blurring the ssn fires onBlur', () => {
+      const onBlur = jasmine.createSpy('onBlur')
+      renderPersonForm({onBlur})
+        .find('MaskedInputField[label="Social security number"]')
+        .simulate('blur')
+      expect(onBlur).toHaveBeenCalledWith('ssn')
+    })
   })
 })
