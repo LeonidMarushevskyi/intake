@@ -126,7 +126,6 @@ feature 'Submit Screening' do
         )
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
@@ -226,8 +225,6 @@ feature 'Submit Screening' do
         }
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
-        visit edit_screening_path(existing_screening.id)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
