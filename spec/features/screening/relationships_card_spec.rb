@@ -16,14 +16,34 @@ feature 'Relationship card' do
 
   context 'a screening without participants' do
     scenario 'edit an existing screening' do
-      stub_and_visit_edit_screening(existing_screening)
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json))
+      stub_request(
+        :get,
+        intake_api_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id)
+        )
+      ).and_return(json_body([].to_json, status: 200))
+      visit edit_screening_path(id: existing_screening.id)
+
       within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Search for people and add them to see their relationships.')
       end
     end
 
     scenario 'view an existing screening' do
-      stub_and_visit_show_screening(existing_screening)
+      stub_request(
+        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
+      ).and_return(json_body(existing_screening.to_json))
+      stub_request(
+        :get,
+        intake_api_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(existing_screening.id)
+        )
+      ).and_return(json_body([].to_json, status: 200))
+      visit screening_path(id: existing_screening.id)
+
       within '#relationships-card', text: 'Relationships' do
         expect(page).to have_content('Search for people and add them to see their relationships.')
       end
@@ -101,7 +121,6 @@ feature 'Relationship card' do
 
     describe 'editing a screening' do
       scenario 'loads relationships on initial page load' do
-        stub_empty_history_for_screening(participants_screening)
         visit edit_screening_path(id: participants_screening.id)
 
         within '#relationships-card.card.show', text: 'Relationships' do

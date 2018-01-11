@@ -47,7 +47,10 @@ feature 'Incident Information Validations' do
   context 'On the show page' do
     let(:show_card) { '#incident-information-card.show' }
     before do
-      stub_and_visit_show_screening(screening)
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+        .and_return(json_body(screening.to_json, status: 200))
+
+      visit screening_path(id: screening.id)
     end
 
     scenario 'user sees no error message when incident date field is empty' do

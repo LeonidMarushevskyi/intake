@@ -25,7 +25,6 @@ import screeningDecisionForm from 'reducers/screeningDecisionFormReducer'
 import screenings from 'reducers/screeningsReducer'
 import screeningPage from 'reducers/screeningPageReducer'
 import staff from 'reducers/staffReducer'
-import screenResponseTimes from 'reducers/systemCodes/screenResponseTimesReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
 import {combineReducers} from 'redux-immutable'
 import userInfo from 'reducers/userInfoReducer'
@@ -58,7 +57,6 @@ const rootReducer = combineReducers({
   screenings,
   screeningPage,
   staff,
-  screenResponseTimes,
   workerSafetyForm,
   userInfo,
 })
