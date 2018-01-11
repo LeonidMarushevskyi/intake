@@ -1,6 +1,12 @@
 import {Map, List, fromJS} from 'immutable'
 import {findByCode} from 'selectors'
-import {createSelector} from 'reselect'
+
+const buildSelector = (...funcs) => (
+  (arg) => {
+    var selector = funcs.pop()
+    return selector(...(funcs.map((f) => (f(arg)))))
+  }
+)
 
 const getPeopleSearchSelector = (state) => state.get('peopleSearch')
 export const getSearchTermValueSelector = (state) => (
@@ -14,7 +20,7 @@ export const getLastResultsSortValueSelector = (state) => {
   return lastResult.get('sort').toJS()
 }
 
-export const getResultLanguagesSelector = (state, result) => createSelector(
+export const getResultLanguagesSelector = (state, result) => buildSelector(
   (state) => state.get('languages'),
   () => (result.get('languages') || List()),
   (statusCodes, languages) => (
@@ -30,7 +36,7 @@ export const getResultLanguagesSelector = (state, result) => createSelector(
 export const getIsSensitiveSelector = (result) => (result.get('sensitivity_indicator', '').toUpperCase() === 'S')
 export const getIsSealedSelector = (result) => (result.get('sensitivity_indicator', '').toUpperCase() === 'R')
 
-export const getResultRacesSelector = (state, result) => createSelector(
+export const getResultRacesSelector = (state, result) => buildSelector(
   (state) => state.get('ethnicityTypes'),
   (state) => state.get('raceTypes'),
   (state) => state.get('unableToDetermineCodes'),
@@ -49,7 +55,7 @@ export const getResultRacesSelector = (state, result) => createSelector(
   }
 )(state)
 
-export const getResultEthnicitiesSelector = (state, result) => createSelector(
+export const getResultEthnicitiesSelector = (state, result) => buildSelector(
   (state) => state.get('hispanicOriginCodes'),
   () => (result.getIn(['race_ethnicity', 'hispanic_codes']) || List()),
   () => (result.getIn(['race_ethnicity', 'hispanic_origin_code'])),
@@ -59,7 +65,7 @@ export const getResultEthnicitiesSelector = (state, result) => createSelector(
   })
 )(state)
 
-export const getResultAddressSelector = (result) => createSelector(
+export const getResultAddressSelector = (result) => buildSelector(
   (result) => (result.get('addresses') || List()).isEmpty(),
   (result) => result.getIn(['addresses', 0, 'city']),
   (result) => result.getIn(['addresses', 0, 'state_code']),
