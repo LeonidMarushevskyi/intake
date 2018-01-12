@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable ModuleLength
 module SystemCodeHelpers
   def allegation_type_codes
     [{
@@ -72,20 +73,86 @@ module SystemCodeHelpers
     ]
   end
 
-  def stub_system_codes
-    system_codes = [
+  def response_time_codes
+    [
+      { code: '1520', value: 'Immediate', category: 'screen_response_time', sub_category: nil }
+    ]
+  end
+
+  def us_state_codes
+    [
+      { code: '1', value: 'California', category: 'us_state' },
+      { code: '2', value: 'New York', category: 'us_state' }
+    ]
+  end
+
+  def race_codes
+    [
+      { code: '1', value: 'White', category: 'race_type' },
+      { code: '2', value: 'American Indian or Alaska Native', category: 'race_type' }
+    ]
+  end
+
+  def ethnicity_codes
+    []
+  end
+
+  def language_codes
+    [
+      { code: '1', value: 'French', category: 'language' },
+      { code: '2', value: 'Italian', category: 'language' },
+      { code: '3', value: 'English', category: 'language' }
+    ]
+  end
+
+  def hispanic_origin_codes
+    [
+      { code: 'Y', value: 'Yes', category: 'hispanic_origin_code' }
+    ]
+  end
+
+  def unable_to_determine_codes
+    [
+      { code: 'A', value: 'Abandoned', category: 'unable_to_determine_code' },
+      { code: 'I', value: 'Unknown', category: 'unable_to_determine_code' },
+      { code: 'K', value: 'Unknown', category: 'unable_to_determine_code' }
+    ]
+  end
+
+  def system_codes
+    [
       *allegation_type_codes,
       *contact_purpose_codes,
       *contact_status_codes,
       *communication_method_codes,
       *contact_location_codes,
-      *county_type_codes
+      *county_type_codes,
+      *response_time_codes,
+      *race_codes,
+      *ethnicity_codes,
+      *language_codes,
+      *hispanic_origin_codes,
+      *us_state_codes,
+      *unable_to_determine_codes
     ]
+  end
+
+  def find_system_code(value:, category:)
+    system_code = system_codes.find do |code|
+      code[:category] == category && code[:value] == value
+    end
+    error_message = "cannot find system code for value: '#{value}', category: '#{category}'"
+    raise error_message unless system_code
+    system_code
+  end
+
+  def stub_system_codes
     stub_request(:get, /#{ExternalRoutes.ferb_api_lov_path}/).and_return(
       json_body(system_codes, status: 200)
     )
   end
 end
+# rubocop:enable ModuleLength
 
 RSpec.configure do |config|
   config.include SystemCodeHelpers, type: :feature

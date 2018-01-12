@@ -12,7 +12,12 @@ import errors from 'reducers/errorsReducer'
 import incidentInformationForm from 'reducers/incidentInformationFormReducer'
 import investigation from 'reducers/investigationReducer'
 import involvements from 'reducers/involvementsReducer'
+import languages from 'reducers/systemCodes/languagesReducer'
 import locations from 'reducers/systemCodes/locationsReducer'
+import unableToDetermineCodes from 'reducers/systemCodes/unableToDetermineCodesReducer'
+import hispanicOriginCodes from 'reducers/systemCodes/hispanicOriginCodesReducer'
+import ethnicityTypes from 'reducers/systemCodes/ethnicityTypesReducer'
+import raceTypes from 'reducers/systemCodes/raceTypesReducer'
 import narrativeForm from 'reducers/narrativeFormReducer'
 import participants from 'reducers/participantsReducer'
 import peopleForm from 'reducers/peopleFormReducer'
@@ -28,6 +33,7 @@ import staff from 'reducers/staffReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
 import {combineReducers} from 'redux-immutable'
 import userInfo from 'reducers/userInfoReducer'
+import usStates from 'reducers/systemCodes/usStatesReducer'
 
 const rootReducer = combineReducers({
   allegationsForm,
@@ -41,10 +47,15 @@ const rootReducer = combineReducers({
   countyAgencies,
   crossReportForm,
   errors,
+  ethnicityTypes,
+  raceTypes,
   incidentInformationForm,
   investigation,
   involvements,
+  languages,
   locations,
+  unableToDetermineCodes,
+  hispanicOriginCodes,
   narrativeForm,
   participants,
   peopleForm,
@@ -59,6 +70,7 @@ const rootReducer = combineReducers({
   staff,
   workerSafetyForm,
   userInfo,
+  usStates,
 })
 
 export default rootReducer
