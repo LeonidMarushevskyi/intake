@@ -299,43 +299,47 @@ feature 'login perry v1' do
   end
 
   scenario 'user uses session token when communicating to API' do
-    screening = FactoryGirl.create(:screening, name: 'My Screening')
-    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-      .and_return(json_body(screening.to_json, status: 200))
-    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
-      .and_return(json_body([].to_json, status: 200))
-    stub_empty_history_for_screening(screening)
+    Feature.run_with_activated(:authentication) do
+      screening = FactoryGirl.create(:screening, name: 'My Screening')
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+        .and_return(json_body(screening.to_json, status: 200))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body([].to_json, status: 200))
+      stub_request(:get, auth_validation_url)
+        .and_return(json_body(auth_artifact.to_json, status: 200))
+      stub_empty_history_for_screening(screening)
 
-    bobs_token = 'BOBS_TOKEN'
-    Capybara.using_session(:bob) do
-      stub_request(:get, "http://www.example.com/authn/validate?token=#{bobs_token}")
-        .and_return(status: 200)
-      visit root_path(token: bobs_token)
-    end
+      bobs_token = 'BOBS_TOKEN'
+      Capybara.using_session(:bob) do
+        stub_request(:get, "http://www.example.com/authn/validate?token=#{bobs_token}")
+          .and_return(status: 200)
+        visit root_path(token: bobs_token)
+      end
 
-    alexs_token = 'ALEXS_TOKEN'
-    Capybara.using_session(:alex) do
-      stub_request(:get, "http://www.example.com/authn/validate?token=#{alexs_token}")
-        .and_return(status: 200)
-      visit root_path(token: alexs_token)
-    end
+      alexs_token = 'ALEXS_TOKEN'
+      Capybara.using_session(:alex) do
+        stub_request(:get, "http://www.example.com/authn/validate?token=#{alexs_token}")
+          .and_return(status: 200)
+        visit root_path(token: alexs_token)
+      end
 
-    Capybara.using_session(:bob) do
-      visit screening_path(screening.id)
-      expect(page).to have_content 'My Screening'
-      expect(
-        a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(headers: { 'Authorization' => bobs_token })
-      ).to have_been_made
-    end
+      Capybara.using_session(:bob) do
+        visit screening_path(screening.id)
+        expect(page).to have_content 'My Screening'
+        expect(
+          a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(headers: { 'Authorization' => bobs_token })
+        ).to have_been_made
+      end
 
-    Capybara.using_session(:alex) do
-      visit screening_path(screening.id)
-      expect(page).to have_content 'My Screening'
-      expect(
-        a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-        .with(headers: { 'Authorization' => alexs_token })
-      ).to have_been_made
+      Capybara.using_session(:alex) do
+        visit screening_path(screening.id)
+        expect(page).to have_content 'My Screening'
+        expect(
+          a_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .with(headers: { 'Authorization' => alexs_token })
+        ).to have_been_made
+      end
     end
   end
 end
