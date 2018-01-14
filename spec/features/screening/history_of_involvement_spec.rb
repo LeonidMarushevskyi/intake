@@ -541,6 +541,58 @@ feature 'History card' do
     context 'release two is enabled' do
       around do |example|
         Feature.run_with_activated(:release_two) do
+          screenings[0][:county_name] = 'el_dorado'
+          screenings[0][:county] = nil
+          screenings[0][:assigned_social_worker] = { first_name: nil, last_name: 'Bob Smith' }
+          screenings[0][:reporter] = { first_name: 'Alex', last_name: 'Hanson' }
+          screenings[0][:all_people][0][:last_name] = 'Bob Smith'
+          screenings[1][:county_name] = 'el_dorado'
+          screenings[1][:county] = nil
+          referrals[0][:response_time] = 'Immediate'
+          referrals[0][:county_name] = 'Madera'
+          referrals[0][:county] = nil
+          referrals[0][:allegations] = [{
+            allegation_description: 'General Neglect',
+            disposition_description: 'Entered in Error',
+            perpetrator_first_name: 'Perpetrator1',
+            perpetrator_last_name: 'p1LastName',
+            victim_first_name: 'Victim1',
+            victim_last_name: 'v1LastName'
+          }]
+          referrals[0][:access_limitation] = { limited_access_code: 'R' }
+          referrals[1][:county_name] = 'San Francisco'
+          referrals[1][:county] = nil
+          referrals[1][:allegations] = [{
+            allegation_description: 'Severe Neglect',
+            perpetrator_first_name: 'Perpetrator2',
+            perpetrator_last_name: 'p2LastName',
+            victim_first_name: 'Victim2',
+            victim_last_name: 'v2LastName'
+          }]
+          referrals[1][:access_limitation] = { limited_access_code: 'S' }
+          cases[0][:county_name] = 'El Dorado'
+          cases[0][:county] = nil
+          cases[0][:service_component] = 'Family Reunification'
+          cases[0][:parents] = [
+            { first_name: 'Parent1', last_name: 'p1Last', id: 'AbiQA5q0Bo' },
+            { first_name: 'Parent2', last_name: 'p2Last', id: 'CaTvuzq0Bo' }
+          ]
+          cases[0][:access_limitation] = { limited_access_code: 'R' }
+          cases[1][:county_name] = 'Plumas'
+          cases[1][:county] = nil
+          cases[1][:parents] = [
+            { first_name: 'Parent3', last_name: 'p3Last', id: 'ABC123' },
+            { first_name: 'Parent4', last_name: 'p4Last', id: 'ABCDEFG' }
+          ]
+          cases[1][:access_limitation] = { limited_access_code: 'N' }
+          screening_involvement = { referrals: referrals, screenings: screenings, cases: cases }
+
+          stub_request(
+            :get,
+            intake_api_url(
+              ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id)
+            )
+          ).and_return(json_body(screening_involvement.to_json, status: 200))
           example.run
         end
       end
@@ -551,8 +603,8 @@ feature 'History card' do
         expect(
           a_request(
             :get,
-            ferb_api_url(
-              ExternalRoutes.ferb_api_screening_history_of_involvements_path(existing_screening.id)
+            intake_api_url(
+              ExternalRoutes.intake_api_history_of_involvements_path(existing_screening.id)
             )
           )
         ).to have_been_made
