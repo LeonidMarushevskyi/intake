@@ -6,10 +6,14 @@ import {
   getFormattedScreeningsSelector,
 } from 'selectors/screening/historyOfInvolvementSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
+import * as IntakeConfig from 'common/config'
 
 describe('historyOfInvolvementSelectors', () => {
-  beforeEach(() => jasmine.addMatchers(matchers))
   const involvements = {cases: ['A'], referrals: ['B', 'C'], screenings: ['D', 'E', 'F']}
+  beforeEach(() => {
+    jasmine.addMatchers(matchers)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
+  })
 
   describe('getHistoryIsEmptySelector', () => {
     it('returns true when history is not present', () => {
@@ -36,7 +40,7 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedCasesSelector(state).getIn([0, 'caseId'])).toEqual('ABC123')
     })
 
-    it('returns the county_name as county', () => {
+    it('returns the county description as county', () => {
       const cases = [{county: {id: '1101', description: 'Amador'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'county'])).toEqual('Amador')
@@ -305,7 +309,7 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedScreeningsSelector(state).getIn([0, 'dateRange'])).toEqual('01/02/2002 - 02/03/2002')
     })
 
-    it('returns the last name for the worker when present', () => {
+    it('returns the name for the worker when present', () => {
       const screenings = [{assigned_social_worker: {first_name: 'John', last_name: 'Smith'}}]
       const state = fromJS({involvements: {screenings}})
       expect(getFormattedScreeningsSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
