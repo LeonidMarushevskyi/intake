@@ -78,52 +78,50 @@ const getReferralCountyAndStatus = (referral, responseTimes) => {
   }
 }
 
-const getReferralAllegationPeopleAndRoles = (allegation) => {
-  if (IntakeConfig.isFeatureActive('release_two')) {
-    return Map({
-      victim: nameFormatter({
-        first_name: allegation.get('victim_first_name'),
-        middle_name: allegation.get('victim_middle_name'),
-        last_name: allegation.get('victim_last_name'),
-        name_suffix: allegation.get('victim_name_suffix'),
-        name_default: ''}),
-      perpetrator: nameFormatter({
-        first_name: allegation.get('perpetrator_first_name'),
-        middle_name: allegation.get('perpetrator_middle_name'),
-        last_name: allegation.get('perpetrator_last_name'),
-        name_suffix: allegation.get('perpetrator_name_suffix'),
-        name_default: ''}),
-      allegations: allegation.get('allegation_description', ''),
-      disposition: formatDisposition(allegation.get('disposition_description')),
-    })
-  } else {
-    return Map({
-      victim: nameFormatter({
-        first_name: allegation.getIn(['victim', 'first_name']),
-        middle_name: allegation.getIn(['victim', 'middle_name']),
-        last_name: allegation.getIn(['victim', 'last_name']),
-        name_suffix: allegation.getIn(['victim', 'name_suffix']),
-        name_default: ''}),
-      perpetrator: nameFormatter({
-        first_name: allegation.getIn(['perpetrator', 'first_name']),
-        middle_name: allegation.getIn(['perpetrator', 'middle_name']),
-        last_name: allegation.getIn(['perpetrator', 'last_name']),
-        name_suffix: allegation.getIn(['perpetrator', 'name_suffix']),
-        name_default: ''}),
-      allegations: allegation.getIn(['type', 'description'], ''),
-      disposition: formatDisposition(allegation.getIn(['disposition', 'description'])),
-    })
-  }
-}
+const getSnapshotReferralAllegations = (allegation) => Map({
+  victim: nameFormatter({
+    first_name: allegation.get('victim_first_name'),
+    middle_name: allegation.get('victim_middle_name'),
+    last_name: allegation.get('victim_last_name'),
+    name_suffix: allegation.get('victim_name_suffix'),
+    name_default: ''}),
+  perpetrator: nameFormatter({
+    first_name: allegation.get('perpetrator_first_name'),
+    middle_name: allegation.get('perpetrator_middle_name'),
+    last_name: allegation.get('perpetrator_last_name'),
+    name_suffix: allegation.get('perpetrator_name_suffix'),
+    name_default: ''}),
+  allegations: allegation.get('allegation_description', ''),
+  disposition: formatDisposition(allegation.get('disposition_description')),
+})
+const getHotlineReferralAllegations = (allegation) => Map({
+  victim: nameFormatter({
+    first_name: allegation.getIn(['victim', 'first_name']),
+    middle_name: allegation.getIn(['victim', 'middle_name']),
+    last_name: allegation.getIn(['victim', 'last_name']),
+    name_suffix: allegation.getIn(['victim', 'name_suffix']),
+    name_default: ''}),
+  perpetrator: nameFormatter({
+    first_name: allegation.getIn(['perpetrator', 'first_name']),
+    middle_name: allegation.getIn(['perpetrator', 'middle_name']),
+    last_name: allegation.getIn(['perpetrator', 'last_name']),
+    name_suffix: allegation.getIn(['perpetrator', 'name_suffix']),
+    name_default: ''}),
+  allegations: allegation.getIn(['type', 'description'], ''),
+  disposition: formatDisposition(allegation.getIn(['disposition', 'description'])),
+})
 
 export const getFormattedReferralsSelector = createSelector(
   getReferralsSelector,
   getScreenResponseTimesSelector,
   (referrals, responseTimes) => referrals.map((referral) => {
+    const snapshot = IntakeConfig.isFeatureActive('release_two')
     const {county, status} = getReferralCountyAndStatus(referral, responseTimes)
     const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const peopleAndRoles = referral.get('allegations', List())
-      .map((allegation) => getReferralAllegationPeopleAndRoles(allegation))
+      .map((allegation) => ((snapshot) ?
+        getSnapshotReferralAllegations(allegation) :
+        getHotlineReferralAllegations(allegation)))
     return fromJS({
       county: county,
       dateRange: dateRangeFormatter(referral.toJS()),
