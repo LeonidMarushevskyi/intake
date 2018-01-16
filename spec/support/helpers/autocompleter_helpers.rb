@@ -26,11 +26,9 @@ module AutocompleterHelpers
     if split
       value.split('').each do |character|
         find_field(locator).native.send_keys(character)
-        sleep 0.3
       end
     else
       fill_in locator, with: value
-      sleep 0.5
     end
   end
 
