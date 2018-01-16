@@ -11,7 +11,6 @@ import {
   COMMUNICATION_METHODS,
   COMMUNITY_CARE_LICENSING,
   COUNTY_LICENSING,
-  DEPARTMENT_OF_JUSTICE,
   DISTRICT_ATTORNEY,
   LAW_ENFORCEMENT,
 } from 'enums/CrossReport'
@@ -25,7 +24,6 @@ const CrossReportForm = ({
   county_id,
   countyAgencies,
   countyLicensing,
-  departmentOfJustice,
   districtAttorney,
   hasAgencies,
   errors,
@@ -120,16 +118,6 @@ const CrossReportForm = ({
           </div>
           <div className='col-md-6'>
             <ul className='unstyled-list'>
-              <li key={DEPARTMENT_OF_JUSTICE}>
-                <CrossReportAgencyField
-                  type={DEPARTMENT_OF_JUSTICE}
-                  selected={departmentOfJustice.selected}
-                  value={departmentOfJustice.agency.value}
-                  countyAgencies={countyAgencies[DEPARTMENT_OF_JUSTICE]}
-                  errors={errors[DEPARTMENT_OF_JUSTICE]}
-                  actions={agencyFieldActions}
-                />
-              </li>
               <li key={COUNTY_LICENSING}>
                 <CrossReportAgencyField
                   type={COUNTY_LICENSING}
@@ -209,7 +197,6 @@ CrossReportForm.propTypes = {
   countyAgencies: PropTypes.object,
   countyLicensing: PropTypes.object.isRequired,
   county_id: PropTypes.string.isRequired,
-  departmentOfJustice: PropTypes.object.isRequired,
   districtAttorney: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   hasAgencies: PropTypes.bool.isRequired,
