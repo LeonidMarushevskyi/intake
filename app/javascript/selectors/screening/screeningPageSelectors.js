@@ -6,6 +6,7 @@ import {getErrorsSelector as narrativeErrorsSelector} from 'selectors/screening/
 import {getErrorsSelector as screeningInformationErrorsSelector} from 'selectors/screening/screeningInformationShowSelectors'
 import {getErrorsSelector as screeningDecisionErrorsSelector} from 'selectors/screening/decisionShowSelectors'
 import {getErrorsSelector as incidentInformationErrorsSelector} from 'selectors/screening/incidentInformationShowSelector'
+import {getErrorsSelector as personErrorsSelector} from 'selectors/screening/personShowSelectors'
 
 export const getCardModeValueSelector = (state, card) => (
   state.getIn(['screeningPage', 'cards', card])
@@ -35,4 +36,10 @@ export const getScreeningHasErrorsSelector = (state) => (
     .merge(screeningDecisionErrorsSelector(state))
     .merge(incidentInformationErrorsSelector(state))
     .some((errors) => !errors.isEmpty())
+)
+
+export const getPeopleHaveErrorsSelector = (state) => (
+  state.get('participants').map((person) => (
+    personErrorsSelector(state, person.get('id')).some((errors) => !errors.isEmpty())
+  )).some((errorsPresent) => errorsPresent)
 )
