@@ -119,6 +119,12 @@ module SystemCodeHelpers
     ]
   end
 
+  def address_types
+    [
+      { code: '1', value: 'Home', category: 'address_type' }
+    ]
+  end
+
   def system_codes
     [
       *allegation_type_codes,
@@ -133,7 +139,8 @@ module SystemCodeHelpers
       *language_codes,
       *hispanic_origin_codes,
       *us_state_codes,
-      *unable_to_determine_codes
+      *unable_to_determine_codes,
+      *address_types
     ]
   end
 
