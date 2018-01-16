@@ -3,7 +3,6 @@ import {
   COMMUNITY_CARE_LICENSING,
   COUNTY_LICENSING,
   CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
-  DEPARTMENT_OF_JUSTICE,
   DISTRICT_ATTORNEY,
   LAW_ENFORCEMENT,
 } from 'enums/CrossReport'
@@ -15,7 +14,6 @@ import {
   getAgencyRequiredErrors,
   getCommunityCareLicensingErrors,
   getCountyLicensingErrors,
-  getDepartmentOfJusticeErrors,
   getDistrictAttorneyErrors,
   getLawEnforcementErrors,
 } from 'selectors/screening/crossReportShowSelectors'
@@ -25,7 +23,6 @@ import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {areCrossReportsRequired} from 'utils/allegationsHelper'
 
 export const getDistrictAttorneyFormSelector = (state) => (state.getIn(['crossReportForm', DISTRICT_ATTORNEY]) || Map())
-export const getDepartmentOfJusticeFormSelector = (state) => (state.getIn(['crossReportForm', DEPARTMENT_OF_JUSTICE]) || Map())
 export const getLawEnforcementFormSelector = (state) => (state.getIn(['crossReportForm', LAW_ENFORCEMENT]) || Map())
 export const getCountyLicensingFormSelector = (state) => (state.getIn(['crossReportForm', COUNTY_LICENSING]) || Map())
 export const getCommunityCareLicensingFormSelector = (state) => (state.getIn(['crossReportForm', COMMUNITY_CARE_LICENSING]) || Map())
@@ -33,13 +30,11 @@ export const getCommunityCareLicensingFormSelector = (state) => (state.getIn(['c
 const getSelectedAgenciesSelector = createSelector(
   getCommunityCareLicensingFormSelector,
   getCountyLicensingFormSelector,
-  getDepartmentOfJusticeFormSelector,
   getDistrictAttorneyFormSelector,
   getLawEnforcementFormSelector,
-  (communityCareLicensing, countyLicensing, departmentOfJustice, districtAttorney, lawEnforcement) => fromJS({
+  (communityCareLicensing, countyLicensing, districtAttorney, lawEnforcement) => fromJS({
     [COMMUNITY_CARE_LICENSING]: communityCareLicensing,
     [COUNTY_LICENSING]: countyLicensing,
-    [DEPARTMENT_OF_JUSTICE]: departmentOfJustice,
     [DISTRICT_ATTORNEY]: districtAttorney,
     [LAW_ENFORCEMENT]: lawEnforcement,
   }).filter((agencyForm, _type) => agencyForm.get('selected'))
@@ -83,7 +78,6 @@ export const getErrorsSelector = createSelector(
     method: combineCompact(isRequiredIfCreate(method, 'Please select cross-report communication method.', () => (agencies.size !== 0))),
     [COMMUNITY_CARE_LICENSING]: combineCompact(() => (getCommunityCareLicensingErrors(agencies))),
     [COUNTY_LICENSING]: combineCompact(() => (getCountyLicensingErrors(agencies))),
-    [DEPARTMENT_OF_JUSTICE]: combineCompact(() => (getDepartmentOfJusticeErrors(agencies))),
     [DISTRICT_ATTORNEY]: combineCompact(() => (
       getDistrictAttorneyErrors(agencies) ||
       getAgencyRequiredErrors(DISTRICT_ATTORNEY, agencies, allegations)
