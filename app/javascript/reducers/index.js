@@ -1,3 +1,4 @@
+import addressTypes from 'reducers/systemCodes/addressTypesReducer'
 import allegationsForm from 'reducers/allegationsFormReducer'
 import allegationTypes from 'reducers/systemCodes/allegationTypesReducer'
 import communicationMethods from 'reducers/systemCodes/communicationMethodsReducer'
@@ -36,6 +37,7 @@ import userInfo from 'reducers/userInfoReducer'
 import usStates from 'reducers/systemCodes/usStatesReducer'
 
 const rootReducer = combineReducers({
+  addressTypes,
   allegationsForm,
   allegationTypes,
   communicationMethods,
