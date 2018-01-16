@@ -39,7 +39,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
       ethnicity: mapEthnicities(state, result),
       dateOfBirth: fullResult.getIn(['highlight', 'date_of_birth', 0], result.get('date_of_birth')),
       ssn: formatSSN(fullResult.getIn(['highlight', 'ssn', 0], result.get('ssn'))),
-      address: mapAddress(result),
+      address: mapAddress(state, result),
       phoneNumber: phoneNumber && Map({
         number: phoneNumber.get('number'),
         type: phoneNumber.get('type'),

@@ -37,6 +37,10 @@ describe('peopleSearchHelper', () => {
     {code: 'N', value: 'no'},
   ]
 
+  const addressTypes = [
+    {code: '1', value: 'address type'},
+  ]
+
   describe('mapLanguages', () => {
     it('maps languages to lov values by id, sorting by primary', () => {
       const result = fromJS({
@@ -90,19 +94,43 @@ describe('peopleSearchHelper', () => {
   })
 
   describe('mapAddress', () => {
-    it('returns the city, state, zip, empty type, and a joined street address', () => {
+    it('returns the city, state, zip, type, and a joined street address', () => {
       const result = fromJS({
         addresses: [{
           city: 'city',
           state_code: 'state',
           zip: 'zip',
-          type: 'blah',
+          type: {id: '1'},
           street_number: '123',
           street_name: 'C Street',
 
         }],
       })
-      const addressResult = mapAddress(result)
+      const state = fromJS({addressTypes})
+      const addressResult = mapAddress(state, result)
+      expect(addressResult).toEqualImmutable(fromJS({
+        city: 'city',
+        state: 'state',
+        zip: 'zip',
+        type: 'address type',
+        streetAddress: '123 C Street',
+      }))
+    })
+
+    it('returns city state, zip, a joined street address, and empty string when type is undefined', () => {
+      const result = fromJS({
+        addresses: [{
+          city: 'city',
+          state_code: 'state',
+          zip: 'zip',
+          type: {id: 'not a value to be found'},
+          street_number: '123',
+          street_name: 'C Street',
+
+        }],
+      })
+      const state = fromJS({addressTypes})
+      const addressResult = mapAddress(state, result)
       expect(addressResult).toEqualImmutable(fromJS({
         city: 'city',
         state: 'state',

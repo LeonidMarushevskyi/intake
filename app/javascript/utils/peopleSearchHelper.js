@@ -46,22 +46,25 @@ export const mapEthnicities = (state, result) => buildSelector(
   })
 )(state)
 
-export const mapAddress = (result) => buildSelector(
-  (result) => (result.get('addresses') || List()).isEmpty(),
-  (result) => result.getIn(['addresses', 0, 'city']),
-  (result) => result.getIn(['addresses', 0, 'state_code']),
-  (result) => result.getIn(['addresses', 0, 'zip']),
-  (result) => result.getIn(['addresses', 0, 'street_number']),
-  (result) => result.getIn(['addresses', 0, 'street_name']),
-  (addressesEmpty, city, stateCode, zip, streetNumber, streetName) => {
+export const mapAddress = (state, result) => buildSelector(
+  (state) => state.get('addressTypes'),
+  () => (result.get('addresses') || List()).isEmpty(),
+  () => result.getIn(['addresses', 0, 'city']),
+  () => result.getIn(['addresses', 0, 'state_code']),
+  () => result.getIn(['addresses', 0, 'zip']),
+  () => result.getIn(['addresses', 0, 'type', 'id']),
+  () => result.getIn(['addresses', 0, 'street_number']),
+  () => result.getIn(['addresses', 0, 'street_name']),
+  (addressTypes, addressesEmpty, city, stateCode, zip, typeId, streetNumber, streetName) => {
     if (addressesEmpty) { return null } else {
+      const type = findByCode(addressTypes.toJS(), typeId).value
       return Map({
         city: city,
         state: stateCode,
         zip: zip,
-        type: '', // TODO: Implement as part of #INT-537
+        type: type ? type : '',
         streetAddress: `${streetNumber} ${streetName}`,
       })
     }
   }
-)(result)
+)(state)
