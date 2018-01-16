@@ -15,6 +15,8 @@ describe('PersonSearchForm', () => {
     isSelectable,
     onLoadMoreResults,
     onSelect = () => null,
+    onChange = () => null,
+    onClear = () => null,
     total,
     results,
   }) {
@@ -24,8 +26,8 @@ describe('PersonSearchForm', () => {
         isSelectable={isSelectable}
         onLoadMoreResults={onLoadMoreResults}
         onSelect={onSelect}
-        onChange={() => null}
-        onClear={() => null}
+        onChange={onChange}
+        onClear={onClear}
         onSearch={() => null}
         results={results}
         searchTerm=''
@@ -33,6 +35,15 @@ describe('PersonSearchForm', () => {
       />
     )
   }
+
+  it('componentWillUnmount', () => {
+    const onClear = jasmine.createSpy('onClear')
+    const onChange = jasmine.createSpy('onChange')
+    const component = renderPersonSearchForm({onClear, onChange})
+    component.unmount()
+    expect(onClear).toHaveBeenCalled()
+    expect(onChange).toHaveBeenCalled()
+  })
 
   it('renders a card anchor', () => {
     const component = renderPersonSearchForm({})
