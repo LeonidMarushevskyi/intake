@@ -217,7 +217,7 @@ feature 'Relationship card' do
           fill_in 'Search for any person', with: 'ma'
         end
 
-        within '.react-autosuggest__suggestions-container' do
+        within '#search-card', text: 'Search' do
           click_button 'Create a new person'
         end
 
