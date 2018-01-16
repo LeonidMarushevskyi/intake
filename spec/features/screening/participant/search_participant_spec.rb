@@ -39,14 +39,20 @@ feature 'searching a participant in autocompleter' do
                 ]
               end
               builder.with_phone_number(number: '971-287-6774', type: 'Home')
-              builder.with_addresses([{
-                                       street_number: '123',
-                                       street_name: 'Fake St',
-                                       state_code: 'NY',
-                                       city: 'Springfield',
-                                       zip: '11222',
-                                       type: ''
-                                     }])
+              builder.with_addresses do
+                [
+                  AddressSearchResultBuilder.build do |address|
+                    address.with_street_number('123')
+                    address.with_street_name('Fake St')
+                    address.with_state_code('NY')
+                    address.with_city('Springfield')
+                    address.with_zip('11222')
+                    address.with_type do
+                      AddressTypeSearchResultBuilder.build('Home')
+                    end
+                  end
+                ]
+              end
               builder.with_race_and_ethnicity do
                 RaceEthnicitySearchResultBuilder.build do |race_ethnicity|
                   race_ethnicity.with_hispanic_origin_code('Y')
@@ -84,6 +90,7 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content '1234'
         expect(page).to have_content '123-23-1234'
         expect(page).to have_content '123 Fake St, Springfield, NY 11222'
+        expect(page).to have_content 'Home'
         expect(page).to have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'
       end
@@ -192,7 +199,7 @@ feature 'searching a participant in autocompleter' do
               builder.with_middle_name('Jacqueline')
               builder.with_last_name('Simpson')
               builder.with_name_suffix('md')
-              builder.with_addresses({})
+              builder.with_addresses { [] }
             end
           ]
         end

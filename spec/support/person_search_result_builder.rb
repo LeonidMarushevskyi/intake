@@ -73,8 +73,8 @@ class PersonSearchResultBuilder
     ]
   end
 
-  def with_addresses(addresses)
-    @search_result[:_source][:addresses] = addresses
+  def with_addresses
+    @search_result[:_source][:addresses] = yield
   end
 
   def with_legacy_descriptor(legacy_descriptor)
@@ -182,7 +182,7 @@ class HispanicCodesSearchResultBuilder
 
   def self.build(ethnicity)
     builder = new(ethnicity)
-    yeild(builder)
+    yield(builder)
     builder.hispanic_codes
   end
 
@@ -194,4 +194,60 @@ class HispanicCodesSearchResultBuilder
   end
 
   attr_reader :hispanic_codes
+end
+
+class AddressSearchResultBuilder
+  def self.build
+    builder = new
+    yield(builder)
+    builder.address
+  end
+
+  def initialize
+    @address = {}
+  end
+
+  def with_street_number(number)
+    address[:street_number] = number
+  end
+
+  def with_street_name(name)
+    address[:street_name] = name
+  end
+
+  def with_state_code(code)
+    address[:state_code] = code
+  end
+
+  def with_city(city)
+    address[:city] = city
+  end
+
+  def with_zip(zip)
+    address[:zip] = zip
+  end
+
+  def with_type
+    address[:type] = yield
+  end
+
+  attr_reader :address
+end
+
+class AddressTypeSearchResultBuilder
+  include ::SystemCodeHelpers
+
+  def self.build(type)
+    builder = new(type)
+    builder.address_type
+  end
+
+  def initialize(type)
+    system_code = find_system_code(value: type, category: 'address_type')
+    @address_type = {
+      id: system_code[:code]
+    }
+  end
+
+  attr_reader :address_type
 end
