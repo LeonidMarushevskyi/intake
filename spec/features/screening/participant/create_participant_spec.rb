@@ -161,7 +161,7 @@ feature 'Create participant' do
       .and_return(json_body(created_participant_unknown.to_json, status: 201))
 
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Marge'
+      fill_in 'Search for any person', with: 'Marge'
       click_button 'Create a new person'
       expect(page).to_not have_button('Create a new person')
     end
@@ -186,7 +186,7 @@ feature 'Create participant' do
       .and_return(json_body('', status: 403))
 
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Marge'
+      fill_in 'Search for any person', with: 'Marge'
       click_button 'Create a new person'
     end
 
@@ -203,7 +203,7 @@ feature 'Create participant' do
     it 'hides the create new person button' do
       visit edit_screening_path(id: existing_screening.id)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for clients', with: 'Marge'
+        fill_in 'Search for clients', with: 'Marge'
         expect(page).to_not have_button('Create a new person')
       end
     end
@@ -219,8 +219,10 @@ feature 'Create participant' do
       .and_return(json_body(created_participant_homer.to_json, status: 201))
 
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Homer'
-      find('li', text: 'Homer Simpson').click
+      fill_in 'Search for any person', with: 'Homer'
+    end
+    within '#search-card', text: 'Search' do
+      find('strong', text: 'Homer Simpson').click
     end
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
@@ -287,8 +289,8 @@ feature 'Create participant' do
     fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
 
     within '#search-card', text: 'Search' do
-      fill_in_autocompleter 'Search for any person', with: 'Homer'
-      find('li', text: 'Homer Simpson').click
+      fill_in 'Search for any person', with: 'Homer'
+      find('strong', text: 'Homer Simpson').click
     end
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
@@ -371,8 +373,8 @@ feature 'Create participant' do
         Feature.run_with_activated(:authentication) do
           visit edit_screening_path(id: existing_screening.id, token: insensitive_token)
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Marge'
-            find('li', text: 'Marge Simpson').click
+            fill_in 'Search for any person', with: 'Marge'
+            find('strong', text: 'Marge Simpson').click
           end
           expect(
             a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
@@ -396,8 +398,8 @@ feature 'Create participant' do
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Ho'
-            find('li', text: 'Homer Simpson').click
+            fill_in 'Search for any person', with: 'Ho'
+            find('strong', text: 'Homer Simpson').click
           end
           # The new participant was NOT added
           expect(page)
@@ -423,8 +425,8 @@ feature 'Create participant' do
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_marge.to_json, status: 201))
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Ma'
-            find('li', text: 'Marge Simpson').click
+            fill_in 'Search for any person', with: 'Ma'
+            find('strong', text: 'Marge Simpson').click
           end
           expect(a_request(:post,
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
@@ -463,8 +465,8 @@ feature 'Create participant' do
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
           within '#search-card', text: 'Search' do
-            fill_in_autocompleter 'Search for any person', with: 'Ho'
-            find('li', text: 'Homer Simpson').click
+            fill_in 'Search for any person', with: 'Ho'
+            find('strong', text: 'Homer Simpson').click
           end
           expect(page)
             .to have_selector(edit_participant_card_selector(created_participant_homer.id))
@@ -490,8 +492,8 @@ feature 'Create participant' do
         .and_return(json_body(created_participant_homer.to_json, status: 201))
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for clients', with: 'Ho'
-        find('li', text: 'Homer Simpson').click
+        fill_in 'Search for clients', with: 'Ho'
+        find('strong', text: 'Homer Simpson').click
       end
       expect(
         a_request(:post,

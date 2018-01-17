@@ -411,7 +411,7 @@ feature 'searching a participant in autocompleter' do
 
       stub_person_search(search_term: 'Go back', person_response: { hits: { total: 1, hits: [] } })
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Go back', skip_select: true
+        fill_in 'Search for any person', with: 'Go back'
       end
 
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
