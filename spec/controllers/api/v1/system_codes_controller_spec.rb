@@ -86,13 +86,13 @@ describe Api::V1::SystemCodesController do
        },
        {
          'id' => 'GPumYGQ00F',
-         'name' => 'Hovernment Agency',
+         'name' => 'Hoverment Agency',
          'type' => 'COUNTY_LICENSING',
          'county_id' => '1086'
        },
        {
          'id' => 'GPumYGQ00F',
-         'name' => 'Hovernment Agency',
+         'name' => 'Hoverment Agency',
          'type' => 'COUNTY_LICENSING',
          'county_id' => '2080'
        },
@@ -185,7 +185,7 @@ describe Api::V1::SystemCodesController do
        },
        {
          'id' => 'GPumYGQ00F',
-         'name' => 'Hovernment Agency',
+         'name' => 'Hoverment Agency',
          'type' => 'county_licensing',
          'county_id' => '1086'
        },

@@ -61,7 +61,7 @@ feature 'Cross Reports Validations' do
             }
           ) do
             within '#cross-report-card.edit' do
-              select 'Hovernment Agency', from: 'County licensing agency name'
+              select 'Hoverment Agency', from: 'County licensing agency name'
             end
           end
         end
@@ -80,7 +80,7 @@ feature 'Cross Reports Validations' do
           select '', from: 'County licensing agency name'
           blur_field
           should_have_content error_message, inside: '#cross-report-card.edit'
-          select 'Hovernment Agency', from: 'County licensing agency name'
+          select 'Hoverment Agency', from: 'County licensing agency name'
           should_not_have_content error_message, inside: '#cross-report-card.edit'
         end
 
@@ -102,7 +102,7 @@ feature 'Cross Reports Validations' do
           stub_and_visit_edit_screening(screening)
         end
         scenario 'shows no error when filled in' do
-          select 'Hovernment Agency', from: 'County licensing agency name'
+          select 'Hoverment Agency', from: 'County licensing agency name'
           blur_field
           should_not_have_content error_message, inside: '#cross-report-card .card-body'
           save_card('cross-report')

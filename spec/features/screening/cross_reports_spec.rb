@@ -28,7 +28,7 @@ feature 'cross reports' do
       expect(page).to have_content 'County'
       select 'Sacramento', from: 'County'
       find('label', text: /\ACounty licensing\z/).click
-      select 'Hovernment Agency', from: 'County licensing agency name'
+      select 'Hoverment Agency', from: 'County licensing agency name'
       find('label', text: /\ALaw enforcement\z/).click
       select 'The Sheriff', from: 'Law enforcement agency name'
       expect(page).to have_content 'Communication Time and Method'

@@ -29,7 +29,7 @@ module CountyAgenciesHelpers
       },
       {
         'id' => 'GPumYGQ00F',
-        'name' => 'Hovernment Agency',
+        'name' => 'Hoverment Agency',
         'type' => 'COUNTY_LICENSING',
         'county_id' => county_id
       },
