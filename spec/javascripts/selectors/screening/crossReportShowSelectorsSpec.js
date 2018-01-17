@@ -118,7 +118,6 @@ describe('crossReportShowSelectors', () => {
             {type: 'LAW_ENFORCEMENT'},
             {type: 'COMMUNITY_CARE_LICENSING'},
             {type: 'COUNTY_LICENSING'},
-            {type: 'DEPARTMENT_OF_JUSTICE'},
           ],
         }]
         it('returns an error on informDate', () => {
@@ -136,8 +135,6 @@ describe('crossReportShowSelectors', () => {
           expect(getErrorsSelector(state).get('COMMUNITY_CARE_LICENSING'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
           expect(getErrorsSelector(state).get('COUNTY_LICENSING'))
-            .toEqualImmutable(fromJS(['Please enter an agency name.']))
-          expect(getErrorsSelector(state).get('DEPARTMENT_OF_JUSTICE'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
           expect(getErrorsSelector(state).get('DISTRICT_ATTORNEY'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
@@ -161,8 +158,6 @@ describe('crossReportShowSelectors', () => {
           expect(getErrorsSelector(state).get('COMMUNITY_CARE_LICENSING'))
             .toEqualImmutable(List())
           expect(getErrorsSelector(state).get('COUNTY_LICENSING'))
-            .toEqualImmutable(List())
-          expect(getErrorsSelector(state).get('DEPARTMENT_OF_JUSTICE'))
             .toEqualImmutable(List())
           expect(getErrorsSelector(state).get('DISTRICT_ATTORNEY'))
             .toEqualImmutable(List())

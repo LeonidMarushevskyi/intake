@@ -49,14 +49,6 @@ describe('crossReportFormReducer', () => {
             touched: true,
           },
         },
-        DEPARTMENT_OF_JUSTICE: {
-          selected: true,
-          touched: false,
-          agency: {
-            value: '',
-            touched: false,
-          },
-        },
         COUNTY_LICENSING: {
           selected: false,
           touched: false,
@@ -98,14 +90,6 @@ describe('crossReportFormReducer', () => {
             },
           },
           LAW_ENFORCEMENT: {
-            selected: false,
-            touched: false,
-            agency: {
-              value: '',
-              touched: false,
-            },
-          },
-          DEPARTMENT_OF_JUSTICE: {
             selected: false,
             touched: false,
             agency: {
@@ -164,14 +148,6 @@ describe('crossReportFormReducer', () => {
             touched: true,
           },
         },
-        DEPARTMENT_OF_JUSTICE: {
-          selected: true,
-          touched: false,
-          agency: {
-            value: '',
-            touched: false,
-          },
-        },
         COUNTY_LICENSING: {
           selected: false,
           touched: false,
@@ -218,14 +194,6 @@ describe('crossReportFormReducer', () => {
             agency: {
               value: '5234',
               touched: true,
-            },
-          },
-          DEPARTMENT_OF_JUSTICE: {
-            selected: true,
-            touched: false,
-            agency: {
-              value: '',
-              touched: false,
             },
           },
           COUNTY_LICENSING: {
@@ -292,14 +260,6 @@ describe('crossReportFormReducer', () => {
             touched: true,
           },
         },
-        DEPARTMENT_OF_JUSTICE: {
-          selected: false,
-          touched: false,
-          agency: {
-            value: '',
-            touched: false,
-          },
-        },
         COUNTY_LICENSING: {
           selected: false,
           touched: false,
@@ -345,14 +305,6 @@ describe('crossReportFormReducer', () => {
             agency: {
               value: '',
               touched: true,
-            },
-          },
-          DEPARTMENT_OF_JUSTICE: {
-            selected: false,
-            touched: false,
-            agency: {
-              value: '',
-              touched: false,
             },
           },
           COUNTY_LICENSING: {
@@ -420,14 +372,6 @@ describe('crossReportFormReducer', () => {
               touched: false,
             },
           },
-          DEPARTMENT_OF_JUSTICE: {
-            selected: false,
-            touched: false,
-            agency: {
-              value: '',
-              touched: false,
-            },
-          },
           COUNTY_LICENSING: {
             selected: false,
             touched: false,
@@ -488,14 +432,6 @@ describe('crossReportFormReducer', () => {
             },
           },
           LAW_ENFORCEMENT: {
-            selected: false,
-            touched: false,
-            agency: {
-              value: '',
-              touched: false,
-            },
-          },
-          DEPARTMENT_OF_JUSTICE: {
             selected: false,
             touched: false,
             agency: {
@@ -581,14 +517,6 @@ describe('crossReportFormReducer', () => {
             touched: true,
           },
         },
-        DEPARTMENT_OF_JUSTICE: {
-          selected: false,
-          touched: false,
-          agency: {
-            value: '',
-            touched: false,
-          },
-        },
         COUNTY_LICENSING: {
           selected: false,
           touched: false,
@@ -633,14 +561,6 @@ describe('crossReportFormReducer', () => {
             touched: true,
             agency: {
               value: '5234',
-              touched: true,
-            },
-          },
-          DEPARTMENT_OF_JUSTICE: {
-            selected: false,
-            touched: true,
-            agency: {
-              value: '',
               touched: true,
             },
           },

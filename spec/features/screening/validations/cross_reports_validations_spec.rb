@@ -12,7 +12,7 @@ feature 'Cross Reports Validations' do
           :cross_report,
           county_id: 'c41',
           agencies: [
-            FactoryGirl.create(:agency, id: nil, type: 'DEPARTMENT_OF_JUSTICE')
+            FactoryGirl.create(:agency, id: nil, type: 'COUNTY_LICENSING')
           ]
         )
       ]
@@ -55,13 +55,13 @@ feature 'Cross Reports Validations' do
               cross_reports: [
                 county_id: 'c41',
                 agencies: [
-                  { type: 'DEPARTMENT_OF_JUSTICE', id: 'EYIS9Nh75C' }
+                  { type: 'COUNTY_LICENSING', id: 'GPumYGQ00F' }
                 ]
               ]
             }
           ) do
             within '#cross-report-card.edit' do
-              select 'DOJ Agency', from: 'Department of justice agency name'
+              select 'Hoverment Agency', from: 'County licensing agency name'
             end
           end
         end
@@ -71,21 +71,21 @@ feature 'Cross Reports Validations' do
         end
 
         scenario 'displays error on blur' do
-          select '', from: 'Department of justice agency name'
+          select '', from: 'County licensing agency name'
           blur_field
           should_have_content error_message, inside: '#cross-report-card.edit'
         end
 
         scenario 'removes error on change' do
-          select '', from: 'Department of justice agency name'
+          select '', from: 'County licensing agency name'
           blur_field
           should_have_content error_message, inside: '#cross-report-card.edit'
-          select 'DOJ Agency', from: 'Department of justice agency name'
+          select 'Hoverment Agency', from: 'County licensing agency name'
           should_not_have_content error_message, inside: '#cross-report-card.edit'
         end
 
         scenario 'shows error on save page' do
-          select '', from: 'Department of justice agency name'
+          select '', from: 'County licensing agency name'
           blur_field
           should_have_content error_message, inside: '#cross-report-card.edit'
           save_card('cross-report')
@@ -102,7 +102,7 @@ feature 'Cross Reports Validations' do
           stub_and_visit_edit_screening(screening)
         end
         scenario 'shows no error when filled in' do
-          select 'DOJ Agency', from: 'Department of justice agency name'
+          select 'Hoverment Agency', from: 'County licensing agency name'
           blur_field
           should_not_have_content error_message, inside: '#cross-report-card .card-body'
           save_card('cross-report')

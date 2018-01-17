@@ -7,7 +7,6 @@ import {
   getErrorsSelector,
   getScreeningWithEditsSelector,
   getDistrictAttorneyFormSelector,
-  getDepartmentOfJusticeFormSelector,
   getLawEnforcementFormSelector,
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
@@ -46,14 +45,6 @@ describe('crossReportFormSelectors', () => {
         touched: false,
       },
     },
-    DEPARTMENT_OF_JUSTICE = {
-      selected: false,
-      touched: false,
-      agency: {
-        value: '',
-        touched: false,
-      },
-    },
     DISTRICT_ATTORNEY = {
       selected: false,
       touched: false,
@@ -77,7 +68,6 @@ describe('crossReportFormSelectors', () => {
       method,
       COMMUNITY_CARE_LICENSING,
       COUNTY_LICENSING,
-      DEPARTMENT_OF_JUSTICE,
       DISTRICT_ATTORNEY,
       LAW_ENFORCEMENT,
     }
@@ -429,14 +419,6 @@ describe('crossReportFormSelectors', () => {
                 touched: false,
               },
             },
-            DEPARTMENT_OF_JUSTICE: {
-              selected: true,
-              touched: false,
-              agency: {
-                value: '',
-                touched: false,
-              },
-            },
             DISTRICT_ATTORNEY: {
               selected: true,
               touched: false,
@@ -457,8 +439,6 @@ describe('crossReportFormSelectors', () => {
           expect(getErrorsSelector(state).get('COMMUNITY_CARE_LICENSING'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
           expect(getErrorsSelector(state).get('COUNTY_LICENSING'))
-            .toEqualImmutable(fromJS(['Please enter an agency name.']))
-          expect(getErrorsSelector(state).get('DEPARTMENT_OF_JUSTICE'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
           expect(getErrorsSelector(state).get('DISTRICT_ATTORNEY'))
             .toEqualImmutable(fromJS(['Please enter an agency name.']))
@@ -487,8 +467,6 @@ describe('crossReportFormSelectors', () => {
             .toEqualImmutable(List())
           expect(getErrorsSelector(state).get('COUNTY_LICENSING'))
             .toEqualImmutable(List())
-          expect(getErrorsSelector(state).get('DEPARTMENT_OF_JUSTICE'))
-            .toEqualImmutable(List())
           expect(getErrorsSelector(state).get('DISTRICT_ATTORNEY'))
             .toEqualImmutable(List())
           expect(getErrorsSelector(state).get('LAW_ENFORCEMENT'))
@@ -510,29 +488,6 @@ describe('crossReportFormSelectors', () => {
         },
       })})
       expect(getDistrictAttorneyFormSelector(state))
-        .toEqualImmutable(fromJS({
-          selected: true,
-          touched: false,
-          agency: {
-            value: '1234',
-            touched: true,
-          },
-        }))
-    })
-  })
-  describe('getDepartmentOfJusticeFormSelector', () => {
-    it('returns data from form for DEPARTMENT_OF_JUSTICE', () => {
-      const state = fromJS({crossReportForm: getCrossReportState({
-        DEPARTMENT_OF_JUSTICE: {
-          selected: true,
-          touched: false,
-          agency: {
-            value: '1234',
-            touched: true,
-          },
-        },
-      })})
-      expect(getDepartmentOfJusticeFormSelector(state))
         .toEqualImmutable(fromJS({
           selected: true,
           touched: false,

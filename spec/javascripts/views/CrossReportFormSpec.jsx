@@ -13,7 +13,6 @@ describe('CrossReportForm', () => {
     countyAgencies = {
       COMMUNITY_CARE_LICENSING: [],
       COUNTY_LICENSING: [],
-      DEPARTMENT_OF_JUSTICE: [],
       DISTRICT_ATTORNEY: [],
       LAW_ENFORCEMENT: [],
     },
@@ -26,14 +25,6 @@ describe('CrossReportForm', () => {
       },
     },
     lawEnforcement = {
-      selected: false,
-      touched: false,
-      agency: {
-        value: '',
-        touched: false,
-      },
-    },
-    departmentOfJustice = {
       selected: false,
       touched: false,
       agency: {
@@ -62,7 +53,6 @@ describe('CrossReportForm', () => {
       method: [],
       COMMUNITY_CARE_LICENSING: [],
       COUNTY_LICENSING: [],
-      DEPARTMENT_OF_JUSTICE: [],
       DISTRICT_ATTORNEY: [],
       LAW_ENFORCEMENT: [],
     },
@@ -80,7 +70,6 @@ describe('CrossReportForm', () => {
       counties,
       county_id,
       countyAgencies,
-      departmentOfJustice,
       districtAttorney,
       errors,
       lawEnforcement,
@@ -180,7 +169,6 @@ describe('CrossReportForm', () => {
           countyAgencies: {
             COMMUNITY_CARE_LICENSING: [],
             COUNTY_LICENSING: [],
-            DEPARTMENT_OF_JUSTICE: [],
             DISTRICT_ATTORNEY: [{id: '123', value: 'asdf'}],
             LAW_ENFORCEMENT: [],
           },
@@ -196,7 +184,6 @@ describe('CrossReportForm', () => {
           countyAgencies: {
             COMMUNITY_CARE_LICENSING: [],
             COUNTY_LICENSING: [],
-            DEPARTMENT_OF_JUSTICE: [],
             DISTRICT_ATTORNEY: [],
             LAW_ENFORCEMENT: [{id: '123', value: 'asdf'}],
           },
@@ -212,7 +199,6 @@ describe('CrossReportForm', () => {
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [],
-          DEPARTMENT_OF_JUSTICE: [],
           DISTRICT_ATTORNEY: [{id: '123', value: 'asdf'}],
           LAW_ENFORCEMENT: [],
         },
@@ -235,7 +221,6 @@ describe('CrossReportForm', () => {
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [],
-          DEPARTMENT_OF_JUSTICE: [],
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [{id: '123', value: 'asdf'}],
         },
@@ -251,29 +236,6 @@ describe('CrossReportForm', () => {
       expect(field.props().actions).toEqual(actions)
       expect(field.props().errors).toEqual(['le is missing'])
     })
-    it('renders DEPARTMENT_OF_JUSTICE agency field', () => {
-      const component = renderCrossReportForm({
-        county_id: '12',
-        departmentOfJustice: {selected: true, agency: {value: '1234'}},
-        countyAgencies: {
-          COMMUNITY_CARE_LICENSING: [],
-          COUNTY_LICENSING: [],
-          DEPARTMENT_OF_JUSTICE: [{id: '123', value: 'asdf'}],
-          DISTRICT_ATTORNEY: [],
-          LAW_ENFORCEMENT: [],
-        },
-        errors: {
-          DEPARTMENT_OF_JUSTICE: ['doj is missing'],
-        },
-        actions,
-      })
-      const field = component.find('CrossReportAgencyField[type="DEPARTMENT_OF_JUSTICE"]')
-      expect(field.props().selected).toEqual(true)
-      expect(field.props().value).toEqual('1234')
-      expect(field.props().countyAgencies).toEqual([{id: '123', value: 'asdf'}])
-      expect(field.props().actions).toEqual(actions)
-      expect(field.props().errors).toEqual(['doj is missing'])
-    })
     it('renders COUNTY_LICENSING agency field', () => {
       const component = renderCrossReportForm({
         county_id: '12',
@@ -281,7 +243,6 @@ describe('CrossReportForm', () => {
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [],
           COUNTY_LICENSING: [{id: '123', value: 'asdf'}],
-          DEPARTMENT_OF_JUSTICE: [],
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [],
         },
@@ -304,7 +265,6 @@ describe('CrossReportForm', () => {
         countyAgencies: {
           COMMUNITY_CARE_LICENSING: [{id: '123', value: 'asdf'}],
           COUNTY_LICENSING: [],
-          DEPARTMENT_OF_JUSTICE: [],
           DISTRICT_ATTORNEY: [],
           LAW_ENFORCEMENT: [],
         },

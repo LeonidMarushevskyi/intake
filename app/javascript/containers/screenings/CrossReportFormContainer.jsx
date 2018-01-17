@@ -1,14 +1,12 @@
 import {
   AGENCY_TYPES,
   DISTRICT_ATTORNEY,
-  DEPARTMENT_OF_JUSTICE,
   LAW_ENFORCEMENT,
   COUNTY_LICENSING,
   COMMUNITY_CARE_LICENSING,
 } from 'enums/CrossReport'
 import {
   getDistrictAttorneyAgenciesSelector,
-  getDepartmentOfJusticeAgenciesSelector,
   getLawEnforcementAgenciesSelector,
   getCountyLicensingAgenciesSelector,
   getCommunityCareLicensingAgenciesSelector,
@@ -37,7 +35,6 @@ import {
   getVisibleErrorsSelector,
   getScreeningWithEditsSelector,
   getDistrictAttorneyFormSelector,
-  getDepartmentOfJusticeFormSelector,
   getLawEnforcementFormSelector,
   getCountyLicensingFormSelector,
   getCommunityCareLicensingFormSelector,
@@ -50,14 +47,12 @@ const mapStateToProps = (state) => ({
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']) || '',
   countyAgencies: {
-    [DEPARTMENT_OF_JUSTICE]: getDepartmentOfJusticeAgenciesSelector(state).toJS(),
     [DISTRICT_ATTORNEY]: getDistrictAttorneyAgenciesSelector(state).toJS(),
     [LAW_ENFORCEMENT]: getLawEnforcementAgenciesSelector(state).toJS(),
     [COMMUNITY_CARE_LICENSING]: getCommunityCareLicensingAgenciesSelector(state).toJS(),
     [COUNTY_LICENSING]: getCountyLicensingAgenciesSelector(state).toJS(),
   },
   countyLicensing: getCountyLicensingFormSelector(state).toJS(),
-  departmentOfJustice: getDepartmentOfJusticeFormSelector(state).toJS(),
   districtAttorney: getDistrictAttorneyFormSelector(state).toJS(),
   hasAgencies: Boolean(Object.keys(AGENCY_TYPES).reduce((result, key) => result || state.getIn(['crossReportForm', key, 'selected']), false)),
   errors: getVisibleErrorsSelector(state).toJS(),

@@ -27,8 +27,8 @@ feature 'cross reports' do
       expect(page).to_not have_content 'Communication Time and Method'
       expect(page).to have_content 'County'
       select 'Sacramento', from: 'County'
-      find('label', text: /\ADepartment of justice\z/).click
-      select 'DOJ Agency', from: 'Department of justice agency name'
+      find('label', text: /\ACounty licensing\z/).click
+      select 'Hoverment Agency', from: 'County licensing agency name'
       find('label', text: /\ALaw enforcement\z/).click
       select 'The Sheriff', from: 'Law enforcement agency name'
       expect(page).to have_content 'Communication Time and Method'
@@ -48,7 +48,7 @@ feature 'cross reports' do
               'county_id' => 'c42',
               'agencies' => array_including(
                 hash_including('id' => 'BMG2f3J75C', 'type' => 'LAW_ENFORCEMENT'),
-                hash_including('id' => 'EYIS9Nh75C', 'type' => 'DEPARTMENT_OF_JUSTICE')
+                hash_including('id' => 'GPumYGQ00F', 'type' => 'COUNTY_LICENSING')
               ),
               'inform_date' => reported_on.to_s(:db),
               'method' => communication_method
@@ -67,7 +67,7 @@ feature 'cross reports' do
       CrossReport.new(
         county_id: 'c42',
         agencies: [
-          { id: 'EYIS9Nh75C', type: 'DEPARTMENT_OF_JUSTICE' },
+          { id: 'GPumYGQ00F', type: 'COUNTY_LICENSING' },
           { id: 'BMG2f3J75C', type: 'LAW_ENFORCEMENT' }
         ],
         method: communication_method,
@@ -86,7 +86,7 @@ feature 'cross reports' do
       select 'San Francisco', from: 'County'
       expect(page).to have_select('County', selected: 'San Francisco')
 
-      expect(find(:checkbox, 'Department of justice')).to_not be_checked
+      expect(find(:checkbox, 'County licensing')).to_not be_checked
 
       find('label', text: /\ALaw enforcement\z/).click
       expect(find(:checkbox, 'Law enforcement')).to be_checked
@@ -125,7 +125,7 @@ feature 'cross reports' do
       CrossReport.new(
         county_id: 'c42',
         agencies: [
-          { id: 'EYIS9Nh75C', type: 'DEPARTMENT_OF_JUSTICE' },
+          { id: 'LsUFj7O00E', type: 'COMMUNITY_CARE_LICENSING' },
           { id: 'BMG2f3J75C', type: 'LAW_ENFORCEMENT' }
         ],
         method: 'Child Abuse Form',
@@ -142,8 +142,8 @@ feature 'cross reports' do
     within '#cross-report-card', text: 'Cross Report' do
       expect(page).to_not have_content 'County'
       expect(page).to_not have_content 'Sacramento'
-      expect(page).to have_content 'Department of justice'
-      expect(page).to have_content 'DOJ Agency'
+      expect(page).to have_content 'Community care licensing'
+      expect(page).to have_content "Daisie's Preschool"
       expect(page).to have_content 'Law enforcement'
       expect(page).to have_content 'The Sheriff'
       expect(page).to have_content Date.today.strftime('%m/%d/%Y')
@@ -156,8 +156,9 @@ feature 'cross reports' do
       expect(page).to have_select('County', selected: 'Sacramento')
       expect(find(:checkbox, 'Law enforcement')).to be_checked
       expect(page).to have_select('Law enforcement agency name', selected: 'The Sheriff')
-      expect(find(:checkbox, 'Department of justice')).to be_checked
-      expect(page).to have_select('Department of justice agency name', selected: 'DOJ Agency')
+      expect(find(:checkbox, 'Community care licensing')).to be_checked
+      expect(page).to have_select('Community care licensing agency name',
+        selected: "Daisie's Preschool")
       expect(page).to have_field('Communication Method', with: 'Child Abuse Form')
       expect(page).to have_field('Cross Reported on Date', with: Date.today.strftime('%m/%d/%Y'))
     end
@@ -193,10 +194,10 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       select 'State of California', from: 'County'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       find('label', text: /\ALaw enforcement\z/).click
       expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
       expect(page).to have_field('Communication Method', with: communication_method)
@@ -236,10 +237,10 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       select 'San Francisco', from: 'County'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       find('label', text: /\ALaw enforcement\z/).click
       expect(page).to have_field('Cross Reported on Date', with: reported_on.strftime('%m/%d/%Y'))
       expect(page).to have_field('Communication Method', with: communication_method)
@@ -287,10 +288,10 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       select 'State of California', from: 'County'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       fill_in_datepicker 'Cross Reported on Date', with: reported_on
       select communication_method, from: 'Communication Method'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       click_button 'Save'
     end
 
@@ -298,7 +299,7 @@ feature 'cross reports' do
 
     within '#cross-report-card' do
       select 'State of California', from: 'County'
-      find('label', text: /\ADepartment of justice\z/).click
+      find('label', text: /\ACounty licensing\z/).click
       expect(page).to have_field('Cross Reported on Date', with: '')
       expect(page).to have_field('Communication Method', with: '')
     end

@@ -5,7 +5,6 @@ import {
   AGENCY_TYPES,
   CROSS_REPORTS_REQUIRED_FOR_ALLEGATIONS,
   DISTRICT_ATTORNEY,
-  DEPARTMENT_OF_JUSTICE,
   COUNTY_LICENSING,
   COMMUNITY_CARE_LICENSING,
   LAW_ENFORCEMENT,
@@ -74,15 +73,6 @@ export const getDistrictAttorneyErrors = (agencies) => {
   }
 }
 
-export const getDepartmentOfJusticeErrors = (agencies) => {
-  const {type, id} = findAgencyData(agencies, DEPARTMENT_OF_JUSTICE)
-  if (isBlank(type) || id) {
-    return undefined
-  } else {
-    return 'Please enter an agency name.'
-  }
-}
-
 export const getLawEnforcementErrors = (agencies) => {
   const {type, id} = findAgencyData(agencies, LAW_ENFORCEMENT)
   if (isBlank(type) || id) {
@@ -127,7 +117,6 @@ export const getErrorsSelector = createSelector(
     method: combineCompact(isRequiredIfCreate(crossReport.get('method'), 'Please select a cross-report communication method.', () => (agencies.size !== 0))),
     [COMMUNITY_CARE_LICENSING]: combineCompact(() => (getCommunityCareLicensingErrors(agencies))),
     [COUNTY_LICENSING]: combineCompact(() => (getCountyLicensingErrors(agencies))),
-    [DEPARTMENT_OF_JUSTICE]: combineCompact(() => (getDepartmentOfJusticeErrors(agencies))),
     [DISTRICT_ATTORNEY]: combineCompact(() => (getDistrictAttorneyErrors(agencies))),
     [LAW_ENFORCEMENT]: combineCompact(() => (getLawEnforcementErrors(agencies))),
     agencyRequired: combineCompact(
