@@ -8,10 +8,18 @@ describe ApplicationController do
     def custom
       render body: nil
     end
+
+    def custom_logout
+      delete_user_from_session
+      render body: nil
+    end
   end
 
   before do
-    routes.draw { get 'custom' => 'anonymous#custom' }
+    routes.draw do
+      get 'custom' => 'anonymous#custom'
+      get 'custom_logout' => 'anonymous#custom_logout'
+    end
   end
 
   describe '#authenticate_user' do
@@ -204,6 +212,19 @@ describe ApplicationController do
               expect(session[:user_details]).to eq user_details
             end
           end
+        end
+      end
+
+      context 'when a user logs out' do
+        before do
+          @request.session[:security_token] = 'my_secure_token'
+          @request.session[:user_details] = { first_name: 'Bob' }
+        end
+
+        it 'clears all information from the session ' do
+          process :custom_logout, method: :get
+          expect(session[:security_token]).to be_nil
+          expect(session[:user_details]).to be_nil
         end
       end
     end
