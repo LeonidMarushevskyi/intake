@@ -18,6 +18,7 @@ describe('Store', () => {
   beforeEach(() => {
     jasmine.addMatchers(matchers)
     initialState = fromJS({
+      addressTypes: [],
       allegationsForm: [],
       allegationTypes: [],
       communicationMethods: [],

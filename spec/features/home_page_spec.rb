@@ -20,12 +20,18 @@ feature 'home page' do
               builder.with_last_name('Simpson')
               builder.with_ssn('123-23-1234')
               builder.with_gender('female')
-              builder.with_addresses(
-                street_number: 123,
-                street_name: 'Fake St',
-                state_code: 'CA',
-                type: 'Home'
-              )
+              builder.with_addresses do
+                [
+                  AddressSearchResultBuilder.build do |address|
+                    address.with_street_number('123')
+                    address.with_street_name('Fake St')
+                    address.with_state_code('CA')
+                    address.with_type do
+                      AddressTypeSearchResultBuilder.build('Home')
+                    end
+                  end
+                ]
+              end
             end
           ]
         end

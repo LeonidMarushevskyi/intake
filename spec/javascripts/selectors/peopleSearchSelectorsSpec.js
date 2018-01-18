@@ -36,6 +36,10 @@ describe('peopleSearchSelectors', () => {
     {code: '1', value: 'state'},
   ]
 
+  const addressTypes = [
+    {code: '1', value: 'address type'},
+  ]
+
   describe('getLastResultsSortValueSelector', () => {
     it('returns the last results sort attribute', () => {
       const peopleSearch = {
@@ -80,7 +84,7 @@ describe('peopleSearchSelectors', () => {
               city: 'Flushing',
               state_code: 'state',
               zip: '11344',
-              type: 'School',
+              type: {id: '1'},
             }],
             phone_numbers: [{
               id: '2',
@@ -103,6 +107,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults).toEqualImmutable(
@@ -131,7 +136,7 @@ describe('peopleSearchSelectors', () => {
             city: 'Flushing',
             state: 'state',
             zip: '11344',
-            type: '',
+            type: 'address type',
             streetAddress: '234 Fake Street',
           },
           phoneNumber: {
@@ -155,7 +160,7 @@ describe('peopleSearchSelectors', () => {
               city: 'Flushing',
               state_code: 'state',
               zip: '11344',
-              type: 'School',
+              type: {id: '1'},
             }, {
               id: '2',
               street_number: '2',
@@ -163,7 +168,7 @@ describe('peopleSearchSelectors', () => {
               city: 'Flushing',
               state_code: 'state',
               zip: '11222',
-              type: 'Home',
+              type: {id: '1'},
             }],
             phone_numbers: [{
               number: '994-907-6774',
@@ -183,6 +188,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'address'])).toEqualImmutable(
@@ -190,7 +196,7 @@ describe('peopleSearchSelectors', () => {
           city: 'Flushing',
           state: 'state',
           zip: '11344',
-          type: '',
+          type: 'address type',
           streetAddress: '234 Fake Street',
         })
       )
@@ -219,6 +225,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'address'])).toEqual(null)
@@ -252,6 +259,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
@@ -276,6 +284,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'ssn'])).toEqual('123-45-6789')
@@ -300,6 +309,7 @@ describe('peopleSearchSelectors', () => {
         hispanicOriginCodes,
         usStates,
         peopleSearch,
+        addressTypes,
       })
       const peopleResults = getPeopleResultsSelector(state)
       expect(peopleResults.getIn([0, 'ssn'])).toEqual('<em>123-45-6789</em>')
