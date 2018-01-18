@@ -8,12 +8,14 @@ gem 'feature'
 gem 'haml-rails'
 gem 'high_voltage'
 gem 'newrelic_rpm'
+gem 'nokogiri', '~> 1.8.1'
 gem 'puma'
 gem 'rails', '~> 5.1'
 gem 'redis-rails'
 gem 'responders'
 gem 'virtus'
 gem 'webpacker'
+gem 'yard', '~> 0.9.11'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
