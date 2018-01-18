@@ -29,10 +29,15 @@ module CaIntake # :nodoc:
       #{ENV.fetch('AUTHENTICATION_URL', '').chomp('/')}/authn/login?callback=
     URL
 
+    authentication_logout_url = <<~URL.strip
+      #{ENV.fetch('AUTHENTICATION_URL', '').chomp('/')}/authn/logout
+    URL
+
     config.intake = {
       api_url: ENV.fetch('API_URL', nil),
       authentication_base_url: ENV.fetch('AUTHENTICATION_URL', ''),
       authentication_login_url: authentication_login_url,
+      authentication_logout_url: authentication_logout_url,
       base_path: ENV.fetch('BASE_PATH', ''),
       client_only_search: ENV.fetch('CLIENT_ONLY_SEARCH', 'false') == 'true',
       ferb_api_url: ENV.fetch('FERB_API_URL', nil),

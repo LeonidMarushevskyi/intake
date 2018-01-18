@@ -23,6 +23,10 @@ class SecurityRepository
       "#{Rails.configuration.intake[:authentication_login_url]}#{callback}"
     end
 
+    def logout_url
+      Rails.configuration.intake[:authentication_logout_url]
+    end
+
     def access_code_mapping_url(access_code)
       authentication_base_url = Rails.configuration.intake[:authentication_base_url]
       "#{authentication_base_url}/authn/token?accessCode=#{access_code}"

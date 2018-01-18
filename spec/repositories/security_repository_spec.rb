@@ -16,6 +16,17 @@ describe SecurityRepository do
     end
   end
 
+  describe '.logout_url' do
+    before do
+      allow(Rails.configuration).to receive(:intake)
+        .and_return(authentication_logout_url: 'http://www.example.com')
+    end
+
+    it 'returns the security logout url' do
+      expect(described_class.logout_url).to eq('http://www.example.com')
+    end
+  end
+
   describe '.access_code_mapping_url' do
     before do
       allow(Rails.configuration).to receive(:intake)
