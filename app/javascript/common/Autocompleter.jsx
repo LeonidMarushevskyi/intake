@@ -16,6 +16,24 @@ const Autocompleter = ({
   total,
   footer,
 }) => {
+  const menuStyle = {
+    backgroundColor: '#fff',
+    border: '1px solid #d4d4d4',
+    borderBottomLeftRadius: '4px',
+    borderBottomRightRadius: '4px',
+    fontFamily: 'Helvetica, sans-serif',
+    fontSize: '16px',
+    fontWeight: 300,
+    position: 'absolute',
+    width: '100%',
+    zIndex: 2,
+    display: 'block',
+  }
+  const resultStyle = {
+    borderBottom: '2px solid #d4d4d4',
+    cursor: 'pointer',
+    padding: '10px 20px',
+  }
   const MIN_SEARCHABLE_CHARS = 2
   const onItemSelect = (_value, item) => {
     if (isSelectable(item)) {
@@ -25,7 +43,7 @@ const Autocompleter = ({
     }
   }
   const renderMenu = (items, searchTerm, _style) => (
-    <div>
+    <div style={menuStyle}>
       <SuggestionHeader
         currentNumberOfResults={items.length}
         total={total}
@@ -38,7 +56,7 @@ const Autocompleter = ({
   const renderItem = (item, _isHighlighted, _styles) => {
     const key = item.legacyDescriptor.legacy_id
     return (
-      <div id={`search-result-${key}`} key={key}>
+      <div id={`search-result-${key}`} key={key} style={resultStyle}>
         <PersonSuggestion
           address={item.address}
           dateOfBirth={item.dateOfBirth}
@@ -68,14 +86,15 @@ const Autocompleter = ({
   }
   return (
     <Autocomplete
+      getItemValue={(_) => searchTerm}
       inputProps={{id}}
-      value={searchTerm}
+      items={results}
       onChange={onChangeInput}
       onSelect={onItemSelect}
-      renderMenu={renderMenu}
       renderItem={renderItem}
-      getItemValue={(_) => searchTerm}
-      items={results}
+      renderMenu={renderMenu}
+      value={searchTerm}
+      wrapperStyle={{display: 'block', position: 'relative'}}
     />
   )
 }
