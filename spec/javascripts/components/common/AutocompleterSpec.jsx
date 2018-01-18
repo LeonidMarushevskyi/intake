@@ -1,9 +1,9 @@
 import Autocompleter from 'common/Autocompleter'
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 describe('<Autocompleter />', () => {
-  function renderAutocompleter({
+  function mountAutocompleter({
     onSelect = () => null,
     onClear = () => null,
     isSelectable = () => true,
@@ -14,7 +14,7 @@ describe('<Autocompleter />', () => {
     footer = null,
     total = 0,
   }) {
-    return shallow(
+    return mount(
       <Autocompleter
         onSelect={onSelect}
         onClear={onClear}
@@ -28,33 +28,55 @@ describe('<Autocompleter />', () => {
       />
     )
   }
+  function renderAutocompleter({
+    onSelect = () => null,
+    onClear = () => null,
+    isSelectable = () => true,
+    onSearch = () => null,
+    onChange = () => null,
+    searchTerm = '',
+    results = [],
+    footer = null,
+    total = 0,
+    id = null,
+  }) {
+    return shallow(
+      <Autocompleter
+        id={id}
+        onSelect={onSelect}
+        onClear={onClear}
+        onChange={onChange}
+        isSelectable={isSelectable}
+        total={total}
+        results={results}
+        searchTerm={searchTerm}
+        footer={footer}
+        onSearch={onSearch}
+      />
+    )
+  }
 
-  it('renders a Autosuggest component', () => {
-    const autosuggest = renderAutocompleter({})
-    expect(autosuggest.find('Autosuggest').length).toBe(1)
-  })
-
-  describe('#onSuggestionSelected', () => {
-    let onSelect
+  describe('#onItemSelect', () => {
     let onClear
     let onChange
-    let isSelectable
-    const suggestion = {id: '1'}
+    let onSelect
+    const item = {legacyDescriptor: {legacy_id: 1}}
+    const results = [item]
+    beforeEach(() => {
+      onClear = jasmine.createSpy('onClear')
+      onChange = jasmine.createSpy('onChange')
+      onSelect = jasmine.createSpy('onSelect')
+    })
 
-    describe('when a suggestion is selectable', () => {
+    describe('when an item is selectable', () => {
       beforeEach(() => {
-        onSelect = jasmine.createSpy('onSelectSpy')
-        onClear = jasmine.createSpy('onClear')
-        onChange = jasmine.createSpy('onChange')
-        isSelectable = jasmine.createSpy('isSelectable')
-          .and.returnValue(true)
-        renderAutocompleter({
-          onSelect,
-          onClear,
-          onChange,
-          isSelectable,
-        }).instance()
-          .onSuggestionSelected('selected', {suggestion})
+        const autocompleter = mountAutocompleter({
+          results, searchTerm: 'te', onClear, onChange, onSelect,
+        })
+        autocompleter.find('input').simulate('focus')
+        autocompleter.find('div[id="search-result-1"]')
+          .first()
+          .simulate('click', null)
       })
 
       it('clears the results', () => {
@@ -66,94 +88,172 @@ describe('<Autocompleter />', () => {
       })
 
       it('calls onSelect with the selected result', () => {
-        expect(onSelect).toHaveBeenCalledWith(suggestion)
+        expect(onSelect).toHaveBeenCalledWith(item)
       })
     })
 
-    describe('when a suggestion is not selectable', () => {
+    describe('when an item is not selectable', () => {
       beforeEach(() => {
-        onSelect = jasmine.createSpy('onSelectSpy')
-        onClear = jasmine.createSpy('onClear')
-        onChange = jasmine.createSpy('onChange')
-        isSelectable = jasmine.createSpy('isSelectable')
-          .and.returnValue(false)
-        renderAutocompleter({
-          onSelect,
-          onClear,
-          onChange,
+        const isSelectable = jasmine.createSpy('isSelectable')
+        isSelectable.and.returnValue(false)
+        const autocompleter = mountAutocompleter({
+          results, searchTerm: 'te', onClear, onChange, onSelect,
           isSelectable,
-        }).instance()
-          .onSuggestionSelected('selected', {suggestion})
+        })
+        autocompleter.find('input').simulate('focus')
+        autocompleter.find('div[id="search-result-1"]')
+          .first()
+          .simulate('click', null)
       })
 
       it('does nothing', () => {
         expect(onClear).not.toHaveBeenCalled()
-        expect(onChange).not.toHaveBeenCalledWith('')
-        expect(onSelect).not.toHaveBeenCalledWith(suggestion)
+        expect(onChange).not.toHaveBeenCalled()
+        expect(onSelect).not.toHaveBeenCalled()
       })
     })
   })
 
-  describe('#onSuggestionsClearRequested', () => {
-    it('pass onClear to ReactAutoSuggest', () => {
-      const onClear = jasmine.createSpy('onClear')
-      const component = renderAutocompleter({onClear})
-        .find('Autosuggest')
-      expect(component.props().onSuggestionsClearRequested).toEqual(onClear)
+  describe('onChange', () => {
+    let searchInput
+    let onSearch
+    let onChange
+    beforeEach(() => {
+      onSearch = jasmine.createSpy('onSearch')
+      onChange = jasmine.createSpy('onChange')
+      searchInput = renderAutocompleter({onSearch, onChange})
+        .dive()
+        .find('input')
+    })
+    describe('when user types to non whitespace characters', () => {
+      const value = 'aa'
+      beforeEach(() => searchInput.simulate('change', {target: {value}}))
+
+      it('performs a search', () => {
+        expect(onSearch).toHaveBeenCalledWith(value)
+      })
+
+      it('calls props onChange', () => {
+        expect(onChange).toHaveBeenCalledWith(value)
+      })
+    })
+    describe('when search value contains a character then a whitespace', () => {
+      const value = 'a '
+      beforeEach(() => searchInput.simulate('change', {target: {value}}))
+
+      it('performs a search', () => {
+        expect(onSearch).toHaveBeenCalledWith(value)
+      })
+
+      it('calls props onChange', () => {
+        expect(onChange).toHaveBeenCalledWith(value)
+      })
+    })
+    describe('when search value contains two whitespace characters', () => {
+      const value = '  '
+      beforeEach(() => searchInput.simulate('change', {target: {value}}))
+
+      it('does not perform a search', () => {
+        expect(onSearch).not.toHaveBeenCalled()
+      })
+
+      it('calls props onChange', () => {
+        expect(onChange).toHaveBeenCalledWith(value)
+      })
+    })
+    describe('when search value contains a whitespace then a character', () => {
+      const value = ' a'
+      beforeEach(() => searchInput.simulate('change', {target: {value}}))
+
+      it('does not perform a search', () => {
+        expect(onSearch).not.toHaveBeenCalled()
+      })
+
+      it('calls props onChange', () => {
+        expect(onChange).toHaveBeenCalledWith(value)
+      })
     })
   })
 
-  describe('#renderSuggestionsContainer', () => {
-    it('renders the suggestions header', () => {
-      const suggestionHeader = renderAutocompleter({searchTerm: 'Te'})
-        .dive('SuggestionHeader')
-      expect(suggestionHeader.exists()).toEqual(true)
+  describe('render', () => {
+    it('displays an Autocomplete component', () => {
+      const autocomplete = renderAutocompleter({
+        id: 'search-input-id',
+      }).find('Autocomplete')
+      expect(autocomplete.length).toBe(1)
+
+      const input = autocomplete.dive().find('input')
+      expect(input.props().id).toEqual('search-input-id')
     })
 
-    it('renders no results were found', () => {
-      const suggestionHeader = renderAutocompleter({total: 0, searchTerm: 'Simpson'})
-        .dive('SuggestionHeader')
-      expect(suggestionHeader.html()).toContain('No results were found for &quot;Simpson&quot;')
+    it('displays person suggestion', () => {
+      const address = {id: 'test address'}
+      const ethnicity = {id: 'test ethnicity'}
+      const languages = ['test languages']
+      const phoneNumber = {id: 'test phone number'}
+      const races = ['test race']
+      const legacyDescriptor = {legacy_id: 'test legacy descriptor'}
+      const results = [{
+        address,
+        dateOfBirth: 'test date of birth',
+        ethnicity,
+        firstName: 'test first name',
+        gender: 'male',
+        isSealed: false,
+        isSensitive: false,
+        languages,
+        lastName: 'test last name',
+        legacyDescriptor,
+        middleName: 'test middle name',
+        phoneNumber,
+        races,
+        ssn: 'test ssn',
+      }]
+      const autocompleter = mountAutocompleter({results})
+      autocompleter.find('input').simulate('focus')
+      const personResult = autocompleter.find('PersonSuggestion')
+      expect(personResult.length).toBe(1)
+
+      expect(personResult.props().address).toEqual(address)
+      expect(personResult.props().dateOfBirth).toEqual('test date of birth')
+      expect(personResult.props().ethnicity).toEqual(ethnicity)
+      expect(personResult.props().firstName).toEqual('test first name')
+      expect(personResult.props().gender).toEqual('male')
+      expect(personResult.props().isSealed).toEqual(false)
+      expect(personResult.props().isSensitive).toEqual(false)
+      expect(personResult.props().languages).toEqual(languages)
+      expect(personResult.props().lastName).toEqual('test last name')
+      expect(personResult.props().legacyDescriptor).toEqual(legacyDescriptor)
+      expect(personResult.props().middleName).toEqual('test middle name')
+      expect(personResult.props().phoneNumber).toEqual(phoneNumber)
+      expect(personResult.props().races).toEqual(races)
+      expect(personResult.props().ssn).toEqual('test ssn')
     })
 
-    it('renders number of results found', () => {
-      const fiveResults = Array.from(Array(5).keys()).map(() => ({}))
-      const suggestionHeader = renderAutocompleter({
+    it('displays no results were found', () => {
+      const autocompleter = mountAutocompleter({total: 0, searchTerm: 'Simpson'})
+      autocompleter.find('input').simulate('focus')
+      const suggestionHeader = autocompleter.find('SuggestionHeader')
+      expect(suggestionHeader.html()).toContain('No results were found for "Simpson"')
+    })
+
+    it('displays number of results found', () => {
+      const fiveResults = Array.from(Array(5).keys()).map((id) => ({legacyDescriptor: {legacy_id: id}}))
+      const autocompleter = mountAutocompleter({
         results: fiveResults,
         total: 10,
         searchTerm: 'Simpson',
-      }).dive('SuggestionHeader')
-      expect(suggestionHeader.html()).toContain('Showing 1-5 of 10 results for &quot;Simpson&quot;')
+      })
+      autocompleter.find('input').simulate('focus')
+      const suggestionHeader = autocompleter.find('SuggestionHeader')
+      expect(suggestionHeader.html()).toContain('Showing 1-5 of 10 results for "Simpson"')
     })
 
-    it('renders the footer', () => {
+    it('displays the footer', () => {
       const footer = <p className='footer-1'>Footer #1</p>
-      const component = renderAutocompleter({searchTerm: 'Te', footer})
-        .dive('.footer-1')
-      expect(component.html()).toContain('Footer #1')
-    })
-  })
-
-  describe('#shouldRenderSuggestions', () => {
-    let instance
-    beforeEach(() => {
-      instance = renderAutocompleter({}).instance()
-    })
-
-    it('returns true when search value contains two non whitespace characters', () => {
-      expect(instance.shouldRenderSuggestions('aa')).toEqual(true)
-    })
-
-    it('returns true when search value contains a character then a whitespace', () => {
-      expect(instance.shouldRenderSuggestions('a ')).toEqual(true)
-    })
-
-    it('returns false when search value contains two whitespace characters', () => {
-      expect(instance.shouldRenderSuggestions('  ')).toEqual(false)
-    })
-
-    it('returns false when search value contains a whitespace then a character', () => {
-      expect(instance.shouldRenderSuggestions(' a')).toEqual(false)
+      const autocompleter = mountAutocompleter({searchTerm: 'Te', footer})
+      autocompleter.find('input').simulate('focus')
+      expect(autocompleter.html()).toContain('Footer #1')
     })
   })
 })

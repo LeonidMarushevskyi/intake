@@ -1,92 +1,83 @@
 import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
 import React from 'react'
-import ReactAutosuggest from 'common/ReactAutosuggest'
+import Autocomplete from 'react-autocomplete'
 import SuggestionHeader from 'common/SuggestionHeader'
-const MIN_SEARCHABLE_CHARS = 2
 
-export default class Autocompleter extends React.Component {
-  constructor(props) {
-    super(props)
-    this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
-    this.renderSuggestion = this.renderSuggestion.bind(this)
-    this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
-  }
-
-  onSuggestionSelected(event, {suggestion}) {
-    const {
-      isSelectable,
-      onClear,
-      onSelect,
-      onChange,
-    } = this.props
-    if (isSelectable(suggestion)) {
+const Autocompleter = ({
+  id,
+  isSelectable,
+  onChange,
+  onClear,
+  onSearch,
+  onSelect,
+  results,
+  searchTerm,
+  total,
+  footer,
+}) => {
+  const MIN_SEARCHABLE_CHARS = 2
+  const onItemSelect = (_value, item) => {
+    if (isSelectable(item)) {
       onClear()
       onChange('')
-      onSelect(suggestion)
+      onSelect(item)
     }
   }
-
-  renderSuggestion(suggestion) {
-    if (suggestion.emptyResult) {
-      return false
-    } else {
-      return (<PersonSuggestion {...suggestion} />)
-    }
-  }
-
-  renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm, results, footer} = this.props
-    let newChildren = null
-    if (children) {
-      const items = children.props.items.filter((item) => !item.emptyResult)
-      newChildren = React.cloneElement(children, {items})
-    }
+  const renderMenu = (items, searchTerm, _style) => (
+    <div>
+      <SuggestionHeader
+        currentNumberOfResults={items.length}
+        total={total}
+        searchTerm={searchTerm}
+      />
+      {items}
+      {footer}
+    </div>
+  )
+  const renderItem = (item, _isHighlighted, _styles) => {
+    const key = item.legacyDescriptor.legacy_id
     return (
-      <div {...props}>
-        <SuggestionHeader
-          currentNumberOfResults={results.length}
-          total={total}
-          searchTerm={searchTerm}
+      <div id={`search-result-${key}`} key={key}>
+        <PersonSuggestion
+          address={item.address}
+          dateOfBirth={item.dateOfBirth}
+          ethnicity={item.ethnicity}
+          firstName={item.firstName}
+          gender={item.gender}
+          isSealed={item.isSealed}
+          isSensitive={item.isSensitive}
+          languages={item.languages}
+          lastName={item.lastName}
+          legacyDescriptor={item.legacyDescriptor}
+          middleName={item.middleName}
+          nameSuffix={item.nameSuffix}
+          phoneNumber={item.phoneNumber}
+          races={item.races}
+          ssn={item.ssn}
         />
-        {newChildren}
-        {footer}
       </div>
     )
   }
-
-  shouldRenderSuggestions(value) {
-    return value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
-  }
-
-  render() {
-    const {
-      id,
-      onChange,
-      onClear,
-      onSearch,
-      searchTerm,
-      results,
-    } = this.props
-    const inputProps = {
-      id,
-      value: searchTerm,
-      onChange: (event, {newValue}) => onChange(newValue),
+  const onChangeInput = (_, value) => {
+    const isSearchable = value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
+    if (isSearchable) {
+      onSearch(value)
     }
-    return (
-      <ReactAutosuggest
-        suggestions={[...results, {emptyResult: true}]}
-        shouldRenderSuggestions={this.shouldRenderSuggestions}
-        onSuggestionsFetchRequested={({value}) => onSearch(value)}
-        onSuggestionsClearRequested={onClear}
-        onSuggestionSelected={this.onSuggestionSelected}
-        getSuggestionValue={() => searchTerm}
-        renderSuggestion={this.renderSuggestion}
-        inputProps={inputProps}
-        renderSuggestionsContainer={this.renderSuggestionsContainer}
-      />
-    )
+    onChange(value)
   }
+  return (
+    <Autocomplete
+      inputProps={{id}}
+      value={searchTerm}
+      onChange={onChangeInput}
+      onSelect={onItemSelect}
+      renderMenu={renderMenu}
+      renderItem={renderItem}
+      getItemValue={(_) => searchTerm}
+      items={results}
+    />
+  )
 }
 
 Autocompleter.propTypes = {
@@ -108,3 +99,5 @@ Autocompleter.defaultProps = {
 }
 
 Autocompleter.displayName = 'Autocompleter'
+
+export default Autocompleter
