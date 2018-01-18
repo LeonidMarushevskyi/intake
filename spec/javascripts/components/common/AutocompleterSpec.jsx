@@ -186,13 +186,13 @@ describe('<Autocompleter />', () => {
       expect(input.props().id).toEqual('search-input-id')
     })
 
-    it('displays person suggestion', () => {
+    describe('with search results present', () => {
       const address = {id: 'test address'}
       const ethnicity = {id: 'test ethnicity'}
       const languages = ['test languages']
       const phoneNumber = {id: 'test phone number'}
       const races = ['test race']
-      const legacyDescriptor = {legacy_id: 'test legacy descriptor'}
+      const legacyDescriptor = {legacy_id: 'some-legacy-id'}
       const results = [{
         address,
         dateOfBirth: 'test date of birth',
@@ -209,25 +209,38 @@ describe('<Autocompleter />', () => {
         races,
         ssn: 'test ssn',
       }]
-      const autocompleter = mountAutocompleter({results})
-      autocompleter.find('input').simulate('focus')
-      const personResult = autocompleter.find('PersonSuggestion')
-      expect(personResult.length).toBe(1)
+      let autocompleter
+      beforeEach(() => {
+        autocompleter = mountAutocompleter({results})
+        autocompleter.find('input').simulate('focus')
+      })
 
-      expect(personResult.props().address).toEqual(address)
-      expect(personResult.props().dateOfBirth).toEqual('test date of birth')
-      expect(personResult.props().ethnicity).toEqual(ethnicity)
-      expect(personResult.props().firstName).toEqual('test first name')
-      expect(personResult.props().gender).toEqual('male')
-      expect(personResult.props().isSealed).toEqual(false)
-      expect(personResult.props().isSensitive).toEqual(false)
-      expect(personResult.props().languages).toEqual(languages)
-      expect(personResult.props().lastName).toEqual('test last name')
-      expect(personResult.props().legacyDescriptor).toEqual(legacyDescriptor)
-      expect(personResult.props().middleName).toEqual('test middle name')
-      expect(personResult.props().phoneNumber).toEqual(phoneNumber)
-      expect(personResult.props().races).toEqual(races)
-      expect(personResult.props().ssn).toEqual('test ssn')
+      it('displays person suggestion', () => {
+        const sugestion = autocompleter.find('PersonSuggestion')
+        expect(sugestion.length).toBe(1)
+
+        expect(sugestion.props().address).toEqual(address)
+        expect(sugestion.props().dateOfBirth).toEqual('test date of birth')
+        expect(sugestion.props().ethnicity).toEqual(ethnicity)
+        expect(sugestion.props().firstName).toEqual('test first name')
+        expect(sugestion.props().gender).toEqual('male')
+        expect(sugestion.props().isSealed).toEqual(false)
+        expect(sugestion.props().isSensitive).toEqual(false)
+        expect(sugestion.props().languages).toEqual(languages)
+        expect(sugestion.props().lastName).toEqual('test last name')
+        expect(sugestion.props().legacyDescriptor).toEqual(legacyDescriptor)
+        expect(sugestion.props().middleName).toEqual('test middle name')
+        expect(sugestion.props().phoneNumber).toEqual(phoneNumber)
+        expect(sugestion.props().races).toEqual(races)
+        expect(sugestion.props().ssn).toEqual('test ssn')
+      })
+
+      it('changes backround colour when highlighted', () => {
+        const input = autocompleter.find('input')
+        input.simulate('keyDown', { key : 'ArrowDown', keyCode: 40, which: 40 })
+        const result = autocompleter.find('div[id="search-result-some-legacy-id"]')
+        expect(result.props().style.backgroundColor).toEqual('#d4d4d4')
+      })
     })
 
     it('displays no results were found', () => {

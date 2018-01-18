@@ -34,6 +34,10 @@ const Autocompleter = ({
     cursor: 'pointer',
     padding: '10px 20px',
   }
+  const resultStyleHighlighted = {
+    ...resultStyle,
+    backgroundColor: '#d4d4d4',
+  }
   const MIN_SEARCHABLE_CHARS = 2
   const onItemSelect = (_value, item) => {
     if (isSelectable(item)) {
@@ -53,10 +57,14 @@ const Autocompleter = ({
       {footer}
     </div>
   )
-  const renderItem = (item, _isHighlighted, _styles) => {
+  const renderItem = (item, isHighlighted, _styles) => {
     const key = item.legacyDescriptor.legacy_id
     return (
-      <div id={`search-result-${key}`} key={key} style={resultStyle}>
+      <div
+        id={`search-result-${key}`}
+        key={key}
+        style={isHighlighted ? resultStyleHighlighted : resultStyle}
+      >
         <PersonSuggestion
           address={item.address}
           dateOfBirth={item.dateOfBirth}
