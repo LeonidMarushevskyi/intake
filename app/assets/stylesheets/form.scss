@@ -236,6 +236,14 @@ input[type='radio']:disabled + label::before {
   }
 }
 
+.highlighted {
+  em {
+    background-color: $orange;
+    font-style: normal;
+    font-weight: bold;
+  }
+}
+
 .react-autosuggest__suggestion {
   border-bottom: 2px solid $light-grey;
   cursor: pointer;

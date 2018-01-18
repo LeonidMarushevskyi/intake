@@ -33,7 +33,7 @@ const PersonSuggestion = ({
       <div className='col-md-10'>
         <div className='row'>
           <div className='col-md-12'>
-            <strong {...sanitizedField(fullName)} /><br/>
+            <strong className='highlighted' {...sanitizedField(fullName)} /><br/>
             <span>{legacySourceString}</span>
           </div>
         </div>
@@ -45,7 +45,7 @@ const PersonSuggestion = ({
             {
               ssn && <div>
                 <strong className='c-gray half-pad-right'>SSN</strong>
-                <span {...sanitizedField(ssn)} />
+                <span className='highlighted' {...sanitizedField(ssn)} />
               </div>
             }
           </div>

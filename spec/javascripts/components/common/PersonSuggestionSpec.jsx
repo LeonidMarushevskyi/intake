@@ -6,7 +6,7 @@ describe('PersonSuggestion', () => {
   it('renders first, last name, middle name and suffix', () => {
     const props = {firstName: 'Bart', lastName: 'Simpson', middleName: 'Jacqueline', nameSuffix: 'md'}
     const component = shallow(<PersonSuggestion {...props} />)
-    expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
+    expect(component.html()).toContain('<strong class="highlighted">Bart Jacqueline Simpson MD</strong>')
   })
 
   it('renders legacy source table and id', () => {
@@ -24,7 +24,7 @@ describe('PersonSuggestion', () => {
   it('renders html sanitized first, last name, middle name and suffix', () => {
     const props = {firstName: '<h3>Bart</h3>', lastName: '<strong>Simpson</strong>', middleName: 'Jacqueline', nameSuffix: 'md'}
     const component = shallow(<PersonSuggestion {...props} />)
-    expect(component.html()).toContain('<strong>Bart Jacqueline Simpson MD</strong>')
+    expect(component.html()).toContain('<strong class="highlighted">Bart Jacqueline Simpson MD</strong>')
   })
 
   describe('sensitive', () => {
@@ -60,7 +60,7 @@ describe('PersonSuggestion', () => {
       const props = {ssn: '123-456-7890'}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).toContain(
-        '<div><strong class="c-gray half-pad-right">SSN</strong><span>123-456-7890</span></div>'
+        '<div><strong class="c-gray half-pad-right">SSN</strong><span class="highlighted">123-456-7890</span></div>'
       )
     })
 
@@ -68,7 +68,7 @@ describe('PersonSuggestion', () => {
       const props = {ssn: '<em><h3>123-456-7890</h3></em>'}
       const component = shallow(<PersonSuggestion {...props} />)
       expect(component.html()).toContain(
-        '<div><strong class="c-gray half-pad-right">SSN</strong><span><em>123-456-7890</em></span></div>'
+        '<div><strong class="c-gray half-pad-right">SSN</strong><span class="highlighted"><em>123-456-7890</em></span></div>'
       )
     })
 

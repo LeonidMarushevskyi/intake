@@ -24,7 +24,7 @@ const AgeInfo = ({dateOfBirth}) => {
   }
 
   return (
-    dob.isValid() && <div>
+    dob.isValid() && <div className='highlighted'>
       <span>{`${ageInYears} yrs old (DOB:`}</span>
       {genDobHtml(dateOfBirth, sanitizedDob, dob)}
       <span>)</span>
