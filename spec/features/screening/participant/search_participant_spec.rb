@@ -77,22 +77,20 @@ feature 'searching a participant in autocompleter' do
         fill_in 'Search for any person', with: 'Ma'
       end
 
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge Jacqueline Simpson MD")]]/../../../..') do
-          expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
-          expect(page).to have_content '15 yrs old'
-          expect(page).to have_content 'Female, White, American Indian or Alaska Native'
-          expect(page).to have_content 'Hispanic/Latino'
-          expect(page).to have_content 'Language'
-          expect(page).to have_content 'French (Primary), Italian'
-          expect(page).to have_content 'Home971-287-6774'
-          expect(page).to have_content 'SSN'
-          expect(page).to have_content '1234'
-          expect(page).to have_content '123-23-1234'
-          expect(page).to have_content 'Home123 Fake St, Springfield, NY 11222'
-          expect(page).to have_content 'Sensitive'
-          expect(page).to_not have_content 'Sealed'
-        end
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
+        expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
+        expect(page).to have_content '15 yrs old'
+        expect(page).to have_content 'Female, White, American Indian or Alaska Native'
+        expect(page).to have_content 'Hispanic/Latino'
+        expect(page).to have_content 'Language'
+        expect(page).to have_content 'French (Primary), Italian'
+        expect(page).to have_content 'Home971-287-6774'
+        expect(page).to have_content 'SSN'
+        expect(page).to have_content '1234'
+        expect(page).to have_content '123-23-1234'
+        expect(page).to have_content 'Home123 Fake St, Springfield, NY 11222'
+        expect(page).to have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
       end
     end
 
@@ -181,11 +179,8 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Ma'
       end
-
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge Jacqueline Simpson MD")]]/../../../..') do
-          expect(page).to_not have_css 'fa-phone'
-        end
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
+        expect(page).to_not have_css 'fa-phone'
       end
     end
 
@@ -208,10 +203,8 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Ma'
       end
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge Jacqueline Simpson MD")]]/../../../..') do
-          expect(page).to_not have_css 'fa-map-marker'
-        end
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
+        expect(page).to_not have_css 'fa-map-marker'
       end
     end
 
@@ -231,11 +224,9 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Ma'
       end
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge")]]/../../../..') do
-          expect(page).to_not have_content 'Sensitive'
-          expect(page).to_not have_content 'Sealed'
-        end
+      within_person_search_result(name: 'Marge') do
+        expect(page).to_not have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
       end
     end
 
@@ -255,11 +246,9 @@ feature 'searching a participant in autocompleter' do
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Ma'
       end
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge")]]/../../../..') do
-          expect(page).to have_content 'Sensitive'
-          expect(page).to_not have_content 'Sealed'
-        end
+      within_person_search_result(name: 'Marge') do
+        expect(page).to have_content 'Sensitive'
+        expect(page).to_not have_content 'Sealed'
       end
     end
 
@@ -280,11 +269,9 @@ feature 'searching a participant in autocompleter' do
         fill_in 'Search for any person', with: 'Ma'
       end
 
-      within '#search-card', text: 'Search' do
-        within(:xpath, '//*[text()[contains(., "Marge")]]/../../../..') do
-          expect(page).to_not have_content 'Sensitive'
-          expect(page).to have_content 'Sealed'
-        end
+      within_person_search_result(name: 'Marge') do
+        expect(page).to_not have_content 'Sensitive'
+        expect(page).to have_content 'Sealed'
       end
     end
 
