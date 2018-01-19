@@ -14,8 +14,8 @@ export default class HistoryTable extends React.Component {
           <colgroup>
             <col className='col-md-2'/>
             <col className='col-md-2'/>
-            <col className='col-md-2'/>
-            <col className='col-md-6'/>
+            <col className='col-md-1'/>
+            <col className='col-md-7'/>
           </colgroup>
           <thead>
             <tr>
