@@ -14,19 +14,19 @@ const CaseView = ({
   <tr>
     <td>{dateRange}</td>
     <td>
-      <div className='row'>Case</div>
-      <div className='row'>{caseId}</div>
-      <div className='row'>({status})</div>
+      <div className='semibold'>Case</div>
+      <div>({status})</div>
+      <div className='c-dark-grey'>{caseId}</div>
       {
         restrictedAccessStatus &&
-        <div className='row information-flag'>{restrictedAccessStatus}</div>
+        <div className='information-flag'>{restrictedAccessStatus}</div>
       }
     </td>
     <td>{county}</td>
     <td>
-      <div className='row'>Focus Child: {focusChild}</div>
-      <div className='row'>Parent(s): {parents}</div>
-      <div className='row'>Worker: {worker}</div>
+      <div><span className='semibold'>Focus Child:</span> {focusChild}</div>
+      <div><span className='semibold'>Parent(s):</span> {parents}</div>
+      <div><span className='semibold'>Worker:</span> {worker}</div>
     </td>
   </tr>
 )
