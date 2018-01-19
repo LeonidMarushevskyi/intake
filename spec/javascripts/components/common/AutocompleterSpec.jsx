@@ -114,7 +114,7 @@ describe('<Autocompleter />', () => {
     })
   })
 
-  describe('onChange', () => {
+  describe('onChangeInput', () => {
     let searchInput
     let onSearch
     let onChange
@@ -125,7 +125,7 @@ describe('<Autocompleter />', () => {
         .dive()
         .find('input')
     })
-    describe('when user types to non whitespace characters', () => {
+    describe('when user types two non whitespace characters', () => {
       const value = 'aa'
       beforeEach(() => searchInput.simulate('change', {target: {value}}))
 
