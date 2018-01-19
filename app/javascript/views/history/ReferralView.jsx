@@ -5,45 +5,44 @@ const ReferralView = ({dateRange, referralId, status, notification, county, peop
   <tr>
     <td>{dateRange}</td>
     <td>
-      <div className='row referral'>Referral</div>
-      <div className='row referral-id'>{referralId}</div>
-      <div className='row referral-status'>({status})</div>
+      <div className='referral'>Referral</div>
+      <div className='referral-status'>({status})</div>
+      <div className='referral-id'>{referralId}</div>
+      
       {notification && <div className='row information-flag'>{notification}</div>}
     </td>
     <td>{county}</td>
     <td>
       <div className='row'>
-        <div className='table-responsive'>
-          <table className='table people-and-roles'>
-            <colgroup>
-              <col className='col-md-3' />
-              <col className='col-md-3'/>
-              <col className='col-md-6'/>
-            </colgroup>
-            <thead>
-              <tr>
-                <th scope='col' className='victim'>Victim</th>
-                <th scope='col' className='perpetrator'>Perpetrator</th>
-                <th scope='col' className='allegations disposition'>Allegation(s) &amp; Disposition</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                peopleAndRoles.map(({victim, perpetrator, allegations, disposition}, index) => (
-                  <tr key={index}>
-                    <td className='victim'>{victim}</td>
-                    <td className='perpetrator'>{perpetrator}</td>
-                    <td className='allegations disposition'>{allegations} {disposition}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
+        <table className='table people-and-roles'>
+          <colgroup>
+            <col className='col-md-3'/>
+            <col className='col-md-3'/>
+            <col className='col-md-6'/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope='col' className='victim semibold'>Victim</th>
+              <th scope='col' className='perpetrator semibold'>Perpetrator</th>
+              <th scope='col' className='allegations disposition semibold'>Allegation(s) &amp; Disposition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              peopleAndRoles.map(({victim, perpetrator, allegations, disposition}, index) => (
+                <tr key={index}>
+                  <td className='victim'>{victim}</td>
+                  <td className='perpetrator'>{perpetrator}</td>
+                  <td className='allegations disposition'>{allegations} {disposition}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
       </div>
       <div className='row'>
-        <div className='col-md-6 reporter'>Reporter: {reporter}</div>
-        <div className='col-md-6 assignee'>Worker: {worker}</div>
+        <div className='col-md-6 reporter'><span>Reporter: </span>{reporter}</div>
+        <div className='col-md-6 assignee'><span>Worker: </span>{worker}</div>
       </div>
     </td>
   </tr>

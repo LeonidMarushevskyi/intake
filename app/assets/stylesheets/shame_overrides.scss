@@ -5,6 +5,19 @@
   visibility: hidden;
 }
 
-#history-card table tr:nth-child(even) {
+#history-card{
+  .reporter span, .assignee span, .referral{
+  	font-weight: 600;
+  }
+  .referral-id {
+  	color: #767676;
+  }
+  thead {
+    .victim, .perpetrator, .allegations, .disposition {
+  	  font-weight: 600;
+  	}
+  }
+  table tr:nth-child(even) {
     background-color: #ffffff;
+  }
 }
