@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import Autocomplete from 'react-autocomplete'
 import SuggestionHeader from 'common/SuggestionHeader'
+import AutocompleterFooter from 'common/AutocompleterFooter'
 
 const Autocompleter = ({
   id,
@@ -14,7 +15,8 @@ const Autocompleter = ({
   results,
   searchTerm,
   total,
-  footer,
+  canCreateNewPerson,
+  onLoadMoreResults,
 }) => {
   const menuStyle = {
     backgroundColor: '#fff',
@@ -54,7 +56,14 @@ const Autocompleter = ({
         searchTerm={searchTerm}
       />
       {items}
-      {footer}
+      <AutocompleterFooter
+        canCreateNewPerson={canCreateNewPerson}
+        canLoadMoreResults={results && total !== results.length}
+        onLoadMoreResults={onLoadMoreResults}
+        onCreateNewPerson={() => {
+          onSelect({id: null})
+        }}
+      />
     </div>
   )
   const renderItem = (item, isHighlighted, _styles) => {
@@ -108,11 +117,12 @@ const Autocompleter = ({
 }
 
 Autocompleter.propTypes = {
-  footer: PropTypes.element,
+  canCreateNewPerson: PropTypes.bool,
   id: PropTypes.string,
   isSelectable: PropTypes.func,
   onChange: PropTypes.func,
   onClear: PropTypes.func,
+  onLoadMoreResults: PropTypes.func,
   onSearch: PropTypes.func,
   onSelect: PropTypes.func,
   results: PropTypes.array,
@@ -121,7 +131,6 @@ Autocompleter.propTypes = {
 }
 
 Autocompleter.defaultProps = {
-  footer: null,
   isSelectable: () => true,
 }
 

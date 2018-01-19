@@ -4,18 +4,21 @@ import {shallow, mount} from 'enzyme'
 
 describe('<Autocompleter />', () => {
   function mountAutocompleter({
-    onSelect = () => null,
-    onClear = () => null,
+    canCreateNewPerson,
+    onLoadMoreResults,
     isSelectable = () => true,
-    onSearch = () => null,
     onChange = () => null,
-    searchTerm = '',
+    onClear = () => null,
+    onSearch = () => null,
+    onSelect = () => null,
     results = [],
-    footer = null,
+    searchTerm = '',
     total = 0,
   }) {
     return mount(
       <Autocompleter
+        canCreateNewPerson={canCreateNewPerson}
+        onLoadMoreResults={onLoadMoreResults}
         onSelect={onSelect}
         onClear={onClear}
         onChange={onChange}
@@ -23,7 +26,6 @@ describe('<Autocompleter />', () => {
         total={total}
         results={results}
         searchTerm={searchTerm}
-        footer={footer}
         onSearch={onSearch}
       />
     )
@@ -36,7 +38,6 @@ describe('<Autocompleter />', () => {
     onChange = () => null,
     searchTerm = '',
     results = [],
-    footer = null,
     total = 0,
     id = null,
   }) {
@@ -50,7 +51,6 @@ describe('<Autocompleter />', () => {
         total={total}
         results={results}
         searchTerm={searchTerm}
-        footer={footer}
         onSearch={onSearch}
       />
     )
@@ -237,7 +237,7 @@ describe('<Autocompleter />', () => {
 
       it('changes backround colour when highlighted', () => {
         const input = autocompleter.find('input')
-        input.simulate('keyDown', { key : 'ArrowDown', keyCode: 40, which: 40 })
+        input.simulate('keyDown', {key: 'ArrowDown', keyCode: 40, which: 40})
         const result = autocompleter.find('div[id="search-result-some-legacy-id"]')
         expect(result.props().style.backgroundColor).toEqual('#d4d4d4')
       })
@@ -262,11 +262,20 @@ describe('<Autocompleter />', () => {
       expect(suggestionHeader.html()).toContain('Showing 1-5 of 10 results for "Simpson"')
     })
 
-    it('displays the footer', () => {
-      const footer = <p className='footer-1'>Footer #1</p>
-      const autocompleter = mountAutocompleter({searchTerm: 'Te', footer})
+    it('displays the autocompleter footer', () => {
+      const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
+      const autocompleter = mountAutocompleter({
+        canCreateNewPerson: true,
+        results: [],
+        total: 2,
+        onLoadMoreResults,
+      })
       autocompleter.find('input').simulate('focus')
-      expect(autocompleter.html()).toContain('Footer #1')
+      const footer = autocompleter.find('AutocompleterFooter')
+      expect(footer.length).toBe(1)
+      expect(footer.props().canCreateNewPerson).toEqual(true)
+      expect(footer.props().canLoadMoreResults).toEqual(true)
+      expect(footer.props().onLoadMoreResults).toEqual(onLoadMoreResults)
     })
   })
 })

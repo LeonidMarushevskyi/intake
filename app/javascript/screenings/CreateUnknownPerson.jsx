@@ -4,7 +4,7 @@ import React from 'react'
 const CreateUnknownPerson = ({onClick}) => (
   <button className='btn btn-default btn-block gap-bottom'
     aria-label='Create a new person'
-    onClick={() => onClick({id: null})}
+    onClick={onClick}
     data-autosuggest='true'
   >
     <i className='fa fa-plus' /> Create a new person
