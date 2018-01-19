@@ -375,5 +375,50 @@ feature 'searching a participant in autocompleter' do
         expect(page).to_not have_button('Show more results')
       end
     end
+
+    scenario 'clear search input on navigation' do
+      allow(LUID).to receive(:generate).and_return(['DQJIYK'])
+      new_screening = FactoryGirl.create(
+        :screening,
+        reference: 'DQJIYK',
+        safety_alerts: [],
+        safety_information: nil,
+        address: { city: nil },
+        assignee: nil
+      )
+      stub_empty_history_for_screening(new_screening)
+      stub_empty_relationships_for_screening(new_screening)
+      stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+        .with(body: as_json_without_root_id(new_screening))
+        .and_return(json_body(new_screening.to_json, status: 201))
+
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body([].to_json, status: 200))
+
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+        .and_return(json_body(new_screening.to_json, status: 200))
+
+      visit root_path
+      click_button 'Start Screening'
+
+      stub_person_search(search_term: 'Go back', person_response: { hits: { total: 1, hits: [] } })
+      within '#search-card', text: 'Search' do
+        fill_in_autocompleter 'Search for any person', with: 'Go back', skip_select: true
+      end
+
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+        .and_return(json_body([].to_json, status: 200))
+
+      page.go_back
+
+      stub_empty_history_for_screening(new_screening)
+      stub_empty_relationships_for_screening(new_screening)
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
+        .and_return(json_body(new_screening.to_json, status: 200))
+
+      page.go_forward
+
+      expect(find_field('Search for any person').value).to eq ''
+    end
   end
 end
