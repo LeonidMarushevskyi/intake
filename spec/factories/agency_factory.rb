@@ -9,7 +9,6 @@ FactoryGirl.define do
       %w[
         COMMUNITY_CARE_LICENSING
         COUNTY_LICENSING
-        DEPARTMENT_OF_JUSTICE
         DISTRICT_ATTORNEY
         LAW_ENFORCEMENT
       ].sample
