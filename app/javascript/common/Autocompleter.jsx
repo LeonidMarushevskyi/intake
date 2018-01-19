@@ -1,6 +1,6 @@
 import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import Autocomplete from 'react-autocomplete'
 import SuggestionHeader from 'common/SuggestionHeader'
 import AutocompleterFooter from 'common/AutocompleterFooter'
@@ -30,7 +30,17 @@ const resultStyleHighlighted = {
 const MIN_SEARCHABLE_CHARS = 2
 
 export class Autocompleter extends Component {
-  onItemSelect = (_value, item) => {
+  constructor(props) {
+    super(props)
+    this.state = {
+      menuVisible: false,
+    }
+    this.onItemSelect = this.onItemSelect.bind(this)
+    this.renderMenu = this.renderMenu.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this)
+  }
+
+  onItemSelect(_value, item) {
     const {isSelectable, onClear, onChange, onSelect} = this.props
     if (isSelectable(item)) {
       onClear()
@@ -39,7 +49,7 @@ export class Autocompleter extends Component {
     }
   }
 
-  renderMenu = (items, searchTerm, _style) => {
+  renderMenu(items, searchTerm, _style) {
     const {canCreateNewPerson, onLoadMoreResults, onSelect, total} = this.props
     return (
       <div style={menuStyle}>
@@ -55,13 +65,14 @@ export class Autocompleter extends Component {
           onLoadMoreResults={onLoadMoreResults}
           onCreateNewPerson={() => {
             onSelect({id: null})
+            this.setState({menuVisible: false})
           }}
         />
       </div>
     )
   }
 
-  renderItem = (item, isHighlighted, _styles) => {
+  renderItem(item, isHighlighted, _styles) {
     const key = item.legacyDescriptor.legacy_id
     return (
       <div
@@ -89,16 +100,22 @@ export class Autocompleter extends Component {
       </div>
     )
   }
-  onChangeInput = (_, value) => {
+
+  onChangeInput(_, value) {
     const {onSearch, onChange} = this.props
     const isSearchable = value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
     if (isSearchable) {
       onSearch(value)
+      this.setState({menuVisible: true})
+    } else {
+      this.setState({menuVisible: false})
     }
     onChange(value)
   }
+
   render() {
     const {searchTerm, id, results} = this.props
+    const {menuVisible} = this.state
     return (
       <Autocomplete
         getItemValue={(_) => searchTerm}
@@ -107,6 +124,7 @@ export class Autocompleter extends Component {
         onChange={this.onChangeInput}
         onSelect={this.onItemSelect}
         renderItem={this.renderItem}
+        open={menuVisible}
         renderMenu={this.renderMenu}
         value={searchTerm}
         wrapperStyle={{display: 'block', position: 'relative'}}

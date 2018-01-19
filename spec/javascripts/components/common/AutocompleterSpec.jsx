@@ -71,9 +71,9 @@ describe('<Autocompleter />', () => {
     describe('when an item is selectable', () => {
       beforeEach(() => {
         const autocompleter = mountAutocompleter({
-          results, searchTerm: 'te', onClear, onChange, onSelect,
+          results, onClear, onChange, onSelect,
         })
-        autocompleter.find('input').simulate('focus')
+        autocompleter.find('input').simulate('change', {target: {value: 'te'}})
         autocompleter.find('div[id="search-result-1"]')
           .first()
           .simulate('click', null)
@@ -94,13 +94,11 @@ describe('<Autocompleter />', () => {
 
     describe('when an item is not selectable', () => {
       beforeEach(() => {
-        const isSelectable = jasmine.createSpy('isSelectable')
-        isSelectable.and.returnValue(false)
+        const isSelectable = jasmine.createSpy('isSelectable').and.returnValue(false)
         const autocompleter = mountAutocompleter({
-          results, searchTerm: 'te', onClear, onChange, onSelect,
-          isSelectable,
+          results, onClear, onChange, onSelect, isSelectable,
         })
-        autocompleter.find('input').simulate('focus')
+        autocompleter.find('input').simulate('change', {target: {value: 'te'}})
         autocompleter.find('div[id="search-result-1"]')
           .first()
           .simulate('click', null)
@@ -108,7 +106,7 @@ describe('<Autocompleter />', () => {
 
       it('does nothing', () => {
         expect(onClear).not.toHaveBeenCalled()
-        expect(onChange).not.toHaveBeenCalled()
+        expect(onChange).not.toHaveBeenCalledWith('')
         expect(onSelect).not.toHaveBeenCalled()
       })
     })
@@ -186,6 +184,24 @@ describe('<Autocompleter />', () => {
       expect(input.props().id).toEqual('search-input-id')
     })
 
+    it('shows search results when search is two characters', () => {
+      const results = Array.from(Array(5).keys())
+        .map((id) => ({legacyDescriptor: {legacy_id: id}}))
+      const autocomplete = mountAutocompleter({results}).find('Autocomplete')
+      autocomplete.find('input')
+        .simulate('change', {target: {value: 'ab'}})
+      expect(autocomplete.find('PersonSuggestion').length).toEqual(5)
+    })
+
+    it('hides search results when search is less than two characters', () => {
+      const results = Array.from(Array(5).keys())
+        .map((id) => ({legacyDescriptor: {legacy_id: id}}))
+      const autocomplete = mountAutocompleter({results}).find('Autocomplete')
+      autocomplete.find('input')
+        .simulate('change', {target: {value: 'a'}})
+      expect(autocomplete.find('PersonSuggestion').length).toEqual(0)
+    })
+
     describe('with search results present', () => {
       const address = {id: 'test address'}
       const ethnicity = {id: 'test ethnicity'}
@@ -212,7 +228,8 @@ describe('<Autocompleter />', () => {
       let autocompleter
       beforeEach(() => {
         autocompleter = mountAutocompleter({results})
-        autocompleter.find('input').simulate('focus')
+        autocompleter.find('input')
+          .simulate('change', {target: {value: 'ab'}})
       })
 
       it('displays person suggestion', () => {
@@ -245,7 +262,8 @@ describe('<Autocompleter />', () => {
 
     it('displays no results were found', () => {
       const autocompleter = mountAutocompleter({total: 0, searchTerm: 'Simpson'})
-      autocompleter.find('input').simulate('focus')
+      autocompleter.find('input')
+        .simulate('change', {target: {value: 'ab'}})
       const suggestionHeader = autocompleter.find('SuggestionHeader')
       expect(suggestionHeader.html()).toContain('No results were found for "Simpson"')
     })
@@ -257,7 +275,8 @@ describe('<Autocompleter />', () => {
         total: 10,
         searchTerm: 'Simpson',
       })
-      autocompleter.find('input').simulate('focus')
+      autocompleter.find('input')
+        .simulate('change', {target: {value: 'ab'}})
       const suggestionHeader = autocompleter.find('SuggestionHeader')
       expect(suggestionHeader.html()).toContain('Showing 1-5 of 10 results for "Simpson"')
     })
@@ -270,7 +289,8 @@ describe('<Autocompleter />', () => {
         total: 2,
         onLoadMoreResults,
       })
-      autocompleter.find('input').simulate('focus')
+      autocompleter.find('input')
+        .simulate('change', {target: {value: 'ab'}})
       const footer = autocompleter.find('AutocompleterFooter')
       expect(footer.length).toBe(1)
       expect(footer.props().canCreateNewPerson).toEqual(true)
