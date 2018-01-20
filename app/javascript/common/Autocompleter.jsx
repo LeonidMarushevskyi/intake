@@ -1,100 +1,145 @@
 import PersonSuggestion from 'common/PersonSuggestion'
 import PropTypes from 'prop-types'
-import React from 'react'
-import ReactAutosuggest from 'common/ReactAutosuggest'
+import React, {Component} from 'react'
+import Autocomplete from 'react-autocomplete'
 import SuggestionHeader from 'common/SuggestionHeader'
+import AutocompleterFooter from 'common/AutocompleterFooter'
+
+const menuStyle = {
+  backgroundColor: '#fff',
+  border: '1px solid #d4d4d4',
+  borderBottomLeftRadius: '4px',
+  borderBottomRightRadius: '4px',
+  fontFamily: 'Helvetica, sans-serif',
+  fontSize: '16px',
+  fontWeight: 300,
+  position: 'absolute',
+  width: '100%',
+  zIndex: 2,
+  display: 'block',
+}
+const resultStyle = {
+  borderBottom: '2px solid #d4d4d4',
+  cursor: 'pointer',
+  padding: '10px 20px',
+}
+const resultStyleHighlighted = {
+  ...resultStyle,
+  backgroundColor: '#d4d4d4',
+}
 const MIN_SEARCHABLE_CHARS = 2
 
-export default class Autocompleter extends React.Component {
+export class Autocompleter extends Component {
   constructor(props) {
     super(props)
-    this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
-    this.renderSuggestion = this.renderSuggestion.bind(this)
-    this.renderSuggestionsContainer = this.renderSuggestionsContainer.bind(this)
+    this.state = {
+      menuVisible: false,
+    }
+    this.onItemSelect = this.onItemSelect.bind(this)
+    this.renderMenu = this.renderMenu.bind(this)
+    this.onChangeInput = this.onChangeInput.bind(this)
   }
 
-  onSuggestionSelected(event, {suggestion}) {
-    const {
-      isSelectable,
-      onClear,
-      onSelect,
-      onChange,
-    } = this.props
-    if (isSelectable(suggestion)) {
+  onItemSelect(_value, item) {
+    const {isSelectable, onClear, onChange, onSelect} = this.props
+    if (isSelectable(item)) {
       onClear()
       onChange('')
-      onSelect(suggestion)
+      onSelect(item)
     }
   }
 
-  renderSuggestion(suggestion) {
-    if (suggestion.emptyResult) {
-      return false
-    } else {
-      return (<PersonSuggestion {...suggestion} />)
-    }
-  }
-
-  renderSuggestionsContainer({children, ...props}) {
-    const {total, searchTerm, results, footer} = this.props
-    let newChildren = null
-    if (children) {
-      const items = children.props.items.filter((item) => !item.emptyResult)
-      newChildren = React.cloneElement(children, {items})
-    }
+  renderMenu(items, searchTerm, _style) {
+    const {canCreateNewPerson, onLoadMoreResults, onSelect, total} = this.props
     return (
-      <div {...props}>
+      <div style={menuStyle}>
         <SuggestionHeader
-          currentNumberOfResults={results.length}
+          currentNumberOfResults={items.length}
           total={total}
           searchTerm={searchTerm}
         />
-        {newChildren}
-        {footer}
+        {items}
+        <AutocompleterFooter
+          canCreateNewPerson={canCreateNewPerson}
+          canLoadMoreResults={items && total !== items.length}
+          onLoadMoreResults={onLoadMoreResults}
+          onCreateNewPerson={() => {
+            onSelect({id: null})
+            this.setState({menuVisible: false})
+          }}
+        />
       </div>
     )
   }
 
-  shouldRenderSuggestions(value) {
-    return value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
+  renderItem(item, isHighlighted, _styles) {
+    const key = item.legacyDescriptor.legacy_id
+    return (
+      <div
+        id={`search-result-${key}`}
+        key={key}
+        style={isHighlighted ? resultStyleHighlighted : resultStyle}
+      >
+        <PersonSuggestion
+          address={item.address}
+          dateOfBirth={item.dateOfBirth}
+          ethnicity={item.ethnicity}
+          firstName={item.firstName}
+          gender={item.gender}
+          isSealed={item.isSealed}
+          isSensitive={item.isSensitive}
+          languages={item.languages}
+          lastName={item.lastName}
+          legacyDescriptor={item.legacyDescriptor}
+          middleName={item.middleName}
+          nameSuffix={item.nameSuffix}
+          phoneNumber={item.phoneNumber}
+          races={item.races}
+          ssn={item.ssn}
+        />
+      </div>
+    )
+  }
+
+  onChangeInput(_, value) {
+    const {onSearch, onChange} = this.props
+    const isSearchable = value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
+    if (isSearchable) {
+      onSearch(value)
+      this.setState({menuVisible: true})
+    } else {
+      this.setState({menuVisible: false})
+    }
+    onChange(value)
   }
 
   render() {
-    const {
-      id,
-      onChange,
-      onClear,
-      onSearch,
-      searchTerm,
-      results,
-    } = this.props
-    const inputProps = {
-      id,
-      value: searchTerm,
-      onChange: (event, {newValue}) => onChange(newValue),
-    }
+    const {searchTerm, id, results} = this.props
+    const {menuVisible} = this.state
     return (
-      <ReactAutosuggest
-        suggestions={[...results, {emptyResult: true}]}
-        shouldRenderSuggestions={this.shouldRenderSuggestions}
-        onSuggestionsFetchRequested={({value}) => onSearch(value)}
-        onSuggestionsClearRequested={onClear}
-        onSuggestionSelected={this.onSuggestionSelected}
-        getSuggestionValue={() => searchTerm}
-        renderSuggestion={this.renderSuggestion}
-        inputProps={inputProps}
-        renderSuggestionsContainer={this.renderSuggestionsContainer}
+      <Autocomplete
+        getItemValue={(_) => searchTerm}
+        inputProps={{id}}
+        items={results}
+        onChange={this.onChangeInput}
+        onSelect={this.onItemSelect}
+        renderItem={this.renderItem}
+        open={menuVisible}
+        renderMenu={this.renderMenu}
+        value={searchTerm}
+        wrapperStyle={{display: 'block', position: 'relative'}}
       />
     )
   }
 }
 
 Autocompleter.propTypes = {
-  footer: PropTypes.element,
+  canCreateNewPerson: PropTypes.bool,
   id: PropTypes.string,
   isSelectable: PropTypes.func,
   onChange: PropTypes.func,
   onClear: PropTypes.func,
+  onLoadMoreResults: PropTypes.func,
   onSearch: PropTypes.func,
   onSelect: PropTypes.func,
   results: PropTypes.array,
@@ -103,8 +148,9 @@ Autocompleter.propTypes = {
 }
 
 Autocompleter.defaultProps = {
-  footer: null,
   isSelectable: () => true,
 }
 
 Autocompleter.displayName = 'Autocompleter'
+
+export default Autocompleter

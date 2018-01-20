@@ -74,23 +74,21 @@ feature 'searching a participant in autocompleter' do
       stub_person_search(search_term: 'Ma', person_response: search_response)
 
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
 
-      within 'li', text: 'Marge Jacqueline Simpson MD' do
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
         expect(page).to have_content date_of_birth.strftime('%-m/%-d/%Y')
         expect(page).to have_content '15 yrs old'
         expect(page).to have_content 'Female, White, American Indian or Alaska Native'
         expect(page).to have_content 'Hispanic/Latino'
         expect(page).to have_content 'Language'
         expect(page).to have_content 'French (Primary), Italian'
-        expect(page).to have_content 'Home'
-        expect(page).to have_content '971-287-6774'
+        expect(page).to have_content 'Home971-287-6774'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '1234'
         expect(page).to have_content '123-23-1234'
-        expect(page).to have_content '123 Fake St, Springfield, NY 11222'
-        expect(page).to have_content 'Home'
+        expect(page).to have_content 'Home123 Fake St, Springfield, NY 11222'
         expect(page).to have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'
       end
@@ -110,12 +108,10 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma 12345', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person',
-          with: 'Ma 123-45',
-          select_option_with: 'Marge'
+        fill_in 'Search for any person', with: 'Ma 123-45'
       end
 
-      within '.react-autosuggest__suggestions-list' do
+      within '#search-card', text: 'Search' do
         expect(page).to have_content '123-45-6789'
       end
 
@@ -157,9 +153,9 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
-      within '.react-autosuggest__suggestions-list' do
+      within '#search-card', text: 'Search' do
         expect(page).to have_content 'Client ID 123-456-789 in CWS-CMS'
       end
     end
@@ -181,10 +177,9 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
-
-      within 'li', text: 'Marge Jacqueline Simpson MD' do
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
         expect(page).to_not have_css 'fa-phone'
       end
     end
@@ -206,9 +201,9 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
-      within 'li', text: 'Marge Jacqueline Simpson MD' do
+      within_person_search_result(name: 'Marge Jacqueline Simpson MD') do
         expect(page).to_not have_css 'fa-map-marker'
       end
     end
@@ -227,9 +222,9 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
-      within 'li', text: 'Marge' do
+      within_person_search_result(name: 'Marge') do
         expect(page).to_not have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'
       end
@@ -249,9 +244,9 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
-      within 'li', text: 'Marge' do
+      within_person_search_result(name: 'Marge') do
         expect(page).to have_content 'Sensitive'
         expect(page).to_not have_content 'Sealed'
       end
@@ -271,10 +266,10 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Ma'
+        fill_in 'Search for any person', with: 'Ma'
       end
 
-      within 'li', text: 'Marge' do
+      within_person_search_result(name: 'Marge') do
         expect(page).to_not have_content 'Sensitive'
         expect(page).to have_content 'Sealed'
       end
@@ -287,7 +282,7 @@ feature 'searching a participant in autocompleter' do
       end
       stub_person_search(search_term: 'No', person_response: no_search_results)
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'No', skip_select: true
+        fill_in 'Search for any person', with: 'No'
         expect(page).to have_content 'No results were found for "No"'
       end
     end
@@ -341,7 +336,7 @@ feature 'searching a participant in autocompleter' do
         Rails.application.routes.url_helpers.dora_people_light_index_path
       )
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Fi', skip_select: true, split: true
+        fill_in 'Search for any person', with: 'Fi'
         expect(page).to have_content 'Showing 1-25 of 51 results for "Fi"'
         expect(page).to have_content 'Result 24'
       end
@@ -403,7 +398,7 @@ feature 'searching a participant in autocompleter' do
 
       stub_person_search(search_term: 'Go back', person_response: { hits: { total: 1, hits: [] } })
       within '#search-card', text: 'Search' do
-        fill_in_autocompleter 'Search for any person', with: 'Go back', skip_select: true
+        fill_in 'Search for any person', with: 'Go back'
       end
 
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))

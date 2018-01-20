@@ -22,7 +22,6 @@ describe('CreateUnknownPerson', () => {
   it('calls onClick when the button is clicked', () => {
     const button = component.find('button')
     button.simulate('click')
-    expect(onClick).toHaveBeenCalledWith({id: null})
-    expect(onClick.calls.count()).toEqual(1)
+    expect(onClick).toHaveBeenCalled()
   })
 })

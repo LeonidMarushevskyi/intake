@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Autocompleter from 'common/Autocompleter'
-import AutocompleterFooter from 'common/AutocompleterFooter'
 import * as IntakeConfig from 'common/config'
 
 export class PersonSearchForm extends React.Component {
@@ -23,15 +22,6 @@ export class PersonSearchForm extends React.Component {
       searchTerm,
       total,
     } = this.props
-
-    const footer = (
-      <AutocompleterFooter
-        canCreateNewPerson={canCreateNewPerson}
-        canLoadMoreResults={results && total !== results.length}
-        onLoadMoreResults={onLoadMoreResults}
-        onCreateNewPerson={onSelect}
-      />
-    )
 
     return (
       <div>
@@ -55,13 +45,14 @@ export class PersonSearchForm extends React.Component {
                   id='screening_participants'
                   onSelect={onSelect}
                   isSelectable={isSelectable}
-                  footer={footer}
                   onClear={onClear}
                   onSearch={onSearch}
                   onChange={onChange}
                   searchTerm={searchTerm}
                   total={total}
                   results={results}
+                  canCreateNewPerson={canCreateNewPerson}
+                  onLoadMoreResults={onLoadMoreResults}
                 />
               </div>
             </div>

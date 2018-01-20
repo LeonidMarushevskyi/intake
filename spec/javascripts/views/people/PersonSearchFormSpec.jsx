@@ -1,7 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import PersonSearchForm from 'views/people/PersonSearchForm'
-import AutocompleterFooter from 'common/AutocompleterFooter'
 import * as IntakeConfig from 'common/config'
 
 describe('PersonSearchForm', () => {
@@ -69,28 +68,6 @@ describe('PersonSearchForm', () => {
     const component = renderPersonSearchForm({onSelect})
     const autocompleter = component.find('Autocompleter')
     expect(autocompleter.props().onSelect).toEqual(onSelect)
-  })
-
-  it('renders the autocompleter footer', () => {
-    const onLoadMoreResults = jasmine.createSpy('onLoadMoreResults')
-    const onSelect = jasmine.createSpy('onSelect')
-    const results = []
-    const total = 2
-    const autocompleter = renderPersonSearchForm({
-      canCreateNewPerson: true,
-      results,
-      total,
-      onSelect,
-      onLoadMoreResults,
-    }).find('Autocompleter')
-    expect(autocompleter.props().footer).toEqual(
-      <AutocompleterFooter
-        canCreateNewPerson={true}
-        canLoadMoreResults={true}
-        onLoadMoreResults={onLoadMoreResults}
-        onCreateNewPerson={onSelect}
-      />
-    )
   })
 
   it('renders the card header', () => {

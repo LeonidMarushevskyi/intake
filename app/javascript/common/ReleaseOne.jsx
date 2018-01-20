@@ -26,7 +26,6 @@ const ReleaseOne = ({
   </div>
 )
 ReleaseOne.propTypes = {
-  footer: PropTypes.bool,
   onChange: PropTypes.func,
   onClear: PropTypes.func,
   onSearch: PropTypes.func,

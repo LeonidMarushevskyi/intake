@@ -11,12 +11,11 @@ module AutocompleterHelpers
     locator,
     with:,
     select_option_with: nil,
-    skip_select: false,
     split: false
   )
     select_option_with ||= with
     populate_autocompleter_with_options(locator, with, split)
-    click_autocompleter_result(with, select_option_with) unless skip_select
+    click_autocompleter_result(with, select_option_with)
   end
 
   def populate_autocompleter_with_options(locator, value, split)
@@ -53,6 +52,14 @@ module AutocompleterHelpers
         visible: true,
         text: result_should_contain || value
       )
+    end
+  end
+
+  def within_person_search_result(name:)
+    within '#search-card', text: 'Search' do
+      within(:xpath, "//*[text()[contains(., '#{name}')]]/../../../..") do
+        yield
+      end
     end
   end
 end
