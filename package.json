@@ -71,7 +71,7 @@
     "browserify": "^14.4.0",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "cors": "^2.8.4",
-    "enzyme": "2.9.1",
+    "enzyme": "3.0.0",
     "eslint": "4.5.0",
     "eslint-plugin-jasmine": "^2.8.4",
     "eslint-plugin-react": "7.3.0",
