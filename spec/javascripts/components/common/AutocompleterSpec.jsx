@@ -190,15 +190,6 @@ describe('<Autocompleter />', () => {
       expect(input.props().id).toEqual('search-input-id')
     })
 
-    it('shows search results when search is two characters', () => {
-      const results = Array.from(Array(5).keys())
-        .map((id) => ({legacyDescriptor: {legacy_id: id}}))
-      const autocomplete = mountAutocompleter({results}).find('Autocomplete')
-      autocomplete.find('input')
-        .simulate('change', {target: {value: 'ab'}})
-      expect(autocomplete.find('PersonSuggestion').length).toEqual(5)
-    })
-
     it('hides search results when search is less than two characters', () => {
       const results = Array.from(Array(5).keys())
         .map((id) => ({legacyDescriptor: {legacy_id: id}}))
@@ -230,6 +221,8 @@ describe('<Autocompleter />', () => {
         phoneNumber,
         races,
         ssn: 'test ssn',
+      }, {
+        legacyDescriptor: {legacy_id: 'some-other-legacy-id'},
       }]
       let autocompleter
       beforeEach(() => {
@@ -238,24 +231,29 @@ describe('<Autocompleter />', () => {
           .simulate('change', {target: {value: 'ab'}})
       })
 
-      it('displays person suggestion', () => {
-        const sugestion = autocompleter.find('PersonSuggestion')
-        expect(sugestion.length).toBe(1)
+      it('displays multiple suggestions', () => {
+        const suggestions = autocompleter.find('PersonSuggestion')
+        expect(suggestions.length).toEqual(2)
+      })
 
-        expect(sugestion.props().address).toEqual(address)
-        expect(sugestion.props().dateOfBirth).toEqual('test date of birth')
-        expect(sugestion.props().ethnicity).toEqual(ethnicity)
-        expect(sugestion.props().firstName).toEqual('test first name')
-        expect(sugestion.props().gender).toEqual('male')
-        expect(sugestion.props().isSealed).toEqual(false)
-        expect(sugestion.props().isSensitive).toEqual(false)
-        expect(sugestion.props().languages).toEqual(languages)
-        expect(sugestion.props().lastName).toEqual('test last name')
-        expect(sugestion.props().legacyDescriptor).toEqual(legacyDescriptor)
-        expect(sugestion.props().middleName).toEqual('test middle name')
-        expect(sugestion.props().phoneNumber).toEqual(phoneNumber)
-        expect(sugestion.props().races).toEqual(races)
-        expect(sugestion.props().ssn).toEqual('test ssn')
+      it('displays person suggestion', () => {
+        const suggestions = autocompleter.find('PersonSuggestion')
+        const suggestion = suggestions.at(0)
+
+        expect(suggestion.props().address).toEqual(address)
+        expect(suggestion.props().dateOfBirth).toEqual('test date of birth')
+        expect(suggestion.props().ethnicity).toEqual(ethnicity)
+        expect(suggestion.props().firstName).toEqual('test first name')
+        expect(suggestion.props().gender).toEqual('male')
+        expect(suggestion.props().isSealed).toEqual(false)
+        expect(suggestion.props().isSensitive).toEqual(false)
+        expect(suggestion.props().languages).toEqual(languages)
+        expect(suggestion.props().lastName).toEqual('test last name')
+        expect(suggestion.props().legacyDescriptor).toEqual(legacyDescriptor)
+        expect(suggestion.props().middleName).toEqual('test middle name')
+        expect(suggestion.props().phoneNumber).toEqual(phoneNumber)
+        expect(suggestion.props().races).toEqual(races)
+        expect(suggestion.props().ssn).toEqual('test ssn')
       })
 
       it('changes backround colour when highlighted', () => {
