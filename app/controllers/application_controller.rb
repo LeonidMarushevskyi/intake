@@ -42,6 +42,10 @@ class ApplicationController < ActionController::Base # :nodoc:
     session[:user_details]['privileges'] = auth_data['privileges']
   end
 
+  def delete_user_from_session
+    session.clear
+  end
+
   def authentication_enabled?
     Feature.active?(:authentication)
   end

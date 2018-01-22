@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def host_env_string
-  'REDIS_HOST=redis_host REDIS_PORT=6379 API_URL=http://api FERB_API_URL=https://ferb_api'
+  'API_URL=http://api FERB_API_URL=https://ferb_api MARIONETTE=true'
 end
 
 namespace :spec do # rubocop:disable BlockLength
@@ -40,7 +40,7 @@ namespace :spec do # rubocop:disable BlockLength
   namespace :intake do
     desc 'Run specs locally outside container'
     task :local do
-      system "#{webpack?} #{host_env_string} MARIONETTE=true bundle exec rspec #{file_list}"
+      system "#{webpack?} #{host_env_string} bundle exec rspec #{file_list}"
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do

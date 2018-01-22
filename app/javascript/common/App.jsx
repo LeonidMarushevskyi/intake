@@ -15,7 +15,7 @@ export class App extends React.Component {
   render() {
     return (
       <div>
-        <GlobalHeader profileName={this.props.fullName} />
+        <GlobalHeader profileName={this.props.fullName} logoutCallback={() => (window.location.href = '/logout')} />
         {this.props.children}
       </div>
     )

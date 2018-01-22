@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   end
 
   resources :version, only: :index
+  get '/logout' => 'home#logout'
 
   get '/pages/*id' => 'pages#show', as: :page, format: false
 end

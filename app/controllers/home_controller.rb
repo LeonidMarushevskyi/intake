@@ -5,4 +5,9 @@
 class HomeController < ApplicationController # :nodoc:
   before_action :authenticate_user, if: :authentication_enabled?
   def index; end
+
+  def logout
+    delete_user_from_session
+    redirect_to SecurityRepository.logout_url
+  end
 end

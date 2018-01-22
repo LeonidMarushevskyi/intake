@@ -5,6 +5,7 @@ require 'feature/testing'
 
 feature 'login' do
   let(:auth_login_url) { 'http://www.example.com/authn/login?callback=' }
+  let(:auth_logout_url) { 'http://www.example.com/authn/logout' }
   let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
   let(:auth_access_code_url) { 'http://www.example.com/authn/token?accessCode=tempToken123' }
   let(:auth_artifact) do
@@ -20,6 +21,7 @@ feature 'login' do
       with_config(
         authentication_base_url: 'http://www.example.com',
         authentication_login_url: auth_login_url,
+        authentication_logout_url: auth_logout_url,
         base_path: ''
       ) do
         example.run
@@ -68,29 +70,43 @@ feature 'login' do
     end
 
     context 'with global header' do
-      scenario 'user sees his name on the global header' do
+      before do
         stub_request(:get, auth_access_code_url)
           .and_return(json_body('123', status: 200))
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_artifact.to_json, status: 200))
         stub_request(:get, staff_url)
-          .and_return(json_body(staff_info.to_json, status: 200))
-        visit root_path(accessCode: 'tempToken123')
-        expect(a_request(:get, auth_access_code_url)).to have_been_made
-        expect(a_request(:get, auth_validation_url)).to have_been_made
-        expect(a_request(:get, staff_url)).to have_been_made
-        expect(page).to have_css 'header', text: 'Joe Cool'
+          .and_return(json_body(user_info.to_json, status: 200))
       end
 
-      scenario 'user sees "Not Available" if there is no user on session' do
-        stub_request(:get, auth_access_code_url)
-          .and_return(json_body('123', status: 200))
-        stub_request(:get, auth_validation_url)
-          .and_return(json_body(auth_artifact.to_json, status: 200))
-        stub_request(:get, staff_url)
-          .and_return(json_body({}.to_json, status: 200))
-        visit root_path(accessCode: 'tempToken123')
-        expect(page).to have_css 'header', text: 'Not Available'
+      context 'when there is a user on the session' do
+        let(:user_info) { staff_info }
+
+        scenario 'user sees their name on the global header' do
+          visit root_path(accessCode: 'tempToken123')
+          expect(a_request(:get, auth_access_code_url)).to have_been_made
+          expect(a_request(:get, auth_validation_url)).to have_been_made
+          expect(a_request(:get, staff_url)).to have_been_made
+          expect(page).to have_css 'header', text: 'Joe Cool'
+        end
+
+        scenario 'when user logs out' do
+          visit root_path(accessCode: 'tempToken123')
+          # regular click_link won't keep the pop-up menu open for some reason
+          execute_script('$(".fa.fa-user").click()')
+          click_link 'Logout'
+          expect(page.current_url).not_to have_content root_path(accessCode: 'tempToken123')
+          expect(page.current_url).to have_content auth_logout_url
+        end
+      end
+
+      context 'when there is no user on the session' do
+        let(:user_info) { {} }
+
+        scenario 'user sees "Not Available" if there is no user on session' do
+          visit root_path(accessCode: 'tempToken123')
+          expect(page).to have_css 'header', text: 'Not Available'
+        end
       end
     end
   end
