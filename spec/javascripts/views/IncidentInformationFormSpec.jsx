@@ -15,19 +15,17 @@ describe('IncidentInformationForm', () => {
     })
 
     it('datetime fires onChange callback', () => {
-      const component = renderIncidentInformationForm({
-        onChange: jasmine.createSpy('onChange'),
-      })
+      const onChange = jasmine.createSpy('onChange')
+      const component = renderIncidentInformationForm({onChange})
       component.find('DateField[label="Incident Date"]').simulate('change', 'new value')
-      expect(component.instance().props.onChange).toHaveBeenCalledWith(['incident_date'], 'new value')
+      expect(onChange).toHaveBeenCalledWith(['incident_date'], 'new value')
     })
 
     it('datetime fires onBlur callback', () => {
-      const component = renderIncidentInformationForm({
-        onBlur: jasmine.createSpy('onBlur'),
-      })
+      const onBlur = jasmine.createSpy('onBlur')
+      const component = renderIncidentInformationForm({onBlur})
       component.find('DateField[label="Incident Date"]').simulate('blur')
-      expect(component.instance().props.onBlur).toHaveBeenCalledWith('incident_date')
+      expect(onBlur).toHaveBeenCalledWith('incident_date')
     })
 
     it('renders the incident date field with errors', () => {
@@ -57,11 +55,10 @@ describe('IncidentInformationForm', () => {
       })
 
       it('fires onChange callback', () => {
-        const component = renderIncidentInformationForm({
-          onChange: jasmine.createSpy('onChange'),
-        })
+        const onChange = jasmine.createSpy('onChange')
+        const component = renderIncidentInformationForm({onChange})
         component.find('InputField[label="Address"]').simulate('change', {target: {value: 'new value'}})
-        expect(component.instance().props.onChange).toHaveBeenCalledWith(['address', 'street_address'], 'new value')
+        expect(onChange).toHaveBeenCalledWith(['address', 'street_address'], 'new value')
       })
     })
 
@@ -76,11 +73,10 @@ describe('IncidentInformationForm', () => {
       })
 
       it('fires onChange callback', () => {
-        const component = renderIncidentInformationForm({
-          onChange: jasmine.createSpy('onChange'),
-        })
+        const onChange = jasmine.createSpy('onChange')
+        const component = renderIncidentInformationForm({onChange})
         component.find('InputField[label="City"]').simulate('change', {target: {value: 'new value'}})
-        expect(component.instance().props.onChange).toHaveBeenCalledWith(['address', 'city'], 'new value')
+        expect(onChange).toHaveBeenCalledWith(['address', 'city'], 'new value')
       })
     })
 
@@ -104,11 +100,10 @@ describe('IncidentInformationForm', () => {
       })
 
       it('fires onChange callback', () => {
-        const component = renderIncidentInformationForm({
-          onChange: jasmine.createSpy('onChange'),
-        })
+        const onChange = jasmine.createSpy('onChange')
+        const component = renderIncidentInformationForm({onChange})
         component.find('SelectField[label="Incident County"]').simulate('change', {target: {value: 'new value'}})
-        expect(component.instance().props.onChange).toHaveBeenCalledWith(['incident_county'], 'new value')
+        expect(onChange).toHaveBeenCalledWith(['incident_county'], 'new value')
       })
     })
 
@@ -134,11 +129,10 @@ describe('IncidentInformationForm', () => {
       })
 
       it('fires onChange callback', () => {
-        const component = renderIncidentInformationForm({
-          onChange: jasmine.createSpy('onChange'),
-        })
+        const onChange = jasmine.createSpy('onChange')
+        const component = renderIncidentInformationForm({onChange})
         component.find('SelectField[label="State"]').simulate('change', {target: {value: 'new value'}})
-        expect(component.instance().props.onChange).toHaveBeenCalledWith(['address', 'state'], 'new value')
+        expect(onChange).toHaveBeenCalledWith(['address', 'state'], 'new value')
       })
     })
 
@@ -153,11 +147,10 @@ describe('IncidentInformationForm', () => {
       })
 
       it('fires onChange callback', () => {
-        const component = renderIncidentInformationForm({
-          onChange: jasmine.createSpy('onChange'),
-        })
+        const onChange = jasmine.createSpy('onChange')
+        const component = renderIncidentInformationForm({onChange})
         component.find('InputField[label="Zip"]').simulate('change', {target: {value: 'new value'}})
-        expect(component.instance().props.onChange).toHaveBeenCalledWith(['address', 'zip'], 'new value')
+        expect(onChange).toHaveBeenCalledWith(['address', 'zip'], 'new value')
       })
     })
   })
@@ -188,27 +181,24 @@ describe('IncidentInformationForm', () => {
     })
 
     it('fires onChange callback', () => {
-      const component = renderIncidentInformationForm({
-        onChange: jasmine.createSpy('onChange'),
-      })
+      const onChange = jasmine.createSpy('onChange')
+      const component = renderIncidentInformationForm({onChange})
       component.find('SelectField[label="Location Type"]').simulate('change', {target: {value: 'new value'}})
-      expect(component.instance().props.onChange).toHaveBeenCalledWith(['location_type'], 'new value')
+      expect(onChange).toHaveBeenCalledWith(['location_type'], 'new value')
     })
   })
 
   it('renders the save button', () => {
-    const component = renderIncidentInformationForm({
-      onSave: jasmine.createSpy(),
-    })
+    const onSave = jasmine.createSpy('onSave')
+    const component = renderIncidentInformationForm({onSave})
     component.find('.btn.btn-primary').simulate('click')
-    expect(component.instance().props.onSave).toHaveBeenCalled()
+    expect(onSave).toHaveBeenCalled()
   })
 
   it('renders the cancel button', () => {
-    const component = renderIncidentInformationForm({
-      onCancel: jasmine.createSpy(),
-    })
+    const onCancel = jasmine.createSpy('onCancel')
+    const component = renderIncidentInformationForm({onCancel})
     component.find('.btn.btn-default').simulate('click')
-    expect(component.instance().props.onCancel).toHaveBeenCalled()
+    expect(onCancel).toHaveBeenCalled()
   })
 })
