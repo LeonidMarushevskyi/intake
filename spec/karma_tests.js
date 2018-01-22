@@ -1,6 +1,6 @@
 var Enzyme = require('enzyme')
 var Adapter = require('enzyme-adapter-react-16')
-Enzyme.configure({adapter: new Adapter()})
+Enzyme.configure({adapter: new Adapter(), disableLifecycleMethods: true })
 
 var componentContext = require.context('./../app/javascript', true, /\*\.(js|jsx)$/)
 componentContext.keys().forEach(componentContext)
