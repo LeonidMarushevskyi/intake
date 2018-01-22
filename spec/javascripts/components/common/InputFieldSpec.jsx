@@ -39,7 +39,7 @@ describe('InputField', () => {
       expect(formField.props().label).toEqual('this is my label')
       expect(formField.props().errors).toEqual([])
       expect(formField.props().required).toEqual(false)
-      expect(formField.childAt(0).node.type).toEqual('input')
+      expect(formField.childAt(0).getElement().type).toEqual('input')
       expect(formField.props().disabled).toEqual(false)
     })
 

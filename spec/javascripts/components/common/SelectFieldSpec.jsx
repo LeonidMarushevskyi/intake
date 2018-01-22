@@ -31,7 +31,7 @@ describe('SelectField', () => {
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
     expect(formField.props().htmlFor).toEqual('myDateFieldId')
     expect(formField.props().label).toEqual('this is my label')
-    expect(formField.childAt(0).node.type).toEqual('select')
+    expect(formField.childAt(0).getElement().type).toEqual('select')
   })
 
   it('renders the select element and children', () => {

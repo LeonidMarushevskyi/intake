@@ -186,7 +186,7 @@ describe('ScreeningInformationForm', () => {
     ]
     const select = renderScreeningInformationForm({communicationMethods})
       .find('SelectField[label="Communication Method"]')
-    const selectOptions = select.find('option').nodes
+    const selectOptions = select.find('option').getElements()
     expect(selectOptions.length).toEqual(4)
     expect(selectOptions[0].props.value).toEqual(undefined)
     expect(selectOptions[1].props.value).toEqual('option_1')
