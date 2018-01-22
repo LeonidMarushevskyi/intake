@@ -5,7 +5,7 @@ module Routes
   # for available routes while referral_submit is active and release_two is not active
   class ActiveReferralSubmitConstraint
     def self.matches?(_request)
-      Feature.active?(:referral_submit) && Feature.inactive?(:release_two)
+      Feature.inactive?(:release_two)
     end
   end
 end
