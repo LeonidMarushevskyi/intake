@@ -37,6 +37,7 @@ feature 'show cross reports' do
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
+    stub_county_agencies('c41')
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
@@ -101,6 +102,7 @@ feature 'show cross reports' do
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
     stub_empty_relationships_for_screening(screening)
+    stub_county_agencies('c41')
     visit edit_screening_path(id: screening.id)
 
     within '#cross-report-card.edit' do
