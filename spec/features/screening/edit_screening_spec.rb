@@ -79,7 +79,7 @@ feature 'Edit Screening' do
 
       within '#incident-information-card.edit', text: 'Incident Information' do
         expect(page).to have_field('Incident Date', with: '08/11/2016')
-        expect(page).to have_field('Incident County', with: 'sacramento')
+        expect(page).to have_field('Incident County', with: 'sacramento', disabled: true)
         expect(page).to have_field('Address', with: '123 Fake St')
         expect(page).to have_field('City', with: 'Faketown')
         expect(page).to have_field('State', with: 'DE')

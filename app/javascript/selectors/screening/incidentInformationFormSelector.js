@@ -8,6 +8,8 @@ import {isFutureDatetimeCreate, combineCompact} from 'utils/validator'
 
 export const getIncidentInformationFormSelector = (state) => state.get('incidentInformationForm', Map())
 
+export const getDefaultIncidentCountySelector = (state) => Object.keys(COUNTIES).find((key) => COUNTIES[key] === state.getIn(['userInfo', 'county']))
+
 export const getIncidentDateSelector = createSelector(
   getIncidentInformationFormSelector,
   (incidentInformationForm) => incidentInformationForm.getIn(['incident_date', 'value'], '') || ''
@@ -15,7 +17,8 @@ export const getIncidentDateSelector = createSelector(
 
 export const getIncidentCountySelector = createSelector(
   getIncidentInformationFormSelector,
-  (incidentInformationForm) => incidentInformationForm.getIn(['incident_county', 'value']) || ''
+  getDefaultIncidentCountySelector,
+  (incidentInformationForm, defaultIncidentCounty) => defaultIncidentCounty || incidentInformationForm.getIn(['incident_county', 'value'])
 )
 
 export const getAddressSelector = createSelector(
