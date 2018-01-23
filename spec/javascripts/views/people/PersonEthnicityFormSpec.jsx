@@ -5,7 +5,7 @@ import PersonEthnicityForm from 'views/people/PersonEthnicityForm'
 describe('PersonEthnicityForm', () => {
   const renderPersonEthnicityForm = ({ethnicityDetailOptions = [], ...options}) => {
     const props = {ethnicityDetailOptions, ...options}
-    return shallow(<PersonEthnicityForm {...props} />)
+    return shallow(<PersonEthnicityForm {...props} />, {disableLifecycleMethods: true})
   }
 
   describe('Yes checkbox', () => {

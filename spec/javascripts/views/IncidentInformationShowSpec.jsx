@@ -5,7 +5,7 @@ import IncidentInformationShow from 'views/IncidentInformationShow'
 describe('IncidentInformationShow', () => {
   const renderIncidentInformationShow = ({errors = {}, address = {}, ...args}) => {
     const props = {errors, address, ...args}
-    return shallow(<IncidentInformationShow {...props}/>)
+    return shallow(<IncidentInformationShow {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('renders the incident date', () => {

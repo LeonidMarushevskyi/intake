@@ -12,7 +12,7 @@ describe('ScreeningInformationShow', () => {
     errors = {},
   }) {
     const props = {name, assignee, communication_method, started_at, ended_at, errors}
-    return shallow(<ScreeningInformationShow {...props} />)
+    return shallow(<ScreeningInformationShow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders errors for the Assigned Social Worker', () => {

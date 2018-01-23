@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 describe('ReferralView', () => {
   const renderReferralView = ({peopleAndRoles = [], ...args}) => {
     const props = {peopleAndRoles, ...args}
-    return shallow(<ReferralView {...props}/>)
+    return shallow(<ReferralView {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('renders a date range for the history entry in the first column', () => {

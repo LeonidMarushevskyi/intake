@@ -52,7 +52,7 @@ describe('<Autocompleter />', () => {
         results={results}
         searchTerm={searchTerm}
         onSearch={onSearch}
-      />
+      />, {disableLifecycleMethods: true}
     )
   }
 

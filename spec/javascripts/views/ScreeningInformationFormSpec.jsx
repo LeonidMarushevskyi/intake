@@ -9,7 +9,7 @@ describe('ScreeningInformationForm', () => {
     ...args
   }) {
     const props = {errors, communicationMethods, ...args}
-    return shallow(<ScreeningInformationForm {...props} />)
+    return shallow(<ScreeningInformationForm {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders the name field', () => {

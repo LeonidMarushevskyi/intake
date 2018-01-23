@@ -11,7 +11,7 @@ describe('FormField', () => {
         children: <div>Italy</div>,
         label: 'L1',
       }
-      component = shallow(<FormField {...props}/>)
+      component = shallow(<FormField {...props}/>, {disableLifecycleMethods: true})
       expect(component.html())
         .toEqual('<div class=""><label class="">L1</label><div>Italy</div><div></div></div>')
     })
@@ -26,7 +26,7 @@ describe('FormField', () => {
     }
 
     it('renders the label inside the grid wrapper with the classes', () => {
-      component = shallow(<FormField {...props}/>)
+      component = shallow(<FormField {...props}/>, {disableLifecycleMethods: true})
       expect(component.find('div.giggidy').find('label').props()
         .className).toEqual('working-class object-oriented-class')
     })
@@ -41,7 +41,7 @@ describe('FormField', () => {
     }
 
     it('renders the children between the label and ErrorMessages', () => {
-      const wrapper = shallow(<FormField {...props}/>).first('div')
+      const wrapper = shallow(<FormField {...props}/>, {disableLifecycleMethods: true}).first('div')
       expect(wrapper.children().length).toEqual(3)
       expect(wrapper.childAt(0).type()).toEqual('label')
       expect(wrapper.childAt(1).html()).toEqual('<h1>Child</h1>')
@@ -59,20 +59,20 @@ describe('FormField', () => {
     }
 
     it('renders label and its wrapper with error classes', () => {
-      component = shallow(<FormField {...props}/>)
+      component = shallow(<FormField {...props}/>, {disableLifecycleMethods: true})
       expect(component.find('label.trouble-maker.input-error-label').parent().props()
         .className).toEqual('working-class object-oriented-class input-error')
     })
 
     it('renders ErrorMessages and passes it errors', () => {
-      component = shallow(<FormField {...props}/>)
+      component = shallow(<FormField {...props}/>, {disableLifecycleMethods: true})
       expect(component.find('ErrorMessages').props().errors)
         .toEqual(['Please choose wisely.', 'Stick to the plan!'])
     })
 
     describe('when required', () => {
       beforeEach(() => {
-        component = shallow(<FormField {...props} required/>)
+        component = shallow(<FormField {...props} required/>, {disableLifecycleMethods: true})
       })
 
       it('renders label as required', () => {
@@ -90,7 +90,7 @@ describe('FormField', () => {
     }
 
     beforeEach(() => {
-      component = shallow(<FormField {...props} required/>)
+      component = shallow(<FormField {...props} required/>, {disableLifecycleMethods: true})
     })
 
     it('does not display any errors', () => {

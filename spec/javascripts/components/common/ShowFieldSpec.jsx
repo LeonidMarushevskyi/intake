@@ -14,7 +14,7 @@ describe('ShowField', () => {
 
   beforeEach(() => {
     component = shallow(
-      <ShowField {...requiredProps}>This is the show field value</ShowField>
+      <ShowField {...requiredProps}>This is the show field value</ShowField>, {disableLifecycleMethods: true}
     )
     formField = component.find('FormField')
   })
@@ -38,7 +38,7 @@ describe('when field is required and has errors', () => {
       required: true,
       errors: ['Error 1', 'Error 2'],
     }
-    const component = shallow(<ShowField {...props} >show field value</ShowField>)
+    const component = shallow(<ShowField {...props} >show field value</ShowField>, {disableLifecycleMethods: true})
     const formField = component.find('FormField')
     expect(formField.props().required).toEqual(true)
     expect(formField.props().errors).toEqual(['Error 1', 'Error 2'])

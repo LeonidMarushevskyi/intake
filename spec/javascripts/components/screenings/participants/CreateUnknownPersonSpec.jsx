@@ -11,7 +11,7 @@ describe('CreateUnknownPerson', () => {
     component = shallow(
       <CreateUnknownPerson
         onClick={onClick}
-      />
+      />, {disableLifecycleMethods: true}
     )
   })
 

@@ -7,7 +7,7 @@ describe('ErrorMessages', () => {
 
   describe('when no errors are passed', () => {
     beforeEach(() => {
-      component = shallow(<ErrorMessages id={'myInputFieldId'}/>)
+      component = shallow(<ErrorMessages id={'myInputFieldId'}/>, {disableLifecycleMethods: true})
     })
 
     it('renders the div wrapper', () => {
@@ -23,7 +23,7 @@ describe('ErrorMessages', () => {
     const props = {id: 'myInputFieldId', errors: []}
 
     it('does not render error messages', () => {
-      component = shallow(<ErrorMessages {...props}/>)
+      component = shallow(<ErrorMessages {...props}/>, {disableLifecycleMethods: true})
       expect(component.find('.input-error-message').exists()).toEqual(false)
     })
   })
@@ -33,7 +33,7 @@ describe('ErrorMessages', () => {
     describe('when ariaDescribedBy is passed', () => {
       beforeEach(() => {
         const props = {ariaDescribedBy: 'myInputFieldId', errors}
-        component = shallow(<ErrorMessages {...props}/>)
+        component = shallow(<ErrorMessages {...props}/>, {disableLifecycleMethods: true})
       })
 
       it('adds an aria-describedby prop', () => {
@@ -53,7 +53,7 @@ describe('ErrorMessages', () => {
 
     describe('when ariaDescribedBy is not passed', () => {
       beforeEach(() => {
-        component = shallow(<ErrorMessages errors={errors}/>)
+        component = shallow(<ErrorMessages errors={errors}/>, {disableLifecycleMethods: true})
       })
 
       it('does not add an aria-describedby prop', () => {

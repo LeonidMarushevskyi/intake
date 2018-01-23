@@ -9,7 +9,7 @@ describe('gender,race and ethnicity', () => {
       races: [],
       ethnicity: {},
     }
-    const component = shallow(<GenderRaceAndEthnicity {...props} />)
+    const component = shallow(<GenderRaceAndEthnicity {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain('<div>Female</div>')
   })
 
@@ -20,7 +20,7 @@ describe('gender,race and ethnicity', () => {
         {race: 'American Indian or Alaska Native'},
       ],
     }
-    const component = shallow(<GenderRaceAndEthnicity {...props} />)
+    const component = shallow(<GenderRaceAndEthnicity {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain(
       '<div>White, American Indian or Alaska Native</div>'
     )
@@ -33,7 +33,7 @@ describe('gender,race and ethnicity', () => {
         ethnicity_detail: ['Central American'],
       },
     }
-    const component = shallow(<GenderRaceAndEthnicity {...props} />)
+    const component = shallow(<GenderRaceAndEthnicity {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain(
       '<div>Hispanic/Latino</div>'
     )
@@ -48,7 +48,7 @@ describe('gender,race and ethnicity', () => {
       ],
       ethnicity: {hispanic_latino_origin: 'Unknown'},
     }
-    const component = shallow(<GenderRaceAndEthnicity {...props} />)
+    const component = shallow(<GenderRaceAndEthnicity {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain(
       '<div>Female, White, American Indian or Alaska Native</div>'
     )

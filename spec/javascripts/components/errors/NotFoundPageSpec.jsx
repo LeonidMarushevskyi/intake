@@ -6,7 +6,7 @@ describe('NotFoundPage', () => {
   let component
 
   beforeEach(() => {
-    component = shallow(<NotFoundPage/>)
+    component = shallow(<NotFoundPage/>, {disableLifecycleMethods: true})
   })
 
   it('renders the error text', () => {

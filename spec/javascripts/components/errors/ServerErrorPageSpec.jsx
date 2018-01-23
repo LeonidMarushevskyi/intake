@@ -6,7 +6,7 @@ describe('ServerErrorPage', () => {
   let component
 
   beforeEach(() => {
-    component = shallow(<ServerErrorPage/>)
+    component = shallow(<ServerErrorPage/>, {disableLifecycleMethods: true})
   })
 
   it('renders the error text', () => {

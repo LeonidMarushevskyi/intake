@@ -6,7 +6,7 @@ describe('ForbiddenPage', () => {
   let component
 
   beforeEach(() => {
-    component = shallow(<ForbiddenPage/>)
+    component = shallow(<ForbiddenPage/>, {disableLifecycleMethods: true})
   })
 
   it('renders the error text', () => {

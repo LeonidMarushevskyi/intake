@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('NarrativeShow', () => {
   function renderNarrative(props) {
-    return shallow(<NarrativeShow {...props} />)
+    return shallow(<NarrativeShow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the narrative', () => {

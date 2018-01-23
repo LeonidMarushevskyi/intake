@@ -15,7 +15,7 @@ describe('<AutocompleterFooter />', () => {
         canLoadMoreResults={canLoadMoreResults}
         onCreateNewPerson={onCreateNewPerson}
         onLoadMoreResults={onLoadMoreResults}
-      />
+      />, {disableLifecycleMethods: true}
     )
   }
 

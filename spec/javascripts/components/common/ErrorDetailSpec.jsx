@@ -4,7 +4,7 @@ import ErrorDetail from 'common/ErrorDetail'
 
 describe('ErrorDetail', () => {
   it('renders alert icon', () => {
-    const component = shallow(<ErrorDetail errors={[]}/>)
+    const component = shallow(<ErrorDetail errors={[]}/>, {disableLifecycleMethods: true})
     const errorMessageDiv = component.find('div.error-message')
     expect(errorMessageDiv.props().className).toEqual('alert-message error-message')
     expect(errorMessageDiv.props().role).toEqual('alert')
@@ -17,7 +17,7 @@ describe('ErrorDetail', () => {
       'carrot',
       'dragon fruit',
     ]
-    const component = shallow(<ErrorDetail errors={errors}/>)
+    const component = shallow(<ErrorDetail errors={errors}/>, {disableLifecycleMethods: true})
     const errorDetails = component.find('div.error-message').find('div.alert-text ul')
     expect(errorDetails.exists()).toEqual(true)
     expect(errorDetails.childAt(0).text()).toEqual('apple')

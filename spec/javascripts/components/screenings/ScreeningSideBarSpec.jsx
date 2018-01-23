@@ -5,7 +5,7 @@ import ScreeningSideBar from 'screenings/ScreeningSideBar'
 describe('ScreeningSideBar', () => {
   let component
   beforeEach(() => {
-    component = shallow(<ScreeningSideBar />)
+    component = shallow(<ScreeningSideBar />, {disableLifecycleMethods: true})
   })
 
   it('renders the div wrapper', () => {

@@ -82,7 +82,7 @@ describe('CrossReportForm', () => {
       screeningWithEdits,
       toggleShow,
     }
-    return shallow(<CrossReportForm {...props} />)
+    return shallow(<CrossReportForm {...props} />, {disableLifecycleMethods: true})
   }
   it('renders the label', () => {
     const component = renderCrossReportForm({})

@@ -13,7 +13,7 @@ describe('PersonCardHeader', () => {
 
   function renderComponent({title = 'J Doe', showEdit = true, showDelete = true, informationFlag = null}) {
     const props = {informationFlag, title, showDelete, showEdit, onEdit, onDelete}
-    return shallow(<PersonCardHeader {...props} />)
+    return shallow(<PersonCardHeader {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the name passed in the props', () => {

@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('EmptyHistory', () => {
   function renderEmptyHistory() {
-    return shallow(<EmptyHistory />)
+    return shallow(<EmptyHistory />, {disableLifecycleMethods: true})
   }
 
   it('the user sees a message indicating empty state', () => {

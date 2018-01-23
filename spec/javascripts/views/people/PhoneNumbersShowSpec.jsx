@@ -5,7 +5,7 @@ import PhoneNumbersShow from 'views/people/PhoneNumbersShow'
 describe('PhoneNumbersShow', () => {
   const renderPhoneNumbersShow = ({phoneNumbers = [], ...options}) => {
     const props = {phoneNumbers, ...options}
-    return shallow(<PhoneNumbersShow {...props} />)
+    return shallow(<PhoneNumbersShow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('does not render any show fields if phoneNumbers is an empty array', () => {

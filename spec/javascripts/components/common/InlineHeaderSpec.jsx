@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('InlineHeader', () => {
   const renderInlineHeader = ({...props}) => (
-    shallow(<InlineHeader {...props} />)
+    shallow(<InlineHeader {...props} />, {disableLifecycleMethods: true})
   )
 
   it('displays the header with heading text', () => {

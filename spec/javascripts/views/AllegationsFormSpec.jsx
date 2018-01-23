@@ -5,7 +5,7 @@ import AllegationsForm from 'views/AllegationsForm'
 describe('AllegationsForm', () => {
   const renderAllegationsForm = ({allegations = [], ...args}) => {
     const props = {allegations, ...args}
-    return shallow(<AllegationsForm {...props}/>)
+    return shallow(<AllegationsForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('calls onSave when the save button is clicked', () => {

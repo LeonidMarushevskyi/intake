@@ -9,7 +9,7 @@ describe('HistoryOfInvolvement', () => {
         historyIsEmpty={true}
         empty={<p>Hello!</p>}
         notEmpty={<p>Goodbye!</p>}
-      />
+      />, {disableLifecycleMethods: true}
     )
     expect(component.html()).toContain('<p>Hello!</p>')
     expect(component.html()).not.toContain('Goodbye!')
@@ -21,7 +21,7 @@ describe('HistoryOfInvolvement', () => {
         historyIsEmpty={false}
         empty={<p>Hello!</p>}
         notEmpty={<p>Goodbye!</p>}
-      />
+      />, {disableLifecycleMethods: true}
     )
     expect(component.html()).toContain('<p>Goodbye!</p>')
     expect(component.html()).not.toContain('Hello!')

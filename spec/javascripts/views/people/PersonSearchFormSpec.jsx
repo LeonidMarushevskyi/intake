@@ -16,7 +16,7 @@ describe('PersonSearchForm', () => {
     ...args
   }) {
     const props = {onSelect, onChange, onClear, ...args}
-    return shallow(<PersonSearchForm {...props} />)
+    return shallow(<PersonSearchForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('componentWillUnmount', () => {

@@ -4,7 +4,7 @@ import CaseView from 'views/history/CaseView'
 
 describe('History Case View', () => {
   const renderCaseView = ({...props}) => (
-    shallow(<CaseView {...props} />)
+    shallow(<CaseView {...props} />, {disableLifecycleMethods: true})
   )
 
   it('Renders a date range in the first column', () => {

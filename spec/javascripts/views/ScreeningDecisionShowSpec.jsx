@@ -19,7 +19,7 @@ describe('ScreeningDecisionShow', () => {
       restrictionRationale,
       ...options,
     }
-    return shallow(<ScreeningDecisionShow {...props}/>)
+    return shallow(<ScreeningDecisionShow {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('does not render an Edit Link if no onEdit is passed', () => {

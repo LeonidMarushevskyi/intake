@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 describe('ContactLogRow', () => {
   function renderContactLogRow({id, investigationId, startedAt, people = [], note, status, method}) {
     const props = {id, investigationId, startedAt, people, note, status, method}
-    return shallow(<ContactLogRow {...props} />)
+    return shallow(<ContactLogRow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays startedAt', () => {

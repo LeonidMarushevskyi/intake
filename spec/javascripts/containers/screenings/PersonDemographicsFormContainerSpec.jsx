@@ -17,7 +17,7 @@ describe('PersonDemographicsFormContainer', () => {
   let component
   beforeEach(() => {
     const context = {store}
-    component = shallow(<PersonDemographicsFormContainer personId='1'/>, {context})
+    component = shallow(<PersonDemographicsFormContainer personId='1'/>, {context}, {disableLifecycleMethods: true})
   })
   it('renders PersonDemographicsForm', () => {
     expect(component.find('PersonDemographicsForm').props()).toEqual({

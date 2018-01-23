@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 describe('ContactLog', () => {
   function renderContactLog({investigationId = 'ABC123', contactLogs = []}) {
     const props = {investigationId, contactLogs}
-    return shallow(<ContactLog {...props} />)
+    return shallow(<ContactLog {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the investigation investigationId in the header', () => {

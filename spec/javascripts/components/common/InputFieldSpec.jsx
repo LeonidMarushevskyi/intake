@@ -28,7 +28,7 @@ describe('InputField', () => {
 
   describe('basic functionality', () => {
     beforeEach(() => {
-      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} />)
+      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} />, {disableLifecycleMethods: true})
       formField = component.find('FormField')
     })
 
@@ -56,7 +56,7 @@ describe('InputField', () => {
     it('renders the input type', () => {
       const inputElement = component.find('input')
       const inputElementWithType = shallow(
-        <InputField {...props} type='tel' onChange={onChange} onBlur={onBlur}/>
+        <InputField {...props} type='tel' onChange={onChange} onBlur={onBlur}/>, {disableLifecycleMethods: true}
       ).find('input')
 
       expect(inputElement.props().type).toEqual('text')
@@ -90,7 +90,7 @@ describe('InputField', () => {
 
   describe('when it is NOT required', () => {
     beforeEach(() => {
-      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} />)
+      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} />, {disableLifecycleMethods: true})
     })
 
     it('renders an input field', () => {
@@ -101,7 +101,7 @@ describe('InputField', () => {
 
   describe('when it is required', () => {
     beforeEach(() => {
-      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} required/>)
+      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} required/>, {disableLifecycleMethods: true})
     })
 
     it('renders a required input field', () => {
@@ -113,7 +113,7 @@ describe('InputField', () => {
 
   describe('when it is disabled', () => {
     beforeEach(() => {
-      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} disabled/>)
+      component = shallow(<InputField {...props} onChange={onChange} onBlur={onBlur} disabled/>, {disableLifecycleMethods: true})
     })
 
     it('renders a disabled input field', () => {

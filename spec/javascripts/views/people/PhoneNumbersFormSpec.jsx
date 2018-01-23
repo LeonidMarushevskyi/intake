@@ -5,7 +5,7 @@ import PhoneNumbersForm from 'views/people/PhoneNumbersForm'
 describe('PhoneNumbersForm', () => {
   const renderPhoneNumbersForm = ({phoneNumbers = [], phoneTypes = [], ...options}) => {
     const props = {phoneNumbers, phoneTypes, ...options}
-    return shallow(<PhoneNumbersForm {...props} />)
+    return shallow(<PhoneNumbersForm {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders an add new phone number button', () => {

@@ -4,7 +4,7 @@ import ReleaseOne from 'common/ReleaseOne'
 
 describe('ReleaseOne', () => {
   function renderReleaseOne() {
-    return shallow(<ReleaseOne />)
+    return shallow(<ReleaseOne />, {disableLifecycleMethods: true})
   }
   it('renders a people label', () => {
     const component = renderReleaseOne()

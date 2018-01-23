@@ -3,11 +3,22 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 const SelectField = ({gridClassName, labelClassName, disabled, id, label, value, onChange, onBlur, children, required, errors}) => (
-  <FormField htmlFor={id} label={label} labelClassName={labelClassName} gridClassName={gridClassName}
-    errors={errors} required={required}
+  <FormField
+    htmlFor={id}
+    label={label}
+    labelClassName={labelClassName}
+    gridClassName={gridClassName}
+    errors={errors}
+    required={required}
   >
-    <select disabled={disabled} id={id} value={value || ''} onChange={onChange} onBlur={onBlur}
-      aria-required={required} required={required}
+    <select
+      disabled={disabled}
+      id={id}
+      value={value || ''}
+      onChange={onChange}
+      onBlur={onBlur}
+      aria-required={required}
+      required={required}
     >
       {children}
     </select>

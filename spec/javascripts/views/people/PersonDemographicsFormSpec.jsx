@@ -29,7 +29,7 @@ describe('PersonDemographicsForm', () => {
       onChange,
       personId,
     }
-    return shallow(<PersonForm {...props}/>)
+    return shallow(<PersonForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('renders the date of birth field', () => {
