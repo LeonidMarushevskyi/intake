@@ -30,6 +30,8 @@ feature 'Create Screening' do
 
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
         .and_return(json_body(new_screening.to_json, status: 200))
+      stub_empty_relationships_for_screening(new_screening)
+      stub_empty_history_for_screening(new_screening)
 
       visit root_path
       click_button 'Start Screening'
