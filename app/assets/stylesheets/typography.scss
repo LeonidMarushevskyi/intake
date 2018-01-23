@@ -1,0 +1,123 @@
+@import 'constants';
+/////////////////////////////////////////
+
+// - Typography - //
+
+/////////////////////////////////////////
+
+html {
+  font-family: $font-family;
+  font-size: 10px;
+}
+
+body {
+  background-color: $lightest-grey;
+  color: $darkest-grey;
+  font-family: $font-family;
+  font-size: 1.6rem;
+}
+
+p {
+  line-height: 1.5;
+  margin-bottom: $base-spacing;
+  margin-top: $base-spacing;
+}
+
+a {
+  color: $medium-blue;
+  text-decoration: underline;
+}
+
+a:hover,
+a:active {
+  color: $dark-blue;
+}
+
+a:visited {
+  color: $medium-blue;
+}
+
+a:focus {
+  box-shadow: 0 0 3px $medium-blue, 0 0 7px $medium-blue;
+  outline: 0;
+}
+
+.dark-background-link a {
+  color: $light-grey;
+}
+
+h1,
+h2,
+h3 {
+  clear: both;
+  line-height: 1.3;
+  margin-bottom: $half-spacing;
+  margin-top: $base-spacing * 1.5;
+}
+
+h1 {
+  font-size: $largest-font;
+  font-weight: $light-weight;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: $larger-font;
+  font-weight: $semibold-weight;
+}
+
+h3 {
+  font-size: $large-font;
+  font-weight: $semibold-weight;
+}
+
+h4 {
+  font-size: $large-font;
+  font-weight: $semibold-weight;
+  margin-bottom: 2rem;
+  margin-top: 0;
+}
+
+pre {
+  background-color: $darkest-grey;
+  border: 0;
+  border-radius: 0;
+  font-family: $code-font-family;
+  font-size: $small-font;
+  margin: 0;
+  max-height: 60rem;
+
+  xmp {
+    color: $white;
+    margin-left: -5rem;
+    padding: 0 3rem 0 0;
+  }
+}
+
+.profile-picture {
+  position: relative;
+}
+
+.image-caption {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.information-flag {
+  background-color: $transparent-black;
+  color: $white;
+  padding: 0 .5rem;
+  text-align: center;
+}
+
+.card .card-header span.information-flag {
+  margin-left: $half-spacing;
+  padding: 0 $half-spacing;
+}
+
+ul,
+ol {
+  margin: 0;
+}
