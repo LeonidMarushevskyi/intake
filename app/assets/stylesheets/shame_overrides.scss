@@ -1,3 +1,5 @@
+@import 'constants';
+
 .anchor {
   display: block;
   height: 13rem;
@@ -5,12 +7,22 @@
   visibility: hidden;
 }
 
+// Navigation //
+
+.inactive-navlink {
+  display: none;
+}
+
+// History Styling//
+
 .history-table {
-  .semibold,
-  .reporter span,
+  background-color: transparent;
+
   .assignee span,
-  .worker span,
-  .referral {
+  .referral,
+  .reporter span,
+  .semibold,
+  .worker span {
     font-weight: $semibold-weight;
   }
 
@@ -19,15 +31,25 @@
   }
 
   thead {
-    .victim,
-    .perpetrator,
     .allegations,
-    .disposition {
+    .disposition,
+    .perpetrator,
+    .victim {
       font-weight: $semibold-weight;
   	}
   }
 
-  table tr:nth-child(even) {
-    background-color: $white;
+  .people-and-roles {
+    background-color: transparent;
+
+    thead {
+      th {
+        padding-top:0;
+      }
+    }
+
+    tr {
+      background-color: transparent;
+    }
   }
 }
