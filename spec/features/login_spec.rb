@@ -15,6 +15,7 @@ feature 'login' do
     { first_name: 'Joe', last_name: 'Cool' }
   end
   let(:screening_results) { [{ id: '1' }, { id: '2' }] }
+  let(:base_path) { '' }
 
   around do |example|
     Feature.run_with_activated(:authentication, :perry_version_two) do
@@ -22,7 +23,7 @@ feature 'login' do
         authentication_base_url: 'http://www.example.com',
         authentication_login_url: auth_login_url,
         authentication_logout_url: auth_logout_url,
-        base_path: ''
+        base_path: base_path
       ) do
         example.run
       end
@@ -97,6 +98,18 @@ feature 'login' do
           click_link 'Logout'
           expect(page.current_url).not_to have_content root_path(accessCode: 'tempToken123')
           expect(page.current_url).to have_content auth_logout_url
+        end
+
+        context 'when there is a base_path present' do
+          let(:base_path) { 'intake' }
+
+          scenario 'when user logs out' do
+            visit root_path(accessCode: 'tempToken123')
+            # regular click_link won't keep the pop-up menu open for some reason
+            execute_script('$(".fa.fa-user").click()')
+            click_link 'Logout'
+            expect(page.current_url).to have_content 'intake/logout'
+          end
         end
       end
 
