@@ -6,6 +6,7 @@ import {fetch as fetchUserInfoAction} from 'actions/userInfoActions'
 import {bindActionCreators} from 'redux'
 import {GlobalHeader} from 'react-wood-duck'
 import userNameFormatter from 'utils/userNameFormatter'
+import {config} from '../common/config'
 
 export class App extends React.Component {
   componentDidMount() {
@@ -13,9 +14,10 @@ export class App extends React.Component {
   }
 
   render() {
+    const logoutUrl = `${config().base_path.replace(/\/$/, '')}/logout`
     return (
       <div>
-        <GlobalHeader profileName={this.props.fullName} logoutCallback={() => (window.location.href = '/logout')} />
+        <GlobalHeader profileName={this.props.fullName} logoutCallback={() => (window.location.href = logoutUrl)} />
         {this.props.children}
       </div>
     )
