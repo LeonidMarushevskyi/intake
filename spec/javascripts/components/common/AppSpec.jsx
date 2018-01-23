@@ -1,8 +1,13 @@
 import {App} from 'common/App'
 import React from 'react'
 import {shallow, mount} from 'enzyme'
+import * as IntakeConfig from 'common/config'
 
 describe('App', () => {
+  beforeEach(() => {
+    spyOn(IntakeConfig, 'config').and.returnValue({base_path: 'intake'})
+  })
+
   it('fetches user info when the component mounts', () => {
     const fetchUserInfoActionSpy = jasmine.createSpy('fetchUserInfoAction')
     mount(<App actions={{fetchUserInfoAction: fetchUserInfoActionSpy}}><div/></App>)
