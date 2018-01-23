@@ -28,7 +28,7 @@ feature 'searching a participant in autocompleter' do
               builder.with_last_name('Simpson')
               builder.with_name_suffix('md')
               builder.with_gender('female')
-              builder.with_dob(date_of_birth)
+              builder.with_date_of_birth(date_of_birth)
               builder.with_ssn('123231234')
               builder.with_languages do
                 [
