@@ -5,19 +5,29 @@
   visibility: hidden;
 }
 
-#history-card{
-  .semibold, .reporter span, .assignee span, .referral{
-  	font-weight: 600;
+.history-table {
+  .semibold,
+  .reporter span,
+  .assignee span,
+  .worker span,
+  .referral {
+    font-weight: $semibold-weight;
   }
+
   .referral-id {
-  	color: #767676;
+    color: $dark-grey;
   }
+
   thead {
-    .victim, .perpetrator, .allegations, .disposition {
-  	  font-weight: 600;
+    .victim,
+    .perpetrator,
+    .allegations,
+    .disposition {
+      font-weight: $semibold-weight;
   	}
   }
+
   table tr:nth-child(even) {
-    background-color: #ffffff;
+    background-color: $white;
   }
 }

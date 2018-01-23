@@ -8,7 +8,6 @@ const ReferralView = ({dateRange, referralId, status, notification, county, peop
       <div className='referral'>Referral</div>
       <div className='referral-status'>({status})</div>
       <div className='referral-id'>{referralId}</div>
-      
       {notification && <div className='information-flag'>{notification}</div>}
     </td>
     <td>{county}</td>
