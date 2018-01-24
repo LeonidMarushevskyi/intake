@@ -69,8 +69,9 @@ describe('<Autocompleter />', () => {
     })
 
     describe('when an item is selectable', () => {
+      let autocompleter
       beforeEach(() => {
-        const autocompleter = mountAutocompleter({
+        autocompleter = mountAutocompleter({
           results, onClear, onChange, onSelect,
         })
         autocompleter.find('input').simulate('change', {target: {value: 'te'}})
@@ -89,6 +90,11 @@ describe('<Autocompleter />', () => {
 
       it('calls onSelect with the selected result', () => {
         expect(onSelect).toHaveBeenCalledWith(item)
+      })
+
+      it('hides the menu', () => {
+        const header = autocompleter.find('SuggestionHeader')
+        expect(header.length).toBe(0)
       })
     })
 

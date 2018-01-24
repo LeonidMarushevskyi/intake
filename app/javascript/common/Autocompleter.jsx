@@ -46,6 +46,7 @@ export class Autocompleter extends Component {
       onClear()
       onChange('')
       onSelect(item)
+      this.setState({menuVisible: false})
     }
   }
 
