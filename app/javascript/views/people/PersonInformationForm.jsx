@@ -5,6 +5,7 @@ import InputField from 'common/InputField'
 import SelectField from 'common/SelectField'
 import MaskedInputField from 'common/MaskedInputField'
 import AlertErrorMessage from 'common/AlertErrorMessage'
+import ErrorMessages from 'common/ErrorMessages'
 
 const PersonInformationForm = ({
   firstName,
@@ -38,13 +39,14 @@ const PersonInformationForm = ({
           multi
           tabSelectsValue={false}
           inputProps={{id: `roles_${personId}`}}
-          value={roles}
+          value={roles.value}
           clearable={false}
           options={roleOptions}
           placeholder=''
           onChange={(values) => onChange('roles', values.map(({value}) => value))}
           onBlur={() => onBlur('roles')}
         />
+        {roles && <ErrorMessages ariaDescribedBy={`roles_${personId}`} errors={roles.errors}/>}
       </div>
     </div>
     <div className='row'>
@@ -124,7 +126,7 @@ PersonInformationForm.propTypes = {
   onChange: PropTypes.func,
   personId: PropTypes.string.isRequired,
   roleOptions: PropTypes.array,
-  roles: PropTypes.array,
+  roles: PropTypes.object,
   ssn: PropTypes.shape({
     value: PropTypes.string,
     errors: PropTypes.arrayOf(PropTypes.string),

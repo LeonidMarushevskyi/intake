@@ -4,6 +4,7 @@ import NAME_SUFFIXES from 'enums/NameSuffixes'
 import {Map} from 'immutable'
 import {
   getPeopleSelector,
+  getRolesSelector,
   getFilteredPersonRolesSelector,
   getFirstNameSelector,
   getLastNameSelector,
@@ -18,12 +19,11 @@ const mapStateToProps = (state, {personId}) => {
     {label: NAME_SUFFIXES[value], value}
   ))
   const person = getPeopleSelector(state).get(personId)
-  const roles = person.getIn(['roles', 'value']).toJS()
   const legacySourceDescription = legacySourceFormatter(person.getIn(['legacy_descriptor', 'value'], Map()).toJS())
   return {
     alertErrorMessage: getPersonAlertErrorMessageSelector(state, personId),
     personId,
-    roles,
+    roles: getRolesSelector(state, personId).toJS(),
     legacySourceDescription,
     firstName: getFirstNameSelector(state, personId).toJS(),
     middleName: person.getIn(['middle_name', 'value']),
