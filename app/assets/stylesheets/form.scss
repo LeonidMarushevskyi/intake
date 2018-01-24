@@ -182,25 +182,12 @@ input[type='radio']:disabled + label::before {
   content: ' (required)';
 }
 
-/////////////////////////////////////////
-
-// - Autocompleter - //
-
-/////////////////////////////////////////
-
-
 .highlighted {
   em {
     background-color: $orange;
     font-style: normal;
     font-weight: bold;
   }
-}
-
-.react-autosuggest__suggestion {
-  border-bottom: 2px solid $light-grey;
-  cursor: pointer;
-  padding: 10px 20px;
 }
 
 .masked-input {
