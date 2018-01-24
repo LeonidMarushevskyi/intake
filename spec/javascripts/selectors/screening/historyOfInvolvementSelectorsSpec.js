@@ -6,10 +6,14 @@ import {
   getFormattedScreeningsSelector,
 } from 'selectors/screening/historyOfInvolvementSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
+import * as IntakeConfig from 'common/config'
 
 describe('historyOfInvolvementSelectors', () => {
-  beforeEach(() => jasmine.addMatchers(matchers))
   const involvements = {cases: ['A'], referrals: ['B', 'C'], screenings: ['D', 'E', 'F']}
+  beforeEach(() => {
+    jasmine.addMatchers(matchers)
+    spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false)
+  })
 
   describe('getHistoryIsEmptySelector', () => {
     it('returns true when history is not present', () => {
@@ -36,8 +40,8 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedCasesSelector(state).getIn([0, 'caseId'])).toEqual('ABC123')
     })
 
-    it('returns the county_name as county', () => {
-      const cases = [{county_name: 'Amador'}]
+    it('returns the county description as county', () => {
+      const cases = [{county: {id: '1101', description: 'Amador'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'county'])).toEqual('Amador')
     })
@@ -69,8 +73,8 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedCasesSelector(state).getIn([0, 'parents'])).toEqual('')
     })
 
-    it('returns Sealed if the access indicator is R', () => {
-      const cases = [{access_limitation: {limited_access_code: 'R'}}]
+    it('returns Sealed if the access indicator is SEALED', () => {
+      const cases = [{access_limitation: {limited_access_code: 'SEALED'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'restrictedAccessStatus'])).toEqual('Sealed')
     })
@@ -93,7 +97,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('adds the service component to the status if one exists', () => {
-      const cases = [{end_date: '2003-01-01', service_component: 'Family reunification'}]
+      const cases = [{end_date: '2003-01-01', service_component: {id: '1695', description: 'Family reunification'}}]
       const state = fromJS({involvements: {cases}})
       expect(getFormattedCasesSelector(state).getIn([0, 'status'])).toEqual('Closed - Family reunification')
     })
@@ -117,84 +121,89 @@ describe('historyOfInvolvementSelectors', () => {
   })
 
   describe('getFormattedReferralsSelector', () => {
+    let state
+    beforeEach(() => {
+      state = fromJS({involvements: {referrals: [{}]}, screenResponseTimes: []})
+    })
+
     it('returns a formatted date range', () => {
       const referrals = [{start_date: '2002-01-02', end_date: '2002-02-03'}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'dateRange'])).toEqual('01/02/2002 - 02/03/2002')
     })
 
     it('returns an ID for the given referral', () => {
       const referrals = [{legacy_descriptor: {legacy_ui_id: '1'}}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'referralId'])).toEqual('1')
     })
 
     it('returns a status of open for the given referral when there is no close date', () => {
       const referrals = [{}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'status'])).toEqual('Open')
     })
 
     it('returns a status of closed for the given referral when there is a close date', () => {
       const referrals = [{end_date: '2009-02-03'}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'status'])).toEqual('Closed')
     })
 
     it('includes the response time for a given referral in the status, if present', () => {
-      const referrals = [{response_time: 'Immediate'}]
-      const state = fromJS({involvements: {referrals}})
+      state = fromJS({
+        involvements: {referrals: [{response_time: {id: '1518', description: 'Immediate'}}]},
+        screenResponseTimes: [{code: '1518', value: 'Immediate'}],
+      })
       expect(getFormattedReferralsSelector(state).getIn([0, 'status'])).toEqual('Open - Immediate')
     })
 
     it('returns a restrictedAccessStatus if one is present', () => {
-      const referrals = [{access_limitation: {limited_access_code: 'R'}}]
-      const state = fromJS({involvements: {referrals}})
+      const referrals = [{access_limitation: {limited_access_code: 'SEALED'}}]
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'notification'])).toEqual('Sealed')
     })
 
     it('returns the county name', () => {
-      const referrals = [{county_name: 'Yolo'}]
-      const state = fromJS({involvements: {referrals}})
+      const referrals = [{county: {id: '1101', description: 'Yolo'}}]
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'county'])).toEqual('Yolo')
     })
 
     it('returns a formatted name for the worker', () => {
       const referrals = [{assigned_social_worker: {first_name: 'John', last_name: 'Smith'}}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
     })
 
     it('returns an empty string if the worker does not exist', () => {
       const referrals = [{}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'worker'])).toEqual('')
     })
 
     it('returns a formatted name for the reporter', () => {
       const referrals = [{reporter: {first_name: 'John', last_name: 'Smith'}}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'reporter'])).toEqual('John Smith')
     })
 
     it('returns an empty string if the reporter does not exist', () => {
       const referrals = [{}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'reporter'])).toEqual('')
     })
 
     it('returns an object that includes a victim, a perpetrator, allegations, and a disposition', () => {
       const referrals = [{
         allegations: [{
-          victim_last_name: 'W.',
-          victim_first_name: 'Sharon',
-          perpetrator_last_name: 'W.',
-          perpetrator_first_name: 'Ricky',
-          disposition_description: 'Substantiated',
-          allegation_description: 'Sexual Abuse',
+          type: {id: '2179', description: 'Sexual Abuse'},
+          disposition: {id: '45', description: 'Substantiated'},
+          victim: {first_name: 'Sharon', last_name: 'W.'},
+          perpetrator: {first_name: 'Ricky', last_name: 'W.'},
         }],
       }]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'peopleAndRoles']))
         .toEqualImmutable(fromJS([{
           victim: 'Sharon W.',
@@ -206,7 +215,7 @@ describe('historyOfInvolvementSelectors', () => {
 
     it('returns an object with empty strings when victim and perpetrator are empty', () => {
       const referrals = [{allegations: [{victim: {}, perpetrator: {}}]}]
-      const state = fromJS({involvements: {referrals}})
+      state = state.setIn(['involvements', 'referrals'], fromJS(referrals))
       expect(getFormattedReferralsSelector(state).getIn([0, 'peopleAndRoles']))
         .toEqualImmutable(fromJS([{
           victim: '',
@@ -283,7 +292,7 @@ describe('historyOfInvolvementSelectors', () => {
     })
 
     it('returns the enum mapped value for the county', () => {
-      const screenings = [{county_name: 'amador'}]
+      const screenings = [{county: {description: 'Amador'}}]
       const state = fromJS({involvements: {screenings}})
       expect(getFormattedScreeningsSelector(state).getIn([0, 'county'])).toEqual('Amador')
     })
@@ -300,8 +309,8 @@ describe('historyOfInvolvementSelectors', () => {
       expect(getFormattedScreeningsSelector(state).getIn([0, 'dateRange'])).toEqual('01/02/2002 - 02/03/2002')
     })
 
-    it('returns the last name for the worker when present', () => {
-      const screenings = [{assigned_social_worker: {last_name: 'John Smith'}}]
+    it('returns the name for the worker when present', () => {
+      const screenings = [{assigned_social_worker: {first_name: 'John', last_name: 'Smith'}}]
       const state = fromJS({involvements: {screenings}})
       expect(getFormattedScreeningsSelector(state).getIn([0, 'worker'])).toEqual('John Smith')
     })

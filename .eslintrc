@@ -28,7 +28,7 @@
     "no-alert": [2],
     "no-array-constructor": [2],
     // no-confusing-arrow autofix conflicts with arrow-body-style. {'allowParens': true} resolve it.
-    "no-confusing-arrow": ["error", {"allowParens": false}],
+    "no-confusing-arrow": ["error", {"allowParens": true}],
     "no-caller": [2],
     "no-class-assign": [2],
     "no-console": 0,

@@ -45,11 +45,14 @@ class ScreeningRepository
   end
 
   def self.history_of_involvements(security_token, id)
-    response = IntakeAPI.make_api_call(
-      security_token,
-      ExternalRoutes.intake_api_history_of_involvements_path(id),
-      :get
-    )
+    if Feature.active?(:hoi_from_intake_api)
+      api = IntakeAPI
+      path = ExternalRoutes.intake_api_history_of_involvements_path(id)
+    else
+      api = FerbAPI
+      path = ExternalRoutes.ferb_api_screening_history_of_involvements_path(id)
+    end
+    response = api.make_api_call(security_token, path, :get)
     response.body
   end
 
