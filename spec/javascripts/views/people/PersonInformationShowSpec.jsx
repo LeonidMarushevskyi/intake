@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import PersonInformationShow from 'views/people/PersonInformationShow'
 
 describe('PersonInformationShow', () => {
-  const renderPersonShow = ({ssn = {}, roles = [], name = {}, ...options}) => {
+  const renderPersonShow = ({ssn = {}, roles = {value: []}, name = {}, ...options}) => {
     const params = {ssn, roles, name, ...options}
     return shallow(<PersonInformationShow {...params} />)
   }
@@ -42,8 +42,14 @@ describe('PersonInformationShow', () => {
   })
 
   it('renders the roles of the person', () => {
-    const view = renderPersonShow({roles: ['judge', 'jury', 'executioner']})
+    const view = renderPersonShow({roles: {value: ['judge', 'jury', 'executioner']}})
     expect(view.find('ShowField[label="Role(s)"]').html()).toContain('judge', 'jury', 'executioner')
+  })
+
+  it('renders the roles error if roles include victim', () => {
+    const view = renderPersonShow({roles: {value: ['Victim'], errors: ['Alleged victims must be under 18 years old.']}})
+    const rolesField = view.find('ShowField[label="Role(s)"]')
+    expect(rolesField.html()).toContain('Alleged victims must be under 18 years old.')
   })
 
   it('renders the language(s) of the person', () => {

@@ -35,7 +35,10 @@ describe('PersonShowContainer', () => {
       legacySource: 'Client ID 1-4 in CWS-CMS',
       personId: '1',
       races: 'White - Romanian, Asian - Chinese',
-      roles: ['super-hero', 'anti-hero'],
+      roles: {
+        value: ['super-hero', 'anti-hero'],
+        errors: [],
+      },
       ssn: {value: '123-45-6789', errors: []},
     })
   })

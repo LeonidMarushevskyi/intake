@@ -20,7 +20,7 @@ describe('personShowSelectors', () => {
         legacySource: undefined,
         name: {value: 'Unknown Person', errors: [], required: false},
         gender: undefined,
-        roles: [],
+        roles: {value: [], errors: []},
         languages: undefined,
         dateOfBirth: undefined,
         approximateAge: undefined,
@@ -61,7 +61,7 @@ describe('personShowSelectors', () => {
     it('includes the roles for the given person as is', () => {
       const participants = [{id: '1', roles: ['super-hero', 'anti-hero']}]
       const state = fromJS({participants})
-      expect(getFormattedPersonInformationSelector(state, '1').get('roles'))
+      expect(getFormattedPersonInformationSelector(state, '1').getIn(['roles', 'value']))
         .toEqualImmutable(fromJS(['super-hero', 'anti-hero']))
     })
 
@@ -386,24 +386,75 @@ describe('personShowSelectors', () => {
       })
     })
 
+    describe('roles in getErrorsSelector', () => {
+      it('returns roles error if role includes Victim and date of birth or approximate age is empty', () => {
+        const people = [{id: '1', roles: ['Victim']}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, '1').get('roles').first()).toEqual('Alleged victims must be under 18 years old.')
+      })
+
+      it('does not return roles error if role includes Victim and valid date of birth is given', () => {
+        const people = [{id: '1', date_of_birth: '12/24/2001', roles: ['Victim']}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List())
+      })
+
+      it('returns roles error if role includes Victim and invalid date of birth is given', () => {
+        const people = [{id: '1', date_of_birth: '12/24/1998', roles: ['Victim']}]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
+      })
+
+      it('does not return roles error if role includes Victim and valid approximate age with units is given', () => {
+        const people = [
+          {id: '1', approximate_age: '17', approximate_age_units: 'years', roles: ['Victim']},
+          {id: '2', approximate_age: '214', approximate_age_units: 'months', roles: ['Victim']},
+          {id: '3', approximate_age: '923', approximate_age_units: 'weeks', roles: ['Victim']},
+          {id: '4', approximate_age: '6522', approximate_age_units: 'days', roles: ['Victim']},
+        ]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List([]))
+        expect(getErrorsSelector(state, '2').get('roles')).toEqualImmutable(List([]))
+        expect(getErrorsSelector(state, '3').get('roles')).toEqualImmutable(List([]))
+        expect(getErrorsSelector(state, '4').get('roles')).toEqualImmutable(List([]))
+      })
+
+      it('returns roles error if role includes Victim and invalid approximate age with units is given', () => {
+        const people = [
+          {id: '1', approximate_age: '18', approximate_age_units: 'years', roles: ['Victim']},
+          {id: '2', approximate_age: '217', approximate_age_units: 'months', roles: ['Victim']},
+          {id: '3', approximate_age: '940', approximate_age_units: 'weeks', roles: ['Victim']},
+          {id: '4', approximate_age: '6575', approximate_age_units: 'days', roles: ['Victim']},
+        ]
+        const state = fromJS({participants: people})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
+        expect(getErrorsSelector(state, '2').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
+        expect(getErrorsSelector(state, '3').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
+        expect(getErrorsSelector(state, '4').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
+      })
+    })
+
     it('returns last name error if last name is empty and role includes Victim', () => {
       const people = [{id: '1', roles: ['Victim', 'other role'],
         first_name: 'John'}]
       const state = fromJS({participants: people})
       expect(getErrorsSelector(state, '1').get('name').first()).toEqual('Please enter a last name.')
     })
+
     it('returns first name error if first name is empty and role includes Victim', () => {
       const people = [{id: '1', roles: ['Victim', 'other role'],
         last_name: 'Smith'}]
       const state = fromJS({participants: people})
       expect(getErrorsSelector(state, '1').get('name').first()).toEqual('Please enter a first name.')
     })
+
     it('returns undefined if first name and last name is not empty and role includes Victim', () => {
       const people = [{id: '1', roles: ['Victim', 'other role'],
         last_name: 'Smith', first_name: 'John'}]
       const state = fromJS({participants: people})
       expect(getErrorsSelector(state, '1').get('name').first()).toEqual(undefined)
     })
+
     it('returns first name error and last name error if first name and last name are empty and role includes Victim', () => {
       const people = [{id: '1', roles: ['Victim', 'other role'],
         last_name: '', first_name: ''}]

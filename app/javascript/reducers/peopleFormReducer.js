@@ -77,7 +77,7 @@ const buildPerson = ({
 }) => fromJS({
   addresses: buildAddresses(addresses),
   approximate_age: {value: approximate_age},
-  approximate_age_units: {value: approximate_age_units || 'years'},
+  approximate_age_units: {value: approximate_age_units},
   date_of_birth: {value: date_of_birth},
   first_name: {value: first_name, touched: false},
   gender: {value: gender},

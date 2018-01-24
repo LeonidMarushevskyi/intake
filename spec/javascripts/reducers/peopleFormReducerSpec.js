@@ -405,16 +405,6 @@ describe('peopleFormReducer', () => {
         },
       }))
     })
-
-    it('returns people form with approximate age units to be years by default', () => {
-      const newPerson = {
-        approximate_age_units: null,
-        id: 'participant_one',
-      }
-      const action = createPersonSuccess(newPerson)
-      expect(peopleFormReducer(Map(), action).getIn(['participant_one', 'approximate_age_units', 'value'])).toEqual('years')
-    })
-
     it('returns the last person form state on failure', () => {
       const action = createPersonFailure()
       expect(peopleFormReducer(lastState, action)).toEqualImmutable(lastState)

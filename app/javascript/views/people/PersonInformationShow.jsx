@@ -31,9 +31,9 @@ const PersonInformationShow = ({
             <ShowField label='Gender'>{gender}</ShowField>
           </div>
           <div className='col-md-5'>
-            <ShowField label='Role(s)'>
-              {roles.length > 0 &&
-                  <ul>{roles.map((role, index) => (<li key={`role-${index}`}>{role}</li>))}</ul>
+            <ShowField label='Role(s)' errors={roles.errors}>
+              {roles.value.length > 0 &&
+                  <ul>{roles.value.map((role, index) => (<li key={`role-${index}`}>{role}</li>))}</ul>
               }
             </ShowField>
           </div>
@@ -73,7 +73,10 @@ PersonInformationShow.propTypes = {
     required: PropTypes.bool,
   }),
   races: PropTypes.string,
-  roles: PropTypes.arrayOf(PropTypes.string),
+  roles: PropTypes.shape({
+    errors: PropTypes.array,
+    value: PropTypes.array,
+  }),
   ssn: PropTypes.shape({
     errors: PropTypes.array,
     value: PropTypes.string,
