@@ -91,12 +91,6 @@ describe('IncidentInformationForm', () => {
         })
         expect(component.find('SelectField[label="Incident County"]').props().value).toEqual('Yolo')
       })
-      it('disable dropdown when county exists', () => {
-        const component = renderIncidentInformationForm({
-          selectedCounty: 'Yolo',
-        })
-        expect(component.find('SelectField[label="Incident County"]').prop('disabled')).toEqual(true)
-      })
       it('renders the county options', () => {
         const component = renderIncidentInformationForm({
           counties: [
