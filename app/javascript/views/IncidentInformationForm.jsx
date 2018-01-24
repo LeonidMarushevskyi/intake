@@ -42,7 +42,6 @@ const IncidentInformationForm = ({incidentDate, errors, onChange, onBlur, addres
           value={address.city}
         />
         <SelectField
-          disabled
           gridClassName='col-md-4'
           id='incident_county'
           label='Incident County'

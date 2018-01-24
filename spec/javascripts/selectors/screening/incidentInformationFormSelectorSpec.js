@@ -29,27 +29,15 @@ describe('incidentInformationFormSelectors', () => {
   })
 
   describe('getIncidentCountySelector', () => {
-    it('return a default incident county from UserInfo if incidentInformationForm.incident_county is null', () => {
-      const incidentInformationForm = {
-        incident_county: null,
-      }
-      const userInfo = {
-        county: 'Alameda',
-      }
-      const state = fromJS({incidentInformationForm, userInfo})
-      expect(getIncidentCountySelector(state)).toEqual('alameda')
-    })
-    it('return an User Info county even if Incident Information has a incident county', () => {
+    it('return an incident county or undefined if there is no incident county', () => {
       const incidentInformationForm = {
         incident_county: {
           value: 'yolo',
         },
       }
-      const userInfo = {
-        county: 'Alameda',
-      }
-      const state = fromJS({incidentInformationForm, userInfo})
-      expect(getIncidentCountySelector(state)).toEqual('alameda')
+      const state = fromJS({incidentInformationForm})
+      expect(getIncidentCountySelector(state)).toEqual('yolo')
+      expect(getIncidentCountySelector(emptyState)).toEqual('')
     })
   })
 

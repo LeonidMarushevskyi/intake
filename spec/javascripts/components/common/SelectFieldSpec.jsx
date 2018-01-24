@@ -86,32 +86,4 @@ describe('SelectField', () => {
       expect(component.find('select').prop('aria-required')).toEqual(true)
     })
   })
-  it('renders a disabled select field when disabled prop set to true', () => {
-    const props = {
-      children: [],
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      disabled: true,
-      value: 'this-is-my-value',
-      onChange: onChange,
-    }
-    component = shallow(<SelectField {...props}/>)
-    expect(component.find('select').prop('disabled')).toEqual(true)
-  })
-  it('renders an enabled select field when disabled prop set to false', () => {
-    const props = {
-      children: [],
-      gridClassName: 'myWrapperTest',
-      labelClassName: 'myLabelTest',
-      id: 'myDateFieldId',
-      label: 'this is my label',
-      disabled: false,
-      value: 'this-is-my-value',
-      onChange: onChange,
-    }
-    component = shallow(<SelectField {...props}/>)
-    expect(component.find('select').prop('disabled')).toEqual(false)
-  })
 })
