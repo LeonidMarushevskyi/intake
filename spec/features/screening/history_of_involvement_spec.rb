@@ -540,7 +540,7 @@ feature 'History card' do
 
     context 'release two is enabled' do
       around do |example|
-        Feature.run_with_activated(:release_two) do
+        Feature.run_with_activated(:release_two, :hoi_from_intake_api) do
           screenings[0][:county_name] = 'el_dorado'
           screenings[0][:county] = nil
           screenings[0][:assigned_social_worker] = { first_name: nil, last_name: 'Bob Smith' }

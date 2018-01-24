@@ -22,7 +22,7 @@ const formatDisposition = (disposition) => {
 
 const getCaseCountyAndStatus = (hoiCase) => {
   const status = hoiCase.get('end_date') ? 'Closed' : 'Open'
-  if (IntakeConfig.isFeatureActive('release_two')) {
+  if (IntakeConfig.isFeatureActive('hoi_from_intake_api')) {
     const serviceComponent = hoiCase.get('service_component')
     return {
       county: hoiCase.get('county_name'),
@@ -62,7 +62,7 @@ const getReferralsSelector = createSelector(
 
 const getReferralCountyAndStatus = (referral, responseTimes) => {
   const status = referral.get('end_date') ? 'Closed' : 'Open'
-  if (IntakeConfig.isFeatureActive('release_two')) {
+  if (IntakeConfig.isFeatureActive('hoi_from_intake_api')) {
     const responseTime = referral.get('response_time')
     return {
       county: referral.get('county_name'),
@@ -78,7 +78,7 @@ const getReferralCountyAndStatus = (referral, responseTimes) => {
   }
 }
 
-const getSnapshotReferralAllegations = (allegation) => Map({
+const getIntakeReferralAllegations = (allegation) => Map({
   victim: nameFormatter({
     first_name: allegation.get('victim_first_name'),
     middle_name: allegation.get('victim_middle_name'),
@@ -94,7 +94,7 @@ const getSnapshotReferralAllegations = (allegation) => Map({
   allegations: allegation.get('allegation_description', ''),
   disposition: formatDisposition(allegation.get('disposition_description')),
 })
-const getHotlineReferralAllegations = (allegation) => Map({
+const getFerbReferralAllegations = (allegation) => Map({
   victim: nameFormatter({
     first_name: allegation.getIn(['victim', 'first_name']),
     middle_name: allegation.getIn(['victim', 'middle_name']),
@@ -115,13 +115,13 @@ export const getFormattedReferralsSelector = createSelector(
   getReferralsSelector,
   getScreenResponseTimesSelector,
   (referrals, responseTimes) => referrals.map((referral) => {
-    const snapshot = IntakeConfig.isFeatureActive('release_two')
+    const hoiFromIntakeAPI = IntakeConfig.isFeatureActive('hoi_from_intake_api')
     const {county, status} = getReferralCountyAndStatus(referral, responseTimes)
     const limitedAccessCode = referral.getIn(['access_limitation', 'limited_access_code'], 'NONE')
     const peopleAndRoles = referral.get('allegations', List())
-      .map((allegation) => ((snapshot) ?
-        getSnapshotReferralAllegations(allegation) :
-        getHotlineReferralAllegations(allegation)))
+      .map((allegation) => ((hoiFromIntakeAPI) ?
+        getIntakeReferralAllegations(allegation) :
+        getFerbReferralAllegations(allegation)))
     return fromJS({
       county: county,
       dateRange: dateRangeFormatter(referral.toJS()),
@@ -141,7 +141,7 @@ const getScreeningsSelector = createSelector(
 )
 
 const getScreeningCountyAndWorker = (screening) => {
-  if (IntakeConfig.isFeatureActive('release_two')) {
+  if (IntakeConfig.isFeatureActive('hoi_from_intake_api')) {
     return {
       county: COUNTIES[screening.get('county_name')] || '',
       worker: screening.getIn(['assigned_social_worker', 'last_name'], ''),

@@ -110,14 +110,14 @@ describe ScreeningRepository do
   describe '.history_of_involvements' do
     let(:screening_id) { '11' }
 
-    describe 'in snapshot' do
+    context 'when hoi_from_intake_api is enabled' do
       let(:screening_one) { { id: '123456789' } }
       let(:screening_two) { { id: '987654321' } }
       let(:screenings) { [screening_one, screening_two] }
       let(:response) { double(:response, body: screenings.to_json) }
 
       around do |example|
-        Feature.run_with_activated(:release_two) do
+        Feature.run_with_activated(:hoi_from_intake_api) do
           example.run
         end
       end
