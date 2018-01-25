@@ -8,7 +8,7 @@ module ErrorHandler
         rescue_from(WebMock::NetConnectNotAllowedError) do |exception|
           incident_id = SecureRandom.uuid
           log_standard_error(exception, incident_id)
-          render json: generate_standard_error(exception, incident_id), status: 500
+          raise StandardError, exception.message
         end
       end
       rescue_from StandardError, with: :handle_exception

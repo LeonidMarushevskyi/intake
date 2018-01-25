@@ -5,7 +5,6 @@ require 'support/capybara/screenshot'
 require 'capybara/accessible'
 require 'capybara/poltergeist'
 require 'selenium-webdriver'
-Capybara.raise_server_errors = false
 
 # Tests must be run in the correct timezone because
 # of UTC converstion and explicit expectations.
@@ -35,6 +34,7 @@ end
 Capybara.default_driver = :accessible_selenium
 
 Capybara.server_port = 8889 + ENV['TEST_ENV_NUMBER'].to_i
+Capybara.raise_server_errors = true
 
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true
