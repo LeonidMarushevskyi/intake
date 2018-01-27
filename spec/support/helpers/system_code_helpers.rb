@@ -73,6 +73,15 @@ module SystemCodeHelpers
     ]
   end
 
+  def address_counties
+    [
+      { code: '06', value: 'Colusa', category: 'address_county', sub_category: nil },
+      { code: '23', value: 'Mendocino', category: 'address_county', sub_category: nil },
+      { code: '34', value: 'Sacramento', category: 'address_county', sub_category: nil },
+      { code: '99', value: 'State of California', category: 'address_county', sub_category: nil }
+    ]
+  end
+
   def response_time_codes
     [
       { code: '1520', value: 'Immediate', category: 'screen_response_time', sub_category: nil }
@@ -133,6 +142,7 @@ module SystemCodeHelpers
       *communication_method_codes,
       *contact_location_codes,
       *county_type_codes,
+      *address_counties,
       *response_time_codes,
       *race_codes,
       *ethnicity_codes,
