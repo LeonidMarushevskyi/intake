@@ -6,6 +6,7 @@ import {
   getLocationTypeSelector,
   getErrorsSelector,
 } from 'selectors/screening/incidentInformationShowSelector'
+import {getAddressCountiesSelector} from 'selectors/systemCodeSelectors'
 import * as matchers from 'jasmine-immutable-matchers'
 import moment from 'moment'
 
@@ -28,11 +29,17 @@ describe('incidentInformationShowSelectors', () => {
   describe('getIncidentCountySelector', () => {
     it('return an incident county or empty string if there is no incident county', () => {
       const screening = {
-        incident_county: 'yolo',
+        incident_county: '99',
       }
-      const state = fromJS({screening})
-      expect(getIncidentCountySelector(state)).toEqual('Yolo')
-      expect(getIncidentCountySelector(emptyState)).toEqual('')
+      const addressCounties = [
+        {code: '01', value: 'San Francisco', category: 'address_county'},
+        {code: '02', value: 'Monterey', category: 'address_county'},
+        {code: '03', value: 'Sacramento', category: 'county_type'},
+        {code: '99', value: 'State Of California', category: 'address_county'},
+      ]
+      const state = fromJS({screening, addressCounties})
+      expect(getIncidentCountySelector(state, getAddressCountiesSelector)).toEqual('State Of California')
+      expect(getIncidentCountySelector(emptyState, getAddressCountiesSelector)).toEqual('')
     })
   })
 
