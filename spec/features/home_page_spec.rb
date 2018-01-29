@@ -72,6 +72,9 @@ feature 'home page' do
 
   context 'when no releases are enabled' do
     scenario 'includes title and navigation links' do
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path)).and_return(
+        json_body([], status: 200)
+      )
       visit root_path
       expect(page).to have_title 'Intake'
       expect(page).to have_button 'Start Screening'
