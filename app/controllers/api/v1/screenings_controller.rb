@@ -46,7 +46,8 @@ module Api
         new_screening = Screening.new(
           reference: LUID.generate.first,
           assignee: build_assignee_name(session),
-          assignee_staff_id: build_staff_id(session)
+          assignee_staff_id: build_staff_id(session),
+          incident_county: build_incident_county(session)
         )
         screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening
@@ -90,6 +91,13 @@ module Api
 
       def screening_params
         params.require(:screening).permit(*PERMITTED_PARAMS)
+      end
+
+      def build_incident_county(session)
+        user_details = session[:user_details]
+        return nil unless user_details
+
+        user_details.county_code
       end
 
       def build_staff_id(session)

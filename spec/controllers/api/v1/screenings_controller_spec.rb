@@ -42,7 +42,10 @@ describe Api::V1::ScreeningsController do
     it 'creates and renders screening as json' do
       assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
       expect(Screening).to receive(:new)
-        .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '123')
+        .with(reference: '123ABC',
+              assignee: assignee,
+              assignee_staff_id: '123',
+              incident_county: nil)
         .and_return(blank_screening)
 
       process :create, method: :post, session: session
@@ -54,7 +57,10 @@ describe Api::V1::ScreeningsController do
       it 'leaves assignee and assignee_staff_id as nil if user_details is not set' do
         session = { 'security_token' => security_token }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: nil, assignee_staff_id: nil)
+          .with(reference: '123ABC',
+                assignee: nil,
+                assignee_staff_id: nil,
+                incident_county: nil)
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -64,7 +70,7 @@ describe Api::V1::ScreeningsController do
         staff = FactoryGirl.build(:staff, first_name: nil, last_name: nil, county: nil)
         session = { 'security_token' => security_token, 'user_details' => staff }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil)
+          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil, incident_county: nil)
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -79,7 +85,10 @@ describe Api::V1::ScreeningsController do
             'user_details' => staff
           }
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '456')
+            .with(reference: '123ABC',
+                  assignee: assignee,
+                  assignee_staff_id: '456',
+                  incident_county: nil)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
@@ -93,7 +102,10 @@ describe Api::V1::ScreeningsController do
             'user_details' => staff
           }
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .with(reference: '123ABC',
+                  assignee: assignee,
+                  assignee_staff_id: '789',
+                  incident_county: nil)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
@@ -111,14 +123,65 @@ describe Api::V1::ScreeningsController do
             'user_details' => staff
           }
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .with(reference: '123ABC',
+                  assignee: assignee,
+                  assignee_staff_id: '789',
+                  incident_county: nil)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(Screening).to receive(:new)
-            .with(reference: '123ABC', assignee: assignee, assignee_staff_id: '789')
+            .with(reference: '123ABC',
+                  assignee: assignee,
+                  assignee_staff_id: '789',
+                  incident_county: nil)
             .and_return(blank_screening)
           process :create, method: :post, session: session
         end
+      end
+    end
+
+    describe 'setting incident county' do
+      it 'leaves incident county as nil if user_details is not set' do
+        session = { 'security_token' => security_token }
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC', assignee: nil, assignee_staff_id: nil, incident_county: nil)
+          .and_return(blank_screening)
+        process :create, method: :post, session: session
+        expect(response).to be_successful
+      end
+
+      it 'is blank if user_details is empty' do
+        staff = FactoryGirl.build(
+          :staff,
+          first_name: nil,
+          last_name: nil,
+          county: nil,
+          county_code: nil
+        )
+        session = { 'security_token' => security_token, 'user_details' => staff }
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil, incident_county: nil)
+          .and_return(blank_screening)
+        process :create, method: :post, session: session
+        expect(response).to be_successful
+      end
+
+      it 'default to have user info county' do
+        staff = FactoryGirl.build(:staff, county: 'yolo', staff_id: '456', county_code: '123')
+        incident_county = '123'
+        assignee = "#{staff.first_name} #{staff.last_name} - #{staff.county}"
+        session = {
+          'security_token' => security_token,
+          'user_details' => staff
+        }
+        expect(Screening).to receive(:new)
+          .with(reference: '123ABC',
+                assignee: assignee,
+                assignee_staff_id: '456',
+                incident_county: incident_county)
+          .and_return(blank_screening)
+        process :create, method: :post, session: session
+        expect(response).to be_successful
       end
     end
   end
