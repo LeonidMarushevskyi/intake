@@ -9,5 +9,6 @@ class Staff
   attribute :last_name
   attribute :middle_initial
   attribute :county
+  attribute :county_code
   attribute :privileges, Array, default: []
 end

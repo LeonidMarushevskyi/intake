@@ -12,6 +12,7 @@ describe Staff do
           middle_initial: 'J',
           last_name: 'Simpson',
           county: 'Sacramento',
+          county_code: '2334',
           privileges: ['Sandwich']
         }.with_indifferent_access
         expect(described_class.new(attributes).as_json).to eq({
@@ -20,6 +21,7 @@ describe Staff do
           middle_initial: 'J',
           last_name: 'Simpson',
           county: 'Sacramento',
+          county_code: '2334',
           privileges: ['Sandwich']
         }.with_indifferent_access)
       end
@@ -31,7 +33,8 @@ describe Staff do
           first_name: 'Homer',
           middle_initial: 'J',
           last_name: 'Simpson',
-          county: 'Sacramento'
+          county: 'Sacramento',
+          county_code: '2334'
         }.with_indifferent_access
         expect(described_class.new(attributes).as_json).to eq({
           staff_id: '1',
@@ -39,6 +42,7 @@ describe Staff do
           middle_initial: 'J',
           last_name: 'Simpson',
           county: 'Sacramento',
+          county_code: '2334',
           privileges: []
         }.with_indifferent_access)
       end
