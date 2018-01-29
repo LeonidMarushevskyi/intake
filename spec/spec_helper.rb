@@ -71,7 +71,8 @@ RSpec.configure do |config|
   end
 
   config.around(:each, type: :feature) do |example|
-    WebMock.disable_net_connect!(allow_localhost: true)
+    allowed_sites = ->(uri) { uri.host == Capybara.server_host && uri !~ %r{/api/} }
+    WebMock.disable_net_connect!(allow: allowed_sites)
     example.run
     WebMock.allow_net_connect!
   end

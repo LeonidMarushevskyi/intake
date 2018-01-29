@@ -12,6 +12,7 @@ feature 'error pages' do
     Rails.application.config.consider_all_requests_local = true
     Rails.application.config.action_dispatch.show_exceptions = false
   end
+  let(:screening) { FactoryGirl.create(:screening, :submittable) }
 
   context 'page does not exist' do
     scenario 'renders 404 page' do
@@ -30,10 +31,11 @@ feature 'error pages' do
 
   context 'screening does not exist' do
     scenario 'renders not found error page' do
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body('Screening is not found!!', status: 404))
-      stub_empty_history_for_screening(id: 1)
-      visit edit_screening_path(id: 1)
+      stub_empty_relationships_for_screening(screening)
+      stub_empty_history_for_screening(screening)
+      visit edit_screening_path(id: screening.id)
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
         "It may have been deleted or doesn't exist. Please check the address or"
@@ -71,10 +73,11 @@ feature 'error pages' do
 
   context 'when user attempts to access a screening created by another' do
     scenario 'renders 403 page' do
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(1)))
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body('Forbidden!!', status: 403))
-      stub_empty_history_for_screening(id: 1)
-      visit edit_screening_path(id: 1)
+      stub_empty_relationships_for_screening(screening)
+      stub_empty_history_for_screening(screening)
+      visit edit_screening_path(id: screening.id)
       expect(page).to have_current_path('/forbidden')
       expect(page).to have_text('This page is restricted.')
       expect(page).to have_text("You don't have the appropriate permissions to view this page.")

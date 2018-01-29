@@ -97,8 +97,6 @@ feature 'Cross Reports Validations' do
         before do
           stub_county_agencies('c41')
           screening.cross_reports[0].agencies[0].id = 'EYIS9Nh75C'
-          stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
-            .and_return(json_body(screening.to_json, status: 200))
           stub_and_visit_edit_screening(screening)
         end
         scenario 'shows no error when filled in' do
