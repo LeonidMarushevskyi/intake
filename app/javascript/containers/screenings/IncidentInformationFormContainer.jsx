@@ -5,7 +5,7 @@ import {
   getAddressSelector,
   getLocationTypeSelector,
   getScreeningWithEditsSelector,
-  getCounties,
+  getCountiesSelector,
   getStates,
   getLocationTypes,
   getVisibleErrorsSelector,
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => ({
   selectedCounty: getIncidentCountySelector(state),
   address: getAddressSelector(state).toJS(),
   selectedLocationType: getLocationTypeSelector(state),
-  counties: getCounties(),
+  counties: getCountiesSelector(state),
   usStates: getStates(),
   locationTypes: getLocationTypes(),
 })

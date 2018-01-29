@@ -1,4 +1,3 @@
-import COUNTIES from 'enums/Counties'
 import US_STATE from 'enums/USState'
 import LOCATION_TYPE from 'enums/LocationType'
 import {createSelector} from 'reselect'
@@ -75,8 +74,8 @@ export const getVisibleErrorsSelector = createSelector(
   )
 )
 
-export const getCounties = () =>
-  Object.keys(COUNTIES).map((item) => ({key: item, name: COUNTIES[item]}))
+export const getCountiesSelector = (state) =>
+  (state.get('addressCounties').map((county) => ({key: county.get('code'), name: county.get('value')}))).toJS()
 
 export const getStates = () => US_STATE
 
