@@ -6,7 +6,7 @@ import {fetchSuccess, fetchFailure} from 'actions/systemCodesActions'
 describe('countiesReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on FETCH_STATUS_CODES_COMPLETE', () => {
+  describe('on FETCH_SYSTEM_CODES_COMPLETE', () => {
     it('returns the system codes for counties', () => {
       const action = fetchSuccess([
         {code: '123', value: 'San Francisco', category: 'county_type'},
