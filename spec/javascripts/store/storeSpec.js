@@ -56,6 +56,7 @@ describe('Store', () => {
       screeningDecisionForm: {},
       screeningPage: {},
       screenings: [],
+      snapshot: {},
       staff: {},
       screenResponseTimes: [],
       workerSafetyForm: {},

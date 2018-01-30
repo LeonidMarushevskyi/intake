@@ -31,6 +31,7 @@ import screeningInformationForm from 'reducers/screeningInformationFormReducer'
 import screeningDecisionForm from 'reducers/screeningDecisionFormReducer'
 import screenings from 'reducers/screeningsReducer'
 import screeningPage from 'reducers/screeningPageReducer'
+import snapshot from 'reducers/snapshotReducer'
 import staff from 'reducers/staffReducer'
 import screenResponseTimes from 'reducers/systemCodes/screenResponseTimesReducer'
 import workerSafetyForm from 'reducers/workerSafetyFormReducer'
@@ -72,6 +73,7 @@ const rootReducer = combineReducers({
   screeningDecisionForm,
   screenings,
   screeningPage,
+  snapshot,
   staff,
   screenResponseTimes,
   workerSafetyForm,

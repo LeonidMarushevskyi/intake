@@ -2,21 +2,25 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 
-export class SnapshotPage extends React.Component {
-  render() {
-    return (
-      <div>
-        <p>I'm a snapshot!</p>
-      </div>
-    )
-  }
-}
+const SnapshotPage = ({id}) => (
+  <div>
+    <p>I'm a snapshot! My Id is {id}</p>
+  </div>
+)
 
 SnapshotPage.propTypes = {
+  id: PropTypes.string,
 }
 
 SnapshotPage.defaultProps = {
 }
 
-export default connect(null)(SnapshotPage)
+function mapStateToProps(state) {
+  const snapshot = state.get('snapshot')
+  return {
+    id: snapshot.get('id')
+  }
+}
+
+export default connect(mapStateToProps)(SnapshotPage)
 
