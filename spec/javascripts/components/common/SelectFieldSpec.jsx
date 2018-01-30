@@ -69,21 +69,18 @@ describe('SelectField', () => {
 
   describe('when SelectField is required', () => {
     it('renders a required select field', () => {
-      onChange = jasmine.createSpy('onChange')
-      const props = {
-        children: [],
-        gridClassName: 'myWrapperTest',
-        labelClassName: 'myLabelTest',
-        id: 'myDateFieldId',
-        label: 'this is my label',
-        required: true,
-        value: 'this-is-my-value',
-        onChange: onChange,
-      }
-      component = shallow(<SelectField {...props}/>)
+      component = shallow(<SelectField {...props} required/>)
       expect(component.find('FormField').props().required).toEqual(true)
       expect(component.find('select').prop('required')).toEqual(true)
       expect(component.find('select').prop('aria-required')).toEqual(true)
     })
+  })
+  it('renders a disabled select field when disabled prop is passed', () => {
+    component = shallow(<SelectField {...props} disabled/>)
+    expect(component.find('select').is('[disabled]')).toEqual(true)
+  })
+  it('renders an enabled select field when disabled prop is not passed', () => {
+    component = shallow(<SelectField {...props}/>)
+    expect(component.find('select').is('[disabled]')).toEqual(false)
   })
 })

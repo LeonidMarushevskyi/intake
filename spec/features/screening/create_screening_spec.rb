@@ -125,6 +125,68 @@ feature 'Create Screening' do
       end
     end
 
+    context 'incident information county uses userInfo county' do
+      let(:user_details) do
+        {
+          first_name: 'Joe',
+          middle_initial: 'B',
+          last_name: 'Cool',
+          county: 'Mendocino',
+          county_code: '23',
+          staff_id: '1234'
+        }
+      end
+      let(:auth_details) { { staffId: '1234' } }
+
+      scenario 'via start screening link' do
+        user_name_display = 'Joe B. Cool - Mendocino'
+        allow(LUID).to receive(:generate).and_return(['DQJIYK'])
+        new_screening = FactoryGirl.create(
+          :screening,
+          incident_county: '23',
+          reference: 'DQJIYK',
+          safety_alerts: [],
+          safety_information: nil,
+          address: { city: nil },
+          assignee: user_name_display,
+          assignee_staff_id: '1234'
+        )
+
+        stub_empty_history_for_screening(new_screening)
+        stub_empty_relationships_for_screening(new_screening)
+        stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+          .with(body: as_json_without_root_id(new_screening))
+          .and_return(json_body(new_screening.to_json, status: 201))
+
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
+          .and_return(json_body([].to_json, status: 200))
+
+        stub_request(
+          :get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id))
+        ).and_return(json_body(new_screening.to_json, status: 200))
+
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body(auth_details.to_json, status: 200))
+
+        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
+          .and_return(json_body(user_details.to_json, status: 200))
+
+        visit root_path(token: 123)
+        click_button 'Start Screening'
+
+        within '.page-header-mast' do
+          expect(page).to have_content("Screening #{new_screening.id}")
+        end
+
+        expect(page).to have_select('Incident County', selected: 'Mendocino', disabled: true)
+
+        within '#incident-information-card' do
+          click_button 'Cancel'
+          expect(page).to have_content('Mendocino')
+        end
+      end
+    end
+
     context 'user has first and last name' do
       let(:user_details) do
         {

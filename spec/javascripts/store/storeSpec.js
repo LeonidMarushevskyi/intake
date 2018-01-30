@@ -33,6 +33,7 @@ describe('Store', () => {
       ethnicityTypes: [],
       languages: [],
       counties: [],
+      addressCounties: [],
       countyAgencies: [],
       crossReportForm: {},
       errors: {},

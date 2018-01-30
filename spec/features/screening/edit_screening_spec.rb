@@ -22,7 +22,7 @@ feature 'Edit Screening' do
       assignee: 'Bob Loblaw',
       communication_method: 'phone',
       ended_at: '2016-08-13T11:00:00.000Z',
-      incident_county: 'sacramento',
+      incident_county: '34',
       incident_date: '2016-08-11',
       name: 'Little Shop Of Horrors',
       reference: 'My Bad!',
@@ -79,7 +79,7 @@ feature 'Edit Screening' do
 
       within '#incident-information-card.edit', text: 'Incident Information' do
         expect(page).to have_field('Incident Date', with: '08/11/2016')
-        expect(page).to have_field('Incident County', with: 'sacramento')
+        expect(page).to have_select('Incident County', selected: 'Sacramento', disabled: true)
         expect(page).to have_field('Address', with: '123 Fake St')
         expect(page).to have_field('City', with: 'Faketown')
         expect(page).to have_field('State', with: 'DE')

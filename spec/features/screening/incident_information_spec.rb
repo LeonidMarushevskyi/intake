@@ -8,7 +8,7 @@ feature 'screening incident information card' do
   let(:existing_screening) do
     FactoryGirl.create(
       :screening,
-      incident_county: 'colusa',
+      incident_county: '06',
       incident_date: '2016-08-11',
       address: FactoryGirl.create(
         :address,
@@ -64,7 +64,7 @@ feature 'screening incident information card' do
   scenario 'user edits incident card from screening edit page and saves' do
     within '#incident-information-card.edit' do
       expect(page).to have_field('Incident Date', with: '08/11/2016')
-      expect(page).to have_field('Incident County', with: 'colusa')
+      expect(page).to have_select('Incident County', selected: 'Colusa', disabled: true)
       expect(page).to have_field('Location Type', with: "Child's Home")
       expect(page).to have_field('Address', with: '123 fake st')
       expect(page).to have_field('City', with: 'Springfield')

@@ -1,9 +1,9 @@
-import COUNTIES from 'enums/Counties'
 import US_STATE from 'enums/USState'
 import {createSelector} from 'reselect'
 import {Map, fromJS} from 'immutable'
 import {dateFormatter} from 'utils/dateFormatter'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
+import {systemCodeDisplayValue, getAddressCountiesSelector} from 'selectors/systemCodeSelectors'
 import {isFutureDatetimeCreate, combineCompact} from 'utils/validator'
 
 export const getIncidentDateSelector = createSelector(
@@ -13,7 +13,9 @@ export const getIncidentDateSelector = createSelector(
 
 export const getIncidentCountySelector = createSelector(
   getScreeningSelector,
-  (screening) => COUNTIES[screening.get('incident_county')] || ''
+  getAddressCountiesSelector,
+  (screening, addressCounties) =>
+    systemCodeDisplayValue(screening.get('incident_county', ''), addressCounties) || ''
 )
 
 export const getAddressSelector = createSelector(

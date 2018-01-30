@@ -7,6 +7,7 @@ import contactForm from 'reducers/contactFormReducer'
 import contactPurposes from 'reducers/systemCodes/contactPurposesReducer'
 import contactStatuses from 'reducers/systemCodes/contactStatusesReducer'
 import counties from 'reducers/systemCodes/countiesReducer'
+import addressCounties from 'reducers/systemCodes/addressCountiesReducer'
 import countyAgencies from 'reducers/systemCodes/countyAgenciesReducer'
 import crossReportForm from 'reducers/crossReportFormReducer'
 import errors from 'reducers/errorsReducer'
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   contactPurposes,
   contactStatuses,
   counties,
+  addressCounties,
   countyAgencies,
   crossReportForm,
   errors,
