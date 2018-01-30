@@ -37,8 +37,8 @@ class SnapshotPage extends React.Component {
           </div>
         </div>
         <PersonSearchFormContainer />
-        {participants.map((participant) =>
-          <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
+        {participants.map(({id}) =>
+          <PersonCardView key={id} personId={id} />
         )}
         <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
       </div>
@@ -58,7 +58,7 @@ SnapshotPage.defaultProps = {
 function mapStateToProps(state) {
   return {
     id: getSnapshotIdValueSelector(state),
-    participants: [],
+    participants: state.get('participants').toJS(),
   }
 }
 
