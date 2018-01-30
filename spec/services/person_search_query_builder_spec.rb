@@ -125,5 +125,105 @@ describe PersonSearchQueryBuilder do
         )
       end
     end
+
+    context 'when the search term includes date of birth' do
+      it 'filters out slashes in the date of birth' do
+        search_terms = [
+          '01/02/2001',
+          '02/2001',
+          '2001',
+          '01/02',
+          '1/2/2001',
+          '2/2001',
+          '1/2'
+        ]
+        expected_results = %w[
+          01022001
+          022001
+          2001
+          0102
+          122001
+          22001
+          12
+        ]
+        search_terms.each_with_index do |search_term, index|
+          expect(
+            described_class.new(search_term: search_term).build
+          ).to match(a_hash_including(
+                       query: {
+                         bool: {
+                           must: [{
+                             multi_match: {
+                               query: expected_results[index],
+                               type: 'cross_fields',
+                               operator: 'and',
+                               fields: %w[searchable_name searchable_date_of_birth ssn]
+                             }
+                           }]
+                         }
+                       }
+          ))
+        end
+      end
+
+      it 'filters out dashes' do
+        search_terms = [
+          '01-02-2001',
+          '02-2001',
+          '2001',
+          '01-02',
+          '1-2-2001',
+          '2-2001',
+          '1-2'
+        ]
+        expected_results = %w[
+          01022001
+          022001
+          2001
+          0102
+          122001
+          22001
+          12
+        ]
+        search_terms.each_with_index do |search_term, index|
+          expect(
+            described_class.new(search_term: search_term).build
+          ).to match(a_hash_including(
+                       query: {
+                         bool: {
+                           must: [{
+                             multi_match: {
+                               query: expected_results[index],
+                               type: 'cross_fields',
+                               operator: 'and',
+                               fields: %w[searchable_name searchable_date_of_birth ssn]
+                             }
+                           }]
+                         }
+                       }
+          ))
+        end
+      end
+
+      it 'keeps apostrophes and slashes in the name' do
+        search_term = "A/li'son Juniper 01/02"
+        expect(
+          described_class.new(search_term: search_term).build
+        ).to match(a_hash_including(
+                     query: {
+                       bool: {
+                         must: [{
+                           multi_match: {
+                             query: "a/li'son juniper 0102",
+                             type: 'cross_fields',
+                             operator: 'and',
+                             fields: %w[searchable_name searchable_date_of_birth ssn]
+                           }
+                         }]
+                       }
+                     }
+        ))
+      end
+    end
   end
 end
