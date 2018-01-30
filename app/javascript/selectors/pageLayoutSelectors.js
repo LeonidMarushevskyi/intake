@@ -9,7 +9,7 @@ import {isFeatureActive} from 'common/config'
 
 const getDashboardDetailSelector = () => ({
   pageHeaderButtonDisabled: false,
-  pageHeaderButtonText: 'Start Screening',
+  pageHeaderButtonText: isFeatureActive('release_two') ? 'Start Snapshot' : 'Start Screening',
   pageHeaderHasButton: true,
   pageHeaderLocation: 'dashboard',
   pageHeaderTitle: 'Dashboard',
