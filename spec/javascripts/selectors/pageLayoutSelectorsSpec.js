@@ -4,7 +4,7 @@ import * as investigationSelectors from 'selectors/investigation/investigationSe
 import * as screeningSelectors from 'selectors/screeningSelectors'
 import * as intakeConfig from 'common/config'
 
-fdescribe('getPageHeaderDetailSelector', () => {
+describe('getPageHeaderDetailSelector', () => {
   it('returns page header details for the dashboard page when release two is inactive', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/', {})).toEqual({

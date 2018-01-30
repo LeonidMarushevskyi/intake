@@ -8,9 +8,11 @@ import {
 } from 'selectors/errorsSelectors'
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
 import {createScreening, submitScreening} from 'actions/screeningActions'
+import {createSnapshot} from 'actions/snapshotActions'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 import {PageHeader} from 'react-wood-duck'
+import {isFeatureActive} from 'common/config'
 
 export class PageLayout extends React.Component {
   componentDidMount() {
@@ -70,14 +72,19 @@ PageLayout.propTypes = {
   params: PropTypes.object,
 }
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  actions: bindActionCreators({fetchSystemCodesAction, createScreening, submitScreening}, dispatch),
+  actions: bindActionCreators({
+    fetchSystemCodesAction,
+    createScreening,
+    createSnapshot,
+    submitScreening,
+  }, dispatch),
 })
 
 const mergeProps = (stateProps, {actions}, ownProps) => {
   const {pageHeaderDetails: {pageHeaderLocation}} = stateProps
   let pageHeaderButtonOnClick
   if (pageHeaderLocation === 'dashboard') {
-    pageHeaderButtonOnClick = actions.createScreening
+    pageHeaderButtonOnClick = isFeatureActive('release_two') ? actions.createSnapshot : actions.createScreening
   } else if (pageHeaderLocation === 'screening') {
     pageHeaderButtonOnClick = () => actions.submitScreening(ownProps.params.id)
   }
