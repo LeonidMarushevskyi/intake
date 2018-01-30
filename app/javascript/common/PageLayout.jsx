@@ -65,7 +65,13 @@ PageLayout.propTypes = {
   children: PropTypes.object.isRequired,
   hasError: PropTypes.bool,
   pageErrorMessage: PropTypes.string,
-  pageHeaderDetails: PropTypes.object.isRequired,
+  pageHeaderDetails: PropTypes.shape({
+    pageHeaderButtonDisabled: PropTypes.bool,
+    pageHeaderButtonText: PropTypes.string,
+    pageHeaderHasButton: PropTypes.bool,
+    pageHeaderLocation: PropTypes.string,
+    pageHeaderTitle: PropTypes.string,
+  }),
   params: PropTypes.object,
 }
 const mapDispatchToProps = (dispatch, _ownProps) => ({
