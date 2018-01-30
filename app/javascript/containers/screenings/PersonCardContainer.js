@@ -13,6 +13,7 @@ import {touchAllFields} from 'actions/peopleFormActions'
 const mapStateToProps = (state, {personId}) => ({
   mode: getModeValueSelector(state, personId),
   editable: !state.getIn(['screening', 'referral_id']),
+  deletable: !state.getIn(['screening', 'referral_id']),
   informationFlag: getPersonInformationFlagValuesSelector(state).get(personId),
   personName: getPersonNamesSelector(state).get(personId),
   personWithEdits: getPeopleWithEditsSelector(state).get(personId).toJS(),
@@ -21,6 +22,7 @@ const mergeProps = (stateProps, {dispatch}, ownProps) => {
   const {
     mode,
     editable,
+    deletable,
     informationFlag,
     personName,
     personWithEdits,
@@ -43,6 +45,7 @@ const mergeProps = (stateProps, {dispatch}, ownProps) => {
   return {
     edit,
     editable,
+    deletable,
     informationFlag,
     mode,
     onCancel,
