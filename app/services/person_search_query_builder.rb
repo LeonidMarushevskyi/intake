@@ -28,8 +28,9 @@ class PersonSearchQueryBuilder
   def formatted_search_term
     @search_term
       .downcase
-      .gsub(/(\d+\s*)[^a-z0-9 ]+/, '\1') # Remove special chars after digits
-      .gsub(/([a-z]+\s*)[^a-z0-9 ]+/, '\1 ') # Replace special chars after letters w/ space
+      .gsub(%r((\d{1,2})[-/](\d{1,2})[-/](\d{4})), '\1\2\3')
+      .gsub(%r((\d{1,2})[-/](\d{4})), '\1\2')
+      .gsub(%r((\d{1,2})[-/](\d{1,2})), '\1\2')
   end
 
   def query
