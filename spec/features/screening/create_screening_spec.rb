@@ -4,54 +4,6 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'Create Screening' do
-  context 'when release two is enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_two) do
-        example.run
-      end
-    end
-
-    scenario 'via start screening link' do
-      allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-      new_screening = FactoryGirl.create(
-        :screening,
-        indexable: false,
-        reference: 'DQJIYK',
-        safety_alerts: [],
-        safety_information: nil,
-        address: { city: nil },
-        assignee: nil
-      )
-      stub_empty_history_for_screening(new_screening)
-      stub_empty_relationships_for_screening(new_screening)
-      stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
-        .with(body: as_json_without_root_id(new_screening))
-        .and_return(json_body(new_screening.to_json, status: 201))
-
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(new_screening.id)))
-        .and_return(json_body(new_screening.to_json, status: 200))
-      stub_empty_relationships_for_screening(new_screening)
-      stub_empty_history_for_screening(new_screening)
-
-      visit root_path
-      click_button 'Start Screening'
-
-      expect(
-        a_request(
-          :post, intake_api_url(ExternalRoutes.intake_api_screenings_path)
-        ).with(body: as_json_without_root_id(new_screening))
-      ).to have_been_made
-
-      within '#snapshot-card' do
-        expect(page).to have_content(
-          'The Child Welfare History Snapshot allows you to search CWS/CMS for people and their'
-        )
-      end
-
-      expect(page).not_to have_css('.side-bar')
-    end
-  end
-
   context 'when authentication is enabled' do
     let(:auth_validation_url) { 'http://www.example.com/authn/validate?token=123' }
 
