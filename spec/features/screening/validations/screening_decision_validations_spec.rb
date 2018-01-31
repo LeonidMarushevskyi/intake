@@ -236,6 +236,8 @@ feature 'Screening Decision Validations' do
       let(:screening_decision) { nil }
 
       scenario 'do not show error on restriction_rationale' do
+        stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+          .and_return(json_body(screening.to_json, status: 200))
         blur_field
         should_not_have_content error_message, inside: '#decision-card.edit'
         save_card('decision')
