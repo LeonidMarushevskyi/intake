@@ -5,8 +5,8 @@ import {getSnapshotIdValueSelector} from 'selectors/snapshotSelectors'
 import {createSnapshot} from 'actions/snapshotActions'
 import PersonSearchFormContainer from 'containers/snapshot/PersonSearchFormContainer'
 import PersonCardView from 'snapshots/PersonCardView'
-import HistoryOfInvolvementContainer from 'containers/screenings/HistoryOfInvolvementContainer'
-import HistoryTableContainer from 'containers/screenings/HistoryTableContainer'
+import HistoryOfInvolvementContainer from 'containers/snapshot/HistoryOfInvolvementContainer'
+import HistoryTableContainer from 'containers/snapshot/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 
 class SnapshotPage extends React.Component {
