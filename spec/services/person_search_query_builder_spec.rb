@@ -224,6 +224,69 @@ describe PersonSearchQueryBuilder do
                      }
         ))
       end
+
+      it 'removes slashes in date times as the user is typing' do
+        search_terms = [
+          '0',
+          '01',
+          '01/',
+          '01/0',
+          '01/02',
+          '01/02/',
+          '01/02/1',
+          '01/02/19',
+          '01/02/199',
+          '01/02/1995',
+          '//0/1/0//2/1/9/9/5//',
+          '1',
+          '1/',
+          '1/2',
+          '1/2/',
+          '1/2/1',
+          '1/2/19',
+          '1/2/199',
+          '1/2/1995',
+        ]
+        expected_results = [
+          '0',
+          '01',
+          '01',
+          '010',
+          '0102',
+          '0102',
+          '01021',
+          '010219',
+          '0102199',
+          '01021995',
+          '01021995',
+          '1',
+          '1',
+          '12',
+          '12',
+          '121',
+          '1219',
+          '12199',
+          '121995',
+        ]
+        search_terms.each_with_index do |search_term, index|
+          expect(
+            described_class.new(search_term: search_term).build
+          ).to match(a_hash_including(
+                       query: {
+                         bool: {
+                           must: [{
+                             multi_match: {
+                               query: expected_results[index],
+                               type: 'cross_fields',
+                               operator: 'and',
+                               fields: %w[searchable_name searchable_date_of_birth ssn]
+                             }
+                           }]
+                         }
+                       }
+          ))
+        end
+      end
     end
   end
 end
