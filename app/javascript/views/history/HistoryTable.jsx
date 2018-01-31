@@ -7,7 +7,7 @@ import Clipboard from 'react-clipboard.js'
 
 export default class HistoryTable extends React.Component {
   render() {
-    const {cases, referrals, screenings} = this.props
+    const {cases, onCopy, onError, onSuccess, referrals, screenings} = this.props
     return (<div className='card-body no-pad-top'>
       <div className='table-responsive' ref={(history) => { this.historyTable = history }}>
         <table className='table table-hover'>
@@ -34,7 +34,12 @@ export default class HistoryTable extends React.Component {
       </div>
       <div className='row'>
         <div className='centered'>
-          <Clipboard className='btn btn-primary' option-target={() => (this.historyTable)}>
+          <Clipboard
+            className='btn btn-primary'
+            onSuccess={() => onSuccess(this.historyTable)}
+            onError={() => onError(this.historyTable)}
+            option-target={() => (onCopy(this.historyTable))}
+          >
             Copy
           </Clipboard>
         </div>
@@ -46,6 +51,9 @@ export default class HistoryTable extends React.Component {
 
 HistoryTable.propTypes = {
   cases: PropTypes.array,
+  onCopy: PropTypes.func,
+  onError: PropTypes.func,
+  onSuccess: PropTypes.func,
   referrals: PropTypes.array,
   screenings: PropTypes.array,
 }

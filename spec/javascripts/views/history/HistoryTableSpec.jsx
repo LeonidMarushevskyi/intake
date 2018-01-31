@@ -46,7 +46,11 @@ describe('HistoryTable', () => {
       it('renders', () => {
         const component = renderHistoryTable({})
         const copyButton = component.find('ClipboardButton')
+
+        expect(copyButton.exists()).toEqual(true)
         expect(copyButton.props()['option-target']).toBeDefined()
+        expect(copyButton.props().onSuccess).toBeDefined()
+        expect(copyButton.props().onError).toBeDefined()
       })
     })
   })

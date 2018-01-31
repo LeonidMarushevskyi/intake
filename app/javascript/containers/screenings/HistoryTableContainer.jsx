@@ -13,6 +13,17 @@ const mapStateToProps = (state) => {
     cases: getFormattedCasesSelector(state).toJS(),
     referrals: getFormattedReferralsSelector(state).toJS(),
     screenings: [],
+    // To make the copied table fit in MS Word, we have to temporarily resize it.
+    onCopy: (copyContent) => {
+      copyContent.style.width = '1%'
+      return copyContent
+    },
+    onSuccess: (copyContent) => {
+      copyContent.style.width = null
+    },
+    onError: (copyContent) => {
+      copyContent.style.width = null
+    },
   }
   if (IntakeConfig.isFeatureActive('release_two')) {
     return props
