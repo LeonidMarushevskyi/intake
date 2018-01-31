@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import PersonCardContainer from 'containers/snapshot/PersonCardContainer'
-import PersonPhoneNumbersContainer from 'containers/screenings/PersonPhoneNumbersContainer'
-import PersonShowContainer from 'containers/screenings/PersonShowContainer'
-import PersonAddressesContainer from 'containers/screenings/PersonAddressesContainer'
+import PersonPhoneNumbersContainer from 'containers/snapshot/PersonPhoneNumbersContainer'
+import PersonShowContainer from 'containers/snapshot/PersonInformationContainer'
+import PersonAddressesContainer from 'containers/snapshot/PersonAddressesContainer'
 
 const PersonCardView = ({personId}) => (
   <PersonCardContainer
