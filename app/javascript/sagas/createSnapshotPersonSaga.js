@@ -5,6 +5,9 @@ import {
   createPersonSuccess,
   createPersonFailure,
 } from 'actions/personCardActions'
+import {
+  fetchHistoryOfInvolvements,
+} from 'actions/screeningActions'
 
 export function* createSnapshotPerson({payload: {person}}) {
   try {
@@ -20,6 +23,7 @@ export function* createSnapshotPerson({payload: {person}}) {
       },
     })
     yield put(createPersonSuccess(response))
+    yield put(fetchHistoryOfInvolvements(snapshotId))
   } catch (error) {
     if (error.status === STATUS_CODES.forbidden) {
       yield call(alert, 'You are not authorized to add this person.')

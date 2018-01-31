@@ -6,6 +6,7 @@ import {
   createSnapshotPersonSaga,
 } from 'sagas/createSnapshotPersonSaga'
 import {CREATE_SNAPSHOT_PERSON} from 'actions/personCardActions'
+import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
 
 describe('createSnapshotPersonSaga', () => {
@@ -16,16 +17,20 @@ describe('createSnapshotPersonSaga', () => {
 })
 
 describe('createSnapshotPerson', () => {
+  const snapashotId = '444'
   const legacy_descriptor = {legacy_id: '1', legacy_table_name: 'table'}
-  const params = {screening_id: '1', legacy_descriptor}
+  const params = {screening_id: snapashotId, legacy_descriptor}
   const participant = {first_name: 'Michael', ...params}
-  const action = personCardActions.createSnapshotPerson({snapshotId: '1', legacy_descriptor})
+  const action = personCardActions.createSnapshotPerson({snapshotId: snapashotId, legacy_descriptor})
 
   it('creates and puts participant and fetches relationships and history', () => {
     const gen = createSnapshotPerson(action)
     expect(gen.next().value).toEqual(call(post, '/api/v1/participants', {participant: params}))
     expect(gen.next(participant).value).toEqual(
       put(personCardActions.createPersonSuccess(participant))
+    )
+    expect(gen.next(snapashotId).value).toEqual(
+      put(screeningActions.fetchHistoryOfInvolvements(snapashotId))
     )
   })
 
