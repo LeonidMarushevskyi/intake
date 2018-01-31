@@ -1,6 +1,7 @@
 import {fromJS, List} from 'immutable'
 import {
   getFormattedPersonInformationSelector,
+  getFormattedPersonWithErrorsSelector,
   getPersonFormattedPhoneNumbersSelector,
   getPersonFormattedAddressesSelector,
   getNamesRequiredSelector,
@@ -94,12 +95,12 @@ describe('personShowSelectors', () => {
       expect(getFormattedPersonInformationSelector(state, '1').get('approximateAge')).toEqual('9 dog years')
     })
 
-    it('includes the value and errors for the social security number for the given person', () => {
-      const participants = [{id: '1', ssn: '123456789'}]
+    it('includes the value and empty errors for the social security number for the given person', () => {
+      const participants = [{id: '1', ssn: '987654321'}]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('ssn'))
         .toEqualImmutable(fromJS({
-          value: '123-45-6789',
+          value: '987-65-4321',
           errors: [],
         }))
     })
@@ -131,6 +132,35 @@ describe('personShowSelectors', () => {
       ]
       const state = fromJS({participants})
       expect(getFormattedPersonInformationSelector(state, '1').get('ethnicity')).toEqual('Unknown')
+    })
+  })
+
+  describe('getFormattedPersonWithErrorsSelector', () => {
+    it('includes errors for ssn', () => {
+      const participants = [{id: '1', ssn: '987654321'}]
+      const state = fromJS({participants})
+      expect(getFormattedPersonWithErrorsSelector(state, '1').get('ssn'))
+        .toEqualImmutable(fromJS({
+          value: '987-65-4321',
+          errors: ['Social security number cannot begin with 9.'],
+        }))
+    })
+
+    it('includes errors and required value for name', () => {
+      const participants = [{
+        id: '1',
+        first_name: null,
+        middle_name: 'Q',
+        last_name: 'Public',
+        roles: ['Victim'],
+      }]
+      const state = fromJS({participants})
+      expect(getFormattedPersonWithErrorsSelector(state, '1').get('name'))
+        .toEqualImmutable(fromJS({
+          value: '(Unknown first name) Q Public',
+          errors: ['Please enter a first name.'],
+          required: true,
+        }))
     })
   })
 

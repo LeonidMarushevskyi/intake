@@ -129,7 +129,6 @@ export const getErrorsSelector = (state, personId) => {
 
 export const getFormattedPersonInformationSelector = (state, personId) => {
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
-  const errors = getErrorsSelector(state, personId)
   const legacyDescriptor = person.get('legacy_descriptor')
   const showApproximateAge = !person.get('date_of_birth') && person.get('approximate_age')
   const approximateAge = showApproximateAge ?
@@ -150,16 +149,25 @@ export const getFormattedPersonInformationSelector = (state, personId) => {
     gender: GENDERS[person.get('gender')],
     languages: person.get('languages') && flagPrimaryLanguage((person.toJS().languages) || []).join(', '),
     legacySource: legacyDescriptor && legacySourceFormatter(legacyDescriptor.toJS()),
-    name: Map({
+    name: {
       value: nameFormatter(person.toJS()),
-      errors: errors.get('name'),
-      required: getNamesRequiredSelector(state, personId),
-    }),
+      errors: [],
+      required: false,
+    },
     races: races,
-    roles: {value: person.get('roles', List()), errors: errors.get('roles')},
-    ssn: {value: ssnFormatter(person.get('ssn')), errors: errors.get('ssn')},
+    roles: {value: person.get('roles', List()), errors: []},
+    ssn: {value: ssnFormatter(person.get('ssn')), errors: []},
     alertErrorMessage: getPersonAlertErrorMessageSelector(state, personId),
   })
+}
+
+export const getFormattedPersonWithErrorsSelector = (state, personId) => {
+  const errors = getErrorsSelector(state, personId)
+  return getFormattedPersonInformationSelector(state, personId)
+    .setIn(['ssn', 'errors'], errors.get('ssn'))
+    .setIn(['name', 'errors'], errors.get('name'))
+    .setIn(['name', 'required'], getNamesRequiredSelector(state, personId))
+    .setIn(['roles', 'errors'], errors.get('roles'))
 }
 
 const formattedPhoneNumber = (phoneNumber) => {
