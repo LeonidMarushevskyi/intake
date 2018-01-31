@@ -41,7 +41,7 @@ const SSN_MIDDLE_SECTION_START = 3
 const SSN_MIDDLE_SECTION_END = 5
 
 const calculateAgeFromScreeningDate = (state, personId) => {
-  const screeningStartDate = moment(state.get(['screeningInformationForm', 'started_at']))
+  const screeningStartDate = moment(state.getIn(['screeningInformationForm', 'started_at', 'value']))
   const person = state.get('participants').find((person) => person.get('id') === personId) || Map()
   const dateOfBirth = person.get('date_of_birth') || ''
   const approximateAge = parseInt(person.get('approximate_age'), 10)
@@ -58,11 +58,13 @@ const calculateAgeFromScreeningDate = (state, personId) => {
   return ageFromScreeningDate
 }
 
-const ageFromScreeningDateIsEmpty = (state, personId) => (!calculateAgeFromScreeningDate(state, personId))
-
-const isOver18YearsOfAgeAtScreeningDate = (state, personId) => {
+const ageFromScreeningDateIsEmpty = (state, personId) => {
   const ageFromScreeningDate = calculateAgeFromScreeningDate(state, personId)
 
+  return typeof ageFromScreeningDate !== 'number'
+}
+const isOver18YearsOfAgeAtScreeningDate = (state, personId) => {
+  const ageFromScreeningDate = calculateAgeFromScreeningDate(state, personId)
   const ageLimit = 18
   return ageFromScreeningDate && ageFromScreeningDate >= ageLimit
 }

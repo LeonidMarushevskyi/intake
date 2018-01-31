@@ -817,19 +817,25 @@ describe('peopleFormSelectors', () => {
         expect(getErrorsSelector(state, '1').get('roles').first()).toEqual('Alleged victims must be under 18 years old.')
       })
 
-      it('does not return roles error if role includes Victim and valid date of birth is given', () => {
+      it('does not return roles error if role includes Victim and date of birth is under 18', () => {
         const peopleForm = {1: {date_of_birth: {value: '12/24/2001'}, roles: {value: ['Victim'], errors: []}}}
         const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, peopleForm})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List())
       })
 
-      it('returns roles error if role includes Victim and invalid date of birth is given', () => {
+      it('returns roles error if role includes Victim and date of birth is over 18', () => {
         const peopleForm = {1: {date_of_birth: {value: '12/24/1996'}, roles: {value: ['Victim'], errors: []}}}
         const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, peopleForm})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
       })
 
-      it('does not return roles error if role includes Victim and valid approximate age with units is given', () => {
+      it('does not return roles error if role includes Victim and date of birth is in the future', () => {
+        const peopleForm = {1: {date_of_birth: {value: '2/24/2018'}, roles: {value: ['Victim'], errors: []}}}
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, peopleForm})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List())
+      })
+
+      it('does not return roles error if role includes Victim and approximate age with units is under 18', () => {
         const peopleForm = {
           1: {approximate_age: {value: '17'}, approximate_age_units: {value: 'years'}, roles: {value: ['Victim'], errors: []}},
           2: {approximate_age: {value: '214'}, approximate_age_units: {value: 'months'}, roles: {value: ['Victim'], errors: []}},
@@ -843,7 +849,7 @@ describe('peopleFormSelectors', () => {
         expect(getErrorsSelector(state, '4').get('roles')).toEqualImmutable(List([]))
       })
 
-      it('returns roles error if role includes Victim and invalid approximate age with units is given', () => {
+      it('returns roles error if role includes Victim and approximate age with units is under 18', () => {
         const peopleForm = {
           1: {approximate_age: {value: '18'}, approximate_age_units: {value: 'years'}, roles: {value: ['Victim'], errors: []}},
           2: {approximate_age: {value: '217'}, approximate_age_units: {value: 'months'}, roles: {value: ['Victim'], errors: []}},

@@ -389,44 +389,50 @@ describe('personShowSelectors', () => {
     describe('roles in getErrorsSelector', () => {
       it('returns roles error if role includes Victim and date of birth or approximate age is empty', () => {
         const people = [{id: '1', roles: ['Victim']}]
-        const state = fromJS({participants: people})
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
         expect(getErrorsSelector(state, '1').get('roles').first()).toEqual('Alleged victims must be under 18 years old.')
       })
 
-      it('does not return roles error if role includes Victim and valid date of birth is given', () => {
+      it('does not return roles error if role includes Victim and date of birth is under 18', () => {
         const people = [{id: '1', date_of_birth: '12/24/2001', roles: ['Victim']}]
-        const state = fromJS({participants: people})
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List())
       })
 
-      it('returns roles error if role includes Victim and invalid date of birth is given', () => {
+      it('does not return roles error if role includes Victim and date of birth is in the future', () => {
+        const people = [{id: '1', date_of_birth: '2/24/2018', roles: ['Victim']}]
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
+        expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List())
+      })
+
+      it('returns roles error if role includes Victim and date of birth is over 18', () => {
         const people = [{id: '1', date_of_birth: '12/24/1998', roles: ['Victim']}]
-        const state = fromJS({participants: people})
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
       })
 
-      it('does not return roles error if role includes Victim and valid approximate age with units is given', () => {
+      it('does not return roles error if role includes Victim and approximate age with units is under 18', () => {
         const people = [
           {id: '1', approximate_age: '17', approximate_age_units: 'years', roles: ['Victim']},
           {id: '2', approximate_age: '214', approximate_age_units: 'months', roles: ['Victim']},
           {id: '3', approximate_age: '923', approximate_age_units: 'weeks', roles: ['Victim']},
           {id: '4', approximate_age: '6522', approximate_age_units: 'days', roles: ['Victim']},
         ]
-        const state = fromJS({participants: people})
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List([]))
         expect(getErrorsSelector(state, '2').get('roles')).toEqualImmutable(List([]))
         expect(getErrorsSelector(state, '3').get('roles')).toEqualImmutable(List([]))
         expect(getErrorsSelector(state, '4').get('roles')).toEqualImmutable(List([]))
       })
 
-      it('returns roles error if role includes Victim and invalid approximate age with units is given', () => {
+      it('returns roles error if role includes Victim and approximate age with units is under 18', () => {
         const people = [
           {id: '1', approximate_age: '18', approximate_age_units: 'years', roles: ['Victim']},
           {id: '2', approximate_age: '217', approximate_age_units: 'months', roles: ['Victim']},
           {id: '3', approximate_age: '940', approximate_age_units: 'weeks', roles: ['Victim']},
           {id: '4', approximate_age: '6575', approximate_age_units: 'days', roles: ['Victim']},
         ]
-        const state = fromJS({participants: people})
+        const state = fromJS({screeningInformationForm: {started_at: {value: '2018-01-31T00:24:22.007Z'}}, participants: people})
         expect(getErrorsSelector(state, '1').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
         expect(getErrorsSelector(state, '2').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
         expect(getErrorsSelector(state, '3').get('roles')).toEqualImmutable(List(['Alleged victims must be under 18 years old.']))
