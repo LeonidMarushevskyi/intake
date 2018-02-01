@@ -39,7 +39,7 @@ describe('Store', () => {
       errors: {},
       incidentInformationForm: {},
       investigation: {},
-      involvements: [],
+      involvements: {},
       locations: [],
       narrativeForm: {},
       participants: [],

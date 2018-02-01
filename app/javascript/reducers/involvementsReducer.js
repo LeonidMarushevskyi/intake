@@ -3,14 +3,14 @@ import {
   FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
-import {List, fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
-export default createReducer(List(), {
+export default createReducer(Map(), {
   [CREATE_SCREENING_COMPLETE](state, {error}) {
     if (error) {
       return state
     } else {
-      return List()
+      return Map()
     }
   },
   [FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE](state, {payload: {history_of_involvements}, error}) {
