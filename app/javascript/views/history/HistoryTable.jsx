@@ -10,12 +10,12 @@ export default class HistoryTable extends React.Component {
     const {cases, onCopy, onError, onSuccess, referrals, screenings} = this.props
     return (<div className='card-body no-pad-top'>
       <div className='table-responsive' ref={(history) => { this.historyTable = history }}>
-        <table className='table table-hover'>
+        <table className='table history-table'>
           <colgroup>
-            <col className='col-md-2' />
             <col className='col-md-2'/>
-            <col className='col-md-2' />
-            <col className='col-md-6'/>
+            <col className='col-md-2'/>
+            <col className='col-md-1'/>
+            <col className='col-md-7'/>
           </colgroup>
           <thead>
             <tr>

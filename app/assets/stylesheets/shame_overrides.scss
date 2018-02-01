@@ -1,14 +1,53 @@
-$react-wood-duck-warning-red: #ad2213;
-
-.card .card-header {
-  padding: 15px;
-  button.btn-warning { background-color: $react-wood-duck-warning-red; }
-  button.btn.pull-right { margin-left: 15px; }
-}
+@import 'constants';
 
 .anchor {
   display: block;
   height: 13rem;
   margin-top: -13rem;
   visibility: hidden;
+}
+
+// Navigation //
+
+.inactive-navlink {
+  display: none;
+}
+
+// History Styling //
+
+.history-table {
+  background-color: transparent;
+
+  .assignee span,
+  .referral,
+  .reporter span,
+  .semibold,
+  .worker span {
+    font-weight: $semibold-weight;
+  }
+
+  .referral-id {
+    color: $dark-grey;
+  }
+
+  thead {
+    .allegations,
+    .disposition,
+    .perpetrator,
+    .victim {
+      font-weight: $semibold-weight;
+  	}
+  }
+
+  .people-and-roles {
+    background-color: transparent;
+
+    th {
+      padding-top: 0;
+    }
+
+    tr {
+      background-color: transparent;
+    }
+  }
 }
