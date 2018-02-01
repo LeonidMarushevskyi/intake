@@ -35,6 +35,12 @@ feature 'Submit Screening' do
         )
       end
 
+      before do
+        stub_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
+        ).and_return(json_body(existing_screening.to_json, status: 200))
+      end
+
       scenario 'submit button is disabled until all cards are saved' do
         visit edit_screening_path(existing_screening.id)
         expect(page).to have_button('Submit', disabled: true)
@@ -132,6 +138,10 @@ feature 'Submit Screening' do
       end
 
       scenario 'the submit button is disabled until the person is valid' do
+        stub_request(
+          :put, intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
+        ).and_return(json_body(person.to_json, status: 200))
+
         visit edit_screening_path(existing_screening.id)
         save_all_cards
         within('.card', text: person_name) { click_button 'Save' }
