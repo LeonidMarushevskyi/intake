@@ -268,38 +268,9 @@ feature 'Edit Screening' do
       end
     end
 
-    scenario 'edit an existing screening' do
-      stub_request(
-        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-      ).and_return(json_body(existing_screening.to_json, status: 200))
-      stub_county_agencies('c42')
-      stub_empty_relationships_for_screening(existing_screening)
-      stub_empty_history_for_screening(existing_screening)
+    scenario 'edit screening route returns a 404', browser: :poltergeist do
       visit edit_screening_path(id: existing_screening.id)
-
-      within '#snapshot-card' do
-        expect(page).to have_content(
-          'The Child Welfare History Snapshot allows you to search CWS/CMS for people'
-        )
-      end
-      within '.page-header-mast' do
-        expect(page).to have_content('Little Shop Of Horrors')
-      end
-      expect(page).to have_css('.card', text: 'Search')
-      expect(page).to have_css('.card', text: 'History')
-
-      expect(page).to_not have_css('.card', text: 'Screening Information')
-      expect(page).to_not have_css('.card', text: 'Narrative')
-      expect(page).to_not have_css('.card', text: 'Incident Information')
-      expect(page).to_not have_css('.card', text: 'Allegations')
-      expect(page).to_not have_css('.card', text: 'Relationships')
-      expect(page).to_not have_css('.card', text: 'Worker Safety')
-      expect(page).to_not have_css('.card', text: 'Cross Report')
-      expect(page).to_not have_css('.card', text: 'Decision')
-
-      expect(page).to have_link('Start Over')
-      click_link 'Start Over'
-      expect(page.current_url).to have_content(root_path)
+      expect(page.status_code).not_to eq 200
     end
   end
 end

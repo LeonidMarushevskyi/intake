@@ -13,13 +13,7 @@ Rails.application.routes.draw do
   get '/403', to: 'errors#forbidden', via: :all
 
   resources :screenings,
-    only: %i[edit],
-    to: 'home#index',
-    constraints: Routes::InactiveReleaseOneConstraint do
-  end
-
-  resources :screenings,
-    only: %i[show],
+    only: %i[edit show],
     to: 'home#index',
     constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
