@@ -27,13 +27,13 @@ feature 'Cross Reports Validations' do
       end
 
       it 'shows reported_on validation on blur' do
-        within '#cross-report-card' do
-          expect(page).not_to have_content('Please enter a cross-report date.')
-          fill_in_datepicker 'Cross Reported on Date', with: '', blur: false
-          expect(page).not_to have_content('Please enter a cross-report date.')
-          blur_field
-          expect(page).to have_content('Please enter a cross-report date.')
-        end
+        validate_message_as_user_interacts_with_date_field(
+          card_name: 'cross-report',
+          field: 'Cross Reported on Date',
+          error_message: 'Please enter a cross-report date.',
+          invalid_value: '',
+          valid_value: 20.years.ago
+        )
       end
     end
 
