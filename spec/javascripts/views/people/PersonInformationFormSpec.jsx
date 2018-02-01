@@ -10,6 +10,7 @@ describe('PersonInformationForm', () => {
     firstName = {},
     lastName = {},
     ssn = {},
+    roles = {},
     ...args
   }) {
     const props = {
@@ -19,6 +20,7 @@ describe('PersonInformationForm', () => {
       firstName,
       lastName,
       ssn,
+      roles,
       ...args,
     }
     return shallow(<PersonInformationForm {...props}/>)
@@ -35,7 +37,7 @@ describe('PersonInformationForm', () => {
   it('renders the role field as a multiselect', () => {
     const component = renderPersonForm({
       personId: 'existing-person-id',
-      roles: ['A', 'B'],
+      roles: {value: ['A', 'B']},
       roleOptions: [
         {label: 'label 1', value: 'label_1', disabled: true},
         {label: 'label 2', value: 'label_2'},
@@ -59,12 +61,19 @@ describe('PersonInformationForm', () => {
 
   it('changing roles fires onChange', () => {
     const onChange = jasmine.createSpy('onChange')
-    renderPersonForm({onChange, roles: []})
+    renderPersonForm({onChange, roles: {}})
       .find('Select').simulate('change', [
         {label: 'label 1', value: 'label_1'},
         {label: 'label 2', value: 'label_2'},
       ])
     expect(onChange).toHaveBeenCalledWith('roles', ['label_1', 'label_2'])
+  })
+
+  it('renders errors for selectfield of roles', () => {
+    const component = renderPersonForm({roles: {value: ['victim'], errors: ['Alleged victims must be under 18 years old.']}})
+    const errors = component.find('ErrorMessages')
+    expect(errors.exists()).toEqual(true)
+    expect(errors.props().errors).toEqual(['Alleged victims must be under 18 years old.'])
   })
 
   it('renders the first name field', () => {
