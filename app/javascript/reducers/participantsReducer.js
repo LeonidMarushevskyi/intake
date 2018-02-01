@@ -6,6 +6,7 @@ import {
   CREATE_PERSON_COMPLETE,
   DELETE_PERSON_COMPLETE,
   UPDATE_PERSON_COMPLETE,
+  CLEAR_PEOPLE,
 } from 'actions/personCardActions'
 import {SAVE_SCREENING_COMPLETE} from 'actions/screeningActions'
 import {createReducer} from 'utils/createReducer'
@@ -46,5 +47,8 @@ export default createReducer(List(), {
       const personIndex = state.findIndex((x) => x.get('id') === updatedPerson.get('id'))
       return state.setIn([personIndex], updatedPerson)
     }
+  },
+  [CLEAR_PEOPLE]() {
+    return List()
   },
 })

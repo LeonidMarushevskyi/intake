@@ -6,6 +6,7 @@ export const UPDATE_PERSON = 'UPDATE_PERSON'
 export const UPDATE_PERSON_COMPLETE = 'UPDATE_PERSON_COMPLETE'
 export const CREATE_SNAPSHOT_PERSON = 'CREATE_SNAPSHOT_PERSON'
 export const DELETE_SNAPSHOT_PERSON = 'DELETE_SNAPSHOT_PERSON'
+export const CLEAR_PEOPLE = 'CLEAR_PEOPLE'
 
 export function updatePersonSuccess(person) {
   return {type: UPDATE_PERSON_COMPLETE, payload: {person}}
@@ -39,4 +40,7 @@ export function createSnapshotPerson(person) {
 }
 export function deleteSnapshotPerson(id) {
   return {type: DELETE_SNAPSHOT_PERSON, payload: {id}}
+}
+export function clearPeople() {
+  return {type: CLEAR_PEOPLE}
 }

@@ -1,6 +1,7 @@
 import {
   CREATE_SCREENING_COMPLETE,
   FETCH_HISTORY_OF_INVOLVEMENTS_COMPLETE,
+  CLEAR_HISTORY_OF_INVOLVEMENTS,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
@@ -19,5 +20,8 @@ export default createReducer(Map(), {
     } else {
       return fromJS(history_of_involvements)
     }
+  },
+  [CLEAR_HISTORY_OF_INVOLVEMENTS]() {
+    return Map()
   },
 })

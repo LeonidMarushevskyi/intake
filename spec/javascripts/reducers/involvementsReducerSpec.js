@@ -6,6 +6,7 @@ import {
   createScreeningSuccess,
   createScreeningFailure,
 } from 'actions/screeningActions'
+import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
 import {fromJS, Map} from 'immutable'
 
 describe('involvementsReducer', () => {
@@ -34,6 +35,14 @@ describe('involvementsReducer', () => {
       const action = createScreeningFailure({})
       const oldState = fromJS({cases: [], screenings: [], referrals: []})
       expect(involvementsReducer(oldState, action)).toEqual(oldState)
+    })
+  })
+
+  describe('on CLEAR_HISTORY_OF_INVOLVEMENTS', () => {
+    it('clears all the history from the involvements reducer', () => {
+      const oldState = fromJS({cases: [], referrals: [], screenings: []})
+      const action = clearHistoryOfInvolvement()
+      expect(involvementsReducer(oldState, action)).toEqual(Map())
     })
   })
 })
