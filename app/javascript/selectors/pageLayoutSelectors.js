@@ -15,6 +15,14 @@ const getDashboardDetailSelector = () => ({
   pageHeaderTitle: 'Dashboard',
 })
 
+const getSnapshotDetailSelector = () => ({
+  pageHeaderButtonDisabled: false,
+  pageHeaderButtonText: 'Start Over',
+  pageHeaderHasButton: true,
+  pageHeaderLocation: 'snapshot',
+  pageHeaderTitle: 'Snapshot',
+})
+
 const getScreeningDetailSelector = (state) => {
   const buttonDisabled = (
     !getAllCardsAreSavedValueSelector(state) ||
@@ -53,6 +61,8 @@ export const getPageHeaderDetailSelector = (path, state) => {
     pageHeaderDetails = getContactDetailSelector(state)
   } else if (path.includes('investigations')) {
     pageHeaderDetails = getInvestigationDetailSelector(state)
+  } else if (path.includes('snapshot')) {
+    pageHeaderDetails = getSnapshotDetailSelector()
   }
   return pageHeaderDetails
 }

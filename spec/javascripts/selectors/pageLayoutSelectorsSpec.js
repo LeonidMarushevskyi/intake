@@ -27,6 +27,16 @@ describe('getPageHeaderDetailSelector', () => {
     })
   })
 
+  it('returns page header details for the snapshot page', () => {
+    expect(getPageHeaderDetailSelector('/snapshot', {})).toEqual({
+      pageHeaderButtonDisabled: false,
+      pageHeaderButtonText: 'Start Over',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'snapshot',
+      pageHeaderTitle: 'Snapshot',
+    })
+  })
+
   it('returns page header details for a screening page', () => {
     spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     spyOn(screeningPageSelectors, 'getAllCardsAreSavedValueSelector').and.returnValue(true)

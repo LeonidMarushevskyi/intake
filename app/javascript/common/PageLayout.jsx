@@ -9,6 +9,8 @@ import {
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
 import {createScreening, submitScreening} from 'actions/screeningActions'
 import {createSnapshot} from 'actions/snapshotActions'
+import {clearPeople} from 'actions/personCardActions'
+import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 import {PageHeader} from 'react-wood-duck'
@@ -77,6 +79,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     createScreening,
     createSnapshot,
     submitScreening,
+    clearPeople,
+    clearHistoryOfInvolvement,
   }, dispatch),
 })
 
@@ -87,6 +91,12 @@ const mergeProps = (stateProps, {actions}, ownProps) => {
     pageHeaderButtonOnClick = isFeatureActive('release_two') ? actions.createSnapshot : actions.createScreening
   } else if (pageHeaderLocation === 'screening') {
     pageHeaderButtonOnClick = () => actions.submitScreening(ownProps.params.id)
+  } else if (pageHeaderLocation === 'snapshot') {
+    pageHeaderButtonOnClick = () => {
+      actions.createSnapshot()
+      actions.clearPeople()
+      actions.clearHistoryOfInvolvement()
+    }
   }
   const pageHeaderDetails = {...stateProps.pageHeaderDetails, pageHeaderButtonOnClick}
   const children = ownProps.children
