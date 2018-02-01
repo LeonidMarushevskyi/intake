@@ -28,7 +28,9 @@ class PersonSearchQueryBuilder
   def formatted_search_term
     @search_term
       .downcase
-      .gsub(%r{[-/]*(\d+)[-/]*}, '\1')
+      .gsub(%r((\d{1,2})[-/](\d{1,2})[-/](\d{4})), '\1\2\3')
+      .gsub(%r((\d{1,2})[-/](\d{4})), '\1\2')
+      .gsub(%r((\d{1,2})[-/](\d{1,2})), '\1\2')
   end
 
   def query
