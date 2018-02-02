@@ -65,7 +65,7 @@ feature 'home page' do
       expect(
         a_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       ).to_not have_been_made
-      expect(page).to have_button 'Start Screening'
+      expect(page).to have_button 'Start Snapshot'
       expect(page).not_to have_css 'table'
     end
   end
