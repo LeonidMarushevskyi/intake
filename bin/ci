@@ -1,2 +1,5 @@
 #!/bin/bash
+
+bundle exec ruby -e "require 'headless'; Headless.new(display: 100, dimensions: '2500x2500x16', destroy_at_exit: false).start"
 RAILS_ENV=test bin/webpack && bundle exec parallel_rspec spec
+bundle exec ruby -e "require 'headless'; Headless.new(display: 100, reuse: true).destroy"

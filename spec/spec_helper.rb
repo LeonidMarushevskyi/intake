@@ -30,21 +30,17 @@ if ENV['GENERATE_TEST_REPORTS'] == 'yes'
 end
 
 RSpec.configure do |config|
-  config.before :suite do
+  config.around(:each, type: :feature) do |example|
     if ENV['USE_XVFB'] == 'true'
       require 'headless'
-      @headless_manager = Headless.new(reuse: false)
-      @headless_manager.start
+      Headless.new(display: 100, reuse: true, destroy_at_exit: false).start
     end
+    example.run
   end
 
   config.before :each do
     # we try stub_system_codes because it is only loaded in feature tests
     try(:stub_system_codes)
-  end
-
-  config.after :suite do
-    @headless_manager.destroy if @headless_manager && ENV['USE_XVFB'] == 'true'
   end
 
   # rspec-expectations config goes here. You can use an alternate
