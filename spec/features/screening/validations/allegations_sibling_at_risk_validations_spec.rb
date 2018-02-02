@@ -54,6 +54,9 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User sees error when adding at risk allegation' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(victim.id)))
+        .and_return(json_body(victim.to_json, status: 200))
+
       within '.card.edit', text: 'Allegations' do
         fill_in_react_select "allegations_#{victim.id}_#{perpetrator.id}",
           with: 'At risk, sibling abused'
@@ -308,6 +311,13 @@ feature 'Allegations Sibling At Risk Validations' do
     end
 
     scenario 'User can fix error' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(perpetrator.id)))
+        .and_return(json_body(perpetrator.to_json, status: 200))
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(victim2.id)))
+        .and_return(json_body(victim2.to_json, status: 200))
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(victim.id)))
+        .and_return(json_body(victim.to_json, status: 200))
+
       new_allegation = FactoryGirl.create(
         :allegation,
         victim_id: victim2.id,

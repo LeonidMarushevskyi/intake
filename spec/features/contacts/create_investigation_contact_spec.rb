@@ -88,6 +88,15 @@ feature 'Create Investigation Contact' do
   end
 
   scenario 'saving with communication method not set to in-person save location as office' do
+    contact_id = 'new_contact_id'
+    show_path = ExternalRoutes.ferb_api_investigations_contact_path(investigation_id, contact_id)
+    create_path = ExternalRoutes.ferb_api_investigations_contacts_path(investigation_id)
+    persisted_contact = { legacy_descriptor: { legacy_id: contact_id } }
+    stub_request(:post, ferb_api_url(create_path)).and_return(
+      json_body(persisted_contact.to_json, status: 201)
+    )
+    stub_request(:get, ferb_api_url(show_path)).and_return(json_body({}.to_json, status: 200))
+
     fill_in_datepicker 'Date/Time', with: '08/17/2016 3:00 AM'
     select 'Contact status 1', from: 'Status'
     select 'Communication method 2', from: 'Communication Method'

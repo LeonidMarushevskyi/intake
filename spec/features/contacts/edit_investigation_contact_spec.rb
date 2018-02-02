@@ -50,6 +50,7 @@ feature 'Edit Investigation Contact' do
     stub_request(:get, investigation_show_url)
       .and_return(json_body(investigation.to_json, status: 200))
     stub_request(:get, contact_show_url).and_return(json_body(contact.to_json, status: 200))
+    stub_request(:put, contact_show_url).and_return(json_body({}.to_json, status: 200))
     visit edit_investigation_contact_path(investigation_id: investigation_id, id: contact_id)
   end
 

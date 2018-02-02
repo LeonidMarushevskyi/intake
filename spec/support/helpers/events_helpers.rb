@@ -6,7 +6,7 @@ module EventsHelpers
   end
 
   def blur_field
-    page.document.find('body').click
+    page.document.find('.page-title').click
   end
 end
 

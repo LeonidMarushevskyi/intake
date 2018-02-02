@@ -104,6 +104,10 @@ feature 'login' do
           let(:base_path) { 'intake' }
 
           scenario 'when user logs out' do
+            pending(<<~MESSAGE)
+              base path cannot be configured during the test run.
+              This exposes a problem with how we are handling base path in our environment setup.
+            MESSAGE
             visit root_path(accessCode: 'tempToken123')
             # regular click_link won't keep the pop-up menu open for some reason
             execute_script('$(".fa.fa-user").click()')
@@ -141,6 +145,7 @@ feature 'login' do
     expect(a_request(:get, auth_validation_url)).to have_been_made
     WebMock.reset!
 
+    stub_system_codes
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(screening_results, status: 200))
     visit root_path
@@ -293,6 +298,7 @@ feature 'login perry v1' do
     expect(a_request(:get, auth_validation_url)).to have_been_made
     WebMock.reset!
 
+    stub_system_codes
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(screening_results, status: 200))
     visit root_path

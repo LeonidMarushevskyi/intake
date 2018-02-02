@@ -57,6 +57,8 @@ feature 'Edit Person' do
 
   context 'editing and saving basic person information' do
     scenario 'saves the person information' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .and_return(json_body(marge.to_json, status: 201))
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(marge.id) do
         within '.card-header' do
@@ -101,6 +103,9 @@ feature 'Edit Person' do
 
   context 'editing and saving person phone numbers' do
     scenario 'saves the person information' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .and_return(json_body({}.to_json, status: 201))
+
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(marge.id) do
         within '.card-body' do
@@ -141,6 +146,9 @@ feature 'Edit Person' do
 
   context 'editing and saving addresses' do
     scenario 'saves the person information' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(homer.id)))
+        .and_return(json_body({}.to_json, status: 201))
+
       address = homer.addresses.first
       visit edit_screening_path(id: screening.id)
       within edit_participant_card_selector(homer.id) do
@@ -194,6 +202,9 @@ feature 'Edit Person' do
 
   context 'editing and saving person demographics' do
     scenario 'saves the person information' do
+      stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+        .and_return(json_body({}.to_json, status: 201))
+
       visit edit_screening_path(id: screening.id)
       dob = Time.parse(marge.date_of_birth).strftime('%m/%d/%Y')
       within edit_participant_card_selector(marge.id) do
@@ -223,6 +234,9 @@ feature 'Edit Person' do
   end
 
   scenario 'editing & saving a person for a screening saves only the relevant person ids' do
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .and_return(json_body({}.to_json, status: 201))
+
     visit edit_screening_path(id: screening.id)
 
     within edit_participant_card_selector(marge.id) do
@@ -543,6 +557,9 @@ feature 'Edit Person' do
   end
 
   scenario 'setting an approximate age' do
+    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
+      .and_return(json_body(marge.to_json, status: 201))
+
     visit edit_screening_path(id: screening.id)
     within edit_participant_card_selector(marge.id) do
       expect(page).to have_field('Approximate Age', disabled: true)
