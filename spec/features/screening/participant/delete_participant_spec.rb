@@ -57,27 +57,4 @@ feature 'Delete Participant' do
     ).to have_been_made
     expect(page).to_not have_css(show_participant_card_selector(participant.id))
   end
-
-  context 'when release two is enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_two) do
-        example.run
-      end
-    end
-
-    scenario 'removing a participant from an existing screening' do
-      visit edit_screening_path(id: screening.id)
-      within show_participant_card_selector(participant.id) do
-        within '.card-header' do
-          click_button 'Delete person'
-        end
-      end
-      expect(
-        a_request(
-          :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
-        )
-      ).to have_been_made
-      expect(page).to_not have_css(edit_participant_card_selector(participant.id))
-    end
-  end
 end

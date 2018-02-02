@@ -193,23 +193,6 @@ feature 'Create participant' do
     expect(accept_alert).to eq('You are not authorized to add this person.')
   end
 
-  context 'release_two enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_two) do
-        example.run
-      end
-    end
-
-    it 'hides the create new person button' do
-      stub_empty_history_for_screening(existing_screening)
-      visit edit_screening_path(id: existing_screening.id)
-      within '#search-card', text: 'Search' do
-        fill_in 'Search for clients', with: 'Marge'
-        expect(page).to_not have_button('Create a new person')
-      end
-    end
-  end
-
   scenario 'adding a participant from search on show screening page' do
     visit screening_path(id: existing_screening.id)
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
@@ -228,83 +211,6 @@ feature 'Create participant' do
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made
-
-    within edit_participant_card_selector(created_participant_homer.id) do
-      within '.card-header' do
-        expect(page).to_not have_content('Sensitive')
-        expect(page).to have_content 'Homer Simpson'
-        expect(page).to have_button 'Delete person'
-      end
-
-      within '.card-body' do
-        expect(page).to have_field('First Name', with: homer.first_name)
-        expect(page).to have_field('Last Name', with: homer.last_name)
-        expect(page).to have_field('Phone Number', with: '(971)287-6774')
-        expect(page).to have_select('Phone Number Type', selected: homer.phone_numbers.first.type)
-        expect(page).to have_field('Gender', with: homer.gender)
-        expect(page).to have_react_select_field(
-          'Language(s) (Primary First)', with: homer.languages
-        )
-        expect(page).to have_field('Date of birth', with: homer_date_of_birth.strftime('%m/%d/%Y'))
-        expect(page).to have_field('Social security number', with: homer.ssn)
-        expect(page).to have_field('Address', with: homer.addresses.first.street_address)
-        expect(page).to have_field('City', with: homer.addresses.first.city)
-        expect(page).to have_field('State', with: homer.addresses.first.state)
-        expect(page).to have_field('Zip', with: homer.addresses.first.zip)
-        expect(page).to have_select('Address Type', selected: homer.addresses.first.type)
-        within 'fieldset', text: 'Race' do
-          expect(page).to have_checked_field('Asian')
-          expect(page).to have_select(
-            "participant-#{created_participant_homer.id}-Asian-race-detail",
-            selected: 'Chinese'
-          )
-          expect(page).to have_checked_field('White')
-          expect(page).to have_select(
-            "participant-#{created_participant_homer.id}-White-race-detail",
-            selected: 'Romanian'
-          )
-          expect(page).to have_checked_field('American Indian or Alaska Native')
-        end
-        within 'fieldset', text: 'Hispanic/Latino Origin' do
-          expect(page).to have_checked_field('Yes')
-          expect(page).to have_select(
-            "participant-#{created_participant_homer.id}-ethnicity-detail",
-            selected: 'Hispanic'
-          )
-        end
-        expect(page).to have_button 'Cancel'
-        expect(page).to have_button 'Save'
-      end
-    end
-  end
-
-  scenario 'adding a participant from search on edit screening page' do
-    stub_empty_history_for_screening(existing_screening)
-    visit edit_screening_path(id: existing_screening.id)
-    homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
-    participant_homer = FactoryGirl.build(:participant, homer_attributes)
-    created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-    stub_request(:post,
-      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
-      .and_return(json_body(created_participant_homer.to_json, status: 201))
-
-    fill_in 'Title/Name of Screening', with: 'The Rocky Horror Picture Show'
-
-    within '#search-card', text: 'Search' do
-      fill_in 'Search for any person', with: 'Homer'
-      find('strong', text: 'Homer Simpson').click
-    end
-    expect(a_request(:post,
-      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
-      .to have_been_made
-
-    # adding participant doesnt change screening modifications
-    expect(page).to have_field('Title/Name of Screening', with: 'The Rocky Horror Picture Show')
-
-    # The new participant was added to the top of the list of participants
-    created_participant_selector = edit_participant_card_selector(created_participant_homer.id)
-    existing_participant_selector = edit_participant_card_selector(existing_participant.id)
-    expect(find("#{created_participant_selector}+div")).to match_css(existing_participant_selector)
 
     within edit_participant_card_selector(created_participant_homer.id) do
       within '.card-header' do
@@ -481,59 +387,6 @@ feature 'Create participant' do
           end
           expect(page)
             .to have_selector(edit_participant_card_selector(created_participant_homer.id))
-        end
-      end
-    end
-  end
-
-  context 'when release two is enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_two) do
-        example.run
-      end
-    end
-
-    scenario 'creating a participant from search adds participant in show mode' do
-      stub_empty_history_for_screening(existing_screening)
-      visit edit_screening_path(id: existing_screening.id)
-      homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
-      participant_homer = FactoryGirl.build(:participant, homer_attributes)
-      created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
-      stub_request(:post,
-        intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
-        .and_return(json_body(created_participant_homer.to_json, status: 201))
-
-      within '#search-card', text: 'Search' do
-        fill_in 'Search for clients', with: 'Ho'
-        find('strong', text: 'Homer Simpson').click
-      end
-      expect(
-        a_request(:post,
-          intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
-      ).to have_been_made
-
-      within show_participant_card_selector(created_participant_homer.id) do
-        within '.card-header' do
-          expect(page).to_not have_content('Sensitive')
-          expect(page).to have_content('Homer Simpson')
-          expect(page).to_not have_link 'Edit person'
-          expect(page).to have_button 'Delete person'
-        end
-
-        within '.card-body' do
-          expect(page).to have_content(homer.first_name)
-          expect(page).to have_content(homer.last_name)
-          expect(page).to have_content('(971)287-6774')
-          expect(page).to have_content(homer.phone_numbers.first.type)
-          expect(page).to have_content(homer.gender.capitalize)
-          expect(page).to have_content('French (Primary), Italian')
-          expect(page).to have_content(Date.parse(homer.date_of_birth).strftime('%m/%d/%Y'))
-          expect(page).to have_content(homer.ssn)
-          expect(page).to have_content(homer.addresses.first.street_address)
-          expect(page).to have_content(homer.addresses.first.city)
-          expect(page).to have_content('New York')
-          expect(page).to have_content(homer.addresses.first.zip)
-          expect(page).to have_content(homer.addresses.first.type)
         end
       end
     end
