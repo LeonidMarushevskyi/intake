@@ -189,12 +189,14 @@ feature 'Create participant' do
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body('', status: 403))
 
-    within '#search-card', text: 'Search' do
-      fill_in 'Search for any person', with: 'Marge'
-      click_button 'Create a new person'
+    alert_text = accept_alert do
+      within '#search-card', text: 'Search' do
+        fill_in 'Search for any person', with: 'Marge'
+        click_button 'Create a new person'
+      end
     end
 
-    expect(accept_alert).to eq('You are not authorized to add this person.')
+    expect(alert_text).to eq('You are not authorized to add this person.')
   end
 
   scenario 'adding a participant from search on show screening page' do
@@ -390,7 +392,7 @@ feature 'Create participant' do
             find('strong', text: 'Homer Simpson').click
           end
           expect(page)
-            .to have_selector(edit_participant_card_selector(created_participant_homer.id))
+            .to have_css(edit_participant_card_selector(created_participant_homer.id))
         end
       end
     end

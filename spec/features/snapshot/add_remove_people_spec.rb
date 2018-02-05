@@ -105,6 +105,8 @@ feature 'Adding and removing a person from a snapshot' do
       end
     end
 
+    expect(page).not_to have_css(show_participant_card_selector(person.id))
+
     expect(
       a_request(
         :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))

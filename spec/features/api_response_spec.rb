@@ -46,6 +46,7 @@ feature 'API call' do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body('I failed', status: 500))
     stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
     visit root_path
     expect(page).to have_content(
       /Something went wrong, sorry! Please try your last action again. \(Ref #:.*\)/
