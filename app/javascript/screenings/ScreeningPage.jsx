@@ -69,8 +69,8 @@ export class ScreeningPage extends React.Component {
               show={<ScreeningInformationShowContainer />}
             />
             {editable && <PersonSearchFormContainer />}
-            {this.props.participants.map((participant) =>
-              <PersonCardView key={participant.get('id')} personId={participant.get('id')} />
+            {this.props.participants.map(({id}) =>
+              <PersonCardView key={id} personId={id} />
             )}
             <CardContainer
               title='Narrative'
@@ -132,7 +132,7 @@ ScreeningPage.propTypes = {
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
   params: PropTypes.object.isRequired,
-  participants: PropTypes.object.isRequired,
+  participants: PropTypes.array.isRequired,
   reference: PropTypes.string,
   referralId: PropTypes.string,
   submitReferralErrors: PropTypes.array,
@@ -147,7 +147,7 @@ export function mapStateToProps(state, _ownProps) {
     editable: !state.getIn(['screening', 'referral_id']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     mode: state.getIn(['screeningPage', 'mode']),
-    participants: state.get('participants'),
+    participants: state.get('participants').toJS(),
     reference: state.getIn(['screening', 'reference']),
     referralId: state.getIn(['screening', 'referral_id']),
     hasApiValidationErrors: Boolean(getApiValidationErrorsSelector(state).size),

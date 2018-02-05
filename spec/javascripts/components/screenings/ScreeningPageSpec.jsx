@@ -1,5 +1,4 @@
 import * as IntakeConfig from 'common/config'
-import {List, fromJS} from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
@@ -20,7 +19,7 @@ describe('ScreeningPage', () => {
     loaded = true,
     mode,
     params = {},
-    participants = List(),
+    participants = [],
     reference,
     referralId,
     hasApiValidationErrors = false,
@@ -47,7 +46,7 @@ describe('ScreeningPage', () => {
       fetchRelationships = () => null,
       fetchHistoryOfInvolvements = () => null,
     },
-    participants = {},
+    participants = [],
     screening = {},
     params = {},
     editable,
@@ -182,7 +181,7 @@ describe('ScreeningPage', () => {
       beforeEach(() => {
         component = renderScreeningPage({
           mode: 'show',
-          participants: fromJS([{id: 'id-1'}, {id: 'id-2'}]),
+          participants: [{id: 'id-1'}, {id: 'id-2'}],
           params: {id: '1'},
         })
       })
