@@ -260,16 +260,9 @@ describe('ScreeningPage', () => {
     })
   })
 
-  describe('in snapshot', () => {
-    it('does not render a sidebar', () => {
-      isFeatureActiveSpy.and.returnValue(true)
-      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(false)
-    })
-  })
-
   describe('in hotline', () => {
     it('renders a sidebar', () => {
-      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(true)
+      expect(renderScreeningPage({loaded: true}).find('ScreeningSideBar').exists()).toBe(true)
     })
   })
 })
