@@ -16,9 +16,12 @@ Capybara.register_driver :accessible_selenium do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(
     marionette: ENV['MARIONETTE'] == 'true'
   )
+  firefox_profile = Selenium::WebDriver::Firefox::Profile.new
+  firefox_profile['focusmanager.testmode'] = true
   driver = Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
+    profile: firefox_profile,
     desired_capabilities: capabilities
   )
   adaptor = Capybara::Accessible::SeleniumDriverAdapter.new
