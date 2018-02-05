@@ -130,7 +130,6 @@ export class ScreeningPage extends React.Component {
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  disableSubmitButton: PropTypes.bool,
   editable: PropTypes.bool,
   hasAddSensitivePerson: PropTypes.bool,
   hasApiValidationErrors: PropTypes.bool,
