@@ -16,7 +16,7 @@ namespace :spec do # rubocop:disable BlockLength
     'rm -rf public/packs-test && bin/webpack &&' if run_webpack
   end
 
-  def run_in_intake_container(command)
+  def run_in_intake_container(command, rm: true)
     # for some reason ca_intake requires redis for feature tests
     system 'docker-compose up -d redis'
     # docker-compose supports ENV vars for run, but not exec (yet?)
@@ -27,9 +27,17 @@ namespace :spec do # rubocop:disable BlockLength
       -e AUTHENTICATION=false
       -e RAILS_ENV=test
       --no-deps
-      --rm ca_intake
+      #{rm ? '--rm' : ''}
+      ca_intake
       #{command}
     END
+  end
+
+  def headless(&block)
+    headless_start = run_in_intake_container('bundle exec ruby bin/headless-start', rm: false)
+    test_result = yield(block) if headless_start
+    headless_destroy = run_in_intake_container('bundle exec ruby bin/headless-destroy')
+    headless_start && test_result && headless_destroy
   end
 
   desc 'Run specs in ca_intake container'
@@ -44,8 +52,10 @@ namespace :spec do # rubocop:disable BlockLength
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do
-      cmd = 'bundle exec parallel_rspec --runtime-log parallel_runtime_rspec.log'
-      system "#{webpack?} #{run_in_intake_container(cmd)} #{file_list}"
+      headless do
+        cmd = 'bundle exec parallel_rspec --runtime-log parallel_runtime_rspec.log'
+        system "#{webpack?} #{run_in_intake_container(cmd, rm: false)} #{file_list}"
+      end
     end
 
     desc 'Run ALL THE SPECS, LINT, & KARMA!!!'

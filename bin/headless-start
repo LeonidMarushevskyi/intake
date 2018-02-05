@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'headless'
+Headless.new(display: 100, dimensions: '2500x2500x16', destroy_at_exit: false).start

@@ -1,2 +1,4 @@
 #!/bin/bash
+bundle exec ruby bin/headless-start
 RAILS_ENV=test bin/webpack && bundle exec parallel_rspec --runtime-log parallel_runtime_rspec.log spec
+bundle exec ruby bin/headless-destroy
