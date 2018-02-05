@@ -16,14 +16,16 @@ describe('PageLayout', () => {
   }
 
   it('fetches the system codes when the component mounts', () => {
-    const fetchSystemCodesActionSpy = jasmine.createSpy('fetchSystemCodesAction')
+    const fetchSystemCodesAction = jasmine.createSpy('fetchSystemCodesAction')
+    const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
     mount(
       <PageLayout
-        actions={{fetchSystemCodesAction: fetchSystemCodesActionSpy}}
+        actions={{fetchSystemCodesAction, checkStaffPermission}}
         pageHeaderDetails={{pageHeaderTitle: ''}}
       ><div/></PageLayout>
     )
-    expect(fetchSystemCodesActionSpy).toHaveBeenCalled()
+    expect(fetchSystemCodesAction).toHaveBeenCalled()
+    expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
   })
 
   describe('PageHeader', () => {

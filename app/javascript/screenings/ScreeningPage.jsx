@@ -1,7 +1,6 @@
 import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
 import {setPageMode} from 'actions/screeningPageActions'
-import {checkStaffPermission} from 'actions/staffActions'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -44,7 +43,6 @@ export class ScreeningPage extends React.Component {
         fetchScreening,
         fetchRelationships,
         fetchHistoryOfInvolvements,
-        checkStaffPermission,
       },
       params: {mode, id},
     } = this.props
@@ -52,7 +50,6 @@ export class ScreeningPage extends React.Component {
     fetchScreening(id)
     fetchRelationships(id)
     fetchHistoryOfInvolvements(id)
-    checkStaffPermission('add_sensitive_people')
   }
 
   render() {
@@ -131,7 +128,6 @@ export class ScreeningPage extends React.Component {
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
   editable: PropTypes.bool,
-  hasAddSensitivePerson: PropTypes.bool,
   hasApiValidationErrors: PropTypes.bool,
   loaded: PropTypes.bool,
   mode: PropTypes.string.isRequired,
@@ -144,13 +140,11 @@ ScreeningPage.propTypes = {
 
 ScreeningPage.defaultProps = {
   mode: 'show',
-  hasAddSensitivePerson: false,
 }
 
 export function mapStateToProps(state, _ownProps) {
   return {
     editable: !state.getIn(['screening', 'referral_id']),
-    hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     mode: state.getIn(['screeningPage', 'mode']),
     participants: state.get('participants'),
@@ -162,7 +156,7 @@ export function mapStateToProps(state, _ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = Object.assign({}, personCardActions, screeningActions, {checkStaffPermission, setPageMode})
+  const actions = {...personCardActions, ...screeningActions, setPageMode}
   return {
     actions: bindActionCreators(actions, dispatch),
   }

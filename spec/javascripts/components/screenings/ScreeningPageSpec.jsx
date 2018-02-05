@@ -46,7 +46,6 @@ describe('ScreeningPage', () => {
       fetchScreening = () => null,
       fetchRelationships = () => null,
       fetchHistoryOfInvolvements = () => null,
-      checkStaffPermission = () => null,
     },
     participants = {},
     screening = {},
@@ -59,7 +58,6 @@ describe('ScreeningPage', () => {
         fetchScreening,
         fetchRelationships,
         fetchHistoryOfInvolvements,
-        checkStaffPermission,
       },
       params,
       participants,
@@ -116,12 +114,6 @@ describe('ScreeningPage', () => {
       it('fetches HOI for the screening from the url ID', () => {
         expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(id)
       })
-    })
-
-    it('fetches the current users staff permissions', () => {
-      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-      mountScreeningPage({actions: {checkStaffPermission}})
-      expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
   })
 
