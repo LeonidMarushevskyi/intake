@@ -54,7 +54,7 @@ group :test do
   gem 'poltergeist'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter', require: false
-  gem 'selenium-webdriver', '3.4.0'
+  gem 'selenium-webdriver', '~> 3.8.0'
   gem 'simplecov-parallel', require: false
   gem 'webmock'
 end

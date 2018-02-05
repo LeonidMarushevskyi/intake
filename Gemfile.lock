@@ -322,10 +322,9 @@ GEM
     scss_lint (0.52.0)
       rake (>= 0.9, < 13)
       sass (~> 3.4.20)
-    selenium-webdriver (3.4.0)
+    selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
-      websocket (~> 1.0)
     sexp_processor (4.10.0)
     simplecov (0.15.1)
       docile (~> 1.1.0)
@@ -377,7 +376,6 @@ GEM
       activesupport (>= 4.2)
       multi_json (~> 1.2)
       railties (>= 4.2)
-    websocket (1.2.4)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -427,7 +425,7 @@ DEPENDENCIES
   rubocop
   rubocop-junit-formatter
   scss_lint
-  selenium-webdriver (= 3.4.0)
+  selenium-webdriver (~> 3.8.0)
   simplecov-parallel
   spring
   virtus
