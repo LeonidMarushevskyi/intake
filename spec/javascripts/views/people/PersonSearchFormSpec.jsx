@@ -10,29 +10,13 @@ describe('PersonSearchForm', () => {
   })
 
   function renderPersonSearchForm({
-    canCreateNewPerson,
-    isSelectable,
-    onLoadMoreResults,
     onSelect = () => null,
     onChange = () => null,
     onClear = () => null,
-    total,
-    results,
+    ...args
   }) {
-    return shallow(
-      <PersonSearchForm
-        canCreateNewPerson={canCreateNewPerson}
-        isSelectable={isSelectable}
-        onLoadMoreResults={onLoadMoreResults}
-        onSelect={onSelect}
-        onChange={onChange}
-        onClear={onClear}
-        onSearch={() => null}
-        results={results}
-        searchTerm=''
-        total={total}
-      />
-    )
+    const props = {onSelect, onChange, onClear, ...args}
+    return shallow(<PersonSearchForm {...props} />)
   }
 
   it('componentWillUnmount', () => {
@@ -75,22 +59,10 @@ describe('PersonSearchForm', () => {
     expect(component.find('.card-header').children('span').text()).toContain('Search')
   })
 
-  describe('search card', () => {
-    it('is labeled as "search for any person" in hotline', () => {
-      const component = renderPersonSearchForm({})
-      const searchCard = component.find('#search-card')
-      const label = searchCard.children('.card-body').children('div').children('div').children('label')
-      expect(label.text()).toContain('Search for any person')
-      expect(label.text()).toContain('(Children, parents, collaterals, reporters, alleged perpetrators...)')
-    })
-
-    it('is labeled as "search for clients" in snapshot', () => {
-      IntakeConfig.isFeatureInactive.and.returnValue(false)
-      IntakeConfig.isFeatureActive.and.returnValue(true)
-      const component = renderPersonSearchForm({})
-      const searchCard = component.find('#search-card')
-      const label = searchCard.children('.card-body').children('div').children('div').children('label')
-      expect(label.text()).toContain('Search for clients')
-    })
+  it('renders the search prompt', () => {
+    const component = renderPersonSearchForm({searchPrompt: 'Search for any person'})
+    const searchCard = component.find('#search-card')
+    const label = searchCard.children('.card-body').children('div').children('div').children('label')
+    expect(label.text()).toContain('Search for any person')
   })
 })
