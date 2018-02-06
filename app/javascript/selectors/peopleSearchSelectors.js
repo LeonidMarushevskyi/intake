@@ -21,11 +21,13 @@ export const getLastResultsSortValueSelector = (state) => {
 }
 
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
+const formatDOB = (dob, highlight) => (highlight ? '<em>'.concat(dob, '</em>') : dob)
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
   .map((fullResult) => {
     const result = fullResult.get('_source')
     const phoneNumber = result.getIn(['phone_numbers', 0], null)
+    const highlightDateOfBirth = fullResult.hasIn(['highlight', 'searchable_date_of_birth'])
     return Map({
       legacy_id: result.get('id'),
       firstName: fullResult.getIn(['highlight', 'first_name', 0], result.get('first_name')),
@@ -37,7 +39,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
       languages: mapLanguages(state, result),
       races: mapRaces(state, result),
       ethnicity: mapEthnicities(state, result),
-      dateOfBirth: fullResult.getIn(['highlight', 'date_of_birth', 0], result.get('date_of_birth')),
+      dateOfBirth: formatDOB(result.get('date_of_birth'), highlightDateOfBirth),
       ssn: formatSSN(fullResult.getIn(['highlight', 'ssn', 0], result.get('ssn'))),
       address: mapAddress(state, result),
       phoneNumber: phoneNumber && Map({

@@ -247,7 +247,7 @@ describe('peopleSearchSelectors', () => {
             first_name: ['<em>Bar</em>t'],
             last_name: ['Sim<em>pson</em>'],
             ssn: ['<em>123456789</em>'],
-            date_of_birth: ['<em>1990</em>-02-13'],
+            searchable_date_of_birth: ['<em>1990</em>'],
           },
         }],
       }
@@ -265,7 +265,7 @@ describe('peopleSearchSelectors', () => {
       expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
       expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
       expect(peopleResults.getIn([0, 'ssn'])).toEqual('<em>123-45-6789</em>')
-      expect(peopleResults.getIn([0, 'dateOfBirth'])).toEqual('<em>1990</em>-02-13')
+      expect(peopleResults.getIn([0, 'dateOfBirth'])).toEqual('<em>1990-02-13</em>')
     })
 
     it('formats ssn', () => {
