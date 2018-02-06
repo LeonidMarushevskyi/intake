@@ -47,41 +47,20 @@ describe('PageLayout', () => {
       )
     })
 
-    describe('Start Screening Button', () => {
-      it('calls the create screening action', () => {
-        const createScreening = jasmine.createSpy('createScreening')
-        const fetchSystemCodesAction = jasmine.createSpy('fetchSystemCodesAction')
+    describe('Button', () => {
+      it('calls the button callback', () => {
+        const pageHeaderButtonOnClick = jasmine.createSpy('pageHeaderButtonOnClick')
         const pageHeaderDetails = {
           pageHeaderButtonText: 'Start Screening', pageHeaderHasButton: true,
           pageHeaderLocation: 'dashboard', pageHeaderTitle: 'Dashboard',
+          pageHeaderButtonOnClick,
         }
         layoutComponent = mount(
-          <PageLayout actions={{createScreening, fetchSystemCodesAction}}
-            pageHeaderDetails={pageHeaderDetails}
-          >
+          <PageLayout pageHeaderDetails={pageHeaderDetails} actions={{fetchSystemCodesAction: () => {}}}>
             <span id='child'/>
           </PageLayout>)
         layoutComponent.find('button').simulate('click')
-        expect(createScreening).toHaveBeenCalled()
-      })
-    })
-
-    describe('Submit Screening Button', () => {
-      it('calls the submit screening action', () => {
-        const submitScreening = jasmine.createSpy('submitScreening')
-        const fetchSystemCodesAction = jasmine.createSpy('fetchSystemCodesAction')
-        const pageHeaderDetails = {
-          pageHeaderButtonText: 'Start Screening', pageHeaderHasButton: true,
-          pageHeaderLocation: 'screening', pageHeaderTitle: 'Screening 1',
-        }
-        layoutComponent = mount(
-          <PageLayout actions={{submitScreening, fetchSystemCodesAction}}
-            pageHeaderDetails={pageHeaderDetails} params={{id: 1}}
-          >
-            <span id='child'/>
-          </PageLayout>)
-        layoutComponent.find('button').simulate('click')
-        expect(submitScreening).toHaveBeenCalled()
+        expect(pageHeaderButtonOnClick).toHaveBeenCalled()
       })
     })
 

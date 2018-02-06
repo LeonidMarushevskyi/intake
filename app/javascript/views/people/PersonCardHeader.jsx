@@ -28,8 +28,8 @@ const PersonCardHeader = ({informationFlag, title, onDelete, onEdit, showDelete,
 
 PersonCardHeader.propTypes = {
   informationFlag: PropTypes.string,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
   showDelete: PropTypes.bool.isRequired,
   showEdit: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,

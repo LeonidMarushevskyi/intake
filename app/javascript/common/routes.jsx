@@ -4,6 +4,7 @@ import App from 'common/App'
 import PageLayout from 'common/PageLayout'
 import HomePage from 'home/HomePage'
 import ScreeningPage from 'screenings/ScreeningPage'
+import SnapshotPage from 'snapshots/SnapshotPage'
 import ContactFormContainer from 'investigations/ContactFormContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
 import InvestigationPageContainer from 'investigations/InvestigationPageContainer'
@@ -26,6 +27,7 @@ export default (
           <IndexRoute component={HomePage} />
           <Route path='screenings/:id' component={ScreeningPage}/>
           <Route path='screenings/:id/:mode' component={ScreeningPage} />
+          <Route path='snapshot' component={SnapshotPage}/>
           <Route path='investigations/:id' component={InvestigationPageContainer} />
           <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} />
           <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />

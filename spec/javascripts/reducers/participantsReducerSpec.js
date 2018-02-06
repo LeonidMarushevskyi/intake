@@ -13,6 +13,7 @@ import {
   deletePersonFailure,
   updatePersonSuccess,
   updatePersonFailure,
+  clearPeople,
 } from 'actions/personCardActions'
 import participantsReducer from 'reducers/participantsReducer'
 import {List, fromJS} from 'immutable'
@@ -103,6 +104,15 @@ describe('participantsReducer', () => {
     it('returns the last state on failure', () => {
       const action = deletePersonFailure()
       expect(participantsReducer(List(), action)).toEqual(List())
+    })
+  })
+
+  describe('on CLEAR_PEOPLE', () => {
+    it('clears all people in the particiant reducer', () => {
+      const participants = [{id: '2'}, {id: '3'}]
+      const oldState = fromJS(participants)
+      const action = clearPeople()
+      expect(participantsReducer(oldState, action)).toEqualImmutable(List())
     })
   })
 })

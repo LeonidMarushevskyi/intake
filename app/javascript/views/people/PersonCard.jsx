@@ -1,9 +1,9 @@
-import * as IntakeConfig from 'common/config'
 import PersonCardHeader from 'views/people/PersonCardHeader'
 import PropTypes from 'prop-types'
 import React from 'react'
 
 const PersonCard = ({
+  deletable,
   edit,
   editable,
   informationFlag,
@@ -20,9 +20,9 @@ const PersonCard = ({
     <PersonCardHeader
       informationFlag={informationFlag}
       onDelete={onDelete}
-      showDelete={editable}
+      showDelete={deletable}
       onEdit={onEdit}
-      showEdit={editable && IntakeConfig.isFeatureInactive('release_two') && mode === 'show'}
+      showEdit={editable && mode === 'show'}
       title={personName}
     />
     <div className='card-body'>
@@ -41,14 +41,15 @@ const PersonCard = ({
 )
 
 PersonCard.propTypes = {
+  deletable: PropTypes.bool,
   edit: PropTypes.object,
   editable: PropTypes.bool.isRequired,
   informationFlag: PropTypes.string,
   mode: PropTypes.oneOf(['edit', 'show']).isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
+  onSave: PropTypes.func,
   personId: PropTypes.string.isRequired,
   personName: PropTypes.string.isRequired,
   show: PropTypes.object,

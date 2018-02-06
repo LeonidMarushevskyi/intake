@@ -4,6 +4,7 @@ require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constrain
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_and_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_investigations_constraint')
 
 Rails.application.routes.draw do
@@ -13,13 +14,7 @@ Rails.application.routes.draw do
   get '/403', to: 'errors#forbidden', via: :all
 
   resources :screenings,
-    only: %i[edit],
-    to: 'home#index',
-    constraints: Routes::InactiveReleaseOneConstraint do
-  end
-
-  resources :screenings,
-    only: %i[show],
+    only: %i[edit show],
     to: 'home#index',
     constraints: Routes::InactiveReleaseOneAndTwoConstraint do
   end
@@ -86,6 +81,7 @@ Rails.application.routes.draw do
 
   resources :version, only: :index
   get '/logout' => 'home#logout'
+  get '/snapshot' => 'home#index', constraints: Routes::ActiveReleaseTwoConstraint
 
   get '/pages/*id' => 'pages#show', as: :page, format: false
 end

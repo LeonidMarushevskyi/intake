@@ -5,13 +5,35 @@ import * as screeningSelectors from 'selectors/screeningSelectors'
 import * as intakeConfig from 'common/config'
 
 describe('getPageHeaderDetailSelector', () => {
-  it('returns page header details for the dashboard page', () => {
+  it('returns page header details for the dashboard page when release two is inactive', () => {
+    spyOn(intakeConfig, 'isFeatureActive').and.returnValue(false)
     expect(getPageHeaderDetailSelector('/', {})).toEqual({
       pageHeaderButtonDisabled: false,
       pageHeaderButtonText: 'Start Screening',
       pageHeaderHasButton: true,
       pageHeaderLocation: 'dashboard',
       pageHeaderTitle: 'Dashboard',
+    })
+  })
+
+  it('returns page header details for the dashboard page when release two is active', () => {
+    spyOn(intakeConfig, 'isFeatureActive').and.returnValue(true)
+    expect(getPageHeaderDetailSelector('/', {})).toEqual({
+      pageHeaderButtonDisabled: false,
+      pageHeaderButtonText: 'Start Snapshot',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'dashboard',
+      pageHeaderTitle: 'Dashboard',
+    })
+  })
+
+  it('returns page header details for the snapshot page', () => {
+    expect(getPageHeaderDetailSelector('/snapshot', {})).toEqual({
+      pageHeaderButtonDisabled: false,
+      pageHeaderButtonText: 'Start Over',
+      pageHeaderHasButton: true,
+      pageHeaderLocation: 'snapshot',
+      pageHeaderTitle: 'Snapshot',
     })
   })
 
