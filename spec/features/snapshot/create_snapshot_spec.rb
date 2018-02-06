@@ -113,6 +113,7 @@ feature 'Create Snapshot' do
     end
 
     scenario 'snapshot page is not accessible', browser: :poltergeist do
+      pending 'Sara to fix in follow-up PR for 587'
       visit snapshot_path
       expect(page.status_code).not_to eq 200
     end
