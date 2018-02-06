@@ -148,6 +148,7 @@ feature 'login' do
     stub_system_codes
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(screening_results, status: 200))
+    stub_system_codes
     visit root_path
     expect(a_request(:get, %r{http://www.example.com})).to_not have_been_made
     expect(page).to have_current_path(root_path)
@@ -161,7 +162,6 @@ feature 'login' do
     stub_empty_relationships_for_screening(screening)
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body([].to_json, status: 200))
-    stub_empty_history_for_screening(screening)
 
     bobs_access_code = 'BOBS_ACCESS_CODE'
     bobs_token = 'BOBS_TOKEN'
@@ -184,6 +184,7 @@ feature 'login' do
     end
 
     Capybara.using_session(:bob) do
+      stub_screening_page(screening)
       visit screening_path(screening.id)
       expect(page).to have_content 'My Screening'
       expect(
@@ -193,6 +194,7 @@ feature 'login' do
     end
 
     Capybara.using_session(:alex) do
+      stub_screening_page(screening)
       visit screening_path(screening.id)
       expect(page).to have_content 'My Screening'
       expect(
@@ -301,6 +303,7 @@ feature 'login perry v1' do
     stub_system_codes
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       .and_return(json_body(screening_results, status: 200))
+    stub_system_codes
     visit root_path
     expect(a_request(:get, %r{http://www.example.com})).to_not have_been_made
     expect(page).to have_current_path(root_path)

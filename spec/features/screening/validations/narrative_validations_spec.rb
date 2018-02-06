@@ -53,6 +53,7 @@ feature 'Narrative Card Validations' do
       end
       blur_field
       should_have_content error_message, inside: '#narrative-card.edit'
+      stub_screening_put_request_with_anything_and_return(screening)
       save_card('narrative')
       should_have_content error_message, inside: '#narrative-card .card-body'
     end

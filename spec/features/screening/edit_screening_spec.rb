@@ -418,7 +418,7 @@ feature 'individual card save' do
     stub_request(
       :put, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).with(json_body(as_json_without_root_id(existing_screening)))
-      .and_return(json_body(existing_screening.to_json))
+      .and_return(json_body({}.to_json))
     stub_empty_relationships_for_screening(existing_screening)
     stub_empty_history_for_screening(existing_screening)
 

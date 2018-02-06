@@ -278,7 +278,11 @@ feature 'History card' do
         'document.getElementById("spec_meta").appendChild(label)'
       ].join(';')
       page.execute_script js
-      find('#spec_meta').send_keys [:control, 'v']
+      if page.driver.browser.capabilities.platform == 'darwin'
+        find('#spec_meta').send_keys [:command, 'v']
+      else
+        find('#spec_meta').send_keys [:control, 'v']
+      end
       expect(find('#spec_meta').value).not_to be_empty
     end
 

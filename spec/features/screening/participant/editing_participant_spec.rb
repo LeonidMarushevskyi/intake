@@ -235,7 +235,8 @@ feature 'Edit Person' do
 
   scenario 'editing & saving a person for a screening saves only the relevant person ids' do
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .and_return(json_body({}.to_json, status: 201))
+      .with(body: as_json_without_root_id(marge))
+      .and_return(json_body(marge.to_json, status: 200))
 
     visit edit_screening_path(id: screening.id)
 

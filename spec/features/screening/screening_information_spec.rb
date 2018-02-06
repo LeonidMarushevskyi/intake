@@ -37,15 +37,6 @@ feature 'screening information card' do
       expect(page).to have_button('Cancel')
     end
 
-    within '#screening-information-card.edit' do
-      fill_in_datepicker 'Screening Start Date/Time', with: '08/15/2016 3:00 AM'
-      fill_in_datepicker 'Screening End Date/Time', with: '08/17/2016 3:00 AM'
-      fill_in 'Title/Name of Screening', with: 'Cameron'
-      fill_in 'Assigned Social Worker', with: 'Mariko'
-      select 'Phone', from: 'Communication Method'
-      click_button 'Save'
-    end
-
     screening.assign_attributes(
       name: 'Cameron',
       assignee: 'Mariko',
@@ -59,6 +50,15 @@ feature 'screening information card' do
       .and_return(json_body(screening.to_json))
     stub_empty_relationships_for_screening(screening)
     stub_empty_history_for_screening(screening)
+
+    within '#screening-information-card.edit' do
+      fill_in_datepicker 'Screening Start Date/Time', with: '08/15/2016 3:00 AM'
+      fill_in_datepicker 'Screening End Date/Time', with: '08/17/2016 3:00 AM'
+      fill_in 'Title/Name of Screening', with: 'Cameron'
+      fill_in 'Assigned Social Worker', with: 'Mariko'
+      select 'Phone', from: 'Communication Method'
+      click_button 'Save'
+    end
 
     expect(
       a_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))

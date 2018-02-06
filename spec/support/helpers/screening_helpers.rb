@@ -40,6 +40,13 @@ module ScreeningHelpers
     ).and_return(json_body({ cases: [], referrals: [], screenings: [] }.to_json, status: 200))
   end
 
+  def stub_screening_page(screening)
+    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
+      .and_return(json_body(screening.to_json, status: 200))
+    stub_empty_relationships_for_screening(screening)
+    stub_empty_history_for_screening(screening)
+  end
+
   def stub_and_visit_edit_screening(screening)
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -65,22 +72,22 @@ module ScreeningHelpers
   end
 
   def save_all_cards
+    within('.card', text: 'Cross Report') { click_button 'Save' }
     within('.card', text: 'Screening Information') { click_button 'Save' }
     within('.card', text: 'Narrative') { click_button 'Save' }
     within('.card', text: 'Incident Information') { click_button 'Save' }
     within('.card', text: 'Allegations') { click_button 'Save' }
     within('.card', text: 'Worker Safety') { click_button 'Save' }
-    within('.card', text: 'Cross Report') { click_button 'Save' }
     within('.card', text: 'Decision') { click_button 'Save' }
   end
 
   def cancel_all_cards
+    within('.card', text: 'Cross Report') { click_button 'Cancel' }
     within('.card', text: 'Screening Information') { click_button 'Cancel' }
     within('.card', text: 'Narrative') { click_button 'Cancel' }
     within('.card', text: 'Incident Information') { click_button 'Cancel' }
     within('.card', text: 'Allegations') { click_button 'Cancel' }
     within('.card', text: 'Worker Safety') { click_button 'Cancel' }
-    within('.card', text: 'Cross Report') { click_button 'Cancel' }
     within('.card', text: 'Decision') { click_button 'Cancel' }
   end
 end

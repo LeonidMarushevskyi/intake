@@ -732,6 +732,7 @@ feature 'edit allegations' do
           expect(page).to have_react_select_field("allegations_#{lisa.id}_#{marge.id}", with: [])
         end
       end
+      stub_screening_put_request_with_anything_and_return(screening)
       click_button 'Save'
     end
 

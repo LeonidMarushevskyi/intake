@@ -182,6 +182,7 @@ feature 'Show Screening' do
       ).and_return(json_body(existing_screening.to_json))
       stub_empty_relationships_for_screening(existing_screening)
       stub_empty_history_for_screening(existing_screening)
+      stub_county_agencies('c41')
       visit screening_path(id: existing_screening.id)
 
       expect(page.status_code).to eq 404
