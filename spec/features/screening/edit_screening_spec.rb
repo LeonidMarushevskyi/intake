@@ -260,20 +260,6 @@ feature 'Edit Screening' do
       expect(page).not_to have_selector '.delete-button'
     end
   end
-
-  context 'when release two is enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_two) do
-        example.run
-      end
-    end
-
-    scenario 'edit screening route returns a 404', browser: :poltergeist do
-      pending 'Sara to fix in follow-up PR for 587'
-      visit edit_screening_path(id: existing_screening.id)
-      expect(page.status_code).not_to eq 200
-    end
-  end
 end
 
 feature 'individual card save' do

@@ -99,22 +99,6 @@ feature 'login' do
           expect(page.current_url).not_to have_content root_path(accessCode: 'tempToken123')
           expect(page.current_url).to have_content auth_logout_url
         end
-
-        context 'when there is a base_path present' do
-          let(:base_path) { 'intake' }
-
-          scenario 'when user logs out' do
-            pending(<<~MESSAGE)
-              base path cannot be configured during the test run.
-              This exposes a problem with how we are handling base path in our environment setup.
-            MESSAGE
-            visit root_path(accessCode: 'tempToken123')
-            # regular click_link won't keep the pop-up menu open for some reason
-            execute_script('$(".fa.fa-user").click()')
-            click_link 'Logout'
-            expect(page.current_url).to have_content 'intake/logout'
-          end
-        end
       end
 
       context 'when there is no user on the session' do

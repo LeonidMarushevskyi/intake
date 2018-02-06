@@ -169,24 +169,6 @@ feature 'Show Screening' do
     expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
 
-  context 'when release two is enabled' do
-    scenario 'view an existing screening returns 404', browser: :poltergeist do
-      pending(<<~MESSAGE)
-        This is waiting for changes that will enable our single page application to handle routes better.
-        Currently, we are using react router and rails router to handle routing our 404 pages.
-
-        This test was giving us a false positive, because rails is returning 500
-      MESSAGE
-      stub_request(
-        :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
-      ).and_return(json_body(existing_screening.to_json))
-      stub_empty_relationships_for_screening(existing_screening)
-      stub_empty_history_for_screening(existing_screening)
-      visit screening_path(id: existing_screening.id)
-
-      expect(page.status_code).to eq 404
-    end
-  end
 
   context 'when a screening has already been submitted as a referral' do
     let(:existing_screening) do

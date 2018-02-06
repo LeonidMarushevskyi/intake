@@ -104,18 +104,4 @@ feature 'Create Snapshot' do
       ).not_to have_been_made
     end
   end
-
-  context 'when release two is not enabled' do
-    around do |example|
-      Feature.run_with_deactivated(:release_two) do
-        example.run
-      end
-    end
-
-    scenario 'snapshot page is not accessible', browser: :poltergeist do
-      pending 'Sara to fix in follow-up PR for 587'
-      visit snapshot_path
-      expect(page.status_code).not_to eq 200
-    end
-  end
 end

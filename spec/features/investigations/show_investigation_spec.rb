@@ -70,30 +70,4 @@ feature 'Show Investigation' do
       end
     end
   end
-
-  context 'when investigations is disabled' do
-    around do |example|
-      Feature.run_with_deactivated(:investigations) do
-        example.run
-      end
-    end
-
-    scenario 'view an existing investigation returns 404', browser: :poltergeist do
-      pending(<<~MESSAGE)
-        This is waiting for changes that will enable our single page application to handle routes better.
-        Currently, we are using react router and rails router to handle routing our 404 pages.
-
-        This test was giving us a false positive, because rails is returning 500
-      MESSAGE
-      investigation_id = '12345'
-      visit investigation_path(id: investigation_id)
-      expect(
-        a_request(
-          :get,
-          intake_api_url(ExternalRoutes.ferb_api_investigation_path(investigation_id))
-        )
-      ).to_not have_been_made
-      expect(page.status_code).to eq 404
-    end
-  end
 end
