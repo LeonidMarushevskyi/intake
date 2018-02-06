@@ -44,7 +44,8 @@ namespace :spec do # rubocop:disable BlockLength
     end
     desc 'Run specs in parallel in ca_intake container (from host)'
     task :parallel do
-      system "#{webpack?} #{run_in_intake_container('bundle exec parallel_rspec')} #{file_list}"
+      cmd = 'bundle exec parallel_rspec --runtime-log parallel_runtime_rspec.log'
+      system "#{webpack?} #{run_in_intake_container(cmd)} #{file_list}"
     end
 
     desc 'Run ALL THE SPECS, LINT, & KARMA!!!'
