@@ -269,7 +269,7 @@ feature 'Edit Screening' do
     end
 
     scenario 'edit screening route returns a 404', browser: :poltergeist do
-      pending 'Sara to fix in follow-up PR for 587'
+      pending 'changes to allow us to test pages that are not defined in the router'
       visit edit_screening_path(id: existing_screening.id)
       expect(page.status_code).not_to eq 200
     end
