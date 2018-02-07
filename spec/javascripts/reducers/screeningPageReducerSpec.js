@@ -1,4 +1,3 @@
-import * as IntakeConfig from 'common/config'
 import * as matchers from 'jasmine-immutable-matchers'
 import screeningPageReducer from 'reducers/screeningPageReducer'
 import {Map, fromJS} from 'immutable'
@@ -56,6 +55,7 @@ describe('screeningPageReducer', () => {
       const action = fetchScreeningFailure()
       expect(screeningPageReducer(initialState, action)).toEqualImmutable(initialState)
     })
+
     describe('on successful fetching of a screening', () => {
       const participants = [
         {id: 'participant_id_one'},
@@ -63,89 +63,65 @@ describe('screeningPageReducer', () => {
       ]
       const screening = {participants}
       const action = fetchScreeningSuccess(screening)
-      describe('when release two is not active', () => {
-        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false))
-        describe("when screening page mode is 'show'", () => {
-          const initialState = fromJS({mode: 'show'})
-          it("returns screening page with each persons mode set to 'show'", () => {
-            expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-              fromJS({
-                mode: 'show',
-                peopleCards: {
-                  participant_id_one: 'show',
-                  participant_id_two: 'show',
-                },
-                cards: {
-                  'screening-information-card': 'show',
-                  'narrative-card': 'show',
-                  'incident-information-card': 'show',
-                  'cross-report-card': 'show',
-                  'worker-safety-card': 'show',
-                  'decision-card': 'show',
-                  'allegations-card': 'show',
-                },
-              })
-            )
-          })
-        })
-        describe("when screening page mode is 'edit'", () => {
-          const initialState = fromJS({mode: 'edit'})
-          it("returns screening page with each persons mode set to 'edit'", () => {
-            expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-              fromJS({
-                mode: 'edit',
-                peopleCards: {
-                  participant_id_one: 'edit',
-                  participant_id_two: 'edit',
-                },
-                cards: {
-                  'screening-information-card': 'edit',
-                  'narrative-card': 'edit',
-                  'incident-information-card': 'edit',
-                  'cross-report-card': 'edit',
-                  'worker-safety-card': 'edit',
-                  'decision-card': 'edit',
-                  'allegations-card': 'edit',
-                },
-              })
-            )
-          })
-        })
-        describe('when screening has a referral id and is not editable', () => {
-          const initialState = fromJS({mode: 'edit'})
-          const participants = [
-            {id: 'participant_id_one'},
-            {id: 'participant_id_two'},
-          ]
-          const nonEditableScreening = {referral_id: 'referral_id', participants}
-          const newAction = fetchScreeningSuccess(nonEditableScreening)
-          it("returns screening page with all cards set to 'show'", () => {
-            expect(screeningPageReducer(initialState, newAction)).toEqualImmutable(
-              fromJS({
-                mode: 'show',
-                peopleCards: {
-                  participant_id_one: 'show',
-                  participant_id_two: 'show',
-                },
-                cards: {
-                  'screening-information-card': 'show',
-                  'narrative-card': 'show',
-                  'incident-information-card': 'show',
-                  'cross-report-card': 'show',
-                  'worker-safety-card': 'show',
-                  'decision-card': 'show',
-                  'allegations-card': 'show',
-                },
-              })
-            )
-          })
+
+      describe("when screening page mode is 'show'", () => {
+        const initialState = fromJS({mode: 'show'})
+        it("returns screening page with each persons mode set to 'show'", () => {
+          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'show',
+              peopleCards: {
+                participant_id_one: 'show',
+                participant_id_two: 'show',
+              },
+              cards: {
+                'screening-information-card': 'show',
+                'narrative-card': 'show',
+                'incident-information-card': 'show',
+                'cross-report-card': 'show',
+                'worker-safety-card': 'show',
+                'decision-card': 'show',
+                'allegations-card': 'show',
+              },
+            })
+          )
         })
       })
-      describe('when release two is active', () => {
+
+      describe("when screening page mode is 'edit'", () => {
         const initialState = fromJS({mode: 'edit'})
-        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true))
-        it("returns screening page with all cards set to 'show'", () => {
+        it("returns screening page with each persons mode set to 'edit'", () => {
           expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+            fromJS({
+              mode: 'edit',
+              peopleCards: {
+                participant_id_one: 'edit',
+                participant_id_two: 'edit',
+              },
+              cards: {
+                'screening-information-card': 'edit',
+                'narrative-card': 'edit',
+                'incident-information-card': 'edit',
+                'cross-report-card': 'edit',
+                'worker-safety-card': 'edit',
+                'decision-card': 'edit',
+                'allegations-card': 'edit',
+              },
+            })
+          )
+        })
+      })
+
+      describe('when screening has a referral id and is not editable', () => {
+        const initialState = fromJS({mode: 'edit'})
+        const participants = [
+          {id: 'participant_id_one'},
+          {id: 'participant_id_two'},
+        ]
+        const nonEditableScreening = {referral_id: 'referral_id', participants}
+        const newAction = fetchScreeningSuccess(nonEditableScreening)
+        it("returns screening page with all cards set to 'show'", () => {
+          expect(screeningPageReducer(initialState, newAction)).toEqualImmutable(
             fromJS({
               mode: 'show',
               peopleCards: {
@@ -174,29 +150,13 @@ describe('screeningPageReducer', () => {
     describe('when there is no error', () => {
       const action = createPersonSuccess(newPerson)
 
-      describe('when release two is not active', () => {
-        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(false))
-
-        it('returns the screening page with the created person card in edit mode', () => {
-          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-            fromJS({
-              mode: 'show',
-              peopleCards: {'some-arbitrary-id': 'edit'},
-            })
-          )
-        })
-      })
-      describe('when release two is active', () => {
-        beforeEach(() => spyOn(IntakeConfig, 'isFeatureActive').and.returnValue(true))
-
-        it('returns the screening page with the created person card in show mode', () => {
-          expect(screeningPageReducer(initialState, action)).toEqualImmutable(
-            fromJS({
-              mode: 'show',
-              peopleCards: {'some-arbitrary-id': 'show'},
-            })
-          )
-        })
+      it('returns the screening page with the created person card in edit mode', () => {
+        expect(screeningPageReducer(initialState, action)).toEqualImmutable(
+          fromJS({
+            mode: 'show',
+            peopleCards: {'some-arbitrary-id': 'edit'},
+          })
+        )
       })
     })
     describe('when there is an error', () => {

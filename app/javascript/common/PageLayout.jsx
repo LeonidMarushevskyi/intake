@@ -7,6 +7,7 @@ import {
   getPageErrorMessageValueSelector,
 } from 'selectors/errorsSelectors'
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
+import {checkStaffPermission} from 'actions/staffActions'
 import {createScreening, submitScreening} from 'actions/screeningActions'
 import {createSnapshot} from 'actions/snapshotActions'
 import {clearPeople} from 'actions/personCardActions'
@@ -18,7 +19,9 @@ import {isFeatureActive} from 'common/config'
 
 export class PageLayout extends React.Component {
   componentDidMount() {
-    this.props.actions.fetchSystemCodesAction()
+    const {fetchSystemCodesAction, checkStaffPermission} = this.props.actions
+    fetchSystemCodesAction()
+    checkStaffPermission('add_sensitive_people')
   }
 
   pageHeaderButton() {
@@ -76,6 +79,7 @@ PageLayout.propTypes = {
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   actions: bindActionCreators({
     fetchSystemCodesAction,
+    checkStaffPermission,
     createScreening,
     createSnapshot,
     submitScreening,

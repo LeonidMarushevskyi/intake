@@ -1,5 +1,4 @@
 import * as IntakeConfig from 'common/config'
-import {List, fromJS} from 'immutable'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
 import {mount, shallow} from 'enzyme'
@@ -20,7 +19,7 @@ describe('ScreeningPage', () => {
     loaded = true,
     mode,
     params = {},
-    participants = List(),
+    participants = [],
     reference,
     referralId,
     hasApiValidationErrors = false,
@@ -46,9 +45,8 @@ describe('ScreeningPage', () => {
       fetchScreening = () => null,
       fetchRelationships = () => null,
       fetchHistoryOfInvolvements = () => null,
-      checkStaffPermission = () => null,
     },
-    participants = {},
+    participants = [],
     screening = {},
     params = {},
     editable,
@@ -59,7 +57,6 @@ describe('ScreeningPage', () => {
         fetchScreening,
         fetchRelationships,
         fetchHistoryOfInvolvements,
-        checkStaffPermission,
       },
       params,
       participants,
@@ -116,12 +113,6 @@ describe('ScreeningPage', () => {
       it('fetches HOI for the screening from the url ID', () => {
         expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(id)
       })
-    })
-
-    it('fetches the current users staff permissions', () => {
-      const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-      mountScreeningPage({actions: {checkStaffPermission}})
-      expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
     })
   })
 
@@ -190,7 +181,7 @@ describe('ScreeningPage', () => {
       beforeEach(() => {
         component = renderScreeningPage({
           mode: 'show',
-          participants: fromJS([{id: 'id-1'}, {id: 'id-2'}]),
+          participants: [{id: 'id-1'}, {id: 'id-2'}],
           params: {id: '1'},
         })
       })
@@ -260,16 +251,9 @@ describe('ScreeningPage', () => {
     })
   })
 
-  describe('in snapshot', () => {
-    it('does not render a sidebar', () => {
-      isFeatureActiveSpy.and.returnValue(true)
-      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(false)
-    })
-  })
-
   describe('in hotline', () => {
     it('renders a sidebar', () => {
-      expect(renderScreeningPage({loaded: false}).find('ScreeningSideBar').exists()).toBe(true)
+      expect(renderScreeningPage({loaded: true}).find('ScreeningSideBar').exists()).toBe(true)
     })
   })
 })

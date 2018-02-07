@@ -8,14 +8,14 @@ import {
 } from 'selectors/peopleSearchSelectors'
 import {createPerson} from 'actions/personCardActions'
 import {search, setSearchTerm, clear, loadMoreResults} from 'actions/peopleSearchActions'
-import * as IntakeConfig from 'common/config'
 
 const mapStateToProps = (state) => ({
   screeningId: getScreeningIdValueSelector(state),
-  canCreateNewPerson: IntakeConfig.isFeatureInactive('release_two'),
+  canCreateNewPerson: true,
   hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
   results: getPeopleResultsSelector(state).toJS(),
   total: getResultsTotalValueSelector(state),
+  searchPrompt: 'Search for any person (Children, parents, collaterals, reporters, alleged perpetrators...)',
   searchTerm: getSearchTermValueSelector(state),
 })
 
@@ -39,6 +39,7 @@ const mergeProps = (stateProps, {onSearch, onClear, onChange, onLoadMoreResults,
     hasAddSensitivePerson,
     results,
     screeningId,
+    searchPrompt,
     searchTerm,
     total,
   } = stateProps
@@ -64,6 +65,7 @@ const mergeProps = (stateProps, {onSearch, onClear, onChange, onLoadMoreResults,
     onSearch,
     onSelect,
     results,
+    searchPrompt,
     searchTerm,
     total,
   }

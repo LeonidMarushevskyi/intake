@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Autocompleter from 'common/Autocompleter'
-import * as IntakeConfig from 'common/config'
 
 export class PersonSearchForm extends React.Component {
   componentWillUnmount() {
@@ -19,6 +18,7 @@ export class PersonSearchForm extends React.Component {
       onSearch,
       onSelect,
       results,
+      searchPrompt,
       searchTerm,
       total,
     } = this.props
@@ -33,14 +33,7 @@ export class PersonSearchForm extends React.Component {
           <div className='card-body'>
             <div className='row'>
               <div className='col-md-12'>
-                {
-                  IntakeConfig.isFeatureActive('release_two') &&
-                    <label className='pull-left' htmlFor='screening_participants'>Search for clients</label>
-                }
-                {
-                  IntakeConfig.isFeatureInactive('release_two') &&
-                    <label className='pull-left' htmlFor='screening_participants'>Search for any person(Children, parents, collaterals, reporters, alleged perpetrators...)</label>
-                }
+                <label className='pull-left' htmlFor='screening_participants'>{searchPrompt}</label>
                 <Autocompleter
                   id='screening_participants'
                   onSelect={onSelect}
@@ -72,6 +65,7 @@ PersonSearchForm.propTypes = {
   onSearch: PropTypes.func,
   onSelect: PropTypes.func,
   results: PropTypes.array,
+  searchPrompt: PropTypes.string,
   searchTerm: PropTypes.string,
   total: PropTypes.number,
 }

@@ -15,6 +15,7 @@ const mapStateToProps = (state) => ({
   hasAddSensitivePerson: state.getIn(['staff', 'add_sensitive_people']),
   results: getPeopleResultsSelector(state).toJS(),
   total: getResultsTotalValueSelector(state),
+  searchPrompt: 'Search for clients',
   searchTerm: getSearchTermValueSelector(state),
 })
 
