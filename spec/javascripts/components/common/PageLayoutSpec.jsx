@@ -58,7 +58,10 @@ describe('PageLayout', () => {
           pageHeaderButtonOnClick,
         }
         layoutComponent = mount(
-          <PageLayout pageHeaderDetails={pageHeaderDetails} actions={{fetchSystemCodesAction: () => {}}}>
+          <PageLayout
+            pageHeaderDetails={pageHeaderDetails}
+            actions={{fetchSystemCodesAction: () => {}, checkStaffPermission: () => {}}}
+          >
             <span id='child'/>
           </PageLayout>)
         layoutComponent.find('button').simulate('click')
