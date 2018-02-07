@@ -16,8 +16,13 @@ import {Provider} from 'react-redux'
 import {routerHistory} from 'common/history'
 import {createSelectLocationState} from 'reducers/routerReducer'
 import {syncHistoryWithStore} from 'react-router-redux'
+import * as IntakeConfig from 'common/config'
 
 const history = syncHistoryWithStore(routerHistory, store, {selectLocationState: createSelectLocationState()})
+
+const investigationConstraint = IntakeConfig.isFeatureActive('investigations')
+const releaseOneConstraint = IntakeConfig.isFeatureActive('release_one')
+const releaseTwoConstraint = IntakeConfig.isFeatureActive('release_two')
 
 export default (
   <Provider store={store}>
@@ -25,13 +30,20 @@ export default (
       <Route path='/' component={App}>
         <Route component={PageLayout}>
           <IndexRoute component={HomePage} />
-          <Route path='screenings/:id' component={ScreeningPage}/>
-          <Route path='screenings/:id/:mode' component={ScreeningPage} />
-          <Route path='snapshot' component={SnapshotPage}/>
-          <Route path='investigations/:id' component={InvestigationPageContainer} />
-          <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} />
-          <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />
-          <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} />
+          { !releaseTwoConstraint && !releaseOneConstraint &&
+          <Route path='screenings/:id' component={ScreeningPage}/> }
+          { !releaseTwoConstraint && !releaseOneConstraint &&
+          <Route path='screenings/:id/:mode' component={ScreeningPage} /> }
+          { releaseTwoConstraint &&
+          <Route path='snapshot' component={SnapshotPage}/> }
+          { investigationConstraint &&
+          <Route path='investigations/:id' component={InvestigationPageContainer} /> }
+          { investigationConstraint &&
+          <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} /> }
+          { investigationConstraint &&
+          <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} /> }
+          { investigationConstraint &&
+          <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} /> }
         </Route>
         <Route path='server_error' component={ServerErrorPage}/>
         <Route path='forbidden' component={ForbiddenPage}/>

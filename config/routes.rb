@@ -9,20 +9,14 @@ require File.join(File.dirname(__FILE__), 'routes/active_investigations_constrai
 
 Rails.application.routes.draw do
   root 'home#index'
-  get '/404', to: 'errors#not_found', via: :all
-  get '/500', to: 'errors#server_error', via: :all
-  get '/403', to: 'errors#forbidden', via: :all
 
   resources :screenings,
     only: %i[edit show],
-    to: 'home#index',
-    constraints: Routes::InactiveReleaseOneAndTwoConstraint do
-  end
+    to: 'home#index'
 
   resources :investigations,
     only: [:show],
-    to: 'home#index',
-    constraints: Routes::ActiveInvestigationsConstraint do
+    to: 'home#index' do
     resources :contacts, only: %i[new show edit], to: 'home#index'
   end
 
@@ -81,7 +75,7 @@ Rails.application.routes.draw do
 
   resources :version, only: :index
   get '/logout' => 'home#logout'
-  get '/snapshot' => 'home#index', constraints: Routes::ActiveReleaseTwoConstraint
+  get '/snapshot' => 'home#index'
 
-  get '/pages/*id' => 'pages#show', as: :page, format: false
+  get '*path', to: 'home#index', constraints: ->(request) { request.format.html? }
 end
