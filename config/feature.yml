@@ -1,27 +1,30 @@
 # config/feature.yml
 development:
   features:
-    release_two: false
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: false
     centralized_sessions: true
     hoi_from_intake_api: false
     investigations: true
+    snapshot: true
+    screenings: true
 
 test:
   features:
-    release_two: false
     authentication: false
     perry_version_two: false
     centralized_sessions: true
     hoi_from_intake_api: false
     investigations: true
+    snapshot: true
+    screenings: true
 
 production:
   features:
-    release_two: <%= ENV.fetch('RELEASE_TWO', false) %>
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: <%= ENV.fetch('PERRY_VERSION_TWO', false) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
     hoi_from_intake_api: <%= ENV.fetch('HOI_FROM_INTAKE_API', false) %>
     investigations: <%= ENV.fetch('INVESTIGATIONS', true) %>
+    snapshot: <%= ENV.fetch('SNAPSHOT', true) %>
+    screenings: <%= ENV.fetch('SCREENINGS', true) %>
