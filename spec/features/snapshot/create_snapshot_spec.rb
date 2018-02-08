@@ -112,10 +112,9 @@ feature 'Create Snapshot' do
       end
     end
 
-    scenario 'snapshot page is not accessible', browser: :poltergeist do
-      pending 'changes to allow us to test pages that are not defined in the router'
+    scenario 'snapshot page is not accessible' do
       visit snapshot_path
-      expect(page.status_code).not_to eq 200
+      expect(page).to have_content('Sorry, this is not the page you want')
     end
   end
 end

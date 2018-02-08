@@ -268,10 +268,9 @@ feature 'Edit Screening' do
       end
     end
 
-    scenario 'edit screening route returns a 404', browser: :poltergeist do
-      pending 'changes to allow us to test pages that are not defined in the router'
+    scenario 'cannot edit an existing screening', browser: :poltergeist do
       visit edit_screening_path(id: existing_screening.id)
-      expect(page.status_code).not_to eq 200
+      expect(page).to have_content('Sorry, this is not the page you want')
     end
   end
 end
