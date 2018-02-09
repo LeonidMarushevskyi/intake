@@ -24,7 +24,7 @@ import {RACE_DETAILS} from 'enums/Races'
 import {ETHNICITY_DETAILS} from 'enums/Ethnicity'
 
 const calculateAgeFromScreeningDate = (state, personId) => {
-  const screeningStartDate = state.getIn(['screeningInformationForm', 'started_at', 'value'])
+  const screeningStartDate = moment(state.getIn(['screeningInformationForm', 'started_at', 'value']))
   const person = state.getIn(['peopleForm', personId])
   const dateOfBirth = person.getIn(['date_of_birth', 'value'])
   const approximateAge = parseInt(person.getIn(['approximate_age', 'value']), 10)
@@ -33,7 +33,7 @@ const calculateAgeFromScreeningDate = (state, personId) => {
   let ageFromScreeningDate
 
   if (dateOfBirth) {
-    ageFromScreeningDate = moment(screeningStartDate).diff(dateOfBirth, 'years')
+    ageFromScreeningDate = screeningStartDate.diff(moment(dateOfBirth, 'MM/DD/YYYY'), 'years')
   } else if (approximateAge && approximateAgeUnit) {
     ageFromScreeningDate = moment().diff(screeningStartDate, 'years') + moment.duration(approximateAge, approximateAgeUnit).asYears()
   }

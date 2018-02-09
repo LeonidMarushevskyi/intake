@@ -50,7 +50,7 @@ const calculateAgeFromScreeningDate = (state, personId) => {
   let ageFromScreeningDate
 
   if (dateOfBirth) {
-    ageFromScreeningDate = screeningStartDate.diff(dateOfBirth, 'years')
+    ageFromScreeningDate = screeningStartDate.diff(moment(dateOfBirth, 'MM/DD/YYYY'), 'years')
   } else if (approximateAge && approximateAgeUnit) {
     ageFromScreeningDate = moment().diff(screeningStartDate, 'years') + moment.duration(approximateAge, approximateAgeUnit).asYears()
   }
