@@ -48,6 +48,7 @@ feature 'Create Snapshot' do
         expect(page).to have_content(
           'The Child Welfare History Snapshot allows you to search CWS/CMS for people and their'
         )
+        expect(page).to have_content('People & Roles History')
       end
 
       expect(page).not_to have_css('.side-bar')
