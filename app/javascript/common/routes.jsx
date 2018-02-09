@@ -47,6 +47,7 @@ export default (
           { investigationConstraint &&
           <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} /> }
         </Route>
+        <Route path='logout' component={() => (window.location = IntakeConfig.config().authentication_logout_url)}/>
         <Route path='pages/conditions_of_use' component={ConditionsOfUse}/>
         <Route path='pages/privacy_policy' component={PrivacyPolicy}/>
         <Route path='server_error' component={ServerErrorPage}/>
