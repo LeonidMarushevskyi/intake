@@ -55,6 +55,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter', require: false
   gem 'selenium-webdriver', '3.4.0'
-  gem 'simplecov', require: false
+  gem 'simplecov-parallel', require: false
   gem 'webmock'
 end

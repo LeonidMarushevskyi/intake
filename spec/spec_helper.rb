@@ -21,7 +21,9 @@
 require 'webmock/rspec'
 
 if ENV['GENERATE_TEST_REPORTS'] == 'yes'
-  require 'simplecov'
+  require 'simplecov/parallel'
+  SimpleCov::Parallel.activate
+  SimpleCov.merge_timeout 3600
   SimpleCov.command_name("Rspec:#{ENV['TEST_ENV_NUMBER']}")
   SimpleCov.coverage_dir("#{ENV['CI_REPORTS']}/coverage/ruby")
   SimpleCov.start 'rails' do
