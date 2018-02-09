@@ -8,6 +8,8 @@ import SnapshotPage from 'snapshots/SnapshotPage'
 import ContactFormContainer from 'investigations/ContactFormContainer'
 import ContactShowContainer from 'investigations/ContactShowContainer'
 import InvestigationPageContainer from 'investigations/InvestigationPageContainer'
+import ConditionsOfUse from 'views/pages/ConditionsOfUse'
+import PrivacyPolicy from 'views/pages/PrivacyPolicy'
 import NotFoundPage from 'errors/NotFoundPage'
 import ForbiddenPage from 'errors/ForbiddenPage'
 import ServerErrorPage from 'errors/ServerErrorPage'
@@ -45,6 +47,8 @@ export default (
           { investigationConstraint &&
           <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} /> }
         </Route>
+        <Route path='pages/conditions_of_use' component={ConditionsOfUse}/>
+        <Route path='pages/privacy_policy' component={PrivacyPolicy}/>
         <Route path='server_error' component={ServerErrorPage}/>
         <Route path='forbidden' component={ForbiddenPage}/>
         <Route path='*' component={NotFoundPage}/>
