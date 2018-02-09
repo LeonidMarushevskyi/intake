@@ -85,6 +85,7 @@ GEM
       launchy
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
+    circleci-parallel (0.5.0)
     clamp (1.0.1)
     cliver (0.3.2)
     coderay (1.1.1)
@@ -326,11 +327,14 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0)
     sexp_processor (4.10.0)
-    simplecov (0.13.0)
+    simplecov (0.15.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.0)
+    simplecov-html (0.10.2)
+    simplecov-parallel (0.4.0)
+      circleci-parallel (~> 0.5)
+      simplecov (~> 0.15)
     slop (3.6.0)
     spring (2.0.1)
       activesupport (>= 4.2)
@@ -424,7 +428,7 @@ DEPENDENCIES
   rubocop-junit-formatter
   scss_lint
   selenium-webdriver (= 3.4.0)
-  simplecov
+  simplecov-parallel
   spring
   virtus
   web-console (~> 3.5)
