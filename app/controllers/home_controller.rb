@@ -8,6 +8,6 @@ class HomeController < ApplicationController # :nodoc:
 
   def logout
     delete_user_from_session
-    redirect_to SecurityRepository.logout_url
+    render :index
   end
 end

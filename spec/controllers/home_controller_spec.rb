@@ -23,11 +23,11 @@ describe HomeController do
       @request.session[:user_details] = { first_name: 'Bob' }
     end
 
-    it 'clears the session for a user and redirects to the logout URL' do
+    it 'clears the session for the current user and returns them to the application' do
       process :logout, method: :get
       expect(session[:security_token]).to be_nil
       expect(session[:user_details]).to be_nil
-      expect(response).to redirect_to('http://www.logouturl.com')
+      expect(response).to render_template('index')
     end
   end
 end
