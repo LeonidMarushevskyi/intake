@@ -8,7 +8,7 @@ describe('phone numbers', () => {
       number: '994-907-6774',
       type: 'Home',
     }
-    const component = shallow(<PhoneNumberInfo {...props} />)
+    const component = shallow(<PhoneNumberInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain('<div><i class="fa fa-phone c-gray half-pad-right"></i><strong class="c-gray half-pad-right">Home</strong><span>994-907-6774</span></div>')
   })
 
@@ -17,7 +17,7 @@ describe('phone numbers', () => {
       number: '994-907-6774',
       type: null,
     }
-    const component = shallow(<PhoneNumberInfo {...props} />)
+    const component = shallow(<PhoneNumberInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain('<div><i class="fa fa-phone c-gray half-pad-right"></i><span>994-907-6774</span></div>')
   })
 })

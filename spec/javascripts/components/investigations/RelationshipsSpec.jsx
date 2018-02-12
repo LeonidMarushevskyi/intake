@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {EmptyRelationships, Relationships} from 'investigations/Relationships'
 
 describe('Relationships', () => {
-  const renderRelationships = (props) => shallow(<Relationships {...props} />)
+  const renderRelationships = (props) => shallow(<Relationships {...props} />, {disableLifecycleMethods: true})
   it('renders people with no relationships', () => {
     const people = [
       {name: 'Sally Jones', relationships: []},
@@ -48,7 +48,7 @@ describe('Relationships', () => {
 
 describe('EmptyRelationships', () => {
   it('renders a reminder to add people when there are no relationships', () => {
-    const component = shallow(<EmptyRelationships />)
+    const component = shallow(<EmptyRelationships />, {disableLifecycleMethods: true})
     expect(component.find('.empty-relationships').text()).toEqual('Search for people and add them to see their relationships.')
   })
 })

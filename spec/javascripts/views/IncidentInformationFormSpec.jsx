@@ -5,7 +5,7 @@ import IncidentInformationForm from 'views/IncidentInformationForm'
 describe('IncidentInformationForm', () => {
   const renderIncidentInformationForm = ({errors = {}, address = {}, counties = [], locationTypes = [], usStates = [], ...args}) => {
     const props = {errors, address, counties, locationTypes, usStates, ...args}
-    return shallow(<IncidentInformationForm {...props}/>)
+    return shallow(<IncidentInformationForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   describe('DateField for Incident Date', () => {

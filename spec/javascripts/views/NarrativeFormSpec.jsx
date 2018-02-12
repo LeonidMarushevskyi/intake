@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('NarrativeForm', () => {
   const renderNarrative = ({...props}) => (
-    shallow(<NarrativeForm {...props} />)
+    shallow(<NarrativeForm {...props} />, {disableLifecycleMethods: true})
   )
 
   it('displays the narrative text field', () => {

@@ -10,7 +10,7 @@ describe('MaskedInputField', () => {
     ...args
   }) => {
     const props = {id, label, onChange, ...args}
-    return shallow(<MaskedInputField {...props} />)
+    return shallow(<MaskedInputField {...props} />, {disableLifecycleMethods: true})
   }
 
   describe('without placeholder props', () => {

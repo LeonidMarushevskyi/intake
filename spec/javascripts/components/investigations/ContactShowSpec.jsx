@@ -5,7 +5,7 @@ import {shallow, mount} from 'enzyme'
 describe('ContactShow', () => {
   function renderContact({id = '123', investigationId = '456', people = [], ...otherProps}) {
     const props = {id, investigationId, people, ...otherProps}
-    return shallow(<ContactShow {...props} />)
+    return shallow(<ContactShow {...props} />, {disableLifecycleMethods: true})
   }
   function mountContact({people = [], ...otherProps}) {
     const props = {people, ...otherProps}

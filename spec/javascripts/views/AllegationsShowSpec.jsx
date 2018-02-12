@@ -4,7 +4,7 @@ import AllegationShow from 'views/AllegationsShow'
 
 describe('AllegationsShow', () => {
   const renderAllegationShow = ({...props}) => (
-    shallow(<AllegationShow {...props}/>)
+    shallow(<AllegationShow {...props}/>, {disableLifecycleMethods: true})
   )
 
   it('renders a table of allegations with column headings', () => {

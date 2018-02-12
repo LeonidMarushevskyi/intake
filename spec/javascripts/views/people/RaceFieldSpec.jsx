@@ -23,7 +23,7 @@ describe('RaceField', () => {
       onRaceChange,
       onRaceDetailChange,
     }
-    return shallow(<RaceField {...props} />)
+    return shallow(<RaceField {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders the checkbox', () => {

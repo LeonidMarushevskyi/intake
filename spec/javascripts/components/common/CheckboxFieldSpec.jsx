@@ -17,7 +17,7 @@ describe('CheckboxField', () => {
     onBlur = jasmine.createSpy('onBlur')
     props.onChange = onChange
     props.onBlur = onBlur
-    component = shallow(<CheckboxField {...props} />)
+    component = shallow(<CheckboxField {...props} />, {disableLifecycleMethods: true})
   })
 
   it('passes ariaDescribedBy to the ErrorMessages', () => {
@@ -68,19 +68,19 @@ describe('CheckboxField', () => {
 
   describe('when flag props are set', () => {
     it('renders with required prop', () => {
-      component = shallow(<CheckboxField {...props} required/>)
+      component = shallow(<CheckboxField {...props} required/>, {disableLifecycleMethods: true})
       expect(component.find('label.required').exists()).toEqual(true)
       expect(component.find('input').prop('required')).toEqual(true)
       expect(component.find('input').prop('aria-required')).toEqual(true)
     })
 
     it('renders with disable prop', () => {
-      component = shallow(<CheckboxField {...props} disabled/>)
+      component = shallow(<CheckboxField {...props} disabled/>, {disableLifecycleMethods: true})
       expect(component.find('input').props().disabled).toEqual(true)
     })
 
     it('renders with checked prop', () => {
-      component = shallow(<CheckboxField {...props} checked/>)
+      component = shallow(<CheckboxField {...props} checked/>, {disableLifecycleMethods: true})
       expect(component.find('input').props().checked).toEqual(true)
     })
   })

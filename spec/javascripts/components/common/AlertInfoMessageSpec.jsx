@@ -5,7 +5,7 @@ import AlertInfoMessage from 'common/AlertInfoMessage'
 describe('AlertInfoMessage', () => {
   it('renders the message text passed to it', () => {
     const messageText = 'Help me Obi-Wan Kenobi'
-    const component = shallow(<AlertInfoMessage message={messageText} />)
+    const component = shallow(<AlertInfoMessage message={messageText} />, {disableLifecycleMethods: true})
     expect(component.text()).toEqual(messageText)
   })
 })

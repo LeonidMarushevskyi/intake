@@ -17,7 +17,7 @@ describe('PersonShowContainer', () => {
   let component
   beforeEach(() => {
     const context = {store}
-    component = shallow(<PersonShowContainer personId='1'/>, {context})
+    component = shallow(<PersonShowContainer personId='1'/>, {context}, {disableLifecycleMethods: true})
   })
   it('renders PersonInformationShow', () => {
     expect(component.find('PersonInformationShow').props()).toEqual({

@@ -9,7 +9,7 @@ describe('ShowMoreResults', () => {
   beforeEach(() => {
     onClick = jasmine.createSpy('onClick')
     button = shallow(
-      <ShowMoreResults onClick={onClick} />
+      <ShowMoreResults onClick={onClick} />, {disableLifecycleMethods: true}
     ).find('button')
   })
 

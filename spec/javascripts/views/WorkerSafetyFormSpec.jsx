@@ -19,7 +19,7 @@ describe('WorkerSafetyForm', () => {
       safetyAlerts,
       safetyInformation,
     }
-    return shallow(<WorkerSafetyForm {...props} />)
+    return shallow(<WorkerSafetyForm {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the worker safety alerts', () => {

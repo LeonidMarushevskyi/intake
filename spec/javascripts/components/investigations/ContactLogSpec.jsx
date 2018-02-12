@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 describe('ContactLog', () => {
   function renderContactLog({investigationId = 'ABC123', contactLogs = []}) {
     const props = {investigationId, contactLogs}
-    return shallow(<ContactLog {...props} />)
+    return shallow(<ContactLog {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the investigation investigationId in the header', () => {
@@ -57,7 +57,7 @@ describe('ContactLog', () => {
       }],
     }).find('ContactLogRow')
     expect(contactLogRows.length).toEqual(2)
-    const [contactLogOne, contactLogTwo] = contactLogRows.nodes
+    const [contactLogOne, contactLogTwo] = contactLogRows.getElements()
     expect(contactLogOne.props).toEqual({
       id: 'contact_one',
       investigationId: 'investigationId',

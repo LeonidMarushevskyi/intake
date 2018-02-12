@@ -37,7 +37,7 @@ describe('ScreeningPage', () => {
       hasApiValidationErrors,
       submitReferralErrors,
     }
-    return shallow(<ScreeningPage {...props} />)
+    return shallow(<ScreeningPage {...props} />, {disableLifecycleMethods: true})
   }
   function mountScreeningPage({
     actions: {

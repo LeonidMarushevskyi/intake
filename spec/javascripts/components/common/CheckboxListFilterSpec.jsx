@@ -30,7 +30,7 @@ describe('CheckboxListFilter', () => {
 
     it('calls onChange with updated filters', () => {
       const onChangeSpy = jasmine.createSpy('onChange')
-      const view = shallow(<CheckboxListFilter collection={SCREENING_DECISION} selected={[]} onChange={onChangeSpy}/>)
+      const view = shallow(<CheckboxListFilter collection={SCREENING_DECISION} selected={[]} onChange={onChangeSpy}/>, {disableLifecycleMethods: true})
       const uncheckedInput = view.find('#checkbox-filter-screen_out')
       uncheckedInput.simulate('change', {target: {checked: true}})
       expect(onChangeSpy).toHaveBeenCalledWith(['screen_out'])

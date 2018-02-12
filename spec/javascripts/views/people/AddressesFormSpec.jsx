@@ -5,7 +5,7 @@ import AddressesForm from 'views/people/AddressesForm'
 describe('AddressForm', () => {
   const renderAddressesForm = ({addresses = [], addressTypeOptions = [], stateOptions = [], ...options}) => {
     const props = {addresses, addressTypeOptions, stateOptions, ...options}
-    return shallow(<AddressesForm {...props} />)
+    return shallow(<AddressesForm {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders a button to add a new address', () => {

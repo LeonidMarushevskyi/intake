@@ -5,7 +5,7 @@ import AddressesShow from 'views/people/AddressesShow'
 describe('AddressesShow', () => {
   const renderAddressesShow = ({addresses = [], ...options}) => {
     const props = {addresses, ...options}
-    return shallow(<AddressesShow {...props} />)
+    return shallow(<AddressesShow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('does not render any show fields if there are no addresses', () => {

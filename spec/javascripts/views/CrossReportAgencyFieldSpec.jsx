@@ -21,7 +21,7 @@ describe('CrossReportAgencyField', () => {
       selected,
       value,
     }
-    return shallow(<CrossReportAgencyField {...props} />)
+    return shallow(<CrossReportAgencyField {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders errors', () => {

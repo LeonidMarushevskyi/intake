@@ -49,7 +49,7 @@ describe('ContactForm', () => {
       hasCancel,
       onCancel,
     }
-    return shallow(<ContactForm {...props} />)
+    return shallow(<ContactForm {...props} />, {disableLifecycleMethods: true})
   }
 
   function mountContact({investigationId, id, actions}) {

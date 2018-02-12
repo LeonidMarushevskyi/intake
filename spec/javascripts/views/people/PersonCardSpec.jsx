@@ -27,7 +27,7 @@ describe('PersonCard', () => {
       personId,
       personName,
     }
-    return shallow(<PersonCard {...props}/>)
+    return shallow(<PersonCard {...props}/>, {disableLifecycleMethods: true})
   }
 
   describe('mode is show', () => {

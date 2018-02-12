@@ -5,7 +5,7 @@ import PersonInformationShow from 'views/people/PersonInformationShow'
 describe('PersonInformationShow', () => {
   const renderPersonShow = ({ssn = {}, roles = {value: []}, name = {}, ...options}) => {
     const params = {ssn, roles, name, ...options}
-    return shallow(<PersonInformationShow {...params} />)
+    return shallow(<PersonInformationShow {...params} />, {disableLifecycleMethods: true})
   }
 
   it('renders the default avatar', () => {

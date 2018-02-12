@@ -5,13 +5,13 @@ import {shallow} from 'enzyme'
 describe('EditLink', () => {
   describe('render', () => {
     it('renders the aria label', () => {
-      const component = shallow(<EditLink ariaLabel='test me' onClick={() => null} />)
+      const component = shallow(<EditLink ariaLabel='test me' onClick={() => null} />, {disableLifecycleMethods: true})
       expect(component.props()['aria-label']).toEqual('test me')
     })
 
     it('calls onClick when the link is clicked', () => {
       const onClick = jasmine.createSpy()
-      const component = shallow(<EditLink ariaLabel='test me' onClick={onClick} />)
+      const component = shallow(<EditLink ariaLabel='test me' onClick={onClick} />, {disableLifecycleMethods: true})
       component.simulate('click')
       expect(onClick).toHaveBeenCalled()
     })

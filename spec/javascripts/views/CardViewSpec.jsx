@@ -4,7 +4,7 @@ import CardView from 'views/CardView'
 
 describe('Card View', () => {
   const renderCardView = ({...props}) => (
-    shallow(<CardView {...props} />)
+    shallow(<CardView {...props} />, {disableLifecycleMethods: true})
   )
 
   it('renders a card anchor', () => {

@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('ScreeningView', () => {
   const renderScreeningView = ({...props}) => (
-    shallow(<ScreeningView {...props} />)
+    shallow(<ScreeningView {...props} />, {disableLifecycleMethods: true})
   )
 
   it('renders a date range for the screening in the first column', () => {

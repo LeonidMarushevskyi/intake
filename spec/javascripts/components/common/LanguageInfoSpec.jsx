@@ -5,7 +5,7 @@ import LanguageInfo from 'common/LanguageInfo'
 describe('languages', () => {
   it('renders when present', () => {
     const props = {languages: ['French', 'Italian']}
-    const component = shallow(<LanguageInfo {...props} />)
+    const component = shallow(<LanguageInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain(
       '<div><strong class="c-gray half-pad-right">Language</strong><span>French (Primary), Italian</span></div>'
     )
@@ -13,7 +13,7 @@ describe('languages', () => {
 
   it('does not render when not present', () => {
     const props = {languages: []}
-    const component = shallow(<LanguageInfo {...props} />)
+    const component = shallow(<LanguageInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).not.toContain('Language')
   })
 })

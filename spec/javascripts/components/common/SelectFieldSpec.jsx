@@ -21,7 +21,7 @@ describe('SelectField', () => {
     props.onChange = onChange
     props.onBlur = onBlur
     component = shallow(
-      <SelectField {...props}><option/></SelectField>
+      <SelectField {...props}><option/></SelectField>, {disableLifecycleMethods: true}
     )
     formField = component.find('FormField')
   })
@@ -31,7 +31,7 @@ describe('SelectField', () => {
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
     expect(formField.props().htmlFor).toEqual('myDateFieldId')
     expect(formField.props().label).toEqual('this is my label')
-    expect(formField.childAt(0).node.type).toEqual('select')
+    expect(formField.childAt(0).getElement().type).toEqual('select')
   })
 
   it('renders the select element and children', () => {
@@ -43,7 +43,7 @@ describe('SelectField', () => {
 
   it('renders the select element value with empty string when value is null', () => {
     const propsWithNullValue = Object.assign(props, {value: null})
-    component = shallow(<SelectField {...propsWithNullValue}/>)
+    component = shallow(<SelectField {...propsWithNullValue}/>, {disableLifecycleMethods: true})
     const inputElement = component.find('select')
     expect(inputElement.length).toEqual(1)
     expect(inputElement.props().value).toEqual('')
@@ -67,14 +67,14 @@ describe('SelectField', () => {
     expect(component.find('select').prop('aria-required')).toEqual(undefined)
   })
 
-  describe('when SelectField is required', () => {
-    it('renders a required select field', () => {
-      component = shallow(<SelectField {...props} required/>)
-      expect(component.find('FormField').props().required).toEqual(true)
-      expect(component.find('select').prop('required')).toEqual(true)
-      expect(component.find('select').prop('aria-required')).toEqual(true)
-    })
+  it('renders a required select field, when required is true ', () => {
+    const propsWithRequired = Object.assign(props, {required: true})
+    component = shallow(<SelectField {...propsWithRequired}/>)
+    expect(component.find('FormField').props().required).toEqual(true)
+    expect(component.dive().find('select').prop('required')).toEqual(true)
+    expect(component.dive().find('select').prop('aria-required')).toEqual(true)
   })
+
   it('renders a disabled select field when disabled prop is passed', () => {
     component = shallow(<SelectField {...props} disabled/>)
     expect(component.find('select').is('[disabled]')).toEqual(true)

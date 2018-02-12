@@ -27,7 +27,7 @@ describe('ScreeningDecisionForm', () => {
       isAdditionalInfoRequired,
       ...options,
     }
-    return shallow(<ScreeningDecisionForm {...props}/>)
+    return shallow(<ScreeningDecisionForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('renders text about completing the SDM tool', () => {

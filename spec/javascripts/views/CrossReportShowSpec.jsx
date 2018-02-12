@@ -23,7 +23,7 @@ describe('CrossReportShow', () => {
       hasCrossReport,
       reportedOn,
     }
-    return shallow(<CrossReportShow {...props} />)
+    return shallow(<CrossReportShow {...props} />, {disableLifecycleMethods: true})
   }
 
   it('renders the label', () => {

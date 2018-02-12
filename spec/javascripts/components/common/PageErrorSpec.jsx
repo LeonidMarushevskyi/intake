@@ -6,7 +6,7 @@ describe('PageError', () => {
   let component
   describe('when no params are passed', () => {
     beforeEach(() => {
-      component = shallow(<PageError />)
+      component = shallow(<PageError />, {disableLifecycleMethods: true})
     })
     it('renders the div wrapper', () => {
       expect(component.find('div.page-error').exists()).toEqual(true)
@@ -19,7 +19,7 @@ describe('PageError', () => {
   describe('when pageErrorMessage is passed', () => {
     beforeEach(() => {
       const pageErrorMessage = 'pageErrorMessage'
-      component = shallow(<PageError pageErrorMessage={pageErrorMessage} />)
+      component = shallow(<PageError pageErrorMessage={pageErrorMessage} />, {disableLifecycleMethods: true})
     })
     it('does render pageErrorMessage', () => {
       expect(component.text()).toContain('pageErrorMessage')

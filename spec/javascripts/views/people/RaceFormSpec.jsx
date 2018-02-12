@@ -31,7 +31,7 @@ describe('Race', () => {
         ...races,
       },
     }
-    return shallow(<RaceForm {...props}/>)
+    return shallow(<RaceForm {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('it disables the race fields, except "Unknown" if it is checked', () => {

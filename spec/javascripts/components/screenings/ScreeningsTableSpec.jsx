@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 describe('ScreeningsTable', () => {
   it('renders screening table headings', () => {
-    const view = shallow(<ScreeningsTable />)
+    const view = shallow(<ScreeningsTable />, {disableLifecycleMethods: true})
     const tr = view.find('tr')
     expect(tr.text()).toContain('Screening Name')
     expect(tr.text()).toContain('Type/Decision')
@@ -23,7 +23,7 @@ describe('ScreeningsTable', () => {
       started_at: '2016-09-21T14:26:58.042Z',
       referral_id: '456',
     }]
-    const view = shallow(<ScreeningsTable screenings={screenings} />)
+    const view = shallow(<ScreeningsTable screenings={screenings} />, {disableLifecycleMethods: true})
     const screeningRow = view.find('ScreeningRow')
     expect(screeningRow.props()).toEqual({
       id: '33',

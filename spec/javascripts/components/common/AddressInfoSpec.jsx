@@ -12,7 +12,7 @@ describe('address', () => {
       zip: '11344',
       type: 'School',
     }
-    const component = shallow(<AddressInfo {...props} />)
+    const component = shallow(<AddressInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><strong class="c-gray half-pad-right">School</strong><span>234 Fake Street, Flushing, NM 11344</span></div>')
   })
 
@@ -25,7 +25,7 @@ describe('address', () => {
       zip: '11344',
       type: null,
     }
-    const component = shallow(<AddressInfo {...props} />)
+    const component = shallow(<AddressInfo {...props} />, {disableLifecycleMethods: true})
     expect(component.html()).toContain('<div><i class="fa fa-map-marker c-gray half-pad-right"></i><span>NM 11344</span></div>')
   })
 })

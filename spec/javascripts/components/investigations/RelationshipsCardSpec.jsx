@@ -6,7 +6,7 @@ import RelationshipsContainer from 'investigations/RelationshipsContainer'
 
 describe('RelationshipsCard', () => {
   const renderRelationshipsCard = (props) => (
-    shallow(<RelationshipsCard {...props}/>)
+    shallow(<RelationshipsCard {...props}/>, {disableLifecycleMethods: true})
   )
 
   describe('EmptyRelationships', () => {

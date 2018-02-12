@@ -9,7 +9,7 @@ describe('SuggestionHeader', () => {
         searchTerm={'search term'}
         total={total}
         currentNumberOfResults={currentNumberOfResults}
-      />
+      />, {disableLifecycleMethods: true}
     )
   }
   it('renders no results copy when total is 0', () => {

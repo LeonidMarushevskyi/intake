@@ -6,7 +6,7 @@ import RelationshipsContainer from 'screenings/RelationshipsContainer'
 
 describe('RelationshipsCard', () => {
   const renderRelationshipsCard = (props) => (
-    shallow(<RelationshipsCard {...props}/>)
+    shallow(<RelationshipsCard {...props}/>, {disableLifecycleMethods: true})
   )
 
   it('renders an empty relationships component when there are no relationships', () => {

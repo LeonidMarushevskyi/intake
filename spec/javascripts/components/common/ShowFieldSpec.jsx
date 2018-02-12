@@ -14,7 +14,7 @@ describe('ShowField', () => {
 
   beforeEach(() => {
     component = shallow(
-      <ShowField {...requiredProps}>This is the show field value</ShowField>
+      <ShowField {...requiredProps}>This is the show field value</ShowField>, {disableLifecycleMethods: true}
     )
     formField = component.find('FormField')
   })
@@ -23,7 +23,7 @@ describe('ShowField', () => {
     expect(formField.props().labelClassName).toEqual('myLabelTest')
     expect(formField.props().gridClassName).toEqual('myWrapperTest')
     expect(formField.props().label).toEqual('this is my label')
-    expect(formField.childAt(0).node.type).toEqual('span')
+    expect(formField.childAt(0).getElement().type).toEqual('span')
   })
 
   it('renders the show field value', () => {
@@ -38,7 +38,7 @@ describe('when field is required and has errors', () => {
       required: true,
       errors: ['Error 1', 'Error 2'],
     }
-    const component = shallow(<ShowField {...props} >show field value</ShowField>)
+    const component = shallow(<ShowField {...props} >show field value</ShowField>, {disableLifecycleMethods: true})
     const formField = component.find('FormField')
     expect(formField.props().required).toEqual(true)
     expect(formField.props().errors).toEqual(['Error 1', 'Error 2'])

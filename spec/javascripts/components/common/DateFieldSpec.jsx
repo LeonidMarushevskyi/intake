@@ -53,7 +53,7 @@ describe('DateField', () => {
       onChange,
       required,
     }
-    return shallow(<DateField {...props}/>)
+    return shallow(<DateField {...props}/>, {disableLifecycleMethods: true})
   }
 
   it('passes props to the FormField', () => {

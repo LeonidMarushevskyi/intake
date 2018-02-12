@@ -9,7 +9,7 @@ describe('HistoryTable', () => {
     screenings = [],
   }) {
     const props = {cases, referrals, screenings}
-    return shallow(<HistoryTable {...props}/>)
+    return shallow(<HistoryTable {...props}/>, {disableLifecycleMethods: true})
   }
 
   describe('HistoryTable', () => {

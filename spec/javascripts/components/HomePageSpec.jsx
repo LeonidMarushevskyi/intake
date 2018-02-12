@@ -29,14 +29,14 @@ describe('HomePage', () => {
     })
 
     it('renders the screening index table', () => {
-      component = shallow(<HomePage {...requiredProps} />)
+      component = shallow(<HomePage {...requiredProps} />, {disableLifecycleMethods: true})
       expect(component.find('ScreeningsTable').length).toEqual(1)
     })
 
     it('renders the screening index table when screenings are present', () => {
       const screenings = [{id: 1, name: 'Name 1', reference: 'ref1', started_at: '2016-08-11T18:24:22.157Z'}]
       const props = {...requiredProps, screenings}
-      component = shallow(<HomePage {...props} />)
+      component = shallow(<HomePage {...props} />, {disableLifecycleMethods: true})
       const table = component.find('ScreeningsTable')
       expect(table.props().screenings).toEqual(screenings)
     })
@@ -49,7 +49,7 @@ describe('HomePage', () => {
     })
 
     it('does not render the screenings table', () => {
-      const component = shallow(<HomePage {...requiredProps} />)
+      const component = shallow(<HomePage {...requiredProps} />, {disableLifecycleMethods: true})
       const table = component.find('ScreeningsTable')
       expect(table.length).toEqual(0)
     })

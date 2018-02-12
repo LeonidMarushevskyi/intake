@@ -9,9 +9,10 @@ describe('PageLayout', () => {
     pageHeaderDetails = {},
   }) {
     return shallow(
-      <PageLayout hasError={hasError} actions={actions}
-        pageHeaderDetails={pageHeaderDetails}
-      ><span id='child'/></PageLayout>
+      <PageLayout hasError={hasError} actions={actions} pageHeaderDetails={pageHeaderDetails}>
+        <span id='child'/>
+      </PageLayout>,
+      {disableLifecycleMethods: true}
     )
   }
 

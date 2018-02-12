@@ -17,7 +17,7 @@ describe('CountySelectField', () => {
       onChange,
       value,
     }
-    return shallow(<CountySelectField {...props} />)
+    return shallow(<CountySelectField {...props} />, {disableLifecycleMethods: true})
   }
 
   it('displays the select field', () => {
