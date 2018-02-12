@@ -4,7 +4,6 @@ node('Slave') {
     checkout scm
     def branch = env.BRANCH_NAME ?: 'master'
     def curStage = 'Start'
-    def emailList = 'thomas.ramirez@osi.ca.gov'
     def pipelineStatus = 'SUCCESS'
     def successColor = '11AB1B'
     def failureColor = '#FF0000'
@@ -13,9 +12,7 @@ node('Slave') {
 
     /* dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT")); */
 
-    try {
-        emailList = EMAIL_NOTIFICATION_LIST
-    } catch (e) {
+    catch (e) {
         // Okay not to perform assignment if EMAIL_NOTIFICATION_LIST is not defined
     }
 
@@ -58,8 +55,9 @@ node('Slave') {
                 }
                 withEnv(["DOCKER_USER=${DOCKER_USER}",
                          "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-                    sh "make login"
-                    sh "make publish"
+                    withDockerRegistry([credentialsId: '6ba8d05c-ca13-4818-8329-15d41a089ec0']) {
+                        sh "make publish"
+                    }   
                 }
             }
         }
@@ -100,12 +98,6 @@ node('Slave') {
         // disabling slack alerts when using a branch different from master.
         if (branch == 'master') {
           try {
-              emailext (
-                  to: emailList,
-                  subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
-                  body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
-                  <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-              )
 
               slackAlertColor = successColor
               slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
@@ -124,7 +116,6 @@ node('Slave') {
             retry(2) {
                 sh 'make clean'
             }
-            sh 'make logout'
         }
     }
 }
