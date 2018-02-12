@@ -50,10 +50,7 @@ node('intake-slave') {
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
                 }
-                    {
-                        sh "make publish"
-  
-                    }
+                sh "make publish"
                 }   
             }
         }
