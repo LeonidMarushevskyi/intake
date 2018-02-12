@@ -43,17 +43,17 @@ node('intake-slave') {
             }
 
             stage('Publish') {
-                curStage = 'Publish'
                 withDockerRegistry([credentialsId: '6ba8d05c-ca13-4818-8329-15d41a089ec0']) {
+                curStage = 'Publish'
                 if(VERSION_STRATEGY.startsWith('CALCULATE')) {
                     sh "make tag latest \$(git describe --tags \$(git rev-list --tags --max-count=1)).${buildNumber}"
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
                 }
-                {
-                    sh "make publish"
+                    {
+                        sh "make publish"
   
-                }
+                    }
                 }   
             }
         }
