@@ -12,10 +12,6 @@ node('intake-slave') {
 
     /* dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT")); */
 
-    catch (e) {
-        // Okay not to perform assignment if EMAIL_NOTIFICATION_LIST is not defined
-    }
-
     try {
         stage('Test') {
             curStage = 'Test'
@@ -53,10 +49,9 @@ node('intake-slave') {
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
                 }
-                withEnv(["DOCKER_USER=${DOCKER_USER}",
-                         "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-                    withDockerRegistry([credentialsId: '6ba8d05c-ca13-4818-8329-15d41a089ec0']) {
-                        sh "make publish"
+                {
+                withDockerRegistry([credentialsId: '6ba8d05c-ca13-4818-8329-15d41a089ec0']) {
+                    sh "make publish"
                     }   
                 }
             }
