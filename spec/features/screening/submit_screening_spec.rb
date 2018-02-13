@@ -35,7 +35,7 @@ feature 'Submit Screening' do
       before do
         stub_request(
           :put, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
-        ).and_return(json_body(existing_screening.to_json, status: 200))
+        ).and_return(json_body(participant.to_json, status: 200))
       end
 
       scenario 'submit button is disabled until all cards are saved' do
