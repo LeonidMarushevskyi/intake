@@ -7,12 +7,9 @@ require 'feature/testing'
 feature 'Submit Screening' do
   let(:existing_screening) { FactoryGirl.create(:screening, :submittable) }
   before do
-    no_screenings = []
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
-    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
-      .and_return(json_body(no_screenings.to_json, status: 200))
     stub_empty_history_for_screening(existing_screening)
     stub_empty_relationships_for_screening(existing_screening)
     stub_screening_put_request_with_anything_and_return(existing_screening)
@@ -38,7 +35,7 @@ feature 'Submit Screening' do
       before do
         stub_request(
           :put, intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id))
-        ).and_return(json_body(existing_screening.to_json, status: 200))
+        ).and_return(json_body(participant.to_json, status: 200))
       end
 
       scenario 'submit button is disabled until all cards are saved' do
@@ -69,9 +66,10 @@ feature 'Submit Screening' do
         within('.card', text: 'Cross Report') { click_button 'Save' }
         within('.card', text: 'Decision') { click_button 'Save' }
         expect(page).to have_button('Submit', disabled: true)
-        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+        within edit_participant_card_selector(participant.id) do
           click_button 'Save'
         end
+        expect(page).to have_css show_participant_card_selector(participant.id)
         expect(page).to have_button('Submit', disabled: false)
       end
 
@@ -79,9 +77,10 @@ feature 'Submit Screening' do
         visit edit_screening_path(existing_screening.id)
         expect(page).to have_button('Submit', disabled: true)
         within('.card', text: 'Screening Information') { click_button 'Save' }
-        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+        within edit_participant_card_selector(participant.id) do
           click_button 'Save'
         end
+        expect(page).to have_css show_participant_card_selector(participant.id)
         within('.card', text: 'Narrative') { click_button 'Save' }
         within('.card', text: 'Incident Information') { click_button 'Save' }
         within('.card', text: 'Allegations') { click_button 'Save' }
@@ -174,7 +173,6 @@ feature 'Submit Screening' do
         )
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
@@ -274,13 +272,10 @@ feature 'Submit Screening' do
         }
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
-        visit edit_screening_path(existing_screening.id)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
         ).and_return(json_body(errors.to_json, status: 422))
-
         visit edit_screening_path(existing_screening.id)
         save_all_cards
         click_button 'Submit'
