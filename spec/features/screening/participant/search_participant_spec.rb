@@ -367,7 +367,7 @@ feature 'searching a participant in autocompleter' do
       )
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Fi'
-        expect(page).to have_content 'Showing 1-25 of 51 results for "Fi"'
+        expect(page).to have_content 'Showing 1-25 of 51 results for "Fi"', wait: 3
         expect(page).to have_content 'Result 24'
       end
       expect(a_request(:post, search_path)).to have_been_made
