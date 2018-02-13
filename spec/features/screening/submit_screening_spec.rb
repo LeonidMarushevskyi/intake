@@ -48,16 +48,20 @@ feature 'Submit Screening' do
       expect(page).to have_button('Submit', disabled: false)
     end
 
+    scenario 'submit button is disabled until all cards are saved' do
+      visit edit_screening_path(existing_screening.id)
+      expect(page).to have_button('Submit', disabled: true)
+      within edit_participant_card_selector(participant.id) do
+        click_button 'Save'
+      end
+      save_all_cards
+      expect(page).to have_button('Submit', disabled: false)
+    end
+
     scenario 'submit button is disabled if screening cards are saved but person cards are not' do
       visit edit_screening_path(existing_screening.id)
       expect(page).to have_button('Submit', disabled: true)
-      within('.card', text: 'Screening Information') { click_button 'Save' }
-      within('.card', text: 'Narrative') { click_button 'Save' }
-      within('.card', text: 'Incident Information') { click_button 'Save' }
-      within('.card', text: 'Allegations') { click_button 'Save' }
-      within('.card', text: 'Worker Safety') { click_button 'Save' }
-      within('.card', text: 'Cross Report') { click_button 'Save' }
-      within('.card', text: 'Decision') { click_button 'Save' }
+      save_all_cards
       expect(page).to have_button('Submit', disabled: true)
       within edit_participant_card_selector(participant.id) do
         click_button 'Save'
@@ -69,18 +73,10 @@ feature 'Submit Screening' do
     scenario 'submit button is disabled if person cards are saved but screening cards are not' do
       visit edit_screening_path(existing_screening.id)
       expect(page).to have_button('Submit', disabled: true)
-      within('.card', text: 'Screening Information') { click_button 'Save' }
       within edit_participant_card_selector(participant.id) do
         click_button 'Save'
       end
-      expect(page).to have_css show_participant_card_selector(participant.id)
-      within('.card', text: 'Narrative') { click_button 'Save' }
-      within('.card', text: 'Incident Information') { click_button 'Save' }
-      within('.card', text: 'Allegations') { click_button 'Save' }
-      within('.card', text: 'Worker Safety') { click_button 'Save' }
-      within('.card', text: 'Cross Report') { click_button 'Save' }
-      expect(page).to have_button('Submit', disabled: true)
-      within('.card', text: 'Decision') { click_button 'Save' }
+      save_all_cards
       expect(page).to have_button('Submit', disabled: false)
     end
   end
@@ -111,6 +107,7 @@ feature 'Submit Screening' do
         select 'Fax', from: 'Communication Method'
         click_button 'Save'
       end
+      expect(page).to have_css('.card.show', text: 'Screening Information')
       expect(page).to have_button('Submit', disabled: false)
     end
   end
@@ -134,23 +131,25 @@ feature 'Submit Screening' do
       stub_request(
         :put, intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
       ).and_return(json_body(person.to_json, status: 200))
-
       visit edit_screening_path(existing_screening.id)
       save_all_cards
       within('.card', text: person_name) { click_button 'Save' }
+      expect(page).to have_css('.card.show', text: person_name)
       expect(page).to have_button('Submit', disabled: true)
       within('.card', text: person_name) { click_link 'Edit' }
+      expect(page).to have_css('.card.edit', text: person_name)
+      expect(page).to have_button('Submit', disabled: true)
 
       person.ssn = '123-45-6789'
       stub_request(
         :put,
         intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
       ).and_return(json_body(person.to_json))
-
       within('.card', text: person_name) do
         fill_in 'Social security number', with: '123-45-6789'
         click_button 'Save'
       end
+      expect(page).to have_css('.card.show', text: person_name)
 
       expect(page).to have_button('Submit', disabled: false)
     end

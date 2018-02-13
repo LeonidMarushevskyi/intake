@@ -66,12 +66,19 @@ module ScreeningHelpers
 
   def save_all_cards
     within('.card', text: 'Screening Information') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Screening Information')
     within('.card', text: 'Narrative') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Narrative')
     within('.card', text: 'Incident Information') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Incident Information')
     within('.card', text: 'Allegations') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Allegations')
     within('.card', text: 'Worker Safety') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Worker Safety')
     within('.card', text: 'Cross Report') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Cross Report')
     within('.card', text: 'Decision') { click_button 'Save' }
+    expect(page).to have_css('.card.show', text: 'Decision')
   end
 
   def cancel_all_cards
