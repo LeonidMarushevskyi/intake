@@ -29,8 +29,7 @@ module ValidationHelpers
     error_message: nil, person:, person_updates:, error_messages: nil
   )
     error_messages ||= [error_message]
-    person_name = "#{person.first_name} #{person.last_name}"
-    within('.card.edit', text: person_name) do
+    within edit_participant_card_selector(person.id) do
       error_messages.each do |message|
         expect(page).not_to have_content(message)
       end
