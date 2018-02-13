@@ -45,9 +45,10 @@ feature 'Submit Screening' do
         visit edit_screening_path(existing_screening.id)
         expect(page).to have_button('Submit', disabled: true)
         within('.card', text: 'Screening Information') { click_button 'Save' }
-        within('.card', text: "#{participant.first_name} #{participant.last_name}") do
+        within edit_participant_card_selector(participant.id) do
           click_button 'Save'
         end
+        expect(page).to have_css show_participant_card_selector(participant.id)
         within('.card', text: 'Narrative') { click_button 'Save' }
         within('.card', text: 'Incident Information') { click_button 'Save' }
         within('.card', text: 'Allegations') { click_button 'Save' }
