@@ -100,7 +100,7 @@ node('intake-slave') {
                 slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
               }
 
-              slackSend (color: slackAlertColor, message: slackMessage)
+              slackSend channel: "#tech-intake", baseUrl: 'https://hooks.slack.com/services/', tokenCredentialId: 'slackmessagetpt2', color: slackAlertColor, message: slackMessage
           }
           catch(e) { /* Nothing to do */ }
         }
