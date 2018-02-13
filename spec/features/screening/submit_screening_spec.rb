@@ -7,12 +7,9 @@ require 'feature/testing'
 feature 'Submit Screening' do
   let(:existing_screening) { FactoryGirl.create(:screening, :submittable) }
   before do
-    no_screenings = []
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
     ).and_return(json_body(existing_screening.to_json, status: 200))
-    stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
-      .and_return(json_body(no_screenings.to_json, status: 200))
     stub_empty_history_for_screening(existing_screening)
     stub_empty_relationships_for_screening(existing_screening)
     stub_screening_put_request_with_anything_and_return(existing_screening)
@@ -176,7 +173,6 @@ feature 'Submit Screening' do
         )
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
@@ -276,13 +272,10 @@ feature 'Submit Screening' do
         }
       end
       before do
-        stub_empty_history_for_screening(existing_screening)
-        visit edit_screening_path(existing_screening.id)
         stub_request(
           :post,
           intake_api_url(ExternalRoutes.intake_api_screening_submit_path(existing_screening.id))
         ).and_return(json_body(errors.to_json, status: 422))
-
         visit edit_screening_path(existing_screening.id)
         save_all_cards
         click_button 'Submit'
