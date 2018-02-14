@@ -28,7 +28,7 @@ feature 'Snapshot relationship card' do
     end
   end
 
-  context 'a snapshot with relationships from intake api' do
+  context 'load relationships from intake api' do
     around do |example|
       Feature.run_with_activated(:release_two) do
         example.run
@@ -105,9 +105,7 @@ feature 'Snapshot relationship card' do
           ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
         )
       ).and_return(json_body(relationships.to_json, status: 200))
-    end
 
-    scenario 'search for a person and populate relationships' do
       visit snapshot_path(id: participants_screening.id)
 
       within '#search-card', text: 'Search' do
@@ -117,7 +115,9 @@ feature 'Snapshot relationship card' do
       within '#search-card', text: 'Search' do
         page.find('strong', text: 'Marge').click
       end
+    end
 
+    scenario 'should return the correct relationships' do
       within '#relationships-card.card.show', text: 'Relationships' do
         expect(page).to have_content(
           "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
@@ -134,6 +134,20 @@ feature 'Snapshot relationship card' do
           )
         )
       ).to have_been_made
+    end
+
+    scenario 'clicking the Start Over button clears relationships card' do
+      within '#relationships-card.card.show' do
+        expect(page).to have_content(
+          "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
+        )
+      end
+
+      click_button 'Start Over'
+
+      within '#relationships-card.card.show' do
+        expect(page).to have_content('Search for people and add them to see their relationships')
+      end
     end
   end
 end
