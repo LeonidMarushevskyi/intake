@@ -30,6 +30,9 @@ describe('createSnapshotPerson', () => {
       put(personCardActions.createPersonSuccess(participant))
     )
     expect(gen.next(snapashotId).value).toEqual(
+      put(screeningActions.fetchRelationships(snapashotId))
+    )
+    expect(gen.next(snapashotId).value).toEqual(
       put(screeningActions.fetchHistoryOfInvolvements(snapashotId))
     )
   })
