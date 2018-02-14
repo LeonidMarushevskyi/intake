@@ -1,19 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'spec_helper'
 require 'feature/testing'
 
 feature 'Snapshot relationship card' do
   let(:snapshot) { FactoryGirl.create(:screening) }
-  let(:empty_response) do
-    {
-      hits: {
-        total: 1,
-        hits: []
-      }
-    }
-  end
 
   before do
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
@@ -90,7 +81,6 @@ feature 'Snapshot relationship card' do
         )
       ).and_return(json_body([].to_json, status: 200))
 
-
       search_response = PersonSearchResponseBuilder.build do |response|
         response.with_total(1)
         response.with_hits do
@@ -117,7 +107,7 @@ feature 'Snapshot relationship card' do
       ).and_return(json_body(relationships.to_json, status: 200))
     end
 
-    scenario 'search for a person and relationships populates if it has any related to person' do
+    scenario 'search for a person and populate relationships' do
       visit snapshot_path(id: participants_screening.id)
 
       within '#search-card', text: 'Search' do
