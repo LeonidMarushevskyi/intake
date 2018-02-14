@@ -9,9 +9,14 @@ describe('App', () => {
   })
 
   it('fetches user info when the component mounts', () => {
-    const fetchUserInfoActionSpy = jasmine.createSpy('fetchUserInfoAction')
-    mount(<App actions={{fetchUserInfoAction: fetchUserInfoActionSpy}}><div/></App>)
-    expect(fetchUserInfoActionSpy).toHaveBeenCalled()
+    const fetchUserInfoAction = jasmine.createSpy('fetchUserInfoAction')
+    const fetchSystemCodesAction = jasmine.createSpy('fetchSystemCodesAction')
+    const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
+    const actions = {fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermission}
+    mount(<App actions={actions}><div/></App>)
+    expect(fetchUserInfoAction).toHaveBeenCalled()
+    expect(fetchSystemCodesAction).toHaveBeenCalled()
+    expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
   })
 
   it('renders the global header component on all app views', () => {

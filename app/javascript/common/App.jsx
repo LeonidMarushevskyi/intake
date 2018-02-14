@@ -3,6 +3,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getUserNameSelector} from 'selectors/userInfoSelectors'
 import {fetch as fetchUserInfoAction} from 'actions/userInfoActions'
+import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
+import {checkStaffPermission} from 'actions/staffActions'
 import {bindActionCreators} from 'redux'
 import {GlobalHeader} from 'react-wood-duck'
 import Footer from '../views/Footer'
@@ -11,7 +13,10 @@ import {config} from '../common/config'
 
 export class App extends React.Component {
   componentDidMount() {
-    this.props.actions.fetchUserInfoAction()
+    const {fetchSystemCodesAction, checkStaffPermission, fetchUserInfoAction} = this.props.actions
+    fetchUserInfoAction()
+    fetchSystemCodesAction()
+    checkStaffPermission('add_sensitive_people')
   }
 
   render() {
@@ -36,7 +41,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  actions: bindActionCreators({fetchUserInfoAction}, dispatch),
+  actions: bindActionCreators({fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermission}, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
