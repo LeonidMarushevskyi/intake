@@ -1,7 +1,7 @@
 import * as IntakeConfig from 'common/config'
 import React from 'react'
 import {ScreeningPage} from 'screenings/ScreeningPage'
-import {mount, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('ScreeningPage', () => {
   const sdmPath = 'https://ca.sdmdata.org'
@@ -17,29 +17,25 @@ describe('ScreeningPage', () => {
     actions = {},
     editable = true,
     loaded = true,
-    mode,
     params = {},
     participants = [],
-    reference,
-    referralId,
     hasApiValidationErrors = false,
     submitReferralErrors = [],
+    ...args
   }) {
     const props = {
       actions,
       editable,
       loaded,
-      mode,
       params,
       participants,
-      reference,
-      referralId,
       hasApiValidationErrors,
       submitReferralErrors,
+      ...args,
     }
     return shallow(<ScreeningPage {...props} />, {disableLifecycleMethods: true})
   }
-  function mountScreeningPage({
+  function renderScreeningPageWithLifecycle({
     actions: {
       setPageMode = () => null,
       fetchScreening = () => null,
@@ -63,13 +59,13 @@ describe('ScreeningPage', () => {
       screening,
       editable,
     }
-    return mount(<ScreeningPage {...props}/>)
+    return shallow(<ScreeningPage {...props}/>)
   }
 
   describe('componentDidMount', () => {
     it("sets the page mode to 'edit' when url mode is 'edit' and editable is true", () => {
       const setPageMode = jasmine.createSpy('setPageMode')
-      mountScreeningPage({
+      renderScreeningPageWithLifecycle({
         editable: true,
         actions: {setPageMode},
         params: {mode: 'edit'},
@@ -79,7 +75,7 @@ describe('ScreeningPage', () => {
 
     it("sets the page mode to 'show' when url mode is 'show' and editable is true", () => {
       const setPageMode = jasmine.createSpy('setPageMode')
-      mountScreeningPage({
+      renderScreeningPageWithLifecycle({
         editable: true,
         actions: {setPageMode},
         params: {mode: 'show'},
@@ -96,7 +92,7 @@ describe('ScreeningPage', () => {
         fetchScreening = jasmine.createSpy('fetchScreening')
         fetchRelationships = jasmine.createSpy('fetchRelationships')
         fetchHistoryOfInvolvements = jasmine.createSpy('fetchHistoryOfInvolvements')
-        mountScreeningPage({
+        renderScreeningPageWithLifecycle({
           actions: {fetchScreening, fetchRelationships, fetchHistoryOfInvolvements},
           params: {id},
         })
@@ -117,6 +113,25 @@ describe('ScreeningPage', () => {
   })
 
   describe('render', () => {
+    it('renders a sidebar', () => {
+      expect(renderScreeningPage({}).find('ScreeningSideBar').exists()).toBe(true)
+    })
+
+    it('renders a page header', () => {
+      expect(renderScreeningPage({}).find('Connect(PageHeader)').exists()).toBe(true)
+    })
+
+    it('passes the screening title to the page header', () => {
+      const screeningPage = renderScreeningPage({screeningTitle: 'Screening 1'})
+      const pageHeader = screeningPage.find('Connect(PageHeader)')
+      expect(pageHeader.props().pageTitle).toEqual('Screening 1')
+    })
+
+    it('passes buttons to the screening header', () => {
+      const pageHeader = renderScreeningPage({}).find('Connect(PageHeader)')
+      expect(pageHeader.props().button.type).toEqual('button')
+    })
+
     describe('with errors', () => {
       it('renders the error detail card', () => {
         const submitReferralErrors = ['a', 'b', 'c']
@@ -247,13 +262,7 @@ describe('ScreeningPage', () => {
   describe('when screening is not loaded', () => {
     it('renders an empty div', () => {
       isFeatureActiveSpy.and.returnValue(true)
-      expect(renderScreeningPage({loaded: false}).html()).toEqual('<div></div>')
-    })
-  })
-
-  describe('in hotline', () => {
-    it('renders a sidebar', () => {
-      expect(renderScreeningPage({loaded: true}).find('ScreeningSideBar').exists()).toBe(true)
+      expect(renderScreeningPage({loaded: false}).find('.container').childAt(0).html()).toEqual('<div></div>')
     })
   })
 })

@@ -29,7 +29,14 @@ import CrossReportFormContainer from 'containers/screenings/CrossReportFormConta
 import CrossReportShowContainer from 'containers/screenings/CrossReportShowContainer'
 import DecisionFormContainer from 'containers/screenings/DecisionFormContainer'
 import DecisionShowContainer from 'containers/screenings/DecisionShowContainer'
+import PageHeader from 'common/PageHeader'
 import {getScreeningSubmissionErrorsSelector, getApiValidationErrorsSelector} from 'selectors/errorsSelectors'
+import {getScreeningTitleSelector, getScreeningIsReadOnlySelector} from 'selectors/screeningSelectors'
+import {
+  getAllCardsAreSavedValueSelector,
+  getScreeningHasErrorsSelector,
+  getPeopleHaveErrorsSelector,
+} from 'selectors/screening/screeningPageSelectors'
 
 export class ScreeningPage extends React.Component {
   constructor(props, context) {
@@ -52,7 +59,24 @@ export class ScreeningPage extends React.Component {
     fetchHistoryOfInvolvements(id)
   }
 
-  render() {
+  submitButton() {
+    const {editable, disableSubmitButton, params: {id}, actions: {submitScreening}} = this.props
+    if (editable) {
+      return (
+        <button type='button'
+          className='btn primary-btn pull-right'
+          disabled={disableSubmitButton}
+          onClick={() => submitScreening(id)}
+        >
+          Submit
+        </button>
+      )
+    } else {
+      return (<div />)
+    }
+  }
+
+  renderScreening() {
     const {referralId, editable, mode, loaded, hasApiValidationErrors, submitReferralErrors} = this.props
 
     if (loaded) {
@@ -123,10 +147,24 @@ export class ScreeningPage extends React.Component {
       return (<div />)
     }
   }
+
+  render() {
+    return (
+      <div>
+        <div>
+          <PageHeader pageTitle={this.props.screeningTitle} button={this.submitButton()} />
+        </div>
+        <div className='container'>
+          {this.renderScreening()}
+        </div>
+      </div>
+    )
+  }
 }
 
 ScreeningPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  disableSubmitButton: PropTypes.bool,
   editable: PropTypes.bool,
   hasApiValidationErrors: PropTypes.bool,
   loaded: PropTypes.bool,
@@ -135,6 +173,7 @@ ScreeningPage.propTypes = {
   participants: PropTypes.array.isRequired,
   reference: PropTypes.string,
   referralId: PropTypes.string,
+  screeningTitle: PropTypes.string,
   submitReferralErrors: PropTypes.array,
 }
 
@@ -144,13 +183,17 @@ ScreeningPage.defaultProps = {
 
 export function mapStateToProps(state, _ownProps) {
   return {
-    editable: !state.getIn(['screening', 'referral_id']),
+    disableSubmitButton: !getAllCardsAreSavedValueSelector(state) ||
+      getScreeningHasErrorsSelector(state) ||
+      getPeopleHaveErrorsSelector(state),
+    editable: !getScreeningIsReadOnlySelector(state),
     loaded: state.getIn(['screening', 'fetch_status']) === 'FETCHED',
     mode: state.getIn(['screeningPage', 'mode']),
     participants: state.get('participants').toJS(),
     reference: state.getIn(['screening', 'reference']),
     referralId: state.getIn(['screening', 'referral_id']),
     hasApiValidationErrors: Boolean(getApiValidationErrorsSelector(state).size),
+    screeningTitle: getScreeningTitleSelector(state),
     submitReferralErrors: getScreeningSubmissionErrorsSelector(state).toJS(),
   }
 }
