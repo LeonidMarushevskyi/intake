@@ -5,6 +5,7 @@ import {getSnapshotIdValueSelector} from 'selectors/snapshotSelectors'
 import {createSnapshot} from 'actions/snapshotActions'
 import {clearPeople} from 'actions/personCardActions'
 import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
+import {clearRelationships} from 'actions/relationshipsActions'
 import PersonSearchFormContainer from 'containers/snapshot/PersonSearchFormContainer'
 import PersonCardView from 'snapshots/PersonCardView'
 import HistoryOfInvolvementContainer from 'containers/snapshot/HistoryOfInvolvementContainer'
@@ -91,6 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(createSnapshot())
     dispatch(clearPeople())
     dispatch(clearHistoryOfInvolvement())
+    dispatch(clearRelationships())
   },
 })
 
