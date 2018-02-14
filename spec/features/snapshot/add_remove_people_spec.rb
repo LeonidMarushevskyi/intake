@@ -33,6 +33,13 @@ feature 'Adding and removing a person from a snapshot' do
       )
     ).and_return(json_body({}.to_json, status: 200))
 
+    stub_request(
+      :get,
+      intake_api_url(
+        ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+      )
+    ).and_return(json_body([].to_json, status: 200))
+
     search_response = PersonSearchResponseBuilder.build do |response|
       response.with_total(1)
       response.with_hits do
@@ -111,6 +118,13 @@ feature 'Adding and removing a person from a snapshot' do
         )
       )
     ).to have_been_made.times(2)
+
+    stub_request(
+      :get,
+      intake_api_url(
+        ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+      )
+    ).and_return(json_body([].to_json, status: 200))
 
     expect(page).not_to have_content show_participant_card_selector(person.id)
     expect(page).not_to have_content(person.first_name)
