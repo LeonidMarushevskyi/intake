@@ -6,7 +6,6 @@ development:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: false
     centralized_sessions: true
-    referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
     hoi_from_intake_api: false
     investigations: true
 
@@ -17,7 +16,6 @@ test:
     authentication: false
     perry_version_two: false
     centralized_sessions: true
-    referral_submit: false
     hoi_from_intake_api: false
     investigations: true
 
@@ -28,6 +26,5 @@ production:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: <%= ENV.fetch('PERRY_VERSION_TWO', false) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
-    referral_submit: <%= ENV.fetch('REFERRAL_SUBMIT', false) %>
     hoi_from_intake_api: <%= ENV.fetch('HOI_FROM_INTAKE_API', false) %>
     investigations: <%= ENV.fetch('INVESTIGATIONS', true) %>
