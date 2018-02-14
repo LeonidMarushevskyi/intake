@@ -23,7 +23,6 @@ import * as IntakeConfig from 'common/config'
 const history = syncHistoryWithStore(routerHistory, store, {selectLocationState: createSelectLocationState()})
 
 const investigationConstraint = IntakeConfig.isFeatureActive('investigations')
-const releaseOneConstraint = IntakeConfig.isFeatureActive('release_one')
 const releaseTwoConstraint = IntakeConfig.isFeatureActive('release_two')
 
 export default (
@@ -32,12 +31,9 @@ export default (
       <Route path='/' component={App}>
         <Route component={PageLayout}>
           <IndexRoute component={HomePage} />
-          { !releaseTwoConstraint && !releaseOneConstraint &&
-          <Route path='screenings/:id' component={ScreeningPage}/> }
-          { !releaseTwoConstraint && !releaseOneConstraint &&
-          <Route path='screenings/:id/:mode' component={ScreeningPage} /> }
-          { releaseTwoConstraint &&
-          <Route path='snapshot' component={SnapshotPage}/> }
+          { !releaseTwoConstraint && <Route path='screenings/:id' component={ScreeningPage}/> }
+          { !releaseTwoConstraint && <Route path='screenings/:id/:mode' component={ScreeningPage} /> }
+          { releaseTwoConstraint && <Route path='snapshot' component={SnapshotPage}/> }
           { investigationConstraint &&
           <Route path='investigations/:id' component={InvestigationPageContainer} /> }
           { investigationConstraint &&

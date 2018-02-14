@@ -1,7 +1,6 @@
 # config/feature.yml
 development:
   features:
-    release_one: false
     release_two: false
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: false
@@ -11,7 +10,6 @@ development:
 
 test:
   features:
-    release_one: false
     release_two: false
     authentication: false
     perry_version_two: false
@@ -21,7 +19,6 @@ test:
 
 production:
   features:
-    release_one: <%= ENV.fetch('RELEASE_ONE', false) %>
     release_two: <%= ENV.fetch('RELEASE_TWO', false) %>
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
     perry_version_two: <%= ENV.fetch('PERRY_VERSION_TWO', false) %>

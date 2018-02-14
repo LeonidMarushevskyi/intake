@@ -13,7 +13,6 @@ import 'common/jquery-helpers'
 import 'bootstrap'
 import ReactDOM from 'react-dom'
 import routes from 'common/routes'
-import ReleaseOneContainer from 'common/ReleaseOneContainer'
 
 // CSS
 import 'bootstrap/dist/css/bootstrap'
@@ -34,8 +33,4 @@ import '../../assets/stylesheets/shame_overrides'
 
 if (document.getElementById('app')) {
   ReactDOM.render(routes, document.getElementById('app'))
-}
-
-if (document.getElementById('app-release-one')) {
-  ReactDOM.render(ReleaseOneContainer, document.getElementById('app-release-one'))
 }
