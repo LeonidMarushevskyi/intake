@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
-require File.join(File.dirname(__FILE__), 'routes/active_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_investigations_constraint')
 
 Rails.application.routes.draw do
