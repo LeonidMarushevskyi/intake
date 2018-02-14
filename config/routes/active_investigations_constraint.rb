@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Routes
-  # InactiveReleaseOneAndTwoConstraint provides a feature constraint
-  # for available routes while release_one and release two are inactive
+  # ActiveInvestigationsConstraint provides a feature constraint
+  # for available routes while investigations are active
   class ActiveInvestigationsConstraint
     def self.matches?(_request)
       Feature.active?(:investigations)

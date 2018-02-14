@@ -14,7 +14,7 @@ namespace :docker do # rubocop:disable BlockLength
       'docker-compose up -d',
       'docker-compose restart api',
       'docker-compose exec api bash -c "bundle exec rake db:structure:dump"',
-      'docker-compose exec api bash -c "RAILS_ENV=test bundle exec rake db:test:load"',
+      'docker-compose exec api bash -c "RAILS_ENV=test bundle exec rake db:test:load"'
     ]
   end
   desc 'Cleans docker of old dangling containers & images'

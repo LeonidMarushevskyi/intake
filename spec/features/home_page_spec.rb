@@ -3,56 +3,6 @@
 require 'rails_helper'
 require 'feature/testing'
 feature 'home page' do
-  context 'when release one is enabled' do
-    around do |example|
-      Feature.run_with_activated(:release_one) do
-        example.run
-      end
-    end
-
-    let(:dora_response) do
-      PersonSearchResponseBuilder.build do |response|
-        response.with_total(1)
-        response.with_hits do
-          [
-            PersonSearchResultBuilder.build do |builder|
-              builder.with_first_name('Marge')
-              builder.with_last_name('Simpson')
-              builder.with_ssn('123-23-1234')
-              builder.with_gender('female')
-              builder.with_addresses do
-                [
-                  AddressSearchResultBuilder.build do |address|
-                    address.with_street_number('123')
-                    address.with_street_name('Fake St')
-                    address.with_state_code('CA')
-                    address.with_type do
-                      AddressTypeSearchResultBuilder.build('Home')
-                    end
-                  end
-                ]
-              end
-            end
-          ]
-        end
-      end
-    end
-
-    scenario 'displays search bar' do
-      stub_person_search(search_term: 'Marge', person_response: dora_response)
-      visit root_path
-      expect(page).to_not have_button 'Start Screening'
-      fill_in 'People', with: 'Marge'
-      expect(page).to have_content('Showing 1-1 of 1 results for "Marge"')
-      expect(
-        a_request(
-          :post,
-          dora_api_url(Rails.application.routes.url_helpers.dora_people_light_index_path)
-        )
-      ).to have_been_made.times(1)
-    end
-  end
-
   context 'when release two is enabled' do
     around do |example|
       Feature.run_with_activated(:release_two) do

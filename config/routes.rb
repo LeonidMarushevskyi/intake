@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_constraint')
 require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
-require File.join(File.dirname(__FILE__), 'routes/inactive_release_one_and_two_constraint')
-require File.join(File.dirname(__FILE__), 'routes/active_referral_submit_constraint')
-require File.join(File.dirname(__FILE__), 'routes/active_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_investigations_constraint')
 
 Rails.application.routes.draw do
@@ -27,19 +23,17 @@ Rails.application.routes.draw do
 
       resources :screenings,
         only: %i[index],
-        constraints: Routes::InactiveReleaseOneAndTwoConstraint
+        constraints: Routes::InactiveReleaseTwoConstraint
 
       resources :screenings,
         only: %i[update],
-        constraints: Routes::InactiveReleaseOneAndTwoConstraint
+        constraints: Routes::InactiveReleaseTwoConstraint
 
-      resources :screenings,
-        only: %i[show create],
-        constraints: Routes::InactiveReleaseOneConstraint do
+      resources :screenings, only: %i[show create] do
         member do
           get 'history_of_involvements'
           get 'relationships' => 'relationships#by_screening_id'
-          post 'submit', constraints: Routes::ActiveReferralSubmitConstraint
+          post 'submit'
         end
       end
 

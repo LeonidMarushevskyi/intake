@@ -22,9 +22,6 @@ feature 'Participant Phone Number' do
     visit edit_screening_path(id: screening.id)
 
     marge.phone_numbers << PhoneNumber.new(number: '7894561245', type: 'Home')
-    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(body: as_json_without_root_id(marge))
-      .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
       click_button 'Add new phone number'
@@ -49,9 +46,6 @@ feature 'Participant Phone Number' do
     visit edit_screening_path(id: screening.id)
 
     marge.phone_numbers.first.number = '7894561245'
-    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(body: as_json_without_root_id(marge))
-      .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
       expect(page).to have_field('Phone Number', with: '(917)555-5555')
@@ -79,9 +73,6 @@ feature 'Participant Phone Number' do
     end
 
     marge.phone_numbers = []
-    stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
-      .with(body: as_json_without_root_id(marge))
-      .and_return(json_body(marge.to_json, status: 200))
 
     within edit_participant_card_selector(marge.id) do
       click_link 'Delete phone number'
