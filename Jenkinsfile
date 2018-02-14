@@ -1,10 +1,9 @@
 import java.text.SimpleDateFormat
 
-node('Slave') {
+node('intake-slave') {
     checkout scm
     def branch = env.BRANCH_NAME ?: 'master'
     def curStage = 'Start'
-    def emailList = 'thomas.ramirez@osi.ca.gov'
     def pipelineStatus = 'SUCCESS'
     def successColor = '11AB1B'
     def failureColor = '#FF0000'
@@ -12,12 +11,6 @@ node('Slave') {
     def buildDate = dateFormatGmt.format(new Date())
 
     /* dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT")); */
-
-    try {
-        emailList = EMAIL_NOTIFICATION_LIST
-    } catch (e) {
-        // Okay not to perform assignment if EMAIL_NOTIFICATION_LIST is not defined
-    }
 
     try {
         stage('Test') {
@@ -50,17 +43,15 @@ node('Slave') {
             }
 
             stage('Publish') {
+                withDockerRegistry([credentialsId: '6ba8d05c-ca13-4818-8329-15d41a089ec0']) {
                 curStage = 'Publish'
                 if(VERSION_STRATEGY.startsWith('CALCULATE')) {
                     sh "make tag latest \$(git describe --tags \$(git rev-list --tags --max-count=1)).${buildNumber}"
                 } else {
                     sh 'make tag latest $(git describe --tags $(git rev-list --tags --max-count=1))'
                 }
-                withEnv(["DOCKER_USER=${DOCKER_USER}",
-                         "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-                    sh "make login"
-                    sh "make publish"
-                }
+                sh "make publish"
+                }   
             }
         }
     }
@@ -100,12 +91,6 @@ node('Slave') {
         // disabling slack alerts when using a branch different from master.
         if (branch == 'master') {
           try {
-              emailext (
-                  to: emailList,
-                  subject: "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage ${curStage}",
-                  body: """<p>${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}':</p>
-                  <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-              )
 
               slackAlertColor = successColor
               slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' completed for branch '${branch}' (${env.BUILD_URL})"
@@ -115,7 +100,7 @@ node('Slave') {
                 slackMessage = "${pipelineStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' in stage '${curStage}' for branch '${branch}' (${env.BUILD_URL})"
               }
 
-              slackSend (color: slackAlertColor, message: slackMessage)
+              slackSend channel: "#tech-intake", baseUrl: 'https://hooks.slack.com/services/', tokenCredentialId: 'slackmessagetpt2', color: slackAlertColor, message: slackMessage
           }
           catch(e) { /* Nothing to do */ }
         }
@@ -124,7 +109,6 @@ node('Slave') {
             retry(2) {
                 sh 'make clean'
             }
-            sh 'make logout'
         }
     }
 }
