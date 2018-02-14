@@ -19,7 +19,6 @@ class SnapshotPage extends React.Component {
       createSnapshot()
     }
   }
-
   render() {
     const {participants} = this.props
     return (
@@ -40,9 +39,7 @@ class SnapshotPage extends React.Component {
           </div>
         </div>
         <PersonSearchFormContainer />
-        {participants.map(({id}) =>
-          <PersonCardView key={id} personId={id} />
-        )}
+        {participants.map(({id}) => <PersonCardView key={id} personId={id} />)}
         <RelationshipsCardContainer empty={<EmptyRelationships />} notEmpty={<RelationshipsContainer />} />
         <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
       </div>
