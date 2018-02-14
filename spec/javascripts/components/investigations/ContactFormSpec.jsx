@@ -1,10 +1,9 @@
 import ContactForm from 'investigations/ContactForm'
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {shallow} from 'enzyme'
 
 describe('ContactForm', () => {
   function renderContact({
-    id,
     investigationId = 'ABC123',
     actions = {},
     startedAt = null,
@@ -23,11 +22,9 @@ describe('ContactForm', () => {
     people = [],
     valid = false,
     selectedPeopleIds = [],
-    hasCancel,
-    onCancel,
+    ...args
   }) {
     const props = {
-      id,
       investigationId,
       actions,
       startedAt,
@@ -46,14 +43,13 @@ describe('ContactForm', () => {
       people,
       valid,
       selectedPeopleIds,
-      hasCancel,
-      onCancel,
+      ...args,
     }
     return shallow(<ContactForm {...props} />, {disableLifecycleMethods: true})
   }
 
-  function mountContact({investigationId, id, actions}) {
-    return mount(
+  function renderContactWithLifeCycle({investigationId, id, actions}) {
+    return shallow(
       <ContactForm
         investigationId={investigationId}
         id={id}
@@ -72,6 +68,20 @@ describe('ContactForm', () => {
     const component = renderContact({investigationId: 'ABCD1234'})
     const header = component.find('.card-header')
     expect(header.text()).toEqual('Contact - Investigation ABCD1234')
+  })
+
+  it('passes the page title to the header', () => {
+    const pageTitle = 'Contact - Investigation 1234'
+    const component = renderContact({pageTitle})
+    expect(component.find('Connect(PageHeader)').exists()).toBe(true)
+    expect(component.find('Connect(PageHeader)').props().pageTitle).toEqual(pageTitle)
+  })
+
+  it('passes a null button to the page header so it does not render the default button', () => {
+    const button = null
+    const component = renderContact({button})
+    expect(component.find('Connect(PageHeader)').exists()).toBe(true)
+    expect(component.find('Connect(PageHeader)').props().button).toEqual(button)
   })
 
   it('displays the started at datetime picker', () => {
@@ -443,7 +453,7 @@ describe('ContactForm', () => {
 
     describe('when contact id is not present', () => {
       beforeEach(() => {
-        mountContact({
+        renderContactWithLifeCycle({
           investigationId: 'existing_investigation_id',
           actions: {build, edit},
         })
@@ -462,7 +472,7 @@ describe('ContactForm', () => {
 
     describe('when contact id is present', () => {
       beforeEach(() => {
-        mountContact({
+        renderContactWithLifeCycle({
           investigationId: 'existing_investigation_id',
           id: 'existing_contact_id',
           actions: {build, edit},
