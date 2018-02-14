@@ -12,6 +12,7 @@ import {createScreening, submitScreening} from 'actions/screeningActions'
 import {createSnapshot} from 'actions/snapshotActions'
 import {clearPeople} from 'actions/personCardActions'
 import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
+import {clearRelationships} from 'actions/relationshipsActions'
 import {bindActionCreators} from 'redux'
 import PageError from 'common/PageError'
 import {PageHeader} from 'react-wood-duck'
@@ -85,6 +86,7 @@ const mapDispatchToProps = (dispatch, _ownProps) => ({
     submitScreening,
     clearPeople,
     clearHistoryOfInvolvement,
+    clearRelationships,
   }, dispatch),
 })
 
@@ -100,6 +102,7 @@ const mergeProps = (stateProps, {actions}, ownProps) => {
       actions.createSnapshot()
       actions.clearPeople()
       actions.clearHistoryOfInvolvement()
+      actions.clearRelationships()
     }
   }
   const pageHeaderDetails = {...stateProps.pageHeaderDetails, pageHeaderButtonOnClick}
