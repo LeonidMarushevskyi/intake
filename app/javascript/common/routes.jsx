@@ -22,24 +22,21 @@ import * as IntakeConfig from 'common/config'
 const history = syncHistoryWithStore(routerHistory, store, {selectLocationState: createSelectLocationState()})
 
 const investigationConstraint = IntakeConfig.isFeatureActive('investigations')
-const releaseTwoConstraint = IntakeConfig.isFeatureActive('release_two')
+const snapshotActive = IntakeConfig.isFeatureActive('snapshot')
+const screeningActive = IntakeConfig.isFeatureActive('screenings')
 
 export default (
   <Provider store={store}>
     <Router history={history} >
       <Route path='/' component={App}>
         <IndexRoute component={HomePage} />
-        { !releaseTwoConstraint && <Route path='screenings/:id' component={ScreeningPage}/> }
-        { !releaseTwoConstraint && <Route path='screenings/:id/:mode' component={ScreeningPage} /> }
-        <Route path='snapshot' component={SnapshotPage}/>
-        { investigationConstraint &&
-        <Route path='investigations/:id' component={InvestigationPageContainer} /> }
-        { investigationConstraint &&
-        <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} /> }
-        { investigationConstraint &&
-        <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} /> }
-        { investigationConstraint &&
-        <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} /> }
+        {screeningActive && <Route path='screenings/:id' component={ScreeningPage}/>}
+        {screeningActive && <Route path='screenings/:id/:mode' component={ScreeningPage} />}
+        {snapshotActive && <Route path='snapshot' component={SnapshotPage}/>}
+        {investigationConstraint && <Route path='investigations/:id' component={InvestigationPageContainer} />}
+        {investigationConstraint && <Route path='investigations/:investigation_id/contacts/new' component={ContactFormContainer} />}
+        {investigationConstraint && <Route path='investigations/:investigation_id/contacts/:id' component={ContactShowContainer} />}
+        {investigationConstraint && <Route path='investigations/:investigation_id/contacts/:id/edit' component={ContactFormContainer} />}
         <Route path='logout' component={() => (window.location = IntakeConfig.config().authentication_logout_url)}/>
         <Route path='pages/conditions_of_use' component={ConditionsOfUse}/>
         <Route path='pages/privacy_policy' component={PrivacyPolicy}/>
