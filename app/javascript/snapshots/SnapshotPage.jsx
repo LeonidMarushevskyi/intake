@@ -10,7 +10,7 @@ import HistoryTableContainer from 'containers/snapshot/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 import RelationshipsCardContainer from 'containers/snapshot/RelationshipsCardContainer'
 import RelationshipsContainer from 'containers/snapshot/RelationshipsContainer'
-import {EmptyRelationships} from 'investigations/Relationships'
+import {EmptyRelationships} from 'snapshots/Relationships'
 
 class SnapshotPage extends React.Component {
   componentDidMount() {
