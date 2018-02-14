@@ -37,4 +37,4 @@ test:
 
 production:
   <<: *default
-  public_output_path: assets
+  public_output_path: intake/assets
