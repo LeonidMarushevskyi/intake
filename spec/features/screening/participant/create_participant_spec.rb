@@ -112,6 +112,7 @@ feature 'Create participant' do
           PersonSearchResultBuilder.build do |builder|
             builder.with_first_name('Marge')
             builder.with_last_name('Simpson')
+            builder.with_sensitivity
           end
         ]
       end
@@ -294,9 +295,7 @@ feature 'Create participant' do
             fill_in 'Search for any person', with: 'Marge'
             find('strong', text: 'Marge Simpson').click
           end
-          expect(
-            a_request(:post, intake_api_url(ExternalRoutes.intake_api_participants_path))
-          ).to_not have_been_made
+          expect(accept_alert).to eq('You are not authorized to add this person.')
         end
       end
 
