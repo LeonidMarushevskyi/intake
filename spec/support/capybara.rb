@@ -42,6 +42,18 @@ Capybara.raise_server_errors = true
 # Allow aria-label to be used in locators
 Capybara.enable_aria_label = true
 
+module Selenium
+  module WebDriver
+    module Firefox
+      class Launcher
+        remove_const(:SOCKET_LOCK_TIMEOUT)
+      end
+    end
+  end
+end
+
+::Selenium::WebDriver::Firefox::Launcher::SOCKET_LOCK_TIMEOUT = 90
+
 module Capybara
   module Accessible
     class SeleniumDriverAdapter
