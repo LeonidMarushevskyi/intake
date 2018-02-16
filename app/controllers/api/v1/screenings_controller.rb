@@ -47,7 +47,8 @@ module Api
           reference: LUID.generate.first,
           assignee: build_assignee_name(session),
           assignee_staff_id: build_staff_id(session),
-          incident_county: build_incident_county(session)
+          incident_county: build_incident_county(session),
+          indexable: true
         )
         screening = ScreeningRepository.create(session[:security_token], new_screening)
         render json: screening
@@ -111,10 +112,9 @@ module Api
         user_details = session[:user_details]
         return nil unless user_details
 
-        middle_initial = user_details.middle_initial
         assignee_details = [
           user_details.try(:first_name),
-          ("#{middle_initial}." unless middle_initial.blank?),
+          ("#{user_details.middle_initial}." unless user_details.middle_initial.blank?),
           user_details.try(:last_name),
           ("- #{user_details.county}" if user_details.county)
         ]

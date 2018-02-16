@@ -17,11 +17,11 @@ describe Api::V1::ScreeningsController do
       before do
         allow(LUID).to receive(:generate).and_return(['123ABC'])
       end
-      it 'does not set indexable' do
-        screening_params = { indexable: [true, false].sample }
+      it 'defaults indexable to true' do
+        screening_params = { indexable: false }
         expect(Screening).to receive(:new)
           .with(
-            hash_not_including(:indexable)
+            hash_including(indexable: true)
           ).and_call_original
         allow(ScreeningRepository).to receive(:create)
         process :create, method: :post, session: session, params: screening_params
@@ -45,7 +45,8 @@ describe Api::V1::ScreeningsController do
         .with(reference: '123ABC',
               assignee: assignee,
               assignee_staff_id: '123',
-              incident_county: nil)
+              incident_county: nil,
+              indexable: true)
         .and_return(blank_screening)
 
       process :create, method: :post, session: session
@@ -60,7 +61,8 @@ describe Api::V1::ScreeningsController do
           .with(reference: '123ABC',
                 assignee: nil,
                 assignee_staff_id: nil,
-                incident_county: nil)
+                incident_county: nil,
+                indexable: true)
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -70,7 +72,13 @@ describe Api::V1::ScreeningsController do
         staff = FactoryGirl.build(:staff, first_name: nil, last_name: nil, county: nil)
         session = { 'security_token' => security_token, 'user_details' => staff }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil, incident_county: nil)
+          .with(
+            reference: '123ABC',
+            assignee: '',
+            assignee_staff_id: nil,
+            incident_county: nil,
+            indexable: true
+          )
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -88,7 +96,8 @@ describe Api::V1::ScreeningsController do
             .with(reference: '123ABC',
                   assignee: assignee,
                   assignee_staff_id: '456',
-                  incident_county: nil)
+                  incident_county: nil,
+                  indexable: true)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
@@ -105,7 +114,8 @@ describe Api::V1::ScreeningsController do
             .with(reference: '123ABC',
                   assignee: assignee,
                   assignee_staff_id: '789',
-                  incident_county: nil)
+                  incident_county: nil,
+                  indexable: true)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(response).to be_successful
@@ -126,14 +136,16 @@ describe Api::V1::ScreeningsController do
             .with(reference: '123ABC',
                   assignee: assignee,
                   assignee_staff_id: '789',
-                  incident_county: nil)
+                  incident_county: nil,
+                  indexable: true)
             .and_return(blank_screening)
           process :create, method: :post, session: session
           expect(Screening).to receive(:new)
             .with(reference: '123ABC',
                   assignee: assignee,
                   assignee_staff_id: '789',
-                  incident_county: nil)
+                  incident_county: nil,
+                  indexable: true)
             .and_return(blank_screening)
           process :create, method: :post, session: session
         end
@@ -144,7 +156,13 @@ describe Api::V1::ScreeningsController do
       it 'leaves incident county as nil if user_details is not set' do
         session = { 'security_token' => security_token }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: nil, assignee_staff_id: nil, incident_county: nil)
+          .with(
+            reference: '123ABC',
+            assignee: nil,
+            assignee_staff_id: nil,
+            incident_county: nil,
+            indexable: true
+          )
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -160,7 +178,13 @@ describe Api::V1::ScreeningsController do
         )
         session = { 'security_token' => security_token, 'user_details' => staff }
         expect(Screening).to receive(:new)
-          .with(reference: '123ABC', assignee: '', assignee_staff_id: nil, incident_county: nil)
+          .with(
+            reference: '123ABC',
+            assignee: '',
+            assignee_staff_id: nil,
+            incident_county: nil,
+            indexable: true
+          )
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful
@@ -178,7 +202,8 @@ describe Api::V1::ScreeningsController do
           .with(reference: '123ABC',
                 assignee: assignee,
                 assignee_staff_id: '456',
-                incident_county: incident_county)
+                incident_county: incident_county,
+                indexable: true)
           .and_return(blank_screening)
         process :create, method: :post, session: session
         expect(response).to be_successful

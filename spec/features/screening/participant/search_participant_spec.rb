@@ -409,7 +409,8 @@ feature 'searching a participant in autocompleter' do
         safety_alerts: [],
         safety_information: nil,
         address: { city: nil },
-        assignee: nil
+        assignee: nil,
+        indexable: true
       )
       stub_empty_history_for_screening(new_screening)
       stub_empty_relationships_for_screening(new_screening)
