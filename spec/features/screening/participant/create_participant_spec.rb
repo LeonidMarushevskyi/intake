@@ -180,7 +180,7 @@ feature 'Create participant' do
 
   scenario 'API returns a 403 response when trying to add a person' do
     if ENV.key?('TEST_ENV_NUMBER')
-      skip 'Pending this test as it just fails on jenkins when the javascript pop up is triggered'
+      skip 'Pending this test as it just fails on jenkins when the javascript alert is triggered'
     end
 
     visit edit_screening_path(id: existing_screening.id)
