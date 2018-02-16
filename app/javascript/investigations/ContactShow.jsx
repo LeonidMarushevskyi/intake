@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ShowField from 'common/ShowField'
 import {dateTimeFormatter} from 'utils/dateFormatter'
 import EditLink from 'common/EditLink'
+import PageHeader from 'common/PageHeader'
 
 class ContactShow extends Component {
   componentDidMount() {
@@ -15,6 +16,7 @@ class ContactShow extends Component {
       investigationId,
       location,
       note,
+      pageTitle,
       people,
       purpose,
       startedAt,
@@ -22,58 +24,65 @@ class ContactShow extends Component {
       onEdit,
     } = this.props
     return (
-      <div className='card show double-gap-top'>
-        <div className='card-header'>
-          <span>{`Contact - Investigation ${investigationId}`}</span>
-          <EditLink
-            ariaLabel='Edit contact'
-            onClick={(event) => {
-              event.preventDefault()
-              onEdit()
-            }}
-          />
+      <div>
+        <div>
+          <PageHeader pageTitle={pageTitle} button={null} />
         </div>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-md-6'>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Date & Time'>
-                  {`(${dateTimeFormatter(startedAt)})`}
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Communication Method'>
-                  {communicationMethod}
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Location'>
-                  {location}
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Status'>
-                  {status}
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='People present'>
-                  <ul className='list-unstyled'>
-                    {people.map((person, index) => (<li key={index}>{person}</li>))}
-                  </ul>
-                </ShowField>
-              </div>
-              <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Purpose'>
-                  {purpose}
-                </ShowField>
-              </div>
+        <div className='container'>
+          <div className='card show double-gap-top'>
+            <div className='card-header'>
+              <span>{`Contact - Investigation ${investigationId}`}</span>
+              <EditLink
+                ariaLabel='Edit contact'
+                onClick={(event) => {
+                  event.preventDefault()
+                  onEdit()
+                }}
+              />
             </div>
-            <div className='col-md-6'>
+            <div className='card-body'>
               <div className='row'>
-                <ShowField gridClassName='col-md-12' label='Contact Notes (Optional)'>
-                  {note}
-                </ShowField>
+                <div className='col-md-6'>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Date & Time'>
+                      {`(${dateTimeFormatter(startedAt)})`}
+                    </ShowField>
+                  </div>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Communication Method'>
+                      {communicationMethod}
+                    </ShowField>
+                  </div>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Location'>
+                      {location}
+                    </ShowField>
+                  </div>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Status'>
+                      {status}
+                    </ShowField>
+                  </div>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='People present'>
+                      <ul className='list-unstyled'>
+                        {people.map((person, index) => (<li key={index}>{person}</li>))}
+                      </ul>
+                    </ShowField>
+                  </div>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Purpose'>
+                      {purpose}
+                    </ShowField>
+                  </div>
+                </div>
+                <div className='col-md-6'>
+                  <div className='row'>
+                    <ShowField gridClassName='col-md-12' label='Contact Notes (Optional)'>
+                      {note}
+                    </ShowField>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,6 +100,7 @@ ContactShow.propTypes = {
   location: PropTypes.string,
   note: PropTypes.string,
   onEdit: PropTypes.func,
+  pageTitle: PropTypes.string,
   people: PropTypes.array,
   purpose: PropTypes.string,
   startedAt: PropTypes.string,
