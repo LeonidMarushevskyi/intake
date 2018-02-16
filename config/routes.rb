@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), 'routes/inactive_release_two_constraint')
 require File.join(File.dirname(__FILE__), 'routes/active_investigations_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_screenings_constraint')
+require File.join(File.dirname(__FILE__), 'routes/active_snapshot_constraint')
 
 Rails.application.routes.draw do
   root 'home#index'
@@ -21,15 +22,18 @@ Rails.application.routes.draw do
       get '/security/check_permission' => 'security#check_permission'
       get '/user_info' => 'user#user_info'
 
-      resources :screenings,
-        only: %i[index],
-        constraints: Routes::InactiveReleaseTwoConstraint
+      resources :snapshots,
+        only: %i[create],
+        constraints: Routes::ActiveSnapshotConstraint do
+        member do
+          get 'history_of_involvements'
+          get 'relationships'
+        end
+      end
 
       resources :screenings,
-        only: %i[update],
-        constraints: Routes::InactiveReleaseTwoConstraint
-
-      resources :screenings, only: %i[show create] do
+        only: %i[index update show create],
+        constraints: Routes::ActiveScreeningsConstraint do
         member do
           get 'history_of_involvements'
           get 'relationships' => 'relationships#by_screening_id'
@@ -41,7 +45,7 @@ Rails.application.routes.draw do
 
       resources :participants,
         only: %i[update],
-        constraints: Routes::InactiveReleaseTwoConstraint
+        constraints: Routes::ActiveScreeningsConstraint
 
       resource :people, only: [:search] do
         collection do
