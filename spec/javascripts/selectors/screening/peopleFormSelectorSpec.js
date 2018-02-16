@@ -366,17 +366,30 @@ describe('peopleFormSelectors', () => {
   })
 
   describe('getAddressTypeOptionsSelector', () => {
-    it('returns formatted options for phone types', () => {
-      expect(getAddressTypeOptionsSelector()).toEqualImmutable(fromJS([
-        {value: 'Common', label: 'Common'},
-        {value: 'Day Care', label: 'Day Care'},
-        {value: 'Home', label: 'Home'},
-        {value: 'Homeless', label: 'Homeless'},
-        {value: 'Other', label: 'Other'},
-        {value: 'Penal Institution', label: 'Penal Institution'},
-        {value: 'Permanent Mailing Address', label: 'Permanent Mailing Address'},
-        {value: 'Residence 2', label: 'Residence 2'},
-        {value: 'Work', label: 'Work'},
+    const state = fromJS({
+      addressTypes: [
+        {code: '6273', value: 'Common'},
+        {code: '28', value: 'Day Care'},
+        {code: '32', value: 'Residence'},
+        {code: '29', value: 'Homeless'},
+        {code: '6272', value: 'Other Mailing'},
+        {code: '30', value: 'Penal Institution'},
+        {code: '31', value: 'Permanent Mailing Address'},
+        {code: '6271', value: 'Residence 2'},
+        {code: '27', value: 'Business'},
+      ],
+    })
+    it('returns formatted options for address types', () => {
+      expect(getAddressTypeOptionsSelector(state)).toEqualImmutable(fromJS([
+        {value: '6273', label: 'Common'},
+        {value: '28', label: 'Day Care'},
+        {value: '32', label: 'Residence'},
+        {value: '29', label: 'Homeless'},
+        {value: '6272', label: 'Other Mailing'},
+        {value: '30', label: 'Penal Institution'},
+        {value: '31', label: 'Permanent Mailing Address'},
+        {value: '6271', label: 'Residence 2'},
+        {value: '27', label: 'Business'},
       ]))
     })
   })

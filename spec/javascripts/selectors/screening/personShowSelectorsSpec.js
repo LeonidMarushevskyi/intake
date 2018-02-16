@@ -199,12 +199,12 @@ describe('personShowSelectors', () => {
   describe('getPersonFormattedAddressesSelector', () => {
     it('returns info for the person with the passed id', () => {
       const people = [
-        {id: '1', addresses: [{type: 'Home'}]},
+        {id: '1', addresses: [{type: '32'}]},
         {id: '2', addresses: [{type: 'Cell'}]},
       ]
-      const state = fromJS({participants: people})
+      const state = fromJS({participants: people, addressTypes: [{code: '32', value: 'Residence'}]})
       expect(getPersonFormattedAddressesSelector(state, '1').first().get('type'))
-        .toEqual('Home')
+        .toEqual('Residence')
     })
 
     it('returns an empty array if no addresses exists for the person', () => {
@@ -249,10 +249,10 @@ describe('personShowSelectors', () => {
     })
 
     it('returns the type for an address', () => {
-      const people = [{id: '1', addresses: [{type: 'Home'}]}]
-      const state = fromJS({participants: people})
+      const people = [{id: '1', addresses: [{type: '32'}]}]
+      const state = fromJS({participants: people, addressTypes: [{code: '32', value: 'Residence'}]})
       expect(getPersonFormattedAddressesSelector(state, '1').first().get('type'))
-        .toEqual('Home')
+        .toEqual('Residence')
     })
   })
 
