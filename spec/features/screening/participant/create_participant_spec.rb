@@ -180,10 +180,6 @@ feature 'Create participant' do
   end
 
   scenario 'API returns a 403 response when trying to add a person' do
-    if ENV.key?('TEST_ENV_NUMBER')
-      skip 'Pending this test as it just fails on jenkins when the javascript alert is triggered'
-    end
-
     visit edit_screening_path(id: existing_screening.id)
 
     stub_request(:post,
@@ -191,11 +187,11 @@ feature 'Create participant' do
       .and_return(json_body('', status: 403))
 
     within '#search-card', text: 'Search' do
-      fill_in 'Search for any person', with: 'Marge'
-      click_button 'Create a new person'
+      accept_alert('You are not authorized to add this person.') do
+        fill_in 'Search for any person', with: 'Marge'
+        click_button 'Create a new person'
+      end
     end
-
-    expect(accept_alert).to eq('You are not authorized to add this person.')
   end
 
   scenario 'adding a participant from search on show screening page' do
@@ -292,10 +288,11 @@ feature 'Create participant' do
           ).and_return(json_body({}.to_json, status: 201))
           visit edit_screening_path(id: existing_screening.id, token: insensitive_token)
           within '#search-card', text: 'Search' do
-            fill_in 'Search for any person', with: 'Marge'
-            find('strong', text: 'Marge Simpson').click
+            accept_alert('You are not authorized to add this person.') do
+              fill_in 'Search for any person', with: 'Marge'
+              find('strong', text: 'Marge Simpson').click
+            end
           end
-          expect(accept_alert).to eq('You are not authorized to add this person.')
         end
       end
 
