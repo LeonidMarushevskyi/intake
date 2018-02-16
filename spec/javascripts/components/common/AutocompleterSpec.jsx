@@ -100,6 +100,7 @@ describe('<Autocompleter />', () => {
 
     describe('when an item is not selectable', () => {
       beforeEach(() => {
+        spyOn(window, 'alert')
         const isSelectable = jasmine.createSpy('isSelectable').and.returnValue(false)
         const autocompleter = mountAutocompleter({
           results, onClear, onChange, onSelect, isSelectable,
@@ -110,10 +111,11 @@ describe('<Autocompleter />', () => {
           .simulate('click', null)
       })
 
-      it('does nothing', () => {
+      it('only presents error message', () => {
         expect(onClear).not.toHaveBeenCalled()
         expect(onChange).not.toHaveBeenCalledWith('')
         expect(onSelect).not.toHaveBeenCalled()
+        expect(window.alert).toHaveBeenCalledWith('You are not authorized to add this person.')
       })
     })
   })
