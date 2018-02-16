@@ -10,6 +10,7 @@ export const systemCodeDisplayValue = (code, systemCodes = List(), noSetValue = 
 /* eslint-enable no-invalid-this */
 export const getStatusesSelector = (state) => state.get('contactStatuses')
 export const getPurposesSelector = (state) => state.get('contactPurposes')
+export const getAddressTypes = (state) => state.get('addressTypes')
 export const getLocationsSelector = (state) => state.get('locations')
 export const getCommunicationMethodsSelector = (state) => state.get('communicationMethods')
 export const getAllegationTypesSelector = (state) => state.get('allegationTypes', List())

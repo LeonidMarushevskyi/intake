@@ -6,6 +6,7 @@ import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import {ROLE_TYPE_NON_REPORTER, ROLE_TYPE_REPORTER} from 'enums/RoleType'
 import {isRequiredIfCreate, combineCompact} from 'utils/validator'
+import {getAddressTypes} from 'selectors/systemCodeSelectors'
 import moment from 'moment'
 
 const VALID_SSN_LENGTH = 9
@@ -18,7 +19,6 @@ export const getPeopleSelector = (state) => state.get('peopleForm')
 
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import PHONE_NUMBER_TYPE from 'enums/PhoneNumberType'
-import ADDRESS_TYPE from 'enums/AddressType'
 import US_STATE from 'enums/USState'
 import {RACE_DETAILS} from 'enums/Races'
 import {ETHNICITY_DETAILS} from 'enums/Ethnicity'
@@ -265,7 +265,15 @@ export const getFilteredPersonRolesSelector = (state, personId) => {
   ])
 }
 
-export const getAddressTypeOptionsSelector = () => fromJS(ADDRESS_TYPE.map((type) => ({value: type, label: type})))
+export const getAddressTypeOptionsSelector = (state) => (
+  getAddressTypes(state).map((addressType) => (
+    Map({
+      value: addressType.get('code'),
+      label: addressType.get('value'),
+    })
+  ))
+)
+
 export const getStateOptionsSelector = () => fromJS(US_STATE.map(({code, name}) => ({value: code, label: name})))
 
 export const getPersonAddressesSelector = (state, personId) => (

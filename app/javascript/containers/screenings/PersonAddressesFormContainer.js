@@ -10,7 +10,7 @@ import {
 const mapStateToProps = (state, {personId}) => (
   {
     addresses: getPersonAddressesSelector(state, personId).toJS(),
-    addressTypeOptions: getAddressTypeOptionsSelector().toJS(),
+    addressTypeOptions: getAddressTypeOptionsSelector(state).toJS(),
     stateOptions: getStateOptionsSelector().toJS(),
   }
 )
