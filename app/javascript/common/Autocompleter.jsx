@@ -47,6 +47,8 @@ export class Autocompleter extends Component {
       onChange('')
       onSelect(item)
       this.setState({menuVisible: false})
+    } else {
+      alert('You are not authorized to add this person.') // eslint-disable-line no-alert
     }
   }
 
