@@ -4,9 +4,9 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'Create Snapshot' do
-  context 'when release two is enabled' do
+  context 'when only snapshot is enabled' do
     around do |example|
-      Feature.run_with_activated(:release_two) do
+      Feature.run_with_deactivated(:screenings) do
         example.run
       end
     end
@@ -105,9 +105,9 @@ feature 'Create Snapshot' do
     end
   end
 
-  context 'when release two is not enabled' do
+  context 'when snapshot is not enabled' do
     around do |example|
-      Feature.run_with_deactivated(:release_two) do
+      Feature.run_with_deactivated(:snapshot) do
         example.run
       end
     end
