@@ -1,6 +1,8 @@
 import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
 import {setPageMode} from 'actions/screeningPageActions'
+import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 import PersonCardView from 'screenings/PersonCardView'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -55,8 +57,8 @@ export class ScreeningPage extends React.Component {
     } = this.props
     setPageMode(mode || 'show')
     fetchScreening(id)
-    fetchRelationships(id)
-    fetchHistoryOfInvolvements(id)
+    fetchRelationships('screenings', id)
+    fetchHistoryOfInvolvements('screenings', id)
   }
 
   submitButton() {
@@ -199,7 +201,13 @@ export function mapStateToProps(state, _ownProps) {
 }
 
 function mapDispatchToProps(dispatch, _ownProps) {
-  const actions = {...personCardActions, ...screeningActions, setPageMode}
+  const actions = {
+    setPageMode,
+    fetchHistoryOfInvolvements,
+    fetchRelationships,
+    ...personCardActions,
+    ...screeningActions,
+  }
   return {
     actions: bindActionCreators(actions, dispatch),
   }

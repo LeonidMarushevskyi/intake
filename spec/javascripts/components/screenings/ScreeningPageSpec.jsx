@@ -103,11 +103,11 @@ describe('ScreeningPage', () => {
       })
 
       it('fetches relationships for the screening from the url ID', () => {
-        expect(fetchRelationships).toHaveBeenCalledWith(id)
+        expect(fetchRelationships).toHaveBeenCalledWith('screenings', id)
       })
 
       it('fetches HOI for the screening from the url ID', () => {
-        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith(id)
+        expect(fetchHistoryOfInvolvements).toHaveBeenCalledWith('screenings', id)
       })
     })
   })

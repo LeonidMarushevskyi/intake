@@ -5,10 +5,8 @@ import {
   createPersonSuccess,
   createPersonFailure,
 } from 'actions/personCardActions'
-import {
-  fetchRelationships,
-  fetchHistoryOfInvolvements,
-} from 'actions/screeningActions'
+import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 
 export function* createSnapshotPerson({payload: {person}}) {
   try {
@@ -24,8 +22,8 @@ export function* createSnapshotPerson({payload: {person}}) {
       },
     })
     yield put(createPersonSuccess(response))
-    yield put(fetchRelationships(snapshotId))
-    yield put(fetchHistoryOfInvolvements(snapshotId))
+    yield put(fetchRelationships('snapshots', snapshotId))
+    yield put(fetchHistoryOfInvolvements('snapshots', snapshotId))
   } catch (error) {
     if (error.status === STATUS_CODES.forbidden) {
       yield call(alert, 'You are not authorized to add this person.')
