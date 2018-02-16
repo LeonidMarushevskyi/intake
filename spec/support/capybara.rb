@@ -60,7 +60,9 @@ module Capybara
       def modal_dialog_present?(driver)
         driver.browser.switch_to.alert
         true
-      rescue ::Selenium::WebDriver::Error::NoSuchAlertError, ::NoMethodError
+      rescue ::Selenium::WebDriver::Error::UnhandledAlertError,
+             ::Selenium::WebDriver::Error::NoSuchAlertError,
+             ::NoMethodError
         false
       end
     end
