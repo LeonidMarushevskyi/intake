@@ -23,7 +23,7 @@ describe('createSnapshot', () => {
   it('creates and puts snapshot', () => {
     const snapshot = {id: '123'}
     const gen = createSnapshot()
-    expect(gen.next().value).toEqual(call(post, '/api/v1/screenings'))
+    expect(gen.next().value).toEqual(call(post, '/api/v1/snapshots'))
     expect(gen.next(snapshot).value).toEqual(
       put(createSnapshotSuccess(snapshot))
     )
@@ -35,7 +35,7 @@ describe('createSnapshot', () => {
   it('puts errors when errors are thrown', () => {
     const error = {responseJSON: 'some error'}
     const gen = createSnapshot()
-    expect(gen.next().value).toEqual(call(post, '/api/v1/screenings'))
+    expect(gen.next().value).toEqual(call(post, '/api/v1/snapshots'))
     expect(gen.throw(error).value).toEqual(
       put(createSnapshotFailure(error))
     )
