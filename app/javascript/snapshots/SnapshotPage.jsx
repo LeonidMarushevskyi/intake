@@ -8,6 +8,9 @@ import PersonCardView from 'snapshots/PersonCardView'
 import HistoryOfInvolvementContainer from 'containers/snapshot/HistoryOfInvolvementContainer'
 import HistoryTableContainer from 'containers/snapshot/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
+import RelationshipsCardContainer from 'containers/snapshot/RelationshipsCardContainer'
+import RelationshipsContainer from 'containers/snapshot/RelationshipsContainer'
+import {EmptyRelationships} from 'snapshots/Relationships'
 
 class SnapshotPage extends React.Component {
   componentDidMount() {
@@ -16,7 +19,6 @@ class SnapshotPage extends React.Component {
       createSnapshot()
     }
   }
-
   render() {
     const {participants} = this.props
     return (
@@ -37,9 +39,8 @@ class SnapshotPage extends React.Component {
           </div>
         </div>
         <PersonSearchFormContainer />
-        {participants.map(({id}) =>
-          <PersonCardView key={id} personId={id} />
-        )}
+        {participants.map(({id}) => <PersonCardView key={id} personId={id} />)}
+        <RelationshipsCardContainer empty={<EmptyRelationships />} notEmpty={<RelationshipsContainer />} />
         <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
       </div>
     )

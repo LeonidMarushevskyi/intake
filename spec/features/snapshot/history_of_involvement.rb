@@ -261,6 +261,13 @@ feature 'Snapshot History of Involvement' do
         )
       ).and_return(json_body(screening_involvement.to_json, status: 200))
 
+      stub_request(
+        :get,
+        intake_api_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+        )
+      ).and_return(json_body([].to_json, status: 200))
+
       search_response = PersonSearchResponseBuilder.build do |response|
         response.with_total(1)
         response.with_hits do
@@ -587,6 +594,13 @@ feature 'Snapshot History of Involvement' do
           ExternalRoutes.intake_api_history_of_involvements_path(snapshot.id)
         )
       ).and_return(json_body(screening_involvement.to_json, status: 200))
+
+      stub_request(
+        :get,
+        intake_api_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+        )
+      ).and_return(json_body([].to_json, status: 200))
 
       search_response = PersonSearchResponseBuilder.build do |response|
         response.with_total(1)

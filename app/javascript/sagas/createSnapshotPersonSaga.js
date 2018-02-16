@@ -6,6 +6,7 @@ import {
   createPersonFailure,
 } from 'actions/personCardActions'
 import {
+  fetchRelationships,
   fetchHistoryOfInvolvements,
 } from 'actions/screeningActions'
 
@@ -23,6 +24,7 @@ export function* createSnapshotPerson({payload: {person}}) {
       },
     })
     yield put(createPersonSuccess(response))
+    yield put(fetchRelationships(snapshotId))
     yield put(fetchHistoryOfInvolvements(snapshotId))
   } catch (error) {
     if (error.status === STATUS_CODES.forbidden) {

@@ -6,6 +6,7 @@ import {
   createScreeningSuccess,
   createScreeningFailure,
 } from 'actions/screeningActions'
+import {clearRelationships} from 'actions/relationshipsActions'
 import {List, fromJS} from 'immutable'
 
 describe('relationshipsReducer', () => {
@@ -36,6 +37,14 @@ describe('relationshipsReducer', () => {
       const action = createScreeningFailure()
       expect(relationshipsReducer(oldState, action))
         .toEqual(oldState)
+    })
+  })
+
+  describe('on CLEAR_RELATIONSHIPS', () => {
+    it('clears all the relationships from the relationships reducer', () => {
+      const oldState = fromJS([{id: 1}])
+      const action = clearRelationships()
+      expect(relationshipsReducer(oldState, action).isEmpty()).toEqual(true)
     })
   })
 })
