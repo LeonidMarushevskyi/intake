@@ -20,15 +20,15 @@ FactoryGirl.define do
       zip { FFaker::AddressUS.zip_code }
       type do
         [
-          'Common',
-          'Day Care',
-          'Home',
-          'Homeless',
-          'Other',
-          'Penal Institution',
-          'Permanent Mailing Address',
-          'Residence 2',
-          'Work'
+          '6273',
+          '28',
+          '32',
+          '29',
+          '6272',
+          '30',
+          '31',
+          '6271',
+          '27'
         ].sample
       end
     end

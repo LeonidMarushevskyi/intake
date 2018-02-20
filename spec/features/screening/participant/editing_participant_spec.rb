@@ -157,7 +157,7 @@ feature 'Edit Person' do
           expect(page).to have_field('City', with: address.city)
           expect(page).to have_field('State', with: address.state)
           expect(page).to have_field('Zip', with: address.zip)
-          expect(page).to have_field('Type', with: address.type)
+          expect( find(:css, 'select#address_type').value ).to eq(address.type)
 
           click_button 'Add new address'
 
@@ -191,7 +191,7 @@ feature 'Edit Person' do
                 'city' => 'Someplace',
                 'state' => 'CA',
                 'zip' => '55555',
-                'type' => 'Home'
+                'type' => '32'
               )
             )
           )
@@ -292,7 +292,7 @@ feature 'Edit Person' do
         expect(page).to have_field('City', with: marge.addresses.first.city)
         expect(page).to have_field('State', with: marge.addresses.first.state)
         expect(page).to have_field('Zip', with: marge.addresses.first.zip)
-        expect(page).to have_field('Address Type', with: marge.addresses.first.type)
+        expect( find(:css, 'select#address_type').value ).to eq(marge.addresses.first.type)
         within '#ethnicity' do
           expect(page.find('input[value="Yes"]')).to be_checked
           expect(page).to have_field("participant-#{marge.id}-ethnicity-detail", text: 'Mexican')
@@ -383,7 +383,7 @@ feature 'Edit Person' do
           expect(page).to have_field('City', with: marge.addresses.first.city)
           expect(page).to have_field('State', with: marge.addresses.first.state)
           expect(page).to have_field('Zip', with: marge.addresses.first.zip)
-          expect(page).to have_field('Address Type', with: marge.addresses.first.type)
+          expect( find(:css, 'select#address_type').value ).to eq(marge.addresses.first.type)
           click_link 'Delete address'
         end
 

@@ -45,7 +45,7 @@ feature 'Create participant' do
       city: 'Springfield',
       state: 'NY',
       zip: '12345',
-      type: 'Home'
+      type: '32'
     )
   end
   let(:marge_phone_number) do
@@ -266,7 +266,7 @@ feature 'Create participant' do
         expect(page).to have_field('City', with: homer.addresses.first.city)
         expect(page).to have_field('State', with: homer.addresses.first.state)
         expect(page).to have_field('Zip', with: homer.addresses.first.zip)
-        expect(page).to have_select('Address Type', selected: homer.addresses.first.type)
+        expect(find(:css, 'select#address_type').value).to eq(homer.addresses.first.type)
         within 'fieldset', text: 'Race' do
           expect(page).to have_checked_field('Asian')
           expect(page).to have_select(
