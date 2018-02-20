@@ -1,11 +1,13 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import involvementsReducer from 'reducers/involvementsReducer'
 import {
-  fetchHistoryOfInvolvementsSuccess,
-  fetchHistoryOfInvolvementsFailure,
   createScreeningSuccess,
   createScreeningFailure,
 } from 'actions/screeningActions'
+import {
+  fetchHistoryOfInvolvementsSuccess,
+  fetchHistoryOfInvolvementsFailure,
+} from 'actions/historyOfInvolvementActions'
 import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
 import {fromJS, Map} from 'immutable'
 

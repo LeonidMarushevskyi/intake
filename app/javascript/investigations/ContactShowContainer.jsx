@@ -6,6 +6,7 @@ import {
   getPurposeValueSelector,
   getStatusValueSelector,
 } from 'selectors/investigation/contactSelectors'
+import {getInvestigationTitleSelector} from 'selectors/investigation/investigationSelectors'
 import {push} from 'react-router-redux'
 import * as actions from 'actions/contactActions'
 import {bindActionCreators} from 'redux'
@@ -19,6 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     investigationId: ownProps.params.investigation_id,
     location: getLocationValueSelector(state),
     note: contact.get('note'),
+    pageTitle: `Contact for ${getInvestigationTitleSelector(state)}`,
     people: getFormattedPeopleSelector(state).toJS(),
     purpose: getPurposeValueSelector(state),
     startedAt: contact.get('started_at'),

@@ -9,7 +9,7 @@ import {push} from 'react-router-redux'
 
 export function* createSnapshot() {
   try {
-    const response = yield call(post, '/api/v1/screenings')
+    const response = yield call(post, '/api/v1/snapshots')
     const snapshotPath = '/snapshot'
     yield put(createSnapshotSuccess(response))
     yield put(push(snapshotPath))

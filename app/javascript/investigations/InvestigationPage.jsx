@@ -8,29 +8,35 @@ import RelationshipsCardContainer from 'investigations/RelationshipsCardContaine
 import HistoryTableContainer from 'investigations/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 import CardContainer from 'containers/investigations/CardContainer'
+import PageHeader from 'common/PageHeader'
 
-export class InvestigationPage extends React.Component {
+class InvestigationPage extends React.Component {
   componentDidMount() {
     const {actions: {fetch}, id} = this.props
     fetch({id})
   }
 
   render() {
-    const {id} = this.props
+    const {id, pageTitle} = this.props
     return (
       <div>
-        <ScreeningSummaryContainer />
-        <CardContainer
-          title='Allegations'
-          id='allegations-card'
-          show={<AllegationShowContainer />}
-        />
-        <RelationshipsCardContainer />
-        <HistoryOfInvolvementContainer
-          empty={<EmptyHistory />}
-          notEmpty={<HistoryTableContainer />}
-        />
-        <ContactLogContainer id={id}/>
+        <div>
+          <PageHeader pageTitle={pageTitle} button={null} />
+        </div>
+        <div className='container'>
+          <ScreeningSummaryContainer />
+          <CardContainer
+            title='Allegations'
+            id='allegations-card'
+            show={<AllegationShowContainer />}
+          />
+          <RelationshipsCardContainer />
+          <HistoryOfInvolvementContainer
+            empty={<EmptyHistory />}
+            notEmpty={<HistoryTableContainer />}
+          />
+          <ContactLogContainer id={id}/>
+        </div>
       </div>
     )
   }
@@ -39,6 +45,7 @@ export class InvestigationPage extends React.Component {
 InvestigationPage.propTypes = {
   actions: PropTypes.object,
   id: PropTypes.string,
+  pageTitle: PropTypes.string,
 }
 
 export default InvestigationPage

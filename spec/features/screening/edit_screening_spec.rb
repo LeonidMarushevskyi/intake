@@ -44,7 +44,7 @@ feature 'Edit Screening' do
     )
   end
 
-  context 'when no releases are enabled' do
+  context 'when no screenings are enabled' do
     before(:each) do
       stub_county_agencies('c42')
       stub_request(
@@ -261,9 +261,9 @@ feature 'Edit Screening' do
     end
   end
 
-  context 'when release two is enabled' do
+  context 'when screenings are not enabled' do
     around do |example|
-      Feature.run_with_activated(:release_two) do
+      Feature.run_with_deactivated(:screenings) do
         example.run
       end
     end

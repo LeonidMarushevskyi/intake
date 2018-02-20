@@ -1,12 +1,14 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import relationshipsReducer from 'reducers/relationshipsReducer'
 import {
-  fetchRelationshipsSuccess,
-  fetchRelationshipsFailure,
   createScreeningSuccess,
   createScreeningFailure,
 } from 'actions/screeningActions'
-import {clearRelationships} from 'actions/relationshipsActions'
+import {
+  clearRelationships,
+  fetchRelationshipsSuccess,
+  fetchRelationshipsFailure,
+} from 'actions/relationshipsActions'
 import {List, fromJS} from 'immutable'
 
 describe('relationshipsReducer', () => {

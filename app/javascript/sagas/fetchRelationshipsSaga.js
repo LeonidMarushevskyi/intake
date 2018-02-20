@@ -3,14 +3,14 @@ import {get} from 'utils/http'
 import {
   fetchRelationshipsSuccess,
   fetchRelationshipsFailure,
-} from 'actions/screeningActions'
+} from 'actions/relationshipsActions'
 import {
   FETCH_RELATIONSHIPS,
 } from 'actions/actionTypes'
 
-export function* fetchRelationships({payload: {id}}) {
+export function* fetchRelationships({payload: {id, type}}) {
   try {
-    const response = yield call(get, `/api/v1/screenings/${id}/relationships`)
+    const response = yield call(get, `/api/v1/${type}/${id}/relationships`)
     yield put(fetchRelationshipsSuccess(response))
   } catch (error) {
     yield put(fetchRelationshipsFailure(error.responseJSON))

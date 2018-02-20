@@ -3,14 +3,14 @@ import {get} from 'utils/http'
 import {
   fetchHistoryOfInvolvementsSuccess,
   fetchHistoryOfInvolvementsFailure,
-} from 'actions/screeningActions'
+} from 'actions/historyOfInvolvementActions'
 import {
   FETCH_HISTORY_OF_INVOLVEMENTS,
 } from 'actions/actionTypes'
 
-export function* fetchHistoryOfInvolvements({payload: {id}}) {
+export function* fetchHistoryOfInvolvements({payload: {id, type}}) {
   try {
-    const response = yield call(get, `/api/v1/screenings/${id}/history_of_involvements`)
+    const response = yield call(get, `/api/v1/${type}/${id}/history_of_involvements`)
     yield put(fetchHistoryOfInvolvementsSuccess(response))
   } catch (error) {
     yield put(fetchHistoryOfInvolvementsFailure(error.responseJSON))

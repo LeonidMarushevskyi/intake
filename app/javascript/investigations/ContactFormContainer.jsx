@@ -19,6 +19,7 @@ import {
   getFormattedPeopleSelector,
   getSelectedPeopleIdsSelector,
 } from 'selectors/investigation/contactFormSelectors'
+import {getInvestigationTitleSelector} from 'selectors/investigation/investigationSelectors'
 
 const mapStateToProps = (state, ownProps) => {
   const contactForm = state.get('contactForm')
@@ -35,6 +36,7 @@ const mapStateToProps = (state, ownProps) => {
     locations: getLocationsSelector(state).toJS(),
     note: contactForm.getIn(['note', 'value']),
     officeLocationCode: getOfficeLocationCodeValueSelector(state),
+    pageTitle: `Contact for ${getInvestigationTitleSelector(state)}`,
     people: getFormattedPeopleSelector(state).toJS(),
     purpose: contactForm.getIn(['purpose', 'value']),
     purposes: getPurposesSelector(state).toJS(),

@@ -3,24 +3,40 @@
 require 'rails_helper'
 require 'feature/testing'
 feature 'home page' do
-  context 'when release two is enabled' do
+  context 'when screenings is not enabled' do
     around do |example|
-      Feature.run_with_activated(:release_two) do
+      Feature.run_with_deactivated(:screenings) do
         example.run
       end
     end
 
-    scenario 'hide list of screenings when release two is enabled' do
+    scenario 'hide list of screenings' do
       visit root_path
       expect(
         a_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
       ).to_not have_been_made
-      expect(page).to have_button 'Start Snapshot'
+      expect(page).not_to have_button 'Start Screening'
       expect(page).not_to have_css 'table'
     end
   end
 
-  context 'when no releases are enabled' do
+  context 'when snapshot is not enabled' do
+    around do |example|
+      Feature.run_with_deactivated(:snapshot) do
+        example.run
+      end
+    end
+
+    scenario 'hide start snapshot button' do
+      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path)).and_return(
+        json_body([], status: 200)
+      )
+      visit root_path
+      expect(page).not_to have_button 'Start Snapshot'
+    end
+  end
+
+  context 'when both screenings and snapshot are enabled' do
     scenario 'includes title and navigation links' do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path)).and_return(
         json_body([], status: 200)

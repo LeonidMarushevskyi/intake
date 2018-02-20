@@ -6,8 +6,9 @@ import {
   createSnapshotPersonSaga,
 } from 'sagas/createSnapshotPersonSaga'
 import {CREATE_SNAPSHOT_PERSON} from 'actions/personCardActions'
-import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
+import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 
 describe('createSnapshotPersonSaga', () => {
   it('creates participant on CREATE_SNAPSHOT_PERSON', () => {
@@ -30,10 +31,10 @@ describe('createSnapshotPerson', () => {
       put(personCardActions.createPersonSuccess(participant))
     )
     expect(gen.next(snapashotId).value).toEqual(
-      put(screeningActions.fetchRelationships(snapashotId))
+      put(fetchRelationships('snapshots', snapashotId))
     )
     expect(gen.next(snapashotId).value).toEqual(
-      put(screeningActions.fetchHistoryOfInvolvements(snapashotId))
+      put(fetchHistoryOfInvolvements('snapshots', snapashotId))
     )
   })
 

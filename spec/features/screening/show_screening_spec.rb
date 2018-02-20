@@ -169,9 +169,9 @@ feature 'Show Screening' do
     expect(page).to have_link('Edit', href: edit_screening_path(id: existing_screening.id))
   end
 
-  context 'when release two is enabled' do
+  context 'when screenings are disabled' do
     around do |example|
-      Feature.run_with_activated(:release_two) do
+      Feature.run_with_deactivated(:screenings) do
         example.run
       end
     end

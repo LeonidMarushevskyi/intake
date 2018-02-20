@@ -40,7 +40,8 @@ feature 'Create Screening' do
           safety_information: nil,
           address: { city: nil },
           assignee: user_name_display,
-          assignee_staff_id: '1234'
+          assignee_staff_id: '1234',
+          indexable: true
         )
 
         stub_empty_history_for_screening(new_screening)
@@ -101,7 +102,8 @@ feature 'Create Screening' do
           safety_information: nil,
           address: { city: nil },
           assignee: user_name_display,
-          assignee_staff_id: '1234'
+          assignee_staff_id: '1234',
+          indexable: true
         )
 
         stub_empty_history_for_screening(new_screening)
@@ -160,7 +162,8 @@ feature 'Create Screening' do
           safety_information: nil,
           address: { city: nil },
           assignee: user_name_display,
-          assignee_staff_id: '1234'
+          assignee_staff_id: '1234',
+          indexable: true
         )
         stub_empty_history_for_screening(new_screening)
         stub_empty_relationships_for_screening(new_screening)
@@ -204,7 +207,8 @@ feature 'Create Screening' do
           safety_information: nil,
           address: { city: nil },
           assignee: nil,
-          assignee_staff_id: nil
+          assignee_staff_id: nil,
+          indexable: true
         )
         stub_empty_history_for_screening(new_screening)
         stub_empty_relationships_for_screening(new_screening)
@@ -242,7 +246,8 @@ feature 'Create Screening' do
       safety_alerts: [],
       safety_information: nil,
       address: { city: nil },
-      assignee: nil
+      assignee: nil,
+      indexable: true
     )
     stub_empty_history_for_screening(new_screening)
     stub_empty_relationships_for_screening(new_screening)

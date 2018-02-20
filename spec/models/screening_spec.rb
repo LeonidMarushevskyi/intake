@@ -9,26 +9,6 @@ describe Screening do
     it ' does not have default cross report values' do
       expect(screening.cross_reports).to be_empty
     end
-    describe '#indexable' do
-      around do |example|
-        Feature.run_with_deactivated(:release_two) do
-          example.run
-        end
-      end
-      it 'sets indexable to true' do
-        expect(screening.indexable).to be true
-      end
-    end
-    describe 'release_two enabled' do
-      around do |example|
-        Feature.run_with_activated(:release_two) do
-          example.run
-        end
-      end
-      it 'sets indexable to false' do
-        expect(screening.indexable).to be false
-      end
-    end
   end
 
   describe 'as_json' do
@@ -40,7 +20,6 @@ describe Screening do
         id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
-        indexable: false,
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
@@ -54,6 +33,7 @@ describe Screening do
         restrictions_rationale: 'This is a sensitive referral',
         assignee_staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
+        indexable: true,
         address: {
           id: '1',
           street_address: '123 Fake St',
@@ -110,7 +90,6 @@ describe Screening do
         id: '2',
         incident_county: 'sacramento',
         incident_date: '2016-08-11',
-        indexable: false,
         location_type: nil,
         name: 'Little Shop Of Horrors',
         reference: 'My Bad!',
@@ -127,6 +106,7 @@ describe Screening do
         restrictions_rationale: 'This is a sensitive referral',
         assignee_staff_id: '1234',
         started_at: '2016-08-13T10:00:00.000Z',
+        indexable: true,
         cross_reports: array_including(
           a_hash_including(
             filed_out_of_state: false,

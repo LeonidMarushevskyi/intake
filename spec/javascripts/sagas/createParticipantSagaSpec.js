@@ -7,8 +7,9 @@ import {
 } from 'sagas/createParticipantSaga'
 import {CREATE_PERSON} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
-import * as screeningActions from 'actions/screeningActions'
 import * as personCardActions from 'actions/personCardActions'
+import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 
 describe('createParticipantSaga', () => {
   it('creates participant on CREATE_PERSON', () => {
@@ -33,10 +34,10 @@ describe('createParticipant', () => {
     )
     const screeningId = '444'
     expect(gen.next(screeningId).value).toEqual(
-      put(screeningActions.fetchRelationships(screeningId))
+      put(fetchRelationships('screenings', screeningId))
     )
     expect(gen.next(screeningId).value).toEqual(
-      put(screeningActions.fetchHistoryOfInvolvements(screeningId))
+      put(fetchHistoryOfInvolvements('screenings', screeningId))
     )
   })
 
