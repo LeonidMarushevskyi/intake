@@ -32,7 +32,6 @@ feature 'Adding and removing a person from a snapshot' do
         ExternalRoutes.ferb_api_screening_history_of_involvements_path(snapshot.id)
       )
     ).and_return(json_body({}.to_json, status: 200))
-
     stub_request(
       :get,
       intake_api_url(
@@ -110,6 +109,7 @@ feature 'Adding and removing a person from a snapshot' do
         :delete, intake_api_url(ExternalRoutes.intake_api_participant_path(person.id))
       )
     ).to have_been_made
+
     expect(
       a_request(
         :get,
@@ -119,12 +119,14 @@ feature 'Adding and removing a person from a snapshot' do
       )
     ).to have_been_made.times(2)
 
-    stub_request(
-      :get,
-      intake_api_url(
-        ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+    expect(
+      a_request(
+        :get,
+        intake_api_url(
+          ExternalRoutes.intake_api_relationships_by_screening_path(snapshot.id)
+        )
       )
-    ).and_return(json_body([].to_json, status: 200))
+    ).to have_been_made.times(2)
 
     expect(page).not_to have_content show_participant_card_selector(person.id)
     expect(page).not_to have_content(person.first_name)

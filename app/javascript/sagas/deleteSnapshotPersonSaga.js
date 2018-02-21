@@ -5,6 +5,7 @@ import {
   deletePersonSuccess,
   deletePersonFailure,
 } from 'actions/personCardActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
 import {getSnapshotIdValueSelector} from 'selectors/snapshotSelectors'
 
@@ -13,6 +14,7 @@ export function* deleteSnapshotPerson({payload: {id}}) {
     yield call(destroy, `/api/v1/participants/${id}`)
     yield put(deletePersonSuccess(id))
     const snapshotId = yield select(getSnapshotIdValueSelector)
+    yield put(fetchRelationships('snapshots', snapshotId))
     yield put(fetchHistoryOfInvolvements('snapshots', snapshotId))
   } catch (error) {
     yield put(deletePersonFailure(error.responseJSON))

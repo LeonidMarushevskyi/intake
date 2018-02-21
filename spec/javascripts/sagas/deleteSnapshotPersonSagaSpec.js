@@ -7,6 +7,7 @@ import {
 } from 'sagas/deleteSnapshotPersonSaga'
 import {DELETE_SNAPSHOT_PERSON} from 'actions/personCardActions'
 import * as personCardActions from 'actions/personCardActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
 import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
 import {getSnapshotIdValueSelector} from 'selectors/snapshotSelectors'
 
@@ -21,7 +22,7 @@ describe('deleteParticipant', () => {
   const id = '123'
   const action = personCardActions.deleteSnapshotPerson(id)
 
-  it('deletes and puts participant, fetches a screening, and fetches relationships', () => {
+  it('deletes and puts participant, fetches a screening, relationships, and history_of_involvements', () => {
     const gen = deleteSnapshotPerson(action)
     expect(gen.next().value).toEqual(call(destroy, '/api/v1/participants/123'))
     expect(gen.next().value).toEqual(
@@ -31,6 +32,9 @@ describe('deleteParticipant', () => {
       select(getSnapshotIdValueSelector)
     )
     const snapshotId = '444'
+    expect(gen.next(snapshotId).value).toEqual(
+      put(fetchRelationships('snapshots', snapshotId))
+    )
     expect(gen.next(snapshotId).value).toEqual(
       put(fetchHistoryOfInvolvements('snapshots', snapshotId))
     )
