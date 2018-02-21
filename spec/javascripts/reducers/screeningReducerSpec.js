@@ -2,6 +2,7 @@ import * as matchers from 'jasmine-immutable-matchers'
 import {
   createScreeningSuccess,
   createScreeningFailure,
+  clearScreening,
   fetchScreeningSuccess,
   fetchScreeningFailure,
   submitScreeningSuccess,
@@ -95,6 +96,14 @@ describe('screeningReducer', () => {
     it('returns the last state on failure', () => {
       const action = fetchAllegationsFailure()
       expect(screeningReducer(Map(), action)).toEqualImmutable(Map())
+    })
+  })
+
+  describe('on CLEAR_SCREENING', () => {
+    it('clears all the screening data from the store', () => {
+      const oldState = fromJS({id: 1})
+      const action = clearScreening()
+      expect(screeningReducer(oldState, action)).toEqual(Map())
     })
   })
 })

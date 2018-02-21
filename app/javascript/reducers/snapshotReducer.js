@@ -1,5 +1,6 @@
 import {
   CREATE_SNAPSHOT_COMPLETE,
+  CLEAR_SNAPSHOT,
 } from 'actions/actionTypes'
 import {createReducer} from 'utils/createReducer'
 import {Map, fromJS} from 'immutable'
@@ -12,4 +13,5 @@ export default createReducer(Map(), {
       return fromJS({...snapshot, history: {cases: [], referrals: [], screenings: []}})
     }
   },
+  [CLEAR_SNAPSHOT]: () => Map(),
 })

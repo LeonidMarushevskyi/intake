@@ -2,6 +2,7 @@ import * as matchers from 'jasmine-immutable-matchers'
 import {
   createSnapshotSuccess,
   createSnapshotFailure,
+  clearSnapshot,
 } from 'actions/snapshotActions'
 import snapshotReducer from 'reducers/snapshotReducer'
 import {Map, fromJS} from 'immutable'
@@ -20,6 +21,14 @@ describe('snapshotReducer', () => {
     it('returns the last state on failure', () => {
       const action = createSnapshotFailure()
       expect(snapshotReducer(Map(), action)).toEqualImmutable(Map())
+    })
+  })
+
+  describe('on CLEAR_SNAPSHOT', () => {
+    it('clears all the snapshot data from the store', () => {
+      const oldState = fromJS({id: 1})
+      const action = clearSnapshot()
+      expect(snapshotReducer(oldState, action)).toEqual(Map())
     })
   })
 })
