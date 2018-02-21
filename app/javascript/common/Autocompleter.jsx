@@ -35,9 +35,15 @@ export class Autocompleter extends Component {
     this.state = {
       menuVisible: false,
     }
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
     this.onItemSelect = this.onItemSelect.bind(this)
     this.renderMenu = this.renderMenu.bind(this)
     this.onChangeInput = this.onChangeInput.bind(this)
+  }
+
+  isSearchable(value) {
+    return value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
   }
 
   onItemSelect(_value, item) {
@@ -50,6 +56,18 @@ export class Autocompleter extends Component {
     } else {
       alert('You are not authorized to add this person.') // eslint-disable-line no-alert
     }
+  }
+
+  onFocus() {
+    if (this.isSearchable(this.props.searchTerm)) {
+      this.setState({menuVisible: true})
+    } else {
+      this.setState({menuVisible: false})
+    }
+  }
+
+  onBlur() {
+    this.setState({menuVisible: false})
   }
 
   renderMenu(items, searchTerm, _style) {
@@ -69,6 +87,10 @@ export class Autocompleter extends Component {
           onCreateNewPerson={() => {
             onSelect({id: null})
             this.setState({menuVisible: false})
+            // This is required because react-autcompleter onMouseLeave event is never fired.
+            // So the autocompleter maintains focus and ignore blur events.
+            // We are manually forcing a blur event here so we can get out.
+            this.element_ref._ignoreBlur = false
           }}
         />
       </div>
@@ -106,8 +128,7 @@ export class Autocompleter extends Component {
 
   onChangeInput(_, value) {
     const {onSearch, onChange} = this.props
-    const isSearchable = value && value.replace(/^\s+/, '').length >= MIN_SEARCHABLE_CHARS
-    if (isSearchable) {
+    if (this.isSearchable(value)) {
       onSearch(value)
       this.setState({menuVisible: true})
     } else {
@@ -121,8 +142,9 @@ export class Autocompleter extends Component {
     const {menuVisible} = this.state
     return (
       <Autocomplete
+        ref={(el) => (this.element_ref = el)}
         getItemValue={(_) => searchTerm}
-        inputProps={{id}}
+        inputProps={{id, onBlur: this.onBlur, onFocus: this.onFocus}}
         items={results}
         onChange={this.onChangeInput}
         onSelect={this.onItemSelect}

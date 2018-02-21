@@ -136,33 +136,45 @@ feature 'searching a participant in autocompleter' do
       ).to have_been_made
     end
 
-    scenario 'clicking search result closes search results' do
-      search_response = PersonSearchResponseBuilder.build do |response|
-        response.with_total(1)
-        response.with_hits do
-          [
-            PersonSearchResultBuilder.build do |builder|
-              builder.with_first_name('Marge')
-            end
-          ]
+    context 'closes search results' do
+      before do
+        search_response = PersonSearchResponseBuilder.build do |response|
+          response.with_total(1)
+          response.with_hits do
+            [
+              PersonSearchResultBuilder.build do |builder|
+                builder.with_first_name('Marge')
+              end
+            ]
+          end
+        end
+        stub_person_search(search_term: 'Ma', person_response: search_response)
+        stub_request(
+          :post,
+          intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))
+        ).and_return(json_body({}.to_json, status: 201))
+
+        within '#search-card', text: 'Search' do
+          fill_in 'Search for any person', with: 'Ma'
         end
       end
-      stub_person_search(search_term: 'Ma', person_response: search_response)
-      stub_request(
-        :post,
-        intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))
-      ).and_return(json_body({}.to_json, status: 201))
 
-      within '#search-card', text: 'Search' do
-        fill_in 'Search for any person', with: 'Ma'
+      scenario 'when clicking search result' do
+        within '#search-card', text: 'Search' do
+          page.find('strong', text: 'Marge').click
+        end
+
+        within '#search-card', text: 'Search' do
+          expect(page).to_not have_button('Create a new person')
+        end
       end
 
-      within '#search-card', text: 'Search' do
-        page.find('strong', text: 'Marge').click
-      end
+      scenario 'when clicking outside search result' do
+        page.find('#screening-information-card').click
 
-      within '#search-card', text: 'Search' do
-        expect(page).to_not have_button('Create a new person')
+        within '#search-card', text: 'Search' do
+          expect(page).to_not have_button('Create a new person')
+        end
       end
     end
 
