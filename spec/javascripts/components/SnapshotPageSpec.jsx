@@ -33,4 +33,11 @@ describe('SnapshotPage', () => {
     const snapshotPage = renderSnapshotPage({})
     expect(snapshotPage.find('Connect(PageHeader)').props().button.type).toEqual('button')
   })
+
+  it('calls the unmount function when the component is unmounted', () => {
+    const unmount = jasmine.createSpy('unmount')
+    const snapshotPage = renderSnapshotPage({unmount})
+    snapshotPage.unmount()
+    expect(unmount).toHaveBeenCalled()
+  })
 })

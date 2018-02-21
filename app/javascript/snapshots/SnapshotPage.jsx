@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSnapshotIdValueSelector} from 'selectors/snapshotSelectors'
-import {createSnapshot} from 'actions/snapshotActions'
+import {createSnapshot, clearSnapshot} from 'actions/snapshotActions'
 import {clearPeople} from 'actions/personCardActions'
 import {clearHistoryOfInvolvement} from 'actions/historyOfInvolvementActions'
 import {clearRelationships} from 'actions/relationshipsActions'
@@ -22,6 +22,10 @@ export class SnapshotPage extends React.Component {
     if (!id) {
       createSnapshot()
     }
+  }
+
+  componentWillUnmount() {
+    this.props.unmount()
   }
 
   startOverButton() {
@@ -79,6 +83,7 @@ SnapshotPage.propTypes = {
   id: PropTypes.string,
   participants: PropTypes.array,
   startOver: PropTypes.func,
+  unmount: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
@@ -93,6 +98,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(clearPeople())
     dispatch(clearHistoryOfInvolvement())
     dispatch(clearRelationships())
+  },
+  unmount: () => {
+    dispatch(clearPeople())
+    dispatch(clearHistoryOfInvolvement())
+    dispatch(clearRelationships())
+    dispatch(clearSnapshot())
   },
 })
 

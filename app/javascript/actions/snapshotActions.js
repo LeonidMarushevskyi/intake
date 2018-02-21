@@ -1,6 +1,7 @@
 import {
   CREATE_SNAPSHOT,
   CREATE_SNAPSHOT_COMPLETE,
+  CLEAR_SNAPSHOT,
 } from 'actions/actionTypes'
 
 export function createSnapshotSuccess(snapshot) {
@@ -11,4 +12,7 @@ export function createSnapshotFailure(error) {
 }
 export function createSnapshot() {
   return {type: CREATE_SNAPSHOT}
+}
+export function clearSnapshot() {
+  return {type: CLEAR_SNAPSHOT}
 }
