@@ -15,6 +15,7 @@ import RelationshipsCardContainer from 'containers/snapshot/RelationshipsCardCon
 import RelationshipsContainer from 'containers/snapshot/RelationshipsContainer'
 import {EmptyRelationships} from 'snapshots/Relationships'
 import PageHeader from 'common/PageHeader'
+import SnapshotSideBar from 'snapshots/SnapshotSideBar'
 
 export class SnapshotPage extends React.Component {
   componentDidMount() {
@@ -50,27 +51,32 @@ export class SnapshotPage extends React.Component {
         </div>
         <div className='container'>
           <div className='row'>
-            <div className='card edit double-gap-bottom' id='snapshot-card'>
-              <div className='card-body'>
-                <div className='row'>
-                  <div className='col-md-12'>
-                    <div className='double-pad-top'>
-                      The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
-                      To start, search by any combination of name, date of birth, or social security number. Click on a person from
-                      the results to add them to the Snapshot, and their basic information and history will automatically appear below.
-                      You can add as many people as you like, and when ready, copy the summary of their history.
-                      You will need to manually paste it into a document or a field in CWS/CMS.
+            <SnapshotSideBar />
+            <div className='col-md-10'>
+              <div className='row'>
+                <div className='card edit double-gap-bottom' id='snapshot-card'>
+                  <div className='card-body'>
+                    <div className='row'>
+                      <div className='col-md-12'>
+                        <div className='double-pad-top'>
+                          The Child Welfare History Snapshot allows you to search CWS/CMS for people and their past history with CWS.
+                          To start, search by any combination of name, date of birth, or social security number. Click on a person from
+                          the results to add them to the Snapshot, and their basic information and history will automatically appear below.
+                          You can add as many people as you like, and when ready, copy the summary of their history.
+                          You will need to manually paste it into a document or a field in CWS/CMS.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <PersonSearchFormContainer />
+                {participants.map(({id}) =>
+                  <PersonCardView key={id} personId={id} />
+                )}
+                <RelationshipsCardContainer empty={<EmptyRelationships />} notEmpty={<RelationshipsContainer />} />
+                <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
               </div>
             </div>
-            <PersonSearchFormContainer />
-            {participants.map(({id}) =>
-              <PersonCardView key={id} personId={id} />
-            )}
-            <RelationshipsCardContainer empty={<EmptyRelationships />} notEmpty={<RelationshipsContainer />} />
-            <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
           </div>
         </div>
       </div>

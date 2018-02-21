@@ -6,6 +6,7 @@ const SnapshotSideBar = () => (
     <SideBar>
       <NavLinks>
         <NavLink text='People & Roles' href='#search-card-anchor' />
+        <NavLink text='Relationships' href='#relationships-card-anchor' />
         <NavLink text='History' href='#history-card-anchor' />
       </NavLinks>
     </SideBar>
