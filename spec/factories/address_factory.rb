@@ -19,16 +19,16 @@ FactoryGirl.define do
       state { FFaker::AddressUS.state_abbr }
       zip { FFaker::AddressUS.zip_code }
       type do
-        [
-          '6273',
-          '28',
-          '32',
-          '29',
-          '6272',
-          '30',
-          '31',
-          '6271',
-          '27'
+        %w[
+          6273
+          28
+          32
+          29
+          6272
+          30
+          31
+          6271
+          27
         ].sample
       end
     end
