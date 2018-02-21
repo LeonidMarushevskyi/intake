@@ -130,15 +130,15 @@ module SystemCodeHelpers
 
   def address_types
     [
-        {code: '6273', value: 'Common', category: 'address_type'},
-        {code: '28', value: 'Day Care', category: 'address_type'},
-        {code: '32', value: 'Home', category: 'address_type'},
-        {code: '29', value: 'Homeless', category: 'address_type'},
-        {code: '6272', value: 'Other', category: 'address_type'},
-        {code: '30', value: 'Penal Institution', category: 'address_type'},
-        {code: '31', value: 'Permanent Mailing Address', category: 'address_type'},
-        {code: '6271', value: 'Residence 2', category: 'address_type'},
-        {code: '27', value: 'Work', category: 'address_type'}
+      { code: '6273', value: 'Common', category: 'address_type' },
+      { code: '28', value: 'Day Care', category: 'address_type' },
+      { code: '32', value: 'Home', category: 'address_type' },
+      { code: '29', value: 'Homeless', category: 'address_type' },
+      { code: '6272', value: 'Other', category: 'address_type' },
+      { code: '30', value: 'Penal Institution', category: 'address_type' },
+      { code: '31', value: 'Permanent Mailing Address', category: 'address_type' },
+      { code: '6271', value: 'Residence 2', category: 'address_type' },
+      { code: '27', value: 'Work', category: 'address_type' }
     ]
   end
 
