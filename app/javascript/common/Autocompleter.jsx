@@ -87,6 +87,10 @@ export class Autocompleter extends Component {
           onCreateNewPerson={() => {
             onSelect({id: null})
             this.setState({menuVisible: false})
+            // This is required because react-autcompleter onMouseLeave event is never fired.
+            // So the autocompleter maintains focus and ignore blur events.
+            // We are manually forcing a blur event here so we can get out.
+            this.element_ref._ignoreBlur = false
           }}
         />
       </div>
@@ -138,6 +142,7 @@ export class Autocompleter extends Component {
     const {menuVisible} = this.state
     return (
       <Autocomplete
+        ref={(el) => (this.element_ref = el)}
         getItemValue={(_) => searchTerm}
         inputProps={{id, onBlur: this.onBlur, onFocus: this.onFocus}}
         items={results}

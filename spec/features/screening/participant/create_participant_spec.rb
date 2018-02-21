@@ -179,6 +179,33 @@ feature 'Create participant' do
     end
   end
 
+  scenario 'create and edit an unknown participant' do
+    visit edit_screening_path(id: existing_screening.id)
+    created_participant_unknown = FactoryGirl.create(
+      :participant, :unpopulated,
+      screening_id: existing_screening.id
+    )
+
+    stub_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
+      .and_return(json_body(created_participant_unknown.to_json, status: 201))
+
+    within '#search-card', text: 'Search' do
+      fill_in 'Search for any person', with: 'Marge'
+      click_button 'Create a new person'
+      expect(page).to_not have_button('Create a new person')
+    end
+
+    expect(a_request(:post,
+      intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
+      .to have_been_made
+
+    within edit_participant_card_selector(created_participant_unknown.id) do
+      fill_in 'First Name', with: 'Filled In First Name'
+      expect(find_field('First Name').value).to eq('Filled In First Name')
+    end
+  end
+
   scenario 'API returns a 403 response when trying to add a person' do
     if ENV.key?('TEST_ENV_NUMBER')
       skip 'Pending this test as it just fails on jenkins when the js alert is triggered'
