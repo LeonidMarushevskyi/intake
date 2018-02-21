@@ -1,6 +1,7 @@
 import {
   CREATE_SCREENING,
   CREATE_SCREENING_COMPLETE,
+  CLEAR_SCREENING,
   FETCH_SCREENING,
   FETCH_SCREENING_COMPLETE,
   SUBMIT_SCREENING,
@@ -44,4 +45,7 @@ export function submitScreeningFailure(error) {
 }
 export function submitScreening(id) {
   return {type: SUBMIT_SCREENING, payload: {id}}
+}
+export function clearScreening() {
+  return {type: CLEAR_SCREENING}
 }

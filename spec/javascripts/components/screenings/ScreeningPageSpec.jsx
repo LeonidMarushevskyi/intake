@@ -265,4 +265,41 @@ describe('ScreeningPage', () => {
       expect(renderScreeningPage({loaded: false}).find('.container').childAt(0).html()).toEqual('<div></div>')
     })
   })
+
+  describe('when the screening page is unmounted', () => {
+    let actions
+
+    beforeEach(() => {
+      actions = {
+        clearScreening: jasmine.createSpy('clearScreening'),
+        clearRelationships: jasmine.createSpy('clearRelationships'),
+        clearHistoryOfInvolvement: jasmine.createSpy('clearHistoryOfInvolvement'),
+        clearPeople: jasmine.createSpy('clearPeople'),
+      }
+    })
+
+    it('clears the screening', () => {
+      const screeningPage = renderScreeningPage({actions})
+      screeningPage.unmount()
+      expect(actions.clearScreening).toHaveBeenCalled()
+    })
+
+    it('clears relationships', () => {
+      const screeningPage = renderScreeningPage({actions})
+      screeningPage.unmount()
+      expect(actions.clearRelationships).toHaveBeenCalled()
+    })
+
+    it('clears HOI', () => {
+      const screeningPage = renderScreeningPage({actions})
+      screeningPage.unmount()
+      expect(actions.clearHistoryOfInvolvement).toHaveBeenCalled()
+    })
+
+    it('clears people', () => {
+      const screeningPage = renderScreeningPage({actions})
+      screeningPage.unmount()
+      expect(actions.clearPeople).toHaveBeenCalled()
+    })
+  })
 })
