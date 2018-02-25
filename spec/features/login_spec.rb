@@ -63,11 +63,7 @@ feature 'login' do
       stub_request(:get, auth_validation_url)
         .and_return(status: 200)
       visit root_path(accessCode: 'tempToken123')
-      expect(a_request(:get, auth_access_code_url)).to have_been_made
-      expect(a_request(:get, auth_validation_url)).to have_been_made
-      expect(a_request(:get, staff_url)).to_not have_been_made
-      expect(page.current_url).to_not have_content auth_login_url
-      expect(page).to have_current_path(root_path(accessCode: 'tempToken123'))
+      expect(page).to have_current_path('/forbidden')
     end
 
     context 'with global header' do
@@ -120,9 +116,9 @@ feature 'login' do
       context 'when there is no user on the session' do
         let(:user_info) { {} }
 
-        scenario 'user sees "Not Available" if there is no user on session' do
+        scenario 'user is sent to the 403 (unauthorized) page' do
           visit root_path(accessCode: 'tempToken123')
-          expect(page).to have_css 'header', text: 'Not Available'
+          expect(page).to have_current_path('/forbidden')
         end
       end
     end
@@ -254,13 +250,10 @@ feature 'login perry v1' do
       stub_request(:get, auth_validation_url)
         .and_return(status: 200)
       visit root_path(token: 123)
-      expect(a_request(:get, auth_validation_url)).to have_been_made
-      expect(a_request(:get, staff_url)).to_not have_been_made
-      expect(page.current_url).to_not have_content auth_login_url
-      expect(page).to have_current_path(root_path(token: 123))
+      expect(page).to have_current_path('/forbidden')
     end
 
-    context 'with global header' do
+    context 'once user is logged in' do
       scenario 'user sees his name on the global header' do
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_artifact.to_json, status: 200))
@@ -270,15 +263,6 @@ feature 'login perry v1' do
         expect(a_request(:get, auth_validation_url)).to have_been_made
         expect(a_request(:get, staff_url)).to have_been_made
         expect(page).to have_css 'header', text: 'Joe Cool'
-      end
-
-      scenario 'user sees "Not Available" if there is no user on session' do
-        stub_request(:get, auth_validation_url)
-          .and_return(json_body(auth_artifact.to_json, status: 200))
-        stub_request(:get, staff_url)
-          .and_return(json_body({}.to_json, status: 200))
-        visit root_path(token: 123)
-        expect(page).to have_css 'header', text: 'Not Available'
       end
     end
   end
