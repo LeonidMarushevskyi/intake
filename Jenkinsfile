@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat
 
-node('intake-slave') {
+node('tpt4-slave') {
     checkout scm
     def branch = env.BRANCH_NAME ?: 'master'
     def curStage = 'Start'
