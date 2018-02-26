@@ -35,35 +35,9 @@ const mapStateToProps = (state, {personId}) => {
   }
 }
 
-const mergeProps = ({
-  alertErrorMessage,
-  personId,
-  roles,
-  legacySourceDescription,
-  firstName,
-  middleName,
-  lastName,
-  nameSuffix,
-  ssn,
-  nameSuffixOptions,
-  roleOptions,
-}, {dispatch}) => {
-  const onBlur = (field) => dispatch(touchField(personId, [field]))
-  const onChange = (field, value) => dispatch(setField(personId, [field], value))
-  return {
-    alertErrorMessage,
-    personId,
-    roles,
-    legacySourceDescription,
-    firstName,
-    middleName,
-    lastName,
-    nameSuffix,
-    ssn,
-    nameSuffixOptions,
-    roleOptions,
-    onBlur,
-    onChange,
-  }
-}
-export default connect(mapStateToProps, null, mergeProps)(PersonInformationForm)
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onBlur: (field) => dispatch(touchField(personId, [field])),
+  onChange: (field, value) => dispatch(setField(personId, [field], value)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonInformationForm)

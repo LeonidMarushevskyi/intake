@@ -20,8 +20,8 @@ const mapStateToProps = (state, {personId}) => (
   }
 )
 
-const mergeProps = (stateProps, {dispatch}, {personId}) => {
-  const onChange = (field, value) => {
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onChange: (field, value) => {
     switch (field) {
       case 'languages':
       {
@@ -41,7 +41,7 @@ const mergeProps = (stateProps, {dispatch}, {personId}) => {
         dispatch(setField(personId, [field], value))
       }
     }
-  }
-  return {onChange, personId, ...stateProps}
-}
-export default connect(mapStateToProps, null, mergeProps)(PersonDemographicsForm)
+  },
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonDemographicsForm)

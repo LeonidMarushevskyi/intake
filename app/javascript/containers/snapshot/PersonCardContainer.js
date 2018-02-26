@@ -15,21 +15,8 @@ const mapStateToProps = (state, {personId}) => ({
   personName: getPersonNamesSelector(state).get(personId),
 })
 
-const mergeProps = (stateProps, {dispatch}, ownProps) => {
-  const {
-    personId,
-    show,
-  } = ownProps
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onDelete: () => dispatch(deleteSnapshotPerson(personId)),
+})
 
-  const onDelete = () => dispatch(deleteSnapshotPerson(personId))
-
-  return {
-    ...stateProps,
-    onDelete,
-    personId,
-    show,
-  }
-}
-
-export default connect(mapStateToProps, null, mergeProps)(PersonCard)
-
+export default connect(mapStateToProps, mapDispatchToProps)(PersonCard)

@@ -18,11 +18,8 @@ const mapStateToProps = (state, {personId}) => (
   }
 )
 
-const mergeProps = (stateProps, {dispatch}, {personId}) => (
-  {
-    onChange: (field, value) => { dispatch(setField(personId, ['ethnicity', field], value)) },
-    ...stateProps,
-  }
-)
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onChange: (field, value) => { dispatch(setField(personId, ['ethnicity', field], value)) },
+})
 
-export default connect(mapStateToProps, null, mergeProps)(RaceForm)
+export default connect(mapStateToProps, mapDispatchToProps)(RaceForm)

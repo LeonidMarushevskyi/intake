@@ -7,24 +7,19 @@ import {
   getStateOptionsSelector,
 } from 'selectors/screening/peopleFormSelectors'
 
-const mapStateToProps = (state, {personId}) => (
-  {
-    addresses: getPersonAddressesSelector(state, personId).toJS(),
-    addressTypeOptions: getAddressTypeOptionsSelector(state).toJS(),
-    stateOptions: getStateOptionsSelector().toJS(),
-  }
-)
+const mapStateToProps = (state, {personId}) => ({
+  addresses: getPersonAddressesSelector(state, personId).toJS(),
+  addressTypeOptions: getAddressTypeOptionsSelector(state).toJS(),
+  stateOptions: getStateOptionsSelector().toJS(),
+})
 
-const mergeProps = (stateProps, {dispatch}, {personId}) => (
-  {
-    addAddress: () => dispatch(addAddress(personId)),
-    deleteAddress: (addressIndex) => dispatch(deleteAddress(personId, addressIndex)),
-    onChange: (addressIndex, field, value) => {
-      dispatch(setField(personId, ['addresses', addressIndex, field], value))
-    },
-    ...stateProps,
-  }
-)
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  addAddress: () => dispatch(addAddress(personId)),
+  deleteAddress: (addressIndex) => dispatch(deleteAddress(personId, addressIndex)),
+  onChange: (addressIndex, field, value) => {
+    dispatch(setField(personId, ['addresses', addressIndex, field], value))
+  },
+})
 
-export default connect(mapStateToProps, null, mergeProps)(AddressesForm)
+export default connect(mapStateToProps, mapDispatchToProps)(AddressesForm)
 

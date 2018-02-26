@@ -13,15 +13,12 @@ const mapStateToProps = (state, {personId}) => (
   }
 )
 
-const mergeProps = (stateProps, {dispatch}, {personId}) => (
-  {
-    addPhone: () => dispatch(addPhone(personId)),
-    deletePhone: (phoneIndex) => dispatch(deletePhone(personId, phoneIndex)),
-    onChange: (phoneIndex, field, value) => {
-      dispatch(setField(personId, ['phone_numbers', phoneIndex, field], value))
-    },
-    ...stateProps,
-  }
-)
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  addPhone: () => dispatch(addPhone(personId)),
+  deletePhone: (phoneIndex) => dispatch(deletePhone(personId, phoneIndex)),
+  onChange: (phoneIndex, field, value) => {
+    dispatch(setField(personId, ['phone_numbers', phoneIndex, field], value))
+  },
+})
 
-export default connect(mapStateToProps, null, mergeProps)(PhoneNumbersForm)
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneNumbersForm)
