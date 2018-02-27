@@ -18,6 +18,8 @@ import {
 import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 
+export const cardName = 'incident-information-card'
+
 const mapStateToProps = (state) => ({
   errors: getVisibleErrorsSelector(state).toJS(),
   incidentDate: getIncidentDateSelector(state),
@@ -32,15 +34,15 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onBlur: (fieldName) => dispatch(touchField(fieldName)),
   onCancel: () => {
-    dispatch(clearCardEdits('incident_information'))
+    dispatch(clearCardEdits(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('incident-information-card', SHOW_MODE))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
   onSave: () => {
-    dispatch(saveCard('incident_information'))
+    dispatch(saveCard(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('incident-information-card', SHOW_MODE))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
 })
 

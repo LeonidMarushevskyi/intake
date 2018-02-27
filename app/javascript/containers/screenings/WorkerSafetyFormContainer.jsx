@@ -9,6 +9,8 @@ import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {connect} from 'react-redux'
 
+export const cardName = 'worker-safety-card'
+
 const mapStateToProps = (state) => (
   {
     alertOptions: getSafetyAlertsSelector(state),
@@ -23,13 +25,13 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => ({
   onCancel: () => {
-    dispatch(clearCardEdits('worker_safety'))
-    dispatch(setCardMode('worker-safety-card', SHOW_MODE))
+    dispatch(clearCardEdits(cardName))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
   onSave: () => {
-    dispatch(saveCard('worker_safety'))
-    dispatch(setCardMode('worker-safety-card', SHOW_MODE))
+    dispatch(saveCard(cardName))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   dispatch,
 })

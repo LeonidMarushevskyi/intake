@@ -20,6 +20,8 @@ import {
 } from 'actions/screeningDecisionFormActions'
 import {sdmPath} from 'common/config'
 
+export const cardName = 'decision-card'
+
 const mapStateToProps = (state) => (
   {
     accessRestriction: getAccessRestrictionSelector(state).toJS(),
@@ -38,8 +40,8 @@ const mapStateToProps = (state) => (
 const mapDispatchToProps = (dispatch) => ({
   onBlur: (field) => dispatch(touchField({field})),
   onCancel: () => {
-    dispatch(clearCardEdits('decision'))
-    dispatch(setCardMode('decision-card', SHOW_MODE))
+    dispatch(clearCardEdits(cardName))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   onChange: (field, value) => {
     dispatch(setField({field, value}))
@@ -51,9 +53,9 @@ const mapDispatchToProps = (dispatch) => ({
     }
   },
   onSave: () => {
-    dispatch(saveCard('decision'))
+    dispatch(saveCard(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('decision-card', SHOW_MODE))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   dispatch,
 })

@@ -23,6 +23,13 @@ import {
 import {
   getScreeningWithEditsSelector as getScreeningWithDecisionEditsSelector,
 } from 'selectors/screening/decisionFormSelectors'
+import {cardName as allegationsCardName} from 'containers/screenings/AllegationsFormContainer'
+import {cardName as screeningInformationCardName} from 'containers/screenings/ScreeningInformationFormContainer'
+import {cardName as incidentInformationCardName} from 'containers/screenings/IncidentInformationFormContainer'
+import {cardName as narrativeCardName} from 'containers/screenings/NarrativeFormContainer'
+import {cardName as decisionCardName} from 'containers/screenings/DecisionFormContainer'
+import {cardName as workerSafetyCardName} from 'containers/screenings/WorkerSafetyFormContainer'
+import {cardName as crossReportsCardName} from 'containers/screenings/CrossReportFormContainer'
 
 describe('saveScreeningCardSaga', () => {
   it('saves screening on SAVE_SCREENING', () => {
@@ -33,7 +40,7 @@ describe('saveScreeningCardSaga', () => {
 
 describe('saveScreeningCard', () => {
   it('saves allegations edits and puts screening', () => {
-    const action = saveCard('allegations')
+    const action = saveCard(allegationsCardName)
     const screening = fromJS({id: 123, allegations: []})
 
     const gen = saveScreeningCard(action)
@@ -49,7 +56,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves screening information edits and puts screening', () => {
-    const action = saveCard('screening_information')
+    const action = saveCard(screeningInformationCardName)
     const screening = fromJS({id: 123, name: 'My Screening'})
 
     const gen = saveScreeningCard(action)
@@ -65,7 +72,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves narrative edits and puts screening', () => {
-    const action = saveCard('narrative')
+    const action = saveCard(narrativeCardName)
     const screening = fromJS({id: 123, narrative: 'My Narrative'})
 
     const gen = saveScreeningCard(action)
@@ -81,7 +88,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves incident information edits and puts screening', () => {
-    const action = saveCard('incident_information')
+    const action = saveCard(incidentInformationCardName)
     const screening = fromJS({id: 123, incident_date: '01/01/1990'})
 
     const gen = saveScreeningCard(action)
@@ -97,7 +104,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves worker safety edits and puts screening', () => {
-    const action = saveCard('worker_safety')
+    const action = saveCard(workerSafetyCardName)
     const screening = fromJS({id: 123, safety_alerts: []})
 
     const gen = saveScreeningCard(action)
@@ -113,7 +120,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves cross reports edits and puts screening', () => {
-    const action = saveCard('cross_reports')
+    const action = saveCard(crossReportsCardName)
     const screening = fromJS({id: 123, cross_reports: []})
 
     const gen = saveScreeningCard(action)
@@ -129,7 +136,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('saves decision edits and puts screening', () => {
-    const action = saveCard('decision')
+    const action = saveCard(decisionCardName)
     const screening = fromJS({id: 123, decision: 'screen_out'})
 
     const gen = saveScreeningCard(action)
@@ -145,7 +152,7 @@ describe('saveScreeningCard', () => {
   })
 
   it('puts errors when errors are thrown', () => {
-    const action = saveCard('allegations')
+    const action = saveCard(allegationsCardName)
     const screening = fromJS({id: 123, allegations: []})
 
     const gen = saveScreeningCard(action)

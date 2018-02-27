@@ -8,6 +8,7 @@ describe('CrossReportForm', () => {
     actions = {},
     allegationsRequireCrossReports = false,
     areCrossReportsRequired = false,
+    cardName = '',
     counties = [{id: '1234', name: 'County One'}],
     county_id = '',
     countyAgencies = {
@@ -67,6 +68,7 @@ describe('CrossReportForm', () => {
       actions,
       allegationsRequireCrossReports,
       areCrossReportsRequired,
+      cardName,
       counties,
       county_id,
       countyAgencies,
@@ -341,10 +343,11 @@ describe('CrossReportForm', () => {
     it('fires setCardMode, clearCardEdits', () => {
       const clearCardEdits = jasmine.createSpy('clearCardEdits')
       const setCardMode = jasmine.createSpy('setCardMode')
-      const component = renderCrossReportForm({actions: {clearCardEdits, setCardMode}})
+      const cardName = 'cross-report-card'
+      const component = renderCrossReportForm({actions: {clearCardEdits, setCardMode}, cardName})
       component.find('.btn.btn-default').simulate('click')
-      expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)
-      expect(clearCardEdits).toHaveBeenCalledWith('cross_reports')
+      expect(setCardMode).toHaveBeenCalledWith(cardName, SHOW_MODE)
+      expect(clearCardEdits).toHaveBeenCalledWith(cardName)
     })
   })
   describe('clicking on save', () => {
@@ -354,12 +357,13 @@ describe('CrossReportForm', () => {
       const saveCrossReport = jasmine.createSpy('saveCrossReport')
       const setCardMode = jasmine.createSpy('setCardMode')
       const screeningWithEdits = {id: 123, crossReports: []}
-      const component = renderCrossReportForm({actions: {saveCard, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits})
+      const cardName = 'cross-report-card'
+      const component = renderCrossReportForm({actions: {saveCard, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits, cardName})
       component.find('button.btn-primary').simulate('click')
-      expect(saveCard).toHaveBeenCalledWith('cross_reports')
+      expect(saveCard).toHaveBeenCalledWith(cardName)
       expect(saveCrossReport).toHaveBeenCalledWith(screeningWithEdits)
       expect(touchAllFields).toHaveBeenCalled()
-      expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)
+      expect(setCardMode).toHaveBeenCalledWith(cardName, SHOW_MODE)
     })
   })
 })

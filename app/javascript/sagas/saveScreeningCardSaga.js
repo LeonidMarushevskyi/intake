@@ -20,36 +20,43 @@ import {
 import {
   getScreeningWithEditsSelector as getScreeningWithDecisionEditsSelector,
 } from 'selectors/screening/decisionFormSelectors'
+import {cardName as allegationsCardName} from 'containers/screenings/AllegationsFormContainer'
+import {cardName as screeningInformationCardName} from 'containers/screenings/ScreeningInformationFormContainer'
+import {cardName as incidentInformationCardName} from 'containers/screenings/IncidentInformationFormContainer'
+import {cardName as narrativeCardName} from 'containers/screenings/NarrativeFormContainer'
+import {cardName as decisionCardName} from 'containers/screenings/DecisionFormContainer'
+import {cardName as workerSafetyCardName} from 'containers/screenings/WorkerSafetyFormContainer'
+import {cardName as crossReportsCardName} from 'containers/screenings/CrossReportFormContainer'
 
 export function* saveScreeningCard({payload: {card}}) {
   try {
     let screening
     switch (card) {
-      case 'allegations': {
+      case allegationsCardName: {
         screening = yield select(getScreeningWithAllegationsEditsSelector)
         break
       }
-      case 'cross_reports': {
+      case crossReportsCardName: {
         screening = yield select(getScreeningWithCrossReportEditsSelector)
         break
       }
-      case 'decision': {
+      case decisionCardName: {
         screening = yield select(getScreeningWithDecisionEditsSelector)
         break
       }
-      case 'incident_information': {
+      case incidentInformationCardName: {
         screening = yield select(getScreeningWithIncidentInformationEditsSelector)
         break
       }
-      case 'narrative': {
+      case narrativeCardName: {
         screening = yield select(getScreeningWithNarrativeEditsSelector)
         break
       }
-      case 'screening_information': {
+      case screeningInformationCardName: {
         screening = yield select(getScreeningWithScreeningInformationEditsSelector)
         break
       }
-      case 'worker_safety': {
+      case workerSafetyCardName: {
         screening = yield select(getScreeningWithWorkerSafetyEditsSelector)
         break
       }

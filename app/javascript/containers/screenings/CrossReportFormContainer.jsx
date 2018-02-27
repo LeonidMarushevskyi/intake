@@ -38,9 +38,12 @@ import {
   getCommunityCareLicensingFormSelector,
 } from 'selectors/screening/crossReportFormSelectors'
 
+export const cardName = 'cross-report-card'
+
 const mapStateToProps = (state) => ({
   allegationsRequireCrossReports: getAllegationsRequireCrossReportsValueSelector(state),
   areCrossReportsRequired: getAllegationsRequireCrossReportsValueSelector(state),
+  cardName: cardName,
   communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']) || '',

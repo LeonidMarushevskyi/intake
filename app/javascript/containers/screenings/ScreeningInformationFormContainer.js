@@ -10,6 +10,8 @@ import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
+export const cardName = 'screening-information-card'
+
 const mapStateToProps = (state) => {
   const screening = getScreeningSelector(state)
   const screeningInformationForm = getScreeningInformationFormSelector(state)
@@ -30,15 +32,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   onBlur: (fieldName) => dispatch(touchField(fieldName)),
   onCancel: () => {
-    dispatch(clearCardEdits('screening_information'))
+    dispatch(clearCardEdits(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('screening-information-card', SHOW_MODE))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
   onSave: () => {
-    dispatch(saveCard('screening_information'))
+    dispatch(saveCard(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('screening-information-card', SHOW_MODE))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
 })
 

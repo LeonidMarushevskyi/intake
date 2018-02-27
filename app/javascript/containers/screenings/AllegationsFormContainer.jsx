@@ -10,6 +10,8 @@ import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {setAllegationTypes} from 'actions/allegationsFormActions'
 
+export const cardName = 'allegations-card'
+
 const mapStateToProps = (state) => (
   {
     alertErrorMessage: getAllegationsAlertErrorMessageSelector(state),
@@ -21,15 +23,15 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => ({
   onCancel: () => {
-    dispatch(clearCardEdits('allegations'))
-    dispatch(setCardMode('allegations-card', SHOW_MODE))
+    dispatch(clearCardEdits(cardName))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   onChange: (props) => {
     dispatch(setAllegationTypes(props))
   },
   onSave: () => {
-    dispatch(saveCard('allegations'))
-    dispatch(setCardMode('allegations-card', SHOW_MODE))
+    dispatch(saveCard(cardName))
+    dispatch(setCardMode(cardName, SHOW_MODE))
   },
   dispatch,
 })
