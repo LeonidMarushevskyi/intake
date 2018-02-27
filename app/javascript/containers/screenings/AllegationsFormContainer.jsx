@@ -6,24 +6,24 @@ import {
   getAllegationsRequiredValueSelector,
   getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
-import {saveCard} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
-import {
-  resetAllegations,
-  setAllegationTypes,
-} from 'actions/allegationsFormActions'
+import {setAllegationTypes} from 'actions/allegationsFormActions'
 
 const mapStateToProps = (state) => (
   {
     alertErrorMessage: getAllegationsAlertErrorMessageSelector(state),
     allegations: getFormattedAllegationsSelector(state).toJS(),
     allegationTypes: getAllegationTypesSelector(state).toJS(),
-    persistedAllegations: state.get('screening').get('allegations').toJS(),
     required: getAllegationsRequiredValueSelector(state),
   }
 )
 
 const mapDispatchToProps = (dispatch) => ({
+  onCancel: () => {
+    dispatch(clearCardEdits('allegations'))
+    dispatch(setCardMode('allegations-card', SHOW_MODE))
+  },
   onChange: (props) => {
     dispatch(setAllegationTypes(props))
   },
@@ -34,21 +34,5 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch,
 })
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {dispatch, ...actions} = dispatchProps
-  const {persistedAllegations, ...props} = stateProps
-
-  const onCancel = () => {
-    dispatch(resetAllegations({allegations: persistedAllegations}))
-    dispatch(setCardMode('allegations-card', SHOW_MODE))
-  }
-
-  return {
-    onCancel,
-    ...props,
-    ...actions,
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(AllegationsForm)
+export default connect(mapStateToProps, mapDispatchToProps)(AllegationsForm)
 

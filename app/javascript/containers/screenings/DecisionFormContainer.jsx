@@ -8,14 +8,12 @@ import {
   getDecisionDetailSelector,
   getDecisionOptionsSelector,
   getDecisionSelector,
-  getResetValuesSelector,
   getRestrictionRationaleSelector,
   getAdditionalInfoRequiredSelector,
 } from 'selectors/screening/decisionFormSelectors'
-import {saveCard} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {
-  resetFieldValues,
   setField,
   touchField,
   touchAllFields,
@@ -31,7 +29,6 @@ const mapStateToProps = (state) => (
     decisionDetail: getDecisionDetailSelector(state).toJS(),
     decisionDetailOptions: getDecisionDetailOptionsSelector(state).toJS(),
     decisionOptions: getDecisionOptionsSelector().toJS(),
-    resetValues: getResetValuesSelector(state).toJS(),
     restrictionRationale: getRestrictionRationaleSelector(state).toJS(),
     sdmPath: sdmPath(),
     isAdditionalInfoRequired: getAdditionalInfoRequiredSelector(state),
@@ -40,6 +37,10 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => ({
   onBlur: (field) => dispatch(touchField({field})),
+  onCancel: () => {
+    dispatch(clearCardEdits('decision'))
+    dispatch(setCardMode('decision-card', SHOW_MODE))
+  },
   onChange: (field, value) => {
     dispatch(setField({field, value}))
     if (field === 'screening_decision') {
@@ -57,21 +58,5 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch,
 })
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {dispatch, ...actions} = dispatchProps
-  const {resetValues, ...props} = stateProps
-
-  const onCancel = () => {
-    dispatch(resetFieldValues({...resetValues}))
-    dispatch(setCardMode('decision-card', SHOW_MODE))
-  }
-
-  return {
-    onCancel,
-    ...props,
-    ...actions,
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ScreeningDecisionForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningDecisionForm)
 

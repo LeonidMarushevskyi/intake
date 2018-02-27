@@ -338,14 +338,13 @@ describe('CrossReportForm', () => {
     expect(cancelButton.text()).toContain('Cancel')
   })
   describe('clicking on cancel', () => {
-    it('fires toggleShow, resetFieldValues', () => {
-      const screening = {cross_reports: [{type: 'COUNTY_LICENSING'}]}
-      const resetFieldValues = jasmine.createSpy('resetFieldValues')
+    it('fires setCardMode, clearCardEdits', () => {
+      const clearCardEdits = jasmine.createSpy('clearCardEdits')
       const setCardMode = jasmine.createSpy('setCardMode')
-      const component = renderCrossReportForm({actions: {resetFieldValues, setCardMode}, screening})
+      const component = renderCrossReportForm({actions: {clearCardEdits, setCardMode}})
       component.find('.btn.btn-default').simulate('click')
       expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)
-      expect(resetFieldValues).toHaveBeenCalledWith(screening)
+      expect(clearCardEdits).toHaveBeenCalledWith('cross_reports')
     })
   })
   describe('clicking on save', () => {

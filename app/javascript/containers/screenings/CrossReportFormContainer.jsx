@@ -18,7 +18,6 @@ import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import {
   clearAllAgencyFields,
   clearAllFields,
-  resetFieldValues,
   save as saveCrossReport,
   setAgencyField,
   setAgencyTypeField,
@@ -27,9 +26,8 @@ import {
   touchAllFields,
   touchField,
 } from 'actions/crossReportFormActions'
-import {saveCard} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode} from 'actions/screeningPageActions'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
   getAllegationsRequireCrossReportsValueSelector,
   getVisibleErrorsSelector,
@@ -59,14 +57,12 @@ const mapStateToProps = (state) => ({
   inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']) || '',
   lawEnforcement: getLawEnforcementFormSelector(state).toJS(),
   method: state.getIn(['crossReportForm', 'method', 'value']) || '',
-  screening: getScreeningSelector(state).toJS(),
   screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     clearAllAgencyFields,
     clearAllFields,
-    resetFieldValues,
     saveCrossReport,
     setAgencyField,
     setAgencyTypeField,
@@ -77,6 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
     saveCard,
     fetchCountyAgencies,
     setCardMode,
+    clearCardEdits,
   }, dispatch),
 })
 

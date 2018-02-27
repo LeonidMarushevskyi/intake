@@ -12,7 +12,6 @@ import {
   getAdditionalInformationSelector,
   getAccessRestrictionSelector,
   getRestrictionRationaleSelector,
-  getResetValuesSelector,
   getErrorsSelector,
   getVisibleErrorsSelector,
   getAdditionalInfoRequiredSelector,
@@ -240,20 +239,6 @@ describe('screeningDecisionFormSelectors', () => {
         restrictions_rationale: '5',
         narrative: 'Hello',
       }))
-    })
-  })
-
-  describe('getResetValuesSelector', () => {
-    it('returns the current values saved for the screening', () => {
-      const screening = {
-        screening_decision: 'ABC',
-        screening_decision_detail: 'DEF',
-        additional_information: 'GHI',
-        access_restrictions: 'JKL',
-        restrictions_rationale: 'MNO',
-      }
-      const state = fromJS({screening})
-      expect(getResetValuesSelector(state)).toEqualImmutable(fromJS(screening))
     })
   })
 

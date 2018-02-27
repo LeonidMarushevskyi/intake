@@ -147,14 +147,3 @@ export const getScreeningWithEditsSelector = createSelector(
       .set('restrictions_rationale', restrictionRationale)
   )
 )
-
-export const getResetValuesSelector = createSelector(
-  getScreeningSelector,
-  (screening) => Map({
-    screening_decision: screening.get('screening_decision'),
-    screening_decision_detail: screening.get('screening_decision_detail'),
-    additional_information: screening.get('additional_information'),
-    access_restrictions: screening.get('access_restrictions'),
-    restrictions_rationale: screening.get('restrictions_rationale'),
-  })
-)

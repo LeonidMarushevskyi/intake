@@ -1,12 +1,12 @@
 import {connect} from 'react-redux'
 import ScreeningInformationForm from 'views/ScreeningInformationForm'
 import COMMUNICATION_METHOD from 'enums/CommunicationMethod'
-import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/screeningInformationFormActions'
+import {setField, touchField, touchAllFields} from 'actions/screeningInformationFormActions'
 import {
   getScreeningInformationFormSelector,
   getVisibleErrorsSelector,
 } from 'selectors/screening/screeningInformationFormSelectors'
-import {saveCard} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
@@ -16,7 +16,6 @@ const mapStateToProps = (state) => {
   const communicationMethods = Object.keys(COMMUNICATION_METHOD)
     .map((value) => ({value, label: COMMUNICATION_METHOD[value]}))
   return {
-    screening: screening.toJS(),
     assignee: screeningInformationForm.getIn(['assignee', 'value']),
     assigneeDisabled: Boolean(screening.get('assignee_staff_id')),
     communicationMethod: screeningInformationForm.getIn(['communication_method', 'value']),
@@ -30,27 +29,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onBlur: (fieldName) => dispatch(touchField(fieldName)),
+  onCancel: () => {
+    dispatch(clearCardEdits('screening_information'))
+    dispatch(touchAllFields())
+    dispatch(setCardMode('screening-information-card', SHOW_MODE))
+  },
   onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
   onSave: () => {
     dispatch(saveCard('screening_information'))
     dispatch(touchAllFields())
     dispatch(setCardMode('screening-information-card', SHOW_MODE))
   },
-  dispatch,
 })
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {screening, ...props} = stateProps
-  const {dispatch, ...actions} = dispatchProps
-  const onCancel = () => {
-    dispatch(resetFieldValues(screening))
-    dispatch(touchAllFields())
-    dispatch(setCardMode('screening-information-card', SHOW_MODE))
-  }
-  return {
-    onCancel,
-    ...props,
-    ...actions,
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ScreeningInformationForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ScreeningInformationForm)
