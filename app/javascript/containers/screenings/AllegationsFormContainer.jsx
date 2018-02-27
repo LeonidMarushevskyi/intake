@@ -3,11 +3,10 @@ import AllegationsForm from 'views/AllegationsForm'
 import {
   getAllegationTypesSelector,
   getFormattedAllegationsSelector,
-  getScreeningWithAllegationsEditsSelector,
   getAllegationsRequiredValueSelector,
   getAllegationsAlertErrorMessageSelector,
 } from 'selectors/screening/allegationsFormSelectors'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {
   resetAllegations,
@@ -21,45 +20,35 @@ const mapStateToProps = (state) => (
     allegationTypes: getAllegationTypesSelector(state).toJS(),
     persistedAllegations: state.get('screening').get('allegations').toJS(),
     required: getAllegationsRequiredValueSelector(state),
-    screeningWithEdits: getScreeningWithAllegationsEditsSelector(state).toJS(),
   }
 )
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {dispatch} = dispatchProps
-  const {
-    alertErrorMessage,
-    allegations,
-    allegationTypes,
-    persistedAllegations,
-    required,
-    screeningWithEdits,
-  } = stateProps
-
-  const onSave = () => {
-    dispatch(saveScreening(screeningWithEdits))
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (props) => {
+    dispatch(setAllegationTypes(props))
+  },
+  onSave: () => {
+    dispatch(saveCard('allegations'))
     dispatch(setCardMode('allegations-card', SHOW_MODE))
-  }
+  },
+  dispatch,
+})
+
+const mergeProps = (stateProps, dispatchProps) => {
+  const {dispatch, ...actions} = dispatchProps
+  const {persistedAllegations, ...props} = stateProps
 
   const onCancel = () => {
     dispatch(resetAllegations({allegations: persistedAllegations}))
     dispatch(setCardMode('allegations-card', SHOW_MODE))
   }
 
-  const onChange = (props) => {
-    dispatch(setAllegationTypes(props))
-  }
-
   return {
-    alertErrorMessage,
-    allegations,
-    allegationTypes,
     onCancel,
-    onChange,
-    onSave,
-    required,
+    ...props,
+    ...actions,
   }
 }
 
-export default connect(mapStateToProps, null, mergeProps)(AllegationsForm)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(AllegationsForm)
 

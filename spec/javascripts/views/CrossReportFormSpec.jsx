@@ -349,15 +349,15 @@ describe('CrossReportForm', () => {
     })
   })
   describe('clicking on save', () => {
-    it('fires toggleShow, saveScreening', () => {
-      const saveScreening = jasmine.createSpy('saveScreening')
+    it('fires toggleShow, saveCard', () => {
+      const saveCard = jasmine.createSpy('saveCard')
       const touchAllFields = jasmine.createSpy('touchAllFields')
       const saveCrossReport = jasmine.createSpy('saveCrossReport')
       const setCardMode = jasmine.createSpy('setCardMode')
       const screeningWithEdits = {id: 123, crossReports: []}
-      const component = renderCrossReportForm({actions: {saveScreening, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits})
+      const component = renderCrossReportForm({actions: {saveCard, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits})
       component.find('button.btn-primary').simulate('click')
-      expect(saveScreening).toHaveBeenCalledWith(screeningWithEdits)
+      expect(saveCard).toHaveBeenCalledWith('cross_reports')
       expect(saveCrossReport).toHaveBeenCalledWith(screeningWithEdits)
       expect(touchAllFields).toHaveBeenCalled()
       expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)

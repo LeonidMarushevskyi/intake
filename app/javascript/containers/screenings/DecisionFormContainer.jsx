@@ -10,10 +10,9 @@ import {
   getDecisionSelector,
   getResetValuesSelector,
   getRestrictionRationaleSelector,
-  getScreeningWithEditsSelector,
   getAdditionalInfoRequiredSelector,
 } from 'selectors/screening/decisionFormSelectors'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {
   resetFieldValues,
@@ -34,41 +33,14 @@ const mapStateToProps = (state) => (
     decisionOptions: getDecisionOptionsSelector().toJS(),
     resetValues: getResetValuesSelector(state).toJS(),
     restrictionRationale: getRestrictionRationaleSelector(state).toJS(),
-    screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
     sdmPath: sdmPath(),
     isAdditionalInfoRequired: getAdditionalInfoRequiredSelector(state),
   }
 )
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {dispatch} = dispatchProps
-  const {
-    accessRestriction,
-    accessRestrictionOptions,
-    additionalInformation,
-    decision,
-    decisionOptions,
-    decisionDetail,
-    decisionDetailOptions,
-    resetValues,
-    restrictionRationale,
-    screeningWithEdits,
-    sdmPath,
-    isAdditionalInfoRequired,
-  } = stateProps
-
-  const onSave = () => {
-    dispatch(saveScreening(screeningWithEdits))
-    dispatch(touchAllFields())
-    dispatch(setCardMode('decision-card', SHOW_MODE))
-  }
-
-  const onCancel = () => {
-    dispatch(resetFieldValues({...resetValues}))
-    dispatch(setCardMode('decision-card', SHOW_MODE))
-  }
-
-  const onChange = (field, value) => {
+const mapDispatchToProps = (dispatch) => ({
+  onBlur: (field) => dispatch(touchField({field})),
+  onChange: (field, value) => {
     dispatch(setField({field, value}))
     if (field === 'screening_decision') {
       dispatch(setField({field: 'screening_decision_detail', value: null}))
@@ -76,26 +48,30 @@ const mergeProps = (stateProps, dispatchProps) => {
     if (field === 'access_restrictions' && value === '') {
       dispatch(setField({field: 'restrictions_rationale', value: null}))
     }
+  },
+  onSave: () => {
+    dispatch(saveCard('decision'))
+    dispatch(touchAllFields())
+    dispatch(setCardMode('decision-card', SHOW_MODE))
+  },
+  dispatch,
+})
+
+const mergeProps = (stateProps, dispatchProps) => {
+  const {dispatch, ...actions} = dispatchProps
+  const {resetValues, ...props} = stateProps
+
+  const onCancel = () => {
+    dispatch(resetFieldValues({...resetValues}))
+    dispatch(setCardMode('decision-card', SHOW_MODE))
   }
-  const onBlur = (field) => dispatch(touchField({field}))
 
   return {
-    accessRestriction,
-    accessRestrictionOptions,
-    additionalInformation,
-    decision,
-    decisionDetail,
-    decisionDetailOptions,
-    decisionOptions,
-    onBlur,
     onCancel,
-    onChange,
-    onSave,
-    restrictionRationale,
-    sdmPath,
-    isAdditionalInfoRequired,
+    ...props,
+    ...actions,
   }
 }
 
-export default connect(mapStateToProps, null, mergeProps)(ScreeningDecisionForm)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ScreeningDecisionForm)
 

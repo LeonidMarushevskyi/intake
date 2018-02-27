@@ -27,7 +27,7 @@ import {
   touchAllFields,
   touchField,
 } from 'actions/crossReportFormActions'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard} from 'actions/screeningActions'
 import {setCardMode} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
@@ -74,7 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
     touchAgencyField,
     touchAllFields,
     touchField,
-    saveScreening,
+    saveCard,
     fetchCountyAgencies,
     setCardMode,
   }, dispatch),

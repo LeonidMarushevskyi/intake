@@ -34,8 +34,8 @@ export function saveSuccess(screening) {
 export function saveFailure(error) {
   return {type: SAVE_SCREENING_COMPLETE, payload: {error}, error: true}
 }
-export function save(screening) {
-  return {type: SAVE_SCREENING, payload: {screening}}
+export function saveCard(card) {
+  return {type: SAVE_SCREENING, payload: {card}}
 }
 export function submitScreeningSuccess(screening) {
   return {type: SUBMIT_SCREENING_COMPLETE, payload: {screening}}

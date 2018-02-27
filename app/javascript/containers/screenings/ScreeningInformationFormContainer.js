@@ -4,10 +4,9 @@ import COMMUNICATION_METHOD from 'enums/CommunicationMethod'
 import {setField, resetFieldValues, touchField, touchAllFields} from 'actions/screeningInformationFormActions'
 import {
   getScreeningInformationFormSelector,
-  getScreeningWithEditsSelector,
   getVisibleErrorsSelector,
 } from 'selectors/screening/screeningInformationFormSelectors'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
 import {getScreeningSelector} from 'selectors/screeningSelectors'
 
@@ -18,7 +17,6 @@ const mapStateToProps = (state) => {
     .map((value) => ({value, label: COMMUNICATION_METHOD[value]}))
   return {
     screening: screening.toJS(),
-    screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
     assignee: screeningInformationForm.getIn(['assignee', 'value']),
     assigneeDisabled: Boolean(screening.get('assignee_staff_id')),
     communicationMethod: screeningInformationForm.getIn(['communication_method', 'value']),
@@ -29,44 +27,30 @@ const mapStateToProps = (state) => {
     startedAt: screeningInformationForm.getIn(['started_at', 'value']),
   }
 }
-const mergeProps = (stateProps, {dispatch}) => {
-  const {
-    screening,
-    screeningWithEdits,
-    assignee,
-    assigneeDisabled,
-    communicationMethod,
-    communicationMethods,
-    endedAt,
-    errors,
-    name,
-    startedAt,
-  } = stateProps
+
+const mapDispatchToProps = (dispatch) => ({
+  onBlur: (fieldName) => dispatch(touchField(fieldName)),
+  onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
+  onSave: () => {
+    dispatch(saveCard('screening_information'))
+    dispatch(touchAllFields())
+    dispatch(setCardMode('screening-information-card', SHOW_MODE))
+  },
+  dispatch,
+})
+
+const mergeProps = (stateProps, dispatchProps) => {
+  const {screening, ...props} = stateProps
+  const {dispatch, ...actions} = dispatchProps
   const onCancel = () => {
     dispatch(resetFieldValues(screening))
     dispatch(touchAllFields())
     dispatch(setCardMode('screening-information-card', SHOW_MODE))
   }
-  const onSave = () => {
-    dispatch(saveScreening(screeningWithEdits))
-    dispatch(touchAllFields())
-    dispatch(setCardMode('screening-information-card', SHOW_MODE))
-  }
-  const onBlur = (fieldName) => dispatch(touchField(fieldName))
-  const onChange = (fieldName, value) => dispatch(setField(fieldName, value))
   return {
-    onBlur,
     onCancel,
-    onChange,
-    onSave,
-    assignee,
-    assigneeDisabled,
-    communicationMethod,
-    communicationMethods,
-    endedAt,
-    errors,
-    name,
-    startedAt,
+    ...props,
+    ...actions,
   }
 }
-export default connect(mapStateToProps, null, mergeProps)(ScreeningInformationForm)
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ScreeningInformationForm)

@@ -38,7 +38,7 @@ const CrossReportForm = ({
     fetchCountyAgencies,
     resetFieldValues,
     saveCrossReport,
-    saveScreening,
+    saveCard,
     setAgencyField,
     setAgencyTypeField,
     setCardMode,
@@ -53,7 +53,7 @@ const CrossReportForm = ({
     setCardMode('cross-report-card', SHOW_MODE)
   }
   const save = () => {
-    saveScreening(screeningWithEdits)
+    saveCard('cross_reports')
     saveCrossReport(screeningWithEdits)
     touchAllFields()
     setCardMode('cross-report-card', SHOW_MODE)
