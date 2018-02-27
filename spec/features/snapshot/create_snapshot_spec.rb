@@ -49,8 +49,11 @@ feature 'Create Snapshot' do
           'The Child Welfare History Snapshot allows you to search CWS/CMS for people and their'
         )
       end
-
-      expect(page).not_to have_css('.side-bar')
+      
+      expect(page).to have_css('.side-bar')
+      expect(page).to have_content('People & Roles')
+      expect(page).to have_content('Relationships')
+      expect(page).to have_content('History')
     end
 
     scenario 'user starts a snapshot, goes back to the home page, and starts another snapshot' do
