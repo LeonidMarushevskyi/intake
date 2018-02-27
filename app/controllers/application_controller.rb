@@ -23,20 +23,24 @@ class ApplicationController < ActionController::Base # :nodoc:
     auth_artifact = SecurityRepository.auth_artifact_for_token(security_token)
     if auth_artifact
       if json?(auth_artifact)
-        auth_data = JSON.parse(auth_artifact)
-        if auth_data['staffId']
-          session[:security_token] = security_token
-          auth_data = JSON.parse(auth_artifact)
-          staff_id = auth_data['staffId']
-          set_user_details_on_session(security_token, staff_id, auth_data)
-        else
-          head :forbidden
-        end
+        process_auth_artifact(auth_artifact)
       else
         head :forbidden
       end
     else
       redirect_to SecurityRepository.login_url(request.original_url)
+    end
+  end
+
+  def process_auth_artifact(auth_artifact)
+    auth_data = JSON.parse(auth_artifact)
+    if auth_data['staffId']
+      session[:security_token] = security_token
+      auth_data = JSON.parse(auth_artifact)
+      staff_id = auth_data['staffId']
+      set_user_details_on_session(security_token, staff_id, auth_data)
+    else
+      head :forbidden
     end
   end
 
