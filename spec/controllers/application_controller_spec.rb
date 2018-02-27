@@ -123,11 +123,12 @@ describe ApplicationController do
               .and_return(security_token)
           end
 
-          it 'sets session security token without errors' do
+          it 'redirects to unauthorized (403) error page' do
             process :custom, method: :get, params: {
               accessCode: access_code, token: security_token
             }
-            expect(session[:security_token]).to eq security_token
+            expect(response).to be_forbidden
+            expect(session[:security_token]).not_to eq security_token
             expect(session).not_to have_key(:user_details)
           end
         end
@@ -196,21 +197,6 @@ describe ApplicationController do
             }
             expect(session[:security_token]).to eq security_token
             expect(session[:user_details]).to eq user_details
-          end
-
-          context 'when staff repository throws error' do
-            before do
-              allow(StaffRepository).to receive(:find)
-                .and_throw('Some sort of issue')
-            end
-
-            it 'sets session security token' do
-              process :custom, method: :get, params: {
-                accessCode: access_code, token: security_token
-              }
-              expect(session[:security_token]).to eq security_token
-              expect(session[:user_details]).to eq user_details
-            end
           end
         end
       end
