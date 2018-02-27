@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch, {personId}) => ({
     dispatch(savePerson(personId))
     dispatch(touchAllFields(personId))
     dispatch(setPersonCardMode(personId, 'show'))
-  }
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonCard)

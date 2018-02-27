@@ -14,8 +14,8 @@ export function updatePersonSuccess(person) {
 export function updatePersonFailure(error) {
   return {type: UPDATE_PERSON_COMPLETE, payload: {error}, error: true}
 }
-export function savePerson(person) {
-  return {type: UPDATE_PERSON, payload: {person}}
+export function savePerson(personId) {
+  return {type: UPDATE_PERSON, payload: {personId}}
 }
 export function createPersonSuccess(person) {
   return {type: CREATE_PERSON_COMPLETE, payload: {person}}
