@@ -4,28 +4,25 @@ import {
   getIncidentCountySelector,
   getAddressSelector,
   getLocationTypeSelector,
-  getScreeningWithEditsSelector,
   getCountiesSelector,
   getStates,
   getLocationTypes,
   getVisibleErrorsSelector,
 } from 'selectors/screening/incidentInformationFormSelector'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
 import IncidentInformationForm from 'views/IncidentInformationForm'
 import {
   setField,
   touchAllFields,
   touchField,
-  resetFieldValues,
 } from 'actions/incidentInformationFormActions'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode, SHOW_MODE} from 'actions/screeningPageActions'
+
+export const cardName = 'incident-information-card'
 
 const mapStateToProps = (state) => ({
   errors: getVisibleErrorsSelector(state).toJS(),
   incidentDate: getIncidentDateSelector(state),
-  screening: getScreeningSelector(state).toJS(),
-  screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
   selectedCounty: getIncidentCountySelector(state),
   address: getAddressSelector(state).toJS(),
   selectedLocationType: getLocationTypeSelector(state),
@@ -34,33 +31,19 @@ const mapStateToProps = (state) => ({
   locationTypes: getLocationTypes(),
 })
 
-const mergeProps = (stateProps, dispatchProps) => {
-  const {dispatch} = dispatchProps
-  const {
-    screening,
-    screeningWithEdits,
-    ...usedProps
-  } = stateProps
-
-  const onSave = () => {
-    dispatch(saveScreening(screeningWithEdits))
+const mapDispatchToProps = (dispatch) => ({
+  onBlur: (fieldName) => dispatch(touchField(fieldName)),
+  onCancel: () => {
+    dispatch(clearCardEdits(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('incident-information-card', SHOW_MODE))
-  }
-  const onCancel = () => {
-    dispatch(resetFieldValues(screening))
+    dispatch(setCardMode(cardName, SHOW_MODE))
+  },
+  onChange: (fieldName, value) => dispatch(setField(fieldName, value)),
+  onSave: () => {
+    dispatch(saveCard(cardName))
     dispatch(touchAllFields())
-    dispatch(setCardMode('incident-information-card', SHOW_MODE))
-  }
-  const onChange = (fieldName, value) => dispatch(setField(fieldName, value))
-  const onBlur = (fieldName) => dispatch(touchField(fieldName))
-  return {
-    ...usedProps,
-    onSave,
-    onCancel,
-    onChange,
-    onBlur,
-  }
-}
+    dispatch(setCardMode(cardName, SHOW_MODE))
+  },
+})
 
-export default connect(mapStateToProps, null, mergeProps)(IncidentInformationForm)
+export default connect(mapStateToProps, mapDispatchToProps)(IncidentInformationForm)

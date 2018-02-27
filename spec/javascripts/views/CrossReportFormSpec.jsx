@@ -8,6 +8,7 @@ describe('CrossReportForm', () => {
     actions = {},
     allegationsRequireCrossReports = false,
     areCrossReportsRequired = false,
+    cardName = '',
     counties = [{id: '1234', name: 'County One'}],
     county_id = '',
     countyAgencies = {
@@ -67,6 +68,7 @@ describe('CrossReportForm', () => {
       actions,
       allegationsRequireCrossReports,
       areCrossReportsRequired,
+      cardName,
       counties,
       county_id,
       countyAgencies,
@@ -338,29 +340,30 @@ describe('CrossReportForm', () => {
     expect(cancelButton.text()).toContain('Cancel')
   })
   describe('clicking on cancel', () => {
-    it('fires toggleShow, resetFieldValues', () => {
-      const screening = {cross_reports: [{type: 'COUNTY_LICENSING'}]}
-      const resetFieldValues = jasmine.createSpy('resetFieldValues')
+    it('fires setCardMode, clearCardEdits', () => {
+      const clearCardEdits = jasmine.createSpy('clearCardEdits')
       const setCardMode = jasmine.createSpy('setCardMode')
-      const component = renderCrossReportForm({actions: {resetFieldValues, setCardMode}, screening})
+      const cardName = 'cross-report-card'
+      const component = renderCrossReportForm({actions: {clearCardEdits, setCardMode}, cardName})
       component.find('.btn.btn-default').simulate('click')
-      expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)
-      expect(resetFieldValues).toHaveBeenCalledWith(screening)
+      expect(setCardMode).toHaveBeenCalledWith(cardName, SHOW_MODE)
+      expect(clearCardEdits).toHaveBeenCalledWith(cardName)
     })
   })
   describe('clicking on save', () => {
-    it('fires toggleShow, saveScreening', () => {
-      const saveScreening = jasmine.createSpy('saveScreening')
+    it('fires toggleShow, saveCard', () => {
+      const saveCard = jasmine.createSpy('saveCard')
       const touchAllFields = jasmine.createSpy('touchAllFields')
       const saveCrossReport = jasmine.createSpy('saveCrossReport')
       const setCardMode = jasmine.createSpy('setCardMode')
       const screeningWithEdits = {id: 123, crossReports: []}
-      const component = renderCrossReportForm({actions: {saveScreening, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits})
+      const cardName = 'cross-report-card'
+      const component = renderCrossReportForm({actions: {saveCard, saveCrossReport, touchAllFields, setCardMode}, screeningWithEdits, cardName})
       component.find('button.btn-primary').simulate('click')
-      expect(saveScreening).toHaveBeenCalledWith(screeningWithEdits)
+      expect(saveCard).toHaveBeenCalledWith(cardName)
       expect(saveCrossReport).toHaveBeenCalledWith(screeningWithEdits)
       expect(touchAllFields).toHaveBeenCalled()
-      expect(setCardMode).toHaveBeenCalledWith('cross-report-card', SHOW_MODE)
+      expect(setCardMode).toHaveBeenCalledWith(cardName, SHOW_MODE)
     })
   })
 })

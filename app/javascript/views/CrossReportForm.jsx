@@ -19,6 +19,7 @@ import {SHOW_MODE} from 'actions/screeningPageActions'
 const CrossReportForm = ({
   allegationsRequireCrossReports,
   areCrossReportsRequired,
+  cardName,
   communityCareLicensing,
   counties,
   county_id,
@@ -30,15 +31,14 @@ const CrossReportForm = ({
   inform_date,
   lawEnforcement,
   method,
-  screening,
   screeningWithEdits,
   actions: {
     clearAllAgencyFields,
     clearAllFields,
     fetchCountyAgencies,
-    resetFieldValues,
+    clearCardEdits,
     saveCrossReport,
-    saveScreening,
+    saveCard,
     setAgencyField,
     setAgencyTypeField,
     setCardMode,
@@ -49,14 +49,14 @@ const CrossReportForm = ({
   },
 }) => {
   const cancel = () => {
-    resetFieldValues(screening)
-    setCardMode('cross-report-card', SHOW_MODE)
+    clearCardEdits(cardName)
+    setCardMode(cardName, SHOW_MODE)
   }
   const save = () => {
-    saveScreening(screeningWithEdits)
+    saveCard(cardName)
     saveCrossReport(screeningWithEdits)
     touchAllFields()
-    setCardMode('cross-report-card', SHOW_MODE)
+    setCardMode(cardName, SHOW_MODE)
   }
   const agencyFieldActions = {
     setAgencyTypeField,
@@ -192,6 +192,7 @@ CrossReportForm.propTypes = {
   actions: PropTypes.object.isRequired,
   allegationsRequireCrossReports: PropTypes.bool.isRequired,
   areCrossReportsRequired: PropTypes.bool.isRequired,
+  cardName: PropTypes.string,
   communityCareLicensing: PropTypes.object.isRequired,
   counties: PropTypes.array.isRequired,
   countyAgencies: PropTypes.object,
@@ -203,7 +204,6 @@ CrossReportForm.propTypes = {
   inform_date: PropTypes.string,
   lawEnforcement: PropTypes.object.isRequired,
   method: PropTypes.string,
-  screening: PropTypes.object,
   screeningWithEdits: PropTypes.object,
 }
 

@@ -10,6 +10,7 @@ import {
 
 export const SAVE_SCREENING = 'SAVE_SCREENING'
 export const SAVE_SCREENING_COMPLETE = 'SAVE_SCREENING_COMPLETE'
+export const CLEAR_CARD_EDITS = 'CLEAR_CARD_EDITS'
 export function createScreeningSuccess(screening) {
   return {type: CREATE_SCREENING_COMPLETE, payload: {screening}}
 }
@@ -34,8 +35,11 @@ export function saveSuccess(screening) {
 export function saveFailure(error) {
   return {type: SAVE_SCREENING_COMPLETE, payload: {error}, error: true}
 }
-export function save(screening) {
-  return {type: SAVE_SCREENING, payload: {screening}}
+export function saveCard(card) {
+  return {type: SAVE_SCREENING, payload: {card}}
+}
+export function clearCardEdits(card) {
+  return {type: CLEAR_CARD_EDITS, payload: {card}}
 }
 export function submitScreeningSuccess(screening) {
   return {type: SUBMIT_SCREENING_COMPLETE, payload: {screening}}

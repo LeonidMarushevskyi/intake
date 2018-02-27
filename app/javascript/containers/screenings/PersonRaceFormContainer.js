@@ -21,22 +21,21 @@ const mapStateToProps = (state, {personId}) => {
     raceDetails: getPersonRaceDetailsSelector(state, personId).toJS(),
   }
 }
-const mergeProps = (stateProps, {dispatch}, {personId}) => (
-  {
-    onRaceChange: (changedRace, value) => {
-      dispatch(setField(personId, ['races', changedRace], value))
-      if (changedRace === 'Unknown' || changedRace === 'Abandoned' || changedRace === 'Declined to answer') {
-        Object.keys(RACE_DETAILS).forEach((race) => {
-          if (race !== changedRace) {
-            dispatch(setField(personId, ['races', race], false))
-          }
-        })
-      }
-    },
-    onRaceDetailChange: (changedRace, value) => {
-      dispatch(setField(personId, ['race_details', changedRace], value))
-    },
-    ...stateProps,
-  }
-)
-export default connect(mapStateToProps, null, mergeProps)(RaceForm)
+
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onRaceChange: (changedRace, value) => {
+    dispatch(setField(personId, ['races', changedRace], value))
+    if (changedRace === 'Unknown' || changedRace === 'Abandoned' || changedRace === 'Declined to answer') {
+      Object.keys(RACE_DETAILS).forEach((race) => {
+        if (race !== changedRace) {
+          dispatch(setField(personId, ['races', race], false))
+        }
+      })
+    }
+  },
+  onRaceDetailChange: (changedRace, value) => {
+    dispatch(setField(personId, ['race_details', changedRace], value))
+  },
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RaceForm)

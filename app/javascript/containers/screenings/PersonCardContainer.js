@@ -18,44 +18,16 @@ const mapStateToProps = (state, {personId}) => ({
   personName: getPersonNamesSelector(state).get(personId),
   personWithEdits: getPeopleWithEditsSelector(state).get(personId).toJS(),
 })
-const mergeProps = (stateProps, {dispatch}, ownProps) => {
-  const {
-    mode,
-    editable,
-    deletable,
-    informationFlag,
-    personName,
-    personWithEdits,
-  } = stateProps
-  const {
-    edit,
-    personId,
-    show,
-  } = ownProps
 
-  const onCancel = () => dispatch(setPersonCardMode(personId, 'show'))
-  const onDelete = () => dispatch(deletePerson(personId))
-  const onEdit = () => dispatch(setPersonCardMode(personId, 'edit'))
-  const onSave = () => {
-    dispatch(savePerson(personWithEdits))
+const mapDispatchToProps = (dispatch, {personId}) => ({
+  onCancel: () => dispatch(setPersonCardMode(personId, 'show')),
+  onDelete: () => dispatch(deletePerson(personId)),
+  onEdit: () => dispatch(setPersonCardMode(personId, 'edit')),
+  onSave: () => {
+    dispatch(savePerson(personId))
     dispatch(touchAllFields(personId))
     dispatch(setPersonCardMode(personId, 'show'))
-  }
+  },
+})
 
-  return {
-    edit,
-    editable,
-    deletable,
-    informationFlag,
-    mode,
-    onCancel,
-    onDelete,
-    onEdit,
-    onSave,
-    personId,
-    personName,
-    show,
-  }
-}
-
-export default connect(mapStateToProps, null, mergeProps)(PersonCard)
+export default connect(mapStateToProps, mapDispatchToProps)(PersonCard)

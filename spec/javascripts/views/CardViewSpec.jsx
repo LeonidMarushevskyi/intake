@@ -3,17 +3,18 @@ import {shallow} from 'enzyme'
 import CardView from 'views/CardView'
 
 describe('Card View', () => {
-  const renderCardView = ({...props}) => (
-    shallow(<CardView {...props} />, {disableLifecycleMethods: true})
-  )
+  const renderCardView = ({editable = false, ...args}) => {
+    const props = {editable, ...args}
+    return shallow(<CardView {...props} />, {disableLifecycleMethods: true})
+  }
 
   it('renders a card anchor', () => {
-    const card = renderCardView()
+    const card = renderCardView({})
     expect(card.find('.anchor').exists()).toBe(true)
   })
 
   it('renders a card', () => {
-    const card = renderCardView()
+    const card = renderCardView({})
     expect(card.find('.card').exists()).toEqual(true)
   })
 
@@ -28,27 +29,27 @@ describe('Card View', () => {
     expect(title).toEqual('My Title')
   })
 
-  it('displays an edit button if onEdit is available', () => {
+  it('displays an edit button if editable is true', () => {
     const onEdit = jasmine.createSpy('onEdit')
-    const component = renderCardView({onEdit})
+    const component = renderCardView({onEdit, editable: true})
     expect(component.find('EditLink').exists()).toEqual(true)
   })
 
   it('uses the card title for the edit link aria label', () => {
     const onEdit = jasmine.createSpy('onEdit')
-    const component = renderCardView({onEdit, title: 'My Title'})
+    const component = renderCardView({onEdit, title: 'My Title', editable: true})
     expect(component.find('EditLink').props().ariaLabel).toEqual('Edit my title')
   })
 
   it('calls onEdit when the edit button is clicked', () => {
     const onEdit = jasmine.createSpy('onEdit')
-    const component = renderCardView({onEdit})
+    const component = renderCardView({onEdit, editable: true})
     component.find('EditLink').simulate('click', {preventDefault: () => {}})
     expect(onEdit).toHaveBeenCalled()
   })
 
-  it('does not display an edit button if no onEdit callback is passed', () => {
-    const component = renderCardView({})
+  it('does not display an edit button if editable is false', () => {
+    const component = renderCardView({editable: false})
     expect(component.find('EditLink').exists()).toEqual(false)
   })
 

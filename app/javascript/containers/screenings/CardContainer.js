@@ -6,22 +6,14 @@ import {
   getCardIsEditableSelector,
 } from 'selectors/screening/screeningPageSelectors'
 
-const mapStateToProps = (state, {title, id, edit, show}) => ({
+const mapStateToProps = (state, {id}) => ({
   editable: getCardIsEditableSelector(state, id),
   mode: getCardModeValueSelector(state, id),
-  id,
-  title,
-  edit,
-  show,
 })
 
-const mergeProps = ({editable, ...cardProps}, {dispatch}, {id}) => {
-  const onEdit = () => dispatch(setCardMode(id, EDIT_MODE))
-  return {
-    onEdit: (editable ? onEdit : undefined),
-    ...cardProps,
-  }
-}
+const mapDispatchToProps = (dispatch, {id}) => ({
+  onEdit: () => dispatch(setCardMode(id, EDIT_MODE)),
+})
 
-export default connect(mapStateToProps, null, mergeProps)(CardView)
+export default connect(mapStateToProps, mapDispatchToProps)(CardView)
 

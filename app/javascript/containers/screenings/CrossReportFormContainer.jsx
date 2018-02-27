@@ -18,7 +18,6 @@ import {fetch as fetchCountyAgencies} from 'actions/countyAgenciesActions'
 import {
   clearAllAgencyFields,
   clearAllFields,
-  resetFieldValues,
   save as saveCrossReport,
   setAgencyField,
   setAgencyTypeField,
@@ -27,9 +26,8 @@ import {
   touchAllFields,
   touchField,
 } from 'actions/crossReportFormActions'
-import {save as saveScreening} from 'actions/screeningActions'
+import {saveCard, clearCardEdits} from 'actions/screeningActions'
 import {setCardMode} from 'actions/screeningPageActions'
-import {getScreeningSelector} from 'selectors/screeningSelectors'
 import {
   getAllegationsRequireCrossReportsValueSelector,
   getVisibleErrorsSelector,
@@ -40,9 +38,12 @@ import {
   getCommunityCareLicensingFormSelector,
 } from 'selectors/screening/crossReportFormSelectors'
 
+export const cardName = 'cross-report-card'
+
 const mapStateToProps = (state) => ({
   allegationsRequireCrossReports: getAllegationsRequireCrossReportsValueSelector(state),
   areCrossReportsRequired: getAllegationsRequireCrossReportsValueSelector(state),
+  cardName: cardName,
   communityCareLicensing: getCommunityCareLicensingFormSelector(state).toJS(),
   counties: state.get('counties').toJS(),
   county_id: state.getIn(['crossReportForm', 'county_id', 'value']) || '',
@@ -59,14 +60,12 @@ const mapStateToProps = (state) => ({
   inform_date: state.getIn(['crossReportForm', 'inform_date', 'value']) || '',
   lawEnforcement: getLawEnforcementFormSelector(state).toJS(),
   method: state.getIn(['crossReportForm', 'method', 'value']) || '',
-  screening: getScreeningSelector(state).toJS(),
   screeningWithEdits: getScreeningWithEditsSelector(state).toJS(),
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
     clearAllAgencyFields,
     clearAllFields,
-    resetFieldValues,
     saveCrossReport,
     setAgencyField,
     setAgencyTypeField,
@@ -74,9 +73,10 @@ const mapDispatchToProps = (dispatch) => ({
     touchAgencyField,
     touchAllFields,
     touchField,
-    saveScreening,
+    saveCard,
     fetchCountyAgencies,
     setCardMode,
+    clearCardEdits,
   }, dispatch),
 })
 
