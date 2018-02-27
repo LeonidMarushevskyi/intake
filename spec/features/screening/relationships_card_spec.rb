@@ -227,6 +227,32 @@ feature 'Relationship card' do
           )
         end
       end
+
+      scenario 'saving a new person fetches new relationships' do
+        visit edit_screening_path(id: participants_screening.id)
+
+        stub_request(:put,
+          intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+          .and_return(json_body(participant.to_json, status: 201))
+
+        within edit_participant_card_selector(participant.id) do
+          click_button 'Save'
+        end
+
+        expect(
+          a_request(:put,
+            intake_api_url(ExternalRoutes.intake_api_participant_path(participant.id)))
+        ).to have_been_made
+
+        expect(
+          a_request(
+            :get,
+            intake_api_url(
+              ExternalRoutes.intake_api_relationships_by_screening_path(participants_screening.id)
+            )
+          )
+        ).to have_been_made.times(2)
+      end
     end
   end
 end

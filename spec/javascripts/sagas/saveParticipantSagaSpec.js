@@ -9,6 +9,8 @@ import {UPDATE_PERSON} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 import {fetch as fetchAllegations} from 'actions/screeningAllegationsActions'
 import * as personCardActions from 'actions/personCardActions'
+import {fetchRelationships} from 'actions/relationshipsActions'
+import {fetchHistoryOfInvolvements} from 'actions/historyOfInvolvementActions'
 
 describe('saveParticipantSaga', () => {
   it('updates participant on UPDATE_PERSON', () => {
@@ -31,6 +33,12 @@ describe('saveParticipant', () => {
       put(personCardActions.updatePersonSuccess(participant))
     )
     expect(gen.next().value).toEqual(select(getScreeningIdValueSelector))
+    expect(gen.next('444').value).toEqual(
+      put(fetchRelationships('screenings', '444'))
+    )
+    expect(gen.next('444').value).toEqual(
+      put(fetchHistoryOfInvolvements('screenings', '444'))
+    )
     expect(gen.next('444').value).toEqual(
       put(fetchAllegations('444'))
     )
