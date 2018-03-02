@@ -18,7 +18,7 @@ ENV APP_HOME /ca_intake
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-ADD https://github.com/ariya/phantomjs/archive/2.1.2.tar.gz $APP_HOME
+ADD https://github.com/ariya/phantomjs/archive/2.1.1.tar.gz $APP_HOME
 ADD ./bin/install_phantomjs $APP_HOME/install_phantomjs
 RUN $APP_HOME/install_phantomjs
 
