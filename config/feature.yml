@@ -12,7 +12,7 @@ development:
 test:
   features:
     authentication: false
-    perry_version_two: true
+    perry_version_two: false
     centralized_sessions: true
     hoi_from_intake_api: false
     investigations: true
