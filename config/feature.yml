@@ -2,7 +2,7 @@
 development:
   features:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
-    perry_version_two: false
+    perry_version_two: true
     centralized_sessions: true
     hoi_from_intake_api: false
     investigations: true
@@ -12,7 +12,7 @@ development:
 test:
   features:
     authentication: false
-    perry_version_two: false
+    perry_version_two: true
     centralized_sessions: true
     hoi_from_intake_api: false
     investigations: true
@@ -22,7 +22,7 @@ test:
 production:
   features:
     authentication: <%= ENV.fetch('AUTHENTICATION', false) %>
-    perry_version_two: <%= ENV.fetch('PERRY_VERSION_TWO', false) %>
+    perry_version_two: <%= ENV.fetch('PERRY_VERSION_TWO', true) %>
     centralized_sessions: <%= ENV.fetch('CENTRALIZED_SESSIONS', false) %>
     hoi_from_intake_api: <%= ENV.fetch('HOI_FROM_INTAKE_API', false) %>
     investigations: <%= ENV.fetch('INVESTIGATIONS', true) %>
