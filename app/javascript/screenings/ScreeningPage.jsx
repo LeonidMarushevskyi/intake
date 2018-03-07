@@ -100,12 +100,12 @@ export class ScreeningPage extends React.Component {
   }
 
   renderScreening() {
-    const {referralId, editable, mode, loaded, hasApiValidationErrors, submitReferralErrors} = this.props
+    const {referralId, editable, mode, loaded, hasApiValidationErrors, submitReferralErrors, participants} = this.props
 
     if (loaded) {
       return (
         <div className='row'>
-          <ScreeningSideBar />
+          <ScreeningSideBar participants={participants} />
           <div className='col-md-10'>
             <h1>{referralId && `Referral #${referralId}`}</h1>
             {hasApiValidationErrors && <ErrorDetail errors={submitReferralErrors} />}

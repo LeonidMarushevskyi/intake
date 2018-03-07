@@ -4,8 +4,9 @@ import ScreeningSideBar from 'screenings/ScreeningSideBar'
 
 describe('ScreeningSideBar', () => {
   let component
+  const participants = [{id: '1', first_name: 'scooby', last_name: 'doo', middle_name: 'dooby', name_suffix: ''}]
   beforeEach(() => {
-    component = shallow(<ScreeningSideBar />, {disableLifecycleMethods: true})
+    component = shallow(<ScreeningSideBar participants={participants}/>, {disableLifecycleMethods: true})
   })
 
   it('renders the div wrapper', () => {
@@ -25,6 +26,12 @@ describe('ScreeningSideBar', () => {
     it('renders a link to the People Search card', () => {
       expect(component.find('NavLink[text="People & Roles"]').props().href
       ).toBe('#search-card-anchor')
+    })
+
+    it('renders a link to the People selected/created based on search', () => {
+      expect(component.find('NavLink[text="scooby dooby doo"]').exists()).toBe(true)
+      expect(component.find('NavLink[text="scooby dooby doo"]').props().href
+      ).toBe('#participants-card-1')
     })
   })
 

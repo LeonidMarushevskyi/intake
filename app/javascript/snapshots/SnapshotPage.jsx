@@ -51,7 +51,7 @@ export class SnapshotPage extends React.Component {
         </div>
         <div className='container'>
           <div className='row'>
-            <SnapshotSideBar />
+            <SnapshotSideBar participants={participants} />
             <div className='col-md-10'>
               <div className='row'>
                 <div className='card edit double-gap-bottom' id='snapshot-card'>

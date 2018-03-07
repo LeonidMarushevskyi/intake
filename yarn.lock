@@ -4649,6 +4649,10 @@ module-deps@^4.0.8:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
+moment@2.21.0:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
+
 moment@^2.18.1:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
@@ -6079,15 +6083,15 @@ react-widgets@^3.4.8:
     deconstruct-number-format "0.0.1"
     format-number-with-string "0.0.2"
 
-react-wood-duck@0.1.50:
-  version "0.1.50"
-  resolved "https://registry.yarnpkg.com/react-wood-duck/-/react-wood-duck-0.1.50.tgz#dc4c3fea160c47c34177354deef819644c43dd07"
+react-wood-duck@0.1.51:
+  version "0.1.51"
+  resolved "https://registry.yarnpkg.com/react-wood-duck/-/react-wood-duck-0.1.51.tgz#59b959167d66971f4b3ea6d834222f9361e3d641"
   dependencies:
     babel-runtime "^6.6.1"
     bootstrap "^3.3.7"
     classnames "^2.2.5"
     copyfiles "^1.2.0"
-    moment "^2.18.1"
+    moment "2.21.0"
     node-sass "^4.5.3"
     prettier "^1.7.4"
     prop-types "^15.6.0"
