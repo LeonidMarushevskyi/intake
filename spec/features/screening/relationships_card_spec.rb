@@ -47,8 +47,8 @@ feature 'Relationship card' do
             related_person_first_name: 'Jake',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Brother (Half)',
-            related_person_relationship: 'Brother',
-            indexed_person_relationship: 'Sister',
+            related_person_relationship: 'Sister',
+            indexed_person_relationship: 'Brother',
             relationship_context: 'Half'
           }, {
             related_person_id: nil,
@@ -170,8 +170,8 @@ feature 'Relationship card' do
               related_person_first_name: 'Jake',
               related_person_last_name: 'Campbell',
               relationship: 'Sister/Brother (Half)',
-              related_person_relationship: 'Brother',
-              indexed_person_relationship: 'Sister',
+              related_person_relationship: 'Sister',
+              indexed_person_relationship: 'Brother',
               relationship_context: 'Half',
               related_person_id: '7'
             }]

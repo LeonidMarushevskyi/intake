@@ -16,7 +16,7 @@ export const getPeopleSelector = createSelector(
           middle_name: relationship.get('related_person_middle_name'),
           name_suffix: relationship.get('related_person_name_suffix'),
         }),
-        type: relationship.get('indexed_person_relationship'),
+        type: relationship.get('related_person_relationship'),
       })
     )),
   }))
