@@ -238,6 +238,14 @@ describe('<Autocompleter />', () => {
         expect(suggestions.length).toEqual(2)
       })
 
+      it('scrolls when there are many results', () => {
+        const menu = autocompleter.find('.autocomplete-menu')
+        const menuStyle = menu.prop('style')
+        expect(menuStyle.maxHeight).toEqual(jasmine.any(String))
+        expect(menuStyle.overflowY).toBe('scroll')
+        expect(menuStyle.overflowX).not.toBe('scroll') // No need to horizontally scroll
+      })
+
       it('displays person suggestion', () => {
         const suggestions = autocompleter.find('PersonSuggestion')
         const suggestion = suggestions.at(0)

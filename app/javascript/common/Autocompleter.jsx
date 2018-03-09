@@ -10,13 +10,16 @@ const menuStyle = {
   border: '1px solid #d4d4d4',
   borderBottomLeftRadius: '4px',
   borderBottomRightRadius: '4px',
+  display: 'block',
   fontFamily: 'Helvetica, sans-serif',
   fontSize: '16px',
   fontWeight: 300,
+  maxHeight: '32em',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
   position: 'absolute',
   width: '100%',
   zIndex: 2,
-  display: 'block',
 }
 const resultStyle = {
   borderBottom: '2px solid #d4d4d4',
@@ -73,7 +76,7 @@ export class Autocompleter extends Component {
   renderMenu(items, searchTerm, _style) {
     const {canCreateNewPerson, onLoadMoreResults, onSelect, total} = this.props
     return (
-      <div style={menuStyle}>
+      <div style={menuStyle} className='autocomplete-menu'>
         <SuggestionHeader
           currentNumberOfResults={items.length}
           total={total}
