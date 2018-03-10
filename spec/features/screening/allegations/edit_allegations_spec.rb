@@ -247,7 +247,7 @@ feature 'edit allegations' do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
 
-      click_button 'Delete person'
+      click_button 'Remove person'
     end
 
     within '.card.edit', text: 'Allegations' do
@@ -454,7 +454,7 @@ feature 'edit allegations' do
       stub_request(:delete, intake_api_url(ExternalRoutes.intake_api_participant_path(marge.id)))
         .and_return(json_body(nil, status: 204))
 
-      click_button 'Delete person'
+      click_button 'Remove person'
     end
 
     within '.card.edit', text: 'Allegations' do

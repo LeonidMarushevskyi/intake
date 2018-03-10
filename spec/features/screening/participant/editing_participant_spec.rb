@@ -64,7 +64,7 @@ feature 'Edit Person' do
         within '.card-header' do
           expect(page).to have_content('Sensitive')
           expect(page).to have_content marge_formatted_name
-          expect(page).to have_button 'Delete person'
+          expect(page).to have_button 'Remove person'
         end
         within '.card-body' do
           table_description = marge.legacy_descriptor.legacy_table_description
@@ -269,7 +269,7 @@ feature 'Edit Person' do
       within '.card-header' do
         expect(page).to have_content('Sensitive')
         expect(page).to have_content marge_formatted_name
-        expect(page).to have_button 'Delete person'
+        expect(page).to have_button 'Remove person'
       end
 
       within '.card-body' do

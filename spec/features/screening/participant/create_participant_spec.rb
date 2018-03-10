@@ -248,7 +248,7 @@ feature 'Create participant' do
       within '.card-header' do
         expect(page).to_not have_content('Sensitive')
         expect(page).to have_content 'Homer Simpson'
-        expect(page).to have_button 'Delete person'
+        expect(page).to have_button 'Remove person'
       end
 
       within '.card-body' do
@@ -394,7 +394,7 @@ feature 'Create participant' do
             within '.card-header' do
               expect(page).to have_content('Sensitive')
               expect(page).to have_content 'Marge Simpson'
-              expect(page).to have_button 'Delete person'
+              expect(page).to have_button 'Remove person'
             end
           end
         end

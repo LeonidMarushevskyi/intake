@@ -61,7 +61,7 @@ feature 'Show Screening' do
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
         expect(page).to have_link 'Edit person'
-        expect(page).to have_button 'Delete person'
+        expect(page).to have_button 'Remove person'
       end
 
       within '.card-body' do
