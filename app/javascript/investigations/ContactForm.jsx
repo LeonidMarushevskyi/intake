@@ -196,9 +196,9 @@ class ContactForm extends React.Component {
                   </div>
                 </div>
                 <div className='row'>
-                  <div className='centered'>
-                    <button className='btn btn-primary' type='submit'>Save</button>
-                    { hasCancel &&
+                  <div className='col-md-12'>
+                    <div className='pull-right'>
+                      { hasCancel &&
                         <button
                           className='btn btn-default'
                           onClick={(event) => {
@@ -206,7 +206,9 @@ class ContactForm extends React.Component {
                             onCancel()
                           }}
                         >Cancel</button>
-                    }
+                      }
+                      <button className='btn btn-primary' type='submit'>Save</button>
+                    </div>
                   </div>
                 </div>
               </form>
