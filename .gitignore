@@ -12,7 +12,7 @@ reports
 /log/*
 !/log/.keep
 /tmp
-
+/vendor
 # Ignore node
 node_modules
 
