@@ -6,6 +6,7 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'feature'
 gem 'haml-rails'
+gem 'haml', '~> 5.0.1'
 gem 'high_voltage'
 gem 'newrelic_rpm'
 gem 'nokogiri', '~> 1.8.1'
@@ -23,7 +24,6 @@ group :development, :test do
   gem 'fpm',
     git: 'https://github.com/jordansissel/fpm.git',
     ref: '488863b3211572ba5488b6f3956aa365d847a48b'
-  gem 'haml-lint'
   gem 'i18n-tasks'
   gem 'parallel_tests'
   gem 'pry'
