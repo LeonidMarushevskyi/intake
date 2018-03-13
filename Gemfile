@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'feature'
-gem 'haml-rails'
 gem 'haml', '~> 5.0.1'
+gem 'haml-rails'
 gem 'high_voltage'
 gem 'newrelic_rpm'
 gem 'nokogiri', '~> 1.8.1'
@@ -24,6 +24,7 @@ group :development, :test do
   gem 'fpm',
     git: 'https://github.com/jordansissel/fpm.git',
     ref: '488863b3211572ba5488b6f3956aa365d847a48b'
+  gem 'haml_lint', '0.27.0'
   gem 'i18n-tasks'
   gem 'parallel_tests'
   gem 'pry'
@@ -34,7 +35,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'pry-theme'
   gem 'rspec-rails', '~> 3.4'
-  gem 'rubocop'
+  gem 'rubocop', '0.50.0'
   gem 'rubocop-junit-formatter'
   gem 'scss_lint'
 end
