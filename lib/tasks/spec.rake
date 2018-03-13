@@ -22,14 +22,14 @@ namespace :spec do # rubocop:disable BlockLength
     # docker-compose supports ENV vars for run, but not exec (yet?)
     # We need to set RAILS_ENV because the spawned spec processes pick up
     # RAILS_ENV=development from our dev environment.
-    <<~END.tr("\n", ' ')
+    <<~HEREDOC.tr("\n", ' ')
       docker-compose run
       -e AUTHENTICATION=false
       -e RAILS_ENV=test
       --no-deps
       --rm ca_intake
       #{command}
-    END
+    HEREDOC
   end
 
   desc 'Run specs in ca_intake container'
