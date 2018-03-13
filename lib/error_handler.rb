@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Lint/RescueWithoutErrorClass
+
 # ErrorHandler catches all API errors and re format them as JSON
 module ErrorHandler
   def self.included(base)
