@@ -25,5 +25,5 @@ Metrics/AbcSize:
   Exclude:
     - 'spec/**/*.rb'
 
-Style/AlignParameters:
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
