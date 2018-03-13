@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base # :nodoc:
     return unless staff_id
     begin
       session[:user_details] = StaffRepository.find(security_token, staff_id)
-    rescue
+    rescue StandardError
       session[:user_details] = Staff.new('staffId' => staff_id)
     end
     session[:user_details]['privileges'] = auth_data['privileges']
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base # :nodoc:
   def json?(json_candidate)
     JSON.parse(json_candidate)
     true
-  rescue
+  rescue StandardError
     false
   end
 end
