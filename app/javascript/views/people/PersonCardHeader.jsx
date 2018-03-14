@@ -7,11 +7,11 @@ const PersonCardHeader = ({informationFlag, title, onDelete, onEdit, showDelete,
     <span>{title}</span>
     { informationFlag && <span className='information-flag'>{informationFlag}</span>}
     { showDelete &&
-      <button aria-label='Delete person'
+      <button aria-label='Remove person'
         className='pull-right btn btn-warning'
         onClick={onDelete}
       >
-        Delete
+        Remove
       </button>
     }
     { showEdit &&

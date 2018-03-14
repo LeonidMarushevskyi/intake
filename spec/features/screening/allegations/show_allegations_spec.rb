@@ -154,7 +154,7 @@ feature 'show allegations' do
       .and_return(json_body(screening.to_json, status: 200))
 
     within show_participant_card_selector(marge.id) do
-      click_button 'Delete person'
+      click_button 'Remove person'
     end
 
     within '.card.show', text: 'Allegations' do

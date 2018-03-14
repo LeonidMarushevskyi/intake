@@ -1,13 +1,56 @@
 @import 'constants';
 
+
+// Card Header Fix //
+
+.card {
+  .card-header {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    span {
+      display: inline-block;
+      margin-right: auto;
+    }
+
+    .btn.btn-default {
+      margin-right: 2rem;
+      padding: 1rem;
+    }
+
+    .btn.btn-warning {
+      background-color: transparent;
+      border: 0;
+      box-shadow: none;
+      color: $red;
+      margin-right: 2rem;
+      padding: 1rem;
+    }
+
+    .btn.btn-warning:hover,
+    .btn.btn-warning:focus,
+    .btn.btn-warning:active {
+      text-decoration: underline;
+    }
+  }
+
+  .card-body {
+    .btn {
+      margin: 0;
+    }
+  }
+}
+
+// Navigation Fix //
+
 .anchor {
   display: block;
   height: 13rem;
   margin-top: -13rem;
   visibility: hidden;
 }
-
-// Navigation //
 
 .inactive-navlink {
   display: none;

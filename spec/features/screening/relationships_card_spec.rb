@@ -131,7 +131,7 @@ feature 'Relationship card' do
         visit edit_screening_path(id: participants_screening.id)
         within edit_participant_card_selector(participant.id) do
           within '.card-header' do
-            click_button 'Delete person'
+            click_button 'Remove person'
           end
         end
 

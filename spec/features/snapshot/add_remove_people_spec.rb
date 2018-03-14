@@ -100,7 +100,7 @@ feature 'Adding and removing a person from a snapshot' do
         expect(page).not_to have_content 'Edit'
         expect(page).to_not have_content('Sensitive')
         expect(page).to have_content("#{person.first_name} #{person.last_name}")
-        click_button 'Delete person'
+        click_button 'Remove person'
       end
     end
 
