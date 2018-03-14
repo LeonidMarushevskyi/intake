@@ -6,8 +6,8 @@ class JsonAPI # :nodoc:
   def self.connection
     Faraday.new(url: api_url) do |connection|
       connection.response :json, content_type: /\bjson$/
-      connection.adapter Faraday.default_adapter
       connection.use IntakeFaradayMiddleware::RaiseHttpException
+      connection.adapter Faraday.default_adapter
       connection
     end
   end
