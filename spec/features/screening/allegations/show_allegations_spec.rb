@@ -5,23 +5,23 @@ require 'spec_helper'
 
 feature 'show allegations' do
   scenario 'editing existing allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: nil)
-    lisa = FactoryGirl.create(:participant, :victim,
+    lisa = FactoryBot.create(:participant, :victim,
       first_name: 'Lisa',
       last_name: 'Simpsson',
       date_of_birth: nil)
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simps',
       date_of_birth: nil)
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, homer, lisa]
     )
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: marge.id,
@@ -92,7 +92,7 @@ feature 'show allegations' do
       click_button 'Save'
     end
 
-    new_allegation = FactoryGirl.build(
+    new_allegation = FactoryBot.build(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: homer.id,
@@ -108,20 +108,20 @@ feature 'show allegations' do
   end
 
   scenario 'deleting a participant from a screening removes related allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson')
-    lisa = FactoryGirl.create(:participant, :victim,
+    lisa = FactoryBot.create(:participant, :victim,
       first_name: 'Lisa',
       last_name: 'Simpson')
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simpson')
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, homer, lisa]
     )
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: marge.id,
@@ -178,17 +178,17 @@ feature 'show allegations' do
   end
 
   scenario 'removing participant role, re-adding it does not show deleted allegations' do
-    marge = FactoryGirl.create(
+    marge = FactoryBot.create(
       :participant,
       first_name: 'Marge',
       roles: ['Perpetrator', 'Anonymous Reporter']
     )
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, lisa]
     )
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: marge.id,
@@ -274,9 +274,9 @@ feature 'show allegations' do
   end
 
   scenario 'saving another card will not persist changes to allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_relationships_for_screening(screening)
@@ -312,19 +312,19 @@ feature 'show allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simps',
       date_of_birth: nil)
-    lisa = FactoryGirl.create(:participant, :victim,
+    lisa = FactoryBot.create(:participant, :victim,
       first_name: 'Lisa',
       last_name: 'Simps',
       date_of_birth: nil)
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simps',
       date_of_birth: nil)
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, homer, lisa]
     )
@@ -364,7 +364,7 @@ feature 'show allegations' do
       click_button 'Save'
     end
 
-    new_allegation = FactoryGirl.build(
+    new_allegation = FactoryBot.build(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: homer.id,

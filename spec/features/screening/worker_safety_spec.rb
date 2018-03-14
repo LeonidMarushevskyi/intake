@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'worker safety card' do
   scenario 'user edits worker safety card from screening show page and cancels' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
@@ -38,7 +38,7 @@ feature 'worker safety card' do
   end
 
   scenario 'user edits worker safety card from screening edit page and cancels' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
@@ -63,7 +63,7 @@ feature 'worker safety card' do
   end
 
   scenario 'user edits worker safety card from screening show page and saves' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']
@@ -105,7 +105,7 @@ feature 'worker safety card' do
   end
 
   scenario 'user edits worker safety card from screening edit page and saves' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       safety_information: 'Important safety stuff',
       safety_alerts: ['Dangerous Environment']

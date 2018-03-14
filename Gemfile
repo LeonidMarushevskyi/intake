@@ -19,7 +19,7 @@ gem 'webpacker'
 gem 'yard', '~> 0.9.11'
 
 group :development, :test do
-  gem 'factory_girl_rails', require: false
+  gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'fpm',
     git: 'https://github.com/jordansissel/fpm.git',

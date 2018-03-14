@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'History card' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_screening) { FactoryBot.create(:screening) }
 
   context 'with no history of envolvements' do
     scenario 'while editting an existing screening displays the no HOI copy' do
@@ -245,7 +245,7 @@ feature 'History card' do
     end
 
     before do
-      existing_screening.participants = [FactoryGirl.create(:participant)]
+      existing_screening.participants = [FactoryBot.create(:participant)]
 
       stub_request(
         :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))

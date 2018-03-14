@@ -5,15 +5,15 @@ require 'spec_helper'
 
 feature 'show cross reports' do
   scenario 'adding certain allegations makes certain cross reports required' do
-    perpetrator = FactoryGirl.create(
+    perpetrator = FactoryBot.create(
       :participant,
       :perpetrator
     )
-    victim = FactoryGirl.create(
+    victim = FactoryBot.create(
       :participant,
       :victim
     )
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       id: 1,
       participants: [perpetrator, victim],
@@ -58,19 +58,19 @@ feature 'show cross reports' do
   end
 
   scenario 'adding certain allegations does NOT make any cross reports required' do
-    perpetrator = FactoryGirl.create(
+    perpetrator = FactoryBot.create(
       :participant,
       :perpetrator
     )
-    victim = FactoryGirl.create(
+    victim = FactoryBot.create(
       :participant,
       :victim
     )
-    victim2 = FactoryGirl.create(
+    victim2 = FactoryBot.create(
       :participant,
       :victim
     )
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       id: 1,
       participants: [perpetrator, victim, victim2],
@@ -116,19 +116,19 @@ feature 'show cross reports' do
   end
 
   scenario 'when allegations are required and user selects and unselects cross report options' do
-    perpetrator = FactoryGirl.create(
+    perpetrator = FactoryBot.create(
       :participant,
       :perpetrator
     )
-    victim = FactoryGirl.create(
+    victim = FactoryBot.create(
       :participant,
       :victim
     )
-    victim2 = FactoryGirl.create(
+    victim2 = FactoryBot.create(
       :participant,
       :victim
     )
-    screening = FactoryGirl.create(
+    screening = FactoryBot.create(
       :screening,
       id: 1,
       participants: [perpetrator, victim, victim2],

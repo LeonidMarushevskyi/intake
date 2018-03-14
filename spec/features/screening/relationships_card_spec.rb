@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Relationship card' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_screening) { FactoryBot.create(:screening) }
   let(:empty_response) do
     {
       hits: {
@@ -31,9 +31,9 @@ feature 'Relationship card' do
   end
 
   context 'a screening with participants' do
-    let(:participant) { FactoryGirl.create(:participant) }
+    let(:participant) { FactoryBot.create(:participant) }
     let(:participants_screening) do
-      FactoryGirl.create(:screening, participants: [participant])
+      FactoryBot.create(:screening, participants: [participant])
     end
     let(:relationships) do
       [
@@ -151,7 +151,7 @@ feature 'Relationship card' do
 
       scenario 'adding a new person fetches new relationships' do
         visit edit_screening_path(id: participants_screening.id)
-        new_participant = FactoryGirl.create(
+        new_participant = FactoryBot.create(
           :participant, :unpopulated,
           screening_id: participants_screening.id
         )

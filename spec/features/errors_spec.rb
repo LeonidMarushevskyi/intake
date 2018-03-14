@@ -12,7 +12,7 @@ feature 'error pages' do
     Rails.application.config.consider_all_requests_local = true
     Rails.application.config.action_dispatch.show_exceptions = false
   end
-  let(:screening) { FactoryGirl.create(:screening, :submittable) }
+  let(:screening) { FactoryBot.create(:screening, :submittable) }
 
   context 'page does not exist' do
     scenario 'renders 404 page' do
@@ -98,7 +98,7 @@ feature 'error pages' do
 end
 
 feature 'error banner' do
-  let(:screening) { FactoryGirl.create(:screening, :submittable) }
+  let(:screening) { FactoryBot.create(:screening, :submittable) }
   context 'error occurred after page was loaded' do
     let(:referral_id) { FFaker::Guid.guid }
 

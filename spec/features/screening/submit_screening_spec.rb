@@ -5,7 +5,7 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'Submit Screening' do
-  let(:existing_screening) { FactoryGirl.create(:screening, :submittable) }
+  let(:existing_screening) { FactoryBot.create(:screening, :submittable) }
   before do
     stub_request(
       :get, intake_api_url(ExternalRoutes.intake_api_screening_path(existing_screening.id))
@@ -16,9 +16,9 @@ feature 'Submit Screening' do
   end
 
   context 'screening has people' do
-    let(:participant) { FactoryGirl.create(:participant) }
+    let(:participant) { FactoryBot.create(:participant) }
     let(:existing_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         :submittable,
         participants: [participant]
@@ -87,7 +87,7 @@ feature 'Submit Screening' do
 
   context 'the screening does not have all of the information to be promoted to a referral' do
     let(:existing_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         started_at: Time.now,
         assignee: 'Jane Smith',
@@ -116,10 +116,10 @@ feature 'Submit Screening' do
   end
 
   context 'a person on the screening does not have all of the information to be valid' do
-    let(:person) { FactoryGirl.create(:participant, ssn: '666-12-3456') }
+    let(:person) { FactoryBot.create(:participant, ssn: '666-12-3456') }
     let(:person_name) { "#{person.first_name} #{person.last_name}" }
     let(:existing_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         started_at: Time.now,
         assignee: 'Jane Smith',
@@ -159,7 +159,7 @@ feature 'Submit Screening' do
   context 'when successfully submmitting referral' do
     let(:referral_id) { FFaker::Guid.guid }
     let(:screening_with_referral) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         :submittable,
         referral_id: referral_id

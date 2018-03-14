@@ -33,12 +33,12 @@ def build_participant_from_person_and_screening(person, screening)
 end
 
 feature 'Create participant' do
-  let(:existing_participant) { FactoryGirl.create(:participant) }
-  let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
+  let(:existing_participant) { FactoryBot.create(:participant) }
+  let(:existing_screening) { FactoryBot.create(:screening, participants: [existing_participant]) }
   let(:marge_date_of_birth) { 15.years.ago.to_date }
   let(:homer_date_of_birth) { 16.years.ago.to_date }
   let(:marge_address) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :address,
       :with_legacy,
       street_address: '123 Fake St',
@@ -49,14 +49,14 @@ feature 'Create participant' do
     )
   end
   let(:marge_phone_number) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :phone_number,
       number: '9712876774',
       type: 'Home'
     )
   end
   let(:marge) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :person_search,
       legacy_source_table: 'CLIENT_T',
       date_of_birth: marge_date_of_birth.to_s(:db),
@@ -67,7 +67,7 @@ feature 'Create participant' do
       sealed: false,
       sensitive: true,
       languages: %w[French Italian],
-      legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
+      legacy_descriptor: FactoryBot.create(:legacy_descriptor),
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
@@ -78,7 +78,7 @@ feature 'Create participant' do
     )
   end
   let(:homer) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :person_search,
       legacy_source_table: 'CLIENT_T',
       date_of_birth: homer_date_of_birth.to_s(:db),
@@ -89,7 +89,7 @@ feature 'Create participant' do
       sealed: false,
       sensitive: false,
       languages: %w[French Italian],
-      legacy_descriptor: FactoryGirl.create(:legacy_descriptor),
+      legacy_descriptor: FactoryBot.create(:legacy_descriptor),
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
@@ -152,7 +152,7 @@ feature 'Create participant' do
 
   scenario 'creating an unknown participant' do
     visit edit_screening_path(id: existing_screening.id)
-    created_participant_unknown = FactoryGirl.create(
+    created_participant_unknown = FactoryBot.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
@@ -181,7 +181,7 @@ feature 'Create participant' do
 
   scenario 'create and edit an unknown participant' do
     visit edit_screening_path(id: existing_screening.id)
-    created_participant_unknown = FactoryGirl.create(
+    created_participant_unknown = FactoryBot.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )
@@ -228,8 +228,8 @@ feature 'Create participant' do
   scenario 'adding a participant from search on show screening page' do
     visit screening_path(id: existing_screening.id)
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
-    participant_homer = FactoryGirl.build(:participant, homer_attributes)
-    created_participant_homer = FactoryGirl.create(:participant, participant_homer.as_json)
+    participant_homer = FactoryBot.build(:participant, homer_attributes)
+    created_participant_homer = FactoryBot.create(:participant, participant_homer.as_json)
     stub_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
@@ -338,8 +338,8 @@ feature 'Create participant' do
             homer,
             existing_screening
           )
-          participant_homer = FactoryGirl.build(:participant, homer_attributes)
-          created_participant_homer = FactoryGirl.create(
+          participant_homer = FactoryBot.build(:participant, homer_attributes)
+          created_participant_homer = FactoryBot.create(
             :participant,
             participant_homer.as_json
           )
@@ -366,8 +366,8 @@ feature 'Create participant' do
             marge,
             existing_screening
           )
-          sensitive_participant_marge = FactoryGirl.build(:participant, sensitive_marge_attributes)
-          created_participant_marge = FactoryGirl.create(
+          sensitive_participant_marge = FactoryBot.build(:participant, sensitive_marge_attributes)
+          created_participant_marge = FactoryBot.create(
             :participant,
             sensitive_participant_marge.as_json
           )
@@ -407,8 +407,8 @@ feature 'Create participant' do
             homer,
             existing_screening
           )
-          participant_homer = FactoryGirl.build(:participant, homer_attributes)
-          created_participant_homer = FactoryGirl.create(
+          participant_homer = FactoryBot.build(:participant, homer_attributes)
+          created_participant_homer = FactoryBot.create(
             :participant,
             participant_homer.as_json
           )

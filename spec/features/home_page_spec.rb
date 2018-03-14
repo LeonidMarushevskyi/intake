@@ -47,27 +47,27 @@ feature 'home page' do
     end
 
     scenario 'includes a list of saved screenings' do
-      screening_one = FactoryGirl.create(
+      screening_one = FactoryBot.create(
         :screening_search,
         name: 'Little Shop of Horrors',
         assignee: 'Melody Pond',
         started_at: '2016-08-11T18:24:22.157Z',
         screening_decision: 'differential_response'
       )
-      screening_two = FactoryGirl.create(
+      screening_two = FactoryBot.create(
         :screening_search,
         name: 'The Shining',
         assignee: 'Sarah Jane Smith',
         started_at: '2016-08-12T12:12:22.157Z',
         screening_decision: 'information_to_child_welfare_services'
       )
-      screening_without_name = FactoryGirl.create(
+      screening_without_name = FactoryBot.create(
         :screening_search,
         assignee: 'Rory Williams',
         started_at: '2016-08-17T01:24:22.157Z',
         screening_decision: 'differential_response'
       )
-      screening_without_decision = FactoryGirl.create(
+      screening_without_decision = FactoryBot.create(
         :screening_search,
         name: 'Elm Street',
         assignee: 'Freddy Krueger',
@@ -123,7 +123,7 @@ feature 'home page' do
 
     scenario 'screenings display response time if decision is promote to referral' do
       screenings = [
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           name: "It's bigger on the inside",
           assignee: 'Clara Oswald',
@@ -131,22 +131,22 @@ feature 'home page' do
           screening_decision: 'promote_to_referral',
           screening_decision_detail: nil
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'promote_to_referral',
           screening_decision_detail: 'immediate'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'promote_to_referral',
           screening_decision_detail: '3_days'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'promote_to_referral',
           screening_decision_detail: '5_days'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'promote_to_referral',
           screening_decision_detail: '10_days'
@@ -178,7 +178,7 @@ feature 'home page' do
 
     scenario 'screenings display category if decision is screen out' do
       screenings = [
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           name: "It's bigger on the inside",
           assignee: 'Clara Oswald',
@@ -186,22 +186,22 @@ feature 'home page' do
           screening_decision: 'screen_out',
           screening_decision_detail: nil
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'screen_out',
           screening_decision_detail: 'evaluate_out'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'screen_out',
           screening_decision_detail: 'information_request'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'screen_out',
           screening_decision_detail: 'consultation'
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :screening_search,
           screening_decision: 'screen_out',
           screening_decision_detail: 'other'
@@ -232,7 +232,7 @@ feature 'home page' do
     end
 
     scenario 'screenings display reported date time time from now' do
-      screening = FactoryGirl.create(
+      screening = FactoryBot.create(
         :screening_search,
         started_at: 1.year.ago.strftime('%FT%T.%LZ')
       )
@@ -253,12 +253,12 @@ feature 'home page' do
       end
 
       scenario 'screenings display link to investigation when referral id is present' do
-        screening_with_name = FactoryGirl.create(
+        screening_with_name = FactoryBot.create(
           :screening_search,
           name: 'Screening with name and investigation',
           referral_id: '5667'
         )
-        screening_without_name = FactoryGirl.create(
+        screening_without_name = FactoryBot.create(
           :screening_search,
           referral_id: '1111'
         )
@@ -283,13 +283,13 @@ feature 'home page' do
       end
 
       scenario 'screenings display link to screenng even when referral id is present' do
-        screening_with_name = FactoryGirl.create(
+        screening_with_name = FactoryBot.create(
           :screening_search,
           id: 'ABC123',
           name: 'Screening with name and investigation',
           referral_id: '5667'
         )
-        screening_without_name = FactoryGirl.create(
+        screening_without_name = FactoryBot.create(
           :screening_search,
           id: 'DEF456',
           referral_id: '1111'

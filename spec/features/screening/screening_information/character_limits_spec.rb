@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'screening information card' do
-  let(:screening) { FactoryGirl.create(:screening) }
+  let(:screening) { FactoryBot.create(:screening) }
   let(:character_buffet) { 'C am-r\'o’n1234567890!@#$%^&*(),./;"[]' }
 
   scenario 'character limitations by field' do

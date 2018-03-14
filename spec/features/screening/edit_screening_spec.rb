@@ -6,7 +6,7 @@ require 'feature/testing'
 
 feature 'Edit Screening' do
   let(:address) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :address,
       street_address: '123 Fake St',
       city: 'Faketown',
@@ -15,7 +15,7 @@ feature 'Edit Screening' do
     )
   end
   let(:existing_screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       additional_information: 'This is why I decided what I did',
       address: address,
@@ -208,7 +208,7 @@ feature 'Edit Screening' do
 
   context 'when a screening has already been submitted as a referral' do
     let(:existing_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         referral_id: '123ABC',
         additional_information: 'The reasoning for this decision',
@@ -234,7 +234,7 @@ feature 'Edit Screening' do
 
     before do
       existing_screening.participants = Array.new(3) do
-        FactoryGirl.create :participant, screening_id: existing_screening.id
+        FactoryBot.create :participant, screening_id: existing_screening.id
       end
     end
 
@@ -277,7 +277,7 @@ end
 
 feature 'individual card save' do
   let(:address) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :address,
       street_address: '123 Fake St',
       city: 'Faketown',
@@ -287,7 +287,7 @@ feature 'individual card save' do
     )
   end
   let(:existing_screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       address: address,
       assignee: 'Bob Loblaw',

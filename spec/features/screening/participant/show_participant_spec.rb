@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Show Screening' do
-  address = FactoryGirl.create(
+  address = FactoryBot.create(
     :address,
     street_address: '123 Fake St',
     city: 'Springfield',
@@ -12,11 +12,11 @@ feature 'Show Screening' do
     zip: '12345',
     type: 'Home'
   )
-  phone_number = FactoryGirl.create(:phone_number, number: '4567891234', type: 'Home')
+  phone_number = FactoryBot.create(:phone_number, number: '4567891234', type: 'Home')
 
   date_of_birth = rand(100..1000).weeks.ago
 
-  existing_participant = FactoryGirl.create(
+  existing_participant = FactoryBot.create(
     :participant,
     date_of_birth: date_of_birth.to_s(:db),
     gender: 'male',
@@ -38,7 +38,7 @@ feature 'Show Screening' do
     },
     languages: %w[Korean Lao Hawaiian]
   )
-  existing_screening = FactoryGirl.create(
+  existing_screening = FactoryBot.create(
     :screening,
     participants: [existing_participant]
   )
@@ -115,13 +115,13 @@ feature 'Show Screening' do
   end
 
   context 'participant with approximate age and no date of birth' do
-    approximate_participant = FactoryGirl.create(
+    approximate_participant = FactoryBot.create(
       :participant,
       date_of_birth: nil,
       approximate_age: 10,
       approximate_age_units: 'Months'
     )
-    approximate_screening = FactoryGirl.create(
+    approximate_screening = FactoryBot.create(
       :screening,
       participants: [approximate_participant]
     )

@@ -33,7 +33,7 @@ feature 'Create Screening' do
       scenario 'via start screening link' do
         user_name_display = 'Joe B. Cool - Mendocino'
         allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-        new_screening = FactoryGirl.create(
+        new_screening = FactoryBot.create(
           :screening,
           reference: 'DQJIYK',
           safety_alerts: [],
@@ -94,7 +94,7 @@ feature 'Create Screening' do
       scenario 'via start screening link' do
         user_name_display = 'Joe B. Cool - Mendocino'
         allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-        new_screening = FactoryGirl.create(
+        new_screening = FactoryBot.create(
           :screening,
           incident_county: '23',
           reference: 'DQJIYK',
@@ -155,7 +155,7 @@ feature 'Create Screening' do
       scenario 'via start screening link' do
         user_name_display = 'Joe Cool - Mendocino'
         allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-        new_screening = FactoryGirl.create(
+        new_screening = FactoryBot.create(
           :screening,
           reference: 'DQJIYK',
           safety_alerts: [],
@@ -200,7 +200,7 @@ feature 'Create Screening' do
     context 'no user information' do
       scenario 'via start screening link' do
         allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-        new_screening = FactoryGirl.create(
+        new_screening = FactoryBot.create(
           :screening,
           reference: 'DQJIYK',
           safety_alerts: [],
@@ -240,7 +240,7 @@ feature 'Create Screening' do
 
   scenario 'via start screening link' do
     allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-    new_screening = FactoryGirl.create(
+    new_screening = FactoryBot.create(
       :screening,
       reference: 'DQJIYK',
       safety_alerts: [],

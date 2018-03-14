@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'decision card' do
   let(:screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       screening_decision: 'promote_to_referral',
       screening_decision_detail: '3_days',

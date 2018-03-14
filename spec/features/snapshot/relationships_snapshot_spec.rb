@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'Snapshot relationship card' do
-  let(:snapshot) { FactoryGirl.create(:screening) }
+  let(:snapshot) { FactoryBot.create(:screening) }
 
   before do
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
@@ -35,9 +35,9 @@ feature 'Snapshot relationship card' do
       end
     end
 
-    let(:participant) { FactoryGirl.create(:participant) }
+    let(:participant) { FactoryBot.create(:participant) }
     let(:participants_screening) do
-      FactoryGirl.create(:screening, participants: [participant])
+      FactoryBot.create(:screening, participants: [participant])
     end
     let(:relationships) do
       [
@@ -91,7 +91,7 @@ feature 'Snapshot relationship card' do
           ]
         end
       end
-      person = FactoryGirl.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
+      person = FactoryBot.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
 
       stub_person_search(search_term: 'Ma', person_response: search_response)
       stub_request(

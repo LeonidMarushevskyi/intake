@@ -5,7 +5,7 @@ require 'spec_helper'
 
 feature 'Person Information Validations' do
   let(:screening) do
-    FactoryGirl.create :screening,
+    FactoryBot.create :screening,
       participants: [person],
       started_at: Time.new(2018, 12, 13)
   end
@@ -24,7 +24,7 @@ feature 'Person Information Validations' do
       let(:valid_approximate_age_units) { 'weeks' }
       let(:roles) { ['Victim'] }
       let(:person) do
-        FactoryGirl.create :participant,
+        FactoryBot.create :participant,
           date_of_birth: invalid_date_of_birth,
           approximate_age: invalid_approximate_age,
           approximate_age_units: invalid_approximate_age_units,
@@ -109,7 +109,7 @@ feature 'Person Information Validations' do
       let(:valid_date_of_birth) { Time.new(2002, 12, 13) }
       let(:roles) { ['Victim'] }
       let(:person) do
-        FactoryGirl.create :participant,
+        FactoryBot.create :participant,
           date_of_birth: invalid_date_of_birth,
           roles: roles
       end
@@ -198,7 +198,7 @@ feature 'Person Information Validations' do
     let(:invalid_first_name) { nil }
     let(:valid_first_name) { 'John' }
     let(:person) do
-      FactoryGirl.create :participant,
+      FactoryBot.create :participant,
         first_name: invalid_first_name,
         roles: ['Victim', 'Family Member']
     end
@@ -235,7 +235,7 @@ feature 'Person Information Validations' do
     let(:invalid_last_name) { nil }
     let(:valid_last_name) { 'Dow' }
     let(:person) do
-      FactoryGirl.create :participant,
+      FactoryBot.create :participant,
         last_name: invalid_last_name,
         roles: ['Victim', 'Family Member']
     end
@@ -272,7 +272,7 @@ feature 'Person Information Validations' do
     let(:invalid_first_name) { nil }
     let(:valid_first_name) { 'John' }
     let(:person) do
-      FactoryGirl.create :participant,
+      FactoryBot.create :participant,
         first_name: invalid_first_name,
         roles: ['Collateral', 'Family Member']
     end
@@ -309,7 +309,7 @@ feature 'Person Information Validations' do
     let(:invalid_last_name) { nil }
     let(:valid_last_name) { 'Dow' }
     let(:person) do
-      FactoryGirl.create :participant,
+      FactoryBot.create :participant,
         last_name: invalid_last_name,
         roles: ['Collateral', 'Family Member']
     end
@@ -344,7 +344,7 @@ feature 'Person Information Validations' do
 
   context 'ssn is not valid' do
     let(:valid_ssn) { '123-45-6789' }
-    let(:person) { FactoryGirl.create :participant, ssn: invalid_ssn }
+    let(:person) { FactoryBot.create :participant, ssn: invalid_ssn }
 
     context 'ssn has all zeros in the first group' do
       let(:invalid_ssn) { '000-12-3456' }
@@ -533,7 +533,7 @@ feature 'Person Information Validations' do
   end
 
   context 'ssn is nil' do
-    let(:person) { FactoryGirl.create :participant, ssn: nil }
+    let(:person) { FactoryBot.create :participant, ssn: nil }
     let(:error_messages) do
       [
         'Social security number cannot begin with 666.',
