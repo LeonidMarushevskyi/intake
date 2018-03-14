@@ -5,14 +5,14 @@ require 'spec_helper'
 
 feature 'Allegations Validations' do
   scenario 'User sees that allegations are required when decision is promote to referral' do
-    perpetrator = FactoryGirl.create(:participant, :perpetrator)
-    victim = FactoryGirl.create(:participant, :victim)
-    screening = FactoryGirl.create(
+    perpetrator = FactoryBot.create(:participant, :perpetrator)
+    victim = FactoryBot.create(:participant, :victim)
+    screening = FactoryBot.create(
       :screening,
       participants: [perpetrator, victim],
       screening_decision: 'promote_to_referral'
     )
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: victim.id,
       perpetrator_id: perpetrator.id,

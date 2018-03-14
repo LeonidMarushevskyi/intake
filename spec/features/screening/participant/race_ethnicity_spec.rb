@@ -5,7 +5,7 @@ require 'spec_helper'
 
 feature 'Race & Ethnicity' do
   let(:marge) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :participant,
       middle_name: 'Jacqueline',
       races: [{ race: 'Asian', race_detail: 'Hmong' }],
@@ -13,14 +13,14 @@ feature 'Race & Ethnicity' do
     )
   end
   let(:homer) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :participant,
       middle_name: 'Jay',
       races: [{ race: 'Unknown', race_detail: nil }],
       ethnicity: { hispanic_latino_origin: 'Declined to answer', ethnicity_detail: [] }
     )
   end
-  let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
+  let(:screening) { FactoryBot.create(:screening, participants: [marge, homer]) }
 
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))

@@ -7,12 +7,12 @@ feature 'Allegations Sibling At Risk Validations' do
   let(:sibling_at_risk_error) do
     'Any allegations of Sibling at Risk must be accompanied by another allegation.'
   end
-  let(:perpetrator) { FactoryGirl.create(:participant, :perpetrator) }
-  let(:perpetrator2) { FactoryGirl.create(:participant, :perpetrator) }
-  let(:victim) { FactoryGirl.create(:participant, :victim) }
-  let(:victim2) { FactoryGirl.create(:participant, :victim) }
+  let(:perpetrator) { FactoryBot.create(:participant, :perpetrator) }
+  let(:perpetrator2) { FactoryBot.create(:participant, :perpetrator) }
+  let(:victim) { FactoryBot.create(:participant, :victim) }
+  let(:victim2) { FactoryBot.create(:participant, :victim) }
   let(:screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       participants: [perpetrator, perpetrator2, victim, victim2]
     )
@@ -21,13 +21,13 @@ feature 'Allegations Sibling At Risk Validations' do
   context 'when allegations have no types' do
     let(:allegations) do
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator.id,
           screening_id: screening.id
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim2.id,
           perpetrator_id: perpetrator.id,
@@ -112,14 +112,14 @@ feature 'Allegations Sibling At Risk Validations' do
   context 'when allegations have only sibling at risk' do
     let(:allegations) do
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator.id,
           screening_id: screening.id,
           allegation_types: ['At risk, sibling abused']
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim2.id,
           perpetrator_id: perpetrator.id,
@@ -176,14 +176,14 @@ feature 'Allegations Sibling At Risk Validations' do
   context 'when some have sibling at risk and other with abuse' do
     let(:allegations) do
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator.id,
           screening_id: screening.id,
           allegation_types: ['At risk, sibling abused']
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim2.id,
           perpetrator_id: perpetrator.id,
@@ -213,7 +213,7 @@ feature 'Allegations Sibling At Risk Validations' do
   context 'when one victim has multiple allegations against a perp and is at risk' do
     let(:allegations) do
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator.id,
@@ -249,7 +249,7 @@ feature 'Allegations Sibling At Risk Validations' do
         allegations.first.allegation_types = [
           'At risk, sibling abused', 'General neglect', 'Exploitation'
         ]
-        allegations << FactoryGirl.build(
+        allegations << FactoryBot.build(
           :allegation,
           victim_id: victim2.id,
           perpetrator_id: perpetrator.id,
@@ -277,14 +277,14 @@ feature 'Allegations Sibling At Risk Validations' do
   context 'when two allegations against two perps for one victim who is marked at risk' do
     let(:allegations) do
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator.id,
           screening_id: screening.id,
           allegation_types: ['At risk, sibling abused', 'General neglect']
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :allegation,
           victim_id: victim.id,
           perpetrator_id: perpetrator2.id,
@@ -318,7 +318,7 @@ feature 'Allegations Sibling At Risk Validations' do
       stub_request(:put, intake_api_url(ExternalRoutes.intake_api_participant_path(victim.id)))
         .and_return(json_body(victim.to_json, status: 200))
 
-      new_allegation = FactoryGirl.create(
+      new_allegation = FactoryBot.create(
         :allegation,
         victim_id: victim2.id,
         perpetrator_id: perpetrator.id,

@@ -4,8 +4,8 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'Participant Address' do
-  let(:marge) { FactoryGirl.create(:participant) }
-  let(:screening) { FactoryGirl.create(:screening, participants: [marge]) }
+  let(:marge) { FactoryBot.create(:participant) }
+  let(:screening) { FactoryBot.create(:screening, participants: [marge]) }
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))

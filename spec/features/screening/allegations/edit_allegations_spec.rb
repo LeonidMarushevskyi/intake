@@ -5,32 +5,32 @@ require 'spec_helper'
 
 feature 'edit allegations' do
   scenario 'loading screening with participants generates possible allegations' do
-    marge = FactoryGirl.create(
+    marge = FactoryBot.create(
       :participant,
       :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: nil
     )
-    homer = FactoryGirl.create(
+    homer = FactoryBot.create(
       :participant,
       :perpetrator,
       first_name: 'Homer',
       last_name: 'Simpson',
       date_of_birth: nil
     )
-    bart = FactoryGirl.create(
+    bart = FactoryBot.create(
       :participant,
       first_name: 'Bart',
       last_name: 'Simpson',
       date_of_birth: nil,
       roles: %w[Victim Perpetrator]
     )
-    lisa = FactoryGirl.create(:participant, :victim,
+    lisa = FactoryBot.create(:participant, :victim,
       first_name: 'Lisa',
       last_name: 'Simpson',
       date_of_birth: nil)
-    screening = FactoryGirl.create(:screening, participants: [marge, homer, bart, lisa])
+    screening = FactoryBot.create(:screening, participants: [marge, homer, bart, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -77,17 +77,17 @@ feature 'edit allegations' do
   end
 
   scenario 'removing participant role, re-adding it does not show deleted allegations' do
-    marge = FactoryGirl.create(
+    marge = FactoryBot.create(
       :participant,
       first_name: 'Marge',
       roles: ['Perpetrator', 'Anonymous Reporter']
     )
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
-    screening = FactoryGirl.create(
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simpson')
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, lisa]
     )
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: marge.id,
@@ -166,9 +166,9 @@ feature 'edit allegations' do
   end
 
   scenario 'changing the roles of participants creates new possible allegation rows' do
-    marge = FactoryGirl.create(:participant, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -222,9 +222,9 @@ feature 'edit allegations' do
   end
 
   scenario 'deleting a participant removes possible allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -259,9 +259,9 @@ feature 'edit allegations' do
   end
 
   scenario 'edit and saving allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -278,11 +278,11 @@ feature 'edit allegations' do
 
     screening_with_new_allegation = screening.dup.tap do |obj|
       obj.assign_attributes(
-        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+        allegations: [FactoryBot.build(:allegation, allegation_attributes)]
       )
     end
 
-    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    persisted_allegation = FactoryBot.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -315,9 +315,9 @@ feature 'edit allegations' do
   end
 
   scenario 'cancel edits for new allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -340,11 +340,11 @@ feature 'edit allegations' do
   end
 
   scenario 'cancel edits for a persisted allegation' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
 
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: marge.id,
@@ -377,16 +377,16 @@ feature 'edit allegations' do
   end
 
   scenario 'editing allegation types will not impact other allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: nil)
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simpson',
       date_of_birth: nil)
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -413,16 +413,16 @@ feature 'edit allegations' do
   end
 
   scenario 'I remove a participant for whom I have added allegation types' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: nil)
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simpson',
       date_of_birth: nil)
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa, homer])
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa, homer])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -466,14 +466,14 @@ feature 'edit allegations' do
   end
 
   scenario 'I remove the victim role from a participant for whom I have edited allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
-    lisa = FactoryGirl.create(
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge', last_name: 'Simps')
+    lisa = FactoryBot.create(
       :participant,
       roles: ['Victim', 'Anonymous Reporter'],
       first_name: 'Lisa',
       last_name: 'Simps'
     )
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
 
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -490,11 +490,11 @@ feature 'edit allegations' do
 
     screening_with_new_allegation = screening.dup.tap do |obj|
       obj.assign_attributes(
-        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+        allegations: [FactoryBot.build(:allegation, allegation_attributes)]
       )
     end
 
-    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    persisted_allegation = FactoryBot.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -563,14 +563,14 @@ feature 'edit allegations' do
   end
 
   scenario 'I remove the perpetrator role from a participant for whom I have edited allegations' do
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    marge = FactoryGirl.create(
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    marge = FactoryBot.create(
       :participant,
       roles: ['Perpetrator', 'Anonymous Reporter'],
       first_name: 'Marge',
       last_name: 'Simps'
     )
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
 
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
@@ -587,11 +587,11 @@ feature 'edit allegations' do
 
     screening_with_new_allegation = screening.dup.tap do |obj|
       obj.assign_attributes(
-        allegations: [FactoryGirl.build(:allegation, allegation_attributes)]
+        allegations: [FactoryBot.build(:allegation, allegation_attributes)]
       )
     end
 
-    persisted_allegation = FactoryGirl.create(:allegation, allegation_attributes)
+    persisted_allegation = FactoryBot.create(:allegation, allegation_attributes)
     screening.assign_attributes(allegations: [persisted_allegation])
 
     stub_request(:put, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
@@ -660,9 +660,9 @@ feature 'edit allegations' do
   end
 
   scenario 'saving another card will not persist changes to allegations' do
-    marge = FactoryGirl.create(:participant, :perpetrator, first_name: 'Marge')
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa')
-    screening = FactoryGirl.create(:screening, participants: [marge, lisa])
+    marge = FactoryBot.create(:participant, :perpetrator, first_name: 'Marge')
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa')
+    screening = FactoryBot.create(:screening, participants: [marge, lisa])
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
       .and_return(json_body(screening.to_json, status: 200))
     stub_empty_history_for_screening(screening)
@@ -690,16 +690,16 @@ feature 'edit allegations' do
   end
 
   scenario 'only allegations with allegation types are sent to the API' do
-    marge = FactoryGirl.create(:participant, :perpetrator,
+    marge = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Marge',
       last_name: 'Simpson',
       date_of_birth: nil)
-    homer = FactoryGirl.create(:participant, :perpetrator,
+    homer = FactoryBot.create(:participant, :perpetrator,
       first_name: 'Homer',
       last_name: 'Simpson',
       date_of_birth: nil)
-    lisa = FactoryGirl.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
-    screening = FactoryGirl.create(
+    lisa = FactoryBot.create(:participant, :victim, first_name: 'Lisa', last_name: 'Simps')
+    screening = FactoryBot.create(
       :screening,
       participants: [marge, homer, lisa]
     )
@@ -735,7 +735,7 @@ feature 'edit allegations' do
       click_button 'Save'
     end
 
-    new_allegation = FactoryGirl.build(
+    new_allegation = FactoryBot.build(
       :allegation,
       victim_id: lisa.id,
       perpetrator_id: homer.id,

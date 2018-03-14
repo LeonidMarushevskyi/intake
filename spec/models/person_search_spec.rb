@@ -5,7 +5,7 @@ require 'rails_helper'
 describe PersonSearch do
   describe 'as_json' do
     let(:legacy_descriptor) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :legacy_descriptor,
         legacy_id: '123',
         legacy_last_updated: '456',

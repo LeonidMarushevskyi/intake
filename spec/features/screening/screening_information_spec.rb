@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'screening information card' do
   let(:screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       name: 'James',
       assignee: 'Lisa',

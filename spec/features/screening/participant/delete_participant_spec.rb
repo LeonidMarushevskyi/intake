@@ -5,8 +5,8 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'Delete Participant' do
-  let(:participant) { FactoryGirl.create(:participant) }
-  let(:screening) { FactoryGirl.create(:screening, participants: [participant]) }
+  let(:participant) { FactoryBot.create(:participant) }
+  let(:screening) { FactoryBot.create(:screening, participants: [participant]) }
 
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))

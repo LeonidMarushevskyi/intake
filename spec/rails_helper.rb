@@ -8,7 +8,7 @@ production_message = 'The Rails environment is running in production mode!'
 abort(production_message) if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'faker'
 require 'rails-controller-testing'
 # Add additional requires below this line. Rails is not loaded until this point!

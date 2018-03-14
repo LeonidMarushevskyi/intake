@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Participant do
   describe 'as_json' do
-    let(:legacy_descriptor) { FactoryGirl.create(:legacy_descriptor).as_json }
+    let(:legacy_descriptor) { FactoryBot.create(:legacy_descriptor).as_json }
 
     it 'returns the attributes of a participant as a hash' do
       attributes = {

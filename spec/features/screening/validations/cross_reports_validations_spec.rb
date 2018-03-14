@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'Cross Reports Validations' do
   let(:screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening, cross_reports: [
-        FactoryGirl.create(
+        FactoryBot.create(
           :cross_report,
           county_id: 'c41',
           agencies: [
-            FactoryGirl.create(:agency, id: nil, type: 'COUNTY_LICENSING')
+            FactoryBot.create(:agency, id: nil, type: 'COUNTY_LICENSING')
           ]
         )
       ]

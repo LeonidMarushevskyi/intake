@@ -12,7 +12,7 @@ feature 'Create Snapshot' do
     end
 
     let(:new_snapshot) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         indexable: false,
         reference: 'DQJIYK',
@@ -76,7 +76,7 @@ feature 'Create Snapshot' do
         end
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
-      person = FactoryGirl.create(:participant, first_name: 'Marge', screening_id: new_snapshot.id)
+      person = FactoryBot.create(:participant, first_name: 'Marge', screening_id: new_snapshot.id)
       stub_request(
         :post,
         intake_api_url(ExternalRoutes.intake_api_screening_people_path(new_snapshot.id))
@@ -95,7 +95,7 @@ feature 'Create Snapshot' do
 
       page.driver.go_back
 
-      other_snapshot = FactoryGirl.create(
+      other_snapshot = FactoryBot.create(
         :screening,
         indexable: false,
         reference: 'DQJIYK',
@@ -143,7 +143,7 @@ feature 'Create Snapshot' do
       visit snapshot_path
       expect(page).to have_content('The Child Welfare History Snapshot allows you to search')
 
-      second_snapshot = FactoryGirl.create(:screening)
+      second_snapshot = FactoryBot.create(:screening)
       stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(second_snapshot.to_json, status: 201))
 
@@ -178,7 +178,7 @@ feature 'Create Snapshot' do
 
   context 'both snapshot and screening are enabled' do
     let(:new_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         indexable: true,
         reference: 'DQJIYK',
@@ -190,7 +190,7 @@ feature 'Create Snapshot' do
     end
 
     let(:new_snapshot) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         indexable: false,
         reference: 'DQJIYK',
@@ -231,7 +231,7 @@ feature 'Create Snapshot' do
         end
       end
       stub_person_search(search_term: 'Ma', person_response: search_response)
-      person = FactoryGirl.create(:participant, first_name: 'Marge', screening_id: new_screening.id)
+      person = FactoryBot.create(:participant, first_name: 'Marge', screening_id: new_screening.id)
       stub_request(
         :post,
         intake_api_url(ExternalRoutes.intake_api_screening_people_path(new_screening.id))

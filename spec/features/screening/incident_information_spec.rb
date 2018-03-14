@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'screening incident information card' do
   let(:existing_screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       incident_county: '06',
       incident_date: '2016-08-11',
-      address: FactoryGirl.create(
+      address: FactoryBot.create(
         :address,
         city: 'Springfield',
         state: 'NY',

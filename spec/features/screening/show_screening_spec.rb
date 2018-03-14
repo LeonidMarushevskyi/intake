@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 require 'feature/testing'
 
 feature 'Show Screening' do
   let(:address) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :address,
       street_address: '123 fake st',
       city: 'Springfield',
@@ -16,7 +16,7 @@ feature 'Show Screening' do
     )
   end
   let(:existing_screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       additional_information: 'The reasoning for this decision',
       address: address,
@@ -190,7 +190,7 @@ feature 'Show Screening' do
 
   context 'when a screening has already been submitted as a referral' do
     let(:existing_screening) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :screening,
         referral_id: '123ABC',
         additional_information: 'The reasoning for this decision',
@@ -216,7 +216,7 @@ feature 'Show Screening' do
 
     before do
       existing_screening.participants = Array.new(3) do
-        FactoryGirl.create :participant, screening_id: existing_screening.id
+        FactoryBot.create :participant, screening_id: existing_screening.id
       end
     end
 

@@ -7,9 +7,9 @@ feature 'Edit Person' do
   let(:new_ssn) { '123-23-1234' }
   let(:old_ssn) { '555-56-7895' }
   let(:marge_roles) { %w[Victim Perpetrator] }
-  let(:phone_number) { FactoryGirl.create(:phone_number, number: '1234567890', type: 'Work') }
+  let(:phone_number) { FactoryBot.create(:phone_number, number: '1234567890', type: 'Work') }
   let(:marge) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :participant,
       :with_complete_address,
       phone_numbers: [phone_number],
@@ -33,8 +33,8 @@ feature 'Edit Person' do
     name_suffix = marge.name_suffix.capitalize
     "#{marge.first_name} #{marge.middle_name} #{marge.last_name}, #{name_suffix}"
   end
-  let(:homer) { FactoryGirl.create(:participant, :with_complete_address, ssn: nil) }
-  let(:screening) { FactoryGirl.create(:screening, participants: [marge, homer]) }
+  let(:homer) { FactoryBot.create(:participant, :with_complete_address, ssn: nil) }
+  let(:screening) { FactoryBot.create(:screening, participants: [marge, homer]) }
 
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))

@@ -5,12 +5,12 @@ require 'spec_helper'
 
 feature 'Screening Decision Validations' do
   let(:error_message) { 'Please enter at least one allegation to promote to referral.' }
-  let(:perpetrator) { FactoryGirl.create(:participant, :perpetrator) }
-  let(:victim) { FactoryGirl.create(:participant, :victim) }
+  let(:perpetrator) { FactoryBot.create(:participant, :perpetrator) }
+  let(:victim) { FactoryBot.create(:participant, :victim) }
   let(:screening_decision_detail) { nil }
   let(:additional_information) { nil }
   let(:screening) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :screening,
       participants: [perpetrator, victim],
       screening_decision_detail: screening_decision_detail,
@@ -20,7 +20,7 @@ feature 'Screening Decision Validations' do
   end
 
   before do
-    allegation = FactoryGirl.create(
+    allegation = FactoryBot.create(
       :allegation,
       victim_id: victim.id,
       perpetrator_id: perpetrator.id,

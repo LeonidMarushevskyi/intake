@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Api::V1::SnapshotsController do
   let(:security_token) { 'security_token' }
-  let(:staff) { FactoryGirl.build(:staff, staff_id: '123') }
+  let(:staff) { FactoryBot.build(:staff, staff_id: '123') }
   let(:session) do
     {
       'security_token' => security_token,

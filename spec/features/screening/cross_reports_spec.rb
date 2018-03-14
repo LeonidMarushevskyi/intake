@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature 'cross reports' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_screening) { FactoryBot.create(:screening) }
 
   before do
     stub_county_agencies('c40')

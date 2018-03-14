@@ -10,15 +10,15 @@ feature 'Adding and removing a person from a snapshot' do
     end
   end
 
-  let(:snapshot) { FactoryGirl.create(:screening) }
+  let(:snapshot) { FactoryBot.create(:screening) }
   let(:person) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :participant,
       first_name: 'Marge',
       screening_id: snapshot.id,
-      phone_numbers: [FactoryGirl.create(:phone_number, number: '9712876774')],
+      phone_numbers: [FactoryBot.create(:phone_number, number: '9712876774')],
       languages: %w[French Italian],
-      addresses: [FactoryGirl.create(:address, state: 'CA')]
+      addresses: [FactoryBot.create(:address, state: 'CA')]
     )
   end
 

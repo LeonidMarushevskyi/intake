@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'feature/testing'
 
 feature 'Snapshot History of Involvement' do
-  let(:snapshot) { FactoryGirl.create(:screening) }
+  let(:snapshot) { FactoryBot.create(:screening) }
 
   before do
     stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
@@ -278,7 +278,7 @@ feature 'Snapshot History of Involvement' do
           ]
         end
       end
-      person = FactoryGirl.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
+      person = FactoryBot.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
 
       stub_person_search(search_term: 'Ma', person_response: search_response)
       stub_request(
@@ -296,7 +296,7 @@ feature 'Snapshot History of Involvement' do
     end
 
     scenario 'clicking the Start Over button clears history table' do
-      second_snapshot = FactoryGirl.create(:screening)
+      second_snapshot = FactoryBot.create(:screening)
       stub_request(:post, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(second_snapshot.to_json, status: 201))
 
@@ -612,7 +612,7 @@ feature 'Snapshot History of Involvement' do
           ]
         end
       end
-      person = FactoryGirl.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
+      person = FactoryBot.create(:participant, first_name: 'Marge', screening_id: snapshot.id)
 
       stub_person_search(search_term: 'Ma', person_response: search_response)
       stub_request(

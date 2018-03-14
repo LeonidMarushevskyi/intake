@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'screening narrative card' do
   scenario 'user edits narrative card from screening show page and cancels' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       report_narrative: 'This is my report narrative'
     )
@@ -37,7 +37,7 @@ feature 'screening narrative card' do
   end
 
   scenario 'user edits narrative card from screening edit page and cancels' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       report_narrative: 'This is my report narrative'
     )
@@ -61,7 +61,7 @@ feature 'screening narrative card' do
   end
 
   scenario 'user edits narrative card from screening show page and saves' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       report_narrative: 'This is my report narrative'
     )
@@ -105,7 +105,7 @@ feature 'screening narrative card' do
   end
 
   scenario 'user edits narrative card from screening edit page and saves' do
-    existing_screening = FactoryGirl.create(
+    existing_screening = FactoryBot.create(
       :screening,
       report_narrative: 'This is my report narrative'
     )

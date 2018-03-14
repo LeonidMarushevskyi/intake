@@ -5,8 +5,8 @@ require 'spec_helper'
 
 feature 'Participant Phone Number' do
   let(:existing_phone_number) { PhoneNumber.new(id: '1', number: '9175555555', type: 'Work') }
-  let(:marge) { FactoryGirl.create(:participant, phone_numbers: [existing_phone_number]) }
-  let(:screening) { FactoryGirl.create(:screening, participants: [marge]) }
+  let(:marge) { FactoryBot.create(:participant, phone_numbers: [existing_phone_number]) }
+  let(:screening) { FactoryBot.create(:screening, participants: [marge]) }
 
   before do
     stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))

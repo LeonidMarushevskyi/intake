@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'Narrative Card Validations' do
-  let(:screening) { FactoryGirl.create(:screening, report_narrative: '') }
+  let(:screening) { FactoryBot.create(:screening, report_narrative: '') }
   let(:error_message) { 'Please enter a narrative.' }
 
   context 'on the edit page' do

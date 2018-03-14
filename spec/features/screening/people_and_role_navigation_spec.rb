@@ -5,10 +5,10 @@ require 'spec_helper'
 require 'feature/testing'
 
 feature 'Create participant' do
-  let(:existing_participant) { FactoryGirl.create(:participant) }
-  let(:existing_screening) { FactoryGirl.create(:screening, participants: [existing_participant]) }
+  let(:existing_participant) { FactoryBot.create(:participant) }
+  let(:existing_screening) { FactoryBot.create(:screening, participants: [existing_participant]) }
   let(:marge) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :participant,
       :with_complete_address,
       phone_numbers: [],
@@ -72,7 +72,7 @@ feature 'Create participant' do
       click_button 'Save'
     end
 
-    created_participant_unknown = FactoryGirl.create(
+    created_participant_unknown = FactoryBot.create(
       :participant, :unpopulated,
       screening_id: existing_screening.id
     )

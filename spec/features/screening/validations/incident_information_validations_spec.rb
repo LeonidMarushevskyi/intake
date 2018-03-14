@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 require 'spec_helper'
-require 'support/factory_girl'
+require 'factory_bot'
 
 feature 'Incident Information Validations' do
-  let(:screening) { FactoryGirl.create(:screening) }
+  let(:screening) { FactoryBot.create(:screening) }
   let(:error_message) { 'The incident date and time cannot be in the future.' }
 
   context 'On the edit page' do
@@ -26,7 +26,7 @@ feature 'Incident Information Validations' do
 
       context 'with a screening saved with incident date in the future' do
         let(:screening) do
-          FactoryGirl.create(:screening, incident_date: 30.years.from_now)
+          FactoryBot.create(:screening, incident_date: 30.years.from_now)
         end
         let(:valid_date) { 20.years.ago.iso8601 }
 
@@ -56,7 +56,7 @@ feature 'Incident Information Validations' do
 
     context 'for a screening that has incident date in the future' do
       let(:screening) do
-        FactoryGirl.create :screening, incident_date: 5.years.from_now
+        FactoryBot.create :screening, incident_date: 5.years.from_now
       end
 
       scenario 'user sees error messages for invalid incident date on page load' do

@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 require 'feature/testing'
 feature 'searching a participant in autocompleter' do
-  let(:existing_screening) { FactoryGirl.create(:screening) }
+  let(:existing_screening) { FactoryBot.create(:screening) }
   let(:date_of_birth) { 15.years.ago.to_date }
   before do
     stub_request(
@@ -415,7 +415,7 @@ feature 'searching a participant in autocompleter' do
 
     scenario 'clear search input on navigation' do
       allow(LUID).to receive(:generate).and_return(['DQJIYK'])
-      new_screening = FactoryGirl.create(
+      new_screening = FactoryBot.create(
         :screening,
         reference: 'DQJIYK',
         safety_alerts: [],
