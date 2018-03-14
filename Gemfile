@@ -26,7 +26,7 @@ group :development, :test do
     ref: '488863b3211572ba5488b6f3956aa365d847a48b'
   gem 'haml_lint', '0.27.0'
   gem 'i18n-tasks'
-  gem 'parallel_tests'
+  gem 'parallel_tests', '2.21.2'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
