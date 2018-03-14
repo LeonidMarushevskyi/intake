@@ -1,9 +1,7 @@
 :javascript
   window.org = {
     intake: {
-      config: #{
-        Rails.configuration.intake.merge(active_features: Feature.active_features).to_json.html_safe
-      }
+      config: #{Rails.configuration.intake.merge(active_features: Feature.active_features).to_json.html_safe}
     }
   }
 
