@@ -208,13 +208,13 @@ describe('PersonInformationForm', () => {
       .find('InputField[label="First Name"]')
       .simulate('blur')
     expect(onBlur).toHaveBeenCalledWith('first_name')
+  })
 
-    it('blurring the ssn fires onBlur', () => {
-      const onBlur = jasmine.createSpy('onBlur')
-      renderPersonForm({onBlur})
-        .find('MaskedInputField[label="Social security number"]')
-        .simulate('blur')
-      expect(onBlur).toHaveBeenCalledWith('ssn')
-    })
+  it('blurring the ssn fires onBlur', () => {
+    const onBlur = jasmine.createSpy('onBlur')
+    renderPersonForm({onBlur})
+      .find('MaskedInputField[label="Social security number"]')
+      .simulate('blur')
+    expect(onBlur).toHaveBeenCalledWith('ssn')
   })
 })

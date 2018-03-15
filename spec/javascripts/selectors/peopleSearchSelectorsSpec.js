@@ -88,7 +88,7 @@ describe('peopleSearchSelectors', () => {
             }],
             phone_numbers: [{
               id: '2',
-              number: '994-907-6774',
+              number: '9949076774',
               type: 'Home',
             }],
             legacy_descriptor: {
@@ -140,7 +140,7 @@ describe('peopleSearchSelectors', () => {
             streetAddress: '234 Fake Street',
           },
           phoneNumber: {
-            number: '994-907-6774',
+            number: '(994)907-6774',
             type: 'Home',
           },
           isSensitive: true,
@@ -171,10 +171,10 @@ describe('peopleSearchSelectors', () => {
               type: {id: '1'},
             }],
             phone_numbers: [{
-              number: '994-907-6774',
+              number: '9949076774',
               type: 'Home',
             }, {
-              number: '111-222-6774',
+              number: '1112226774',
               type: 'Work',
             }],
           },
@@ -202,7 +202,7 @@ describe('peopleSearchSelectors', () => {
       )
       expect(peopleResults.getIn([0, 'phoneNumber'])).toEqualImmutable(
         Map({
-          number: '994-907-6774',
+          number: '(994)907-6774',
           type: 'Home',
         })
       )
