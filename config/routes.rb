@@ -70,6 +70,9 @@ Rails.application.routes.draw do
     post '/dora/people/person/_search' => 'dev#null', as: :dora_people
     post '/dora/people-summary/person-summary/_search' => 'dev#null', as: :dora_people_light_index
   end
+  scope host: Rails.configuration.intake_api[:ferb_url] do
+    get '/staffpersons/:id' => 'dev#null', as: :tpt_staff
+  end
 
   resources :version, only: :index
   get '/logout' => 'home#logout'
