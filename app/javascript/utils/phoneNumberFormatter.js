@@ -1,5 +1,5 @@
 export const phoneNumberFormatter = (phone) => {
-  if (phone) {
+  if (phone && phone.replace) {
     phone = phone.replace(/[^\d]/g, '')
     const length = 10
     if (phone.length === length) {
