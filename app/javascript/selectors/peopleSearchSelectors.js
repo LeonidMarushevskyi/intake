@@ -7,7 +7,7 @@ import {
   mapEthnicities,
   mapAddress,
 } from 'utils/peopleSearchHelper'
-import {formattedPhoneNumber} from '../selectors/screening/personShowSelectors'
+import {phoneNumberFormatter} from 'utils/phoneNumberFormatter'
 
 const getPeopleSearchSelector = (state) => state.get('peopleSearch')
 export const getSearchTermValueSelector = (state) => (
@@ -44,7 +44,7 @@ export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state
       ssn: formatSSN(fullResult.getIn(['highlight', 'ssn', 0], result.get('ssn'))),
       address: mapAddress(state, result),
       phoneNumber: phoneNumber && Map({
-        number: formattedPhoneNumber(phoneNumber.get('number')),
+        number: phoneNumberFormatter(phoneNumber.get('number')),
         type: phoneNumber.get('type'),
       }),
       isSensitive: mapIsSensitive(result),

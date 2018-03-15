@@ -8,6 +8,7 @@ import {flagPrimaryLanguage} from 'common/LanguageInfo'
 import US_STATE from 'enums/USState'
 import {isRequiredIfCreate, combineCompact} from 'utils/validator'
 import {getAddressTypes, systemCodeDisplayValue} from 'selectors/systemCodeSelectors'
+import {phoneNumberFormatter} from 'utils/phoneNumberFormatter'
 import moment from 'moment'
 
 export const getNamesRequiredSelector = (state, personId) => {
@@ -171,20 +172,11 @@ export const getFormattedPersonWithErrorsSelector = (state, personId) => {
     .setIn(['roles', 'errors'], errors.get('roles'))
 }
 
-export const formattedPhoneNumber = (phoneNumber) => {
-  if (phoneNumber) {
-    // eslint-disable-next-line no-magic-numbers
-    return `(${phoneNumber.substr(0, 3)})${phoneNumber.substr(3, 3)}-${phoneNumber.substr(6, 4)}`
-  } else {
-    return ''
-  }
-}
-
 export const getPersonFormattedPhoneNumbersSelector = (state, personId) => (
   state.get('participants', List()).find((person) => person.get('id') === personId)
     .get('phone_numbers', List()).map((phoneNumber) => (
       Map({
-        number: formattedPhoneNumber(phoneNumber.get('number')),
+        number: phoneNumberFormatter(phoneNumber.get('number')),
         type: phoneNumber.get('type'),
       })
     )
