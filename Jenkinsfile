@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat
 
 node('intake-slave') {
     checkout scm
-    def branch = env.BRANCH_NAME ?: (env.GIT_BRANCH ?: 'master')
+    def branch = env.BRANCH_NAME ?: 'master'
     def curStage = 'Start'
     def pipelineStatus = 'SUCCESS'
     def successColor = '11AB1B'
