@@ -4,9 +4,9 @@
 # resource via the API
 class StaffRepository
   def self.find(security_token, id)
-    response = IntakeAPI.make_api_call(
+    response = FerbAPI.make_api_call(
       security_token,
-      ExternalRoutes.intake_api_staff_path(id),
+      ExternalRoutes.ferb_api_staff_path(id),
       :get
     )
     Staff.new(response.body)
