@@ -43,10 +43,6 @@ class ExternalRoutes
       "/api/v1/screenings/#{id}/relationships"
     end
 
-    def ferb_api_staff_path(id)
-      "/staffpersons/#{id}"
-    end
-
     def ferb_api_investigation_path(id)
       "/investigations/#{id}"
     end
@@ -69,6 +65,10 @@ class ExternalRoutes
 
     def ferb_api_cross_report_agency
       '/cross_report_agency'
+    end
+
+    def ferb_api_staff_path(id)
+      "/staffpersons/#{id}"
     end
 
     def sdm_path
