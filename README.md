@@ -2,7 +2,7 @@
 [![Build Status](https://ci.mycasebook.org/buildStatus/icon?job=intake(CI))](https://ci.mycasebook.org/job/intake(CI)/)
 
 # README
-
+ 
 Web application frontend for California CWDS Hotline - Intake 
 
 ## Forked from the Casebook Intake Accelerator
