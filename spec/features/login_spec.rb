@@ -36,7 +36,7 @@ feature 'login' do
   end
 
   context 'user provides valid security access code', browser: :poltergeist do
-    let(:staff_url) { intake_api_url(ExternalRoutes.intake_api_staff_path(1234)) }
+    let(:staff_url) { intake_api_url(ExternalRoutes.ferb_api_staff_path(1234)) }
     before do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screening_results, status: 200))
@@ -232,7 +232,7 @@ feature 'login perry v1' do
   end
 
   context 'user provides valid security token', browser: :poltergeist do
-    let(:staff_url) { intake_api_url(ExternalRoutes.intake_api_staff_path(1234)) }
+    let(:staff_url) { intake_api_url(ExternalRoutes.ferb_api_staff_path(1234)) }
     before do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screenings_path))
         .and_return(json_body(screening_results, status: 200))
