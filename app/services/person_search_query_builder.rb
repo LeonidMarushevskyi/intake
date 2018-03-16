@@ -32,7 +32,7 @@ class PersonSearchQueryBuilder
   end
 
   def query
-    { bool: { must: must } }
+    { bool: { must: must, should: should } }
   end
 
   def must
@@ -40,13 +40,35 @@ class PersonSearchQueryBuilder
     [base_query, client_only]
   end
 
+  def match_query(field, term)
+    {
+      match: {
+        field => {
+          query: term
+        }
+      }
+    }
+  end
+
+  def should
+    term = formatted_search_term
+    [
+      match_query(:first_name, term),
+      match_query(:last_name, term),
+      match_query(:'aka.first_name', term),
+      match_query(:'aka.last_name', term),
+      match_query(:date_of_birth_as_text, term),
+      match_query(:ssn, term)
+    ]
+  end
+
   def base_query
     {
-      multi_match: {
-        query: formatted_search_term,
-        type: 'cross_fields',
-        operator: 'and',
-        fields: %w[searchable_name searchable_date_of_birth ssn]
+      match: {
+        autocomplete_search_bar: {
+          query: formatted_search_term,
+          operator: 'and'
+        }
       }
     }
   end
