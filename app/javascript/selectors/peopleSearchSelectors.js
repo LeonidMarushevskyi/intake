@@ -23,6 +23,7 @@ export const getLastResultsSortValueSelector = (state) => {
 
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 const formatDOB = (dob, highlight) => (highlight ? '<em>'.concat(dob, '</em>') : dob)
+
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
   .map((fullResult) => {

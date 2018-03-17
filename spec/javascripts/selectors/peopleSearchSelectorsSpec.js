@@ -232,40 +232,138 @@ describe('peopleSearchSelectors', () => {
       expect(peopleResults.getIn([0, 'phoneNumber'])).toEqual(null)
     })
 
-    it('maps person search hightlight fields', () => {
-      const peopleSearch = {
-        results: [{
-          _source: {
-            first_name: 'Bart',
-            last_name: 'Simpson',
-            date_of_birth: '1990-02-13',
-            ssn: '123456789',
-            addresses: [],
-            phone_numbers: [],
-          },
-          highlight: {
-            first_name: ['<em>Bar</em>t'],
-            last_name: ['Sim<em>pson</em>'],
-            ssn: ['<em>123456789</em>'],
-            searchable_date_of_birth: ['<em>1990</em>'],
-          },
-        }],
+    describe('when highlighting', () => {
+      function personWithHighlights(highlight) {
+        return {
+          results: [{
+            _source: {
+              first_name: 'Bart',
+              last_name: 'Simpson',
+              date_of_birth: '1990-02-13',
+              ssn: '123456789',
+              addresses: [],
+              phone_numbers: [],
+            },
+            highlight,
+          }],
+        }
       }
-      const state = fromJS({
-        languages: languageLovs,
-        ethnicityTypes: ethnicityTypeLovs,
-        raceTypes: raceTypeLovs,
-        unableToDetermineCodes,
-        hispanicOriginCodes,
-        usStates,
-        peopleSearch,
-        addressTypes,
+
+      it('should use exact highlighted fields if available', () => {
+        const peopleSearch = personWithHighlights({
+          first_name: ['<em>Bar</em>t'],
+          last_name: ['Sim<em>pson</em>'],
+          ssn: ['<em>123456789</em>'],
+          searchable_date_of_birth: ['<em>1990</em>'],
+          autocomplete_search_bar: [
+            '<em>Bar</em>t',
+            'Sim<em>pson</em>',
+            '<em>123456789</em>',
+            '<em>1990</em>',
+          ],
+        })
+
+        const state = fromJS({
+          languages: languageLovs,
+          ethnicityTypes: ethnicityTypeLovs,
+          raceTypes: raceTypeLovs,
+          unableToDetermineCodes,
+          hispanicOriginCodes,
+          usStates,
+          peopleSearch,
+          addressTypes,
+        })
+        const peopleResults = getPeopleResultsSelector(state)
+        expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
+        expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
+        expect(peopleResults.getIn([0, 'ssn'])).toEqual('<em>123-45-6789</em>')
+        expect(peopleResults.getIn([0, 'dateOfBirth'])).toEqual('<em>1990-02-13</em>')
       })
-      const peopleResults = getPeopleResultsSelector(state)
-      expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
-      expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
-      expect(peopleResults.getIn([0, 'ssn'])).toEqual('<em>123-45-6789</em>')
-      expect(peopleResults.getIn([0, 'dateOfBirth'])).toEqual('<em>1990-02-13</em>')
+
+      it('should check autocomplete_search_bar if no exact first_name', () => {
+        const peopleSearch = personWithHighlights({
+          // first_name: ['<em>Bar</em>t'],
+          last_name: ['Sim<em>pson</em>'],
+          ssn: ['<em>123456789</em>'],
+          searchable_date_of_birth: ['<em>1990</em>'],
+          autocomplete_search_bar: [
+            '<em>Bar</em>t',
+            'Sim<em>pson</em>',
+            '<em>123456789</em>',
+            '<em>1990</em>',
+          ],
+        })
+
+        const state = fromJS({
+          languages: languageLovs,
+          ethnicityTypes: ethnicityTypeLovs,
+          raceTypes: raceTypeLovs,
+          unableToDetermineCodes,
+          hispanicOriginCodes,
+          usStates,
+          peopleSearch,
+          addressTypes,
+        })
+        const peopleResults = getPeopleResultsSelector(state)
+        expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
+      })
+
+      it('should check autocomplete_search_bar if no exact last_name', () => {
+        const peopleSearch = personWithHighlights({
+          first_name: ['<em>Bar</em>t'],
+          // last_name: ['Sim<em>pson</em>'],
+          ssn: ['<em>123456789</em>'],
+          searchable_date_of_birth: ['<em>1990</em>'],
+          autocomplete_search_bar: [
+            '<em>Bar</em>t',
+            'Sim<em>pson</em>',
+            '<em>123456789</em>',
+            '<em>1990</em>',
+          ],
+        })
+
+        const state = fromJS({
+          languages: languageLovs,
+          ethnicityTypes: ethnicityTypeLovs,
+          raceTypes: raceTypeLovs,
+          unableToDetermineCodes,
+          hispanicOriginCodes,
+          usStates,
+          peopleSearch,
+          addressTypes,
+        })
+        const peopleResults = getPeopleResultsSelector(state)
+        expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
+      })
+
+      it('should find autocomplete fields in any order', () => {
+        const peopleSearch = personWithHighlights({
+          first_name: ['<em>Bar</em>t'],
+          // last_name: ['Sim<em>pson</em>'],
+          ssn: ['<em>123456789</em>'],
+          searchable_date_of_birth: ['<em>1990</em>'],
+          autocomplete_search_bar: [
+            '<em>123456789</em>',
+            '<em>1990</em>',
+            'Sim<em>pson</em>',
+            '<em>Bar</em>t',
+          ],
+        })
+
+        const state = fromJS({
+          languages: languageLovs,
+          ethnicityTypes: ethnicityTypeLovs,
+          raceTypes: raceTypeLovs,
+          unableToDetermineCodes,
+          hispanicOriginCodes,
+          usStates,
+          peopleSearch,
+          addressTypes,
+        })
+        const peopleResults = getPeopleResultsSelector(state)
+        expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
+        expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
+      })
     })
 
     it('formats ssn', () => {
@@ -316,4 +414,3 @@ describe('peopleSearchSelectors', () => {
     })
   })
 })
-

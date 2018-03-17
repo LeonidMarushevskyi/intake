@@ -266,7 +266,7 @@ describe('<Autocompleter />', () => {
         expect(suggestion.props().ssn).toEqual('test ssn')
       })
 
-      it('changes backround colour when highlighted', () => {
+      it('changes background colour when highlighted', () => {
         const input = autocompleter.find('input')
         input.simulate('keyDown', {key: 'ArrowDown', keyCode: 40, which: 40})
         const result = autocompleter.find('div[id="search-result-some-legacy-id"]')
