@@ -1,4 +1,7 @@
-import {Map} from 'immutable'
+import {
+  List,
+  Map,
+} from 'immutable'
 import {
   mapLanguages,
   mapIsSensitive,
@@ -24,16 +27,25 @@ export const getLastResultsSortValueSelector = (state) => {
 const formatSSN = (ssn) => ssn && ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3')
 const formatDOB = (dob, highlight) => (highlight ? '<em>'.concat(dob, '</em>') : dob)
 
+// Try to find a match from a list of highlights by stripping out <em> tags
+const highlightNameField = (exactName, highlights) => (highlights.find(
+  (highlight) => highlight.replace(/<(\/)?em>/g, '') === exactName
+) || exactName)
+
 export const getPeopleResultsSelector = (state) => getPeopleSearchSelector(state)
   .get('results')
   .map((fullResult) => {
     const result = fullResult.get('_source')
     const phoneNumber = result.getIn(['phone_numbers', 0], null)
     const highlightDateOfBirth = fullResult.hasIn(['highlight', 'searchable_date_of_birth'])
+    const autocomplete_highlight = fullResult.getIn(['highlight', 'autocomplete_search_bar'], List())
+
     return Map({
       legacy_id: result.get('id'),
-      firstName: fullResult.getIn(['highlight', 'first_name', 0], result.get('first_name')),
-      lastName: fullResult.getIn(['highlight', 'last_name', 0], result.get('last_name')),
+      firstName: fullResult.getIn(['highlight', 'first_name', 0],
+        highlightNameField(result.get('first_name'), autocomplete_highlight)),
+      lastName: fullResult.getIn(['highlight', 'last_name', 0],
+        highlightNameField(result.get('last_name'), autocomplete_highlight)),
       middleName: result.get('middle_name'),
       nameSuffix: result.get('name_suffix'),
       legacyDescriptor: result.get('legacy_descriptor'),
