@@ -123,7 +123,13 @@ feature 'searching a participant in autocompleter' do
                  'query' => {
                    'bool' => {
                      'must' => array_including(
-                       'multi_match' => hash_including('query' => 'ma 12345')
+                       'match' => {
+                         'autocomplete_search_bar' => {
+                           'query': 'ma 12345',
+                           'operator': 'and'
+                         }
+                       },
+                       'should' => array_including(anything)
                      )
                    }
                  },

@@ -49,13 +49,21 @@ describe PersonSearchRepository do
       {
         bool: {
           must: [{
-            multi_match: {
-              query: 'robert barathian',
-              type: 'cross_fields',
-              operator: 'and',
-              fields: %w[searchable_name searchable_date_of_birth ssn]
+            match: {
+              autocomplete_search_bar: {
+                query: 'robert barathian',
+                operator: 'and'
+              }
             }
-          }]
+          }],
+          should: [
+            { match: { first_name: { query: 'robert barathian' } } },
+            { match: { last_name: { query: 'robert barathian' } } },
+            { match: { 'aka.first_name': { query: 'robert barathian' } } },
+            { match: { 'aka.last_name': { query: 'robert barathian' } } },
+            { match: { date_of_birth_as_text: { query: 'robert barathian' } } },
+            { match: { ssn: { query: 'robert barathian' } } }
+          ]
         }
       }
     end
