@@ -338,7 +338,7 @@ describe('peopleSearchSelectors', () => {
 
       it('should find autocomplete fields in any order', () => {
         const peopleSearch = personWithHighlights({
-          first_name: ['<em>Bar</em>t'],
+          // first_name: ['<em>Bar</em>t'],
           // last_name: ['Sim<em>pson</em>'],
           ssn: ['<em>123456789</em>'],
           searchable_date_of_birth: ['<em>1990</em>'],
@@ -363,6 +363,35 @@ describe('peopleSearchSelectors', () => {
         const peopleResults = getPeopleResultsSelector(state)
         expect(peopleResults.getIn([0, 'firstName'])).toEqual('<em>Bar</em>t')
         expect(peopleResults.getIn([0, 'lastName'])).toEqual('Sim<em>pson</em>')
+      })
+
+      it('should use exact names if no highlight', () => {
+        const peopleSearch = personWithHighlights({
+          // first_name: ['<em>Bar</em>t'],
+          // last_name: ['Sim<em>pson</em>'],
+          ssn: ['<em>123456789</em>'],
+          searchable_date_of_birth: ['<em>1990</em>'],
+          autocomplete_search_bar: [
+            '<em>123456789</em>',
+            '<em>1990</em>',
+            // 'Sim<em>pson</em>',
+            // '<em>Bar</em>t',
+          ],
+        })
+
+        const state = fromJS({
+          languages: languageLovs,
+          ethnicityTypes: ethnicityTypeLovs,
+          raceTypes: raceTypeLovs,
+          unableToDetermineCodes,
+          hispanicOriginCodes,
+          usStates,
+          peopleSearch,
+          addressTypes,
+        })
+        const peopleResults = getPeopleResultsSelector(state)
+        expect(peopleResults.getIn([0, 'firstName'])).toEqual('Bart')
+        expect(peopleResults.getIn([0, 'lastName'])).toEqual('Simpson')
       })
     })
 
