@@ -10,7 +10,7 @@ const AutocompleterFooter = ({canCreateNewPerson, canLoadMoreResults, onLoadMore
     {'col-md-12': canLoadMoreResults ^ canCreateNewPerson}
   )
   return (
-    <div className='row'>
+    <div className='row half-pad-top half-pad-bottom half-pad-right half-pad-left' >
       {
         canLoadMoreResults &&
           <div className={className}>
