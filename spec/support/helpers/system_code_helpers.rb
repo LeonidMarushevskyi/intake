@@ -142,6 +142,14 @@ module SystemCodeHelpers
     ]
   end
 
+  def relationship_type_codes
+    [
+      { code: '277', value: 'Sister (Half)', category: 'relationship_type' },
+      { code: '280', value: 'Sister (Half)', category: 'relationship_type' },
+      { code: '18', value: 'Brother (Half)', category: 'relationship_type' }
+    ]
+  end
+
   def system_codes
     [
       *allegation_type_codes,
@@ -158,7 +166,8 @@ module SystemCodeHelpers
       *hispanic_origin_codes,
       *us_state_codes,
       *unable_to_determine_codes,
-      *address_types
+      *address_types,
+      *relationship_type_codes
     ]
   end
 

@@ -17,6 +17,7 @@ export const getAllegationTypesSelector = (state) => state.get('allegationTypes'
 export const getSafetyAlertsSelector = (_state) => selectOptions(SAFETY_ALERT)
 export const getAddressCountiesSelector = (state) => state.get('addressCounties', List())
 export const getScreenResponseTimesSelector = (state) => state.get('screenResponseTimes')
+export const getRelationshipTypesSelector = (state) => state.get('relationshipTypes')
 
 /* eslint-disable no-invalid-this */
 export const getInPersonCommunicationMethodValueSelector = createSelector(
