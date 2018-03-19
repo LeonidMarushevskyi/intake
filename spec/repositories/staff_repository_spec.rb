@@ -12,8 +12,8 @@ describe StaffRepository do
     end
 
     before do
-      expect(IntakeAPI).to receive(:make_api_call)
-        .with(security_token, "/api/v1/staff/#{staff_id}", :get)
+      expect(FerbAPI).to receive(:make_api_call)
+        .with(security_token, "/staffpersons/#{staff_id}", :get)
         .and_return(response)
     end
 

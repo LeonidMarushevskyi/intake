@@ -60,7 +60,7 @@ feature 'Create Screening' do
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_details.to_json, status: 200))
 
-        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
+        stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_staff_path('1234')))
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
@@ -122,7 +122,7 @@ feature 'Create Screening' do
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_details.to_json, status: 200))
 
-        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
+        stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_staff_path('1234')))
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)
@@ -179,7 +179,7 @@ feature 'Create Screening' do
         ).and_return(json_body(new_screening.to_json, status: 200))
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_details.to_json, status: 200))
-        stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('1234')))
+        stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_staff_path('1234')))
           .and_return(json_body(user_details.to_json, status: 200))
 
         visit root_path(token: 123)

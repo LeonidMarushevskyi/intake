@@ -303,7 +303,7 @@ feature 'Create participant' do
                     body: { staffId: '123', privileges: ['Sensitive Persons'] }.to_json)
       stub_request(:get, %r{https?://.*/authn/validate\?token=#{insensitive_token}})
         .and_return(status: 200, body: { staffId: '123', privileges: [] }.to_json)
-      stub_request(:get, intake_api_url(ExternalRoutes.intake_api_staff_path('123')))
+      stub_request(:get, ferb_api_url(ExternalRoutes.ferb_api_staff_path('123')))
         .and_return(json_body({ staffId: '123', first_name: 'Bob', last_name: 'Boberson',
                                 county: 'San Francisco' }.to_json, status: 200))
     end

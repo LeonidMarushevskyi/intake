@@ -74,9 +74,9 @@ describe ExternalRoutes do
     end
   end
 
-  describe '.intake_api_staff_path' do
-    it 'returns /api/v1/staff/:id' do
-      expect(described_class.intake_api_staff_path(24)).to eq('/api/v1/staff/24')
+  describe '.ferb_api_staff_path' do
+    it 'returns /staffpersons/:id' do
+      expect(described_class.ferb_api_staff_path(24)).to eq('/staffpersons/24')
     end
   end
 
