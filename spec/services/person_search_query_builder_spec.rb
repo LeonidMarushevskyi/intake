@@ -53,14 +53,60 @@ describe PersonSearchQueryBuilder do
           search_after: %w[one two],
           query: {
             bool: {
-              must: [{
-                multi_match: {
-                  query: 'this is my search term',
-                  type: 'cross_fields',
-                  operator: 'and',
-                  fields: %w[searchable_name searchable_date_of_birth ssn]
+              must: [
+                {
+                  match: {
+                    autocomplete_search_bar: {
+                      query: 'this is my search term',
+                      operator: 'and'
+                    }
+                  }
                 }
-              }]
+              ],
+              should: [
+                {
+                  match: {
+                    first_name: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    last_name: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    'aka.first_name': {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    'aka.last_name': {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    date_of_birth_as_text: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    ssn: {
+                      query: 'this is my search term'
+                    }
+                  }
+                }
+              ]
             }
           }
         )
@@ -112,14 +158,60 @@ describe PersonSearchQueryBuilder do
           sort: [{ _score: 'desc', _uid: 'desc' }],
           query: {
             bool: {
-              must: [{
-                multi_match: {
-                  query: 'this is my search term',
-                  type: 'cross_fields',
-                  operator: 'and',
-                  fields: %w[searchable_name searchable_date_of_birth ssn]
+              must: [
+                {
+                  match: {
+                    autocomplete_search_bar: {
+                      query: 'this is my search term',
+                      operator: 'and'
+                    }
+                  }
                 }
-              }]
+              ],
+              should: [
+                {
+                  match: {
+                    first_name: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    last_name: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    'aka.first_name': {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    'aka.last_name': {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    date_of_birth_as_text: {
+                      query: 'this is my search term'
+                    }
+                  }
+                },
+                {
+                  match: {
+                    ssn: {
+                      query: 'this is my search term'
+                    }
+                  }
+                }
+              ]
             }
           }
         )
@@ -149,20 +241,68 @@ describe PersonSearchQueryBuilder do
         search_terms.each_with_index do |search_term, index|
           expect(
             described_class.new(search_term: search_term).build
-          ).to match(a_hash_including(
-                       query: {
-                         bool: {
-                           must: [{
-                             multi_match: {
-                               query: expected_results[index],
-                               type: 'cross_fields',
-                               operator: 'and',
-                               fields: %w[searchable_name searchable_date_of_birth ssn]
-                             }
-                           }]
-                         }
-                       }
-          ))
+          ).to match(
+            a_hash_including(
+              query: {
+                bool: {
+                  must: [
+                    {
+                      match: {
+                        autocomplete_search_bar: {
+                          query: expected_results[index],
+                          operator: 'and'
+                        }
+                      }
+                    }
+                  ],
+                  should: [
+                    {
+                      match: {
+                        first_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        last_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.first_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.last_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        date_of_birth_as_text: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        ssn: {
+                          query: expected_results[index]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            )
+          )
         end
       end
 
@@ -188,41 +328,138 @@ describe PersonSearchQueryBuilder do
         search_terms.each_with_index do |search_term, index|
           expect(
             described_class.new(search_term: search_term).build
-          ).to match(a_hash_including(
-                       query: {
-                         bool: {
-                           must: [{
-                             multi_match: {
-                               query: expected_results[index],
-                               type: 'cross_fields',
-                               operator: 'and',
-                               fields: %w[searchable_name searchable_date_of_birth ssn]
-                             }
-                           }]
-                         }
-                       }
-          ))
+          ).to match(
+            a_hash_including(
+              query: {
+                bool: {
+                  must: [
+                    {
+                      match: {
+                        autocomplete_search_bar: {
+                          query: expected_results[index],
+                          operator: 'and'
+                        }
+                      }
+                    }
+                  ],
+                  should: [
+                    {
+                      match: {
+                        first_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        last_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.first_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.last_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        date_of_birth_as_text: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        ssn: {
+                          query: expected_results[index]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            )
+          )
         end
       end
 
       it 'keeps apostrophes and slashes in the name' do
         search_term = "A/li'son Juniper 01/02"
+        expected_search_term = "a/li'son juniper 0102"
         expect(
           described_class.new(search_term: search_term).build
-        ).to match(a_hash_including(
-                     query: {
-                       bool: {
-                         must: [{
-                           multi_match: {
-                             query: "a/li'son juniper 0102",
-                             type: 'cross_fields',
-                             operator: 'and',
-                             fields: %w[searchable_name searchable_date_of_birth ssn]
-                           }
-                         }]
-                       }
-                     }
-        ))
+        ).to match(
+          a_hash_including(
+            query: {
+              bool: {
+                must: [
+                  {
+                    match: {
+                      autocomplete_search_bar: {
+                        query: expected_search_term,
+                        operator: 'and'
+                      }
+                    }
+                  }
+                ],
+                should: [
+                  {
+                    match: {
+                      first_name: {
+                        query: expected_search_term
+                      }
+                    }
+                  },
+                  {
+                    match: {
+                      last_name: {
+                        query: expected_search_term
+                      }
+                    }
+                  },
+                  {
+                    match: {
+                      'aka.first_name': {
+                        query: expected_search_term
+                      }
+                    }
+                  },
+                  {
+                    match: {
+                      'aka.last_name': {
+                        query: expected_search_term
+                      }
+                    }
+                  },
+                  {
+                    match: {
+                      date_of_birth_as_text: {
+                        query: expected_search_term
+                      }
+                    }
+                  },
+                  {
+                    match: {
+                      ssn: {
+                        query: expected_search_term
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          )
+        )
       end
 
       it 'removes slashes in date times as the user is typing' do
@@ -271,20 +508,68 @@ describe PersonSearchQueryBuilder do
         search_terms.each_with_index do |search_term, index|
           expect(
             described_class.new(search_term: search_term).build
-          ).to match(a_hash_including(
-                       query: {
-                         bool: {
-                           must: [{
-                             multi_match: {
-                               query: expected_results[index],
-                               type: 'cross_fields',
-                               operator: 'and',
-                               fields: %w[searchable_name searchable_date_of_birth ssn]
-                             }
-                           }]
-                         }
-                       }
-          ))
+          ).to match(
+            a_hash_including(
+              query: {
+                bool: {
+                  must: [
+                    {
+                      match: {
+                        autocomplete_search_bar: {
+                          query: expected_results[index],
+                          operator: 'and'
+                        }
+                      }
+                    }
+                  ],
+                  should: [
+                    {
+                      match: {
+                        first_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        last_name: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.first_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        'aka.last_name': {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        date_of_birth_as_text: {
+                          query: expected_results[index]
+                        }
+                      }
+                    },
+                    {
+                      match: {
+                        ssn: {
+                          query: expected_results[index]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            )
+          )
         end
       end
     end

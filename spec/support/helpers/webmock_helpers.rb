@@ -22,8 +22,14 @@ module WebmockHelpers
         'query' => {
           'bool' => {
             'must' => array_including(
-              'multi_match' => hash_including('query' => search_term.downcase)
-            )
+              'match' => {
+                'autocomplete_search_bar' => {
+                  'query' => search_term.downcase,
+                  'operator' => 'and'
+                }
+              }
+            ),
+            'should' => anything
           }
         },
         '_source' => anything,

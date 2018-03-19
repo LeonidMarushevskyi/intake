@@ -122,9 +122,8 @@ feature 'searching a participant in autocompleter' do
         ).with('body' => {
                  'query' => {
                    'bool' => {
-                     'must' => array_including(
-                       'multi_match' => hash_including('query' => 'ma 12345')
-                     )
+                     'must' => anything,
+                     'should' => anything
                    }
                  },
                  '_source' => anything,
