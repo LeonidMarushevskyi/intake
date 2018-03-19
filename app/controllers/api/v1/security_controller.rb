@@ -7,22 +7,36 @@ module Api
     class SecurityController < ApiController # :nodoc:
       respond_to :json
 
-      def check_permission
-        permission = params[:permission].to_sym
-        if permissions_set?(permission)
-          render json: false
-        elsif permission == :add_sensitive_people &&
-              session[:user_details]['privileges'].include?('Sensitive Persons')
-          render json: true
-        else
-          render json: false
+      def check_permissions
+        permissions = params[:permissions].split ","
+        unless permissions_set?(permissions) && permissions.empty?
+          payload = generate_permissions_payload(permissions)
         end
+
+        render json: payload || {}
       end
 
       private
 
-      def permissions_set?(permission)
-        permission.blank? ||
+      PRIVILEGES = {
+        add_sensitive_people: 'Sensitive Persons'
+      }.freeze
+
+      def generate_permissions_payload(permission_list)
+        permission_payload = {}
+        permission_list.each do |perm|
+          permission = perm.to_sym
+          permission_payload[permission] = validate_perm(permission) || false
+        end
+        permission_payload
+      end
+
+      def validate_perm(permission)
+        session[:user_details]['privileges']&.include?(PRIVILEGES[permission])
+      end
+
+      def permissions_set?(permissions)
+        permissions.blank? ||
           session[:user_details].blank? ||
           session[:user_details]['privileges'].blank?
       end

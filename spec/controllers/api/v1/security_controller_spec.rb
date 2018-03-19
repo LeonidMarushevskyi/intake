@@ -5,23 +5,22 @@ require 'rails_helper'
 describe Api::V1::SecurityController do
   let(:security_token) { 'security_token' }
 
-  describe '#check_permission' do
-    context 'with no permission in session' do
+  describe '#check_permissions' do
+    context 'with no permissions in session' do
       let(:session) do
         {
           security_token: security_token,
-          user_details: {
-          }
+          user_details: {}
         }
       end
 
-      it 'returns true' do
-        process :check_permission,
+      it 'returns empty privileges (no access)' do
+        process :check_permissions,
           method: :get,
-          params: { permission: :add_sensitive_people },
+          params: { permissions: 'add_sensitive_people' },
           session: session
         expect(response.status).to eq(200)
-        expect(response.body).to eq('false')
+        expect(response.body).to eq('{"add_sensitive_people":false}')
       end
     end
 
@@ -35,13 +34,13 @@ describe Api::V1::SecurityController do
         }
       end
 
-      it 'returns true' do
-        process :check_permission,
+      it 'returns a hash with the permission set to true' do
+        process :check_permissions,
           method: :get,
-          params: { permission: :add_sensitive_people },
+          params: { permissions: 'add_sensitive_people' },
           session: session
         expect(response.status).to eq(200)
-        expect(response.body).to eq('true')
+        expect(response.body).to eq('{"add_sensitive_people":true}')
       end
     end
 
@@ -55,13 +54,13 @@ describe Api::V1::SecurityController do
         }
       end
 
-      it 'returns false' do
-        process :check_permission,
+      it 'returns hash with the permission set to false' do
+        process :check_permissions,
           method: :get,
-          params: { permission: :add_sensitive_people },
+          params: { permissions: 'add_sensitive_people' },
           session: session
         expect(response.status).to eq(200)
-        expect(response.body).to eq('false')
+        expect(response.body).to eq('{"add_sensitive_people":false}')
       end
     end
   end
