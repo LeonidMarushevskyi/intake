@@ -118,7 +118,7 @@ feature 'searching a participant in autocompleter' do
       expect(
         a_request(
           :post,
-          dora_api_url(Rails.application.routes.url_helpers.dora_people_light_index_path)
+          dora_api_url(ExternalRoutes.dora_people_light_index_path)
         ).with('body' => {
                  'query' => {
                    'bool' => {
@@ -373,9 +373,7 @@ feature 'searching a participant in autocompleter' do
         person_response: search_results_three,
         search_after: %w[result_49_score result_49_uuid]
       )
-      search_path = dora_api_url(
-        Rails.application.routes.url_helpers.dora_people_light_index_path
-      )
+      search_path = dora_api_url(ExternalRoutes.dora_people_light_index_path)
       within '#search-card', text: 'Search' do
         fill_in 'Search for any person', with: 'Fi'
         expect(page).to have_content 'Showing 1-25 of 51 results for "Fi"', wait: 3
