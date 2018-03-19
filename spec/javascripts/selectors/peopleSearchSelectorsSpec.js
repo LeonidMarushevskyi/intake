@@ -282,7 +282,7 @@ describe('peopleSearchSelectors', () => {
 
       it('should check autocomplete_search_bar if no exact first_name', () => {
         const peopleSearch = personWithHighlights({
-          // first_name: ['<em>Bar</em>t'],
+          // first_name: (no exact first name)
           last_name: ['Sim<em>pson</em>'],
           ssn: ['<em>123456789</em>'],
           searchable_date_of_birth: ['<em>1990</em>'],
@@ -311,7 +311,7 @@ describe('peopleSearchSelectors', () => {
       it('should check autocomplete_search_bar if no exact last_name', () => {
         const peopleSearch = personWithHighlights({
           first_name: ['<em>Bar</em>t'],
-          // last_name: ['Sim<em>pson</em>'],
+          // last_name: (no exact last name)
           ssn: ['<em>123456789</em>'],
           searchable_date_of_birth: ['<em>1990</em>'],
           autocomplete_search_bar: [
@@ -338,8 +338,8 @@ describe('peopleSearchSelectors', () => {
 
       it('should find autocomplete fields in any order', () => {
         const peopleSearch = personWithHighlights({
-          // first_name: ['<em>Bar</em>t'],
-          // last_name: ['Sim<em>pson</em>'],
+          // first_name: (no exact first name)
+          // last_name: (no exact last name)
           ssn: ['<em>123456789</em>'],
           searchable_date_of_birth: ['<em>1990</em>'],
           autocomplete_search_bar: [
@@ -367,15 +367,14 @@ describe('peopleSearchSelectors', () => {
 
       it('should use exact names if no highlight', () => {
         const peopleSearch = personWithHighlights({
-          // first_name: ['<em>Bar</em>t'],
-          // last_name: ['Sim<em>pson</em>'],
+          // first_name: (no first name matches)
+          // last_name: (no last name matches)
           ssn: ['<em>123456789</em>'],
           searchable_date_of_birth: ['<em>1990</em>'],
           autocomplete_search_bar: [
             '<em>123456789</em>',
             '<em>1990</em>',
-            // 'Sim<em>pson</em>',
-            // '<em>Bar</em>t',
+            // (no first name or last name matches)
           ],
         })
 
