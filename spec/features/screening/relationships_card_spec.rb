@@ -91,8 +91,6 @@ feature 'Relationship card' do
         )
         expect(page).to have_content('Sister (Half) of Jake Campbell')
         expect(page).to have_content('Sister (Half) of Jane Campbell')
-        expect(page).to have_content('Sister (Half) of Jake Campbell')
-        expect(page).to have_content('Sister (Half) of Jane Campbell')
       end
 
       expect(
