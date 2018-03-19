@@ -7,7 +7,7 @@ class PersonSearchRepository
     def search(security_token:, search_term:, search_after:)
       response = DoraAPI.make_api_call(
         security_token,
-        Rails.application.routes.url_helpers.dora_people_light_index_path,
+        ExternalRoutes.dora_people_light_index_path,
         :post,
         query(search_term: search_term, search_after: search_after)
       )

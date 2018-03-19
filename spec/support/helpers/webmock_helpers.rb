@@ -11,9 +11,7 @@ module WebmockHelpers
   end
 
   def stub_person_search(search_term:, person_response:, search_after: nil)
-    request_path = dora_api_url(
-      Rails.application.routes.url_helpers.dora_people_light_index_path
-    )
+    request_path = dora_api_url(ExternalRoutes.dora_people_light_index_path)
     request_payload = {
       'body' => {
         'size' => 25,

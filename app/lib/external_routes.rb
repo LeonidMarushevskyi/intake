@@ -43,6 +43,10 @@ class ExternalRoutes
       "/api/v1/screenings/#{id}/relationships"
     end
 
+    def dora_people_light_index_path
+      '/dora/people-summary/person-summary/_search'
+    end
+
     def ferb_api_investigation_path(id)
       "/investigations/#{id}"
     end
