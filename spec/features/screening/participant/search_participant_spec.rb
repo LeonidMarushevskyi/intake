@@ -122,15 +122,8 @@ feature 'searching a participant in autocompleter' do
         ).with('body' => {
                  'query' => {
                    'bool' => {
-                     'must' => array_including(
-                       'match' => {
-                         'autocomplete_search_bar' => {
-                           'query': 'ma 12345',
-                           'operator': 'and'
-                         }
-                       },
-                       'should' => array_including(anything)
-                     )
+                     'must' => anything,
+                     'should' => anything
                    }
                  },
                  '_source' => anything,
