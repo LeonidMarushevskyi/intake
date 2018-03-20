@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Participants Controller handles all service request for
-# the creation and modification of screening participant objects.
+# Security Controller handles the validation of privileges for the current user
 module Api
   module V1
     class SecurityController < ApiController # :nodoc:
@@ -36,7 +35,7 @@ module Api
       end
 
       def validate_perm(permission)
-        session[:user_details]['privileges']&.include?(PRIVILEGES[permission])
+        session && session[:user_details]['privileges']&.include?(PRIVILEGES[permission])
       end
 
       def permissions_set?(permissions)
