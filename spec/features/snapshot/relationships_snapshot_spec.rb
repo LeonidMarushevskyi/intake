@@ -51,8 +51,8 @@ feature 'Snapshot relationship card' do
             related_person_first_name: 'Jake',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Brother (Half)',
-            related_person_relationship: 'Sister',
-            indexed_person_relationship: 'Brother',
+            related_person_relationship: '18',
+            indexed_person_relationship: '277',
             relationship_context: 'Half'
           }, {
             related_person_id: nil,
@@ -60,8 +60,8 @@ feature 'Snapshot relationship card' do
             related_person_first_name: 'Jane',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Sister (Half)',
-            related_person_relationship: 'Sister',
-            indexed_person_relationship: 'Sister',
+            related_person_relationship: '280',
+            indexed_person_relationship: '280',
             relationship_context: 'Half'
           }]
         }
@@ -122,8 +122,8 @@ feature 'Snapshot relationship card' do
         expect(page).to have_content(
           "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
         )
-        expect(page).to have_content('Sister of Jake Campbell')
-        expect(page).to have_content('Sister of Jane Campbell')
+        expect(page).to have_content('Sister (Half) of Jake Campbell')
+        expect(page).to have_content('Sister (Half) of Jane Campbell')
       end
 
       expect(

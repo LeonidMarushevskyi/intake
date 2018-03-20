@@ -14,6 +14,10 @@ feature 'Relationship card' do
     }
   end
 
+  before do
+    stub_system_codes
+  end
+
   context 'a screening without participants' do
     scenario 'edit an existing screening' do
       stub_and_visit_edit_screening(existing_screening)
@@ -43,21 +47,21 @@ feature 'Relationship card' do
           last_name: participant.last_name,
           relationships: [{
             related_person_id: nil,
-            related_person_legacy_id: '789',
+            related_person_legacy_id: '277',
             related_person_first_name: 'Jake',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Brother (Half)',
-            related_person_relationship: 'Sister',
-            indexed_person_relationship: 'Brother',
+            related_person_relationship: '18',
+            indexed_person_relationship: '277',
             relationship_context: 'Half'
           }, {
             related_person_id: nil,
-            related_person_legacy_id: '156',
+            related_person_legacy_id: '280',
             related_person_first_name: 'Jane',
             related_person_last_name: 'Campbell',
             relationship: 'Sister/Sister (Half)',
-            related_person_relationship: 'Sister',
-            indexed_person_relationship: 'Sister',
+            related_person_relationship: '280',
+            indexed_person_relationship: '280',
             relationship_context: 'Half'
           }]
         }
@@ -85,8 +89,8 @@ feature 'Relationship card' do
         expect(page).to have_content(
           "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
         )
-        expect(page).to have_content('Sister of Jake Campbell')
-        expect(page).to have_content('Sister of Jane Campbell')
+        expect(page).to have_content('Sister (Half) of Jake Campbell')
+        expect(page).to have_content('Sister (Half) of Jane Campbell')
       end
 
       expect(
@@ -108,8 +112,8 @@ feature 'Relationship card' do
           expect(page).to have_content(
             "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
           )
-          expect(page).to have_content('Sister of Jake Campbell')
-          expect(page).to have_content('Sister of Jane Campbell')
+          expect(page).to have_content('Sister (Half) of Jake Campbell')
+          expect(page).to have_content('Sister (Half) of Jane Campbell')
         end
 
         expect(
@@ -170,8 +174,8 @@ feature 'Relationship card' do
               related_person_first_name: 'Jake',
               related_person_last_name: 'Campbell',
               relationship: 'Sister/Brother (Half)',
-              related_person_relationship: 'Sister',
-              indexed_person_relationship: 'Brother',
+              related_person_relationship: '18',
+              indexed_person_relationship: '277',
               relationship_context: 'Half',
               related_person_id: '7'
             }]
@@ -221,7 +225,7 @@ feature 'Relationship card' do
           expect(page).to have_content(
             "#{relationships.first[:first_name]} #{relationships.first[:last_name]} is the.."
           )
-          expect(page).to have_content('Sister of Jake Campbell')
+          expect(page).to have_content('Sister (Half) of Jake Campbell')
           expect(page).to have_content(
             "#{new_participant.first_name} #{new_participant.last_name} has no known relationships"
           )

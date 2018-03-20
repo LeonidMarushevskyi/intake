@@ -29,6 +29,7 @@ describe('Store', () => {
       usStates: [],
       hispanicOriginCodes: [],
       unableToDetermineCodes: [],
+      relationshipTypes: [],
       raceTypes: [],
       ethnicityTypes: [],
       languages: [],

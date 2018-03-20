@@ -43,14 +43,14 @@ describe('relationshipsViewSelectors', () => {
             {
               related_person_first_name: 'Johny',
               related_person_last_name: 'Robinson',
-              related_person_relationship: 'Brother',
-              indexed_person_relationship: 'Brother',
+              related_person_relationship: '17',
+              indexed_person_relationship: '17',
             },
             {
               related_person_first_name: 'Will',
               related_person_last_name: 'Carlson',
-              related_person_relationship: 'Friend',
-              indexed_person_relationship: 'Friend',
+              related_person_relationship: '297',
+              indexed_person_relationship: '258',
             },
           ],
         },
@@ -61,33 +61,39 @@ describe('relationshipsViewSelectors', () => {
             {
               related_person_first_name: 'Ricky',
               related_person_last_name: 'Robinson',
-              related_person_relationship: 'Brother',
-              indexed_person_relationship: 'Brother',
+              related_person_relationship: '17',
+              indexed_person_relationship: '17',
             },
             {
               related_person_first_name: 'Will',
               related_person_last_name: 'Carlson',
-              related_person_relationship: 'Friend',
-              indexed_person_relationship: 'Friend',
+              related_person_relationship: '297',
+              indexed_person_relationship: '258',
             },
           ],
         },
       ]
-      const state = fromJS({relationships})
+
+      const relationshipTypes = [
+        {code: '17', value: 'Brother'},
+        {code: '258', value: 'Nephew (Paternal)'},
+        {code: '297', value: 'Uncle (Paternal)'},
+      ]
+      const state = fromJS({relationships, relationshipTypes})
 
       expect(getPeopleSelector(state)).toEqualImmutable(fromJS([
         {
           name: 'Ricky Robinson',
           relationships: [
             {relatee: 'Johny Robinson', type: 'Brother'},
-            {relatee: 'Will Carlson', type: 'Friend'},
+            {relatee: 'Will Carlson', type: 'Nephew (Paternal)'},
           ],
         },
         {
           name: 'Johny Robinson',
           relationships: [
             {relatee: 'Ricky Robinson', type: 'Brother'},
-            {relatee: 'Will Carlson', type: 'Friend'},
+            {relatee: 'Will Carlson', type: 'Nephew (Paternal)'},
           ],
         },
       ]))
