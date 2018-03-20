@@ -1,5 +1,5 @@
 export {buildContactSaga} from './buildContactSaga'
-export {checkStaffPermissionSaga} from './checkStaffPermissionSaga'
+export {checkStaffPermissionsSaga} from './checkStaffPermissionsSaga'
 export {createParticipantSaga} from './createParticipantSaga'
 export {createSnapshotPersonSaga} from './createSnapshotPersonSaga'
 export {createScreeningSaga} from './createScreeningSaga'

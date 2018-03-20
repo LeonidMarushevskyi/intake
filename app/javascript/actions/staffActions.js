@@ -1,11 +1,11 @@
-export const CHECK_STAFF_PERMISSION = 'app/staff/CHECK_STAFF_PERMISSION'
-export const CHECK_STAFF_PERMISSION_COMPLETE = 'app/staff/CHECK_STAFF_PERMISSION_COMPLETE'
-export function checkStaffPermission(permission) {
-  return {type: CHECK_STAFF_PERMISSION, payload: {permission}}
+export const CHECK_STAFF_PERMISSIONS = 'app/staff/CHECK_STAFF_PERMISSIONS'
+export const CHECK_STAFF_PERMISSIONS_COMPLETE = 'app/staff/CHECK_STAFF_PERMISSIONS_COMPLETE'
+export function checkStaffPermissions(permissions) {
+  return {type: CHECK_STAFF_PERMISSIONS, payload: {permissions}}
 }
-export function checkStaffPermissionSuccess(permission, hasPermission) {
-  return {type: CHECK_STAFF_PERMISSION_COMPLETE, payload: {permission, hasPermission}}
+export function checkStaffPermissionsSuccess(permissions, hasPermissions) {
+  return {type: CHECK_STAFF_PERMISSIONS_COMPLETE, payload: {permissions, hasPermissions}}
 }
-export function checkStaffPermissionFailure(error) {
-  return {type: CHECK_STAFF_PERMISSION_COMPLETE, payload: {error}, error: true}
+export function checkStaffPermissionsFailure(error) {
+  return {type: CHECK_STAFF_PERMISSIONS_COMPLETE, payload: {error}, error: true}
 }
