@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      get '/security/check_permission' => 'security#check_permission'
+      get '/security/check_permissions' => 'security#check_permissions'
       get '/user_info' => 'user#user_info'
 
       resources :snapshots,
