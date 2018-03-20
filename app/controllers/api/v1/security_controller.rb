@@ -8,7 +8,7 @@ module Api
       respond_to :json
 
       def check_permissions
-        permissions = params[:permissions].split ","
+        permissions = params[:permissions].split ','
         unless permissions_set?(permissions) && permissions.empty?
           payload = generate_permissions_payload(permissions)
         end
@@ -19,14 +19,18 @@ module Api
       private
 
       PRIVILEGES = {
-        add_sensitive_people: 'Sensitive Persons'
+        add_sensitive_people: 'Sensitive Persons',
+        can_see_hotline: 'CARES Hotline',
+        can_see_snapshot: 'CARES Snapshot'
       }.freeze
 
       def generate_permissions_payload(permission_list)
         permission_payload = {}
         permission_list.each do |perm|
           permission = perm.to_sym
-          permission_payload[permission] = validate_perm(permission) || false
+          if PRIVILEGES[permission]
+            permission_payload[permission] = validate_perm(permission) || false
+          end
         end
         permission_payload
       end
