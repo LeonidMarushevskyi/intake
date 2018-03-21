@@ -246,7 +246,7 @@ feature 'Create participant' do
           participant_homer.legacy_descriptor.legacy_id
         )
       )))
-      .to have_been_made
+      .not_to have_been_made
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made
