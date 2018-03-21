@@ -21,28 +21,28 @@ describe('Relationships', () => {
       {
         name: 'Sally Jones',
         relationships: [
-          {relatee: 'Jim Johnson', type: 'mother'},
+          {relatee: 'Jim Johnson', type: 'mother', person_card_exists: true},
         ],
       },
       {
         name: 'Nate Starbringer',
         relationships: [
-          {relatee: 'Jim Johnson', type: 'father'},
+          {relatee: 'Jim Johnson', type: 'father', person_card_exists: false},
         ],
       },
       {
         name: 'Jim Johnson',
         relationships: [
-          {relatee: 'Nate Starbringer', type: 'son'},
-          {relatee: 'Sally Jones', type: 'son'},
+          {relatee: 'Nate Starbringer', type: 'son', person_card_exists: true},
+          {relatee: 'Sally Jones', type: 'son', person_card_exists: true},
         ],
       },
     ]
     const component = renderRelationships({people})
-    expect(component.find('.relationships').at(0).find('li').at(0).text()).toEqual('mother of Jim Johnson')
+    expect(component.find('.relationships').at(0).find('li').at(0).text()).toEqual('mother of Jim Johnson Attach')
     expect(component.find('.relationships').at(1).find('li').at(0).text()).toEqual('father of Jim Johnson')
-    expect(component.find('.relationships').at(2).find('li').at(1).text()).toEqual('son of Sally Jones')
-    expect(component.find('.relationships').at(2).find('li').at(0).text()).toEqual('son of Nate Starbringer')
+    expect(component.find('.relationships').at(2).find('li').at(1).text()).toEqual('son of Sally Jones Attach')
+    expect(component.find('.relationships').at(2).find('li').at(0).text()).toEqual('son of Nate Starbringer Attach')
   })
 })
 

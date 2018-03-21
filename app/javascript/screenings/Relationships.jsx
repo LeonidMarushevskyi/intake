@@ -16,9 +16,9 @@ export const Relationships = ({people, onClick, screeningId}) => (
                   {
                     person.relationships.map((relationship, index) => (
                       <li key={index}>
-                        <strong>{ relationship.type }</strong> &nbsp; of { relationship.relatee } &nbsp;
+                        <strong>{ relationship.type }</strong> &nbsp; of { relationship.relatee }
                         {relationship.person_card_exists &&
-                          <a onClick = {() => { onClick(relationship, screeningId) }}>Attach</a>
+                          <a onClick = {() => { onClick(relationship, screeningId) }}>&nbsp;Attach</a>
                         }
                       </li>
                     ))
@@ -46,7 +46,7 @@ Relationships.propTypes = {
       type: PropTypes.string,
     })),
   })),
-  screeningId: PropTypes.any,
+  screeningId: PropTypes.string,
 }
 
 Relationships.defaultProps = {
