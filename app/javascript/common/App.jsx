@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {getUserNameSelector} from 'selectors/userInfoSelectors'
 import {fetch as fetchUserInfoAction} from 'actions/userInfoActions'
 import {fetch as fetchSystemCodesAction} from 'actions/systemCodesActions'
-import {checkStaffPermission} from 'actions/staffActions'
+import {checkStaffPermissions} from 'actions/staffActions'
 import {bindActionCreators} from 'redux'
 import {GlobalHeader} from 'react-wood-duck'
 import Footer from '../views/Footer'
@@ -13,10 +13,10 @@ import {config} from '../common/config'
 
 export class App extends React.Component {
   componentDidMount() {
-    const {fetchSystemCodesAction, checkStaffPermission, fetchUserInfoAction} = this.props.actions
+    const {fetchSystemCodesAction, checkStaffPermissions, fetchUserInfoAction} = this.props.actions
     fetchUserInfoAction()
     fetchSystemCodesAction()
-    checkStaffPermission('add_sensitive_people')
+    checkStaffPermissions(['add_sensitive_people', 'can_see_hotline', 'can_see_snapshot'])
   }
 
   render() {
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  actions: bindActionCreators({fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermission}, dispatch),
+  actions: bindActionCreators({fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermissions}, dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
