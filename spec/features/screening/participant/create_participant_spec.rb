@@ -240,6 +240,13 @@ feature 'Create participant' do
     within '#search-card', text: 'Search' do
       find('strong', text: 'Homer Simpson').click
     end
+    expect(a_request(:get,
+      ferb_api_url(
+        ExternalRoutes.ferb_api_client_authorization_path(
+          participant_homer.legacy_descriptor.legacy_id
+        )
+      )))
+      .to have_been_made
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made

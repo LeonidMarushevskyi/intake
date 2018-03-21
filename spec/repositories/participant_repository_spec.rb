@@ -7,35 +7,93 @@ describe ParticipantRepository do
 
   describe '.create' do
     let(:participant_id) { '11' }
+
     let(:response) do
       double(:response, body: { 'id' => participant_id, 'first_name' => 'New Participant' })
     end
     let(:screening_id) { '1' }
-    let(:participant) do
-      Participant.new(id: nil, first_name: 'New Participant', screening_id: screening_id)
+
+    describe 'when creating a person with no legacy_id' do
+      let(:participant) do
+        Participant.new(
+          id: nil,
+          first_name: 'New Participant',
+          screening_id: screening_id
+        )
+      end
+
+      let(:payload) do
+        {
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant.legacy_descriptor&.legacy_id,
+            legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+          }
+        }.as_json
+      end
+
+      before do
+        expect(FerbAPI).not_to receive(:make_api_call)
+        expect(IntakeAPI).to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post, payload)
+          .and_return(response)
+      end
+
+      it 'returns the created participant with an error flag' do
+        result = described_class.create(security_token, participant)
+        expect(result[:error?]).to eq(false)
+        expect(result[:participant].id).to eq(participant_id)
+        expect(result[:participant].first_name).to eq('New Participant')
+      end
     end
 
-    let(:payload) do
-      {
-        screening_id: screening_id,
-        legacy_descriptor: {
-          legacy_id: participant.legacy_descriptor&.legacy_id,
-          legacy_table_name: participant.legacy_descriptor&.legacy_table_name
-        }
-      }.as_json
-    end
+    describe 'when creating a person with an existing legacy_id' do
+      let(:participant) do
+        Participant.new(
+          id: nil,
+          first_name: 'New Participant',
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant_id
+          }
+        )
+      end
 
-    before do
-      expect(IntakeAPI).to receive(:make_api_call)
-        .with(security_token, '/api/v1/screenings/1/people', :post, payload)
-        .and_return(response)
-    end
+      let(:payload) do
+        {
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant.legacy_descriptor&.legacy_id,
+            legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+          }
+        }.as_json
+      end
 
-    it 'returns the created participant with an error flag' do
-      result = described_class.create(security_token, participant)
-      expect(result[:error?]).to eq(false)
-      expect(result[:participant].id).to eq(participant_id)
-      expect(result[:participant].first_name).to eq('New Participant')
+      it 'should return a participant when authorization succeeds' do
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, "/authorize/client/#{participant_id}", :get)
+          .and_return(status: 200)
+        expect(IntakeAPI).to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post, payload)
+          .and_return(response)
+
+        result = described_class.create(security_token, participant)
+        expect(result[:error?]).to eq(false)
+        expect(result[:participant].id).to eq(participant_id)
+        expect(result[:participant].first_name).to eq('New Participant')
+      end
+
+      it 'should return an error when authorization fails' do
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, "/authorize/client/#{participant_id}", :get)
+          .and_return(status: 403)
+        expect(IntakeAPI).not_to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post)
+
+        result = described_class.create(security_token, participant)
+        expect(result[:error?]).to eq(true)
+        expect(result[:status]).to eq(403)
+      end
     end
   end
 
