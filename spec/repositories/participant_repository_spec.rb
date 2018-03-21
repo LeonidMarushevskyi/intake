@@ -31,10 +31,11 @@ describe ParticipantRepository do
         .and_return(response)
     end
 
-    it 'returns the created participant' do
-      created_participant = described_class.create(security_token, participant)
-      expect(created_participant.id).to eq(participant_id)
-      expect(created_participant.first_name).to eq('New Participant')
+    it 'returns the created participant with an error flag' do
+      result = described_class.create(security_token, participant)
+      expect(result[:error?]).to eq(false)
+      expect(result[:participant].id).to eq(participant_id)
+      expect(result[:participant].first_name).to eq('New Participant')
     end
   end
 

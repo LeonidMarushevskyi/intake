@@ -10,7 +10,10 @@ class ParticipantRepository
       :post,
       post_data(participant).as_json
     )
-    Participant.new(response.body)
+    {
+      error?: false,
+      participant: Participant.new(response.body)
+    }
   end
 
   def self.post_data(participant)

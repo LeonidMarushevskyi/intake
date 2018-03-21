@@ -43,8 +43,13 @@ module Api
 
       def create
         participant = Participant.new(participant_params.to_h)
-        created_participant = ParticipantRepository.create(session[:security_token], participant)
-        render json: created_participant
+        result = ParticipantRepository.create(session[:security_token], participant)
+
+        if result[:error?]
+          render json: { status: result[:status] }, status: result[:status]
+        else
+          render json: result[:participant].as_json
+        end
       end
 
       def update
