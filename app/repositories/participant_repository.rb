@@ -50,19 +50,15 @@ class ParticipantRepository
     participant.as_json.except('id')
   end
 
-  class << self
-    private
+  private_class_method def self.authorize(security_token, legacy_id)
+    return true if legacy_id.blank?
 
-    def authorize(security_token, legacy_id)
-      return true unless legacy_id
+    auth_response = FerbAPI.make_api_call(
+      security_token,
+      ExternalRoutes.ferb_api_client_authorization_path(legacy_id),
+      :get
+    )
 
-      auth_response = FerbAPI.make_api_call(
-        security_token,
-        ExternalRoutes.ferb_api_client_authorization_path(legacy_id),
-        :get
-      )
-
-      auth_response[:status] >= 200 && auth_response[:status] <= 299
-    end
+    auth_response[:status] >= 200 && auth_response[:status] <= 299
   end
 end
