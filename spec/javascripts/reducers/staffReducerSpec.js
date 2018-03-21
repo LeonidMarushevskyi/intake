@@ -1,7 +1,7 @@
 import * as matchers from 'jasmine-immutable-matchers'
 import {
-  checkStaffPermissionSuccess,
-  checkStaffPermissionFailure,
+  checkStaffPermissionsSuccess,
+  checkStaffPermissionsFailure,
 } from 'actions/staffActions'
 import staffReducer from 'reducers/staffReducer'
 import {Map} from 'immutable'
@@ -9,17 +9,16 @@ import {Map} from 'immutable'
 describe('staffReducer', () => {
   beforeEach(() => jasmine.addMatchers(matchers))
 
-  describe('on CHECK_STAFF_PERMISSION_COMPLETE', () => {
-    it('returns true if the current staff has permission on success', () => {
-      const hasPermission = true
-      const action = checkStaffPermissionSuccess('mypermission', hasPermission)
+  describe('on CHECK_STAFF_PERMISSIONS_COMPLETE', () => {
+    it('returns a hash with permissions on success', () => {
+      const action = checkStaffPermissionsSuccess(['add_something', 'view_something'], {add_something: true, view_something: false})
       expect(staffReducer(Map(), action)).toEqualImmutable(
-        Map({mypermission: true})
+        Map({permissions: Map({add_something: true, view_something: false})})
       )
     })
 
     it('returns the last state on failure', () => {
-      const action = checkStaffPermissionFailure()
+      const action = checkStaffPermissionsFailure()
       expect(staffReducer(Map(), action)).toEqualImmutable(
         Map()
       )
