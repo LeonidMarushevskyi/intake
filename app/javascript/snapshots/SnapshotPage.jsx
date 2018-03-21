@@ -12,8 +12,6 @@ import HistoryOfInvolvementContainer from 'containers/snapshot/HistoryOfInvolvem
 import HistoryTableContainer from 'containers/snapshot/HistoryTableContainer'
 import EmptyHistory from 'views/history/EmptyHistory'
 import RelationshipsCardContainer from 'containers/snapshot/RelationshipsCardContainer'
-import RelationshipsContainer from 'containers/snapshot/RelationshipsContainer'
-import {EmptyRelationships} from 'snapshots/Relationships'
 import PageHeader from 'common/PageHeader'
 import SnapshotSideBar from 'snapshots/SnapshotSideBar'
 
@@ -73,7 +71,7 @@ export class SnapshotPage extends React.Component {
                 {participants.map(({id}) =>
                   <PersonCardView key={id} personId={id} />
                 )}
-                <RelationshipsCardContainer empty={<EmptyRelationships />} notEmpty={<RelationshipsContainer />} />
+                <RelationshipsCardContainer />
                 <HistoryOfInvolvementContainer empty={<EmptyHistory />} notEmpty={<HistoryTableContainer />} />
               </div>
             </div>

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import RelationshipsCard from 'screenings/RelationshipsCard'
+import RelationshipsCard from 'snapshots/RelationshipsCard'
 import {getPeopleSelector} from 'selectors/screening/relationshipsSelectors'
 
 const mapStateToProps = (state, _ownProps) => ({
