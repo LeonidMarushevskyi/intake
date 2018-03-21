@@ -175,7 +175,7 @@ GEM
       toml (= 0.2.0)
       with_env (> 1.0)
       xml-simple
-    loofah (2.2.0)
+    loofah (2.2.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
