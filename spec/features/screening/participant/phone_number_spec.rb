@@ -67,7 +67,7 @@ feature 'Participant Phone Number' do
     visit screening_path(id: screening.id)
 
     within show_participant_card_selector(marge.id) do
-      expect(page).to have_content('(917)555-5555')
+      expect(page).to have_content('(917) 555-5555')
 
       click_link 'Edit person'
     end
@@ -76,7 +76,7 @@ feature 'Participant Phone Number' do
 
     within edit_participant_card_selector(marge.id) do
       click_link 'Delete phone number'
-      expect(page).to_not have_content('(917)555-5555')
+      expect(page).to_not have_content('(917) 555-5555')
 
       click_button 'Save'
     end

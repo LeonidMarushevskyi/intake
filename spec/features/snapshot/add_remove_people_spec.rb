@@ -83,7 +83,7 @@ feature 'Adding and removing a person from a snapshot' do
       within '.card-body' do
         expect(page).to have_content(person.first_name)
         expect(page).to have_content(person.last_name)
-        expect(page).to have_content('(971)287-6774')
+        expect(page).to have_content('(971) 287-6774')
         expect(page).to have_content(person.phone_numbers.first.type)
         expect(page).to have_content(person.gender.capitalize)
         expect(page).to have_content('French (Primary), Italian')

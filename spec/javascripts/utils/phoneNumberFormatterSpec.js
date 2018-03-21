@@ -5,7 +5,7 @@ describe('phoneNumberFormatter ', () => {
     expect(phoneNumberFormatter('')).toEqual(null)
   })
   it('should return formatted number when given a 10 digit number', () => {
-    expect(phoneNumberFormatter('1234567890')).toEqual('(123)456-7890')
+    expect(phoneNumberFormatter('1234567890')).toEqual('(123) 456-7890')
   })
   it('should return null when given a 5 digit number', () => {
     expect(phoneNumberFormatter('12345')).toEqual(null)
