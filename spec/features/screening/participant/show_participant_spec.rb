@@ -71,7 +71,7 @@ feature 'Show Screening' do
         expect(page).to have_content(
           "#{existing_participant.first_name} Jay #{existing_participant.last_name}, Esq"
         )
-        expect(page).to have_content('(456)789-1234')
+        expect(page).to have_content('(456) 789-1234')
         expect(page).to have_content('Home')
         expect(page).to have_content('Male')
         expect(page).to have_content('Victim')

@@ -84,7 +84,7 @@ feature 'searching a participant in autocompleter' do
         expect(page).to have_content 'Hispanic/Latino'
         expect(page).to have_content 'Language'
         expect(page).to have_content 'French (Primary), Italian'
-        expect(page).to have_content 'Home(971)287-6774'
+        expect(page).to have_content 'Home(971) 287-6774'
         expect(page).to have_content 'SSN'
         expect(page).to have_content '1234'
         expect(page).to have_content '123-23-1234'

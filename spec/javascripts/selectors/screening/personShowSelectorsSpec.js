@@ -185,7 +185,7 @@ describe('personShowSelectors', () => {
       const people = [{id: '1', phone_numbers: [{number: '0123456789'}]}]
       const state = fromJS({participants: people})
       expect(getPersonFormattedPhoneNumbersSelector(state, '1').first().get('number'))
-        .toEqual('(012)345-6789')
+        .toEqual('(012) 345-6789')
     })
 
     it('returns the type for a number', () => {
