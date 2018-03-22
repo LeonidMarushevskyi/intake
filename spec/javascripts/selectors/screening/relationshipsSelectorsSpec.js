@@ -43,17 +43,12 @@ describe('relationshipsViewSelectors', () => {
             {
               related_person_first_name: 'Johny',
               related_person_last_name: 'Robinson',
-<<<<<<< HEAD
               related_person_relationship: '17',
               indexed_person_relationship: '17',
-=======
-              related_person_relationship: 'Brother',
-              indexed_person_relationship: 'Brother',
               legacy_descriptor: {
                 legacy_id: '2',
               },
               person_card_exists: true,
->>>>>>> Add Attach Link next to relationships to have the ability to add distinctive people to screening from relationships card
             },
             {
               related_person_first_name: 'Will',
@@ -63,7 +58,6 @@ describe('relationshipsViewSelectors', () => {
               legacy_descriptor: {
                 legacy_id: '1',
               },
-              person_card_exists: true,
             },
           ],
         },
@@ -79,7 +73,6 @@ describe('relationshipsViewSelectors', () => {
               legacy_descriptor: {
                 legacy_id: '3',
               },
-              person_card_exists: true,
             },
             {
               related_person_first_name: 'Will',
@@ -89,7 +82,6 @@ describe('relationshipsViewSelectors', () => {
               legacy_descriptor: {
                 legacy_id: '1',
               },
-              person_card_exists: true,
             },
           ],
         },
