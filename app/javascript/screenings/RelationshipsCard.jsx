@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {EmptyRelationships} from 'investigations/Relationships'
+import {EmptyRelationships} from 'common/Relationships'
 import RelationshipsContainer from 'screenings/RelationshipsContainer'
 import CardView from 'views/CardView'
 

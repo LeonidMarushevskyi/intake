@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {Relationships} from 'screenings/Relationships'
+import {Relationships} from 'common/Relationships'
 import {getPeopleSelector} from 'selectors/screening/relationshipsSelectors'
 import {createPerson} from 'actions/personCardActions'
 import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
@@ -7,6 +7,7 @@ import {getScreeningIdValueSelector} from 'selectors/screeningSelectors'
 const mapStateToProps = (state, _ownProps) => ({
   people: getPeopleSelector(state).toJS(),
   screeningId: getScreeningIdValueSelector(state),
+  isScreening: true,
 })
 
 const mapDispatchToProps = (dispatch) => ({
