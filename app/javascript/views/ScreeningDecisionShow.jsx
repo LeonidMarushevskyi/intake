@@ -31,7 +31,7 @@ const ScreeningDecisionShow = ({
         <a href={sdmPath} target='_blank' id='complete_sdm'>Complete SDM</a>
       </div>
       <div className='row'>
-        <div className='col-md-12'>
+        <div className='col-md-12 double-pad-left'>
           <ShowField label='Additional information' errors={additionalInformation.errors} required={isAdditionalInfoRequired}>
             {additionalInformation.value}
           </ShowField>
