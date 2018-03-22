@@ -6,7 +6,7 @@ class ParticipantRepository
   def self.create(security_token, participant)
     legacy_id = participant.legacy_descriptor&.legacy_id
 
-    return { error?: true, status: 403 } unless authorize security_token, legacy_id
+    authorize security_token, legacy_id
 
     response = IntakeAPI.make_api_call(
       security_token,
@@ -14,7 +14,7 @@ class ParticipantRepository
       :post,
       post_data(participant).as_json
     )
-    { error?: false, participant: Participant.new(response.body) }
+    Participant.new(response.body)
   end
 
   def self.post_data(participant)
@@ -51,14 +51,15 @@ class ParticipantRepository
   end
 
   private_class_method def self.authorize(security_token, legacy_id)
-    return true if legacy_id.blank?
+    return if legacy_id.blank?
 
-    auth_response = FerbAPI.make_api_call(
-      security_token,
-      ExternalRoutes.ferb_api_client_authorization_path(legacy_id),
-      :get
-    )
+    route = ExternalRoutes.ferb_api_client_authorization_path(legacy_id)
 
-    auth_response[:status] >= 200 && auth_response[:status] <= 299
+    begin
+      FerbAPI.make_api_call(security_token, route, :get)
+    rescue ApiError => e
+      raise 'Forbidden' if e.api_error[:http_code] == 403
+      raise e
+    end
   end
 end

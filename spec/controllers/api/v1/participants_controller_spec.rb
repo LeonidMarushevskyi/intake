@@ -68,7 +68,7 @@ describe Api::V1::ParticipantsController do
         .with(participant_params).and_return(participant)
       expect(ParticipantRepository).to receive(:create)
         .with(security_token, participant)
-        .and_return(error?: false, participant: created_participant)
+        .and_return(created_participant)
 
       process :create,
         method: :post,
@@ -83,7 +83,7 @@ describe Api::V1::ParticipantsController do
         .with(participant_params).and_return(participant)
       expect(ParticipantRepository).to receive(:create)
         .with(security_token, participant)
-        .and_return(error?: true, status: 403)
+        .and_raise('Forbidden')
 
       process :create,
         method: :post,

@@ -40,10 +40,9 @@ describe ParticipantRepository do
       end
 
       it 'returns the created participant with an error flag' do
-        result = described_class.create(security_token, participant)
-        expect(result[:error?]).to eq(false)
-        expect(result[:participant].id).to eq(participant_id)
-        expect(result[:participant].first_name).to eq('New Participant')
+        created_participant = described_class.create(security_token, participant)
+        expect(created_participant.id).to eq(participant_id)
+        expect(created_participant.first_name).to eq('New Participant')
       end
     end
 
@@ -77,22 +76,60 @@ describe ParticipantRepository do
           .with(security_token, '/api/v1/screenings/1/people', :post, payload)
           .and_return(response)
 
-        result = described_class.create(security_token, participant)
-        expect(result[:error?]).to eq(false)
-        expect(result[:participant].id).to eq(participant_id)
-        expect(result[:participant].first_name).to eq('New Participant')
+        created_participant = described_class.create(security_token, participant)
+        expect(created_participant.id).to eq(participant_id)
+        expect(created_participant.first_name).to eq('New Participant')
       end
 
-      it 'should return an error when authorization fails' do
+      it 'should raise an error when authorization fails' do
+        url = "/authorize/client/#{participant_id}"
         expect(FerbAPI).to receive(:make_api_call)
-          .with(security_token, "/authorize/client/#{participant_id}", :get)
-          .and_return(status: 403)
+          .with(security_token, url, :get)
+          .and_raise(
+            ApiError.new(
+              message: 'Forbidden',
+              sent_attributes: '',
+              url: url,
+              method: :get,
+              response: OpenStruct.new(
+                status: 403,
+                body: 'Forbidden'
+              )
+            )
+          )
+
         expect(IntakeAPI).not_to receive(:make_api_call)
           .with(security_token, '/api/v1/screenings/1/people', :post)
 
-        result = described_class.create(security_token, participant)
-        expect(result[:error?]).to eq(true)
-        expect(result[:status]).to eq(403)
+        expect do
+          described_class.create(security_token, participant)
+        end.to raise_error('Forbidden')
+      end
+
+      it 'should reraise unexpected API errors' do
+        url = "/authorize/client/#{participant_id}"
+
+        exception = ApiError.new(
+          message: 'I am a teapot',
+          sent_attributes: '',
+          url: url,
+          method: :get,
+          response: OpenStruct.new(
+            status: 418,
+            body: 'I am a teapot'
+          )
+        )
+
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, url, :get)
+          .and_raise(exception)
+
+        expect(IntakeAPI).not_to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post)
+
+        expect do
+          described_class.create(security_token, participant)
+        end.to raise_error(exception)
       end
     end
   end
