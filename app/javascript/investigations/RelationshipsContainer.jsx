@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {Relationships} from 'investigations/Relationships'
+import {Relationships} from 'common/Relationships'
 import {
   getPeopleSelector,
 } from 'selectors/investigation/relationshipsSelectors'

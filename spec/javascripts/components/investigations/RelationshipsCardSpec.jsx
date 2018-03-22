@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import RelationshipsCard from 'investigations/RelationshipsCard'
-import {EmptyRelationships} from 'investigations/Relationships'
+import {EmptyRelationships} from 'common/Relationships'
 import RelationshipsContainer from 'investigations/RelationshipsContainer'
 
 describe('RelationshipsCard', () => {
