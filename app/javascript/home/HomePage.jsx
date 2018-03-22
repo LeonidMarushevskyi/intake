@@ -15,7 +15,7 @@ export class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    if (isFeatureActive('screenings')) {
+    if (isFeatureActive('screenings') && this.props.canSeeHotline) {
       this.props.actions.fetchScreenings()
     }
   }
@@ -50,8 +50,8 @@ export class HomePage extends React.Component {
   buttons() {
     return (
       <div>
-        {isFeatureActive('screenings') && this.startScreeningButton() || <div />}
-        {isFeatureActive('snapshot') && this.startSnapshotButton() || <div />}
+        { this.props.canSeeHotline && isFeatureActive('screenings') && this.startScreeningButton() || <div />}
+        { this.props.canSeeSnapshot && isFeatureActive('snapshot') && this.startSnapshotButton() || <div />}
       </div>
     )
   }
@@ -66,7 +66,7 @@ export class HomePage extends React.Component {
           <div className='row gap-top'>
             <div className='col-md-3' />
             <div className='col-md-9'>
-              { isFeatureActive('screenings') && <ScreeningsTable screenings={this.props.screenings} /> }
+              { this.props.canSeeHotline && isFeatureActive('screenings') && <ScreeningsTable screenings={this.props.screenings} /> }
             </div>
           </div>
         </div>
@@ -77,12 +77,16 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   actions: PropTypes.object.isRequired,
+  canSeeHotline: PropTypes.bool,
+  canSeeSnapshot: PropTypes.bool,
   screenings: PropTypes.array,
 }
 
 function mapStateToProps(state, _ownProps) {
   return {
     screenings: state.get('screenings').toJS(),
+    canSeeHotline: state.getIn(['staff', 'permissions', 'can_see_hotline']),
+    canSeeSnapshot: state.getIn(['staff', 'permissions', 'can_see_snapshot']),
   }
 }
 
