@@ -103,7 +103,7 @@ describe ParticipantRepository do
 
         expect do
           described_class.create(security_token, participant)
-        end.to raise_error('Forbidden')
+        end.to raise_error(described_class::AuthenticationError)
       end
 
       it 'should reraise unexpected API errors' do

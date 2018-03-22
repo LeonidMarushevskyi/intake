@@ -47,8 +47,7 @@ module Api
         begin
           created_participant = ParticipantRepository.create(session[:security_token], participant)
           render json: created_participant
-        rescue StandardError => e
-          raise e unless e.message == 'Forbidden'
+        rescue ParticipantRepository::AuthenticationError
           render json: { status: 403 }, status: 403
         end
       end
