@@ -11,12 +11,12 @@ describe('App', () => {
   it('fetches user info when the component mounts', () => {
     const fetchUserInfoAction = jasmine.createSpy('fetchUserInfoAction')
     const fetchSystemCodesAction = jasmine.createSpy('fetchSystemCodesAction')
-    const checkStaffPermission = jasmine.createSpy('checkStaffPermission')
-    const actions = {fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermission}
+    const checkStaffPermissions = jasmine.createSpy('checkStaffPermissions')
+    const actions = {fetchUserInfoAction, fetchSystemCodesAction, checkStaffPermissions}
     mount(<App actions={actions}><div/></App>)
     expect(fetchUserInfoAction).toHaveBeenCalled()
     expect(fetchSystemCodesAction).toHaveBeenCalled()
-    expect(checkStaffPermission).toHaveBeenCalledWith('add_sensitive_people')
+    expect(checkStaffPermissions).toHaveBeenCalledWith(['add_sensitive_people', 'can_see_hotline', 'can_see_snapshot'])
   })
 
   it('renders the global header component on all app views', () => {
