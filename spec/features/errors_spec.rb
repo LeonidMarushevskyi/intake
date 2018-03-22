@@ -30,17 +30,25 @@ feature 'error pages' do
   end
 
   context 'screening does not exist' do
-    scenario 'renders not found error page' do
+    before(:each) do
       stub_request(:get, intake_api_url(ExternalRoutes.intake_api_screening_path(screening.id)))
         .and_return(json_body('Screening is not found!!', status: 404))
       stub_empty_relationships_for_screening(screening)
       stub_empty_history_for_screening(screening)
       visit edit_screening_path(id: screening.id)
+    end
+
+    scenario 'renders not found error page' do
       expect(page).to have_text('Sorry, this is not the page you want.')
       expect(page).to have_text(
         "It may have been deleted or doesn't exist. Please check the address or"
       )
       expect(page).to have_link('return to your dashboard', href: '/')
+    end
+
+    scenario 'does not display "Something went wrong, sorry! Please try your last action again."' do
+      click_link 'return to your dashboard'
+      expect(page).not_to have_text("Something went wrong, sorry! Please try your last action again.")
     end
   end
 
