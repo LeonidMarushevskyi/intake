@@ -43,8 +43,13 @@ module Api
 
       def create
         participant = Participant.new(participant_params.to_h)
-        created_participant = ParticipantRepository.create(session[:security_token], participant)
-        render json: created_participant
+
+        begin
+          created_participant = ParticipantRepository.create(session[:security_token], participant)
+          render json: created_participant
+        rescue ParticipantRepository::AuthenticationError
+          render json: { status: 403 }, status: 403
+        end
       end
 
       def update

@@ -62,21 +62,37 @@ describe Api::V1::ParticipantsController do
       double(:participant, as_json: participant_params.merge(id: '1'))
     end
 
-    before do
+    it 'should render a participant as json' do
       participant = double(:participant)
       expect(Participant).to receive(:new)
         .with(participant_params).and_return(participant)
       expect(ParticipantRepository).to receive(:create)
         .with(security_token, participant)
         .and_return(created_participant)
-    end
 
-    it 'renders a participant as json' do
       process :create,
         method: :post,
         params: { screening_id: '1', participant: participant_params },
         session: session
       expect(JSON.parse(response.body)).to eq(created_participant.as_json)
+    end
+
+    it 'should return an error if unauthorized' do
+      participant = double(:participant)
+      expect(Participant).to receive(:new)
+        .with(participant_params).and_return(participant)
+      expect(ParticipantRepository).to receive(:create)
+        .with(security_token, participant)
+        .and_raise(ParticipantRepository::AuthenticationError)
+
+      process :create,
+        method: :post,
+        params: { screening_id: '1', participant: participant_params },
+        session: session
+      expect(response.status).to eq(403)
+      expect(JSON.parse(response.body)).to eq({
+        status: 403
+      }.as_json)
     end
   end
 

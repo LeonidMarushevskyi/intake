@@ -7,34 +7,130 @@ describe ParticipantRepository do
 
   describe '.create' do
     let(:participant_id) { '11' }
+
     let(:response) do
       double(:response, body: { 'id' => participant_id, 'first_name' => 'New Participant' })
     end
     let(:screening_id) { '1' }
-    let(:participant) do
-      Participant.new(id: nil, first_name: 'New Participant', screening_id: screening_id)
+
+    describe 'when creating a person with no legacy_id' do
+      let(:participant) do
+        Participant.new(
+          id: nil,
+          first_name: 'New Participant',
+          screening_id: screening_id
+        )
+      end
+
+      let(:payload) do
+        {
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant.legacy_descriptor&.legacy_id,
+            legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+          }
+        }.as_json
+      end
+
+      before do
+        expect(FerbAPI).not_to receive(:make_api_call)
+        expect(IntakeAPI).to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post, payload)
+          .and_return(response)
+      end
+
+      it 'returns the created participant with an error flag' do
+        created_participant = described_class.create(security_token, participant)
+        expect(created_participant.id).to eq(participant_id)
+        expect(created_participant.first_name).to eq('New Participant')
+      end
     end
 
-    let(:payload) do
-      {
-        screening_id: screening_id,
-        legacy_descriptor: {
-          legacy_id: participant.legacy_descriptor&.legacy_id,
-          legacy_table_name: participant.legacy_descriptor&.legacy_table_name
-        }
-      }.as_json
-    end
+    describe 'when creating a person with an existing legacy_id' do
+      let(:participant) do
+        Participant.new(
+          id: nil,
+          first_name: 'New Participant',
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant_id
+          }
+        )
+      end
 
-    before do
-      expect(IntakeAPI).to receive(:make_api_call)
-        .with(security_token, '/api/v1/screenings/1/people', :post, payload)
-        .and_return(response)
-    end
+      let(:payload) do
+        {
+          screening_id: screening_id,
+          legacy_descriptor: {
+            legacy_id: participant.legacy_descriptor&.legacy_id,
+            legacy_table_name: participant.legacy_descriptor&.legacy_table_name
+          }
+        }.as_json
+      end
 
-    it 'returns the created participant' do
-      created_participant = described_class.create(security_token, participant)
-      expect(created_participant.id).to eq(participant_id)
-      expect(created_participant.first_name).to eq('New Participant')
+      it 'should return a participant when authorization succeeds' do
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, "/authorize/client/#{participant_id}", :get)
+          .and_return(status: 200)
+        expect(IntakeAPI).to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post, payload)
+          .and_return(response)
+
+        created_participant = described_class.create(security_token, participant)
+        expect(created_participant.id).to eq(participant_id)
+        expect(created_participant.first_name).to eq('New Participant')
+      end
+
+      it 'should raise an error when authorization fails' do
+        url = "/authorize/client/#{participant_id}"
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, url, :get)
+          .and_raise(
+            ApiError.new(
+              message: 'Forbidden',
+              sent_attributes: '',
+              url: url,
+              method: :get,
+              response: OpenStruct.new(
+                status: 403,
+                body: 'Forbidden'
+              )
+            )
+          )
+
+        expect(IntakeAPI).not_to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post)
+
+        expect do
+          described_class.create(security_token, participant)
+        end.to raise_error(described_class::AuthenticationError)
+      end
+
+      it 'should reraise unexpected API errors' do
+        url = "/authorize/client/#{participant_id}"
+
+        exception = ApiError.new(
+          message: 'I am a teapot',
+          sent_attributes: '',
+          url: url,
+          method: :get,
+          response: OpenStruct.new(
+            status: 418,
+            body: 'I am a teapot'
+          )
+        )
+
+        expect(FerbAPI).to receive(:make_api_call)
+          .with(security_token, url, :get)
+          .and_raise(exception)
+
+        expect(IntakeAPI).not_to receive(:make_api_call)
+          .with(security_token, '/api/v1/screenings/1/people', :post)
+
+        expect do
+          described_class.create(security_token, participant)
+        end.to raise_error(exception)
+      end
     end
   end
 

@@ -89,7 +89,7 @@ feature 'Create participant' do
       sealed: false,
       sensitive: false,
       languages: %w[French Italian],
-      legacy_descriptor: FactoryBot.create(:legacy_descriptor),
+      legacy_descriptor: FactoryBot.create(:legacy_descriptor, legacy_id: 'ABC123ABC'),
       addresses: [marge_address],
       phone_numbers: [marge_phone_number],
       races: [
@@ -127,6 +127,7 @@ feature 'Create participant' do
           PersonSearchResultBuilder.build do |builder|
             builder.with_first_name('Homer')
             builder.with_last_name('Simpson')
+            builder.with_legacy_descriptor(homer.legacy_descriptor)
           end
         ]
       end
@@ -166,7 +167,6 @@ feature 'Create participant' do
       click_button 'Create a new person'
       expect(page).to_not have_button('Create a new person')
     end
-
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made
@@ -230,6 +230,14 @@ feature 'Create participant' do
     homer_attributes = build_participant_from_person_and_screening(homer, existing_screening)
     participant_homer = FactoryBot.build(:participant, homer_attributes)
     created_participant_homer = FactoryBot.create(:participant, participant_homer.as_json)
+    stub_request(:get,
+      ferb_api_url(
+        ExternalRoutes.ferb_api_client_authorization_path(
+          created_participant_homer.legacy_descriptor.legacy_id
+        )
+      )).and_return(status: 200)
+
+    puts created_participant_homer.to_json
     stub_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
       .and_return(json_body(created_participant_homer.to_json, status: 201))
@@ -240,6 +248,13 @@ feature 'Create participant' do
     within '#search-card', text: 'Search' do
       find('strong', text: 'Homer Simpson').click
     end
+    expect(a_request(:get,
+      ferb_api_url(
+        ExternalRoutes.ferb_api_client_authorization_path(
+          created_participant_homer.legacy_descriptor.legacy_id
+        )
+      )))
+      .to have_been_made
     expect(a_request(:post,
       intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id))))
       .to have_been_made
@@ -343,6 +358,12 @@ feature 'Create participant' do
             :participant,
             participant_homer.as_json
           )
+          stub_request(:get,
+            ferb_api_url(
+              ExternalRoutes.ferb_api_client_authorization_path(
+                participant_homer.legacy_descriptor.legacy_id
+              )
+            )).and_return(status: 200)
           stub_request(:post,
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
@@ -412,6 +433,12 @@ feature 'Create participant' do
             :participant,
             participant_homer.as_json
           )
+          stub_request(:get,
+            ferb_api_url(
+              ExternalRoutes.ferb_api_client_authorization_path(
+                participant_homer.legacy_descriptor.legacy_id
+              )
+            )).and_return(status: 200)
           stub_request(:post,
             intake_api_url(ExternalRoutes.intake_api_screening_people_path(existing_screening.id)))
             .and_return(json_body(created_participant_homer.to_json, status: 201))
