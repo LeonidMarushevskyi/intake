@@ -70,34 +70,56 @@ feature 'login' do
       expect(page).to have_current_path(root_path(accessCode: 'tempToken123'))
     end
 
-    context 'with global header' do
+    context 'and login with different privileges' do
+      before do
+        stub_request(:get, auth_access_code_url)
+          .and_return(json_body('123', status: 200))
+        stub_request(:get, staff_url)
+          .and_return(json_body(staff_info.to_json, status: 200))
+      end
+
+      scenario 'has CARES Hotline and CARES Snapshot can see screenings and snapshot' do
+        privileges = ['CARES Hotline', 'CARES Snapshot']
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body({ staffId: '1234', privileges: privileges }.to_json, status: 200))
+        visit root_path(accessCode: 'tempToken123')
+        expect(page).to have_button 'Start Snapshot'
+        expect(page).to have_button 'Start Screening'
+      end
+
+      scenario 'has CARES Hotline, can see screenings but not snapshot' do
+        privileges = ['CARES Hotline']
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body({ staffId: '1234', privileges: privileges }.to_json, status: 200))
+        visit root_path(accessCode: 'tempToken123')
+        expect(page).to_not have_button 'Start Snapshot'
+        expect(page).to have_button 'Start Screening'
+      end
+
+      scenario 'has CARES Snapshot, can see snapshot but not screening' do
+        privileges = ['CARES Snapshot']
+        stub_request(:get, auth_validation_url)
+          .and_return(json_body({ staffId: '1234', privileges: privileges }.to_json, status: 200))
+        visit root_path(accessCode: 'tempToken123')
+        expect(page).to have_button 'Start Snapshot'
+        expect(page).to_not have_button 'Start Screening'
+      end
+    end
+
+    context 'and login successfully' do
       before do
         stub_request(:get, auth_access_code_url)
           .and_return(json_body('123', status: 200))
         stub_request(:get, auth_validation_url)
           .and_return(json_body(auth_artifact.to_json, status: 200))
         stub_request(:get, staff_url)
-          .and_return(json_body(user_info.to_json, status: 200))
+          .and_return(json_body(staff_info.to_json, status: 200))
       end
 
-      context 'when there is a user on the session' do
-        let(:user_info) { staff_info }
-
-        scenario 'user sees their name on the global header' do
-          visit root_path(accessCode: 'tempToken123')
-          expect(a_request(:get, auth_access_code_url)).to have_been_made
-          expect(a_request(:get, auth_validation_url)).to have_been_made
-          expect(a_request(:get, staff_url)).to have_been_made
-          expect(page).to have_css 'header', text: 'Joe Cool'
-        end
-
-        scenario 'when user logs out' do
-          visit root_path(accessCode: 'tempToken123')
-          # regular click_link won't keep the pop-up menu open for some reason
-          execute_script('$(".fa.fa-user").click()')
-          click_link 'Logout'
-          expect(page.current_url).not_to have_content root_path(accessCode: 'tempToken123')
-          expect(page.current_url).to have_content auth_logout_url
+      context 'with global header' do
+        before do
+          stub_request(:get, staff_url)
+            .and_return(json_body(staff_info.to_json, status: 200))
         end
 
         context 'when there is a base_path present' do
@@ -118,7 +140,7 @@ feature 'login' do
       end
 
       context 'when there is no user on the session' do
-        let(:user_info) { {} }
+        let(:staff_info) { {} }
 
         scenario 'user sees "Not Available" if there is no user on session' do
           visit root_path(accessCode: 'tempToken123')
