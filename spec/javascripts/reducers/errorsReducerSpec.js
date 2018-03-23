@@ -49,6 +49,16 @@ describe('errorsReducer', () => {
       )
     })
   })
+  it('resets the state to initial state if error store is empty/undefined', () => {
+    const state = fromJS({})
+    const action = {
+      payload: 'none',
+      type: 'FETCH_SCREENINGS',
+    }
+    expect(errorsReducer(state, action)).toEqualImmutable(
+      fromJS({})
+    )
+  })
   describe('generic action type', () => {
     describe('on error', () => {
       it('updates error store for the type', () => {
@@ -75,19 +85,6 @@ describe('errorsReducer', () => {
         const action = {
           payload: 'Did have a plan',
           type: 'GENERIC_ACTION_COMPLETE',
-          error: false,
-        }
-        expect(errorsReducer(state, action)).toEqualImmutable(
-          fromJS({})
-        )
-      })
-      it('resets the state to initial state if error store is empty/undefined', () => {
-        const state = fromJS({
-          ACTION_TYPE: 'FETCH_SCREENINGS',
-        })
-        const action = {
-          payload: 'undefined',
-          type: 'FETCH_SCREENINGS',
           error: false,
         }
         expect(errorsReducer(state, action)).toEqualImmutable(

@@ -13,7 +13,7 @@ export default function errorsReducer(state = initialState, action) {
     } else {
       return state.set(type, fromJS(payload))
     }
-  } else if (action.type === FETCH_SCREENINGS && action.error !== true) {
+  } else if (type === FETCH_SCREENINGS) {
     return initialState
   } else {
     return state.delete(type)
