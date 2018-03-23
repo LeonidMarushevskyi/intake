@@ -30,22 +30,22 @@ const ScreeningDecisionShow = ({
         <div>Determine Decision and Response Time by using Structured Decision Making.</div>
         <a href={sdmPath} target='_blank' id='complete_sdm'>Complete SDM</a>
       </div>
-      <div className='row'>
-        <div className='col-md-12'>
-          <ShowField label='Additional information' errors={additionalInformation.errors} required={isAdditionalInfoRequired}>
-            {additionalInformation.value}
+    </div>
+    <div className='row'>
+      <div className='col-md-12'>
+        <ShowField label='Additional information' errors={additionalInformation.errors} required={isAdditionalInfoRequired}>
+          {additionalInformation.value}
+        </ShowField>
+        {accessRestriction.value &&
+          <ShowField label='Access restrictions'>
+            {accessRestriction.value}
           </ShowField>
-          {accessRestriction.value &&
-            <ShowField label='Access restrictions'>
-              {accessRestriction.value}
-            </ShowField>
-          }
-          {(accessRestriction.value || restrictionRationale.value) &&
-            <ShowField label='Restrictions rationale' errors={restrictionRationale.errors} required>
-              {restrictionRationale.value}
-            </ShowField>
-          }
-        </div>
+        }
+        {(accessRestriction.value || restrictionRationale.value) &&
+          <ShowField label='Restrictions rationale' errors={restrictionRationale.errors} required>
+            {restrictionRationale.value}
+          </ShowField>
+        }
       </div>
     </div>
   </div>
