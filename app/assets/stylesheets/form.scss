@@ -149,15 +149,6 @@ input[type='radio']:disabled + label::before {
   cursor: not-allowed;
 }
 
-.input-no-header {
-  margin-top: 56px;
-}
-
-.text-between-inputs {
-  -webkit-margin-before: 65px;
-  text-align: center;
-}
-
 .unstyled-list {
   list-style-type: none;
   margin: 0;

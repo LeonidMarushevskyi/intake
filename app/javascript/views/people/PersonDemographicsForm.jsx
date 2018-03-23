@@ -33,7 +33,7 @@ const PersonDemographicsForm = ({
         value={dateOfBirth}
         onChange={(value) => onChange('date_of_birth', value)}
       />
-      <div className='col-md-1 text-between-inputs' >or</div>
+      <div className='col-md-1'>or</div>
       <InputField
         gridClassName='col-md-2'
         id='approximate_age'
@@ -44,7 +44,7 @@ const PersonDemographicsForm = ({
         onChange={({target: {value}}) => onChange('approximate_age', value)}
         disabled={approximateAgeIsDisabled}
       />
-      <div className='col-md-2 input-no-header'>
+      <div className='col-md-2'>
         <select
           id='approximate_age_units'
           aria-label='Approximate Age Units'
