@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def host_env_string
-  'API_URL=http://api FERB_API_URL=https://ferb_api MARIONETTE=true'
+  'AUTHENTICATION=false API_URL=http://api FERB_API_URL=https://ferb_api MARIONETTE=false'
 end
 
 namespace :spec do # rubocop:disable BlockLength
@@ -13,7 +13,7 @@ namespace :spec do # rubocop:disable BlockLength
 
   def webpack?
     run_webpack = file_list == 'spec' || file_list == 'spec/' || file_list.include?('features')
-    'rm -rf public/packs-test && bin/webpack &&' if run_webpack
+    'rm -rf public/packs-test && NODE_ENV=test bin/webpack &&' if run_webpack
   end
 
   def run_in_intake_container(command)
